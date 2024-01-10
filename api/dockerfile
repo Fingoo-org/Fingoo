@@ -1,0 +1,35 @@
+FROM node:18-alpine As Test
+WORKDIR /api
+COPY --chown=node:node package*.json ./
+
+RUN npm ci
+COPY --chown=node:node . .
+USER node
+RUN npm test
+
+
+FROM node:18-alpine As Build
+WORKDIR /api
+COPY --chown=node:node package*.json ./
+
+COPY --chown=node:node --from=Test /api/node_modules ./node_modules
+COPY --chown=node:node . .
+
+RUN npm run build
+
+ENV NODE_ENV production
+
+
+#package*.json이 여기 있으니 여기서 설치
+RUN npm ci --only=production && npm cache clean --force
+
+USER node
+
+FROM node:18-alpine As Production
+
+COPY --chown=node:node --from=build /api/node_modules ./node_modules
+COPY --chown=node:node --from=build /api/dist ./dist
+
+CMD [ "node", "dist/main.js" ]
+
+
