@@ -1,0 +1,37 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+commit_msg_file=$1
+commit_msg=$(cat $1)
+second_line=$(echo "$commit_msg" | sed -n '2p')
+last_second_line=$(echo "$commit_msg" | tail -n 2 | head -n 1)
+
+commit_msg_title_regex='^(feat|fix|refactor|chore|test|docs|style): .{1,50}'
+#commit_msg_jira_regex="\[[A-Z]+-[0-9]+\]$"
+
+# 제목
+if ! grep -qE "$commit_msg_title_regex" "$commit_msg_file"; then
+  echo "COMMIT REJECTED: Please write according to the commit message rule."
+  exit 1
+fi
+
+# 2번째 줄
+if ! [ -z "$second_line" ]; then
+  echo "COMMIT REJECTED: The 2nd line should be blank."
+  exit 1
+fi
+
+## 마지막 2번째 줄
+#if ! [ -z "$last_second_line" ]; then
+#  echo "COMMIT REJECTED: The 2nd last line should be blank."
+#  exit 1
+#fi
+
+## Jira ticket
+#if ! tail -n +1 "$commit_msg_file" | grep -qE $commit_msg_jira_regex; then
+#  echo "COMMIT REJECTED: Please check jira ticket."
+#  exit 1
+#fi
