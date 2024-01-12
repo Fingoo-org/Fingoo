@@ -36,3 +36,5 @@ jobs:
           # experiment for cache
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: E2E test for Acceptance Test
+        run: docker compose -f docker-compose.yml -f docker-compose-build.yml up --abort-on-container-exit
