@@ -38,3 +38,18 @@ jobs:
           cache-to: type=gha,mode=max
       - name: E2E test for Acceptance Test
         run: docker compose -f docker-compose.yml -f docker-compose-build.yml up --abort-on-container-exit
+      - name: send discord message if fail
+        if: ${{ failure() }}  
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: warn
+          text: "build fail"
+      - name: send discord message if success
+        if: ${{ success() }}  
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: info
+          text: "build success"
+          
