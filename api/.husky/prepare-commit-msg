@@ -1,14 +1,12 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-#!/bin/sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 commit_msg_file=$1
 commit_msg=$(cat $1)
 second_line=$(echo "$commit_msg" | sed -n '2p')
 last_second_line=$(echo "$commit_msg" | tail -n 2 | head -n 1)
 
+# TODO: api, web을 구분해서 commit 보내도록 -> 통합 husky여야함, test, jira 토큰 발급
 commit_msg_title_regex='^(feat|fix|refactor|chore|test|docs|style): .{1,50}'
 #commit_msg_jira_regex="\[[A-Z]+-[0-9]+\]$"
 

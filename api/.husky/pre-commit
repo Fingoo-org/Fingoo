@@ -2,7 +2,7 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npx lint-staged
-#
+
 #FONT_YELLOW="\033[33m"
 #BG_RED="\033[41m"
 #NO_COLOR="\033[0m"
