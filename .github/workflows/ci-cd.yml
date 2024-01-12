@@ -23,7 +23,7 @@ jobs:
         with:
           context: ./api
           push: true
-          tags: user/api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/api:latest
           # experiment for cache
           cache-from: type=gha
           cache-to: type=gha,mode=max
