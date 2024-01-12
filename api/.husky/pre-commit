@@ -2,3 +2,18 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npx lint-staged
+#
+#FONT_YELLOW="\033[33m"
+#BG_RED="\033[41m"
+#NO_COLOR="\033[0m"
+#
+## set test flag here
+#GOTEST="go test -v ./..." # (1)
+#
+#echo "${FONT_YELLOW}>> Run [ `echo ${GOTEST}` ] before commit.${NO_COLOR}" # (2)
+#
+#${GOTEST} # (3)
+#if [ $? -ne 0 ]; then # (4)
+#	echo "${BG_RED}>> Commit fail! Check your code.${NO_COLOR}" # (5)
+#	exit 1
+#fi
