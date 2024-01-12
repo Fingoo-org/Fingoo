@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  cypress:
+    image: cypress/included:13.6.2
+    volumes:
+      - ./web/e2e:/cypress/e2e
+      - ./web/cypress.config.js:/cypress.config.js
+    environment:
+      - CYPRESS_BASE_URL=http://web:3000
+    depends_on:
+      - web
+    networks:
+      - app-net
+
+  web:
+    ports:
+      - "3000:3000"
+    networks:
+      - app-net
+
+  api:
+    ports:
+      - "8000:8000"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    name: econo
