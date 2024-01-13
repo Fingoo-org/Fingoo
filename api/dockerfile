@@ -22,8 +22,8 @@ RUN npm run build
 ENV NODE_ENV production
 
 
-#package*.json이 여기 있으니 여기서 설치
-RUN npm ci --only=production && npm cache clean --force
+# husky issue https://github.com/typicode/husky/issues/914
+RUN npm set-script prepare "" && npm ci --only=production && npm cache clean --force
 
 USER node
 

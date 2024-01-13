@@ -6,7 +6,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /web
 COPY package*.json ./
 
-RUN npm ci
+# husky issue https://github.com/typicode/husky/issues/914
+RUN npm set-script prepare "" && npm ci
 COPY . .
 RUN npm test
 
