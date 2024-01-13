@@ -4,44 +4,26 @@
 commit_msg_file=$1
 commit_msg=$(cat "$1")
 second_line=$(echo "$commit_msg" | sed -n '2p')
-#last_second_line=$(echo "$commit_msg" | tail -n 2 | head -n 1)
 
 if git diff --cached --name-only | grep -q "api"; then
   # api 경로가 포함되어 있으면, 해당 정보를 커밋 메시지에 추가
-  commit_msg_title_regex='^(\[API\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
+  commit_msg_title_regex='^(\[api\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
 elif git diff --cached --name-only | grep -q "web"; then
    # web 경로가 포함되어 있으면, 해당 정보를 커밋 메시지에 추가
-  commit_msg_title_regex='^(\[WEB\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
+  commit_msg_title_regex='^(\[web\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
 else
-  commit_msg_title_regex='^(\[COMMON\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
+  commit_msg_title_regex='^(\[infra\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
 fi
-
-#BRANCH_NAME=$(git symbolic-ref --short HEAD)
-#BRANCH_NAME='${BRANCH_NAME##*/}'
-#JIRA_ID=$(echo $BRANCH_NAME | egrep -o 'EI.-[0-9]+')
-#
-#BRANCH_IN_COMMIT=$(grep -c "$JIRA_ID" $1)
-#
-## shellcheck disable=SC2215
-#if -n "$JIRA_ID" && ! $BRANCH_IN_COMMIT -ge 1; then
-#  sed -i.bak -e "\$s/\$/ $JIRA_ID/" $1
-#fi
 
 
 # 제목
 if ! grep -qE "$commit_msg_title_regex" "$commit_msg_file"; then
-  echo "COMMIT REJECTED: { [API|WEB|COMMON] feat|fix|refactor|chore|test|docs|style: commit 제목 } 제시된 형식에 맞게 작성해주세요."
+  echo "COMMIT REJECTED: { [api|web|infra] feat|fix|refactor|chore|test|docs|style: commit 제목 } 제시된 형식에 맞게 작성해주세요."
   exit 1
 fi
 
-# 2번째 줄
+# 2번째 줄 -> 필요한가?
 if ! [ -z "$second_line" ]; then
   echo "COMMIT REJECTED: 제목 아래 개행문자를 추가해주세요."
   exit 1
 fi
-
-## Jira ticket
-#if ! tail -n +1 "$commit_msg_file" | grep -qE '\[[A-Z]+-[0-9]+\]$'; then
-#  echo "COMMIT REJECTED: jira ticket을 체크해주세요."
-#  exit 1
-#fi
