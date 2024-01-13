@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common';
-import { IBusinessRule } from './ibusiness.rule';
+import { BusinessRule } from './business.rule';
 
 type ErrorName = 'BUSINESS_RULE_BREAK';
 
@@ -7,7 +7,7 @@ type ErrorName = 'BUSINESS_RULE_BREAK';
 export class BusinessRuleValidationException extends HttpException {
   name: ErrorName;
 
-  constructor(rule: IBusinessRule) {
+  constructor(rule: BusinessRule) {
     super(rule.Message, 400);
   }
 }
