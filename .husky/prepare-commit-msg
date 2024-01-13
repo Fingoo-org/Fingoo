@@ -13,14 +13,24 @@ elif git diff --cached --name-only | grep -q "web"; then
    # web 경로가 포함되어 있으면, 해당 정보를 커밋 메시지에 추가
   commit_msg_title_regex='^(\[WEB\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
 else
-  commit_msg_title_regex='^(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
+  commit_msg_title_regex='^(\[COMMON\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
 fi
 
+#BRANCH_NAME=$(git symbolic-ref --short HEAD)
+#BRANCH_NAME='${BRANCH_NAME##*/}'
+#JIRA_ID=$(echo $BRANCH_NAME | egrep -o 'HD.-[0-9]+')
+#
+#BRANCH_IN_COMMIT=$(grep -c "$JIRA_ID" $1)
+#
+## shellcheck disable=SC2215
+#if -n "$JIRA_ID" && ! $BRANCH_IN_COMMIT -ge 1; then
+#  sed -i.bak -e "\$s/\$/ $JIRA_ID/" $1
+#fi
 
 
 # 제목
 if ! grep -qE "$commit_msg_title_regex" "$commit_msg_file"; then
-  echo "COMMIT REJECTED: feat|fix|refactor|chore|test|docs|style: commit 제목 형식에 맞게 작성해주세요"
+  echo "COMMIT REJECTED: { [API|WEB|COMMON] feat|fix|refactor|chore|test|docs|style: commit 제목 } 제시된 형식에 맞게 작성해주세요."
   exit 1
 fi
 
@@ -30,14 +40,8 @@ if ! [ -z "$second_line" ]; then
   exit 1
 fi
 
-## 마지막 2번째 줄
-#if ! [ -z "$last_second_line" ]; then
-#  echo "COMMIT REJECTED: The 2nd last line should be blank."
-#  exit 1
-#fi
-
 ## Jira ticket
 #if ! tail -n +1 "$commit_msg_file" | grep -qE '\[[A-Z]+-[0-9]+\]$'; then
-#  echo "COMMIT REJECTED: Please check jira ticket."
+#  echo "COMMIT REJECTED: jira ticket을 체크해주세요."
 #  exit 1
 #fi
