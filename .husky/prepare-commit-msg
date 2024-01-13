@@ -22,7 +22,7 @@ if ! grep -qE "$commit_msg_title_regex" "$commit_msg_file"; then
   exit 1
 fi
 
-# 2번째 줄 -> 필요한가?
+# 2번째 줄
 if ! [ -z "$second_line" ]; then
   echo "COMMIT REJECTED: 제목 아래 개행문자를 추가해주세요."
   exit 1
