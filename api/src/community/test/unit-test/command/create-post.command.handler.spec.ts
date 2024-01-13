@@ -9,6 +9,7 @@ jest.spyOn(crypto, 'randomUUID').mockReturnValue('0000-0000-0000-0000-0000');
 describe('CreatePostCommandHandler', () => {
   let createPostCommandHandler: CreatePostCommandHandler;
   let createPostPort: CreatePostPort;
+
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       providers: [
