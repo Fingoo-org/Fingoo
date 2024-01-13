@@ -22,8 +22,7 @@ RUN npm run build
 ENV NODE_ENV production
 
 
-# husky issue https://github.com/typicode/husky/issues/914
-RUN npm set-script prepare "" && npm ci --only=production && npm cache clean --force
+RUN npm ci --only=production && npm cache clean --force
 
 USER node
 
