@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd api && npx lint-staged && npm run test
+npx lint-staged
+if git diff --cached --name-only | grep -q "api"; then
+  cd api && npm run test
+elif git diff --cached --name-only | grep -q "web"; then
+  cd web && npm run test
+fi
