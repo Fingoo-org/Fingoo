@@ -22,6 +22,7 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
       - name: Find Jira Issue Key in branch
         uses: atlassian/gajira-find-issue-key@v3
+        id: IssueKey
         with:
           from: commits
       # - name: Login to Docker Hub
@@ -67,5 +68,5 @@ jobs:
         if: ${{ success() }}  
         uses: atlassian/gajira-transition@v3
         with:
-          issue: EI-100
-          transition: "DONE"
+          issue: ${{ steps.IssueKey.outputs.issue }}
+          transitionId: 5
