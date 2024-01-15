@@ -26,3 +26,23 @@ if ! [ -z "$second_line" ]; then
   echo "COMMIT REJECTED: 제목 아래 개행문자를 추가해주세요."
   exit 1
 fi
+
+
+# 커밋에 Jira 이슈 번호 추가
+
+COMMIT_MESSAGE=$1
+
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+BRANCH_NAME="${BRANCH_NAME##*/}"
+JIRA_ID=$(echo "$BRANCH_NAME" | egrep -o 'EI-[0-9]+')
+
+# merge commit 제외
+MERGE=$(cat $COMMIT_MESSAGE|grep -i 'merge'|wc -l)
+
+
+# COMMIT_MSG_HEAD=$(head $1 -n 1)
+# BRANCH_IN_COMMIT=$(grep -c "$JIRA_ID" $1)
+
+if [ -n $JIRA_ID ] && [ $MERGE -eq 0 ] ; then
+  echo "[$JIRA_ID] $(cat $COMMIT_MESSAGE)" > $COMMIT_MESSAGE
+fi
