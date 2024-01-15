@@ -2,9 +2,8 @@ name: ci-cd
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "EI-100" ]
+
 
 jobs:
   build:
