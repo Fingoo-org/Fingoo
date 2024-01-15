@@ -70,3 +70,5 @@ jobs:
           transition: "DONE"
       - name: Delete merged branch
         uses: SvanBoxel/delete-merged-branch@1.4.3
+        with:
+          exclude: main
