@@ -39,10 +39,6 @@ JIRA_ID=$(echo "$BRANCH_NAME" | egrep -o 'EI-[0-9]+')
 # merge commit 제외
 MERGE=$(cat $COMMIT_MESSAGE|grep -i 'merge'|wc -l)
 
-
-# COMMIT_MSG_HEAD=$(head $1 -n 1)
-# BRANCH_IN_COMMIT=$(grep -c "$JIRA_ID" $1)
-
 if [ -n $JIRA_ID ] && [ $MERGE -eq 0 ] ; then
   echo "[$JIRA_ID] $(cat $COMMIT_MESSAGE)" > $COMMIT_MESSAGE
 fi
