@@ -5,3 +5,16 @@ services:
     image: hunnnys/web
   api:
     image: hunnnys/api
+    environment:
+    - DB_HOST=${DB_HOST}
+    - DB_PORT=${DB_PORT}
+    - MYSQL_USER=${MYSQL_USER}
+    - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    - MYSQL_DATABASE=${MYSQL_DATABASE}
+  db:
+    image: mysql:8
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}

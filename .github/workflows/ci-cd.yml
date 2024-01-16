@@ -47,8 +47,15 @@ jobs:
           # experiment for cache
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: .env setting
+        run: |
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
+          echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
+          echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
       - name: E2E test for Acceptance Test
-        run: docker compose -f docker-compose.yml -f docker-compose-build.yml up --abort-on-container-exit
+        run: docker compose -f docker-compose.yml -f docker-compose-test.yml up --abort-on-container-exit
       - name: Send discord message if fail
         if: ${{ failure() }}  
         uses: rjstone/discord-webhook-notify@v1.0.4
