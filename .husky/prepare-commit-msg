@@ -7,12 +7,12 @@ second_line=$(echo "$commit_msg" | sed -n '2p')
 
 if git diff --cached --name-only | grep -q "api"; then
   # api 경로가 포함되어 있으면, 해당 정보를 커밋 메시지에 추가
-  commit_msg_title_regex='^(\[api\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
+  commit_msg_title_regex='^(\[api\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,100}?$'
 elif git diff --cached --name-only | grep -q "web"; then
    # web 경로가 포함되어 있으면, 해당 정보를 커밋 메시지에 추가
-  commit_msg_title_regex='^(\[web\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
+  commit_msg_title_regex='^(\[web\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,100}?$'
 else
-  commit_msg_title_regex='^(\[infra\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,50}?$'
+  commit_msg_title_regex='^(\[infra\]\s*)(feat|fix|refactor|chore|test|docs|style): .{1,100}?$'
 fi
 
 # 제목
