@@ -12,15 +12,13 @@ services:
       - web
     networks:
       - app-net
-
   web:
     build: ./web
-    image: local/api
+    image: local/web
     ports:
       - "3000:3000"
     networks:
       - app-net
-
   api:
     build: ./api
     image: local/api
@@ -28,6 +26,17 @@ services:
       - "8000:8000"
     networks:
       - app-net
+    depends_on:
+      - db
+  
+  db:
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - app-net
+    
 
 networks:
   app-net:

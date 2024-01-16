@@ -24,6 +24,15 @@ services:
       - "8000:8000"
     networks:
       - app-net
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    networks:
+      - app-net
 
 networks:
   app-net:
