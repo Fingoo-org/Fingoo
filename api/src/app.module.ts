@@ -6,6 +6,8 @@ import { CommunityModule } from './community/community.module';
 import { DataSource } from 'typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RedisModule } from '@nestjs-modules/ioredis';
+import { MyRedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -14,7 +16,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       imports: [ConfigModule],
       useClass: TypeOrmConfigService,
     }),
+    RedisModule.forRoot({
+      type: 'single',
+      url: 'redis://localhost:6379',
+    }),
     CommunityModule,
+    MyRedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
