@@ -14,7 +14,7 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "database:local": "docker run -p 3306:3306/tcp --env-file ./.env -d mysql:8",
+    "infra": "docker compose -f docker-compose-api.yml up",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
