@@ -6,7 +6,7 @@ import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
 
 @Injectable()
-export class FluctuatingIndicatorsRedisAdapter
+export class FluctuatingIndicatorRedisAdapter
   implements LoadCachedFluctuatingIndicatorPort, CachingFluctuatingIndicatorPort
 {
   constructor(@InjectRedis() private readonly redis: Redis) {}
