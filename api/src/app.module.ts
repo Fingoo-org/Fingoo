@@ -8,6 +8,7 @@ import { TypeOrmConfigService } from './config/typeorm.config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { MyRedisModule } from './redis/redis.module';
+import { NumericalGuidanceModule } from './numerical-guidance/numerical-guidance.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MyRedisModule } from './redis/redis.module';
     }),
     CommunityModule,
     MyRedisModule,
+    NumericalGuidanceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
