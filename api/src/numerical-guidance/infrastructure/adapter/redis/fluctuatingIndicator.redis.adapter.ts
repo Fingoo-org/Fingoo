@@ -4,6 +4,7 @@ import { FluctuatingIndicatorsDto } from '../../../application/query/get-fluctua
 import { CachingFluctuatingIndicatorPort } from '../../../application/port/cache/caching-fluctuatingIndicator.port';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
+import { FluctuatingIndicatorMapper } from '../../../../building-blocks/mapper/fluctuatingIndicator.mapper';
 
 @Injectable()
 export class FluctuatingIndicatorRedisAdapter
@@ -16,11 +17,12 @@ export class FluctuatingIndicatorRedisAdapter
     if (data == null) {
       return null;
     }
-    return FluctuatingIndicatorsDto.create(data);
+    return FluctuatingIndicatorMapper.mapToDto(data);
   }
 
   async cachingFluctuatingIndicator(ticker: string, fluctuatingIndicatorsDto: FluctuatingIndicatorsDto): Promise<void> {
     const value: string = JSON.stringify(fluctuatingIndicatorsDto);
     this.redis.set(ticker, value);
+    this.redis.expire(ticker, 10); // 변경가능
   }
 }
