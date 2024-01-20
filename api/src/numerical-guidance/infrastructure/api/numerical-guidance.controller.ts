@@ -14,8 +14,8 @@ export class NumericalGuidanceController {
   ): Promise<FluctuatingIndicatorsDto> {
     const query = new GetFluctuatingIndicatorsQuery(
       getFluctuatingIndicatorsDto.dataCount,
-      getFluctuatingIndicatorsDto.ticker,
       getFluctuatingIndicatorsDto.type,
+      getFluctuatingIndicatorsDto.fluctuatingIndicatorInfos,
     );
     return this.queryBus.execute(query);
   }
