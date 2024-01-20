@@ -8,7 +8,6 @@ export class FluctuatingIndicatorMapper {
     const data: {
       response: Response;
     } = JSON.parse(stringData);
-    console.log(data);
 
     const header = {
       resultCode: data.response.header.resultCode,
