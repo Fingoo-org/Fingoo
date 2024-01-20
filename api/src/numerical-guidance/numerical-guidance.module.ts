@@ -3,9 +3,11 @@ import { NumericalGuidanceController } from './infrastructure/api/numerical-guid
 import { GetFluctuatingIndicatorsQueryHandler } from './application/query/get-fluctuatingIndicators/get-fluctuatingIndicators.query.handler';
 import { FluctuatingIndicatorRedisAdapter } from './infrastructure/adapter/redis/fluctuatingIndicator.redis.adapter';
 import { FluctuatingIndicatorKrxAdapter } from './infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
-  imports: [NumericalGuidanceController],
+  imports: [CqrsModule],
+  controllers: [NumericalGuidanceController],
   providers: [
     GetFluctuatingIndicatorsQueryHandler,
     {
