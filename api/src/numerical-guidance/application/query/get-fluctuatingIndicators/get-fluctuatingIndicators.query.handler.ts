@@ -19,18 +19,21 @@ export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
   ) {}
 
   async execute(getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery): Promise<FluctuatingIndicatorsDto[]> {
-    const { dataCount, tickers, type } = getFluctuatingIndicatorsQuery;
+    const { dataCount, type, fluctuatingIndicatorInfos } = getFluctuatingIndicatorsQuery;
     const fluctuatingIndicatorsDtos: FluctuatingIndicatorsDto[] = [];
 
-    for (const ticker of tickers) {
+    for (const fluctuatingIndicatorInfo of fluctuatingIndicatorInfos) {
+      const { ticker, market } = fluctuatingIndicatorInfo;
+
       let fluctuatingIndicatorsDto: FluctuatingIndicatorsDto =
         await this.loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator(ticker);
 
       if (this.isNotCached(fluctuatingIndicatorsDto)) {
         fluctuatingIndicatorsDto = await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(
           dataCount,
-          ticker,
           type,
+          ticker,
+          market,
         );
         await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(ticker, fluctuatingIndicatorsDto);
       }
@@ -40,6 +43,6 @@ export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
   }
 
   private isNotCached(fluctuatingIndicatorsDto: FluctuatingIndicatorsDto): boolean {
-    return fluctuatingIndicatorsDto != null;
+    return fluctuatingIndicatorsDto == null;
   }
 }
