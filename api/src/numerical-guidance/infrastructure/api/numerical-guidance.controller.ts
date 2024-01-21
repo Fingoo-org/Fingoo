@@ -8,7 +8,7 @@ import { GetFluctuatingIndicatorsDto } from './dto/get-fluctuatingIndicators.dto
 export class NumericalGuidanceController {
   constructor(private queryBus: QueryBus) {}
 
-  @Get()
+  @Get('/fluctuatingIndicators')
   async getFluctuatingIndicators(
     @Body() getFluctuatingIndicatorsDto: GetFluctuatingIndicatorsDto,
   ): Promise<FluctuatingIndicatorsDto> {
