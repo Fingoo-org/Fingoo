@@ -109,9 +109,9 @@ describe('FluctuatingIndicatorRedisAdapter', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        RedisModule.forRoot({
-          type: 'single',
-          url: 'redis://localhost:6379',
+        RedisModule.forRootAsync({
+          imports: [ConfigModule],
+          useClass: RedisConfigService,
         }),
       ],
       providers: [
