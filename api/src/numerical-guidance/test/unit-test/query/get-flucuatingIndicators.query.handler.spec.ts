@@ -147,7 +147,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
 
   it('변동지표를 불러온다.', async () => {
     //given
-    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(2, 'KOREA', [
+    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(2, [
       { ticker: 'KR7005930001', market: 'KOSPI' },
     ]);
     //when
@@ -162,7 +162,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
 
   it('변동지표가 redis에서 불러와진다.', async () => {
     //given
-    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(2, 'KOREA', [
+    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(2, [
       { ticker: 'KR7005930009', market: 'KOSPI' },
     ]);
     //when
