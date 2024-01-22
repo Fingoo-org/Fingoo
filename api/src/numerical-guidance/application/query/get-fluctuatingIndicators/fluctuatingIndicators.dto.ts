@@ -20,31 +20,20 @@ export type Items = {
   item: Item[];
 };
 
-export type Body = {
+export class FluctuatingIndicatorsDto {
   numOfRows: number;
   pageNo: number;
   totalCount: number;
   items: Items;
-};
 
-export type Header = {
-  resultCode: string;
-  resultMsg: string;
-};
-
-export type Response = {
-  header: Header;
-  body: Body;
-};
-
-export class FluctuatingIndicatorsDto {
-  response: Response;
-
-  private constructor(response: Response) {
-    this.response = response;
+  private constructor(numOfRows: number, pageNo: number, totalCount: number, items: Items) {
+    this.numOfRows = numOfRows;
+    this.pageNo = pageNo;
+    this.totalCount = totalCount;
+    this.items = items;
   }
 
-  static create({ response }: { response: any }): FluctuatingIndicatorsDto {
-    return new FluctuatingIndicatorsDto(response);
+  static create({ numOfRows, pageNo, totalCount, items }): FluctuatingIndicatorsDto {
+    return new FluctuatingIndicatorsDto(numOfRows, pageNo, totalCount, items);
   }
 }
