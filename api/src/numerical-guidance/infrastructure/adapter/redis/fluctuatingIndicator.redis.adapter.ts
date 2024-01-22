@@ -14,10 +14,7 @@ export class FluctuatingIndicatorRedisAdapter
 
   async loadCachedFluctuatingIndicator(ticker: string): Promise<FluctuatingIndicatorsDto | null> {
     const data: string = await this.redis.get(ticker);
-    if (data == null) {
-      return null;
-    }
-    return FluctuatingIndicatorMapper.mapToDto(data);
+    return data && FluctuatingIndicatorMapper.mapToDto(data);
   }
 
   async cachingFluctuatingIndicator(ticker: string, fluctuatingIndicatorsDto: FluctuatingIndicatorsDto): Promise<void> {
