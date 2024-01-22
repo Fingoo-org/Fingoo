@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
 import { CommunityController } from './infrastructure/api/community.controller';
 import { CreatePostCommandHandler } from './application/command/create-post/create-post.command.handler';
 import { CommunityPersistentAdapter } from './infrastructure/adapter/persistent/community.persistent.adapter.stub';
 import { GetPostsQueryHandler } from './application/query/get-posts/get-posts.query.handler';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [CqrsModule],

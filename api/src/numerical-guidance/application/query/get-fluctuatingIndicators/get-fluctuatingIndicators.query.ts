@@ -5,5 +5,6 @@ export class GetFluctuatingIndicatorsQuery implements IQuery {
     readonly dataCount: number,
     readonly tickers: string[],
     readonly type: string,
+    readonly market: string,
   ) {}
 }

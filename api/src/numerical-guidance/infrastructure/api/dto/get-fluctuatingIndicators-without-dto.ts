@@ -1,13 +1,13 @@
-import { IsArray, IsInt, IsString } from 'class-validator';
+import { IsInt, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-export class GetFluctuatingIndicatorsDto {
+export class GetFluctuatingIndicatorsWithoutCacheDto {
   @Transform(({ value }) => parseInt(value, 10))
   @IsInt()
   readonly dataCount: number;
 
-  @IsArray()
-  readonly ticker: string[];
+  @IsString()
+  readonly ticker: string;
 
   @IsString()
   readonly market: string;

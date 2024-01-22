@@ -3,17 +3,34 @@ import { NumericalGuidanceController } from './infrastructure/api/numerical-guid
 import { GetFluctuatingIndicatorsQueryHandler } from './application/query/get-fluctuatingIndicators/get-fluctuatingIndicators.query.handler';
 import { FluctuatingIndicatorRedisAdapter } from './infrastructure/adapter/redis/fluctuatingIndicator.redis.adapter';
 import { FluctuatingIndicatorKrxAdapter } from './infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
+import { HttpModule } from '@nestjs/axios';
+import { GetFluctuatingIndicatorsWithoutCacheQueryHandler } from './application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
-  imports: [NumericalGuidanceController],
+  imports: [
+    CqrsModule,
+    HttpModule.registerAsync({
+      useFactory: () => ({
+        timeout: 5000,
+        maxRedirects: 5,
+      }),
+    }),
+  ],
+  controllers: [NumericalGuidanceController],
   providers: [
     GetFluctuatingIndicatorsQueryHandler,
+    GetFluctuatingIndicatorsWithoutCacheQueryHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
     },
     {
       provide: 'LoadFluctuatingIndicatorPort',
+      useClass: FluctuatingIndicatorKrxAdapter,
+    },
+    {
+      provide: 'LoadFluctuatingIndicatorWithoutCachePort',
       useClass: FluctuatingIndicatorKrxAdapter,
     },
     {

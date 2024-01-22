@@ -10,16 +10,16 @@ import { CachingFluctuatingIndicatorPort } from '../../port/cache/caching-fluctu
 @QueryHandler(GetFluctuatingIndicatorsQuery)
 export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
   constructor(
-    @Inject('LoadFluctuatingIndicatorsPort')
+    @Inject('LoadFluctuatingIndicatorPort')
     private readonly loadFluctuatingIndicatorPort: LoadFluctuatingIndicatorPort,
-    @Inject('LoadCachedFluctuatingIndicatorsPort')
+    @Inject('LoadCachedFluctuatingIndicatorPort')
     private readonly loadCachedFluctuatingIndicatorPort: LoadCachedFluctuatingIndicatorPort,
-    @Inject('CachingFluctuatingIndicatorsPort')
+    @Inject('CachingFluctuatingIndicatorPort')
     private readonly cachingFluctuatingIndicatorPort: CachingFluctuatingIndicatorPort,
   ) {}
 
   async execute(getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery): Promise<FluctuatingIndicatorsDto[]> {
-    const { dataCount, tickers, type } = getFluctuatingIndicatorsQuery;
+    const { dataCount, tickers, type, market } = getFluctuatingIndicatorsQuery;
     const fluctuatingIndicatorsDtos: FluctuatingIndicatorsDto[] = [];
 
     for (const ticker of tickers) {
@@ -31,6 +31,7 @@ export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
           dataCount,
           ticker,
           type,
+          market,
         );
         await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(ticker, fluctuatingIndicatorsDto);
       }
