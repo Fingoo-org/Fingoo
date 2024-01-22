@@ -33,7 +33,8 @@ export class FluctuatingIndicatorKrxAdapter {
       ),
     );
 
-    const responseData: FluctuatingIndicatorsWithoutCacheDto = res.data;
+    const responseData: FluctuatingIndicatorsWithoutCacheDto = res.data.response.body;
+    console.log(responseData.items);
 
     return responseData;
   }
