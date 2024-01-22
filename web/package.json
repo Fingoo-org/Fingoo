@@ -24,6 +24,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
+    "@types/jest": "^29.5.11",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -37,8 +38,9 @@
     "postcss": "^8",
     "prettier": "^3.2.1",
     "tailwindcss": "^3.3.0",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5.3.3"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

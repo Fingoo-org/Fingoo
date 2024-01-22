@@ -10,6 +10,6 @@ describe('useStore', () => {
   it('init store', () => {
     const { result } = renderHook(() => useStore());
 
-    expect(result.current.init).toEqual(true);
+    expect(result.current.init).toBe(true);
   });
 });

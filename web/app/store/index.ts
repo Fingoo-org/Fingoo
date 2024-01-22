@@ -10,7 +10,11 @@ export const resetAllSlice = () => {
   });
 };
 
-export const useStore = create<IndicatorBoardSlice & IndicatorBoardMetadataSlice>()((...a) => ({
+type defaultState = {
+  init: boolean;
+};
+
+export const useStore = create<defaultState & IndicatorBoardSlice & IndicatorBoardMetadataSlice>()((...a) => ({
   init: true,
   ...createIndicatorBoardSlice(...a),
   ...createIndicatorBoardMetadataSlice(...a),
