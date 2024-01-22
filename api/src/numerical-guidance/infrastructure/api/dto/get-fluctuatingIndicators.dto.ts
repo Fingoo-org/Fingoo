@@ -14,9 +14,6 @@ export class GetFluctuatingIndicatorsDto {
   @IsInt()
   readonly dataCount: number;
 
-  @IsString()
-  readonly type: string;
-
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })

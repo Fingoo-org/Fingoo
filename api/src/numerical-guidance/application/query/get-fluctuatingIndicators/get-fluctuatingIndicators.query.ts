@@ -4,7 +4,6 @@ import { FluctuatingIndicatorInfo } from '../../../infrastructure/api/dto/get-fl
 export class GetFluctuatingIndicatorsQuery implements IQuery {
   constructor(
     readonly dataCount: number,
-    readonly type: string,
     readonly fluctuatingIndicatorInfos: FluctuatingIndicatorInfo[],
   ) {}
 }
