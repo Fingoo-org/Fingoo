@@ -7,7 +7,7 @@ describe('useStore', () => {
     resetAllSlice();
   });
 
-  it('init store', () => {
+  it('초기 설정 확인', () => {
     const { result } = renderHook(() => useStore());
 
     expect(result.current.init).toBe(true);

@@ -2,11 +2,11 @@ import { StateCreator } from 'zustand';
 import { sliceResetFns } from '.';
 import { IndicatorBoardSlice } from './indicator-board.slice';
 
-type Indicator = {
+export type Indicator = {
   id: string;
 };
 
-type IndicatorBoardMetadata = {
+export type IndicatorBoardMetadata = {
   id: string;
   name: string;
   indicators: Indicator[];
@@ -16,7 +16,9 @@ type IndicatorBoardMetadataState = {
   metadataList: IndicatorBoardMetadata[];
 };
 
-type IndicatorBoardMetadataAction = {};
+type IndicatorBoardMetadataAction = {
+  addMetaData: (metaData: IndicatorBoardMetadata) => void;
+};
 
 export type IndicatorBoardMetadataSlice = IndicatorBoardMetadataState & IndicatorBoardMetadataAction;
 
@@ -33,5 +35,7 @@ export const createIndicatorBoardMetadataSlice: StateCreator<
   sliceResetFns.add(() => set(initialIndicatorBoardMetadataState));
   return {
     ...initialIndicatorBoardMetadataState,
+    addMetaData: (metaData: IndicatorBoardMetadata) =>
+      set((state) => ({ metadataList: [...state.metadataList, metaData] })),
   };
 };
