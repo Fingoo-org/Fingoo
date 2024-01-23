@@ -11,15 +11,13 @@ import { GetFluctuatingIndicatorsWithoutCacheQuery } from 'src/numerical-guidanc
 export class NumericalGuidanceController {
   constructor(private queryBus: QueryBus) {}
 
-  @Get()
+  @Get('/fluctuatingIndicators')
   async getFluctuatingIndicators(
     @Body() getFluctuatingIndicatorsDto: GetFluctuatingIndicatorsDto,
   ): Promise<FluctuatingIndicatorsDto> {
     const query = new GetFluctuatingIndicatorsQuery(
       getFluctuatingIndicatorsDto.dataCount,
-      getFluctuatingIndicatorsDto.ticker,
-      getFluctuatingIndicatorsDto.type,
-      getFluctuatingIndicatorsDto.market,
+      getFluctuatingIndicatorsDto.fluctuatingIndicatorInfos,
     );
     return this.queryBus.execute(query);
   }
@@ -32,7 +30,6 @@ export class NumericalGuidanceController {
       getFluctuatingIndicatorsWithoutCacheDto.dataCount,
       getFluctuatingIndicatorsWithoutCacheDto.ticker,
       getFluctuatingIndicatorsWithoutCacheDto.market,
-      getFluctuatingIndicatorsWithoutCacheDto.type,
     );
     return this.queryBus.execute(query);
   }

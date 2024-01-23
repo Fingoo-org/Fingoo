@@ -4,7 +4,6 @@ export interface LoadFluctuatingIndicatorPort {
   loadFluctuatingIndicator(
     dataCount: number,
     ticker: string,
-    type: string,
     market: string,
   ): Promise<FluctuatingIndicatorsDto>;
 }
