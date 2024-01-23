@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { catchError, lastValueFrom } from 'rxjs';
 import { AxiosError } from '@nestjs/terminus/dist/errors/axios.error';
-import { FluctuatingIndicatorsWithoutCacheDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators-without-cache/fluctuatingIndicators-without-cache.dto';
+import { FluctuatingIndicatorsDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
 
 @Injectable()
 export class FluctuatingIndicatorKrxAdapter {
@@ -13,7 +13,7 @@ export class FluctuatingIndicatorKrxAdapter {
     dataCount: number,
     ticker: string,
     market: string,
-  ): Promise<FluctuatingIndicatorsWithoutCacheDto> {
+  ): Promise<FluctuatingIndicatorsDto> {
     // KRX API 통신
     const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=f5burUfSauyza43%2F8ohdEUPRiVyXVJaN31DAiPF4bGgtif%2BdgQVtK11RWjpybFBCdhIPi%2FVrjDvSYTpwBrakRA%3D%3D&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=20230101&endBasDt=20230105&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
     /*
@@ -31,7 +31,7 @@ export class FluctuatingIndicatorKrxAdapter {
       ),
     );
 
-    const responseData: FluctuatingIndicatorsWithoutCacheDto = res.data.response.body;
+    const responseData: FluctuatingIndicatorsDto = res.data.response.body;
 
     return responseData;
   }

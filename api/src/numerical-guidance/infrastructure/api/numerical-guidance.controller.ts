@@ -4,7 +4,6 @@ import { GetFluctuatingIndicatorsQuery } from '../../application/query/get-fluct
 import { FluctuatingIndicatorsDto } from '../../application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
 import { GetFluctuatingIndicatorsDto } from './dto/get-fluctuatingIndicators.dto';
 import { GetFluctuatingIndicatorsWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
-import { FluctuatingIndicatorsWithoutCacheDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators-without-cache/fluctuatingIndicators-without-cache.dto';
 import { GetFluctuatingIndicatorsWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators-without-cache/get-fluctuatingIndicators-without-cache.query';
 
 @Controller('/numerical-guidance')
@@ -25,7 +24,7 @@ export class NumericalGuidanceController {
   @Get('/without-cache')
   async getFluctuatingIndicatorsWithoutCache(
     @Query() getFluctuatingIndicatorsWithoutCacheDto: GetFluctuatingIndicatorsWithoutCacheDto,
-  ): Promise<FluctuatingIndicatorsWithoutCacheDto> {
+  ): Promise<FluctuatingIndicatorsDto> {
     const query = new GetFluctuatingIndicatorsWithoutCacheQuery(
       getFluctuatingIndicatorsWithoutCacheDto.dataCount,
       getFluctuatingIndicatorsWithoutCacheDto.ticker,
