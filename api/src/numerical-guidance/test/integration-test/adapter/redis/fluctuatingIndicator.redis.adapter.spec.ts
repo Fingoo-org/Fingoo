@@ -35,6 +35,11 @@ describe('FluctuatingIndicatorRedisAdapter', () => {
     fluctuatingIndicatorRedisAdapter = module.get(FluctuatingIndicatorRedisAdapter);
   });
 
+  afterAll(async () => {
+    // await environment.down();
+    await fluctuatingIndicatorRedisAdapter.disconnectRedis();
+  });
+
   it('redis에서 캐시된 값을 불러오는 경우.', async () => {
     //given
     const testCachingData = FluctuatingIndicatorsDto.create(testData);
