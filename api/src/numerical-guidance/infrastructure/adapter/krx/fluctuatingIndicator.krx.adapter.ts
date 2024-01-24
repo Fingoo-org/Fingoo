@@ -14,11 +14,6 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
 
     const res = await this.api.axiosRef.get(request_url);
 
-    console.log(serviceKey);
-    console.log('-------------------------------');
-
-    console.log(res.data.response.header.resultCode);
-
     const responseData: FluctuatingIndicatorsDto = res.data.response.body;
 
     if (!responseData) {

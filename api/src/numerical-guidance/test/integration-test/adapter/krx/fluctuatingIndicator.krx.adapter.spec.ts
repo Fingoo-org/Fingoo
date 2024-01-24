@@ -13,7 +13,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        ConfigModule,
+        ConfigModule.forRoot(),
         HttpModule.registerAsync({
           useFactory: () => ({
             timeout: 7000,
@@ -38,8 +38,6 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
 
     const result: string = responseData.items.item[0]['srtnCd'];
 
-    console.log(responseData);
-
     // then
     const expected: string = FluctuatingIndicatorsDto.create(testData).items.item[0]['srtnCd'];
     expect(result).toEqual(expected);
@@ -62,7 +60,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     expect(result).toEqual(expected);
   });
 
-  it('KOSDAQ 종목의 지표 데이터를 요청할 경우, 올바르게 데이터를 가져오는지 확인하가', async () => {
+  it('KOSDAQ 종목의 지표 데이터를 요청할 경우, 올바르게 데이터를 가져오는지 확인하기', async () => {
     // given
 
     // when
