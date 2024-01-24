@@ -14,9 +14,9 @@ describe('FluctucatingIndicatorKrxAdapter', () => {
       providers: [
         GetFluctuatingIndicatorsWithoutCacheQueryHandler,
         {
-          provide: 'LoadFluctuatingIndicatorWithoutCachePort',
+          provide: 'LoadFluctuatingIndicatorPort',
           useValue: {
-            loadFluctuatingIndicatorWithoutCache: jest.fn().mockImplementation(() => {
+            loadFluctuatingIndicator: jest.fn().mockImplementation(() => {
               const apiData = FluctuatingIndicatorsDto.create(testData);
               return apiData;
             }),

@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject, Injectable } from '@nestjs/common';
-import { LoadFluctuatingIndicatorWithoutCachePort } from '../../port/external/load-fluctuatingIndicator-without-cache.port';
+import { LoadFluctuatingIndicatorPort } from '../../port/external/load-fluctuatingIndicator.port';
 import { GetFluctuatingIndicatorsWithoutCacheQuery } from './get-fluctuatingIndicators-without-cache.query';
 import { FluctuatingIndicatorsDto } from '../get-fluctuatingIndicators/fluctuatingIndicators.dto';
 
@@ -8,8 +8,8 @@ import { FluctuatingIndicatorsDto } from '../get-fluctuatingIndicators/fluctuati
 @QueryHandler(GetFluctuatingIndicatorsWithoutCacheQuery)
 export class GetFluctuatingIndicatorsWithoutCacheQueryHandler implements IQueryHandler {
   constructor(
-    @Inject('LoadFluctuatingIndicatorWithoutCachePort')
-    private readonly loadFluctuatingIndicatorWithoutCachePort: LoadFluctuatingIndicatorWithoutCachePort,
+    @Inject('LoadFluctuatingIndicatorPort')
+    private readonly loadFluctuatingIndicatorPort: LoadFluctuatingIndicatorPort,
   ) {}
 
   async execute(
@@ -17,13 +17,9 @@ export class GetFluctuatingIndicatorsWithoutCacheQueryHandler implements IQueryH
   ): Promise<FluctuatingIndicatorsDto> {
     const { dataCount, ticker, market } = getFluctuatingIndicatorsWithoutCacheQuery;
 
-    const fluctuatingIndicatorsWithoutCacheDto: FluctuatingIndicatorsDto =
-      await this.loadFluctuatingIndicatorWithoutCachePort.loadFluctuatingIndicatorWithoutCache(
-        dataCount,
-        ticker,
-        market,
-      );
+    const fluctuatingIndicatorsDto: FluctuatingIndicatorsDto =
+      await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(dataCount, ticker, market);
 
-    return fluctuatingIndicatorsWithoutCacheDto;
+    return fluctuatingIndicatorsDto;
   }
 }

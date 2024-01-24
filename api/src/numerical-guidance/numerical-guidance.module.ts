@@ -30,10 +30,6 @@ import { GetFluctuatingIndicatorsWithoutCacheQueryHandler } from './application/
       useClass: FluctuatingIndicatorKrxAdapter,
     },
     {
-      provide: 'LoadFluctuatingIndicatorWithoutCachePort',
-      useClass: FluctuatingIndicatorKrxAdapter,
-    },
-    {
       provide: 'CachingFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
     },

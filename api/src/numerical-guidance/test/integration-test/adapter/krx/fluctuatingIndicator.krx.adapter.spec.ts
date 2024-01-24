@@ -24,10 +24,6 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
       providers: [
         FluctuatingIndicatorKrxAdapter,
         {
-          provide: 'LoadFluctuatingIndicatorWithoutCachePort',
-          useClass: FluctuatingIndicatorKrxAdapter,
-        },
-        {
           provide: 'LoadFluctuatingIndicatorPort',
           useClass: FluctuatingIndicatorKrxAdapter,
         },
