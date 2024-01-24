@@ -22,4 +22,8 @@ export class FluctuatingIndicatorRedisAdapter
     this.redis.set(ticker, value);
     this.redis.expire(ticker, 10); // 변경가능
   }
+
+  async disconnectRedis() {
+    this.redis.disconnect();
+  }
 }

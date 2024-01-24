@@ -47,6 +47,10 @@ describe('NumericalGuidanceController', () => {
     await app.init();
   });
 
+  afterAll(async () => {
+    await app.close();
+  });
+
   it('/get 변동 지표를 불러온다.', () => {
     return request(app.getHttpServer())
       .get('/numerical-guidance/fluctuatingIndicators')
