@@ -17,7 +17,7 @@ type IndicatorBoardMetadataState = {
 };
 
 type IndicatorBoardMetadataAction = {
-  addMetaData: (metaData: IndicatorBoardMetadata) => void;
+  addMetadata: (metaData: IndicatorBoardMetadata) => void;
 };
 
 export type IndicatorBoardMetadataSlice = IndicatorBoardMetadataState & IndicatorBoardMetadataAction;
@@ -35,7 +35,7 @@ export const createIndicatorBoardMetadataSlice: StateCreator<
   sliceResetFns.add(() => set(initialIndicatorBoardMetadataState));
   return {
     ...initialIndicatorBoardMetadataState,
-    addMetaData: (metaData: IndicatorBoardMetadata) =>
+    addMetadata: (metaData: IndicatorBoardMetadata) =>
       set((state) => ({ metadataList: [...state.metadataList, metaData] })),
   };
 };
