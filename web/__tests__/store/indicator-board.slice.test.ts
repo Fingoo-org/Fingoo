@@ -20,12 +20,10 @@ describe('indicatorBoardSlice', () => {
   it('메타데이터 선택하기', () => {
     // given
     const { result } = renderHook(() => useStore());
-    result.current.addMetadata({ id: '1', name: 'name', indicators: [] });
+    act(() => result.current.addMetadata({ id: '1', name: 'name', indicators: [] }));
 
     // when
-    act(() => {
-      result.current.selectMetaData('1');
-    });
+    act(() => result.current.selectMetaData('1'));
 
     // then
     expect(result.current.selectedMetaDataID).toBe('1');

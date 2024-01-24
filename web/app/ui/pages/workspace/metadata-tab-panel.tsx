@@ -7,7 +7,7 @@ export default function MetadataTabPanel() {
 
   const handleMetadataCreate = () => {
     addMetadata({
-      id: '12',
+      id: Math.random().toString(36),
       name: 'metadata1',
       indicators: [],
     });
