@@ -13,8 +13,14 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - name: setup
+      - name: Setup
         run: echo "start build"
+      - name: Send discord message
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: info
+          text: "start build"
 
   build-web:
     runs-on: ubuntu-latest
@@ -37,6 +43,20 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/web:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Send discord message if fail
+        if: ${{ failure() }}  
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: error
+          text: "web package failed to build"
+      - name: Send discord message if success
+        if: ${{ success() }}  
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: info
+          text: "web package was successfully built"
 
   build-api:
     runs-on: ubuntu-latest
@@ -73,3 +93,17 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/api:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Send discord message if fail
+        if: ${{ failure() }}  
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: error
+          text: "api package failed to build"
+      - name: Send discord message if success
+        if: ${{ success() }}  
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: info
+          text: "api package was successfully built"
