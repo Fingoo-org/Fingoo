@@ -1,5 +1,5 @@
 import React from 'react';
-import List from '../view/molocule/list';
+import List from '../view/atom/list';
 import ListItem from '../view/atom/list-item';
 import { useStore } from '@/app/store';
 import { IndicatorBoardMetadata } from '@/app/store/indicator-board-metadata.slice';
