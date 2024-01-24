@@ -1,6 +1,6 @@
 'use client';
 import { Tab } from '@headlessui/react';
-import { MetadataList } from '../../components/numerical-guidance/metadata-list';
+import MetadataTabPanel from './metadata-tab-panel';
 
 type ToolbarTabProps = {
   tabName: string;
@@ -38,7 +38,7 @@ export default function IndicatorBoardToolbar() {
         <Tab.Panels>
           <Tab.Panel>Content 1</Tab.Panel>
           <Tab.Panel>
-            <MetadataList />
+            <MetadataTabPanel />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
