@@ -1,20 +1,9 @@
 FROM node:20-alpine AS base
 
-FROM base As Test
-WORKDIR /api
-COPY --chown=node:node package*.json ./
-
-RUN npm ci
-COPY --chown=node:node . .
-USER node
-RUN npm test
-
-
 FROM base As Build
 WORKDIR /api
-# COPY --chown=node:node package*.json ./
-
-COPY --chown=node:node --from=Test /api/node_modules ./node_modules
+COPY --chown=node:node package*.json ./
+RUN npm ci
 COPY --chown=node:node . .
 
 RUN npm run build

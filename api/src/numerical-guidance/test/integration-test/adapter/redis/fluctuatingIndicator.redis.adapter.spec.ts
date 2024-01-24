@@ -16,7 +16,7 @@ describe('FluctuatingIndicatorRedisAdapter', () => {
   let fluctuatingIndicatorRedisAdapter: FluctuatingIndicatorRedisAdapter;
 
   beforeAll(async () => {
-    if (process.env.NODE_ENV !== 'build') {
+    if (process.env.NODE_ENV === 'build') {
       environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['redis']);
     }
     const module = await Test.createTestingModule({
