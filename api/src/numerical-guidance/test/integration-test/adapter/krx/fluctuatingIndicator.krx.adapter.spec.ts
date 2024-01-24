@@ -16,18 +16,12 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
         ConfigModule,
         HttpModule.registerAsync({
           useFactory: () => ({
-            timeout: 5000,
+            timeout: 7000,
             maxRedirects: 5,
           }),
         }),
       ],
-      providers: [
-        FluctuatingIndicatorKrxAdapter,
-        {
-          provide: 'LoadFluctuatingIndicatorPort',
-          useClass: FluctuatingIndicatorKrxAdapter,
-        },
-      ],
+      providers: [FluctuatingIndicatorKrxAdapter],
     }).compile();
     fluctuatingIndicatorKrxAdapter = module.get(FluctuatingIndicatorKrxAdapter);
   });
@@ -44,8 +38,44 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
 
     const result: string = responseData.items.item[0]['srtnCd'];
 
+    console.log(responseData);
+
     // then
     const expected: string = FluctuatingIndicatorsDto.create(testData).items.item[0]['srtnCd'];
+    expect(result).toEqual(expected);
+  });
+
+  it('지표 데이터를 100개 요청했을 경우, 올바르게 데이터를 가져오는지 확인하기', async () => {
+    // given
+
+    // when
+    const responseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
+      100,
+      '005930',
+      'KOSPI',
+    );
+
+    const result: number = responseData.items.item.length;
+
+    // then
+    const expected: number = 100;
+    expect(result).toEqual(expected);
+  });
+
+  it('KOSDAQ 종목의 지표 데이터를 요청할 경우, 올바르게 데이터를 가져오는지 확인하가', async () => {
+    // given
+
+    // when
+    const responseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
+      7,
+      '900110',
+      'KOSDAQ',
+    );
+
+    const result: string = responseData.items.item[0]['mrktCtg'];
+
+    // then
+    const expected: string = 'KOSDAQ';
     expect(result).toEqual(expected);
   });
 });
