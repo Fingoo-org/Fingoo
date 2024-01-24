@@ -81,6 +81,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
         working-directory: ${{ env.WORKDIR }}
+      - name: Setting .env
+        run: |
+          echo "DB_HOST=${{ secrets.KRX_SERVICE_KEY }}" >> .env
+        working-directory: ${{ env.WORKDIR }}
       - name: Run tests
         run: NODE_ENV=${{ env.NODE_ENV }} npm test
         working-directory: ${{ env.WORKDIR }}
