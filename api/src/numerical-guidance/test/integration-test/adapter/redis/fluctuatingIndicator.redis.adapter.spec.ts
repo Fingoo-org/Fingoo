@@ -40,7 +40,7 @@ describe('FluctuatingIndicatorRedisAdapter', () => {
     }).compile();
 
     fluctuatingIndicatorRedisAdapter = module.get(FluctuatingIndicatorRedisAdapter);
-  });
+  }, 10000);
 
   afterAll(async () => {
     if (environment) {
