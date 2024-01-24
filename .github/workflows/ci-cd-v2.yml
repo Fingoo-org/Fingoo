@@ -83,7 +83,7 @@ jobs:
         working-directory: ${{ env.WORKDIR }}
       - name: Setting .env
         run: |
-          echo "DB_HOST=${{ secrets.KRX_SERVICE_KEY }}" >> .env
+          echo "SERVICE_KEY=${{ secrets.KRX_SERVICE_KEY }}" >> .env
         working-directory: ${{ env.WORKDIR }}
       - name: Run tests
         run: NODE_ENV=${{ env.NODE_ENV }} npm test
