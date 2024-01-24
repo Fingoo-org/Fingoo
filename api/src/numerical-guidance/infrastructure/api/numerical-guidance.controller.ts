@@ -3,8 +3,8 @@ import { QueryBus } from '@nestjs/cqrs';
 import { GetFluctuatingIndicatorsQuery } from '../../application/query/get-fluctuatingIndicators/get-fluctuatingIndicators.query';
 import { FluctuatingIndicatorsDto } from '../../application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
 import { GetFluctuatingIndicatorsDto } from './dto/get-fluctuatingIndicators.dto';
-import { GetFluctuatingIndicatorsWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
-import { GetFluctuatingIndicatorsWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators-without-cache/get-fluctuatingIndicators-without-cache.query';
+import { GetFluctuatingIndicatorWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
+import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators-without-cache/get-fluctuatingIndicator-without-cache.query';
 
 @Controller('/numerical-guidance')
 export class NumericalGuidanceController {
@@ -22,13 +22,13 @@ export class NumericalGuidanceController {
   }
 
   @Get('/without-cache')
-  async getFluctuatingIndicatorsWithoutCache(
-    @Query() getFluctuatingIndicatorsWithoutCacheDto: GetFluctuatingIndicatorsWithoutCacheDto,
+  async getFluctuatingIndicatorWithoutCache(
+    @Query() getFluctuatingIndicatorWithoutCacheDto: GetFluctuatingIndicatorWithoutCacheDto,
   ): Promise<FluctuatingIndicatorsDto> {
-    const query = new GetFluctuatingIndicatorsWithoutCacheQuery(
-      getFluctuatingIndicatorsWithoutCacheDto.dataCount,
-      getFluctuatingIndicatorsWithoutCacheDto.ticker,
-      getFluctuatingIndicatorsWithoutCacheDto.market,
+    const query = new GetFluctuatingIndicatorWithoutCacheQuery(
+      getFluctuatingIndicatorWithoutCacheDto.dataCount,
+      getFluctuatingIndicatorWithoutCacheDto.ticker,
+      getFluctuatingIndicatorWithoutCacheDto.market,
     );
     return this.queryBus.execute(query);
   }

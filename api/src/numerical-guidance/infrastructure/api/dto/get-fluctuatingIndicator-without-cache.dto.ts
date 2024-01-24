@@ -1,7 +1,7 @@
 import { IsInt, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-export class GetFluctuatingIndicatorsWithoutCacheDto {
+export class GetFluctuatingIndicatorWithoutCacheDto {
   @Transform(({ value }) => parseInt(value, 10))
   @IsInt()
   readonly dataCount: number;
