@@ -5,13 +5,20 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 import { fluctuatingIndicatorTestData } from '../../../data/fluctuatingIndicator.test.data';
 import { ConfigModule } from '@nestjs/config';
 import { RedisConfigService } from '../../../../../config/redis.config.service';
+import { DockerComposeEnvironment } from 'testcontainers';
 
 const testData = fluctuatingIndicatorTestData;
+const composeFilePath = '';
+const composeFileName = 'docker-compose-api.yml';
 
 describe('FluctuatingIndicatorRedisAdapter', () => {
+  let environment;
   let fluctuatingIndicatorRedisAdapter: FluctuatingIndicatorRedisAdapter;
 
   beforeAll(async () => {
+    if (process.env.NODE_ENV !== 'build') {
+      environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['redis']);
+    }
     const module = await Test.createTestingModule({
       imports: [
         RedisModule.forRootAsync({
@@ -36,7 +43,9 @@ describe('FluctuatingIndicatorRedisAdapter', () => {
   });
 
   afterAll(async () => {
-    // await environment.down();
+    if (environment) {
+      await environment.down();
+    }
     await fluctuatingIndicatorRedisAdapter.disconnectRedis();
   });
 
