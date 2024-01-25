@@ -13,7 +13,7 @@ describe('indicatorBoardSlice', () => {
 
     // when
     // then
-    expect(result.current.selectedMetaDataID).toBe(null);
+    expect(result.current.selectedMetadataId).toBe(null);
     expect(result.current.interval).toBe('day');
   });
 
@@ -26,6 +26,6 @@ describe('indicatorBoardSlice', () => {
     act(() => result.current.selectMetaData('1'));
 
     // then
-    expect(result.current.selectedMetaDataID).toBe('1');
+    expect(result.current.selectedMetadataId).toBe('1');
   });
 });
