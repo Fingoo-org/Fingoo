@@ -16,6 +16,7 @@
     "prepare": "cd .. && [ -d '.husky' ] && husky install || true"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.11",
     "@types/node": "^20",
     "@types/react": "^18",

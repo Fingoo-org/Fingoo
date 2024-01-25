@@ -10,7 +10,9 @@ type IndicatorBoardState = {
   interval: Interval;
 };
 
-type IndicatorBoardAction = {};
+type IndicatorBoardAction = {
+  selectMetaData: (MetadataId: string) => void;
+};
 
 export type IndicatorBoardSlice = IndicatorBoardState & IndicatorBoardAction;
 
@@ -29,5 +31,6 @@ export const createIndicatorBoardSlice: StateCreator<
   sliceResetFns.add(() => set(initialIndicatorBoardState));
   return {
     ...initialIndicatorBoardState,
+    selectMetaData: (MetadataId: string) => set({ selectedMetaDataID: MetadataId }),
   };
 };

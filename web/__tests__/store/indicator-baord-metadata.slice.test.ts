@@ -22,7 +22,7 @@ describe('indicatorBoardMetadataSlice', () => {
 
     // when
     act(() => {
-      result.current.addMetaData({ id: '1', name: 'name', indicators: [] });
+      result.current.addMetadata({ id: '1', name: 'name', indicators: [] });
     });
 
     // then
@@ -35,8 +35,8 @@ describe('indicatorBoardMetadataSlice', () => {
 
     // when
     act(() => {
-      result.current.addMetaData({ id: '1', name: 'name', indicators: [] });
-      result.current.addMetaData({ id: '2', name: 'name', indicators: [] });
+      result.current.addMetadata({ id: '1', name: 'name', indicators: [] });
+      result.current.addMetadata({ id: '2', name: 'name', indicators: [] });
     });
 
     // then
