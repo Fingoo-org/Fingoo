@@ -2,6 +2,8 @@
 import { Tab } from '@headlessui/react';
 import MetadataTabPanel from './metadata-tab-panel';
 import { useStore } from '@/app/store';
+import { useEffect } from 'react';
+import { API_PATH } from '@/app/constants/api-path';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -33,6 +35,12 @@ function ToolbarTab({ tabName, disable = false }: ToolbarTabProps) {
 
 export default function IndicatorBoardToolbar() {
   const selectedMetadataId = useStore((state) => state.selectedMetadataId);
+
+  useEffect(() => {
+    fetch(API_PATH.indicatorList)
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  }, []);
 
   return (
     <div className="h-full bg-red-800">
