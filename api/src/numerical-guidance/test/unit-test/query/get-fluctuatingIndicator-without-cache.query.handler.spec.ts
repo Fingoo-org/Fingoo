@@ -9,7 +9,7 @@ const testData = fluctuatingIndicatorTestData;
 describe('FluctucatingIndicatorKrxAdapter', () => {
   let getFluctuatingIndicatorsWithoutCacheQueryHandler: GetFluctuatingIndicatorWithoutCacheQueryHandler;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
         GetFluctuatingIndicatorWithoutCacheQueryHandler,
