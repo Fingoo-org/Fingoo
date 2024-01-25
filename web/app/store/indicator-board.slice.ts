@@ -22,12 +22,7 @@ const initialIndicatorBoardState: IndicatorBoardState = {
   interval: 'day',
 };
 
-export const createIndicatorBoardSlice: StateCreator<
-  IndicatorBoardSlice & IndicatorBoardMetadataSlice,
-  [],
-  [],
-  IndicatorBoardSlice
-> = (set) => {
+export const createIndicatorBoardSlice: StateCreator<IndicatorBoardSlice, [], [], IndicatorBoardSlice> = (set) => {
   sliceResetFns.add(() => set(initialIndicatorBoardState));
   return {
     ...initialIndicatorBoardState,

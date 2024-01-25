@@ -27,7 +27,7 @@ const initialIndicatorBoardMetadataState: IndicatorBoardMetadataState = {
 };
 
 export const createIndicatorBoardMetadataSlice: StateCreator<
-  IndicatorBoardMetadataSlice & IndicatorBoardSlice,
+  IndicatorBoardMetadataSlice,
   [],
   [],
   IndicatorBoardMetadataSlice
