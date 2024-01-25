@@ -57,6 +57,7 @@ describe('NumericalGuidanceController', () => {
       .send({
         dataCount: 2,
         fluctuatingIndicatorInfos: [{ ticker: 'KR7005930001', market: 'market' }],
+        interval: 'day',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);

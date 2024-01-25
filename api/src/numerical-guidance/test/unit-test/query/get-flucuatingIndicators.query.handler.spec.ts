@@ -58,9 +58,11 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
 
   it('변동지표를 불러온다.', async () => {
     //given
-    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(5, [
-      { ticker: '005930', market: 'KOSPI' },
-    ]);
+    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(
+      5,
+      [{ ticker: '005930', market: 'KOSPI' }],
+      'day',
+    );
 
     //when
     await getFluctuatingIndicatorsQueryHandler.execute(getFluctuatingIndicatorsQuery);
@@ -72,9 +74,11 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
 
   it('변동지표가 redis에서 불러와진다.', async () => {
     //given
-    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(2, [
-      { ticker: 'KR7005930009', market: 'KOSPI' },
-    ]);
+    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(
+      5,
+      [{ ticker: '005931', market: 'KOSPI' }],
+      'day',
+    );
 
     //when
     await getFluctuatingIndicatorsQueryHandler.execute(getFluctuatingIndicatorsQuery);
@@ -82,7 +86,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
 
     //then
     expect(loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator).toHaveBeenCalledTimes(2);
-    expect(loadFluctuatingIndicatorPort.loadFluctuatingIndicator).toHaveBeenCalledTimes(1);
     expect(cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator).toHaveBeenCalledTimes(1);
+    expect(loadFluctuatingIndicatorPort.loadFluctuatingIndicator).toHaveBeenCalledTimes(1);
   });
 });

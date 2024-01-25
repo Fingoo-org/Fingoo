@@ -33,6 +33,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     const responseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
       5,
       '005930',
+      'day',
       'KOSPI',
     );
 
@@ -50,6 +51,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     const responseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
       100,
       '005930',
+      'day',
       'KOSPI',
     );
 
@@ -67,6 +69,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     const responseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
       7,
       '900110',
+      'day',
       'KOSDAQ',
     );
 
