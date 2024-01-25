@@ -7,8 +7,13 @@ import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application
 export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorPort {
   constructor(private readonly api: HttpService) {}
 
-  async loadFluctuatingIndicator(dataCount: number, ticker: string, market: string): Promise<FluctuatingIndicatorsDto> {
-    // KRX API 통신
+  async loadFluctuatingIndicator(
+    dataCount: number,
+    ticker: string,
+    interval: string,
+    market: string,
+  ): Promise<FluctuatingIndicatorsDto> {
+    // KRX API 통신 -> 현재 일자부터 이전 데이터 모두 조회
     const serviceKey: string = process.env.SERVICE_KEY;
     const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
 

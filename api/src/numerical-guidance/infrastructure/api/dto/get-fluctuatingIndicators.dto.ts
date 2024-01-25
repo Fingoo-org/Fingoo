@@ -9,6 +9,8 @@ export class FluctuatingIndicatorInfo {
   readonly market: string;
 }
 
+type Interval = 'day' | 'week' | 'month' | 'year';
+
 export class GetFluctuatingIndicatorsDto {
   @Transform(({ value }) => parseInt(value, 10))
   @IsInt()
@@ -19,4 +21,7 @@ export class GetFluctuatingIndicatorsDto {
   @ValidateNested({ each: true })
   @Type(() => FluctuatingIndicatorInfo)
   readonly fluctuatingIndicatorInfos: FluctuatingIndicatorInfo[];
+
+  @IsString()
+  readonly interval: Interval;
 }

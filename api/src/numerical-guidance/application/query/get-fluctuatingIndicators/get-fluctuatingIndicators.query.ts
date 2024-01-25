@@ -5,5 +5,6 @@ export class GetFluctuatingIndicatorsQuery implements IQuery {
   constructor(
     readonly dataCount: number,
     readonly fluctuatingIndicatorInfos: FluctuatingIndicatorInfo[],
+    readonly interval: string,
   ) {}
 }

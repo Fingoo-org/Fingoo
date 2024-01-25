@@ -10,5 +10,8 @@ export class GetFluctuatingIndicatorWithoutCacheDto {
   readonly ticker: string;
 
   @IsString()
+  readonly interval: string;
+
+  @IsString()
   readonly market: string;
 }
