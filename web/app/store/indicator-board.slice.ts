@@ -6,7 +6,7 @@ type Interval = 'day' | 'week' | 'month' | 'year';
 
 type IndicatorBoardState = {
   boardId: string;
-  selectedMetaDataID: string | null;
+  selectedMetadataId: string | null;
   interval: Interval;
 };
 
@@ -18,19 +18,14 @@ export type IndicatorBoardSlice = IndicatorBoardState & IndicatorBoardAction;
 
 const initialIndicatorBoardState: IndicatorBoardState = {
   boardId: 'test',
-  selectedMetaDataID: null,
+  selectedMetadataId: null,
   interval: 'day',
 };
 
-export const createIndicatorBoardSlice: StateCreator<
-  IndicatorBoardSlice & IndicatorBoardMetadataSlice,
-  [],
-  [],
-  IndicatorBoardSlice
-> = (set) => {
+export const createIndicatorBoardSlice: StateCreator<IndicatorBoardSlice, [], [], IndicatorBoardSlice> = (set) => {
   sliceResetFns.add(() => set(initialIndicatorBoardState));
   return {
     ...initialIndicatorBoardState,
-    selectMetaData: (MetadataId: string) => set({ selectedMetaDataID: MetadataId }),
+    selectMetaData: (MetadataId: string) => set({ selectedMetadataId: MetadataId }),
   };
 };
