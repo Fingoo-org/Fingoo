@@ -1,4 +1,5 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
+import headlessui from '@headlessui/tailwindcss';
 
 const config: Config = {
   content: [
@@ -10,11 +11,10 @@ const config: Config = {
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
     },
   },
-  plugins: [],
-}
-export default config
+  plugins: [headlessui],
+};
+export default config;
