@@ -3,22 +3,20 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { server } from '@/app/mocks/server';
 import { HttpResponse, http } from 'msw';
 import { API_PATH } from '@/app/api/api-path';
-import { SWRConfig } from 'swr';
-import { PropsWithChildren } from 'react';
 import { resetAllStore, useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 import { act } from 'react-dom/test-utils';
+import { SWRProviderWithoutCache } from '@/app/api/swr-provider';
 
-const wrapper = ({ children }: PropsWithChildren) => {
-  return <SWRConfig value={{ provider: () => new Map() }}>{children}</SWRConfig>;
-};
+const wrapper = SWRProviderWithoutCache;
 
 describe('useIndicatorMetadataList', () => {
   beforeEach(() => {
     resetAllStore();
   });
+
   it('메타 데이터 가져오기', async () => {
     // given
-    const { result } = renderHook(() => useIndicatorMetadataList());
+    const { result } = renderHook(() => useIndicatorMetadataList(), { wrapper });
 
     // when
     await waitFor(() => expect(result.current.isLoading).toBe(false));
@@ -45,7 +43,7 @@ describe('useIndicatorMetadataList', () => {
 
   it('메타 데이터 추가하기', async () => {
     // given
-    const { result } = renderHook(() => useIndicatorMetadataList());
+    const { result } = renderHook(() => useIndicatorMetadataList(), { wrapper });
 
     // when
     await waitFor(() => expect(result.current.isLoading).toBe(false));

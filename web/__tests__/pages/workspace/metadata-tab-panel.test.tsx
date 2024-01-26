@@ -1,11 +1,16 @@
-import { act, render, screen, cleanup } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MetadataTabPanel from '@/app/ui/pages/workspace/metadata-tab-panel';
+import { SWRProviderWithoutCache } from '@/app/api/swr-provider';
 
 describe('MetadataTabPanel', () => {
   it('메타 데이터 조회하기', async () => {
     // given
-    render(<MetadataTabPanel />);
+    render(
+      <SWRProviderWithoutCache>
+        <MetadataTabPanel />
+      </SWRProviderWithoutCache>,
+    );
     // when
     // then
     expect(await screen.findByText(/metadata1/i)).toBeInTheDocument();
@@ -16,11 +21,15 @@ describe('MetadataTabPanel', () => {
   it('메타 데이터 생성하기', async () => {
     // given
     const user = userEvent.setup();
-    render(<MetadataTabPanel />);
+    render(
+      <SWRProviderWithoutCache>
+        <MetadataTabPanel />
+      </SWRProviderWithoutCache>,
+    );
     // when
-    await act(async () => {
-      await user.click(screen.getByRole('button', { name: /create/i }));
-    });
+    await waitFor(async () => expect(await screen.findByText(/metadata1/i)).toBeInTheDocument());
+    await user.click(screen.getByRole('button', { name: /create/i }));
+
     // then
     expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(4);
   });
@@ -28,13 +37,16 @@ describe('MetadataTabPanel', () => {
   it('메타 데이터 두번 생성하기', async () => {
     // given
     const user = userEvent.setup();
-    render(<MetadataTabPanel />);
+    render(
+      <SWRProviderWithoutCache>
+        <MetadataTabPanel />
+      </SWRProviderWithoutCache>,
+    );
     // when;
-    await act(async () => {
-      await user.click(screen.getByRole('button', { name: /create/i }));
-      await user.click(screen.getByRole('button', { name: /create/i }));
-    });
-    // then
+    await waitFor(async () => expect(await screen.findByText(/metadata1/i)).toBeInTheDocument());
+    await user.click(screen.getByRole('button', { name: /create/i }));
+    await user.click(screen.getByRole('button', { name: /create/i }));
+
     expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(5);
   });
 });
