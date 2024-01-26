@@ -1,7 +1,7 @@
 'use client';
 import { Tab } from '@headlessui/react';
 import MetadataTabPanel from './metadata-tab-panel';
-import { useStore } from '@/app/store';
+import { useNumericalGuidanceStore } from '@/app/store/numerical-guidance.store';
 import { useEffect } from 'react';
 import { API_PATH } from '@/app/api/constants/api-path';
 
@@ -34,7 +34,7 @@ function ToolbarTab({ tabName, disable = false }: ToolbarTabProps) {
 }
 
 export default function IndicatorBoardToolbar() {
-  const selectedMetadataId = useStore((state) => state.selectedMetadataId);
+  const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
 
   useEffect(() => {
     fetch(API_PATH.indicatorList)

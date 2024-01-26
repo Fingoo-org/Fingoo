@@ -5,7 +5,7 @@ import { HttpResponse, http } from 'msw';
 import { API_PATH } from '@/app/api/constants/api-path';
 import { SWRConfig } from 'swr';
 import { PropsWithChildren } from 'react';
-import { useStore } from '@/app/store';
+import { resetAllStore, useNumericalGuidanceStore } from '@/app/store/numerical-guidance.store';
 import { act } from 'react-dom/test-utils';
 
 const wrapper = ({ children }: PropsWithChildren) => {
@@ -13,6 +13,9 @@ const wrapper = ({ children }: PropsWithChildren) => {
 };
 
 describe('useIndicatorMetadataList', () => {
+  beforeEach(() => {
+    resetAllStore();
+  });
   it('메타 데이터 가져오기', async () => {
     // given
     const { result } = renderHook(() => useIndicatorMetadataList());
@@ -77,7 +80,7 @@ describe('useIndicatorMetadataList', () => {
   it('메타 데이터 추가하기 실패', async () => {
     // given
     const { result } = renderHook(() => useIndicatorMetadataList(), { wrapper });
-    const { result: store } = renderHook(() => useStore());
+    const { result: store } = renderHook(() => useNumericalGuidanceStore());
     server.use(
       http.post(API_PATH.metadataList, () => {
         return new HttpResponse(null, { status: 400 });
@@ -112,7 +115,7 @@ describe('useIndicatorMetadataList', () => {
   it('메타데이터 추가하기 실패: 낙관적 업데이트 테스트', async () => {
     // given
     const { result } = renderHook(() => useIndicatorMetadataList(), { wrapper });
-    const { result: store } = renderHook(() => useStore());
+    const { result: store } = renderHook(() => useNumericalGuidanceStore());
     server.use(
       http.post(API_PATH.metadataList, () => {
         return new HttpResponse(null, { status: 400 });
@@ -147,6 +150,7 @@ describe('useIndicatorMetadataList', () => {
         indicators: [],
       },
     ]);
+    expect(store.current.selectedMetadataId).toBe('4');
     await waitFor(() => expect(result.current.mutationError).not.toBe(undefined));
 
     // then

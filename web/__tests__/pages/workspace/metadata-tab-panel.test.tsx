@@ -1,13 +1,8 @@
 import { act, render, screen, cleanup } from '@testing-library/react';
-import { resetAllSlice } from '@/app/store';
 import userEvent from '@testing-library/user-event';
 import MetadataTabPanel from '@/app/ui/pages/workspace/metadata-tab-panel';
 
 describe('MetadataTabPanel', () => {
-  beforeEach(() => {
-    resetAllSlice();
-  });
-
   it('메타 데이터 조회하기', async () => {
     // given
     render(<MetadataTabPanel />);

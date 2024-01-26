@@ -6,7 +6,6 @@ import { useIndicatorMetadataList } from '@/app/hooks/use-indicator-metadata-lis
 
 export default function MetadataTabPanel() {
   const { createAndSelectMetadata } = useIndicatorMetadataList();
-  // const createAndSelectMetadata = useStore((state) => state.createAndSelectMetadata);
 
   const handleClick = () => {
     const metadata: IndicatorBoardMetadata = {
