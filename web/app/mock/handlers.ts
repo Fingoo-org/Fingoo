@@ -10,4 +10,25 @@ export const handlers = [
       message: 'Hello world!',
     });
   }),
+  http.get(API_PATH.metadataList, () => {
+    return HttpResponse.json({
+      metadataList: [
+        {
+          id: '1',
+          name: 'test',
+          indicators: [],
+        },
+        {
+          id: '2',
+          name: 'test',
+          indicators: [],
+        },
+        {
+          id: '3',
+          name: 'test',
+          indicators: [],
+        },
+      ],
+    });
+  }),
 ];
