@@ -18,29 +18,28 @@ describe('MetadataTabPanel', () => {
     expect(await screen.findByText(/metadata3/i)).toBeInTheDocument();
   });
 
-  // it('메타 데이터 생성하기', async () => {
-  //   // given
-  //   const user = userEvent.setup();
-  //   render(<MetadataTabPanel />);
-  //   // when
-  //   await act(async () => {
-  //     await user.click(screen.getByRole('button', { name: /create/i }));
-  //   });
-  //   // then
-  //   expect(await screen.findByText(/metadata1/i)).toBeInTheDocument();
-  //   cleanup();
-  // });
+  it('메타 데이터 생성하기', async () => {
+    // given
+    const user = userEvent.setup();
+    render(<MetadataTabPanel />);
+    // when
+    await act(async () => {
+      await user.click(screen.getByRole('button', { name: /create/i }));
+    });
+    // then
+    expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(4);
+  });
 
-  // it('메타 데이터 두번 생성하기', async () => {
-  //   // given
-  //   const user = userEvent.setup();
-  //   render(<MetadataTabPanel />);
-  //   // when;
-  //   await act(async () => {
-  //     await user.click(screen.getByRole('button', { name: /create/i }));
-  //     await user.click(screen.getByRole('button', { name: /create/i }));
-  //   });
-  //   // then
-  //   expect(await screen.findAllByText(/metadata1/i)).toHaveLength(2);
-  // });
+  it('메타 데이터 두번 생성하기', async () => {
+    // given
+    const user = userEvent.setup();
+    render(<MetadataTabPanel />);
+    // when;
+    await act(async () => {
+      await user.click(screen.getByRole('button', { name: /create/i }));
+      await user.click(screen.getByRole('button', { name: /create/i }));
+    });
+    // then
+    expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(5);
+  });
 });

@@ -31,4 +31,9 @@ export const handlers = [
       ],
     });
   }),
+  http.post(API_PATH.metadataList, () => {
+    return HttpResponse.json({
+      status: 200,
+    });
+  }),
 ];
