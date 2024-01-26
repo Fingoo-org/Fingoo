@@ -3,7 +3,7 @@ import { Tab } from '@headlessui/react';
 import MetadataTabPanel from './metadata-tab-panel';
 import { useStore } from '@/app/store';
 import { useEffect } from 'react';
-import { API_PATH } from '@/app/constants/api-path';
+import { API_PATH } from '@/app/api/constants/api-path';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');

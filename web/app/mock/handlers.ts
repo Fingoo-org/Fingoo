@@ -1,5 +1,5 @@
 import { HttpResponse, http } from 'msw';
-import { API_PATH } from '../constants/api-path';
+import { API_PATH } from '../api/constants/api-path';
 
 export const handlers = [
   // Intercept the "GET /resource" request.
@@ -15,17 +15,17 @@ export const handlers = [
       metadataList: [
         {
           id: '1',
-          name: 'test',
+          name: 'metadata1',
           indicators: [],
         },
         {
           id: '2',
-          name: 'test',
+          name: 'metadata2',
           indicators: [],
         },
         {
           id: '3',
-          name: 'test',
+          name: 'metadata3',
           indicators: [],
         },
       ],
