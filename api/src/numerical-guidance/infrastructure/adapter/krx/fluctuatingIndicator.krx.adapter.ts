@@ -18,13 +18,157 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
 
     const res = await this.api.axiosRef.get(request_url);
-
     const responseData: FluctuatingIndicatorsDto = res.data.response.body;
 
     if (!responseData) {
       throw new Error('API response body is undefined');
     }
+    return this.transferredByInterval(interval, responseData);
+  }
 
-    return responseData;
+  private transferredByInterval(interval: string, data: FluctuatingIndicatorsDto) {
+    switch (interval) {
+      case 'day':
+        return data;
+      case 'week':
+        return this.calculateWeeklyAverage(data);
+      case 'month':
+        return this.calculateMonthlyAverage(data);
+      case 'year':
+        return this.calculateYearlyAverage(data);
+      default:
+        return data;
+    }
+  }
+
+  private calculateWeeklyAverage(data: FluctuatingIndicatorsDto) {
+    const items = data.items.item;
+    const weeklyAverages = [];
+    const processedWeeks = new Set();
+
+    for (let i = 0; i < items.length; i++) {
+      const currentDate = new Date(items[i].basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+
+      const weeklyItems = items.filter((item) => {
+        const itemDate = new Date(item.basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+
+        const isSameWeek =
+          currentDate.getFullYear() === itemDate.getFullYear() &&
+          this.getISOWeekNumber(currentDate) === this.getISOWeekNumber(itemDate);
+
+        return isSameWeek;
+      });
+
+      if (weeklyItems.length > 0) {
+        const weekIdentifier = `${currentDate.getFullYear()}-${this.getISOWeekNumber(currentDate)}`;
+
+        if (!processedWeeks.has(weekIdentifier)) {
+          const weeklyClprSum = weeklyItems.reduce((sum, item) => sum + parseInt(item.clpr), 0);
+          const weeklyAverage = weeklyClprSum / weeklyItems.length;
+
+          const { basDt, srtnCd, isinCd, itmsNm, mrktCtg } = weeklyItems[0];
+
+          weeklyAverages.push({
+            ...{ basDt, srtnCd, isinCd, itmsNm, mrktCtg },
+            weeklyAverage: weeklyAverage.toFixed(2),
+          });
+
+          processedWeeks.add(weekIdentifier);
+        }
+      }
+    }
+
+    data.items.item = weeklyAverages;
+
+    return data;
+  }
+
+  private getISOWeekNumber(date: Date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const weekNumber = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+    return weekNumber;
+  }
+
+  private calculateMonthlyAverage(data: FluctuatingIndicatorsDto) {
+    const items = data.items.item;
+    const monthlyAverages = [];
+    const processedMonths = new Set();
+
+    for (let i = 0; i < items.length; i++) {
+      const currentDate = new Date(items[i].basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+
+      const monthlyItems = items.filter((item) => {
+        const itemDate = new Date(item.basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+
+        const isSameMonth =
+          currentDate.getFullYear() === itemDate.getFullYear() && currentDate.getMonth() === itemDate.getMonth();
+
+        return isSameMonth;
+      });
+
+      if (monthlyItems.length > 0) {
+        const monthIdentifier = currentDate.getMonth();
+
+        if (!processedMonths.has(monthIdentifier)) {
+          const monthlyClprSum = monthlyItems.reduce((sum, item) => sum + parseInt(item.clpr), 0);
+          const monthlyAverage = monthlyClprSum / monthlyItems.length;
+
+          const { basDt, srtnCd, isinCd, itmsNm, mrktCtg } = monthlyItems[0];
+
+          monthlyAverages.push({
+            ...{ basDt, srtnCd, isinCd, itmsNm, mrktCtg },
+            monthlyAverage: monthlyAverage.toFixed(2),
+          });
+
+          processedMonths.add(monthIdentifier);
+        }
+      }
+    }
+
+    data.items.item = monthlyAverages;
+
+    return data;
+  }
+
+  private calculateYearlyAverage(data: FluctuatingIndicatorsDto) {
+    const items = data.items.item;
+    const yearlyAverages = [];
+    const processedYears = new Set();
+
+    for (let i = 0; i < items.length; i++) {
+      const currentDate = new Date(items[i].basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+
+      const yearlyItems = items.filter((item) => {
+        const itemDate = new Date(item.basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+
+        const isSameYear = currentDate.getFullYear() === itemDate.getFullYear();
+
+        return isSameYear;
+      });
+
+      if (yearlyItems.length > 0) {
+        const yearIdentifier = currentDate.getFullYear();
+
+        if (!processedYears.has(yearIdentifier)) {
+          const yearlyClprSum = yearlyItems.reduce((sum, item) => sum + parseInt(item.clpr), 0);
+          const yearlyAverage = yearlyClprSum / yearlyItems.length;
+
+          const { basDt, srtnCd, isinCd, itmsNm, mrktCtg } = yearlyItems[0];
+
+          yearlyAverages.push({
+            ...{ basDt, srtnCd, isinCd, itmsNm, mrktCtg },
+            yearlyAverages: yearlyAverage.toFixed(2),
+          });
+
+          processedYears.add(yearIdentifier);
+        }
+      }
+    }
+
+    data.items.item = yearlyAverages;
+
+    return data;
   }
 }
