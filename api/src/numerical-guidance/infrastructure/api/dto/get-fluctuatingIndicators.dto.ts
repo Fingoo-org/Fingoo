@@ -1,5 +1,6 @@
 import { ArrayNotEmpty, IsArray, IsInt, IsString, ValidateNested } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
+import { IsInterval } from '../../../../validation/is.interval.validation';
 
 export class FluctuatingIndicatorInfo {
   @IsString()
@@ -23,5 +24,6 @@ export class GetFluctuatingIndicatorsDto {
   readonly fluctuatingIndicatorInfos: FluctuatingIndicatorInfo[];
 
   @IsString()
+  @IsInterval()
   readonly interval: Interval;
 }
