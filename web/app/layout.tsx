@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import MSWComponent from './mocks/msw-component';
-import SWRProvider from './api/swr-provider';
+import { SWRProvider } from './api/swr-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 

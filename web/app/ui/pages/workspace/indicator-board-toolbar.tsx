@@ -3,7 +3,7 @@ import { Tab } from '@headlessui/react';
 import MetadataTabPanel from './metadata-tab-panel';
 import { useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 import { useEffect } from 'react';
-import { API_PATH } from '@/app/api/constants/api-path';
+import { API_PATH } from '@/app/api/api-path';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
