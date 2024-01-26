@@ -17,10 +17,10 @@ export class FluctuatingIndicatorRedisAdapter
     return data && FluctuatingIndicatorMapper.mapToDto(data);
   }
 
-  async cachingFluctuatingIndicator(ticker: string, fluctuatingIndicatorsDto: FluctuatingIndicatorsDto): Promise<void> {
+  async cachingFluctuatingIndicator(key: string, fluctuatingIndicatorsDto: FluctuatingIndicatorsDto): Promise<void> {
     const value: string = JSON.stringify(fluctuatingIndicatorsDto);
-    this.redis.set(ticker, value);
-    this.redis.expire(ticker, 10); // 변경가능
+    this.redis.set(key, value);
+    this.redis.expire(key, 93600);
   }
 
   async disconnectRedis() {

@@ -36,7 +36,8 @@ export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
           interval,
           market,
         );
-        await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(ticker, fluctuatingIndicatorsDto);
+        await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(key, fluctuatingIndicatorsDto);
+        this.logger.log('KRX 호출');
       }
       fluctuatingIndicatorsDtos.push(fluctuatingIndicatorsDto);
     }
@@ -45,5 +46,14 @@ export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
 
   private isNotCached(fluctuatingIndicatorsDto: FluctuatingIndicatorsDto): boolean {
     return fluctuatingIndicatorsDto == null;
+  }
+
+  private createFluctuatingIndicatorKey(ticker: string, interval: string) {
+    const today: Date = new Date();
+    const date = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today
+      .getDate()
+      .toString()
+      .padStart(2, '0')}`;
+    return `${ticker}${interval}${date}`;
   }
 }
