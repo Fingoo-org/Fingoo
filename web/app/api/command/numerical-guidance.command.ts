@@ -23,8 +23,9 @@ async function createIndicatorMetadata(url: string, { arg }: { arg: RequestCreat
 }
 
 export const useCreateIndicatorMetadata = () => {
-  const { trigger } = useSWRMutation(API_PATH.metadataList, createIndicatorMetadata);
+  const { trigger, error } = useSWRMutation(API_PATH.metadataList, createIndicatorMetadata);
   return {
     trigger,
+    mutationError: error,
   };
 };

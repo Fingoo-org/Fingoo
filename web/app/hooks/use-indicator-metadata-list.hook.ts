@@ -6,9 +6,8 @@ import { IndicatorBoardMetadata } from '../store/indicator-board-metadata.slice'
 
 export const useIndicatorMetadataList = () => {
   const { metadataList, error, isLoading } = useFetchIndicatorMetadataList();
-  const { trigger } = useCreateIndicatorMetadata();
+  const { trigger, mutationError } = useCreateIndicatorMetadata();
   const selectMetaData = useStore((state) => state.selectMetaData);
-
   const createAndSelectMetadata = async (metadata: IndicatorBoardMetadata) => {
     try {
       await trigger(metadata, {
@@ -29,6 +28,7 @@ export const useIndicatorMetadataList = () => {
     metadataList,
     error,
     isLoading,
+    mutationError,
     createAndSelectMetadata,
   };
 };
