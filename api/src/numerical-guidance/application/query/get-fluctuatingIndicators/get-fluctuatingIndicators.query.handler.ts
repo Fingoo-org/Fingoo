@@ -1,5 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { GetFluctuatingIndicatorsQuery } from './get-fluctuatingIndicators.query';
 import { FluctuatingIndicatorsDto } from './fluctuatingIndicators.dto';
 import { LoadFluctuatingIndicatorPort } from '../../port/external/load-fluctuatingIndicator.port';
@@ -9,6 +9,7 @@ import { CachingFluctuatingIndicatorPort } from '../../port/cache/caching-fluctu
 @Injectable()
 @QueryHandler(GetFluctuatingIndicatorsQuery)
 export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
+  private readonly logger = new Logger(GetFluctuatingIndicatorsQueryHandler.name);
   constructor(
     @Inject('LoadFluctuatingIndicatorPort')
     private readonly loadFluctuatingIndicatorPort: LoadFluctuatingIndicatorPort,
