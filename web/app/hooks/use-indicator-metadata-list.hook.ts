@@ -2,7 +2,7 @@ import { useStore } from '../store';
 
 import { useCreateIndicatorMetadata } from '../api/command/numerical-guidance.command';
 import { useFetchIndicatorMetadataList } from '../api/query/numerical-guidance.query';
-import { IndicatorBoardMetadata } from '../store/indicator-board-metadata.slice';
+import { IndicatorBoardMetadata } from '../api/type/numerical-guidance.type';
 
 export const useIndicatorMetadataList = () => {
   const { metadataList, error, isLoading } = useFetchIndicatorMetadataList();

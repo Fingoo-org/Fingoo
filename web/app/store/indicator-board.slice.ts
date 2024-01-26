@@ -1,6 +1,5 @@
 import { StateCreator } from 'zustand';
 import { sliceResetFns } from '.';
-import { IndicatorBoardMetadataSlice } from './indicator-board-metadata.slice';
 
 type Interval = 'day' | 'week' | 'month' | 'year';
 

@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { API_PATH } from '../constants/api-path';
 import { defaultFetcher } from './fetcher';
-import { IndicatorBoardMetadata } from '../../store/indicator-board-metadata.slice';
+import { IndicatorBoardMetadata } from '../type/numerical-guidance.type';
 
 export type ResponseIndicatorBoardMetadata = {
   metadataList: IndicatorBoardMetadata[];

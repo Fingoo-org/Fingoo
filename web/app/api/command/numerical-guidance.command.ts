@@ -1,6 +1,6 @@
 import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../constants/api-path';
-import { Indicator } from '@/app/store/indicator-board-metadata.slice';
+import { Indicator } from '../type/numerical-guidance.type';
 import { ResponseIndicatorBoardMetadata } from '../query/numerical-guidance.query';
 
 type RequestCreateIndicatorMetadataBody = {
