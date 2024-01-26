@@ -1,4 +1,3 @@
-import { useStore } from '@/app/store';
 import { MetadataList } from '../../components/numerical-guidance/metadata-list';
 import Button from '../../components/view/atom/button';
 import { IndicatorBoardMetadata } from '@/app/api/type/numerical-guidance.type';

@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { API_PATH } from '../constants/api-path';
+import { API_PATH } from '../api-path';
 import { defaultFetcher } from './fetcher';
 import { IndicatorBoardMetadata } from '../type/numerical-guidance.type';
 

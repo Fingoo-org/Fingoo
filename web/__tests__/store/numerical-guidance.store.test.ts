@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
-import { resetAllStore } from '@/app/store/numerical-guidance.store';
-import { useNumericalGuidanceStore } from '@/app/store/numerical-guidance.store';
+import { resetAllStore } from '@/app/stores/numerical-guidance.store';
+import { useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 
 describe('useNumericalGuidanceStore', () => {
   beforeEach(() => {

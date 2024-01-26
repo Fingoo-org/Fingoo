@@ -1,11 +1,11 @@
 import { useIndicatorMetadataList } from '@/app/hooks/use-indicator-metadata-list.hook';
 import { renderHook, waitFor } from '@testing-library/react';
-import { server } from '@/app/mock/server';
+import { server } from '@/app/mocks/server';
 import { HttpResponse, http } from 'msw';
-import { API_PATH } from '@/app/api/constants/api-path';
+import { API_PATH } from '@/app/api/api-path';
 import { SWRConfig } from 'swr';
 import { PropsWithChildren } from 'react';
-import { resetAllStore, useNumericalGuidanceStore } from '@/app/store/numerical-guidance.store';
+import { resetAllStore, useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 import { act } from 'react-dom/test-utils';
 
 const wrapper = ({ children }: PropsWithChildren) => {

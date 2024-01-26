@@ -1,5 +1,5 @@
 import { HttpResponse, http } from 'msw';
-import { API_PATH } from '../api/constants/api-path';
+import { API_PATH } from '../api/api-path';
 
 export const handlers = [
   // Intercept the "GET /resource" request.

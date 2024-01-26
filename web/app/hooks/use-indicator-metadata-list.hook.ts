@@ -1,4 +1,4 @@
-import { useNumericalGuidanceStore } from '../store/numerical-guidance.store';
+import { useNumericalGuidanceStore } from '../stores/numerical-guidance.store';
 
 import { useCreateIndicatorMetadata } from '../api/command/numerical-guidance.command';
 import { useFetchIndicatorMetadataList } from '../api/query/numerical-guidance.query';

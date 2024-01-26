@@ -1,7 +1,7 @@
 'use client';
 import { Tab } from '@headlessui/react';
 import MetadataTabPanel from './metadata-tab-panel';
-import { useNumericalGuidanceStore } from '@/app/store/numerical-guidance.store';
+import { useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 import { useEffect } from 'react';
 import { API_PATH } from '@/app/api/constants/api-path';
 
