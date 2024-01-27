@@ -1,13 +1,22 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
-import { IndicatorBoardMetadata } from '../type/numerical-guidance.type';
 
-export type ResponseIndicatorBoardMetadata = {
-  metadataList: IndicatorBoardMetadata[];
+type IndicatorResponse = {
+  id: string;
+};
+
+type IndicatorBoardMetadataResponse = {
+  id: string;
+  name: string;
+  indicators: IndicatorResponse[];
+};
+
+type IndicatorBoardMetadataListResponse = {
+  metadataList: IndicatorBoardMetadataResponse[];
 };
 
 export const useFetchIndicatorMetadataList = () => {
-  const { data, error, isLoading } = useSWR<ResponseIndicatorBoardMetadata>(API_PATH.metadataList);
+  const { data, error, isLoading } = useSWR<IndicatorBoardMetadataListResponse>(API_PATH.metadataList);
   return {
     metadataList: data?.metadataList,
     error,

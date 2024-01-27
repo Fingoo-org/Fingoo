@@ -2,13 +2,13 @@ import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
 import { Indicator } from '../type/numerical-guidance.type';
 
-type RequestCreateIndicatorMetadataBody = {
+type CreateIndicatorMetadataRequestBody = {
   id: string;
   name: string;
   indicators: Indicator[];
 };
 
-async function createIndicatorMetadata(url: string, { arg }: { arg: RequestCreateIndicatorMetadataBody }) {
+async function createIndicatorMetadata(url: string, { arg }: { arg: CreateIndicatorMetadataRequestBody }) {
   const res = await fetch(url, {
     method: 'POST',
     body: JSON.stringify(arg),
