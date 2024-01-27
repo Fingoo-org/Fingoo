@@ -11,7 +11,7 @@ type IndicatorBoardMetadataResponse = {
   indicators: IndicatorResponse[];
 };
 
-type IndicatorBoardMetadataListResponse = {
+export type IndicatorBoardMetadataListResponse = {
   metadataList: IndicatorBoardMetadataResponse[];
 };
 

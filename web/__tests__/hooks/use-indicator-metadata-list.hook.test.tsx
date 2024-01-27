@@ -6,12 +6,14 @@ import { API_PATH } from '@/app/api/api-path';
 import { resetAllStore, useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 import { act } from 'react-dom/test-utils';
 import { SWRProviderWithoutCache } from '@/app/api/swr-provider';
+import { resetMockDB } from '@/app/mocks/mock-db';
 
 const wrapper = SWRProviderWithoutCache;
 
 describe('useIndicatorMetadataList', () => {
   beforeEach(() => {
     resetAllStore();
+    resetMockDB();
   });
 
   it('메타 데이터 가져오기', async () => {

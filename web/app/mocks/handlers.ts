@@ -1,37 +1,21 @@
 import { HttpResponse, http } from 'msw';
 import { API_PATH } from '../api/api-path';
+import { mockDB } from './mock-db';
+import { CreateIndicatorMetadataRequestBody } from '../api/command/numerical-guidance.command';
 
 export const handlers = [
-  // Intercept the "GET /resource" request.
   http.get(API_PATH.indicatorList, () => {
-    // And respond with a "text/plain" response
-    // with a "Hello world!" text response body.
     return HttpResponse.json({
       message: 'Hello world!',
     });
   }),
   http.get(API_PATH.metadataList, () => {
-    return HttpResponse.json({
-      metadataList: [
-        {
-          id: '1',
-          name: 'metadata1',
-          indicators: [],
-        },
-        {
-          id: '2',
-          name: 'metadata2',
-          indicators: [],
-        },
-        {
-          id: '3',
-          name: 'metadata3',
-          indicators: [],
-        },
-      ],
-    });
+    return HttpResponse.json(mockDB.getMetadataList());
   }),
-  http.post(API_PATH.metadataList, () => {
+  http.post<never, CreateIndicatorMetadataRequestBody, never>(API_PATH.metadataList, async ({ request }) => {
+    const newMetadata = await request.json();
+    mockDB.postMetadataList(newMetadata);
+
     return HttpResponse.json({
       status: 200,
     });

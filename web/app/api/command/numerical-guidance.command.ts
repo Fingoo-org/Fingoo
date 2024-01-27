@@ -2,7 +2,7 @@ import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
 import { Indicator } from '../type/numerical-guidance.type';
 
-type CreateIndicatorMetadataRequestBody = {
+export type CreateIndicatorMetadataRequestBody = {
   id: string;
   name: string;
   indicators: Indicator[];

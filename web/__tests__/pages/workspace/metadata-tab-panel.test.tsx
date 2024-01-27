@@ -2,8 +2,12 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MetadataTabPanel from '@/app/ui/pages/workspace/metadata-tab-panel';
 import { SWRProviderWithoutCache } from '@/app/api/swr-provider';
+import { resetMockDB } from '@/app/mocks/mock-db';
 
 describe('MetadataTabPanel', () => {
+  beforeEach(() => {
+    resetMockDB();
+  });
   it('메타 데이터 조회하기', async () => {
     // given
     render(
