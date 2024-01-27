@@ -2,11 +2,30 @@
 import { Tab } from '@headlessui/react';
 import MetadataTabPanel from './metadata-tab-panel';
 import { useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
-import { useEffect } from 'react';
-import { API_PATH } from '@/app/api/api-path';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
+}
+
+export default function IndicatorBoardToolbar() {
+  const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
+
+  return (
+    <div className="h-full bg-red-800">
+      <Tab.Group>
+        <Tab.List className="flex space-x-1   p-1">
+          <ToolbarTab disable={selectedMetadataId ? false : true} tabName="Tool Bar" />
+          <ToolbarTab tabName="Meta Data" />
+        </Tab.List>
+        <Tab.Panels>
+          <Tab.Panel>Content 1</Tab.Panel>
+          <Tab.Panel>
+            <MetadataTabPanel />
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
+    </div>
+  );
 }
 
 type ToolbarTabProps = {
@@ -30,32 +49,5 @@ function ToolbarTab({ tabName, disable = false }: ToolbarTabProps) {
     >
       {tabName}
     </Tab>
-  );
-}
-
-export default function IndicatorBoardToolbar() {
-  const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
-
-  useEffect(() => {
-    fetch(API_PATH.indicatorList)
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  }, []);
-
-  return (
-    <div className="h-full bg-red-800">
-      <Tab.Group>
-        <Tab.List className="flex space-x-1   p-1">
-          <ToolbarTab disable={selectedMetadataId ? false : true} tabName="Tool Bar" />
-          <ToolbarTab tabName="Meta Data" />
-        </Tab.List>
-        <Tab.Panels>
-          <Tab.Panel>Content 1</Tab.Panel>
-          <Tab.Panel>
-            <MetadataTabPanel />
-          </Tab.Panel>
-        </Tab.Panels>
-      </Tab.Group>
-    </div>
   );
 }

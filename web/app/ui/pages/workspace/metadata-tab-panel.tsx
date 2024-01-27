@@ -1,4 +1,4 @@
-import { MetadataList } from '../../components/numerical-guidance/metadata-list';
+import MetadataList from '../../components/numerical-guidance/metadata-list';
 import Button from '../../components/view/atom/button';
 import { IndicatorBoardMetadata } from '@/app/api/type/numerical-guidance.type';
 import { useIndicatorMetadataList } from '@/app/hooks/use-indicator-metadata-list.hook';
