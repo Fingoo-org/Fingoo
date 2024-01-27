@@ -1,3 +1,4 @@
 import { type Fetcher } from 'swr';
+import axios from 'axios';
 
-export const defaultFetcher: Fetcher<any, string> = (...args) => fetch(...args).then((res) => res.json());
+export const defaultFetcher: Fetcher<any, string> = (url) => axios.get(url).then((res) => res.data);
