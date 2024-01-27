@@ -6,5 +6,6 @@ export interface LoadFluctuatingIndicatorPort {
     ticker: string,
     interval: string,
     market: string,
+    endDate: string,
   ): Promise<FluctuatingIndicatorsDto>;
 }

@@ -62,6 +62,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
       5,
       [{ ticker: '005930', market: 'KOSPI' }],
       'day',
+      '20240125',
     );
 
     //when
@@ -78,6 +79,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
       5,
       [{ ticker: '005931', market: 'KOSPI' }],
       'day',
+      '20240125',
     );
 
     //when

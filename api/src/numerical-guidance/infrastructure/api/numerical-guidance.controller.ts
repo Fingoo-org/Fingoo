@@ -18,6 +18,7 @@ export class NumericalGuidanceController {
       getFluctuatingIndicatorsDto.dataCount,
       getFluctuatingIndicatorsDto.fluctuatingIndicatorInfos,
       getFluctuatingIndicatorsDto.interval,
+      getFluctuatingIndicatorsDto.endDate,
     );
     return this.queryBus.execute(query);
   }
@@ -31,6 +32,7 @@ export class NumericalGuidanceController {
       getFluctuatingIndicatorWithoutCacheDto.ticker,
       getFluctuatingIndicatorWithoutCacheDto.interval,
       getFluctuatingIndicatorWithoutCacheDto.market,
+      getFluctuatingIndicatorWithoutCacheDto.endDate,
     );
     return this.queryBus.execute(query);
   }

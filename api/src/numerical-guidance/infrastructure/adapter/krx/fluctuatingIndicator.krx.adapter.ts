@@ -12,10 +12,11 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     ticker: string,
     interval: string,
     market: string,
+    endDate: string,
   ): Promise<FluctuatingIndicatorsDto> {
     // KRX API 통신 -> 현재 일자부터 이전 데이터 모두 조회
     const serviceKey: string = process.env.SERVICE_KEY;
-    const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
+    const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
 
     const res = await this.api.axiosRef.get(request_url);
     const responseData: FluctuatingIndicatorsDto = res.data.response.body;

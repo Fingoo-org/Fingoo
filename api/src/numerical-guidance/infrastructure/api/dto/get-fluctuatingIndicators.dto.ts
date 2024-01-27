@@ -26,4 +26,7 @@ export class GetFluctuatingIndicatorsDto {
   @IsString()
   @IsInterval()
   readonly interval: Interval;
+
+  @IsString()
+  readonly endDate: string;
 }

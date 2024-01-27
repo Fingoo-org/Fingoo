@@ -14,4 +14,7 @@ export class GetFluctuatingIndicatorWithoutCacheDto {
 
   @IsString()
   readonly market: string;
+
+  @IsString()
+  readonly endDate: string;
 }

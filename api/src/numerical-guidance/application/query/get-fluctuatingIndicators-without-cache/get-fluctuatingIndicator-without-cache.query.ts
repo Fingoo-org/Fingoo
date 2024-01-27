@@ -6,5 +6,6 @@ export class GetFluctuatingIndicatorWithoutCacheQuery implements IQuery {
     readonly ticker: string,
     readonly interval: string,
     readonly market: string,
+    readonly endDate: string,
   ) {}
 }

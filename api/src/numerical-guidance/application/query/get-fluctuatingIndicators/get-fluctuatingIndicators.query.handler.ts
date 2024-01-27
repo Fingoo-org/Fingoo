@@ -20,7 +20,7 @@ export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
   ) {}
 
   async execute(getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery): Promise<FluctuatingIndicatorsDto[]> {
-    const { dataCount, fluctuatingIndicatorInfos, interval } = getFluctuatingIndicatorsQuery;
+    const { dataCount, fluctuatingIndicatorInfos, interval, endDate } = getFluctuatingIndicatorsQuery;
     const fluctuatingIndicatorsDtos: FluctuatingIndicatorsDto[] = [];
 
     for (const fluctuatingIndicatorInfo of fluctuatingIndicatorInfos) {
@@ -36,6 +36,7 @@ export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
           ticker,
           interval,
           market,
+          endDate,
         );
         await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(key, fluctuatingIndicatorsDto);
         this.logger.log('KRX 호출');
