@@ -1,11 +1,11 @@
 import { useNumericalGuidanceStore } from '../stores/numerical-guidance.store';
 
 import { useCreateIndicatorMetadata } from '../api/command/numerical-guidance.command';
-import { useFetchIndicatorMetadataList } from '../api/query/numerical-guidance.query';
+import { useFetchIndicatorBoardMetadataList } from '../api/query/numerical-guidance.query';
 import { IndicatorBoardMetadata } from '../api/type/numerical-guidance.type';
 
-export const useIndicatorMetadataList = () => {
-  const { data, isLoading } = useFetchIndicatorMetadataList();
+export const useIndicatoBoardrMetadataList = () => {
+  const { data, isLoading } = useFetchIndicatorBoardMetadataList();
   const { trigger, error: createMetadataError } = useCreateIndicatorMetadata();
   const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
 

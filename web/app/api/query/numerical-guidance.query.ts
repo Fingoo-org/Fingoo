@@ -16,7 +16,8 @@ export type IndicatorBoardMetadataListResponse = {
   metadataList: IndicatorBoardMetadataResponse[];
 };
 
-export const useFetchIndicatorMetadataList = () => useSWR<IndicatorBoardMetadataListResponse>(API_PATH.metadataList);
+export const useFetchIndicatorBoardMetadataList = () =>
+  useSWR<IndicatorBoardMetadataListResponse>(API_PATH.metadataList);
 
 // Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까?
 export type IndicatorListResponse = {

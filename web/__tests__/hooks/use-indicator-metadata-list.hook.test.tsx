@@ -1,4 +1,4 @@
-import { useIndicatorMetadataList } from '@/app/hooks/use-indicator-metadata-list.hook';
+import { useIndicatoBoardrMetadataList } from '@/app/hooks/use-indicator-board-metadata-list.hook';
 import { renderHook, waitFor } from '@testing-library/react';
 import { server } from '@/app/mocks/server';
 import { HttpResponse, http } from 'msw';
@@ -10,7 +10,7 @@ import { resetMockDB } from '@/app/mocks/mock-db';
 
 const wrapper = SWRProviderWithoutCache;
 
-describe('useIndicatorMetadataList', () => {
+describe('useIndicatoBoardrMetadataList', () => {
   beforeEach(() => {
     resetAllStore();
     resetMockDB();
@@ -18,7 +18,7 @@ describe('useIndicatorMetadataList', () => {
 
   it('메타 데이터 가져오기', async () => {
     // given
-    const { result } = renderHook(() => useIndicatorMetadataList(), { wrapper });
+    const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
 
     // when
     await waitFor(() => expect(result.current.isLoading).toBe(false));
@@ -45,7 +45,7 @@ describe('useIndicatorMetadataList', () => {
 
   it('메타 데이터 추가하기', async () => {
     // given
-    const { result } = renderHook(() => useIndicatorMetadataList(), { wrapper });
+    const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
 
     // when
     await waitFor(() => expect(result.current.isLoading).toBe(false));
@@ -79,7 +79,7 @@ describe('useIndicatorMetadataList', () => {
   // Risk: https://mswjs.io/docs/limitations#parallel-runs
   it('메타 데이터 추가하기 실패', async () => {
     // given
-    const { result } = renderHook(() => useIndicatorMetadataList(), { wrapper });
+    const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
     server.use(
       http.post(API_PATH.metadataList, () => {
@@ -114,7 +114,7 @@ describe('useIndicatorMetadataList', () => {
 
   it('메타데이터 추가하기 실패: 낙관적 업데이트 테스트', async () => {
     // given
-    const { result } = renderHook(() => useIndicatorMetadataList(), { wrapper });
+    const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
     server.use(
       http.post(API_PATH.metadataList, () => {
