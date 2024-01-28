@@ -29,7 +29,7 @@ describe('FluctucatingIndicatorKrxAdapter', () => {
 
   it('외부에서 변동 지표 데이터롤 가져온다', async () => {
     // given
-    const testQuery = new GetFluctuatingIndicatorWithoutCacheQuery(5, '005930', 'KOSPI');
+    const testQuery = new GetFluctuatingIndicatorWithoutCacheQuery(5, '005930', 'day', 'KOSPI', '20240125');
 
     // when
     const result = await getFluctuatingIndicatorsWithoutCacheQueryHandler.execute(testQuery);

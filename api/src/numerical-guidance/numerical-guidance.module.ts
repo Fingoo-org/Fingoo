@@ -12,7 +12,7 @@ import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/q
     CqrsModule,
     HttpModule.registerAsync({
       useFactory: () => ({
-        timeout: 5000,
+        timeout: 10000,
         maxRedirects: 5,
       }),
     }),
