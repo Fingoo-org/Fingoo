@@ -1,6 +1,7 @@
 'use client';
 import { Tab } from '@headlessui/react';
 import MetadataTabPanel from './metadata-tab-panel';
+import IndicatorTabPanel from './indicator-tab-panel';
 import { useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 
 function classNames(...classes: string[]) {
@@ -18,7 +19,9 @@ export default function IndicatorBoardToolbar() {
           <ToolbarTab tabName="Meta Data" />
         </Tab.List>
         <Tab.Panels>
-          <Tab.Panel>Content 1</Tab.Panel>
+          <Tab.Panel>
+            <IndicatorTabPanel />
+          </Tab.Panel>
           <Tab.Panel>
             <MetadataTabPanel />
           </Tab.Panel>
