@@ -8,7 +8,7 @@ import { IndicatorBoardMetadata } from '@/app/api/type/numerical-guidance.type';
 export default React.memo(function MetadataList() {
   const { metadataList } = useIndicatorMetadataList();
 
-  const renderItem = (item: IndicatorBoardMetadata) => <ListItem key={item.id} content={item.name} />;
+  const renderItem = (item: IndicatorBoardMetadata) => <ListItem key={item.id}>{item.name}</ListItem>;
 
   return <div>{metadataList && <List list={metadataList} render={renderItem} />}</div>;
 });

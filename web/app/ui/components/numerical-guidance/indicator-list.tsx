@@ -1,10 +1,10 @@
 import { ListChildComponentProps } from 'react-window';
 import WindowList from '../view/molocule/window-list';
-import ListItem from '../view/atom/list-item';
+import SelectableListItem from '../view/atom/selectable-list-item';
 
 export default function IndicatorList() {
   const render = ({ index, style }: ListChildComponentProps) => (
-    <ListItem style={style} content={`row${index}`} selected={true} />
+    <SelectableListItem key={index} style={style} content={`row${index}`} selected={true} />
   );
 
   const item = [1];
