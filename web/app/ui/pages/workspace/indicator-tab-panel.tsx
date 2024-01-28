@@ -1,5 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/16/solid';
+import IndicatorList from '../../components/numerical-guidance/indicator-list';
 
 export default function IndicatorTabPanel() {
   return (
@@ -11,7 +12,9 @@ export default function IndicatorTabPanel() {
               <span>지표</span>
               <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-purple-500`} />
             </Disclosure.Button>
-            <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-yellow-500">test message</Disclosure.Panel>
+            <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-yellow-500">
+              <IndicatorList />
+            </Disclosure.Panel>
           </>
         )}
       </Disclosure>

@@ -12,13 +12,13 @@ export default function IndicatorBoardToolbar() {
   const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
 
   return (
-    <div className="h-full bg-red-800">
+    <div className=" bg-red-800">
       <Tab.Group>
         <Tab.List className="flex space-x-1   p-1">
           <ToolbarTab disable={selectedMetadataId ? false : true} tabName="Tool Bar" />
           <ToolbarTab tabName="Meta Data" />
         </Tab.List>
-        <Tab.Panels>
+        <Tab.Panels className="md:h-96">
           <Tab.Panel>
             <IndicatorTabPanel />
           </Tab.Panel>
