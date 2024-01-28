@@ -1,8 +1,9 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
 
-type IndicatorResponse = {
-  id: string;
+export type IndicatorResponse = {
+  ticker: string;
+  name: string;
 };
 
 type IndicatorBoardMetadataResponse = {
@@ -21,5 +22,17 @@ export const useFetchIndicatorMetadataList = () => {
     metadataList: data?.metadataList,
     error,
     isLoading,
+  };
+};
+
+// Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까?
+export type IndicatorListResponse = {
+  indicatorList: IndicatorResponse[];
+};
+
+export const useFetchIndicatorList = () => {
+  const { data } = useSWR<IndicatorListResponse>(API_PATH.indicatorList);
+  return {
+    indicatorList: data?.indicatorList,
   };
 };

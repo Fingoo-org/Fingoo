@@ -5,5 +5,6 @@ export type IndicatorBoardMetadata = {
   indicators: Indicator[];
 };
 export type Indicator = {
-  id: string;
+  ticker: string;
+  name: string;
 };

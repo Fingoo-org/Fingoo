@@ -4,11 +4,6 @@ import { mockDB } from './mock-db';
 import { CreateIndicatorMetadataRequestBody } from '../api/command/numerical-guidance.command';
 
 export const handlers = [
-  http.get(API_PATH.indicatorList, () => {
-    return HttpResponse.json({
-      message: 'Hello world!',
-    });
-  }),
   http.get(API_PATH.metadataList, () => {
     return HttpResponse.json(mockDB.getMetadataList());
   }),
@@ -19,5 +14,8 @@ export const handlers = [
     return HttpResponse.json({
       status: 200,
     });
+  }),
+  http.get(API_PATH.indicatorList, () => {
+    return HttpResponse.json(mockDB.getIndicatorList());
   }),
 ];

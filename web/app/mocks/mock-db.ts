@@ -1,11 +1,13 @@
 import { CreateIndicatorMetadataRequestBody } from '../api/command/numerical-guidance.command';
 import { IndicatorBoardMetadataListResponse } from '../api/query/numerical-guidance.query';
+import { IndicatorListResponse } from '../api/query/numerical-guidance.query';
 
-type MockDatabase = IndicatorBoardMetadataListResponse;
+type MockDatabase = IndicatorBoardMetadataListResponse & IndicatorListResponse;
 
 type MockDatabaseAction = {
   getMetadataList: () => IndicatorBoardMetadataListResponse;
   postMetadataList: (newMetadata: CreateIndicatorMetadataRequestBody) => void;
+  getIndicatorList: () => IndicatorListResponse;
 };
 
 const initialState: MockDatabase = {
@@ -26,6 +28,20 @@ const initialState: MockDatabase = {
       indicators: [],
     },
   ],
+  indicatorList: [
+    {
+      ticker: 'AAPL',
+      name: 'Apple Inc.',
+    },
+    {
+      ticker: 'MSFT',
+      name: 'Microsoft Corporation',
+    },
+    {
+      ticker: 'GOOG',
+      name: 'Alphabet Inc.',
+    },
+  ],
 };
 
 const mockDatabaseStore = {
@@ -40,6 +56,11 @@ export const mockDB: MockDatabaseAction = {
   },
   postMetadataList: (newMetadata) => {
     mockDatabaseStore.metadataList = [...mockDatabaseStore.metadataList, newMetadata];
+  },
+  getIndicatorList: () => {
+    return {
+      indicatorList: mockDatabaseStore.indicatorList,
+    };
   },
 };
 
