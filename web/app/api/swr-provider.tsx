@@ -2,12 +2,14 @@
 import { PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
 import { defaultFetcher } from './fetcher';
+import { onActionHttpError } from '../utils/http/action-http-error';
 
 export const SWRProvider = ({ children }: PropsWithChildren) => {
   return (
     <SWRConfig
       value={{
         fetcher: defaultFetcher,
+        onError: onActionHttpError,
       }}
     >
       {children}
@@ -18,7 +20,13 @@ export const SWRProvider = ({ children }: PropsWithChildren) => {
 export const SWRProviderWithoutCache = ({ children }: PropsWithChildren) => {
   return (
     <SWRProvider>
-      <SWRConfig value={{ provider: () => new Map() }}>{children}</SWRConfig>
+      <SWRConfig
+        value={{
+          provider: () => new Map(),
+        }}
+      >
+        {children}
+      </SWRConfig>
     </SWRProvider>
   );
 };
