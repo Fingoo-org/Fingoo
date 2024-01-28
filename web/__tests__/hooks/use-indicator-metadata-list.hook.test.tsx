@@ -151,7 +151,7 @@ describe('useIndicatorMetadataList', () => {
       },
     ]);
     expect(store.current.selectedMetadataId).toBe('4');
-    await waitFor(() => expect(result.current.mutationError).not.toBe(undefined));
+    await waitFor(() => expect(result.current.createMetadataError).not.toBe(undefined));
 
     // then
     // 이후 rollback 되기 때문에, 업데이트가 되지 않는다.

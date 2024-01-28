@@ -9,10 +9,5 @@ export type CreateIndicatorMetadataRequestBody = {
   indicators: Indicator[];
 };
 
-export const useCreateIndicatorMetadata = () => {
-  const { trigger, error } = useSWRMutation(API_PATH.metadataList, updateFetcher<CreateIndicatorMetadataRequestBody>);
-  return {
-    trigger,
-    mutationError: error,
-  };
-};
+export const useCreateIndicatorMetadata = () =>
+  useSWRMutation(API_PATH.metadataList, updateFetcher<CreateIndicatorMetadataRequestBody>);

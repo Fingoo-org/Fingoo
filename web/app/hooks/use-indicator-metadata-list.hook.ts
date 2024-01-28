@@ -5,10 +5,11 @@ import { useFetchIndicatorMetadataList } from '../api/query/numerical-guidance.q
 import { IndicatorBoardMetadata } from '../api/type/numerical-guidance.type';
 
 export const useIndicatorMetadataList = () => {
-  const { metadataList, error, isLoading } = useFetchIndicatorMetadataList();
-  const { trigger, mutationError } = useCreateIndicatorMetadata();
+  const { data, isLoading } = useFetchIndicatorMetadataList();
+  const { trigger, error: createMetadataError } = useCreateIndicatorMetadata();
   const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
 
+  const metadataList = data?.metadataList;
   const createAndSelectMetadata = async (metadata: IndicatorBoardMetadata) => {
     try {
       await trigger(metadata, {
@@ -28,9 +29,8 @@ export const useIndicatorMetadataList = () => {
 
   return {
     metadataList,
-    error,
     isLoading,
-    mutationError,
+    createMetadataError,
     createAndSelectMetadata,
   };
 };
