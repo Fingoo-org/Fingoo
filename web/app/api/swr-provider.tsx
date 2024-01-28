@@ -1,7 +1,7 @@
 'use client';
 import { PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
-import { defaultFetcher } from './query/fetcher';
+import { defaultFetcher } from './fetcher';
 
 export const SWRProvider = ({ children }: PropsWithChildren) => {
   return (
