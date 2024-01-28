@@ -34,8 +34,13 @@ describe('useSelectedMetadata', () => {
   it('선택된 메타데이터가 없을 때', async () => {
     // given
     const { result } = renderHook(() => useSelectedMetadata(), { wrapper });
+    const { result: query } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
-    store.current.actions.selectMetadata(null);
+
+    await waitFor(() => expect(query.current.metadataList).not.toBeUndefined());
+    act(() => {
+      store.current.actions.selectMetadata(null);
+    });
 
     // when
     // then
