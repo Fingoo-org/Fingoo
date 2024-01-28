@@ -1,5 +1,5 @@
 import { ListChildComponentProps } from 'react-window';
-import WindowList from '../view/atom/window-list';
+import WindowList from '../view/molocule/window-list';
 
 export default function IndicatorList() {
   const render = ({ index, style }: ListChildComponentProps) => <div style={style}>Row {index}</div>;

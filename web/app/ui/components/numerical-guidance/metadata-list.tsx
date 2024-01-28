@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import List from '../view/atom/list';
+import List from '../view/molocule/list';
 import ListItem from '../view/atom/list-item';
 import { useIndicatorMetadataList } from '@/app/hooks/use-indicator-metadata-list.hook';
 import { IndicatorBoardMetadata } from '@/app/api/type/numerical-guidance.type';
