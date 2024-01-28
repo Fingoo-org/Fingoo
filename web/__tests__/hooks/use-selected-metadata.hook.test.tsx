@@ -12,6 +12,7 @@ describe('useSelectedMetadata', () => {
     resetAllStore();
     resetMockDB();
   });
+
   it('선택된 메타데이터 가져오기', async () => {
     // given
     const { result } = renderHook(() => useSelectedMetadata(), { wrapper });
@@ -20,7 +21,6 @@ describe('useSelectedMetadata', () => {
 
     // when
     await waitFor(() => expect(query.current.metadataList).not.toBeUndefined());
-
     act(() => {
       if (query.current.metadataList?.[0]) {
         store.current.actions.selectMetadata(query.current.metadataList?.[0].id);
@@ -35,10 +35,9 @@ describe('useSelectedMetadata', () => {
     // given
     const { result } = renderHook(() => useSelectedMetadata(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
-
-    // when
     store.current.actions.selectMetadata(null);
 
+    // when
     // then
     expect(result.current.selectedMetadata).toBeUndefined();
   });

@@ -10,7 +10,7 @@ describe('useIndicatorList', () => {
     const { result } = renderHook(() => useIndicatorList(), { wrapper });
 
     // when
-    await waitFor(() => expect(result.current.indicatorList).toBe(undefined));
+    await waitFor(() => expect(result.current.indicatorList).not.toBeUndefined());
 
     // then
     expect(result.current.indicatorList).toHaveLength(3);
