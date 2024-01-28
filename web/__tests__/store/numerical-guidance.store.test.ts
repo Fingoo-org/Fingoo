@@ -1,15 +1,15 @@
 import { act, renderHook } from '@testing-library/react';
-import { resetAllSlice } from '@/app/store';
-import { useStore } from '@/app/store';
+import { resetAllStore } from '@/app/stores/numerical-guidance.store';
+import { useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 
-describe('indicatorBoardSlice', () => {
+describe('useNumericalGuidanceStore', () => {
   beforeEach(() => {
-    resetAllSlice();
+    resetAllStore();
   });
 
   it('초기 설정 확인', () => {
     // given
-    const { result } = renderHook(() => useStore());
+    const { result } = renderHook(() => useNumericalGuidanceStore());
 
     // when
     // then
@@ -19,11 +19,10 @@ describe('indicatorBoardSlice', () => {
 
   it('메타데이터 선택하기', () => {
     // given
-    const { result } = renderHook(() => useStore());
-    act(() => result.current.addMetadata({ id: '1', name: 'name', indicators: [] }));
+    const { result } = renderHook(() => useNumericalGuidanceStore());
 
     // when
-    act(() => result.current.selectMetaData('1'));
+    act(() => result.current.actions.selectMetadata('1'));
 
     // then
     expect(result.current.selectedMetadataId).toBe('1');

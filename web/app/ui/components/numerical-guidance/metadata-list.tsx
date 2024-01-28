@@ -1,19 +1,14 @@
+'use client';
 import React from 'react';
 import List from '../view/atom/list';
 import ListItem from '../view/atom/list-item';
-import { useStore } from '@/app/store';
-import { IndicatorBoardMetadata } from '@/app/store/indicator-board-metadata.slice';
+import { useIndicatorMetadataList } from '@/app/hooks/use-indicator-metadata-list.hook';
+import { IndicatorBoardMetadata } from '@/app/api/type/numerical-guidance.type';
 
-interface MetadataListProps {
-  // Define the props for the MetadataList component here
-}
+export default React.memo(function MetadataList() {
+  const { metadataList } = useIndicatorMetadataList();
 
-export function MetadataList(props: MetadataListProps) {
-  const metadataList: IndicatorBoardMetadata[] = useStore((state) => state.metadataList);
+  const renderItem = (item: IndicatorBoardMetadata) => <ListItem key={item.id} content={item.name} />;
 
-  return (
-    <div>
-      <List list={metadataList} render={(item) => <ListItem key={item.id} content={item.name} />} />
-    </div>
-  );
-}
+  return <div>{metadataList && <List list={metadataList} render={renderItem} />}</div>;
+});
