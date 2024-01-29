@@ -14,13 +14,8 @@ export class IndicatorListAdapter implements GetIndicatorListPort {
   async getIndicatorList(): Promise<IndicatorListDto> {
     const indicatorList = await this.dataSource
       .getRepository(IndicatorEntity)
-      .createQueryBuilder()
-      .select('indicator_entity')
-      .from(IndicatorEntity, 'indicator_entity')
+      .createQueryBuilder('indicator_entity')
       .getMany();
-
-    console.log(indicatorList);
-    console.log(indicatorList[0]['id']);
 
     const indicators: IndicatorListDto = { indicatorList: [] };
 

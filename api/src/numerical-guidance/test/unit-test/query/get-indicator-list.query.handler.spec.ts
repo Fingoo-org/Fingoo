@@ -14,7 +14,7 @@ const testData = {
       id: 2,
       name: '이스트아시아홀딩스',
       ticker: '900110',
-      type: '',
+      type: 'stock',
     },
   ],
 };

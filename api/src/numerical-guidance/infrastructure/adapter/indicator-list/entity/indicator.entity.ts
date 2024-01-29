@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class IndicatorEntity {
-  @PrimaryColumn()
+export class IndicatorEntity extends BaseEntity {
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
