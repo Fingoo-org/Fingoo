@@ -11,6 +11,7 @@ export class IndicatorListDto {
 }
 
 export type IndicatorResponse = {
+  id: number;
   name: string;
   ticker: string;
   type: string;

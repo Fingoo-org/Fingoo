@@ -1,31 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { GetIndicatorListPort } from 'src/numerical-guidance/application/port/indicator-list/get-indicator-list.port';
-import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
-
-const testList = {
-  indicatorList: [
-    {
-      name: '삼성전자',
-      ticker: '005931',
-      type: 'stock',
-    },
-    {
-      name: '이스트아시아홀딩스',
-      ticker: '900110',
-      type: 'stock',
-    },
-  ],
-};
+import {
+  IndicatorListDto,
+  IndicatorResponse,
+} from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
+import { DataSource } from 'typeorm';
+import { IndicatorEntity } from './entity/indicator.entity';
 
 @Injectable()
 export class IndicatorListAdapter implements GetIndicatorListPort {
-  constructor() {}
+  constructor(private readonly dataSource: DataSource) {}
 
   async getIndicatorList(): Promise<IndicatorListDto> {
-    const list = IndicatorListDto.create(testList);
+    const indicatorList = await this.dataSource
+      .getRepository(IndicatorEntity)
+      .createQueryBuilder()
+      .select('indicator_entity')
+      .from(IndicatorEntity, 'indicator_entity')
+      .getMany();
+
+    console.log(indicatorList);
+    console.log(indicatorList[0]['id']);
+
+    const indicators: IndicatorListDto = { indicatorList: [] };
+
+    for (let i = 0; i < indicatorList.length; i++) {
+      const response: IndicatorResponse = {
+        id: indicatorList[i]['id'],
+        name: indicatorList[i]['name'],
+        ticker: indicatorList[i]['ticker'],
+        type: indicatorList[i]['type'],
+      };
+      indicators.indicatorList.push(response);
+    }
+
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(list);
+        resolve(indicators);
       }, 2000);
     });
   }
