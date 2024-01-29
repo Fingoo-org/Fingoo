@@ -1,8 +1,9 @@
 import { useNumericalGuidanceStore } from '../stores/numerical-guidance.store';
-
-import { useCreateIndicatorMetadata } from '../api/command/numerical-guidance.command';
+import {
+  CreateIndicatorMetadataRequestBody,
+  useCreateIndicatorMetadata,
+} from '../api/command/numerical-guidance.command';
 import { useFetchIndicatorBoardMetadataList } from '../api/query/numerical-guidance.query';
-import { IndicatorBoardMetadata } from '../api/type/numerical-guidance.type';
 
 export const useIndicatoBoardrMetadataList = () => {
   const { data, isLoading } = useFetchIndicatorBoardMetadataList();
@@ -10,7 +11,7 @@ export const useIndicatoBoardrMetadataList = () => {
   const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
 
   const metadataList = data?.metadataList;
-  const createAndSelectMetadata = async (metadata: IndicatorBoardMetadata) => {
+  const createAndSelectMetadata = async (metadata: CreateIndicatorMetadataRequestBody) => {
     try {
       await trigger(metadata, {
         optimisticData: () => {

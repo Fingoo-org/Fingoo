@@ -1,20 +1,25 @@
 import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
-import { Indicator } from '../type/numerical-guidance.type';
 import { updateFetcher } from '../fetcher';
-import { IndicatorResponse } from '../query/numerical-guidance.query';
+
+export type IndicatorRequestBody = {
+  ticker: string;
+  name: string;
+};
 
 export type CreateIndicatorMetadataRequestBody = {
   id: string;
   name: string;
-  indicators: Indicator[];
+  indicators: IndicatorRequestBody[];
 };
 
 export const useCreateIndicatorMetadata = () =>
   useSWRMutation(API_PATH.metadataList, updateFetcher<CreateIndicatorMetadataRequestBody>);
 
-// Risk: no mapping
-export type AddIndicatorToMetadataRequestBody = IndicatorResponse;
+export type AddIndicatorToMetadataRequestBody = {
+  ticker: string;
+  name: string;
+};
 
 export const useAddIndicatorToMetadata = (metadataId: string | null) =>
   useSWRMutation(metadataId ? [API_PATH.metadata, metadataId] : null, updateFetcher<AddIndicatorToMetadataRequestBody>);

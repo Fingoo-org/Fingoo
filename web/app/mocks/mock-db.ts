@@ -1,8 +1,10 @@
 import { CreateIndicatorMetadataRequestBody } from '../api/command/numerical-guidance.command';
-import { IndicatorBoardMetadataListResponse } from '../api/query/numerical-guidance.query';
+import {
+  IndicatorBoardMetadataListResponse,
+  IndicatorBoardMetadataResponse,
+} from '../api/query/numerical-guidance.query';
 import { IndicatorListResponse } from '../api/query/numerical-guidance.query';
 import { AddIndicatorToMetadataRequestBody } from '../api/command/numerical-guidance.command';
-import { IndicatorBoardMetadata } from '../api/type/numerical-guidance.type';
 
 type MockDatabase = IndicatorBoardMetadataListResponse & IndicatorListResponse;
 
@@ -10,7 +12,7 @@ type MockDatabaseAction = {
   getMetadataList: () => IndicatorBoardMetadataListResponse;
   postMetadataList: (newMetadata: CreateIndicatorMetadataRequestBody) => void;
   getIndicatorList: () => IndicatorListResponse;
-  getMetadata: (id: string) => IndicatorBoardMetadata | undefined;
+  getMetadata: (id: string) => IndicatorBoardMetadataResponse | undefined;
   postIndicatorToMetadata: (id: string, data: AddIndicatorToMetadataRequestBody) => void;
 };
 
