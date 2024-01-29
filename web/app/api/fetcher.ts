@@ -10,6 +10,8 @@ instance.interceptors.response.use((response: AxiosResponse) => {
 
 export const defaultFetcher: Fetcher<any, string> = (url) => instance.get(url).then((res) => res.data);
 
+export const paramFetcher = (url: string, param: string) => instance.get(`${url}/${param}`).then((res) => res.data);
+
 export const updateFetcher = async <RequestBody>(url: string, { arg }: { arg: RequestBody }) => {
   try {
     await instance.post(url, arg);

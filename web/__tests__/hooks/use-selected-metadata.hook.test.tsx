@@ -26,6 +26,7 @@ describe('useSelectedMetadata', () => {
         store.current.actions.selectMetadata(query.current.metadataList?.[0].id);
       }
     });
+    await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
     // then
     expect(result.current.selectedMetadata).toEqual(query.current.metadataList?.[0]);
