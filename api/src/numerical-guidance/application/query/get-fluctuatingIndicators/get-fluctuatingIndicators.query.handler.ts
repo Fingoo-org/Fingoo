@@ -19,31 +19,26 @@ export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
     private readonly cachingFluctuatingIndicatorPort: CachingFluctuatingIndicatorPort,
   ) {}
 
-  async execute(getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery): Promise<FluctuatingIndicatorsDto[]> {
-    const { dataCount, fluctuatingIndicatorInfos, interval, endDate } = getFluctuatingIndicatorsQuery;
-    const fluctuatingIndicatorsDtos: FluctuatingIndicatorsDto[] = [];
+  async execute(getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery): Promise<FluctuatingIndicatorsDto> {
+    const { dataCount, ticker, market, interval, endDate } = getFluctuatingIndicatorsQuery;
 
-    for (const fluctuatingIndicatorInfo of fluctuatingIndicatorInfos) {
-      const { ticker, market } = fluctuatingIndicatorInfo;
-      const key = this.createFluctuatingIndicatorKey(ticker, interval);
+    const key = this.createFluctuatingIndicatorKey(ticker, interval);
 
-      let fluctuatingIndicatorsDto: FluctuatingIndicatorsDto =
-        await this.loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator(key);
+    let fluctuatingIndicatorsDto: FluctuatingIndicatorsDto =
+      await this.loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator(key);
 
-      if (this.isNotCached(fluctuatingIndicatorsDto)) {
-        fluctuatingIndicatorsDto = await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(
-          dataCount,
-          ticker,
-          interval,
-          market,
-          endDate,
-        );
-        await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(key, fluctuatingIndicatorsDto);
-        this.logger.log('KRX 호출');
-      }
-      fluctuatingIndicatorsDtos.push(fluctuatingIndicatorsDto);
+    if (this.isNotCached(fluctuatingIndicatorsDto)) {
+      fluctuatingIndicatorsDto = await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(
+        dataCount,
+        ticker,
+        interval,
+        market,
+        endDate,
+      );
+      await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(key, fluctuatingIndicatorsDto);
+      this.logger.log('KRX 호출');
     }
-    return fluctuatingIndicatorsDtos;
+    return fluctuatingIndicatorsDto;
   }
 
   private isNotCached(fluctuatingIndicatorsDto: FluctuatingIndicatorsDto): boolean {
