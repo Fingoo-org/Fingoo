@@ -5,13 +5,12 @@ import { useIndicatorList } from '@/app/hooks/use-indicator-list.hook';
 const wrapper = SWRProviderWithoutCache;
 
 describe('useIndicatorList', () => {
-  it('지표 리스트 가져오기', async () => {
+  it('지표 리스트를 가져온다.', async () => {
     // given
     const { result } = renderHook(() => useIndicatorList(), { wrapper });
-
-    // when
     await waitFor(() => expect(result.current.indicatorList).not.toBeUndefined());
 
+    // when
     // then
     expect(result.current.indicatorList).toHaveLength(3);
     expect(result.current.indicatorList?.[0].ticker).toBe('AAPL');
