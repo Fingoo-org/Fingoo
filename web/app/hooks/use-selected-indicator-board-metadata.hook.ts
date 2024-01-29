@@ -5,7 +5,7 @@ import {
 import { useFetchMetadata } from '../api/query/numerical-guidance.query';
 import { useNumericalGuidanceStore } from '../stores/numerical-guidance.store';
 
-export const useSelectMetadata = () => {
+export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
   const { data: selectedMetadata } = useFetchMetadata(selectedMetadataId);
   const { trigger } = useAddIndicatorToMetadata(selectedMetadataId);
