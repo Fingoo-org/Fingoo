@@ -5,6 +5,8 @@ import { FluctuatingIndicatorsDto } from '../../application/query/get-fluctuatin
 import { GetFluctuatingIndicatorsDto } from './dto/get-fluctuatingIndicators.dto';
 import { GetFluctuatingIndicatorWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
 import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators-without-cache/get-fluctuatingIndicator-without-cache.query';
+import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
+import { GetIndicatorListQuery } from 'src/numerical-guidance/application/query/get-indicator-list/get-indicator-list.query';
 
 @Controller('/numerical-guidance')
 export class NumericalGuidanceController {
@@ -34,6 +36,12 @@ export class NumericalGuidanceController {
       getFluctuatingIndicatorWithoutCacheDto.market,
       getFluctuatingIndicatorWithoutCacheDto.endDate,
     );
+    return this.queryBus.execute(query);
+  }
+
+  @Get('/get-indicator-list')
+  async getIndicatorList(): Promise<IndicatorListDto> {
+    const query = new GetIndicatorListQuery();
     return this.queryBus.execute(query);
   }
 }

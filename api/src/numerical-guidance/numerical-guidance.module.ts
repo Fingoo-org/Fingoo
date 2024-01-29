@@ -6,6 +6,8 @@ import { FluctuatingIndicatorKrxAdapter } from './infrastructure/adapter/krx/flu
 import { CqrsModule } from '@nestjs/cqrs';
 import { HttpModule } from '@nestjs/axios';
 import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/query/get-fluctuatingIndicators-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
+import { GetIndicatorListQueryHandler } from './application/query/get-indicator-list/get-indicator-list.query.handler';
+import { IndicatorListAdapter } from './infrastructure/adapter/indicator-list/indicator-list.adapter';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/q
   providers: [
     GetFluctuatingIndicatorsQueryHandler,
     GetFluctuatingIndicatorWithoutCacheQueryHandler,
+    GetIndicatorListQueryHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -32,6 +35,10 @@ import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/q
     {
       provide: 'CachingFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
+    },
+    {
+      provide: 'GetIndicatorListPort',
+      useClass: IndicatorListAdapter,
     },
   ],
 })
