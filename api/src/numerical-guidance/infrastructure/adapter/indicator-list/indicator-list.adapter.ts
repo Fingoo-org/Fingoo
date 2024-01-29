@@ -7,12 +7,12 @@ const testList = {
     {
       name: '삼성전자',
       ticker: '005931',
-      category: 'stock',
+      type: 'stock',
     },
     {
       name: '이스트아시아홀딩스',
       ticker: '900110',
-      category: 'stock',
+      type: 'stock',
     },
   ],
 };

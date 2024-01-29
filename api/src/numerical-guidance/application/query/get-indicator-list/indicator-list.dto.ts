@@ -13,5 +13,5 @@ export class IndicatorListDto {
 export type IndicatorResponse = {
   name: string;
   ticker: string;
-  category: string;
+  type: string;
 };
