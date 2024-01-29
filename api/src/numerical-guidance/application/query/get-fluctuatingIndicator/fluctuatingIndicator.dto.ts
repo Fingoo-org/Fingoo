@@ -20,7 +20,7 @@ export type Items = {
   item: Item[];
 };
 
-export class FluctuatingIndicatorsDto {
+export class FluctuatingIndicatorDto {
   numOfRows: number;
   pageNo: number;
   totalCount: number;
@@ -33,7 +33,7 @@ export class FluctuatingIndicatorsDto {
     this.items = items;
   }
 
-  static create({ numOfRows, pageNo, totalCount, items }): FluctuatingIndicatorsDto {
-    return new FluctuatingIndicatorsDto(numOfRows, pageNo, totalCount, items);
+  static create({ numOfRows, pageNo, totalCount, items }): FluctuatingIndicatorDto {
+    return new FluctuatingIndicatorDto(numOfRows, pageNo, totalCount, items);
   }
 }

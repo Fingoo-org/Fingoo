@@ -1,6 +1,6 @@
 import { IQuery } from '@nestjs/cqrs';
 
-export class GetFluctuatingIndicatorsQuery implements IQuery {
+export class GetFluctuatingIndicatorQuery implements IQuery {
   constructor(
     readonly dataCount: number,
     readonly ticker: string,
