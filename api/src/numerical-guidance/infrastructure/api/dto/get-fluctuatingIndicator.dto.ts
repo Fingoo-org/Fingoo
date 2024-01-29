@@ -1,9 +1,11 @@
 import { IsInt, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
 import { IsInterval } from '../../../../validation/is.interval.validation';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class GetFluctuatingIndicatorWithoutCacheDto {
+type Interval = 'day' | 'week' | 'month' | 'year';
+
+export class GetFluctuatingIndicatorDto {
   @ApiProperty({
     example: '100',
     description: '변동지표 주가 정보 한 페이지 결과 수',
@@ -20,20 +22,19 @@ export class GetFluctuatingIndicatorWithoutCacheDto {
   readonly ticker: string;
 
   @ApiProperty({
+    example: 'KOSPI',
+    description: '시장구분',
+  })
+  @IsString()
+  readonly market: string;
+
+  @ApiProperty({
     example: 'day',
     description: '변동지표 주가 정보의 간격(day, week, month, year)',
   })
   @IsString()
   @IsInterval()
-  readonly interval: string;
-
-  @ApiProperty({
-    example: 'KOSPI',
-    description: '시장구분',
-  })
-  @IsString()
-  @IsString()
-  readonly market: string;
+  readonly interval: Interval;
 
   @ApiProperty({
     example: '20240129',

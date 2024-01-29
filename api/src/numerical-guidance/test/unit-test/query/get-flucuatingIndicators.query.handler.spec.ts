@@ -60,7 +60,8 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
     //given
     const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(
       5,
-      [{ ticker: '005930', market: 'KOSPI' }],
+      '005930',
+      'KOSPI',
       'day',
       '20240125',
     );
@@ -77,7 +78,8 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
     //given
     const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(
       5,
-      [{ ticker: '005931', market: 'KOSPI' }],
+      '005931',
+      'KOSPI',
       'day',
       '20240125',
     );
