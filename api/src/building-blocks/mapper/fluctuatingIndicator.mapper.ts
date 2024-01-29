@@ -1,7 +1,7 @@
 import {
-  FluctuatingIndicatorsDto,
+  FluctuatingIndicatorDto,
   Items,
-} from '../../numerical-guidance/application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+} from '../../numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 
 export class FluctuatingIndicatorMapper {
   static mapToDto(stringData: string) {
@@ -12,7 +12,7 @@ export class FluctuatingIndicatorMapper {
       items: Items;
     } = JSON.parse(stringData);
 
-    return FluctuatingIndicatorsDto.create({
+    return FluctuatingIndicatorDto.create({
       numOfRows: data.numOfRows,
       pageNo: data.pageNo,
       totalCount: data.totalCount,

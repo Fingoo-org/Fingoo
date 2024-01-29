@@ -3,8 +3,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { NumericalGuidanceController } from '../../../infrastructure/api/numerical-guidance.controller';
-import { GetFluctuatingIndicatorsQueryHandler } from '../../../application/query/get-fluctuatingIndicators/get-fluctuatingIndicators.query.handler';
-import { FluctuatingIndicatorsDto } from '../../../application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { GetFluctuatingIndicatorQueryHandler } from '../../../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query.handler';
+import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';
 
 const testData = fluctuatingIndicatorTestData;
@@ -17,12 +17,12 @@ describe('NumericalGuidanceController', () => {
       imports: [CqrsModule],
       controllers: [NumericalGuidanceController],
       providers: [
-        GetFluctuatingIndicatorsQueryHandler,
+        GetFluctuatingIndicatorQueryHandler,
         {
           provide: 'LoadCachedFluctuatingIndicatorPort',
           useValue: {
             loadCachedFluctuatingIndicator: jest.fn().mockImplementation(() => {
-              return FluctuatingIndicatorsDto.create(testData);
+              return FluctuatingIndicatorDto.create(testData);
             }),
           },
         },
@@ -30,7 +30,7 @@ describe('NumericalGuidanceController', () => {
           provide: 'LoadFluctuatingIndicatorPort',
           useValue: {
             loadFluctuatingIndicator: jest.fn().mockImplementation(() => {
-              return FluctuatingIndicatorsDto.create(testData);
+              return FluctuatingIndicatorDto.create(testData);
             }),
           },
         },

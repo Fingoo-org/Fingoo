@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LoadCachedFluctuatingIndicatorPort } from '../../../application/port/cache/load-cached-fluctuatingIndicator.port';
-import { FluctuatingIndicatorsDto } from '../../../application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { CachingFluctuatingIndicatorPort } from '../../../application/port/cache/caching-fluctuatingIndicator.port';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
@@ -12,13 +12,13 @@ export class FluctuatingIndicatorRedisAdapter
 {
   constructor(@InjectRedis() private readonly redis: Redis) {}
 
-  async loadCachedFluctuatingIndicator(ticker: string): Promise<FluctuatingIndicatorsDto | null> {
+  async loadCachedFluctuatingIndicator(ticker: string): Promise<FluctuatingIndicatorDto | null> {
     const data: string = await this.redis.get(ticker);
     return data && FluctuatingIndicatorMapper.mapToDto(data);
   }
 
-  async cachingFluctuatingIndicator(key: string, fluctuatingIndicatorsDto: FluctuatingIndicatorsDto): Promise<void> {
-    const value: string = JSON.stringify(fluctuatingIndicatorsDto);
+  async cachingFluctuatingIndicator(key: string, fluctuatingIndicatorDto: FluctuatingIndicatorDto): Promise<void> {
+    const value: string = JSON.stringify(fluctuatingIndicatorDto);
     this.redis.set(key, value);
     this.redis.expire(key, 93600);
   }

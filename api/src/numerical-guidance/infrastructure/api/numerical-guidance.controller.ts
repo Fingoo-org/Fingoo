@@ -1,10 +1,10 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { GetFluctuatingIndicatorsQuery } from '../../application/query/get-fluctuatingIndicators/get-fluctuatingIndicators.query';
-import { FluctuatingIndicatorsDto } from '../../application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { GetFluctuatingIndicatorQuery } from '../../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
+import { FluctuatingIndicatorDto } from '../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorDto } from './dto/get-fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
-import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators-without-cache/get-fluctuatingIndicator-without-cache.query';
+import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('NumericalGuidanceController')
@@ -15,14 +15,14 @@ export class NumericalGuidanceController {
   @ApiOperation({ summary: '변동지표를 불러옵니다.' })
   @Get('/fluctuatingIndicator')
   async getFluctuatingIndicator(
-    @Query() getFluctuatingIndicatorsDto: GetFluctuatingIndicatorDto,
-  ): Promise<FluctuatingIndicatorsDto> {
-    const query = new GetFluctuatingIndicatorsQuery(
-      getFluctuatingIndicatorsDto.dataCount,
-      getFluctuatingIndicatorsDto.ticker,
-      getFluctuatingIndicatorsDto.market,
-      getFluctuatingIndicatorsDto.interval,
-      getFluctuatingIndicatorsDto.endDate,
+    @Query() getFluctuatingIndicatorDto: GetFluctuatingIndicatorDto,
+  ): Promise<FluctuatingIndicatorDto> {
+    const query = new GetFluctuatingIndicatorQuery(
+      getFluctuatingIndicatorDto.dataCount,
+      getFluctuatingIndicatorDto.ticker,
+      getFluctuatingIndicatorDto.market,
+      getFluctuatingIndicatorDto.interval,
+      getFluctuatingIndicatorDto.endDate,
     );
     return this.queryBus.execute(query);
   }
@@ -31,7 +31,7 @@ export class NumericalGuidanceController {
   @Get('/without-cache')
   async getFluctuatingIndicatorWithoutCache(
     @Query() getFluctuatingIndicatorWithoutCacheDto: GetFluctuatingIndicatorWithoutCacheDto,
-  ): Promise<FluctuatingIndicatorsDto> {
+  ): Promise<FluctuatingIndicatorDto> {
     const query = new GetFluctuatingIndicatorWithoutCacheQuery(
       getFluctuatingIndicatorWithoutCacheDto.dataCount,
       getFluctuatingIndicatorWithoutCacheDto.ticker,

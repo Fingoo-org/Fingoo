@@ -24,25 +24,25 @@ export class GetFluctuatingIndicatorQueryHandler implements IQueryHandler {
 
     const key = this.createFluctuatingIndicatorKey(ticker, interval);
 
-    let fluctuatingIndicatorsDto: FluctuatingIndicatorDto =
+    let fluctuatingIndicatorDto: FluctuatingIndicatorDto =
       await this.loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator(key);
 
-    if (this.isNotCached(fluctuatingIndicatorsDto)) {
-      fluctuatingIndicatorsDto = await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(
+    if (this.isNotCached(fluctuatingIndicatorDto)) {
+      fluctuatingIndicatorDto = await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(
         dataCount,
         ticker,
         interval,
         market,
         endDate,
       );
-      await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(key, fluctuatingIndicatorsDto);
+      await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(key, fluctuatingIndicatorDto);
       this.logger.log('KRX 호출');
     }
-    return fluctuatingIndicatorsDto;
+    return fluctuatingIndicatorDto;
   }
 
-  private isNotCached(fluctuatingIndicatorsDto: FluctuatingIndicatorDto): boolean {
-    return fluctuatingIndicatorsDto == null;
+  private isNotCached(fluctuatingIndicatorDto: FluctuatingIndicatorDto): boolean {
+    return fluctuatingIndicatorDto == null;
   }
 
   private createFluctuatingIndicatorKey(ticker: string, interval: string) {
