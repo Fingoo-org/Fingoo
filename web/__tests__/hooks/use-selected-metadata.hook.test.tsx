@@ -32,7 +32,7 @@ describe('useSelectedMetadata', () => {
     expect(result.current.selectedMetadata).toEqual(query.current.metadataList?.[0]);
   });
 
-  it('선택된 메타데이터가 없을 때', async () => {
+  it('선택된 메타데이터가 없을 때, 메타데이터 가져오기', async () => {
     // given
     const { result } = renderHook(() => useSelectedMetadata(), { wrapper });
     const { result: query } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
@@ -44,6 +44,29 @@ describe('useSelectedMetadata', () => {
     });
 
     // when
+    // then
+    expect(result.current.selectedMetadata).toBeUndefined();
+  });
+
+  it('메타데이터를 선택했다가 해제했을 때, 메타데이터 가져오기', async () => {
+    // given
+    const { result } = renderHook(() => useSelectedMetadata(), { wrapper });
+    const { result: query } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    const { result: store } = renderHook(() => useNumericalGuidanceStore());
+
+    // when
+    await waitFor(() => expect(query.current.metadataList).not.toBeUndefined());
+    act(() => {
+      if (query.current.metadataList?.[0]) {
+        store.current.actions.selectMetadata(query.current.metadataList?.[0].id);
+      }
+    });
+    await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+    act(() => {
+      store.current.actions.selectMetadata(null);
+    });
+    await waitFor(() => expect(result.current.selectedMetadata).toBeUndefined());
+
     // then
     expect(result.current.selectedMetadata).toBeUndefined();
   });
