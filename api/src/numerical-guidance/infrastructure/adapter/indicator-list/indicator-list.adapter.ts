@@ -1,12 +1,32 @@
-// import { Injectable } from '@nestjs/common';
-// import { GetIndicatorListPort } from 'src/numerical-guidance/application/port/indicator-list/get-indicator-list.port';
+import { Injectable } from '@nestjs/common';
+import { GetIndicatorListPort } from 'src/numerical-guidance/application/port/indicator-list/get-indicator-list.port';
+import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 
-// @Injectable()
-// export class IndicatorListAdapter implements GetIndicatorListPort {
-//   constructor(){}
+const testList = {
+  indicatorList: [
+    {
+      name: '삼성전자',
+      ticker: '005931',
+      category: 'stock',
+    },
+    {
+      name: '이스트아시아홀딩스',
+      ticker: '900110',
+      category: 'stock',
+    },
+  ],
+};
 
-//   async getIndicatorList(): Promise<IndicatorListDto> {
+@Injectable()
+export class IndicatorListAdapter implements GetIndicatorListPort {
+  constructor() {}
 
-//     return
-//   };
-// }
+  async getIndicatorList(): Promise<IndicatorListDto> {
+    const list = IndicatorListDto.create(testList);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(list);
+      }, 2000);
+    });
+  }
+}
