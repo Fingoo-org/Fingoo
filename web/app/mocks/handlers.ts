@@ -1,7 +1,10 @@
 import { HttpResponse, http } from 'msw';
 import { API_PATH } from '../api/api-path';
 import { mockDB } from './mock-db';
-import { CreateIndicatorMetadataRequestBody } from '../api/command/numerical-guidance.command';
+import {
+  AddIndicatorToMetadataRequestBody,
+  CreateIndicatorMetadataRequestBody,
+} from '../api/command/numerical-guidance.command';
 
 export const handlers = [
   http.get(API_PATH.metadataList, () => {
@@ -18,7 +21,7 @@ export const handlers = [
   http.get(API_PATH.indicatorList, () => {
     return HttpResponse.json(mockDB.getIndicatorList());
   }),
-  http.get<getMetadataParam>(`${API_PATH.metadata}/:metadataId`, ({ params }) => {
+  http.get<metadataParam>(`${API_PATH.metadata}/:metadataId`, ({ params }) => {
     const { metadataId } = params;
 
     const metadata = mockDB.getMetadata(metadataId);
@@ -29,14 +32,18 @@ export const handlers = [
 
     return HttpResponse.json(metadata);
   }),
-  http.post(`${API_PATH.metadataList}/:id`, ({ params }) => {
-    const { id } = params;
-    // const newMetadata = mockDB.putMetadata(id);
+  http.post<metadataParam, AddIndicatorToMetadataRequestBody>(
+    `${API_PATH.metadata}/:metadataId`,
+    async ({ params, request }) => {
+      const { metadataId } = params;
+      const indicator = await request.json();
+      mockDB.postIndicatorToMetadata(metadataId, indicator);
 
-    // return HttpResponse.json(newMetadata);
-  }),
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
 ];
 
-type getMetadataParam = {
+type metadataParam = {
   metadataId: string;
 };
