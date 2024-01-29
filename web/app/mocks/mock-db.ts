@@ -1,6 +1,7 @@
 import { CreateIndicatorMetadataRequestBody } from '../api/command/numerical-guidance.command';
 import { IndicatorBoardMetadataListResponse } from '../api/query/numerical-guidance.query';
 import { IndicatorListResponse } from '../api/query/numerical-guidance.query';
+import { AddIndicatorToMetadataRequestBody } from '../api/command/numerical-guidance.command';
 
 type MockDatabase = IndicatorBoardMetadataListResponse & IndicatorListResponse;
 
@@ -8,6 +9,7 @@ type MockDatabaseAction = {
   getMetadataList: () => IndicatorBoardMetadataListResponse;
   postMetadataList: (newMetadata: CreateIndicatorMetadataRequestBody) => void;
   getIndicatorList: () => IndicatorListResponse;
+  postIndicatorToMetadata: (id: string, data: AddIndicatorToMetadataRequestBody) => void;
 };
 
 const initialState: MockDatabase = {
@@ -61,6 +63,15 @@ export const mockDB: MockDatabaseAction = {
     return {
       indicatorList: mockDatabaseStore.indicatorList,
     };
+  },
+  postIndicatorToMetadata: (id, data) => {
+    const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
+    const newMetadata = {
+      ...mockDatabaseStore.metadataList[index],
+      indicators: [...mockDatabaseStore.metadataList[index].indicators, data.indicator],
+    };
+
+    mockDatabaseStore.metadataList[index] = newMetadata;
   },
 };
 

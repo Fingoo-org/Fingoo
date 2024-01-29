@@ -11,3 +11,10 @@ export type CreateIndicatorMetadataRequestBody = {
 
 export const useCreateIndicatorMetadata = () =>
   useSWRMutation(API_PATH.metadataList, updateFetcher<CreateIndicatorMetadataRequestBody>);
+
+export type AddIndicatorToMetadataRequestBody = {
+  indicator: Indicator;
+};
+
+export const useAddIndicatorToMetadata = () =>
+  useSWRMutation(API_PATH.metadataList, updateFetcher<AddIndicatorToMetadataRequestBody>);
