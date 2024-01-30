@@ -33,7 +33,6 @@ export const useSelectedIndicatorBoardMetadata = () => {
 
   return {
     selectedMetadata,
-    selectedIndicators: selectedMetadata?.indicators,
     addIndicatorToMetadata,
   };
 };
