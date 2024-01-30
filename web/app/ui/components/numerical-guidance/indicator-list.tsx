@@ -5,6 +5,7 @@ import { useIndicatorList } from '@/app/hooks/use-indicator-list.hook';
 import { IndicatorResponse } from '@/app/api/query/numerical-guidance.query';
 import React from 'react';
 import { useSelectedIndicatorBoardMetadata } from '@/app/hooks/use-selected-indicator-board-metadata.hook';
+import clsx from 'clsx';
 
 export default React.memo(function IndicatorList() {
   const { indicatorList } = useIndicatorList();
@@ -12,7 +13,7 @@ export default React.memo(function IndicatorList() {
 
   const render = ({ index, style, data }: ListChildComponentProps<IndicatorResponse[]>) => {
     const indicator = data[index];
-    const isSelected = selectedMetadata?.indicators?.some((i) => i.ticker === indicator.ticker);
+    const isSelected = selectedMetadata?.indicators?.some((i) => i.ticker === indicator.ticker) || false;
     const handleItemSelect = () => addIndicatorToMetadata(indicator);
     const handleItemDeSelect = () => deleteIndicatorFromMetadata(indicator.ticker);
 
@@ -29,8 +30,8 @@ export default React.memo(function IndicatorList() {
   };
 
   return (
-    <>
+    <div role="tablist" className={clsx({ hidden: selectedMetadata === undefined })}>
       <WindowList height={200} items={indicatorList || []} renderRow={render} />
-    </>
+    </div>
   );
 });

@@ -4,7 +4,7 @@ import React, { MouseEventHandler } from 'react';
 
 type SelectableListItemProps = {
   content: string;
-  selected?: boolean;
+  selected: boolean;
   style?: React.CSSProperties;
   onSelect: () => void;
   onDeSelect?: () => void;
@@ -18,9 +18,8 @@ export default function SelectableListItem({
   onDeSelect,
 }: SelectableListItemProps) {
   const handleClick: MouseEventHandler<HTMLButtonElement> = () => (selected ? onDeSelect?.() : onSelect());
-
   return (
-    <button onClick={handleClick}>
+    <button role="tab" aria-selected={`${selected}`} onClick={handleClick}>
       <ListItem style={style}>
         <div className="w-full flex justify-between">
           <div>{content}</div>
