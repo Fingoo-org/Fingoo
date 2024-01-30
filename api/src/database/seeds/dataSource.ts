@@ -1,7 +1,6 @@
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
 import { ConfigService } from '@nestjs/config';
-import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/entity/indicator.entity';
 
 config();
 
@@ -14,7 +13,6 @@ export default new DataSource({
   username: configService.get<string>('MYSQL_USER'),
   password: configService.get<string>('MYSQL_PASSWORD'),
   database: configService.get<string>('MYSQL_DATABASE'),
-  // entities: ['dist/**/**/*.entity.{ts,js}'],
-  entities: [IndicatorEntity],
+  entities: ['src/**/**/*.entity.{ts,js}'],
   synchronize: true,
 });
