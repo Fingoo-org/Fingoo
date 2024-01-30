@@ -1,10 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import MetadataTabPanel from '@/app/ui/pages/workspace/metadata-tab-panel';
+import MetadataList from '@/app/ui/components/numerical-guidance/metadata-list';
 import { SWRProviderWithoutCache } from '@/app/api/swr-provider';
 import { resetMockDB } from '@/app/mocks/mock-db';
 
-describe('MetadataTabPanel', () => {
+describe('MetadataList', () => {
   beforeEach(() => {
     resetMockDB();
   });
@@ -12,7 +12,7 @@ describe('MetadataTabPanel', () => {
     // given
     render(
       <SWRProviderWithoutCache>
-        <MetadataTabPanel />
+        <MetadataList />
       </SWRProviderWithoutCache>,
     );
 
@@ -28,7 +28,7 @@ describe('MetadataTabPanel', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <MetadataTabPanel />
+        <MetadataList />
       </SWRProviderWithoutCache>,
     );
     await waitFor(async () => expect(await screen.findByText(/metadata1/i)).toBeInTheDocument());
@@ -45,7 +45,7 @@ describe('MetadataTabPanel', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <MetadataTabPanel />
+        <MetadataList />
       </SWRProviderWithoutCache>,
     );
     await waitFor(async () => expect(await screen.findByText(/metadata1/i)).toBeInTheDocument());
