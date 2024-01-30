@@ -1,6 +1,6 @@
 import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
-import { updateFetcher } from '../fetcher';
+import { deleteFetcher, updateFetcher } from '../fetcher';
 
 export type IndicatorRequestBody = {
   ticker: string;
@@ -23,3 +23,11 @@ export type AddIndicatorToMetadataRequestBody = {
 
 export const useAddIndicatorToMetadata = (metadataId: string | null) =>
   useSWRMutation(metadataId ? [API_PATH.metadata, metadataId] : null, updateFetcher<AddIndicatorToMetadataRequestBody>);
+
+export type DeleteIndicatorToMetadataRequestBody = {
+  ticker: string;
+  name: string;
+};
+
+export const useDeleteIndicatorFromMetadata = (metadataId: string | null) =>
+  useSWRMutation(metadataId ? [API_PATH.metadata, metadataId] : null, deleteFetcher);
