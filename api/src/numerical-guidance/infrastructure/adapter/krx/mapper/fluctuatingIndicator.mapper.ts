@@ -1,7 +1,7 @@
 import {
   FluctuatingIndicatorDto,
   Items,
-} from '../../numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+} from '../../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 
 export class FluctuatingIndicatorMapper {
   static mapToDto(stringData: string) {

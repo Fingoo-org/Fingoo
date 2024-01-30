@@ -4,7 +4,7 @@ import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuat
 import { CachingFluctuatingIndicatorPort } from '../../../application/port/cache/caching-fluctuatingIndicator.port';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
-import { FluctuatingIndicatorMapper } from '../../../../building-blocks/mapper/fluctuatingIndicator.mapper';
+import { FluctuatingIndicatorMapper } from '../krx/mapper/fluctuatingIndicator.mapper';
 
 @Injectable()
 export class FluctuatingIndicatorRedisAdapter
