@@ -14,6 +14,7 @@ type MockDatabaseAction = {
   getIndicatorList: () => IndicatorListResponse;
   getMetadata: (id: string) => IndicatorBoardMetadataResponse | undefined;
   postIndicatorToMetadata: (id: string, data: AddIndicatorToMetadataRequestBody) => void;
+  deleteIndicatorFromMetadata: (id: string, indicatorKey: string) => void;
 };
 
 const initialState: MockDatabase = {
@@ -76,6 +77,17 @@ export const mockDB: MockDatabaseAction = {
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
       indicators: [...mockDatabaseStore.metadataList[index].indicators, data],
+    };
+
+    mockDatabaseStore.metadataList[index] = newMetadata;
+  },
+  deleteIndicatorFromMetadata: (id, indicatorKey) => {
+    const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
+    const newMetadata = {
+      ...mockDatabaseStore.metadataList[index],
+      indicators: mockDatabaseStore.metadataList[index].indicators.filter(
+        (indicator) => indicator.ticker !== indicatorKey,
+      ),
     };
 
     mockDatabaseStore.metadataList[index] = newMetadata;

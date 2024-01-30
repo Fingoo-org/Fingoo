@@ -42,8 +42,18 @@ export const handlers = [
       return HttpResponse.json({ status: 200 });
     },
   ),
+  http.delete<metadataParam & indicatorParam>(`${API_PATH.metadata}/:metadataId/:indicatorKey`, ({ params }) => {
+    const { metadataId, indicatorKey } = params;
+    mockDB.deleteIndicatorFromMetadata(metadataId, indicatorKey);
+
+    return HttpResponse.json({ status: 200 });
+  }),
 ];
 
 type metadataParam = {
   metadataId: string;
+};
+
+type indicatorParam = {
+  indicatorKey: string;
 };
