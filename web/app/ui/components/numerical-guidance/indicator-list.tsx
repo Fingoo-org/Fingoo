@@ -8,16 +8,18 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/hooks/use-selected-indi
 
 export default React.memo(function IndicatorList() {
   const { indicatorList } = useIndicatorList();
-  const { selectedMetadata, addIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
+  const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } = useSelectedIndicatorBoardMetadata();
 
   const render = ({ index, style, data }: ListChildComponentProps<IndicatorResponse[]>) => {
     const indicator = data[index];
     const isSelected = selectedMetadata?.indicators?.some((i) => i.ticker === indicator.ticker);
     const handleItemSelect = () => addIndicatorToMetadata(indicator);
+    const handleItemDeSelect = () => deleteIndicatorFromMetadata(indicator.ticker);
 
     return (
       <SelectableListItem
         onSelect={handleItemSelect}
+        onDeSelect={handleItemDeSelect}
         key={indicator.ticker}
         style={style}
         content={indicator.name}

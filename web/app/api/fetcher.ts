@@ -29,7 +29,7 @@ export const deleteFetcher = async (key: string | string[], { arg }: { arg: Dele
   const params = Array.isArray(arg) ? arg.join('/') : arg;
   const url = `${rootUrl}/${params}`;
   try {
-    await instance.post(url, arg);
+    await instance.delete(url);
   } catch (e) {
     throw e;
   }
