@@ -51,9 +51,12 @@ const initialState: MockDatabase = {
   ],
 };
 
-const mockDatabaseStore = {
-  ...initialState,
-};
+// mock이라 성능상의 문제가 필요 없음으로 사용
+function initStore(): MockDatabase {
+  return JSON.parse(JSON.stringify(initialState));
+}
+
+let mockDatabaseStore = initStore();
 
 export const mockDB: MockDatabaseAction = {
   getMetadataList: () => {
@@ -95,5 +98,5 @@ export const mockDB: MockDatabaseAction = {
 };
 
 export const resetMockDB = () => {
-  Object.assign(mockDatabaseStore, initialState);
+  mockDatabaseStore = initStore();
 };
