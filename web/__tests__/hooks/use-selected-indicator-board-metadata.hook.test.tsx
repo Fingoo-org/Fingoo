@@ -97,30 +97,67 @@ describe('useSelectedIndicatorBoardMetadata', () => {
     expect(result.current.selectedMetadata).toEqual(metadataList.current.metadataList?.[1]);
   });
 
-  it('메타데이터를 선택했을 때, 선택한 메타데이터에 지표를 추가하면, 메타데이터 값에 선택한 지표가 추가된다.', async () => {
-    // given
-    const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
-    const { result: indicatorList } = renderHook(() => useIndicatorList(), { wrapper });
-    const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
-    const { result: store } = renderHook(() => useNumericalGuidanceStore());
-    await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
-    await waitFor(() => expect(indicatorList.current.indicatorList).not.toBeUndefined());
-    act(() => {
-      if (metadataList.current.metadataList?.[0]) {
-        store.current.actions.selectMetadata(metadataList.current.metadataList?.[0].id);
-      }
-    });
-    await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+  describe('addIndicatorToMetadata', () => {
+    it('메타데이터를 선택했을 때, 선택한 메타데이터에 지표를 추가하면, 메타데이터 값에 선택한 지표가 추가된다.', async () => {
+      // given
+      const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
+      const { result: indicatorList } = renderHook(() => useIndicatorList(), { wrapper });
+      const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+      const { result: store } = renderHook(() => useNumericalGuidanceStore());
+      await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
+      await waitFor(() => expect(indicatorList.current.indicatorList).not.toBeUndefined());
+      act(() => {
+        if (metadataList.current.metadataList?.[0]) {
+          store.current.actions.selectMetadata(metadataList.current.metadataList?.[0].id);
+        }
+      });
+      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
-    // when
-    act(() => {
-      if (indicatorList.current.indicatorList?.[0]) {
-        result.current.addIndicatorToMetadata(indicatorList.current.indicatorList?.[0]);
-      }
-    });
-    await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+      // when
+      act(() => {
+        if (indicatorList.current.indicatorList?.[0]) {
+          result.current.addIndicatorToMetadata(indicatorList.current.indicatorList?.[0]);
+        }
+      });
+      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
-    // then
-    expect(result.current.selectedMetadata?.indicators).toEqual([indicatorList.current.indicatorList?.[0]]);
+      // then
+      expect(result.current.selectedMetadata?.indicators).toEqual([indicatorList.current.indicatorList?.[0]]);
+    });
+  });
+
+  describe('deleteIndicatorFromMetadata', () => {
+    it('메타데이터를 선택하고 선택한 메타데이터에 지표를 추가했을 때, 추가한 지표를 삭제하면, 메타데이터 값에 선택한 지표가 삭제된다.', async () => {
+      // given
+      const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
+      const { result: indicatorList } = renderHook(() => useIndicatorList(), { wrapper });
+      const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+      const { result: store } = renderHook(() => useNumericalGuidanceStore());
+      await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
+      await waitFor(() => expect(indicatorList.current.indicatorList).not.toBeUndefined());
+      act(() => {
+        if (metadataList.current.metadataList?.[0]) {
+          store.current.actions.selectMetadata(metadataList.current.metadataList?.[0].id);
+        }
+      });
+      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+      act(() => {
+        if (indicatorList.current.indicatorList?.[0]) {
+          result.current.addIndicatorToMetadata(indicatorList.current.indicatorList?.[0]);
+        }
+      });
+      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+
+      // when
+      act(() => {
+        if (indicatorList.current.indicatorList?.[0]) {
+          result.current.deleteIndicatorFromMetadata(indicatorList.current.indicatorList?.[0].ticker);
+        }
+      });
+      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+
+      // then
+      expect(result.current.selectedMetadata?.indicators).toEqual([]);
+    });
   });
 });
