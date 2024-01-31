@@ -7,12 +7,10 @@ import { IndicatorBoardMetaDataMapper } from './mapper/indicator-board-meta-data
 
 @Injectable()
 export class IndicatorBoardMetaDataPersistentAdapter implements CreateIndicatorBoardMetaDataPort {
-  async createIndicatorBoardMetaData(indicatorBoardMetaData: IndicatorBoardMetaData): Promise<void> {
-    const indicatorBoardMetaDataEntity: IndicatorBoardMetaDataEntity = IndicatorBoardMetaDataMapper.mapToEntity(
-      indicatorBoardMetaData.indicatorBoardMetaDataName,
-      indicatorBoardMetaData.indicatorIds,
-      indicatorBoardMetaData.memberId,
-    );
+  async createIndicatorBoardMetaData(indicatorBoardMetaData: IndicatorBoardMetaData): Promise<number> {
+    const indicatorBoardMetaDataEntity: IndicatorBoardMetaDataEntity =
+      IndicatorBoardMetaDataMapper.mapToEntity(indicatorBoardMetaData);
     await indicatorBoardMetaDataEntity.save();
+    return indicatorBoardMetaDataEntity.id;
   }
 }
