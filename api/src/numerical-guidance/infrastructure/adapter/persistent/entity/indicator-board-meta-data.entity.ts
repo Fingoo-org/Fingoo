@@ -14,4 +14,10 @@ export class IndicatorBoardMetaDataEntity extends BaseEntity {
 
   @ManyToOne(() => MemberEntity, { eager: false })
   member: Promise<MemberEntity>;
+
+  static findById(id: number) {
+    return this.createQueryBuilder('indicatorBoardMetaDataEntity')
+      .where('indicatorBoardMetaDataEntity.id = :id', { id })
+      .getOne();
+  }
 }
