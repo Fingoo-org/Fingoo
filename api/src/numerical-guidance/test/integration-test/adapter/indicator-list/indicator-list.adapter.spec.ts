@@ -3,8 +3,8 @@ import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 import { IndicatorListAdapter } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/indicator-list.adapter';
-import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/entity/indicator.entity';
 import { DockerComposeEnvironment } from 'testcontainers';
+import { DataSource } from 'typeorm';
 
 const testData = {
   indicatorList: [
@@ -27,6 +27,7 @@ const composeFileName = 'docker-compose-api.yml';
 
 describe('IndicatorListAdapter', () => {
   let environment;
+  let dataSource: DataSource;
   let indicatorListAdapter: IndicatorListAdapter;
 
   beforeAll(async () => {
@@ -47,7 +48,7 @@ describe('IndicatorListAdapter', () => {
             username: configService.get<string>('MYSQL_USER'),
             password: configService.get<string>('MYSQL_PASSWORD'),
             database: configService.get<string>('MYSQL_DATABASE'),
-            entities: [IndicatorEntity],
+            entities: ['src/**/**/*.entity.{ts,js}'],
             synchronize: false,
           }),
         }),
@@ -55,22 +56,27 @@ describe('IndicatorListAdapter', () => {
       providers: [IndicatorListAdapter],
     }).compile();
     indicatorListAdapter = module.get(IndicatorListAdapter);
+    dataSource = module.get<DataSource>(DataSource);
   }, 10000);
 
   afterAll(async () => {
     if (environment) {
       await environment.down();
+      dataSource.destroy();
     }
   });
 
-  it('지표 리스트 가져오기', async () => {
+  it('지표 리스트를 가져올 때 데이터가 올바른지 확인', async () => {
     // given
 
     // when
     const result: IndicatorListDto = await indicatorListAdapter.getIndicatorList();
+    const resultNum: number = result.indicatorList.length;
 
     // then
     const expected = testData;
+    const expectedNum: number = 2;
     expect(result).toEqual(expected);
+    expect(resultNum).toEqual(expectedNum);
   });
 });
