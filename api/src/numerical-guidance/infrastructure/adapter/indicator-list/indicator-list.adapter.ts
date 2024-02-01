@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LoadIndicatorListPort } from 'src/numerical-guidance/application/port/indicator-list/load-indicator-list.port';
-import {
-  IndicatorListDto,
-  IndicatorResponse,
-} from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
+import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 import { DataSource } from 'typeorm';
 import { IndicatorEntity } from './entity/indicator.entity';
 
@@ -17,17 +14,14 @@ export class IndicatorListAdapter implements LoadIndicatorListPort {
       .createQueryBuilder('indicator_entity')
       .getMany();
 
-    const indicators: IndicatorListDto = { indicatorList: [] };
+    const indicators = IndicatorListDto.create({ indicatorList: [] });
 
-    for (let i = 0; i < indicatorList.length; i++) {
-      const response: IndicatorResponse = {
-        id: indicatorList[i]['id'],
-        name: indicatorList[i]['name'],
-        ticker: indicatorList[i]['ticker'],
-        type: indicatorList[i]['type'],
-      };
-      indicators.indicatorList.push(response);
-    }
+    indicators.indicatorList = indicatorList.map((indicator) => ({
+      id: indicator['id'],
+      name: indicator['name'],
+      ticker: indicator['ticker'],
+      type: indicator['type'],
+    }));
 
     return new Promise((resolve) => {
       setTimeout(() => {
