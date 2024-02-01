@@ -35,14 +35,17 @@ export const deleteFetcher = async (key: string | string[], { arg }: { arg: Dele
   }
 };
 
-export const fetchIndicatorsValue = ([url, ...tickers]: string[]) => {
-  return Promise.all(
+export const fetchIndicatorsValue = async ([url, ...tickers]: string[]) => {
+  const indicatorsvalue = await Promise.all(
     tickers.map((ticker) =>
-      instance.get(url, {
-        params: {
-          ticker: ticker,
-        },
-      }),
+      instance
+        .get(url, {
+          params: {
+            ticker: ticker,
+          },
+        })
+        .then((res) => res.data),
     ),
-  ).then((res) => res.map((res) => res.data));
+  );
+  return { indicatorsValue: indicatorsvalue };
 };

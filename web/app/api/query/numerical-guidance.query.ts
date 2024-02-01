@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
-import { fetchIndicatorsValue, multiFetcher, paramFetcher } from '../fetcher';
+import { fetchIndicatorsValue, paramFetcher } from '../fetcher';
 
 // Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까?
 export type IndicatorResponse = {
@@ -34,7 +34,9 @@ export const useFetchMetadata = (metadataId: string | null) =>
   );
 
 // mock
-export type IndicatorsValueResponse = IndicatorValueResponse[];
+export type IndicatorsValueResponse = {
+  indicatorsValue: IndicatorValueResponse[];
+};
 
 export type IndicatorValueResponse = {
   ticker: string;
