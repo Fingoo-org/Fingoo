@@ -15,7 +15,7 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "infra": "docker compose -f docker-compose-api.yml up",
-    "test": "jest",
+    "test": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./src/database/seeds/dataSource.ts && jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -41,7 +41,8 @@
     "mysql2": "^3.7.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.19"
+    "typeorm": "^0.3.19",
+    "typeorm-extension": "^3.4.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
