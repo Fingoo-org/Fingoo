@@ -8,7 +8,7 @@ export const useIndicatorsValueViewModel = () => {
   const { data: indicatorsValueData } = useFetchIndicatorsValue(selectedMetadata?.indicators ?? []);
 
   const indciatorsValueViewModel = useMemo(() => {
-    if (!indicatorsValueData) return [];
+    if (!indicatorsValueData) return undefined;
 
     return convertIndicatorsValueViewModel(indicatorsValueData);
   }, [indicatorsValueData]);

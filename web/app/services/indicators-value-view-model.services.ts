@@ -24,9 +24,13 @@ class IndicatorValue {
 }
 
 export class IndicatorsValue {
-  readonly indicatorsValue: IndicatorValueResponse[];
+  readonly indicatorsValue: IndicatorValue[];
   constructor({ indicatorsValue }: IndicatorsValueResponse) {
     this.indicatorsValue = indicatorsValue.map((indicatorValue) => new IndicatorValue(indicatorValue));
+  }
+
+  get length() {
+    return this.indicatorsValue.length;
   }
 }
 
