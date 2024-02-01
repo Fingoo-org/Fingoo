@@ -23,6 +23,7 @@ export const SWRProviderWithoutCache = ({ children }: PropsWithChildren) => {
       <SWRConfig
         value={{
           provider: () => new Map(),
+          fetcher: defaultFetcher,
         }}
       >
         {children}

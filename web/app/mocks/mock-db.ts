@@ -1,11 +1,20 @@
 import { CreateIndicatorMetadataRequestBody } from '../api/command/numerical-guidance.command';
-import { IndicatorBoardMetadataListResponse } from '../api/query/numerical-guidance.query';
+import {
+  IndicatorBoardMetadataListResponse,
+  IndicatorBoardMetadataResponse,
+} from '../api/query/numerical-guidance.query';
+import { IndicatorListResponse } from '../api/query/numerical-guidance.query';
+import { AddIndicatorToMetadataRequestBody } from '../api/command/numerical-guidance.command';
 
-type MockDatabase = IndicatorBoardMetadataListResponse;
+type MockDatabase = IndicatorBoardMetadataListResponse & IndicatorListResponse;
 
 type MockDatabaseAction = {
   getMetadataList: () => IndicatorBoardMetadataListResponse;
   postMetadataList: (newMetadata: CreateIndicatorMetadataRequestBody) => void;
+  getIndicatorList: () => IndicatorListResponse;
+  getMetadata: (id: string) => IndicatorBoardMetadataResponse | undefined;
+  postIndicatorToMetadata: (id: string, data: AddIndicatorToMetadataRequestBody) => void;
+  deleteIndicatorFromMetadata: (id: string, indicatorKey: string) => void;
 };
 
 const initialState: MockDatabase = {
@@ -26,11 +35,28 @@ const initialState: MockDatabase = {
       indicators: [],
     },
   ],
+  indicatorList: [
+    {
+      ticker: 'AAPL',
+      name: 'Apple Inc.',
+    },
+    {
+      ticker: 'MSFT',
+      name: 'Microsoft Corporation',
+    },
+    {
+      ticker: 'GOOG',
+      name: 'Alphabet Inc.',
+    },
+  ],
 };
 
-const mockDatabaseStore = {
-  ...initialState,
-};
+// mock이라 성능상의 문제가 필요 없음으로 사용
+function initStore(): MockDatabase {
+  return JSON.parse(JSON.stringify(initialState));
+}
+
+let mockDatabaseStore = initStore();
 
 export const mockDB: MockDatabaseAction = {
   getMetadataList: () => {
@@ -41,8 +67,36 @@ export const mockDB: MockDatabaseAction = {
   postMetadataList: (newMetadata) => {
     mockDatabaseStore.metadataList = [...mockDatabaseStore.metadataList, newMetadata];
   },
+  getIndicatorList: () => {
+    return {
+      indicatorList: mockDatabaseStore.indicatorList,
+    };
+  },
+  getMetadata: (id) => {
+    return mockDatabaseStore.metadataList.find((metadata) => metadata.id === id);
+  },
+  postIndicatorToMetadata: (id, data) => {
+    const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
+    const newMetadata = {
+      ...mockDatabaseStore.metadataList[index],
+      indicators: [...mockDatabaseStore.metadataList[index].indicators, data],
+    };
+
+    mockDatabaseStore.metadataList[index] = newMetadata;
+  },
+  deleteIndicatorFromMetadata: (id, indicatorKey) => {
+    const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
+    const newMetadata = {
+      ...mockDatabaseStore.metadataList[index],
+      indicators: mockDatabaseStore.metadataList[index].indicators.filter(
+        (indicator) => indicator.ticker !== indicatorKey,
+      ),
+    };
+
+    mockDatabaseStore.metadataList[index] = newMetadata;
+  },
 };
 
 export const resetMockDB = () => {
-  Object.assign(mockDatabaseStore, initialState);
+  mockDatabaseStore = initStore();
 };

@@ -1,18 +1,28 @@
 import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
-import { Indicator } from '../type/numerical-guidance.type';
-import { updateFetcher } from '../fetcher';
+import { deleteFetcher, updateFetcher } from '../fetcher';
+
+export type IndicatorRequestBody = {
+  ticker: string;
+  name: string;
+};
 
 export type CreateIndicatorMetadataRequestBody = {
   id: string;
   name: string;
-  indicators: Indicator[];
+  indicators: IndicatorRequestBody[];
 };
 
-export const useCreateIndicatorMetadata = () => {
-  const { trigger, error } = useSWRMutation(API_PATH.metadataList, updateFetcher<CreateIndicatorMetadataRequestBody>);
-  return {
-    trigger,
-    mutationError: error,
-  };
+export const useCreateIndicatorMetadata = () =>
+  useSWRMutation(API_PATH.metadataList, updateFetcher<CreateIndicatorMetadataRequestBody>);
+
+export type AddIndicatorToMetadataRequestBody = {
+  ticker: string;
+  name: string;
 };
+
+export const useAddIndicatorToMetadata = (metadataId: string | null) =>
+  useSWRMutation(metadataId ? [API_PATH.metadata, metadataId] : null, updateFetcher<AddIndicatorToMetadataRequestBody>);
+
+export const useDeleteIndicatorFromMetadata = (metadataId: string | null) =>
+  useSWRMutation(metadataId ? [API_PATH.metadata, metadataId] : null, deleteFetcher);

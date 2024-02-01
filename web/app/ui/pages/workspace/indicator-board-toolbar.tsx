@@ -1,6 +1,7 @@
 'use client';
 import { Tab } from '@headlessui/react';
 import MetadataTabPanel from './metadata-tab-panel';
+import IndicatorTabPanel from './indicator-tab-panel';
 import { useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 
 function classNames(...classes: string[]) {
@@ -9,16 +10,18 @@ function classNames(...classes: string[]) {
 
 export default function IndicatorBoardToolbar() {
   const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
-
+  //disable={selectedMetadataId ? false : true}
   return (
-    <div className="h-full bg-red-800">
+    <div className=" bg-red-800">
       <Tab.Group>
         <Tab.List className="flex space-x-1   p-1">
-          <ToolbarTab disable={selectedMetadataId ? false : true} tabName="Tool Bar" />
+          <ToolbarTab tabName="Tool Bar" />
           <ToolbarTab tabName="Meta Data" />
         </Tab.List>
-        <Tab.Panels>
-          <Tab.Panel>Content 1</Tab.Panel>
+        <Tab.Panels className="md:h-96">
+          <Tab.Panel>
+            <IndicatorTabPanel />
+          </Tab.Panel>
           <Tab.Panel>
             <MetadataTabPanel />
           </Tab.Panel>

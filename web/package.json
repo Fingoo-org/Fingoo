@@ -18,10 +18,14 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@headlessui/tailwindcss": "^0.2.0",
+    "@heroicons/react": "^2.1.1",
+    "@types/react-window": "^1.8.8",
     "axios": "^1.6.7",
+    "clsx": "^2.1.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-window": "^1.8.10",
     "swr": "^2.2.4",
     "undici": "^5.28.2",
     "zustand": "^4.5.0"
