@@ -1,18 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetIndicatorListQuery } from './get-indicator-list.query';
-import { GetIndicatorListPort } from '../../port/indicator-list/get-indicator-list.port';
+import { LoadIndicatorListPort } from '../../port/indicator-list/load-indicator-list.port';
 import { IndicatorListDto } from './indicator-list.dto';
 
 @Injectable()
 @QueryHandler(GetIndicatorListQuery)
 export class GetIndicatorListQueryHandler implements IQueryHandler {
   constructor(
-    @Inject('GetIndicatorListPort')
-    private readonly getIndicatorListPort: GetIndicatorListPort,
+    @Inject('LoadIndicatorListPort')
+    private readonly loadIndicatorListPort: LoadIndicatorListPort,
   ) {}
 
   async execute(): Promise<IndicatorListDto> {
-    return await this.getIndicatorListPort.getIndicatorList();
+    return await this.loadIndicatorListPort.loadIndicatorList();
   }
 }

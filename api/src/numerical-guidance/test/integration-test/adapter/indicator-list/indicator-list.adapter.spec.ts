@@ -70,7 +70,7 @@ describe('IndicatorListAdapter', () => {
     // given
 
     // when
-    const result: IndicatorListDto = await indicatorListAdapter.getIndicatorList();
+    const result: IndicatorListDto = await indicatorListAdapter.loadIndicatorList();
     const resultNum: number = result.indicatorList.length;
 
     // then

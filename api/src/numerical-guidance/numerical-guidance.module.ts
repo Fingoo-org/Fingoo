@@ -37,7 +37,7 @@ import { IndicatorListAdapter } from './infrastructure/adapter/indicator-list/in
       useClass: FluctuatingIndicatorRedisAdapter,
     },
     {
-      provide: 'GetIndicatorListPort',
+      provide: 'LoadIndicatorListPort',
       useClass: IndicatorListAdapter,
     },
   ],

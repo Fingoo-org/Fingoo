@@ -27,9 +27,9 @@ describe('GetIndicatorListQueryHandler', () => {
       providers: [
         GetIndicatorListQueryHandler,
         {
-          provide: 'GetIndicatorListPort',
+          provide: 'LoadIndicatorListPort',
           useValue: {
-            getIndicatorList: jest.fn().mockImplementation(() => {
+            loadIndicatorList: jest.fn().mockImplementation(() => {
               const indicatorList = IndicatorListDto.create(testData);
               return indicatorList;
             }),
