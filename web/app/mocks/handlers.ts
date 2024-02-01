@@ -48,6 +48,19 @@ export const handlers = [
 
     return HttpResponse.json({ status: 200 });
   }),
+  http.get(API_PATH.indicatorValue, ({ request }) => {
+    const url = new URL(request.url);
+    const indicatorKey = url.searchParams.get('ticker');
+    if (indicatorKey === null) {
+      return HttpResponse.json(null, { status: 400 });
+    }
+    const indicatorValue = mockDB.getIndicatorValue(indicatorKey);
+    // Risk: 해당하는 값이 없을 때는? 에러 아니면 빈 객체?
+    if (!indicatorValue) {
+      return HttpResponse.json(null, { status: 400 });
+    }
+    return HttpResponse.json(indicatorValue);
+  }),
 ];
 
 type metadataParam = {

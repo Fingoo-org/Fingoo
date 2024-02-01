@@ -2,11 +2,14 @@ import { CreateIndicatorMetadataRequestBody } from '../api/command/numerical-gui
 import {
   IndicatorBoardMetadataListResponse,
   IndicatorBoardMetadataResponse,
+  IndicatorValueResponse,
+  IndicatorsValueResponse,
 } from '../api/query/numerical-guidance.query';
 import { IndicatorListResponse } from '../api/query/numerical-guidance.query';
 import { AddIndicatorToMetadataRequestBody } from '../api/command/numerical-guidance.command';
+import { indicatorsValueMockData } from './mock-data/indicators-value';
 
-type MockDatabase = IndicatorBoardMetadataListResponse & IndicatorListResponse;
+type MockDatabase = IndicatorBoardMetadataListResponse & IndicatorListResponse & IndicatorsValueResponse;
 
 type MockDatabaseAction = {
   getMetadataList: () => IndicatorBoardMetadataListResponse;
@@ -15,6 +18,7 @@ type MockDatabaseAction = {
   getMetadata: (id: string) => IndicatorBoardMetadataResponse | undefined;
   postIndicatorToMetadata: (id: string, data: AddIndicatorToMetadataRequestBody) => void;
   deleteIndicatorFromMetadata: (id: string, indicatorKey: string) => void;
+  getIndicatorValue: (ticker: string) => IndicatorValueResponse | undefined;
 };
 
 const initialState: MockDatabase = {
@@ -49,6 +53,7 @@ const initialState: MockDatabase = {
       name: 'Alphabet Inc.',
     },
   ],
+  indicatorsValue: indicatorsValueMockData,
 };
 
 // mock이라 성능상의 문제가 필요 없음으로 사용
@@ -94,6 +99,9 @@ export const mockDB: MockDatabaseAction = {
     };
 
     mockDatabaseStore.metadataList[index] = newMetadata;
+  },
+  getIndicatorValue: (ticker) => {
+    return mockDatabaseStore.indicatorsValue.find((indicator) => indicator.ticker === ticker);
   },
 };
 
