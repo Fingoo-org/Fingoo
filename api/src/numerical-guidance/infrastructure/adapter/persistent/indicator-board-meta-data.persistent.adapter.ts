@@ -9,7 +9,7 @@ import { IndicatorBoardMetaDataMapper } from './mapper/indicator-board-meta-data
 export class IndicatorBoardMetaDataPersistentAdapter implements CreateIndicatorBoardMetaDataPort {
   async createIndicatorBoardMetaData(indicatorBoardMetaData: IndicatorBoardMetaData): Promise<number> {
     const indicatorBoardMetaDataEntity: IndicatorBoardMetaDataEntity =
-      IndicatorBoardMetaDataMapper.mapToEntity(indicatorBoardMetaData);
+      IndicatorBoardMetaDataMapper.mapDomainToEntity(indicatorBoardMetaData);
     await indicatorBoardMetaDataEntity.save();
     return indicatorBoardMetaDataEntity.id;
   }
