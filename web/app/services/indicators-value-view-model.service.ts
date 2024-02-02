@@ -69,6 +69,10 @@ export class IndicatorsValue {
       };
     });
   }
+
+  get tickerList() {
+    return this.indicatorsValue.map((indicator) => indicator.ticker);
+  }
 }
 
 export const convertIndicatorsValueViewModel = (indicators: IndicatorsValueResponse) => {

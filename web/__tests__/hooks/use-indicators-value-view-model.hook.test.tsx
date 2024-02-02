@@ -18,10 +18,10 @@ describe('useIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { indicatorsValue } = useIndicatorsValueViewModel();
+        const { indciatorsValueViewModel } = useIndicatorsValueViewModel();
         const { selectedMetadata, addIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
         const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
-        return { indicatorsValue, selectedMetadata, addIndicatorToMetadata, selectMetadata };
+        return { indciatorsValueViewModel, selectedMetadata, addIndicatorToMetadata, selectMetadata };
       },
       { wrapper },
     );
@@ -34,21 +34,21 @@ describe('useIndicatorsValueViewModel', () => {
     act(() => {
       result.current.addIndicatorToMetadata(mockDB.getIndicatorList().indicatorList[0]);
     });
-    await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());
+    await waitFor(() => expect(result.current.indciatorsValueViewModel).not.toBeUndefined());
 
     // then
-    expect(result.current.indicatorsValue).toBeInstanceOf(IndicatorsValue);
-    expect(result.current.indicatorsValue?.length).toBe(1);
+    expect(result.current.indciatorsValueViewModel).toBeInstanceOf(IndicatorsValue);
+    expect(result.current.indciatorsValueViewModel?.length).toBe(1);
   });
 
   it('메타데이터를 선택했을 때, 지표를 여러개 선택하면, 선택한 지표들의 값을 가져온다.', async () => {
     // given
     const { result } = renderHook(
       () => {
-        const { indicatorsValue } = useIndicatorsValueViewModel();
+        const { indciatorsValueViewModel } = useIndicatorsValueViewModel();
         const { selectedMetadata, addIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
         const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
-        return { indicatorsValue, selectedMetadata, addIndicatorToMetadata, selectMetadata };
+        return { indciatorsValueViewModel, selectedMetadata, addIndicatorToMetadata, selectMetadata };
       },
       { wrapper },
     );
@@ -64,23 +64,23 @@ describe('useIndicatorsValueViewModel', () => {
     act(() => {
       result.current.addIndicatorToMetadata(mockDB.getIndicatorList().indicatorList[1]);
     });
-    await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());
+    await waitFor(() => expect(result.current.indciatorsValueViewModel).not.toBeUndefined());
 
     // then
-    expect(result.current.indicatorsValue).toBeInstanceOf(IndicatorsValue);
-    expect(result.current.indicatorsValue?.length).toBe(2);
+    expect(result.current.indciatorsValueViewModel).toBeInstanceOf(IndicatorsValue);
+    expect(result.current.indciatorsValueViewModel?.length).toBe(2);
   });
 
   it('메타데이터를 선택했을 때, 지표를 선택하고, 다시 선택한 지표를 삭제하면, 지표 값을 가져오지 않는다.', async () => {
     // given
     const { result } = renderHook(
       () => {
-        const { indicatorsValue } = useIndicatorsValueViewModel();
+        const { indciatorsValueViewModel } = useIndicatorsValueViewModel();
         const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } =
           useSelectedIndicatorBoardMetadata();
         const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
         return {
-          indicatorsValue,
+          indciatorsValueViewModel,
           selectedMetadata,
           addIndicatorToMetadata,
           deleteIndicatorFromMetadata,
@@ -98,13 +98,13 @@ describe('useIndicatorsValueViewModel', () => {
     act(() => {
       result.current.addIndicatorToMetadata(mockDB.getIndicatorList().indicatorList[0]);
     });
-    await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());
+    await waitFor(() => expect(result.current.indciatorsValueViewModel).not.toBeUndefined());
     act(() => {
       result.current.deleteIndicatorFromMetadata(mockDB.getIndicatorList().indicatorList[0].ticker);
     });
-    await waitFor(() => expect(result.current.indicatorsValue).toBeUndefined());
+    await waitFor(() => expect(result.current.indciatorsValueViewModel).toBeUndefined());
 
     // then
-    expect(result.current.indicatorsValue).toBeUndefined();
+    expect(result.current.indciatorsValueViewModel).toBeUndefined();
   });
 });

@@ -13,13 +13,14 @@ export const useIndicatorsValueViewModel = () => {
     return convertIndicatorsValueViewModel(indicatorsValueData);
   }, [indicatorsValueData]);
 
+  // 여기? 아니먄 컴포넌트?
   const formattedIndicatorsRows = useMemo(
     () => indciatorsValueViewModel?.formattedIndicatorsInRow,
     [indicatorsValueData],
   );
 
   return {
-    indicatorsValue: indciatorsValueViewModel,
+    indciatorsValueViewModel,
     formattedIndicatorsRows,
   };
 };

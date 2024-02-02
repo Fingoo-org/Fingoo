@@ -18,31 +18,31 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
       },
       {
         date: '2020-01-04',
-        value: 400,
+        value: 200,
       },
       {
         date: '2020-01-05',
-        value: 500,
+        value: 100,
       },
       {
         date: '2020-01-06',
-        value: 600,
+        value: 150,
       },
       {
         date: '2020-01-07',
-        value: 700,
+        value: 210,
       },
       {
         date: '2020-01-08',
-        value: 800,
+        value: 410,
       },
       {
         date: '2020-01-09',
-        value: 900,
+        value: 220,
       },
       {
         date: '2020-01-10',
-        value: 1000,
+        value: 110,
       },
     ],
   },
@@ -51,43 +51,43 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
     items: [
       {
         date: '2020-01-01',
-        value: 100,
+        value: 220,
       },
       {
         date: '2020-01-02',
-        value: 200,
-      },
-      {
-        date: '2020-01-03',
         value: 300,
       },
       {
+        date: '2020-01-03',
+        value: 120,
+      },
+      {
         date: '2020-01-04',
-        value: 400,
+        value: 220,
       },
       {
         date: '2020-01-05',
-        value: 500,
+        value: 333,
       },
       {
         date: '2020-01-06',
-        value: 600,
+        value: 444,
       },
       {
         date: '2020-01-07',
-        value: 700,
+        value: 555,
       },
       {
         date: '2020-01-08',
-        value: 800,
+        value: 333,
       },
       {
         date: '2020-01-09',
-        value: 900,
+        value: 112,
       },
       {
         date: '2020-01-10',
-        value: 1000,
+        value: 552,
       },
     ],
   },
@@ -96,11 +96,11 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
     items: [
       {
         date: '2020-01-01',
-        value: 100,
+        value: 321,
       },
       {
         date: '2020-01-02',
-        value: 200,
+        value: 221,
       },
     ],
   },
