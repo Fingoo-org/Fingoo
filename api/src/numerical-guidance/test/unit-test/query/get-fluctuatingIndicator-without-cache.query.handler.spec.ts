@@ -7,7 +7,7 @@ import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.te
 const testData = fluctuatingIndicatorTestData;
 
 describe('FluctucatingIndicatorKrxAdapter', () => {
-  let getFluctuatingIndicatorsWithoutCacheQueryHandler: GetFluctuatingIndicatorWithoutCacheQueryHandler;
+  let getFluctuatingIndicatorWithoutCacheQueryHandler: GetFluctuatingIndicatorWithoutCacheQueryHandler;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -24,7 +24,7 @@ describe('FluctucatingIndicatorKrxAdapter', () => {
         },
       ],
     }).compile();
-    getFluctuatingIndicatorsWithoutCacheQueryHandler = module.get(GetFluctuatingIndicatorWithoutCacheQueryHandler);
+    getFluctuatingIndicatorWithoutCacheQueryHandler = module.get(GetFluctuatingIndicatorWithoutCacheQueryHandler);
   });
 
   it('외부에서 변동 지표 데이터롤 가져온다', async () => {
@@ -32,7 +32,7 @@ describe('FluctucatingIndicatorKrxAdapter', () => {
     const testQuery = new GetFluctuatingIndicatorWithoutCacheQuery(5, '005930', 'day', 'KOSPI', '20240125');
 
     // when
-    const result = await getFluctuatingIndicatorsWithoutCacheQueryHandler.execute(testQuery);
+    const result = await getFluctuatingIndicatorWithoutCacheQueryHandler.execute(testQuery);
 
     // then
     const expected = FluctuatingIndicatorDto.create(testData);
