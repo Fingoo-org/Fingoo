@@ -1,85 +1,94 @@
-import { HttpModule } from '@nestjs/axios';
-import { ConfigModule } from '@nestjs/config';
-import { Test } from '@nestjs/testing';
-import { FluctuatingIndicatorsDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import {
+  FluctuatingIndicatorsDto,
+  Item,
+} from 'src/numerical-guidance/application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
 import { FluctuatingIndicatorKrxAdapter } from 'src/numerical-guidance/infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
+import * as fs from 'fs';
 
 describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
-  let fluctuatingIndicatorKrxAdapter: FluctuatingIndicatorKrxAdapter;
+  beforeEach(async () => {});
 
-  beforeEach(async () => {
-    const module = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot(),
-        HttpModule.registerAsync({
-          useFactory: () => ({
-            timeout: 10000,
-            maxRedirects: 5,
-          }),
-        }),
-      ],
-      providers: [FluctuatingIndicatorKrxAdapter],
-    }).compile();
-    fluctuatingIndicatorKrxAdapter = module.get(FluctuatingIndicatorKrxAdapter);
-  });
-
-  it('간격을 일주일로 입력할 경우, 올바른 데이터를 가져오는지 확인하기', async () => {
+  it('interval을 week로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
     // given
 
     // when
-    const ResponseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
-      30,
-      '005930',
-      'week',
-      'KOSPI',
-      '20240125',
-    );
+    const filePath =
+      '/Users/yun-yeongheon/Econo-AI/api/src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
 
-    const expected: string[] = ['74766.67', '72780.00', '74220.00', '77450.00', '77700.00', '74400.00', '73140.00'];
+    const data = fs.readFileSync(filePath, 'utf8');
+    const jsonData = JSON.parse(data);
+
+    const testData = FluctuatingIndicatorsDto.create(jsonData);
+
+    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateWeeklyAverage(testData).items.item;
+
+    const weeklyAverages = result.map((item) => item['weeklyAverage']);
 
     // then
-    for (let i = 0; i < ResponseData.items.item.length; i++) {
-      expect(ResponseData.items.item[i]['weeklyAverage']).toEqual(expected[i]);
-    }
+    const expected: string[] = [
+      '74766.67',
+      '72780.00',
+      '74220.00',
+      '77450.00',
+      '77700.00',
+      '74400.00',
+      '73140.00',
+      '71920.00',
+      '72300.00',
+      '72480.00',
+      '71740.00',
+      '70500.00',
+      '68420.00',
+      '67780.00',
+      '69100.00',
+      '67875.00',
+      '66733.33',
+      '68800.00',
+      '69460.00',
+      '71180.00',
+      '70520.00',
+      '67720.00',
+    ];
+
+    expect(weeklyAverages).toEqual(expected);
   });
 
-  it('간격을 한달로 설정할 경우, 올바른 데이터를 가져오는지 확인하기', async () => {
+  it('interval을 month로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
     // given
 
     // when
-    const ResponseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
-      100,
-      '005930',
-      'month',
-      'KOSPI',
-      '20240125',
-    );
+    const filePath =
+      '/Users/yun-yeongheon/Econo-AI/api/src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
 
+    const data = fs.readFileSync(filePath, 'utf8');
+    const jsonData = JSON.parse(data);
+
+    const testData = FluctuatingIndicatorsDto.create(jsonData);
+
+    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateMonthlyAverage(testData).items.item;
+
+    const monthlyAverages = result.map((item) => item['monthlyAverage']);
+    // then
     const expected: string[] = ['74652.94', '73810.53', '71409.09', '67910.53', '70168.42', '66900.00'];
-
-    // then
-    for (let i = 0; i < ResponseData.items.item.length; i++) {
-      expect(ResponseData.items.item[i]['monthlyAverage']).toEqual(expected[i]);
-    }
+    expect(monthlyAverages).toEqual(expected);
   });
 
-  it('간격을 일년으로 설정할 경우, 올바른 데이터를 가져오는지 확인하기', async () => {
-    // given
+  it('interval을 year로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
+    //given
 
-    // when
-    const ResponseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
-      500,
-      '005930',
-      'year',
-      'KOSPI',
-      '20240125',
-    );
+    //when
+    const filePath =
+      '/Users/yun-yeongheon/Econo-AI/api/src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
 
-    const expected: string[] = ['74652.94', '67457.14', '63455.46'];
+    const data = fs.readFileSync(filePath, 'utf8');
+    const jsonData = JSON.parse(data);
 
+    const testData = FluctuatingIndicatorsDto.create(jsonData);
+    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateYearlyAverage(testData).items.item;
+
+    const yearlyAverages = result.map((item) => item['yearlyAverages']);
     // then
-    for (let i = 0; i < ResponseData.items.item.length; i++) {
-      expect(ResponseData.items.item[i]['yearlyAverages']).toEqual(expected[i]);
-    }
+    const expected: string[] = ['74652.94', '70656.63'];
+    expect(yearlyAverages).toEqual(expected);
   });
 });

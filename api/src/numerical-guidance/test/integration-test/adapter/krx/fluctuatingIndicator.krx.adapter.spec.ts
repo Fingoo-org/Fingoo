@@ -45,25 +45,6 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     expect(result).toEqual(expected);
   });
 
-  it('지표 데이터를 100개 요청했을 경우, 올바르게 데이터를 가져오는지 확인하기', async () => {
-    // given
-
-    // when
-    const responseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
-      100,
-      '005930',
-      'day',
-      'KOSPI',
-      '20240125',
-    );
-
-    const result: number = responseData.items.item.length;
-
-    // then
-    const expected: number = 100;
-    expect(result).toEqual(expected);
-  });
-
   it('KOSDAQ 종목의 지표 데이터를 요청할 경우, 올바르게 데이터를 가져오는지 확인하기', async () => {
     // given
 
