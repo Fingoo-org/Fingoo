@@ -1,13 +1,15 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
 import { fetchIndicatorsValue } from '../fetcher';
-import { IndicatorResponse } from '../numerical-guidance/indicator-board-metadata.query';
 
-export type IndicatorListResponse = {
-  indicatorList: IndicatorResponse[];
+export type IndicatorInfoResponse = {
+  ticker: string;
+  name: string;
 };
 
-export const useFetchIndicatorList = () => useSWR<IndicatorListResponse>(API_PATH.indicatorList);
+export type IndicatorListResponse = {
+  indicatorList: IndicatorInfoResponse[];
+};
 
 export type IndicatorsValueResponse = {
   indicatorsValue: IndicatorValueResponse[];
@@ -23,7 +25,9 @@ export type IndicatorValueItemResponse = {
   value: number;
 };
 
-export const useFetchIndicatorsValue = (indicators: IndicatorResponse[]) => {
+export const useFetchIndicatorList = () => useSWR<IndicatorListResponse>(API_PATH.indicatorList);
+
+export const useFetchIndicatorsValue = (indicators: IndicatorInfoResponse[]) => {
   const tickers = indicators.map((indicator) => indicator.ticker);
   const key = [API_PATH.indicatorValue, ...tickers];
 

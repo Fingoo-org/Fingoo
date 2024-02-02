@@ -3,7 +3,7 @@ import { API_PATH } from '../api-path';
 import { deleteFetcher, paramFetcher, updateFetcher } from '../fetcher';
 import useSWRMutation from 'swr/mutation';
 
-// Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까?
+// Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까? (2/2) 분리 했음
 export type IndicatorResponse = {
   ticker: string;
   name: string;
