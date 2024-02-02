@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
-import { FluctuatingIndicatorsDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
-import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
-import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators-without-cache/get-fluctuatingIndicator-without-cache.query';
+import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
+import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query';
 import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';
 
 const testData = fluctuatingIndicatorTestData;
@@ -17,7 +17,7 @@ describe('FluctucatingIndicatorKrxAdapter', () => {
           provide: 'LoadFluctuatingIndicatorPort',
           useValue: {
             loadFluctuatingIndicator: jest.fn().mockImplementation(() => {
-              const apiData = FluctuatingIndicatorsDto.create(testData);
+              const apiData = FluctuatingIndicatorDto.create(testData);
               return apiData;
             }),
           },
@@ -35,7 +35,7 @@ describe('FluctucatingIndicatorKrxAdapter', () => {
     const result = await getFluctuatingIndicatorsWithoutCacheQueryHandler.execute(testQuery);
 
     // then
-    const expected = FluctuatingIndicatorsDto.create(testData);
+    const expected = FluctuatingIndicatorDto.create(testData);
     expect(result).toEqual(expected);
   });
 });

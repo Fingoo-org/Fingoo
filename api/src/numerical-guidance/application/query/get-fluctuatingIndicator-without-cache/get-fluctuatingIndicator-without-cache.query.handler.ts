@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject, Injectable } from '@nestjs/common';
 import { LoadFluctuatingIndicatorPort } from '../../port/external/load-fluctuatingIndicator.port';
 import { GetFluctuatingIndicatorWithoutCacheQuery } from './get-fluctuatingIndicator-without-cache.query';
-import { FluctuatingIndicatorsDto } from '../get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { FluctuatingIndicatorDto } from '../get-fluctuatingIndicator/fluctuatingIndicator.dto';
 
 @Injectable()
 @QueryHandler(GetFluctuatingIndicatorWithoutCacheQuery)
@@ -14,7 +14,7 @@ export class GetFluctuatingIndicatorWithoutCacheQueryHandler implements IQueryHa
 
   async execute(
     getFluctuatingIndicatorWithoutCacheQuery: GetFluctuatingIndicatorWithoutCacheQuery,
-  ): Promise<FluctuatingIndicatorsDto> {
+  ): Promise<FluctuatingIndicatorDto> {
     const { dataCount, ticker, interval, market, endDate } = getFluctuatingIndicatorWithoutCacheQuery;
 
     return await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(

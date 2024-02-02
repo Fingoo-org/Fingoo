@@ -1,19 +1,19 @@
 import { Test } from '@nestjs/testing';
-import { GetFluctuatingIndicatorsQueryHandler } from '../../../application/query/get-fluctuatingIndicators/get-fluctuatingIndicators.query.handler';
-import { GetFluctuatingIndicatorsQuery } from '../../../application/query/get-fluctuatingIndicators/get-fluctuatingIndicators.query';
+import { GetFluctuatingIndicatorQueryHandler } from '../../../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query.handler';
+import { GetFluctuatingIndicatorQuery } from '../../../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
 import { CachingFluctuatingIndicatorPort } from '../../../application/port/cache/caching-fluctuatingIndicator.port';
 import { LoadCachedFluctuatingIndicatorPort } from '../../../application/port/cache/load-cached-fluctuatingIndicator.port';
 import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';
 import { LoadFluctuatingIndicatorPort } from '../../../application/port/external/load-fluctuatingIndicator.port';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
-import { FluctuatingIndicatorsDto } from '../../../application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 
 const testData = fluctuatingIndicatorTestData;
 const testRedis = new Map<string, string>();
 
-describe('GetFluctuatingIndicatorsQueryHandler', () => {
-  let getFluctuatingIndicatorsQueryHandler: GetFluctuatingIndicatorsQueryHandler;
+describe('GetfluctuatingIndicatorQueryHandler', () => {
+  let getfluctuatingIndicatorQueryHandler: GetFluctuatingIndicatorQueryHandler;
   let loadCachedFluctuatingIndicatorPort: LoadCachedFluctuatingIndicatorPort;
   let loadFluctuatingIndicatorPort: LoadFluctuatingIndicatorPort;
   let cachingFluctuatingIndicatorPort: CachingFluctuatingIndicatorPort;
@@ -22,7 +22,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
     const module = await Test.createTestingModule({
       imports: [CqrsModule, ConfigModule.forRoot()],
       providers: [
-        GetFluctuatingIndicatorsQueryHandler,
+        GetFluctuatingIndicatorQueryHandler,
         {
           provide: 'LoadCachedFluctuatingIndicatorPort',
           useValue: {
@@ -35,7 +35,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
           provide: 'LoadFluctuatingIndicatorPort',
           useValue: {
             loadFluctuatingIndicator: jest.fn().mockImplementation(() => {
-              return FluctuatingIndicatorsDto.create(testData);
+              return FluctuatingIndicatorDto.create(testData);
             }),
           },
         },
@@ -50,7 +50,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
       ],
     }).compile();
 
-    getFluctuatingIndicatorsQueryHandler = module.get(GetFluctuatingIndicatorsQueryHandler);
+    getfluctuatingIndicatorQueryHandler = module.get(GetFluctuatingIndicatorQueryHandler);
     loadCachedFluctuatingIndicatorPort = module.get('LoadCachedFluctuatingIndicatorPort');
     loadFluctuatingIndicatorPort = module.get('LoadFluctuatingIndicatorPort');
     cachingFluctuatingIndicatorPort = module.get('CachingFluctuatingIndicatorPort');
@@ -58,7 +58,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
 
   it('변동지표를 불러온다.', async () => {
     //given
-    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(
+    const getfluctuatingIndicatorQuery: GetFluctuatingIndicatorQuery = new GetFluctuatingIndicatorQuery(
       5,
       '005930',
       'KOSPI',
@@ -67,7 +67,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
     );
 
     //when
-    await getFluctuatingIndicatorsQueryHandler.execute(getFluctuatingIndicatorsQuery);
+    await getfluctuatingIndicatorQueryHandler.execute(getfluctuatingIndicatorQuery);
 
     //then
     expect(loadFluctuatingIndicatorPort.loadFluctuatingIndicator).toHaveBeenCalledTimes(1);
@@ -76,7 +76,7 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
 
   it('변동지표가 redis에서 불러와진다.', async () => {
     //given
-    const getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery = new GetFluctuatingIndicatorsQuery(
+    const getfluctuatingIndicatorQuery: GetFluctuatingIndicatorQuery = new GetFluctuatingIndicatorQuery(
       5,
       '005931',
       'KOSPI',
@@ -85,8 +85,8 @@ describe('GetFluctuatingIndicatorsQueryHandler', () => {
     );
 
     //when
-    await getFluctuatingIndicatorsQueryHandler.execute(getFluctuatingIndicatorsQuery);
-    await getFluctuatingIndicatorsQueryHandler.execute(getFluctuatingIndicatorsQuery);
+    await getfluctuatingIndicatorQueryHandler.execute(getfluctuatingIndicatorQuery);
+    await getfluctuatingIndicatorQueryHandler.execute(getfluctuatingIndicatorQuery);
 
     //then
     expect(loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator).toHaveBeenCalledTimes(2);

@@ -1,7 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { FluctuatingIndicatorsDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { FluctuatingIndicatorKrxAdapter } from 'src/numerical-guidance/infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
 import { fluctuatingIndicatorTestData } from 'src/numerical-guidance/test/data/fluctuatingIndicator.test.data';
 
@@ -30,7 +30,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     // given
 
     // when
-    const responseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
+    const responseData: FluctuatingIndicatorDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
       5,
       '005930',
       'day',
@@ -41,7 +41,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     const result: string = responseData.items.item[0]['srtnCd'];
 
     // then
-    const expected: string = FluctuatingIndicatorsDto.create(testData).items.item[0]['srtnCd'];
+    const expected: string = FluctuatingIndicatorDto.create(testData).items.item[0]['srtnCd'];
     expect(result).toEqual(expected);
   });
 
@@ -49,7 +49,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     // given
 
     // when
-    const responseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
+    const responseData: FluctuatingIndicatorDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
       100,
       '005930',
       'day',
@@ -68,7 +68,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     // given
 
     // when
-    const responseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
+    const responseData: FluctuatingIndicatorDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
       7,
       '900110',
       'day',
@@ -87,7 +87,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     // given
 
     // when
-    const ResponseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
+    const ResponseData: FluctuatingIndicatorDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
       30,
       '005930',
       'week',
@@ -107,7 +107,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     // given
 
     // when
-    const ResponseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
+    const ResponseData: FluctuatingIndicatorDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
       100,
       '005930',
       'month',
@@ -127,7 +127,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     // given
 
     // when
-    const ResponseData: FluctuatingIndicatorsDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
+    const ResponseData: FluctuatingIndicatorDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
       500,
       '005930',
       'year',

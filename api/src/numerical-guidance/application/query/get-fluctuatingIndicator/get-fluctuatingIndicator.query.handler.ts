@@ -1,15 +1,15 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { GetFluctuatingIndicatorsQuery } from './get-fluctuatingIndicators.query';
-import { FluctuatingIndicatorsDto } from './fluctuatingIndicators.dto';
+import { GetFluctuatingIndicatorQuery } from './get-fluctuatingIndicator.query';
+import { FluctuatingIndicatorDto } from './fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from '../../port/external/load-fluctuatingIndicator.port';
 import { LoadCachedFluctuatingIndicatorPort } from '../../port/cache/load-cached-fluctuatingIndicator.port';
 import { CachingFluctuatingIndicatorPort } from '../../port/cache/caching-fluctuatingIndicator.port';
 
 @Injectable()
-@QueryHandler(GetFluctuatingIndicatorsQuery)
-export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
-  private readonly logger = new Logger(GetFluctuatingIndicatorsQueryHandler.name);
+@QueryHandler(GetFluctuatingIndicatorQuery)
+export class GetFluctuatingIndicatorQueryHandler implements IQueryHandler {
+  private readonly logger = new Logger(GetFluctuatingIndicatorQueryHandler.name);
   constructor(
     @Inject('LoadFluctuatingIndicatorPort')
     private readonly loadFluctuatingIndicatorPort: LoadFluctuatingIndicatorPort,
@@ -19,30 +19,30 @@ export class GetFluctuatingIndicatorsQueryHandler implements IQueryHandler {
     private readonly cachingFluctuatingIndicatorPort: CachingFluctuatingIndicatorPort,
   ) {}
 
-  async execute(getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorsQuery): Promise<FluctuatingIndicatorsDto> {
+  async execute(getFluctuatingIndicatorsQuery: GetFluctuatingIndicatorQuery): Promise<FluctuatingIndicatorDto> {
     const { dataCount, ticker, market, interval, endDate } = getFluctuatingIndicatorsQuery;
 
     const key = this.createFluctuatingIndicatorKey(ticker, interval);
 
-    let fluctuatingIndicatorsDto: FluctuatingIndicatorsDto =
+    let fluctuatingIndicatorDto: FluctuatingIndicatorDto =
       await this.loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator(key);
 
-    if (this.isNotCached(fluctuatingIndicatorsDto)) {
-      fluctuatingIndicatorsDto = await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(
+    if (this.isNotCached(fluctuatingIndicatorDto)) {
+      fluctuatingIndicatorDto = await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(
         dataCount,
         ticker,
         interval,
         market,
         endDate,
       );
-      await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(key, fluctuatingIndicatorsDto);
+      await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(key, fluctuatingIndicatorDto);
       this.logger.log('KRX 호출');
     }
-    return fluctuatingIndicatorsDto;
+    return fluctuatingIndicatorDto;
   }
 
-  private isNotCached(fluctuatingIndicatorsDto: FluctuatingIndicatorsDto): boolean {
-    return fluctuatingIndicatorsDto == null;
+  private isNotCached(fluctuatingIndicatorDto: FluctuatingIndicatorDto): boolean {
+    return fluctuatingIndicatorDto == null;
   }
 
   private createFluctuatingIndicatorKey(ticker: string, interval: string) {
