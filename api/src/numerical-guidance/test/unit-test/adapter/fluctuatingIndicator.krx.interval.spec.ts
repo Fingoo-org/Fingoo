@@ -1,7 +1,7 @@
 import {
-  FluctuatingIndicatorsDto,
+  FluctuatingIndicatorDto,
   Item,
-} from 'src/numerical-guidance/application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+} from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { FluctuatingIndicatorKrxAdapter } from 'src/numerical-guidance/infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
 import * as fs from 'fs';
 
@@ -12,13 +12,12 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
     // given
 
     // when
-    const filePath =
-      '/Users/yun-yeongheon/Econo-AI/api/src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
+    const filePath = './src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
 
     const data = fs.readFileSync(filePath, 'utf8');
     const jsonData = JSON.parse(data);
 
-    const testData = FluctuatingIndicatorsDto.create(jsonData);
+    const testData = FluctuatingIndicatorDto.create(jsonData);
 
     const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateWeeklyAverage(testData).items.item;
 
@@ -57,13 +56,12 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
     // given
 
     // when
-    const filePath =
-      '/Users/yun-yeongheon/Econo-AI/api/src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
+    const filePath = './src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
 
     const data = fs.readFileSync(filePath, 'utf8');
     const jsonData = JSON.parse(data);
 
-    const testData = FluctuatingIndicatorsDto.create(jsonData);
+    const testData = FluctuatingIndicatorDto.create(jsonData);
 
     const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateMonthlyAverage(testData).items.item;
 
@@ -77,13 +75,12 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
     //given
 
     //when
-    const filePath =
-      '/Users/yun-yeongheon/Econo-AI/api/src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
+    const filePath = './src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
 
     const data = fs.readFileSync(filePath, 'utf8');
     const jsonData = JSON.parse(data);
 
-    const testData = FluctuatingIndicatorsDto.create(jsonData);
+    const testData = FluctuatingIndicatorDto.create(jsonData);
     const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateYearlyAverage(testData).items.item;
 
     const yearlyAverages = result.map((item) => item['yearlyAverages']);
