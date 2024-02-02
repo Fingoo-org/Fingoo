@@ -28,7 +28,7 @@ describe('CreateIndicatorBoardMetaDataCommandHandler', () => {
     createIndicatorBoardMetaDataPort = module.get('CreateIndicatorBoardMetaDataPort');
   }, 10000);
 
-  it('변동지표를 불러온다.', async () => {
+  it('지표보드 메타데이터를 생성한다.', async () => {
     //given
     const command: CreateIndicatorBoardMetaDataCommand = new CreateIndicatorBoardMetaDataCommand(
       '메타데이터',

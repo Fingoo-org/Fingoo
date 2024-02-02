@@ -105,7 +105,7 @@ describe('NumericalGuidanceController', () => {
       .post('/numerical-guidance/indicatorBoardMetaData')
       .send({
         indicatorBoardMetaDataName: '메타데이터',
-        indicatorIds: {},
+        indicatorIds: { key1: ['1', '2', '3', '4', '5', '6'] },
         memberId: 1,
       })
       .set('Content-Type', 'application/json')
