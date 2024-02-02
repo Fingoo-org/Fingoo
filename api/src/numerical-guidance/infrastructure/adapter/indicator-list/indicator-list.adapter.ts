@@ -23,10 +23,6 @@ export class IndicatorListAdapter implements LoadIndicatorListPort {
       type: indicator['type'],
     }));
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(indicators);
-      }, 2000);
-    });
+    return indicators;
   }
 }
