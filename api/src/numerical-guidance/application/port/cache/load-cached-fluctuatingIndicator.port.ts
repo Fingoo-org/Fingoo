@@ -1,5 +1,5 @@
-import { FluctuatingIndicatorsDto } from '../../query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { FluctuatingIndicatorDto } from '../../query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 
 export interface LoadCachedFluctuatingIndicatorPort {
-  loadCachedFluctuatingIndicator(ticker: string): Promise<FluctuatingIndicatorsDto | null>;
+  loadCachedFluctuatingIndicator(ticker: string): Promise<FluctuatingIndicatorDto | null>;
 }

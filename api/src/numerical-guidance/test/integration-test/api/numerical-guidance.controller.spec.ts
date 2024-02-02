@@ -3,9 +3,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { NumericalGuidanceController } from '../../../infrastructure/api/numerical-guidance.controller';
-import { GetFluctuatingIndicatorsQueryHandler } from '../../../application/query/get-fluctuatingIndicators/get-fluctuatingIndicators.query.handler';
-import { FluctuatingIndicatorsDto } from '../../../application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { GetFluctuatingIndicatorQueryHandler } from '../../../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query.handler';
+import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';
+import { CreateIndicatorBoardMetaDataCommandHandler } from '../../../application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command.handler';
 
 const testData = fluctuatingIndicatorTestData;
 
@@ -13,39 +14,48 @@ describe('NumericalGuidanceController', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    const module = await Test.createTestingModule({
-      imports: [CqrsModule],
-      controllers: [NumericalGuidanceController],
-      providers: [
-        GetFluctuatingIndicatorsQueryHandler,
-        {
-          provide: 'LoadCachedFluctuatingIndicatorPort',
-          useValue: {
-            loadCachedFluctuatingIndicator: jest.fn().mockImplementation(() => {
-              return FluctuatingIndicatorsDto.create(testData);
-            }),
+    const [module] = await Promise.all([
+      Test.createTestingModule({
+        imports: [CqrsModule],
+        controllers: [NumericalGuidanceController],
+        providers: [
+          GetFluctuatingIndicatorQueryHandler,
+          CreateIndicatorBoardMetaDataCommandHandler,
+          {
+            provide: 'LoadCachedFluctuatingIndicatorPort',
+            useValue: {
+              loadCachedFluctuatingIndicator: jest.fn().mockImplementation(() => {
+                return FluctuatingIndicatorDto.create(testData);
+              }),
+            },
           },
-        },
-        {
-          provide: 'LoadFluctuatingIndicatorPort',
-          useValue: {
-            loadFluctuatingIndicator: jest.fn().mockImplementation(() => {
-              return FluctuatingIndicatorsDto.create(testData);
-            }),
+          {
+            provide: 'LoadFluctuatingIndicatorPort',
+            useValue: {
+              loadFluctuatingIndicator: jest.fn().mockImplementation(() => {
+                return FluctuatingIndicatorDto.create(testData);
+              }),
+            },
           },
-        },
-        {
-          provide: 'CachingFluctuatingIndicatorPort',
-          useValue: {
-            cachingFluctuatingIndicator: jest.fn(),
+          {
+            provide: 'CachingFluctuatingIndicatorPort',
+            useValue: {
+              cachingFluctuatingIndicator: jest.fn(),
+            },
           },
-        },
-      ],
-    }).compile();
+          {
+            provide: 'CreateIndicatorBoardMetaDataPort',
+            useValue: {
+              createIndicatorBoardMetaData: jest.fn(),
+            },
+          },
+        ],
+      }).compile(),
+    ]);
     app = module.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
-  });
+  }, 30000);
 
   afterAll(async () => {
     await app.close();
@@ -73,6 +83,30 @@ describe('NumericalGuidanceController', () => {
         ticker: '005930',
         market: 2,
         endDate: '20240125',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/post 지표보드 메타데이터를 생성한다.', () => {
+    return request(app.getHttpServer())
+      .post('/numerical-guidance/indicatorBoardMetaData')
+      .send({
+        indicatorBoardMetaDataName: '메타데이터',
+        indicatorIds: { key1: ['1', '2', '3'] },
+        memberId: 1,
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.CREATED);
+  });
+
+  it('지표보드 메타데이터를 생성할 때 사용자가 유효하지 않는 값 전송한다.', () => {
+    return request(app.getHttpServer())
+      .post('/numerical-guidance/indicatorBoardMetaData')
+      .send({
+        indicatorBoardMetaDataName: '메타데이터',
+        indicatorIds: { key1: ['1', '2', '3', '4', '5', '6'] },
+        memberId: 1,
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);

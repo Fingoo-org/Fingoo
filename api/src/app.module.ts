@@ -10,6 +10,7 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 import { MyRedisModule } from './redis/redis.module';
 import { NumericalGuidanceModule } from './numerical-guidance/numerical-guidance.module';
 import { RedisConfigService } from './config/redis.config.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { RedisConfigService } from './config/redis.config.service';
     CommunityModule,
     MyRedisModule,
     NumericalGuidanceModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

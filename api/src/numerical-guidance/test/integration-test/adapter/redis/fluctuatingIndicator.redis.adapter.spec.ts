@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { FluctuatingIndicatorsDto } from '../../../../application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { FluctuatingIndicatorDto } from '../../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { FluctuatingIndicatorRedisAdapter } from '../../../../infrastructure/adapter/redis/fluctuatingIndicator.redis.adapter';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { fluctuatingIndicatorTestData } from '../../../data/fluctuatingIndicator.test.data';
@@ -51,21 +51,21 @@ describe('FluctuatingIndicatorRedisAdapter', () => {
 
   it('redis에서 캐시된 값을 불러오는 경우.', async () => {
     //given
-    const testCachingData = FluctuatingIndicatorsDto.create(testData);
+    const testCachingData = FluctuatingIndicatorDto.create(testData);
     await fluctuatingIndicatorRedisAdapter.cachingFluctuatingIndicator('testTicker', testCachingData);
 
     //when
     const result = await fluctuatingIndicatorRedisAdapter.loadCachedFluctuatingIndicator('testTicker');
 
     //then
-    const expected = FluctuatingIndicatorsDto.create(testData);
+    const expected = FluctuatingIndicatorDto.create(testData);
 
     expect(result).toEqual(expected);
   });
 
   it('redis에 캐시된 값이 없을 경우.', async () => {
     //given
-    const testCachingData = FluctuatingIndicatorsDto.create(testData);
+    const testCachingData = FluctuatingIndicatorDto.create(testData);
     await fluctuatingIndicatorRedisAdapter.cachingFluctuatingIndicator('testTicker', testCachingData);
 
     //when
