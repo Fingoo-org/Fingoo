@@ -5,11 +5,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetaData } from '../../../../domain/indicator-board-meta-data';
 import { IndicatorBoardMetaDataEntity } from '../../../../infrastructure/adapter/persistent/entity/indicator-board-meta-data.entity';
 import { MemberEntity } from '../../../../../auth/member.entity';
+import { DockerComposeEnvironment } from 'testcontainers';
+
+const composeFilePath = '';
+const composeFileName = 'docker-compose-api.yml';
 
 describe('IndicatorBoardMetaDataPersistentAdapter', () => {
+  let environment;
   let indicatorBoardMetaDataPersistentAdapter: IndicatorBoardMetaDataPersistentAdapter;
 
   beforeAll(async () => {
+    if (process.env.NODE_ENV === 'build') {
+      environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['db']);
+    }
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
@@ -26,15 +34,21 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
             port: configService.get<number>('DB_PORT'),
             username: configService.get<string>('POSTGRES_USER'),
             password: configService.get<string>('POSTGRES_PASSWORD'),
-            database: configService.get<string>('POSTGRES_DB'),
+            database: configService.get<string>('POSTGRES_USER'),
             entities: [IndicatorBoardMetaDataEntity, MemberEntity],
-            synchronize: false,
+            synchronize: true,
           }),
         }),
       ],
       providers: [IndicatorBoardMetaDataPersistentAdapter],
     }).compile();
     indicatorBoardMetaDataPersistentAdapter = module.get(IndicatorBoardMetaDataPersistentAdapter);
+  }, 20000);
+
+  afterAll(async () => {
+    if (environment) {
+      await environment.down();
+    }
   });
 
   it('지표보드 메타데이터 생성 확인', async () => {
