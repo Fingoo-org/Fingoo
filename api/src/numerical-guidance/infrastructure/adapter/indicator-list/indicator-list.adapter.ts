@@ -14,14 +14,14 @@ export class IndicatorListAdapter implements LoadIndicatorListPort {
       .createQueryBuilder('indicator_entity')
       .getMany();
 
-    const indicators = IndicatorListDto.create({ indicatorList: [] });
-
-    indicators.indicatorList = indicatorList.map((indicator) => ({
-      id: indicator['id'],
-      name: indicator['name'],
-      ticker: indicator['ticker'],
-      type: indicator['type'],
-    }));
+    const indicators = IndicatorListDto.create({
+      indicatorList: indicatorList.map((indicator) => ({
+        id: indicator['id'],
+        name: indicator['name'],
+        ticker: indicator['ticker'],
+        type: indicator['type'],
+      })),
+    });
 
     return indicators;
   }
