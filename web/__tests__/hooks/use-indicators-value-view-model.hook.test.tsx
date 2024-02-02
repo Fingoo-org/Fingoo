@@ -1,5 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { SWRProviderWithoutCache } from '@/app/api/swr-provider';
+import { SWRProviderWithoutCache } from '@/app/querys/swr-provider';
 import { resetMockDB, mockDB } from '@/app/mocks/mock-db';
 import { resetAllStore, useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 import { useIndicatorsValueViewModel } from '@/app/hooks/use-indicators-value-view-model.hook';

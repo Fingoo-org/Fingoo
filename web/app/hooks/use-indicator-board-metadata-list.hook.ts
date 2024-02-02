@@ -2,8 +2,8 @@ import { useNumericalGuidanceStore } from '../stores/numerical-guidance.store';
 import {
   CreateIndicatorMetadataRequestBody,
   useCreateIndicatorMetadata,
-} from '../api/command/numerical-guidance.command';
-import { useFetchIndicatorBoardMetadataList } from '../api/query/numerical-guidance.query';
+} from '../querys/numerical-guidance/indicator-board-metadata.query';
+import { useFetchIndicatorBoardMetadataList } from '../querys/numerical-guidance/indicator-board-metadata.query';
 
 export const useIndicatoBoardrMetadataList = () => {
   const { data, isLoading } = useFetchIndicatorBoardMetadataList();

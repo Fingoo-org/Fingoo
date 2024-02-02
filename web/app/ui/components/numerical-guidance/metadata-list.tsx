@@ -3,7 +3,7 @@ import React from 'react';
 import List from '../view/molocule/list';
 import ListItem from '../view/atom/list-item';
 import { useIndicatoBoardrMetadataList } from '@/app/hooks/use-indicator-board-metadata-list.hook';
-import { IndicatorBoardMetadataResponse } from '@/app/api/query/numerical-guidance.query';
+import { IndicatorBoardMetadataResponse } from '@/app/querys/numerical-guidance/indicator-board-metadata.query';
 import Button from '../../components/view/atom/button';
 export default React.memo(function MetadataList() {
   const { metadataList, createAndSelectMetadata } = useIndicatoBoardrMetadataList();

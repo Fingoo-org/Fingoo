@@ -1,10 +1,8 @@
 import { HttpResponse, http } from 'msw';
-import { API_PATH } from '../api/api-path';
+import { API_PATH } from '../querys/api-path';
 import { mockDB } from './mock-db';
-import {
-  AddIndicatorToMetadataRequestBody,
-  CreateIndicatorMetadataRequestBody,
-} from '../api/command/numerical-guidance.command';
+import { AddIndicatorToMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
+import { CreateIndicatorMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
 
 export const handlers = [
   http.get(API_PATH.metadataList, () => {

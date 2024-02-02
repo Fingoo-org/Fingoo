@@ -1,12 +1,11 @@
-import { CreateIndicatorMetadataRequestBody } from '../api/command/numerical-guidance.command';
+import { CreateIndicatorMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
+import { IndicatorValueResponse, IndicatorsValueResponse } from '../querys/numerical-guidance/indicator.query';
 import {
   IndicatorBoardMetadataListResponse,
   IndicatorBoardMetadataResponse,
-  IndicatorValueResponse,
-  IndicatorsValueResponse,
-} from '../api/query/numerical-guidance.query';
-import { IndicatorListResponse } from '../api/query/numerical-guidance.query';
-import { AddIndicatorToMetadataRequestBody } from '../api/command/numerical-guidance.command';
+} from '../querys/numerical-guidance/indicator-board-metadata.query';
+import { IndicatorListResponse } from '../querys/numerical-guidance/indicator.query';
+import { AddIndicatorToMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from './mock-data/indicators-value';
 
 type MockDatabase = IndicatorBoardMetadataListResponse & IndicatorListResponse & IndicatorsValueResponse;

@@ -2,7 +2,7 @@ import {
   IndicatorValueItemResponse,
   IndicatorValueResponse,
   IndicatorsValueResponse,
-} from '../api/query/numerical-guidance.query';
+} from '../querys/numerical-guidance/indicator.query';
 
 // Risk: item이 길어지면 오버헤드
 class IndicatorValueItem {
