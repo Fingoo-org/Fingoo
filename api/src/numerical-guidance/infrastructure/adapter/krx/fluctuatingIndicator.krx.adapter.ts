@@ -24,10 +24,11 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     if (!responseData) {
       throw new Error('API response body is undefined');
     }
-    return this.transferredByInterval(interval, responseData);
+    return FluctuatingIndicatorKrxAdapter.transferredByInterval(interval, responseData);
   }
 
-  private transferredByInterval(interval: string, data: FluctuatingIndicatorDto) {
+
+  static transferredByInterval(interval: string, data: FluctuatingIndicatorDto) {
     switch (interval) {
       case 'day':
         return data;
@@ -42,7 +43,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     }
   }
 
-  private calculateWeeklyAverage(data: FluctuatingIndicatorDto) {
+  static calculateWeeklyAverage(data: FluctuatingIndicatorDto) {
     const items = data.items.item;
     const weeklyAverages = [];
     const processedWeeks = new Set();
@@ -84,7 +85,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return data;
   }
 
-  private getISOWeekNumber(date: Date) {
+  static getISOWeekNumber(date: Date) {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
@@ -92,7 +93,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return weekNumber;
   }
 
-  private calculateMonthlyAverage(data: FluctuatingIndicatorDto) {
+  static calculateMonthlyAverage(data: FluctuatingIndicatorDto) {
     const items = data.items.item;
     const monthlyAverages = [];
     const processedMonths = new Set();
@@ -133,7 +134,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return data;
   }
 
-  private calculateYearlyAverage(data: FluctuatingIndicatorDto) {
+  static calculateYearlyAverage(data: FluctuatingIndicatorDto) {
     const items = data.items.item;
     const yearlyAverages = [];
     const processedYears = new Set();
