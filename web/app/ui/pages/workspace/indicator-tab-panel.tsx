@@ -1,6 +1,6 @@
 import { Disclosure } from '@headlessui/react';
-import { ChevronUpIcon } from '@heroicons/react/16/solid';
 import IndicatorList from '../../components/numerical-guidance/indicator-list';
+import { ChevronUpIcon } from '@heroicons/react/solid';
 
 export default function IndicatorTabPanel() {
   return (
