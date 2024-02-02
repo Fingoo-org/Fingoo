@@ -1,5 +1,6 @@
 import { AggregateRoot } from 'src/building-blocks/domain/aggregate-root';
-import { IndicatorBoardMetaDataMustNotBeEmptyRule } from './rule/IndicatorBoardMetaDataMustNotBeEmpty.rule';
+import { IndicatorBoardMetaDataCountShouldNotExceedLimitRule } from './rule/IndicatorBoardMetaDataCountShouldNotExceedLimit.rule';
+import { IndicatorBoardMetaDataNameShouldNotEmptyRule } from './rule/IndicatorBoardMetaDataNameShouldNotEmpty.rule';
 
 export class IndicatorBoardMetaData extends AggregateRoot {
   readonly indicatorBoardMetaDataName: string;
@@ -12,7 +13,8 @@ export class IndicatorBoardMetaData extends AggregateRoot {
 
   constructor(indicatorBoardMetaDataName: string, indicatorIds: Record<string, string[]>, memberId: number) {
     super();
-    this.checkRule(new IndicatorBoardMetaDataMustNotBeEmptyRule(indicatorIds));
+    this.checkRule(new IndicatorBoardMetaDataCountShouldNotExceedLimitRule(indicatorIds));
+    this.checkRule(new IndicatorBoardMetaDataNameShouldNotEmptyRule(indicatorBoardMetaDataName));
     this.indicatorBoardMetaDataName = indicatorBoardMetaDataName;
     this.memberId = memberId;
     this.indicatorIds = indicatorIds;
