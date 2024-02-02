@@ -3,8 +3,8 @@ import { useIndicatorsValueViewModel } from '@/app/hooks/use-indicators-value-vi
 import MultiLineChart from '../view/molocule/multi-line-chart';
 
 export default function IndicatorsChart() {
-  const { indicatorsValue } = useIndicatorsValueViewModel();
-  console.log(indicatorsValue);
+  const { formattedIndicatorsRows } = useIndicatorsValueViewModel();
+  console.log(formattedIndicatorsRows);
 
   return (
     <>
