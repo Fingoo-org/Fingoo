@@ -19,7 +19,7 @@ describe('useIndicatoBoardrMetadataList', () => {
   it('메타데이터 리스트를 가져온다', async () => {
     // given
     const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
-    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
 
     // when
     // then
@@ -45,7 +45,7 @@ describe('useIndicatoBoardrMetadataList', () => {
   it('메타데이터를 생성하면, 생성한 메타데이터를 포함한 메타데이터 리스트를 가져온다.', async () => {
     // given
     const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
-    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
 
     // when
     await waitFor(() => result.current.createAndSelectMetadata({ id: '4', name: 'metadata4', indicators: [] }));
@@ -65,7 +65,7 @@ describe('useIndicatoBoardrMetadataList', () => {
         return new HttpResponse(null, { status: 500 });
       }),
     );
-    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
 
     // when
     await waitFor(() => result.current.createAndSelectMetadata({ id: '4', name: 'metadata4', indicators: [] }));
@@ -88,7 +88,7 @@ describe('useIndicatoBoardrMetadataList', () => {
     );
 
     // when
-    await waitFor(() => expect(result.current.isLoading).toBe(false));
+    await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
     act(() => {
       result.current.createAndSelectMetadata({ id: '4', name: 'metadata4', indicators: [] });
     });

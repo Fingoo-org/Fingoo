@@ -6,7 +6,7 @@ import {
 import { useFetchIndicatorBoardMetadataList } from '../querys/numerical-guidance/indicator-board-metadata.query';
 
 export const useIndicatoBoardrMetadataList = () => {
-  const { data, isLoading } = useFetchIndicatorBoardMetadataList();
+  const { data } = useFetchIndicatorBoardMetadataList();
   const { trigger, error: createMetadataError } = useCreateIndicatorMetadata();
   const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
 
@@ -30,7 +30,6 @@ export const useIndicatoBoardrMetadataList = () => {
 
   return {
     metadataList,
-    isLoading,
     createMetadataError,
     createAndSelectMetadata,
   };

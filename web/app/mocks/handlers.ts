@@ -1,11 +1,11 @@
-import { HttpResponse, http } from 'msw';
+import { HttpResponse, http, delay } from 'msw';
 import { API_PATH } from '../querys/api-path';
 import { mockDB } from './mock-db';
 import { AddIndicatorToMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
 import { CreateIndicatorMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
 
 export const handlers = [
-  http.get(API_PATH.metadataList, () => {
+  http.get(API_PATH.metadataList, async () => {
     return HttpResponse.json(mockDB.getMetadataList());
   }),
   http.post<never, CreateIndicatorMetadataRequestBody, never>(API_PATH.metadataList, async ({ request }) => {
