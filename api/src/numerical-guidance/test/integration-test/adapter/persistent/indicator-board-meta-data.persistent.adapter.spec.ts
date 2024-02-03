@@ -5,19 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetaData } from '../../../../domain/indicator-board-meta-data';
 import { IndicatorBoardMetaDataEntity } from '../../../../infrastructure/adapter/persistent/entity/indicator-board-meta-data.entity';
 import { MemberEntity } from '../../../../../auth/member.entity';
-import { DockerComposeEnvironment } from 'testcontainers';
-
-const composeFilePath = '';
-const composeFileName = 'docker-compose-api.yml';
+import { PostgreSqlContainer } from '@testcontainers/postgresql';
 
 describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   let environment;
   let indicatorBoardMetaDataPersistentAdapter: IndicatorBoardMetaDataPersistentAdapter;
 
   beforeAll(async () => {
-    if (process.env.NODE_ENV === 'build') {
-      environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['db']);
-    }
+    environment = await new PostgreSqlContainer().start();
+
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
@@ -26,15 +22,15 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           inject: [ConfigService],
-          useFactory: (configService: ConfigService) => ({
+          useFactory: () => ({
             type: 'postgres',
             retryAttempts: 20,
             retryDelay: 5000,
-            host: configService.get<string>('DB_HOST'),
-            port: configService.get<number>('DB_PORT'),
-            username: configService.get<string>('POSTGRES_USER'),
-            password: configService.get<string>('POSTGRES_PASSWORD'),
-            database: configService.get<string>('POSTGRES_USER'),
+            host: environment.getHost(),
+            port: environment.getPort(),
+            username: environment.getUsername(),
+            password: environment.getPassword(),
+            database: environment.getDatabase(),
             entities: [IndicatorBoardMetaDataEntity, MemberEntity],
             synchronize: true,
           }),
@@ -46,9 +42,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   }, 20000);
 
   afterAll(async () => {
-    if (environment) {
-      await environment.down();
-    }
+    await environment.stop();
   });
 
   it('지표보드 메타데이터 생성 확인', async () => {
