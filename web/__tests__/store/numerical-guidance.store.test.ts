@@ -7,7 +7,7 @@ describe('useNumericalGuidanceStore', () => {
     resetAllStore();
   });
 
-  it('초기 설정 확인', () => {
+  it('초기 설정을 확인한다.', () => {
     // given
     const { result } = renderHook(() => useNumericalGuidanceStore());
 
@@ -17,7 +17,7 @@ describe('useNumericalGuidanceStore', () => {
     expect(result.current.interval).toBe('day');
   });
 
-  it('메타데이터 선택하기', () => {
+  it('메타데이터를 선택하면, 선택된 메타데이터 ID를 가진다', () => {
     // given
     const { result } = renderHook(() => useNumericalGuidanceStore());
 

@@ -6,7 +6,7 @@ export default function SideNav() {
       <div className="md:h-28 ">
         <SideNavHeader />
       </div>
-      <div className="md:h-2/5 overflow-auto">
+      <div className="overflow-auto">
         <IndicatorBoardToolbar />
       </div>
     </div>

@@ -18,15 +18,22 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@headlessui/tailwindcss": "^0.2.0",
+    "@heroicons/react": "^1.0.6",
+    "@remixicon/react": "^4.1.1",
+    "@tremor/react": "^3.13.4",
+    "@types/react-window": "^1.8.8",
     "axios": "^1.6.7",
+    "clsx": "^2.1.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-window": "^1.8.10",
     "swr": "^2.2.4",
     "undici": "^5.28.2",
     "zustand": "^4.5.0"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",

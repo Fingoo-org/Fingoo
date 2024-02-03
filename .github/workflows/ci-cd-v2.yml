@@ -20,7 +20,7 @@ jobs:
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: info
-          text: "start build"
+          text: 'start build'
 
   build-web:
     runs-on: ubuntu-latest
@@ -44,19 +44,19 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Send discord message if fail
-        if: ${{ failure() }}  
+        if: ${{ failure() }}
         uses: rjstone/discord-webhook-notify@v1.0.4
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: error
-          text: "web package failed to build"
+          text: 'web package failed to build'
       - name: Send discord message if success
-        if: ${{ success() }}  
+        if: ${{ success() }}
         uses: rjstone/discord-webhook-notify@v1.0.4
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: info
-          text: "web package was successfully built"
+          text: 'web package was successfully built'
 
   build-api:
     runs-on: ubuntu-latest
@@ -83,7 +83,12 @@ jobs:
         working-directory: ${{ env.WORKDIR }}
       - name: Setting .env
         run: |
-          echo "SERVICE_KEY=${{ secrets.KRX_SERVICE_KEY }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env |
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env |
+          echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env |
+          echo "SERVICE_KEY=${{ secrets.KRX_SERVICE_KEY }}" >> .env |
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env |
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env 
         working-directory: ${{ env.WORKDIR }}
       - name: Run tests
         run: NODE_ENV=${{ env.NODE_ENV }} npm test
@@ -98,16 +103,16 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Send discord message if fail
-        if: ${{ failure() }}  
+        if: ${{ failure() }}
         uses: rjstone/discord-webhook-notify@v1.0.4
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: error
-          text: "api package failed to build"
+          text: 'api package failed to build'
       - name: Send discord message if success
-        if: ${{ success() }}  
+        if: ${{ success() }}
         uses: rjstone/discord-webhook-notify@v1.0.4
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: info
-          text: "api package was successfully built"
+          text: 'api package was successfully built'

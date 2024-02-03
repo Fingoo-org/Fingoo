@@ -1,4 +1,4 @@
-import { FluctuatingIndicatorsDto } from '../../query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { FluctuatingIndicatorDto } from '../../query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 
 export interface LoadFluctuatingIndicatorPort {
   loadFluctuatingIndicator(
@@ -7,5 +7,5 @@ export interface LoadFluctuatingIndicatorPort {
     interval: string,
     market: string,
     endDate: string,
-  ): Promise<FluctuatingIndicatorsDto>;
+  ): Promise<FluctuatingIndicatorDto>;
 }

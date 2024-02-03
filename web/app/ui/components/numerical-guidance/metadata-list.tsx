@@ -1,14 +1,27 @@
 'use client';
 import React from 'react';
-import List from '../view/atom/list';
+import List from '../view/molocule/list';
 import ListItem from '../view/atom/list-item';
-import { useIndicatorMetadataList } from '@/app/hooks/use-indicator-metadata-list.hook';
-import { IndicatorBoardMetadata } from '@/app/api/type/numerical-guidance.type';
-
+import { useIndicatoBoardrMetadataList } from '@/app/hooks/use-indicator-board-metadata-list.hook';
+import { IndicatorBoardMetadataResponse } from '@/app/querys/numerical-guidance/indicator-board-metadata.query';
+import Button from '../../components/view/atom/button';
 export default React.memo(function MetadataList() {
-  const { metadataList } = useIndicatorMetadataList();
+  const { metadataList, createAndSelectMetadata } = useIndicatoBoardrMetadataList();
 
-  const renderItem = (item: IndicatorBoardMetadata) => <ListItem key={item.id} content={item.name} />;
+  const handleClick = () => {
+    const metadata = {
+      id: Math.random().toString(36),
+      name: 'metadata1',
+      indicators: [],
+    };
+    createAndSelectMetadata(metadata);
+  };
+  const renderItem = (item: IndicatorBoardMetadataResponse) => <ListItem key={item.id}>{item.name}</ListItem>;
 
-  return <div>{metadataList && <List list={metadataList} render={renderItem} />}</div>;
+  return (
+    <div>
+      {metadataList && <List list={metadataList} render={renderItem} />}
+      <Button onClick={handleClick}>create</Button>
+    </div>
+  );
 });

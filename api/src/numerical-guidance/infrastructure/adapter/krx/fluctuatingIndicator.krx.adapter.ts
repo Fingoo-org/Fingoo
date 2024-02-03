@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { FluctuatingIndicatorsDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicators/fluctuatingIndicators.dto';
+import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application/port/external/load-fluctuatingIndicator.port';
 
 @Injectable()
@@ -13,21 +13,22 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     interval: string,
     market: string,
     endDate: string,
-  ): Promise<FluctuatingIndicatorsDto> {
+  ): Promise<FluctuatingIndicatorDto> {
     // KRX API 통신 -> 현재 일자부터 이전 데이터 모두 조회
     const serviceKey: string = process.env.SERVICE_KEY;
     const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
 
     const res = await this.api.axiosRef.get(request_url);
-    const responseData: FluctuatingIndicatorsDto = res.data.response.body;
+    const responseData: FluctuatingIndicatorDto = res.data.response.body;
 
     if (!responseData) {
       throw new Error('API response body is undefined');
     }
-    return this.transferredByInterval(interval, responseData);
+    return FluctuatingIndicatorKrxAdapter.transferredByInterval(interval, responseData);
   }
 
-  private transferredByInterval(interval: string, data: FluctuatingIndicatorsDto) {
+
+  static transferredByInterval(interval: string, data: FluctuatingIndicatorDto) {
     switch (interval) {
       case 'day':
         return data;
@@ -42,7 +43,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     }
   }
 
-  private calculateWeeklyAverage(data: FluctuatingIndicatorsDto) {
+  static calculateWeeklyAverage(data: FluctuatingIndicatorDto) {
     const items = data.items.item;
     const weeklyAverages = [];
     const processedWeeks = new Set();
@@ -84,7 +85,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return data;
   }
 
-  private getISOWeekNumber(date: Date) {
+  static getISOWeekNumber(date: Date) {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
@@ -92,7 +93,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return weekNumber;
   }
 
-  private calculateMonthlyAverage(data: FluctuatingIndicatorsDto) {
+  static calculateMonthlyAverage(data: FluctuatingIndicatorDto) {
     const items = data.items.item;
     const monthlyAverages = [];
     const processedMonths = new Set();
@@ -133,7 +134,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return data;
   }
 
-  private calculateYearlyAverage(data: FluctuatingIndicatorsDto) {
+  static calculateYearlyAverage(data: FluctuatingIndicatorDto) {
     const items = data.items.item;
     const yearlyAverages = [];
     const processedYears = new Set();
