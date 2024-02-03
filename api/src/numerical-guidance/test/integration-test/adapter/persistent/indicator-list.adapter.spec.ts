@@ -2,8 +2,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
-import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/entity/indicator.entity';
-import { IndicatorListAdapter } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/indicator-list.adapter';
+import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistent/entity/indicator.entity';
+import { IndicatorListAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistent/indicator-list.adapter';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { DataSource } from 'typeorm';
 

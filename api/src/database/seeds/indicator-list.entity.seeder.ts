@@ -1,5 +1,5 @@
 import { Seeder } from 'typeorm-extension';
-import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/entity/indicator.entity';
+import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistent/entity/indicator.entity';
 import { DataSource } from 'typeorm';
 
 export default class IndicatorEntitySeeder implements Seeder {
