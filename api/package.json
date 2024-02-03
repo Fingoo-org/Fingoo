@@ -15,7 +15,6 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "infra": "docker compose -f docker-compose-api.yml up",
-    "pretest": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./src/database/seeds/dataSource.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
