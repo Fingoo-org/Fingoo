@@ -4,6 +4,8 @@ import { GetFluctuatingIndicatorQuery } from '../../application/query/get-fluctu
 import { FluctuatingIndicatorDto } from '../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorDto } from './dto/get-fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
+import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
+import { GetIndicatorListQuery } from 'src/numerical-guidance/application/query/get-indicator-list/get-indicator-list.query';
 import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateIndicatorBoardMetaDataDto } from './dto/create-indicator-board-meta-data.dto';
@@ -45,6 +47,12 @@ export class NumericalGuidanceController {
       getFluctuatingIndicatorWithoutCacheDto.market,
       getFluctuatingIndicatorWithoutCacheDto.endDate,
     );
+    return this.queryBus.execute(query);
+  }
+
+  @Get('/get-indicator-list')
+  async getIndicatorList(): Promise<IndicatorListDto> {
+    const query = new GetIndicatorListQuery();
     return this.queryBus.execute(query);
   }
 
