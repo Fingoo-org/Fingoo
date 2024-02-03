@@ -1,7 +1,9 @@
+import ChartContainer from '../ui/pages/workspace/chart-container';
+
 export default function Page() {
   return (
-    <div>
-      <h1>Home</h1>
+    <div className="flex h-full justify-center items-center">
+      <ChartContainer />
     </div>
   );
 }

@@ -34,3 +34,18 @@ export const deleteFetcher = async (key: string | string[], { arg }: { arg: Dele
     throw e;
   }
 };
+
+export const fetchIndicatorsValue = async ([url, ...tickers]: string[]) => {
+  const indicatorsvalue = await Promise.all(
+    tickers.map((ticker) =>
+      instance
+        .get(url, {
+          params: {
+            ticker: ticker,
+          },
+        })
+        .then((res) => res.data),
+    ),
+  );
+  return { indicatorsValue: indicatorsvalue };
+};

@@ -1,6 +1,6 @@
-import { PlusIcon } from '@heroicons/react/16/solid';
 import ListItem from './list-item';
 import React, { MouseEventHandler } from 'react';
+import { PlusIcon } from '@heroicons/react/solid';
 
 type SelectableListItemProps = {
   content: string;

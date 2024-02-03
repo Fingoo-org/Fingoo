@@ -2,8 +2,8 @@ import {
   AddIndicatorToMetadataRequestBody,
   useAddIndicatorToMetadata,
   useDeleteIndicatorFromMetadata,
-} from '../api/command/numerical-guidance.command';
-import { useFetchMetadata } from '../api/query/numerical-guidance.query';
+} from '../querys/numerical-guidance/indicator-board-metadata.query';
+import { useFetchMetadata } from '../querys/numerical-guidance/indicator-board-metadata.query';
 import { useNumericalGuidanceStore } from '../stores/numerical-guidance.store';
 
 export const useSelectedIndicatorBoardMetadata = () => {

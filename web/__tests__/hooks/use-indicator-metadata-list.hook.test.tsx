@@ -2,10 +2,10 @@ import { useIndicatoBoardrMetadataList } from '@/app/hooks/use-indicator-board-m
 import { renderHook, waitFor } from '@testing-library/react';
 import { server } from '@/app/mocks/server';
 import { HttpResponse, http } from 'msw';
-import { API_PATH } from '@/app/api/api-path';
+import { API_PATH } from '@/app/querys/api-path';
 import { resetAllStore, useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
 import { act } from 'react-dom/test-utils';
-import { SWRProviderWithoutCache } from '@/app/api/swr-provider';
+import { SWRProviderWithoutCache } from '@/app/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/mock-db';
 
 const wrapper = SWRProviderWithoutCache;
