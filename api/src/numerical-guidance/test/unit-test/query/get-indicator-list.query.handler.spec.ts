@@ -1,6 +1,5 @@
 import { Test } from '@nestjs/testing';
 import { GetIndicatorListQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-list/get-indicator-list.query.handler';
-import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 
 const testData = {
   indicatorList: [
@@ -30,7 +29,7 @@ describe('GetIndicatorListQueryHandler', () => {
           provide: 'LoadIndicatorListPort',
           useValue: {
             loadIndicatorList: jest.fn().mockImplementation(() => {
-              const indicatorList = IndicatorListDto.create(testData);
+              const indicatorList = testData;
               return indicatorList;
             }),
           },
@@ -47,7 +46,7 @@ describe('GetIndicatorListQueryHandler', () => {
     const result = await getIndicatorListQueryHandler.execute();
 
     // then
-    const expected = IndicatorListDto.create(testData);
+    const expected = testData;
     expect(result).toEqual(expected);
   });
 });
