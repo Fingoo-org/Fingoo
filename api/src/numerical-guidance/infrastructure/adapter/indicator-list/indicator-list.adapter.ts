@@ -3,6 +3,7 @@ import { LoadIndicatorListPort } from 'src/numerical-guidance/application/port/i
 import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 import { DataSource } from 'typeorm';
 import { IndicatorEntity } from './entity/indicator.entity';
+import { IndicatorListMapper } from './mapper/indicator-list.mapper';
 
 @Injectable()
 export class IndicatorListAdapter implements LoadIndicatorListPort {
@@ -14,7 +15,9 @@ export class IndicatorListAdapter implements LoadIndicatorListPort {
       .createQueryBuilder('indicator_entity')
       .getMany();
 
-    const indicators = IndicatorListDto.create(indicatorEntities);
+    const indicatorList = IndicatorListMapper.mapIndicatorEntityToIndicatorListDto(indicatorEntities);
+
+    const indicators = IndicatorListDto.create(indicatorList);
 
     return indicators;
   }

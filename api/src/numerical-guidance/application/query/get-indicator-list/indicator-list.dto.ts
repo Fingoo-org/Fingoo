@@ -1,5 +1,3 @@
-import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/entity/indicator.entity';
-
 export class IndicatorListDto {
   indicatorList: IndicatorResponse[];
 
@@ -7,14 +5,7 @@ export class IndicatorListDto {
     this.indicatorList = indicatorList;
   }
 
-  static create(indicatorEntities: IndicatorEntity[]): IndicatorListDto {
-    // Entity를 indicatorList로 변환하는 로직
-    const indicatorList: IndicatorResponse[] = indicatorEntities.map((indicator) => ({
-      id: indicator['id'],
-      name: indicator['name'],
-      ticker: indicator['ticker'],
-      type: indicator['type'],
-    }));
+  static create(indicatorList: IndicatorResponse[]): IndicatorListDto {
     return new IndicatorListDto(indicatorList);
   }
 }
