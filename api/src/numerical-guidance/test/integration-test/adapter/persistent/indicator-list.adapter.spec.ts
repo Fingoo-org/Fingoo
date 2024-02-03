@@ -30,10 +30,28 @@ describe('IndicatorListAdapter', () => {
   let environment;
   let dataSource: DataSource;
   let indicatorListAdapter: IndicatorListAdapter;
+  const seeding = async () => {
+    const indicatorRepository = dataSource.getRepository(IndicatorEntity);
+    await indicatorRepository.clear();
+    await indicatorRepository.insert([
+      {
+        id: 1,
+        name: '삼성전자',
+        ticker: '005930',
+        type: 'stock',
+      },
+      {
+        id: 2,
+        name: '이스트아시아',
+        ticker: '900110',
+        type: 'stock',
+      },
+    ]);
+  };
 
   beforeAll(async () => {
     if (process.env.NODE_ENV === 'build') {
-      environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['postgres']);
+      environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['db']);
     }
     const module = await Test.createTestingModule({
       imports: [
@@ -58,6 +76,7 @@ describe('IndicatorListAdapter', () => {
     }).compile();
     indicatorListAdapter = module.get(IndicatorListAdapter);
     dataSource = module.get<DataSource>(DataSource);
+    seeding();
   }, 10000);
 
   afterAll(async () => {
@@ -69,22 +88,6 @@ describe('IndicatorListAdapter', () => {
 
   it('지표 리스트를 가져올 때 데이터가 올바른지 확인', async () => {
     // given
-    const indicatorRepository = dataSource.getRepository(IndicatorEntity);
-    await indicatorRepository.clear();
-    await indicatorRepository.insert([
-      {
-        id: 1,
-        name: '삼성전자',
-        ticker: '005930',
-        type: 'stock',
-      },
-      {
-        id: 2,
-        name: '이스트아시아',
-        ticker: '900110',
-        type: 'stock',
-      },
-    ]);
 
     // when
     const result: IndicatorListDto = await indicatorListAdapter.loadIndicatorList();
