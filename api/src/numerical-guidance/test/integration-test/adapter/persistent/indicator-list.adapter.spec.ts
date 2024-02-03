@@ -2,6 +2,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
+import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/entity/indicator.entity';
 import { IndicatorListAdapter } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/indicator-list.adapter';
 import { DockerComposeEnvironment } from 'testcontainers';
 import { DataSource } from 'typeorm';
@@ -29,10 +30,28 @@ describe('IndicatorListAdapter', () => {
   let environment;
   let dataSource: DataSource;
   let indicatorListAdapter: IndicatorListAdapter;
+  const seeding = async () => {
+    const indicatorRepository = dataSource.getRepository(IndicatorEntity);
+    await indicatorRepository.clear();
+    await indicatorRepository.insert([
+      {
+        id: 1,
+        name: '삼성전자',
+        ticker: '005930',
+        type: 'stock',
+      },
+      {
+        id: 2,
+        name: '이스트아시아',
+        ticker: '900110',
+        type: 'stock',
+      },
+    ]);
+  };
 
   beforeAll(async () => {
     if (process.env.NODE_ENV === 'build') {
-      environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['mysql']);
+      environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['db']);
     }
     const module = await Test.createTestingModule({
       imports: [
@@ -57,6 +76,7 @@ describe('IndicatorListAdapter', () => {
     }).compile();
     indicatorListAdapter = module.get(IndicatorListAdapter);
     dataSource = module.get<DataSource>(DataSource);
+    seeding();
   }, 10000);
 
   afterAll(async () => {
