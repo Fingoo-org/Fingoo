@@ -15,7 +15,7 @@ export class IndicatorListAdapter implements LoadIndicatorListPort {
       .createQueryBuilder('indicator_entity')
       .getMany();
 
-    const indicatorList = IndicatorListMapper.mapIndicatorEntityToIndicatorListDto(indicatorEntities);
+    const indicatorList = IndicatorListMapper.mapDomainToEntity(indicatorEntities);
 
     const indicators = IndicatorListDto.create(indicatorList);
 

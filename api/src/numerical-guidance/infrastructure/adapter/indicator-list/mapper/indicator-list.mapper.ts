@@ -2,7 +2,7 @@ import { IndicatorEntity } from '../entity/indicator.entity';
 import { IndicatorResponse } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 
 export class IndicatorListMapper {
-  static mapIndicatorEntityToIndicatorListDto(indicatorEntities: IndicatorEntity[]) {
+  static mapDomainToEntity(indicatorEntities: IndicatorEntity[]) {
     const indicatorList: IndicatorResponse[] = indicatorEntities.map((indicator) => ({
       id: indicator['id'],
       name: indicator['name'],
