@@ -4,26 +4,24 @@ import { FluctuatingIndicatorRedisAdapter } from '../../../../infrastructure/ada
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { fluctuatingIndicatorTestData } from '../../../data/fluctuatingIndicator.test.data';
 import { ConfigModule } from '@nestjs/config';
-import { RedisConfigService } from '../../../../../config/redis.config.service';
-import { DockerComposeEnvironment } from 'testcontainers';
+import { RedisContainer } from '@testcontainers/redis';
 
 const testData = fluctuatingIndicatorTestData;
-const composeFilePath = '';
-const composeFileName = 'docker-compose-api.yml';
 
 describe('FluctuatingIndicatorRedisAdapter', () => {
   let environment;
   let fluctuatingIndicatorRedisAdapter: FluctuatingIndicatorRedisAdapter;
 
   beforeAll(async () => {
-    if (process.env.NODE_ENV === 'build') {
-      environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['redis']);
-    }
+    environment = await new RedisContainer().start();
     const module = await Test.createTestingModule({
       imports: [
         RedisModule.forRootAsync({
           imports: [ConfigModule],
-          useClass: RedisConfigService,
+          useFactory: () => ({
+            type: 'single',
+            url: environment.getConnectionUrl(),
+          }),
         }),
       ],
       providers: [
@@ -43,10 +41,8 @@ describe('FluctuatingIndicatorRedisAdapter', () => {
   }, 10000);
 
   afterAll(async () => {
-    if (environment) {
-      await environment.down();
-    }
     await fluctuatingIndicatorRedisAdapter.disconnectRedis();
+    await environment.stop();
   });
 
   it('redis에서 캐시된 값을 불러오는 경우.', async () => {

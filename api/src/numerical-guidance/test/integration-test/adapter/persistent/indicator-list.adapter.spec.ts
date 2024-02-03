@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/entity/indicator.entity';
 import { IndicatorListAdapter } from 'src/numerical-guidance/infrastructure/adapter/indicator-list/indicator-list.adapter';
-import { DockerComposeEnvironment } from 'testcontainers';
+import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { DataSource } from 'typeorm';
 
 const testData = {
@@ -23,8 +23,6 @@ const testData = {
     },
   ],
 };
-const composeFilePath = '';
-const composeFileName = 'docker-compose-api.yml';
 
 describe('IndicatorListAdapter', () => {
   let environment;
@@ -50,23 +48,22 @@ describe('IndicatorListAdapter', () => {
   };
 
   beforeAll(async () => {
-    if (process.env.NODE_ENV === 'build') {
-      environment = await new DockerComposeEnvironment(composeFilePath, composeFileName).up(['db']);
-    }
+    environment = await new PostgreSqlContainer().start();
+
     const module = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule.forRoot()],
           inject: [ConfigService],
-          useFactory: (configService: ConfigService) => ({
+          useFactory: () => ({
             type: 'postgres',
             retryAttempts: 20,
             retryDelay: 5000,
-            host: configService.get<string>('DB_HOST'),
-            port: configService.get<number>('DB_PORT'),
-            username: configService.get<string>('POSTGRES_USER'),
-            password: configService.get<string>('POSTGRES_PASSWORD'),
-            database: configService.get<string>('POSTGRES_USER'),
+            host: environment.getHost(),
+            port: environment.getPort(),
+            username: environment.getUsername(),
+            password: environment.getPassword(),
+            database: environment.getDatabase(),
             entities: ['src/**/**/*.entity.{ts,js}'],
             synchronize: true,
           }),
@@ -76,14 +73,12 @@ describe('IndicatorListAdapter', () => {
     }).compile();
     indicatorListAdapter = module.get(IndicatorListAdapter);
     dataSource = module.get<DataSource>(DataSource);
-    seeding();
+    await seeding();
   }, 20000);
 
   afterAll(async () => {
-    if (environment) {
-      await environment.down();
-      dataSource.destroy();
-    }
+    await environment.stop();
+    dataSource.destroy();
   });
 
   it('지표 리스트를 가져올 때 데이터가 올바른지 확인', async () => {
