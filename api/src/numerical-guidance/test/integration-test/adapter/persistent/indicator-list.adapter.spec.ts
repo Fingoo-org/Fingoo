@@ -77,7 +77,7 @@ describe('IndicatorListAdapter', () => {
     indicatorListAdapter = module.get(IndicatorListAdapter);
     dataSource = module.get<DataSource>(DataSource);
     seeding();
-  }, 10000);
+  }, 20000);
 
   afterAll(async () => {
     if (environment) {
