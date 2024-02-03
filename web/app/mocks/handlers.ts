@@ -6,12 +6,13 @@ import { CreateIndicatorMetadataRequestBody } from '../querys/numerical-guidance
 
 export const handlers = [
   http.get(API_PATH.metadataList, async () => {
+    // await delay();
     return HttpResponse.json(mockDB.getMetadataList());
   }),
   http.post<never, CreateIndicatorMetadataRequestBody, never>(API_PATH.metadataList, async ({ request }) => {
     const newMetadata = await request.json();
     mockDB.postMetadataList(newMetadata);
-
+    // await delay();
     return HttpResponse.json({
       status: 200,
     });

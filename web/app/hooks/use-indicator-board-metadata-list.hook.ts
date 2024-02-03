@@ -7,21 +7,12 @@ import { useFetchIndicatorBoardMetadataList } from '../querys/numerical-guidance
 
 export const useIndicatoBoardrMetadataList = () => {
   const { data } = useFetchIndicatorBoardMetadataList();
-  const { trigger, error: createMetadataError } = useCreateIndicatorMetadata();
+  const { trigger, error: createMetadataError, isMutating } = useCreateIndicatorMetadata();
   const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
 
-  const metadataList = data?.metadataList;
   const createAndSelectMetadata = async (metadata: CreateIndicatorMetadataRequestBody) => {
     try {
-      await trigger(metadata, {
-        optimisticData: () => {
-          selectMetadata(metadata.id);
-          return {
-            metadataList: [...(metadataList || []), metadata],
-          };
-        },
-        revalidate: false,
-      });
+      await trigger(metadata);
     } catch (e) {
       selectMetadata(null);
       // error 처리 필요
@@ -29,8 +20,9 @@ export const useIndicatoBoardrMetadataList = () => {
   };
 
   return {
-    metadataList,
+    metadataList: data?.metadataList,
     createMetadataError,
     createAndSelectMetadata,
+    isMutating,
   };
 };
