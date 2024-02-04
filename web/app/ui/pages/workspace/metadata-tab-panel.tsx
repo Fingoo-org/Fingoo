@@ -1,17 +1,19 @@
-import { Suspense } from 'react';
-import MetadataList from '../../components/numerical-guidance/metadata-list';
+import dynamic from 'next/dynamic';
 import { SWRConfig } from 'swr';
+
+const MetadataList = dynamic(() => import('../../components/numerical-guidance/metadata-list'), {
+  ssr: false,
+  loading: () => <div>loading...</div>,
+});
 
 export default function MetadataTabPanel() {
   return (
-    <Suspense fallback={<div>loading...</div>}>
-      <SWRConfig
-        value={{
-          suspense: true,
-        }}
-      >
-        <MetadataList />;
-      </SWRConfig>
-    </Suspense>
+    <SWRConfig
+      value={{
+        suspense: true,
+      }}
+    >
+      <MetadataList />;
+    </SWRConfig>
   );
 }
