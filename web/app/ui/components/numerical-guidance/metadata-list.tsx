@@ -9,7 +9,6 @@ import Pending from '../view/molocule/pending';
 export default React.memo(function MetadataList() {
   const { metadataList, createAndSelectMetadata, isPending } = useIndicatoBoardrMetadataList();
 
-  // console.log(metadataList, isValidating);
   const handleClick = () => {
     const metadata = {
       id: Math.random().toString(36),
