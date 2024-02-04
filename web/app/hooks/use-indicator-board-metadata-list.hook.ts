@@ -4,11 +4,23 @@ import {
   useCreateIndicatorMetadata,
 } from '../querys/numerical-guidance/indicator-board-metadata.query';
 import { useFetchIndicatorBoardMetadataList } from '../querys/numerical-guidance/indicator-board-metadata.query';
+import { useRef } from 'react';
 
 export const useIndicatoBoardrMetadataList = () => {
-  const { data } = useFetchIndicatorBoardMetadataList();
-  const { trigger, error: createMetadataError, isMutating } = useCreateIndicatorMetadata();
+  const { data, isValidating } = useFetchIndicatorBoardMetadataList();
+  const { trigger, isMutating } = useCreateIndicatorMetadata();
   const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
+  const isPending = useRef(false);
+
+  if (isPending.current === false) {
+    if (isMutating) {
+      isPending.current = true;
+    }
+  } else {
+    if (isValidating === false && isMutating === false) {
+      isPending.current = false;
+    }
+  }
 
   const createAndSelectMetadata = async (metadata: CreateIndicatorMetadataRequestBody) => {
     try {
@@ -21,8 +33,7 @@ export const useIndicatoBoardrMetadataList = () => {
 
   return {
     metadataList: data?.metadataList,
-    createMetadataError,
     createAndSelectMetadata,
-    isMutating,
+    isPending: isPending.current,
   };
 };

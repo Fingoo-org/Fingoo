@@ -51,7 +51,7 @@ describe('useIndicatoBoardrMetadataList', () => {
     await act(() => {
       result.current.createAndSelectMetadata({ id: '4', name: 'metadata4', indicators: [] });
     });
-    await waitFor(() => expect(result.current.isMutating).toBe(false));
+    await waitFor(() => expect(result.current.isPending).toBe(false));
 
     // then
     expect(result.current.metadataList).toHaveLength(4);
@@ -74,7 +74,7 @@ describe('useIndicatoBoardrMetadataList', () => {
     await act(() => {
       result.current.createAndSelectMetadata({ id: '4', name: 'metadata4', indicators: [] });
     });
-    await waitFor(() => expect(result.current.isMutating).toBe(false));
+    await waitFor(() => expect(result.current.isPending).toBe(false));
 
     // then
     expect(result.current.metadataList).toHaveLength(3);
