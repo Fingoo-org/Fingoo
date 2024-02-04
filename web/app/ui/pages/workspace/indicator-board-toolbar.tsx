@@ -10,12 +10,11 @@ function classNames(...classes: string[]) {
 
 export default function IndicatorBoardToolbar() {
   const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
-  //disable={selectedMetadataId ? false : true}
   return (
     <div className=" bg-red-800">
       <Tab.Group>
         <Tab.List className="flex space-x-1   p-1">
-          <ToolbarTab tabName="Tool Bar" />
+          <ToolbarTab disable={selectedMetadataId ? false : true} tabName="Tool Bar" />
           <ToolbarTab tabName="Meta Data" />
         </Tab.List>
         <Tab.Panels className="md:h-96">

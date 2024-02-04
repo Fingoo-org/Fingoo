@@ -102,9 +102,8 @@ describe('useIndicatorsValueViewModel', () => {
     act(() => {
       result.current.deleteIndicatorFromMetadata(mockDB.getIndicatorList().indicatorList[0].ticker);
     });
-    await waitFor(() => expect(result.current.indciatorsValueViewModel).toBeUndefined());
 
     // then
-    expect(result.current.indciatorsValueViewModel).toBeUndefined();
+    expect(result.current.indciatorsValueViewModel?.length).toBe(0);
   });
 });

@@ -4,5 +4,5 @@ type ListProps<T> = {
 };
 
 export default function List<T>({ list, render }: ListProps<T>) {
-  return <ul className="divide-y divide-gray-200">{list.map((item) => render(item))}</ul>;
+  return <div className="flex flex-col divide-y divide-gray-200">{list.map((item) => render(item))}</div>;
 }
