@@ -49,7 +49,7 @@ describe('useIndicatoBoardrMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createAndSelectMetadata({ id: '4', name: 'metadata4', indicators: [] });
+      result.current.createMetadata({ id: '4', name: 'metadata4', indicators: [] });
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
@@ -72,7 +72,7 @@ describe('useIndicatoBoardrMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createAndSelectMetadata({ id: '4', name: 'metadata4', indicators: [] });
+      result.current.createMetadata({ id: '4', name: 'metadata4', indicators: [] });
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 

@@ -9,11 +9,11 @@ import { useNumericalGuidanceStore } from '../stores/numerical-guidance.store';
 
 export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
+  const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
   const { data: metadataList } = useFetchIndicatorBoardMetadataList();
   const { trigger: updateTrigger } = useAddIndicatorToMetadata(selectedMetadataId);
   const { trigger: deleteTigger } = useDeleteIndicatorFromMetadata(selectedMetadataId);
 
-  // const selectedMetadata = metadataList?.metadataList.find((metadata) => metadata.id === selectedMetadataId);
   const selectedMetadata = useMemo(
     () => metadataList?.metadataList.find((metadata) => metadata.id === selectedMetadataId),
     [selectedMetadataId, metadataList],
@@ -79,5 +79,6 @@ export const useSelectedIndicatorBoardMetadata = () => {
     selectedMetadata,
     addIndicatorToMetadata,
     deleteIndicatorFromMetadata,
+    selectMetadataById: selectMetadata,
   };
 };

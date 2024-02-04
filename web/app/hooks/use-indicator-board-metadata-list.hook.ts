@@ -1,4 +1,3 @@
-import { useNumericalGuidanceStore } from '../stores/numerical-guidance.store';
 import {
   CreateIndicatorMetadataRequestBody,
   useCreateIndicatorMetadata,
@@ -9,7 +8,6 @@ import { useRef } from 'react';
 export const useIndicatoBoardrMetadataList = () => {
   const { data, isValidating } = useFetchIndicatorBoardMetadataList();
   const { trigger, isMutating } = useCreateIndicatorMetadata();
-  const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
   const isPending = useRef(false);
 
   if (isPending.current === false) {
@@ -22,19 +20,17 @@ export const useIndicatoBoardrMetadataList = () => {
     }
   }
 
-  const createAndSelectMetadata = async (metadata: CreateIndicatorMetadataRequestBody) => {
+  const createMetadata = async (metadata: CreateIndicatorMetadataRequestBody) => {
     try {
       await trigger(metadata);
-      selectMetadata(metadata.id);
-    } catch (e) {
-      selectMetadata(null);
-      // error 처리 필요
+    } catch {
+      // error: 전역 에러 처리 or 에러 바운더리에서 처리
     }
   };
 
   return {
     metadataList: data?.metadataList,
-    createAndSelectMetadata,
+    createMetadata,
     isPending: isPending.current,
   };
 };
