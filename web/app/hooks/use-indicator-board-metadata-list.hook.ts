@@ -25,6 +25,7 @@ export const useIndicatoBoardrMetadataList = () => {
   const createAndSelectMetadata = async (metadata: CreateIndicatorMetadataRequestBody) => {
     try {
       await trigger(metadata);
+      selectMetadata(metadata.id);
     } catch (e) {
       selectMetadata(null);
       // error 처리 필요

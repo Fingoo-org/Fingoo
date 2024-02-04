@@ -27,19 +27,8 @@ export const handlers = [
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getIndicatorList());
   }),
-  http.get<metadataParam>(`${API_PATH.metadata}/:metadataId`, async ({ params }) => {
-    const { metadataId } = params;
-
-    const metadata = mockDB.getMetadata(metadataId);
-    await delayForDevelopment();
-    if (!metadata) {
-      return HttpResponse.json(null, { status: 400 });
-    }
-
-    return HttpResponse.json(metadata);
-  }),
   http.post<metadataParam, AddIndicatorToMetadataRequestBody>(
-    `${API_PATH.metadata}/:metadataId`,
+    `${API_PATH.metadataList}/:metadataId`,
     async ({ params, request }) => {
       const { metadataId } = params;
       const indicator = await request.json();
@@ -49,13 +38,16 @@ export const handlers = [
       return HttpResponse.json({ status: 200 });
     },
   ),
-  http.delete<metadataParam & indicatorParam>(`${API_PATH.metadata}/:metadataId/:indicatorKey`, async ({ params }) => {
-    const { metadataId, indicatorKey } = params;
-    mockDB.deleteIndicatorFromMetadata(metadataId, indicatorKey);
-    await delayForDevelopment();
+  http.delete<metadataParam & indicatorParam>(
+    `${API_PATH.metadataList}/:metadataId/:indicatorKey`,
+    async ({ params }) => {
+      const { metadataId, indicatorKey } = params;
+      mockDB.deleteIndicatorFromMetadata(metadataId, indicatorKey);
+      await delayForDevelopment();
 
-    return HttpResponse.json({ status: 200 });
-  }),
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
   http.get(API_PATH.indicatorValue, async ({ request }) => {
     const url = new URL(request.url);
     const indicatorKey = url.searchParams.get('ticker');
