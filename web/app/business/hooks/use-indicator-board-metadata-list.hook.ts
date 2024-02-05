@@ -1,8 +1,8 @@
 import {
   CreateIndicatorMetadataRequestBody,
   useCreateIndicatorMetadata,
-} from '../querys/numerical-guidance/indicator-board-metadata.query';
-import { useFetchIndicatorBoardMetadataList } from '../querys/numerical-guidance/indicator-board-metadata.query';
+} from '../../querys/numerical-guidance/indicator-board-metadata.query';
+import { useFetchIndicatorBoardMetadataList } from '../../querys/numerical-guidance/indicator-board-metadata.query';
 import { useRef } from 'react';
 
 export const useIndicatoBoardrMetadataList = () => {

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useFetchIndicatorsValue } from '../querys/numerical-guidance/indicator.query';
+import { useFetchIndicatorsValue } from '../../querys/numerical-guidance/indicator.query';
 import { convertIndicatorsValueViewModel } from '../services/indicators-value-view-model.service';
 import { useSelectedIndicatorBoardMetadata } from './use-selected-indicator-board-metadata.hook';
 

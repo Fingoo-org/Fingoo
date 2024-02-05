@@ -1,4 +1,4 @@
-import { useFetchIndicatorList } from '../querys/numerical-guidance/indicator.query';
+import { useFetchIndicatorList } from '../../querys/numerical-guidance/indicator.query';
 
 export const useIndicatorList = () => {
   const { data } = useFetchIndicatorList();
