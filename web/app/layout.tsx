@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import MSWComponent from './mocks/msw-component';
+import MSWComponent from './mocks/msw-component.mock';
 import { SWRProvider } from './querys/swr-provider';
 
 const inter = Inter({ subsets: ['latin'] });

@@ -1,6 +1,6 @@
 import { HttpResponse, http, delay } from 'msw';
 import { API_PATH } from '../querys/api-path';
-import { mockDB } from './mock-db';
+import { mockDB } from './db.mock';
 import { AddIndicatorToMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
 import { CreateIndicatorMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
 

@@ -6,7 +6,7 @@ import {
 } from '../querys/numerical-guidance/indicator-board-metadata.query';
 import { IndicatorListResponse } from '../querys/numerical-guidance/indicator.query';
 import { AddIndicatorToMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
-import { indicatorsValueMockData } from './mock-data/indicators-value';
+import { indicatorsValueMockData } from './mock-data/indicators-value.mock';
 
 type MockDatabase = IndicatorBoardMetadataListResponse & IndicatorListResponse & IndicatorsValueResponse;
 

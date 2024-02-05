@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { server } from './app/mocks/server';
+import { server } from './app/mocks/server.mock';
 import { createElement } from 'react';
 
 beforeAll(() => server.listen());

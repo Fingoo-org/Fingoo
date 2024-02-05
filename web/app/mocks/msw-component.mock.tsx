@@ -8,7 +8,7 @@ export default function MSWComponent({ children }: PropsWithChildren) {
   useEffect(() => {
     async function enableMocking() {
       if (typeof window !== 'undefined') {
-        const { worker } = await import('./browser');
+        const { worker } = await import('./browser.mock');
 
         await worker.start();
         setInit(true);
