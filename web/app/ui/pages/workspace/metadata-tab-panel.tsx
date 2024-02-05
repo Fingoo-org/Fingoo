@@ -1,19 +1,17 @@
-import dynamic from 'next/dynamic';
 import { SWRConfig } from 'swr';
-
-const MetadataList = dynamic(() => import('../../components/numerical-guidance/metadata-list'), {
-  ssr: false,
-  loading: () => <div>loading...</div>,
-});
+import MetadataList from '../../components/numerical-guidance/metadata-list';
+import ClientDataSuspense from '../../components/view/atom/client-data-suspense';
 
 export default function MetadataTabPanel() {
   return (
-    <SWRConfig
-      value={{
-        suspense: true,
-      }}
-    >
-      <MetadataList />;
-    </SWRConfig>
+    <ClientDataSuspense fallback={<div>loading...</div>}>
+      <SWRConfig
+        value={{
+          suspense: true,
+        }}
+      >
+        <MetadataList />;
+      </SWRConfig>
+    </ClientDataSuspense>
   );
 }
