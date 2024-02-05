@@ -1,9 +1,9 @@
 import { act, render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SWRProviderWithoutCache } from '@/app/querys/swr-provider';
+import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
 import IndicatorList from '@/app/ui/components/numerical-guidance/indicator-list';
-import { resetAllStore, useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
+import { resetAllStore, useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 
 describe('IndicatorList', () => {
   beforeEach(() => {

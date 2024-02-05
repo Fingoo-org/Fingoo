@@ -2,7 +2,7 @@
 import { PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
 import { defaultFetcher } from './fetcher';
-import { onActionHttpError } from '../utils/http/action-http-error';
+import { onActionHttpError } from '../../utils/http/action-http-error';
 
 export const SWRProvider = ({ children }: PropsWithChildren) => {
   return (

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, type PropsWithChildren, useState } from 'react';
-import { workspacePagePreFetching } from '../querys/prefetching';
+import { workspacePagePreFetching } from '../store/querys/prefetching';
 
 export default function MSWComponent({ children }: PropsWithChildren) {
   const [init, setInit] = useState(process.env.NODE_ENV !== 'development');

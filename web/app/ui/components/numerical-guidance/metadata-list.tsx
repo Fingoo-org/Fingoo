@@ -2,7 +2,7 @@
 import React from 'react';
 import List from '../view/molocule/list';
 import { useIndicatoBoardrMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
-import { IndicatorBoardMetadataResponse } from '@/app/querys/numerical-guidance/indicator-board-metadata.query';
+import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import Button from '../../components/view/atom/button';
 import Pending from '../view/molocule/pending';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
