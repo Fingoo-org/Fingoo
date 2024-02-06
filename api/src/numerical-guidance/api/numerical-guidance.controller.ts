@@ -8,8 +8,8 @@ import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-i
 import { GetIndicatorListQuery } from 'src/numerical-guidance/application/query/get-indicator-list/get-indicator-list.query';
 import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateIndicatorBoardMetaDataDto } from './dto/create-indicator-board-meta-data.dto';
-import { CreateIndicatorBoardMetaDataCommand } from '../application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command';
+import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-metadata.dto';
+import { CreateIndicatorBoardMetadataCommand } from '../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command';
 import { Response } from 'express';
 
 @ApiTags('NumericalGuidanceController')
@@ -59,10 +59,10 @@ export class NumericalGuidanceController {
   @ApiOperation({ summary: '지표보드 메타데이터를 생성합니다.' })
   @Post('/indicatorBoardMetaData')
   async createIndicatorBoardMetaData(
-    @Body() createIndicatorBoardMetaDataDto: CreateIndicatorBoardMetaDataDto,
+    @Body() createIndicatorBoardMetaDataDto: CreateIndicatorBoardMetadataDto,
     @Res() res: Response,
   ) {
-    const command = new CreateIndicatorBoardMetaDataCommand(
+    const command = new CreateIndicatorBoardMetadataCommand(
       createIndicatorBoardMetaDataDto.indicatorBoardMetaDataName,
       createIndicatorBoardMetaDataDto.indicatorIds,
       createIndicatorBoardMetaDataDto.memberId,

@@ -2,13 +2,13 @@ import { AggregateRoot } from 'src/utils/building-blocks/domain/aggregate-root';
 import { IndicatorBoardMetaDataCountShouldNotExceedLimitRule } from './rule/IndicatorBoardMetaDataCountShouldNotExceedLimit.rule';
 import { IndicatorBoardMetaDataNameShouldNotEmptyRule } from './rule/IndicatorBoardMetaDataNameShouldNotEmpty.rule';
 
-export class IndicatorBoardMetaData extends AggregateRoot {
+export class IndicatorBoardMetadata extends AggregateRoot {
   readonly indicatorBoardMetaDataName: string;
   readonly indicatorIds: Record<string, string[]>;
   readonly memberId: number;
 
   static createNew(indicatorBoardMetaDataName: string, indicatorIds: Record<string, string[]>, memberId: number) {
-    return new IndicatorBoardMetaData(indicatorBoardMetaDataName, indicatorIds, memberId);
+    return new IndicatorBoardMetadata(indicatorBoardMetaDataName, indicatorIds, memberId);
   }
 
   constructor(indicatorBoardMetaDataName: string, indicatorIds: Record<string, string[]>, memberId: number) {

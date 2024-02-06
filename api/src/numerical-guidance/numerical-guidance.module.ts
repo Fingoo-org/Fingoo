@@ -8,8 +8,8 @@ import { HttpModule } from '@nestjs/axios';
 import { GetIndicatorListQueryHandler } from './application/query/get-indicator-list/get-indicator-list.query.handler';
 import { IndicatorListAdapter } from './infrastructure/adapter/indicator-list/indicator-list.adapter';
 import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
-import { CreateIndicatorBoardMetaDataCommandHandler } from './application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command.handler';
-import { IndicatorBoardMetaDataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-meta-data.persistent.adapter';
+import { CreateIndicatorBoardMetadataCommandHandler } from './application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
+import { IndicatorBoardMetadataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-metadata.persistent.adapter';
 
 @Module({
   imports: [
@@ -26,7 +26,7 @@ import { IndicatorBoardMetaDataPersistentAdapter } from './infrastructure/adapte
     GetFluctuatingIndicatorQueryHandler,
     GetFluctuatingIndicatorWithoutCacheQueryHandler,
     GetIndicatorListQueryHandler,
-    CreateIndicatorBoardMetaDataCommandHandler,
+    CreateIndicatorBoardMetadataCommandHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -45,7 +45,7 @@ import { IndicatorBoardMetaDataPersistentAdapter } from './infrastructure/adapte
     },
     {
       provide: 'CreateIndicatorBoardMetaDataPort',
-      useClass: IndicatorBoardMetaDataPersistentAdapter,
+      useClass: IndicatorBoardMetadataPersistentAdapter,
     },
   ],
 })

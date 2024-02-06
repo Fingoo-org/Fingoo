@@ -2,7 +2,7 @@ import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 't
 import { MemberEntity } from '../../../../../auth/member.entity';
 
 @Entity()
-export class IndicatorBoardMetaDataEntity extends BaseEntity {
+export class IndicatorBoardMetadataEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
