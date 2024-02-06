@@ -14,7 +14,6 @@ export class CreatePostCommandHandler implements ICommandHandler {
     const post = Post.createNew(content);
 
     await this.createPostPort.createPost(post);
-    console.log('husky test');
     return post;
   }
 }
