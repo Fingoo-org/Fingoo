@@ -7,6 +7,10 @@ import { IndicatorBoardMetaDataEntity } from '../../../../infrastructure/adapter
 import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 
+jest.mock('typeorm-transactional', () => ({
+  Transactional: () => () => ({}),
+}));
+
 describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   let environment;
   let indicatorBoardMetaDataPersistentAdapter: IndicatorBoardMetaDataPersistentAdapter;
