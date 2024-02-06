@@ -7,16 +7,14 @@ import { CreatePostPort } from '../../port/persistent/create-post.port';
 @Injectable()
 @CommandHandler(CreatePostCommand)
 export class CreatePostCommandHandler implements ICommandHandler {
-  constructor(
-    @Inject('CreatePostPort') private readonly createPostPort: CreatePostPort,
-  ) {}
+  constructor(@Inject('CreatePostPort') private readonly createPostPort: CreatePostPort) {}
 
   async execute(command: CreatePostCommand) {
     const { content } = command;
     const post = Post.createNew(content);
 
     await this.createPostPort.createPost(post);
-
+    console.log('husky test');
     return post;
   }
 }
