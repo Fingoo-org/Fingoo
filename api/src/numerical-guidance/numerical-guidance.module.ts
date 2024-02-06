@@ -9,7 +9,7 @@ import { GetIndicatorListQueryHandler } from './application/query/get-indicator-
 import { IndicatorListAdapter } from './infrastructure/adapter/indicator-list/indicator-list.adapter';
 import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
 import { CreateIndicatorBoardMetaDataCommandHandler } from './application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command.handler';
-import { IndicatorBoardMetaDataPersistentAdapter } from './infrastructure/adapter/persistent/indicator-board-meta-data.persistent.adapter';
+import { IndicatorBoardMetaDataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-meta-data.persistent.adapter';
 
 @Module({
   imports: [
