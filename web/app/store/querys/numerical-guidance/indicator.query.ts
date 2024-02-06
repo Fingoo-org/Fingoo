@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
-import { fetchIndicatorsValue } from '../fetcher';
+import { defaultFetcher, fetchIndicatorsValue } from '../fetcher';
 
 export type IndicatorInfoResponse = {
   ticker: string;
@@ -25,7 +25,7 @@ export type IndicatorValueItemResponse = {
   value: number;
 };
 
-export const useFetchIndicatorList = () => useSWR<IndicatorListResponse>(API_PATH.indicatorList);
+export const useFetchIndicatorList = () => useSWR<IndicatorListResponse>(API_PATH.indicatorList, defaultFetcher);
 
 export const useFetchIndicatorsValue = (indicators: IndicatorInfoResponse[] | undefined) => {
   const key = indicators ? [API_PATH.indicatorValue, ...indicators.map((indicator) => indicator.ticker)] : null;

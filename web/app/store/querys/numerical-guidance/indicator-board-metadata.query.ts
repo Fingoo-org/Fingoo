@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
-import { deleteFetcher, updateFetcher } from '../fetcher';
+import { defaultFetcher, deleteFetcher, updateFetcher } from '../fetcher';
 import useSWRMutation from 'swr/mutation';
 
 // Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까? (2/2) 분리 했음
@@ -36,7 +36,7 @@ export type AddIndicatorToMetadataRequestBody = {
 };
 
 export const useFetchIndicatorBoardMetadataList = () =>
-  useSWR<IndicatorBoardMetadataListResponse>(API_PATH.metadataList);
+  useSWR<IndicatorBoardMetadataListResponse>(API_PATH.metadataList, defaultFetcher);
 
 export const useCreateIndicatorMetadata = () =>
   useSWRMutation(API_PATH.metadataList, updateFetcher<CreateIndicatorMetadataRequestBody>);
