@@ -1,7 +1,7 @@
 import { IsInt, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInterval } from '../../../../validation/is.interval.validation';
+import { IsInterval } from '../../../../utils/validation/is.interval.validation';
 
 export class GetFluctuatingIndicatorWithoutCacheDto {
   @ApiProperty({

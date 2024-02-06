@@ -1,4 +1,4 @@
-import { BusinessRuleValidationException } from 'src/building-blocks/domain/business-rule-validation.exception';
+import { BusinessRuleValidationException } from 'src/utils/building-blocks/domain/business-rule-validation.exception';
 import { Post } from '../../../domain/post';
 import {
   CONTENT_LIMIT_RULE,

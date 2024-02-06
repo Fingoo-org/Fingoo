@@ -1,4 +1,4 @@
-import { AggregateRoot } from 'src/building-blocks/domain/aggregate-root';
+import { AggregateRoot } from 'src/utils/building-blocks/domain/aggregate-root';
 import { PostContentLengthShouldNotExceedLimitRule } from './rule/PostContentLengthShouldNotExceedLimit.rule';
 
 export class Post extends AggregateRoot {
