@@ -43,7 +43,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     // then
     const expected: string = FluctuatingIndicatorDto.create(testData).items.item[0]['srtnCd'];
     expect(result).toEqual(expected);
-  });
+  }, 10000);
 
   it('KOSDAQ 종목의 지표 데이터를 요청할 경우, 올바르게 데이터를 가져오는지 확인하기', async () => {
     // given
@@ -62,5 +62,5 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     // then
     const expected: string = 'KOSDAQ';
     expect(result).toEqual(expected);
-  });
+  }, 10000);
 });
