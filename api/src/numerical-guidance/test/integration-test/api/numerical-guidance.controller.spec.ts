@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import { NumericalGuidanceController } from '../../../infrastructure/api/numerical-guidance.controller';
+import { NumericalGuidanceController } from '../../../api/numerical-guidance.controller';
 import { GetFluctuatingIndicatorQueryHandler } from '../../../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query.handler';
 import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';

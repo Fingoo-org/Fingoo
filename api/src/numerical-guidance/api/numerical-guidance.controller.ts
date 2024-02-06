@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { GetFluctuatingIndicatorQuery } from '../../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
-import { FluctuatingIndicatorDto } from '../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { GetFluctuatingIndicatorQuery } from '../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
+import { FluctuatingIndicatorDto } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorDto } from './dto/get-fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
 import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
@@ -9,7 +9,7 @@ import { GetIndicatorListQuery } from 'src/numerical-guidance/application/query/
 import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateIndicatorBoardMetaDataDto } from './dto/create-indicator-board-meta-data.dto';
-import { CreateIndicatorBoardMetaDataCommand } from '../../application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command';
+import { CreateIndicatorBoardMetaDataCommand } from '../application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command';
 import { Response } from 'express';
 
 @ApiTags('NumericalGuidanceController')

@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { CommunityController } from 'src/community/infrastructure/api/community.controller';
+import { CommunityController } from 'src/community/api/community.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GetPostsQueryHandler } from 'src/community/application/query/get-posts/get-posts.query.handler';
 import * as request from 'supertest';
