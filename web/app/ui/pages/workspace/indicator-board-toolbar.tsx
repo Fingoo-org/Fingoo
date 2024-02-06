@@ -1,8 +1,8 @@
 'use client';
 import { Tab } from '@headlessui/react';
-import MetadataTabPanel from './metadata-tab-panel';
-import IndicatorTabPanel from './indicator-tab-panel';
-import { useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
+import MetadataListContainer from './metadata-list-container';
+import IndicatorListContainer from './indicator-list-container';
+import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -19,10 +19,10 @@ export default function IndicatorBoardToolbar() {
         </Tab.List>
         <Tab.Panels className="md:h-96">
           <Tab.Panel>
-            <IndicatorTabPanel />
+            <IndicatorListContainer />
           </Tab.Panel>
           <Tab.Panel>
-            <MetadataTabPanel />
+            <MetadataListContainer />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

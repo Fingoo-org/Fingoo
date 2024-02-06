@@ -1,10 +1,10 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { SWRProviderWithoutCache } from '@/app/querys/swr-provider';
-import { resetMockDB } from '@/app/mocks/mock-db';
-import { resetAllStore, useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
-import { useSelectedIndicatorBoardMetadata } from '@/app/hooks/use-selected-indicator-board-metadata.hook';
-import { useIndicatoBoardrMetadataList } from '@/app/hooks/use-indicator-board-metadata-list.hook';
-import { useIndicatorList } from '@/app/hooks/use-indicator-list.hook';
+import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
+import { resetMockDB } from '@/app/mocks/db.mock';
+import { resetAllStore, useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
+import { useIndicatoBoardrMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
+import { useIndicatorList } from '@/app/business/hooks/use-indicator-list.hook';
 
 const wrapper = SWRProviderWithoutCache;
 

@@ -2,7 +2,7 @@ import {
   IndicatorValueItemResponse,
   IndicatorValueResponse,
   IndicatorsValueResponse,
-} from '../querys/numerical-guidance/indicator.query';
+} from '../../store/querys/numerical-guidance/indicator.query';
 
 type formattedItem = {
   [key: string]: {

@@ -1,8 +1,8 @@
 import { HttpResponse, http, delay } from 'msw';
-import { API_PATH } from '../querys/api-path';
-import { mockDB } from './mock-db';
-import { AddIndicatorToMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
-import { CreateIndicatorMetadataRequestBody } from '../querys/numerical-guidance/indicator-board-metadata.query';
+import { API_PATH } from '../store/querys/api-path';
+import { mockDB } from './db.mock';
+import { AddIndicatorToMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
+import { CreateIndicatorMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
 
 const delayForDevelopment = async (ms = 1000) => {
   if (process.env.NODE_ENV === 'development') {

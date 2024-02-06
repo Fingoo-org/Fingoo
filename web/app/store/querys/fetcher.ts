@@ -1,6 +1,6 @@
 import { type Fetcher } from 'swr';
 import axios, { AxiosResponse } from 'axios';
-import { httpErrorHandler } from '../utils/http/http-error-handler';
+import { httpErrorHandler } from '../../utils/http/http-error-handler';
 
 const instance = axios.create();
 

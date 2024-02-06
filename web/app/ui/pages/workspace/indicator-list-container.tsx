@@ -2,7 +2,7 @@ import { Disclosure, Transition } from '@headlessui/react';
 import IndicatorList from '../../components/numerical-guidance/indicator-list';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 
-export default function IndicatorTabPanel() {
+export default function IndicatorListContainer() {
   return (
     <div>
       <Disclosure>

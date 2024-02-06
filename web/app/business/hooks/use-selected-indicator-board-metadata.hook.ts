@@ -4,8 +4,8 @@ import {
   useAddIndicatorToMetadata,
   useDeleteIndicatorFromMetadata,
   useFetchIndicatorBoardMetadataList,
-} from '../querys/numerical-guidance/indicator-board-metadata.query';
-import { useNumericalGuidanceStore } from '../stores/numerical-guidance.store';
+} from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
+import { useNumericalGuidanceStore } from '../../store/stores/numerical-guidance.store';
 
 export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);

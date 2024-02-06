@@ -1,12 +1,12 @@
-import { useIndicatoBoardrMetadataList } from '@/app/hooks/use-indicator-board-metadata-list.hook';
+import { useIndicatoBoardrMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
 import { renderHook, waitFor } from '@testing-library/react';
-import { server } from '@/app/mocks/server';
+import { server } from '@/app/mocks/server.mock';
 import { HttpResponse, http } from 'msw';
-import { API_PATH } from '@/app/querys/api-path';
-import { resetAllStore, useNumericalGuidanceStore } from '@/app/stores/numerical-guidance.store';
+import { API_PATH } from '@/app/store/querys/api-path';
+import { resetAllStore, useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 import { act } from 'react-dom/test-utils';
-import { SWRProviderWithoutCache } from '@/app/querys/swr-provider';
-import { resetMockDB } from '@/app/mocks/mock-db';
+import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
+import { resetMockDB } from '@/app/mocks/db.mock';
 
 const wrapper = SWRProviderWithoutCache;
 
