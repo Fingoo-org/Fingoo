@@ -1,4 +1,4 @@
-import { AggregateRoot } from 'src/utils/building-blocks/domain/aggregate-root';
+import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { IndicatorBoardMetaDataCountShouldNotExceedLimitRule } from './rule/IndicatorBoardMetaDataCountShouldNotExceedLimit.rule';
 import { IndicatorBoardMetaDataNameShouldNotEmptyRule } from './rule/IndicatorBoardMetaDataNameShouldNotEmpty.rule';
 

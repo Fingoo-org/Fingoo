@@ -1,4 +1,4 @@
-import { BusinessRule } from 'src/utils/building-blocks/domain/business.rule';
+import { BusinessRule } from 'src/utils/domain/business.rule';
 
 export const CONTENT_LIMIT_RULE = 5000;
 

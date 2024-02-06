@@ -1,6 +1,6 @@
 import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
 import { IndicatorBoardMetaDataCountShouldNotExceedLimitRule } from '../../../domain/rule/IndicatorBoardMetaDataCountShouldNotExceedLimit.rule';
-import { BusinessRuleValidationException } from '../../../../utils/building-blocks/domain/business-rule-validation.exception';
+import { BusinessRuleValidationException } from '../../../../utils/domain/business-rule-validation.exception';
 import { IndicatorBoardMetaDataNameShouldNotEmptyRule } from '../../../domain/rule/IndicatorBoardMetaDataNameShouldNotEmpty.rule';
 
 describe('지표보드 메타데이터', () => {
