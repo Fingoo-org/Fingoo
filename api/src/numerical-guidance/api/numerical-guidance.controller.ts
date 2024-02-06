@@ -58,7 +58,7 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터를 생성합니다.' })
-  @Post('/indicator-board-metaData')
+  @Post('/indicator-board-metadata')
   async createIndicatorBoardMetaData(
     @Body() createIndicatorBoardMetaDataDto: CreateIndicatorBoardMetadataDto,
     @Res() res: Response,
