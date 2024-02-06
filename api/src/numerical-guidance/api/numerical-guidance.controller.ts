@@ -50,14 +50,15 @@ export class NumericalGuidanceController {
     return this.queryBus.execute(query);
   }
 
-  @Get('/get-indicator-list')
+  @ApiOperation({ summary: '지표 리스트를 불러옵니다.' })
+  @Get('/indicator-list')
   async getIndicatorList(): Promise<IndicatorListDto> {
     const query = new GetIndicatorListQuery();
     return this.queryBus.execute(query);
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터를 생성합니다.' })
-  @Post('/indicatorBoardMetaData')
+  @Post('/indicator-board-metaData')
   async createIndicatorBoardMetaData(
     @Body() createIndicatorBoardMetaDataDto: CreateIndicatorBoardMetadataDto,
     @Res() res: Response,
