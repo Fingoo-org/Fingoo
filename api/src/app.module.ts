@@ -11,6 +11,7 @@ import { MyRedisModule } from './redis/redis.module';
 import { NumericalGuidanceModule } from './numerical-guidance/numerical-guidance.module';
 import { RedisConfigService } from './config/redis.config.service';
 import { AuthModule } from './auth/auth.module';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 
 @Module({
   imports: [
@@ -20,6 +21,12 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useClass: TypeOrmConfigService,
+      async dataSourceFactory(options) {
+        if (!options) {
+          throw new Error('Invalid options passed');
+        }
+        return addTransactionalDataSource(new DataSource(options));
+      },
     }),
     RedisModule.forRootAsync({
       imports: [ConfigModule],
