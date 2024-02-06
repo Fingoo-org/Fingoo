@@ -94,7 +94,7 @@ describe('NumericalGuidanceController', () => {
 
   it('/post 지표보드 메타데이터를 생성한다.', () => {
     return request(app.getHttpServer())
-      .post('/numerical-guidance/indicatorBoardMetaData')
+      .post('/numerical-guidance/indicator-board-metadata')
       .send({
         indicatorBoardMetaDataName: '메타데이터',
         indicatorIds: { key1: ['1', '2', '3'] },
@@ -106,7 +106,7 @@ describe('NumericalGuidanceController', () => {
 
   it('지표보드 메타데이터를 생성할 때 사용자가 유효하지 않는 값 전송한다.', () => {
     return request(app.getHttpServer())
-      .post('/numerical-guidance/indicatorBoardMetaData')
+      .post('/numerical-guidance/indicator-board-metadata')
       .send({
         indicatorBoardMetaDataName: '메타데이터',
         indicatorIds: { key1: ['1', '2', '3', '4', '5', '6'] },
