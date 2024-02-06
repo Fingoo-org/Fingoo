@@ -19,10 +19,7 @@ export class CommunityController {
 
   @Post('/post')
   async createPost(@Body() createPostDto: CreatePostDto, @Res() res: Response) {
-    const command = new CreatePostCommand(
-      createPostDto.content,
-      crypto.randomUUID(),
-    );
+    const command = new CreatePostCommand(createPostDto.content, crypto.randomUUID());
     await this.commandBus.execute(command);
     res.status(HttpStatus.CREATED).send();
   }

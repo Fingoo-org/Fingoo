@@ -21,9 +21,7 @@ const testData = [
 ];
 
 @Injectable()
-export class CommunityPersistentAdapter
-  implements CreatePostPort, LoadPostsPort
-{
+export class CommunityPersistentAdapter implements CreatePostPort, LoadPostsPort {
   //mock
   async createPost(post: Post): Promise<boolean> {
     //mapper 함수로 처리해야함

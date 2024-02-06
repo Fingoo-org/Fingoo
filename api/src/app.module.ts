@@ -4,12 +4,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CommunityModule } from './community/community.module';
 import { DataSource } from 'typeorm';
-import { TypeOrmConfigService } from './config/typeorm.config.service';
+import { TypeOrmConfigService } from './utils/config/typeorm.config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { MyRedisModule } from './redis/redis.module';
 import { NumericalGuidanceModule } from './numerical-guidance/numerical-guidance.module';
-import { RedisConfigService } from './config/redis.config.service';
+import { RedisConfigService } from './utils/config/redis.config.service';
 import { AuthModule } from './auth/auth.module';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 

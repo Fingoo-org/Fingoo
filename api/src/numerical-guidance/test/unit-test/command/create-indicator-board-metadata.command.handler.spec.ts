@@ -1,24 +1,24 @@
-import { CreateIndicatorBoardMetaDataCommandHandler } from '../../../application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command.handler';
-import { CreateIndicatorBoardMetaDataPort } from '../../../application/port/persistent/create-indicator-board-meta-data.port';
+import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
+import { CreateIndicatorBoardMetadataPort } from '../../../application/port/persistent/create-indicator-board-metadata.port';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
-import { CreateIndicatorBoardMetaDataCommand } from '../../../application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command';
-import { IndicatorBoardMetaData } from '../../../domain/indicator-board-meta-data';
+import { CreateIndicatorBoardMetadataCommand } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command';
+import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
 }));
 
 describe('CreateIndicatorBoardMetaDataCommandHandler', () => {
-  let createIndicatorBoardMetaDataCommandHandler: CreateIndicatorBoardMetaDataCommandHandler;
-  let createIndicatorBoardMetaDataPort: CreateIndicatorBoardMetaDataPort;
+  let createIndicatorBoardMetaDataCommandHandler: CreateIndicatorBoardMetadataCommandHandler;
+  let createIndicatorBoardMetaDataPort: CreateIndicatorBoardMetadataPort;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [CqrsModule, ConfigModule.forRoot()],
       providers: [
-        CreateIndicatorBoardMetaDataCommandHandler,
+        CreateIndicatorBoardMetadataCommandHandler,
         {
           provide: 'CreateIndicatorBoardMetaDataPort',
           useValue: {
@@ -28,20 +28,20 @@ describe('CreateIndicatorBoardMetaDataCommandHandler', () => {
       ],
     }).compile();
 
-    createIndicatorBoardMetaDataCommandHandler = module.get(CreateIndicatorBoardMetaDataCommandHandler);
+    createIndicatorBoardMetaDataCommandHandler = module.get(CreateIndicatorBoardMetadataCommandHandler);
     createIndicatorBoardMetaDataPort = module.get('CreateIndicatorBoardMetaDataPort');
   }, 10000);
 
   it('지표보드 메타데이터를 생성한다.', async () => {
     //given
-    const command: CreateIndicatorBoardMetaDataCommand = new CreateIndicatorBoardMetaDataCommand(
+    const command: CreateIndicatorBoardMetadataCommand = new CreateIndicatorBoardMetadataCommand(
       '메타데이터',
       { key1: ['1', '2', '3'] },
       1,
     );
 
     //when
-    const indicatorBoardMetaData: IndicatorBoardMetaData =
+    const indicatorBoardMetaData: IndicatorBoardMetadata =
       await createIndicatorBoardMetaDataCommandHandler.execute(command);
 
     //then

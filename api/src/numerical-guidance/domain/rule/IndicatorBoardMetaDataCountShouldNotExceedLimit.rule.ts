@@ -1,4 +1,4 @@
-import { BusinessRule } from '../../../building-blocks/domain/business.rule';
+import { BusinessRule } from '../../../utils/domain/business.rule';
 
 const INDICATOR_KEY_MAXIMUM = 5;
 

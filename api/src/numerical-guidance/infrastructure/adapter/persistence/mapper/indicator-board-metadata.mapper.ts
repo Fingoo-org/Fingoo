@@ -1,10 +1,10 @@
 import { MemberEntity } from '../../../../../auth/member.entity';
-import { IndicatorBoardMetaDataEntity } from '../entity/indicator-board-meta-data.entity';
-import { IndicatorBoardMetaData } from '../../../../domain/indicator-board-meta-data';
+import { IndicatorBoardMetadataEntity } from '../entity/indicator-board-metadata.entity';
+import { IndicatorBoardMetadata } from '../../../../domain/indicator-board-metadata';
 
-export class IndicatorBoardMetaDataMapper {
-  static mapDomainToEntity(indicatorBoardMetaData: IndicatorBoardMetaData) {
-    const indicatorBoardMetaDataEntity: IndicatorBoardMetaDataEntity = new IndicatorBoardMetaDataEntity();
+export class IndicatorBoardMetadataMapper {
+  static mapDomainToEntity(indicatorBoardMetaData: IndicatorBoardMetadata) {
+    const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity = new IndicatorBoardMetadataEntity();
     indicatorBoardMetaDataEntity.indicatorBoardMetaDataName = indicatorBoardMetaData.indicatorBoardMetaDataName;
     indicatorBoardMetaDataEntity.indicators = indicatorBoardMetaData.indicatorIds;
     indicatorBoardMetaDataEntity.member = MemberEntity.findById(indicatorBoardMetaData.memberId);

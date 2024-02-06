@@ -1,6 +1,6 @@
 import { IsInt, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { IsInterval } from '../../../../validation/is.interval.validation';
+import { IsInterval } from '../../../utils/validation/is.interval.validation';
 import { ApiProperty } from '@nestjs/swagger';
 
 type Interval = 'day' | 'week' | 'month' | 'year';

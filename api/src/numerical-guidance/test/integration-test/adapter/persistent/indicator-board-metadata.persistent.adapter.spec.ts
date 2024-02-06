@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { IndicatorBoardMetaDataPersistentAdapter } from '../../../../infrastructure/adapter/persistent/indicator-board-meta-data.persistent.adapter';
+import { IndicatorBoardMetadataPersistentAdapter } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata.persistent.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { IndicatorBoardMetaData } from '../../../../domain/indicator-board-meta-data';
-import { IndicatorBoardMetaDataEntity } from '../../../../infrastructure/adapter/persistent/entity/indicator-board-meta-data.entity';
+import { IndicatorBoardMetadata } from '../../../../domain/indicator-board-metadata';
+import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/entity/indicator-board-metadata.entity';
 import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 
@@ -13,7 +13,7 @@ jest.mock('typeorm-transactional', () => ({
 
 describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   let environment;
-  let indicatorBoardMetaDataPersistentAdapter: IndicatorBoardMetaDataPersistentAdapter;
+  let indicatorBoardMetaDataPersistentAdapter: IndicatorBoardMetadataPersistentAdapter;
 
   beforeAll(async () => {
     environment = await new PostgreSqlContainer().start();
@@ -35,14 +35,14 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
             username: environment.getUsername(),
             password: environment.getPassword(),
             database: environment.getDatabase(),
-            entities: [IndicatorBoardMetaDataEntity, MemberEntity],
+            entities: [IndicatorBoardMetadataEntity, MemberEntity],
             synchronize: true,
           }),
         }),
       ],
-      providers: [IndicatorBoardMetaDataPersistentAdapter],
+      providers: [IndicatorBoardMetadataPersistentAdapter],
     }).compile();
-    indicatorBoardMetaDataPersistentAdapter = module.get(IndicatorBoardMetaDataPersistentAdapter);
+    indicatorBoardMetaDataPersistentAdapter = module.get(IndicatorBoardMetadataPersistentAdapter);
   }, 20000);
 
   afterAll(async () => {
@@ -53,16 +53,17 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     // given
     const member: MemberEntity = new MemberEntity();
     await member.save();
-    const indicatorBoardMetaData: IndicatorBoardMetaData = IndicatorBoardMetaData.createNew(
+    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew(
       '메타 데이터',
       { key1: ['1', '2', '3'] },
       member.id,
     );
+    console.log('husky test');
 
     // when
     const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(indicatorBoardMetaData);
-    const resultIndicatorBoardMetaDataEntity: IndicatorBoardMetaDataEntity =
-      await IndicatorBoardMetaDataEntity.findById(resultId);
+    const resultIndicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
+      await IndicatorBoardMetadataEntity.findById(resultId);
 
     // then
     expect(resultIndicatorBoardMetaDataEntity.indicatorBoardMetaDataName).toEqual('메타 데이터');

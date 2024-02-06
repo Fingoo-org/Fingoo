@@ -1,6 +1,6 @@
-import { IndicatorBoardMetaData } from '../../../domain/indicator-board-meta-data';
+import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
 import { IndicatorBoardMetaDataCountShouldNotExceedLimitRule } from '../../../domain/rule/IndicatorBoardMetaDataCountShouldNotExceedLimit.rule';
-import { BusinessRuleValidationException } from '../../../../building-blocks/domain/business-rule-validation.exception';
+import { BusinessRuleValidationException } from '../../../../utils/domain/business-rule-validation.exception';
 import { IndicatorBoardMetaDataNameShouldNotEmptyRule } from '../../../domain/rule/IndicatorBoardMetaDataNameShouldNotEmpty.rule';
 
 describe('지표보드 메타데이터', () => {
@@ -8,10 +8,10 @@ describe('지표보드 메타데이터', () => {
     // given
 
     // when
-    const indicatorBoardMetaData = IndicatorBoardMetaData.createNew('메타 데이터', { key1: ['1', '2', '3'] }, 1);
+    const indicatorBoardMetaData = IndicatorBoardMetadata.createNew('메타 데이터', { key1: ['1', '2', '3'] }, 1);
 
     // then
-    const expected = new IndicatorBoardMetaData('메타 데이터', { key1: ['1', '2', '3'] }, 1);
+    const expected = new IndicatorBoardMetadata('메타 데이터', { key1: ['1', '2', '3'] }, 1);
     expect(expected).toEqual(indicatorBoardMetaData);
   });
 
@@ -21,7 +21,7 @@ describe('지표보드 메타데이터', () => {
 
     //when
     function createPost() {
-      IndicatorBoardMetaData.createNew('메타 데이터', content, 1);
+      IndicatorBoardMetadata.createNew('메타 데이터', content, 1);
     }
     const rule = new IndicatorBoardMetaDataCountShouldNotExceedLimitRule(content);
 
@@ -36,7 +36,7 @@ describe('지표보드 메타데이터', () => {
 
     //when
     function createPost() {
-      IndicatorBoardMetaData.createNew(content, { key1: ['1', '2', '3', '4', '5'] }, 1);
+      IndicatorBoardMetadata.createNew(content, { key1: ['1', '2', '3', '4', '5'] }, 1);
     }
     const rule = new IndicatorBoardMetaDataNameShouldNotEmptyRule(content);
 
@@ -51,7 +51,7 @@ describe('지표보드 메타데이터', () => {
 
     //when
     function createPost() {
-      IndicatorBoardMetaData.createNew(content, { key1: ['1', '2', '3', '4', '5'] }, 1);
+      IndicatorBoardMetadata.createNew(content, { key1: ['1', '2', '3', '4', '5'] }, 1);
     }
     const rule = new IndicatorBoardMetaDataNameShouldNotEmptyRule(content);
 
