@@ -29,6 +29,7 @@
     "react-dom": "^18",
     "react-window": "^1.8.10",
     "swr": "^2.2.4",
+    "tailwind-merge": "^2.2.1",
     "undici": "^5.28.2",
     "zustand": "^4.5.0"
   },
