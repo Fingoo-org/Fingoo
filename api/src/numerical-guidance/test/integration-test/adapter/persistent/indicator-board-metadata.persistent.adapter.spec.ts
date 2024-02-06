@@ -58,6 +58,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       { key1: ['1', '2', '3'] },
       member.id,
     );
+    console.log('husky test');
 
     // when
     const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(indicatorBoardMetaData);
