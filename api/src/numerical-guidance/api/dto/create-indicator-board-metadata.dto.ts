@@ -10,13 +10,17 @@ export class CreateIndicatorBoardMetadataDto {
   indicatorBoardMetaDataName: string;
 
   @ApiProperty({
-    example: '1',
-    description: '지표의 식별값',
+    example: '{"key1": ["1", "2", "3", "4", "5"]}',
+    description: '지표의 식별값들',
   })
   @IsObject()
   @IsNotEmpty()
   readonly indicatorIds: Record<string, string[]>;
 
+  @ApiProperty({
+    example: '1',
+    description: '요청 유저의 pk',
+  })
   @IsInt()
   readonly memberId: number;
 }
