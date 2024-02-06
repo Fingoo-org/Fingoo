@@ -6,6 +6,10 @@ import { ConfigModule } from '@nestjs/config';
 import { CreateIndicatorBoardMetaDataCommand } from '../../../application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command';
 import { IndicatorBoardMetaData } from '../../../domain/indicator-board-meta-data';
 
+jest.mock('typeorm-transactional', () => ({
+  Transactional: () => () => ({}),
+}));
+
 describe('CreateIndicatorBoardMetaDataCommandHandler', () => {
   let createIndicatorBoardMetaDataCommandHandler: CreateIndicatorBoardMetaDataCommandHandler;
   let createIndicatorBoardMetaDataPort: CreateIndicatorBoardMetaDataPort;

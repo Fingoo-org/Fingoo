@@ -10,6 +10,10 @@ import { CreateIndicatorBoardMetaDataCommandHandler } from '../../../application
 
 const testData = fluctuatingIndicatorTestData;
 
+jest.mock('typeorm-transactional', () => ({
+  Transactional: () => () => ({}),
+}));
+
 describe('NumericalGuidanceController', () => {
   let app: INestApplication;
 
