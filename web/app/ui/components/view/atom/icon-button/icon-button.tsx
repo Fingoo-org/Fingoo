@@ -33,6 +33,8 @@ export default function IconButton({
         iconColorStyles?.borderColor,
         iconColorStyles?.ringColor,
         iconColorStyles?.textColor,
+        iconColorStyles?.hoverBgColor,
+        iconColorStyles?.hoverTextColor,
         iconShapeStyles?.border,
         iconShapeStyles?.ring,
         iconShapeStyles?.rounded,

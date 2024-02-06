@@ -1,4 +1,4 @@
-import { Color, IconVariant, Size, getColorClassNames } from '@/app/utils/style';
+import { Color, IconVariant, Size, colorPalette, getColorClassNames } from '@/app/utils/style';
 import { twMerge } from 'tailwind-merge';
 
 export const Sizes: { [key: string]: Size } = {
@@ -99,13 +99,17 @@ export const getIconColors = (variant: IconVariant, color: Color) => {
         bgColor: '',
         borderColor: '',
         ringColor: '',
+        hoverTextColor: '',
+        hoverBgColor: '',
       };
     case 'outlined':
       return {
-        textColor: color ? getColorClassNames(color, 500).textColor : 'text-tremor-brand dark:text-dark-tremor-brand',
+        textColor: getColorClassNames(color, colorPalette.text).textColor,
         bgColor: twMerge(getColorClassNames('white').bgColor, 'bg-opacity-20'),
-        borderColor: getColorClassNames(color, 500).borderColor,
-        ringColor: twMerge(getColorClassNames(color, 500).ringColor, 'ring-opacity-40'),
+        borderColor: getColorClassNames(color, colorPalette.background).borderColor,
+        ringColor: twMerge(getColorClassNames(color, colorPalette.ring).ringColor, 'ring-opacity-40'),
+        hoverTextColor: getColorClassNames(color, colorPalette.text).hoverTextColor,
+        hoverBgColor: twMerge(getColorClassNames(color, colorPalette.background).hoverBgColor, 'hover:bg-opacity-20'),
       };
   }
 };
