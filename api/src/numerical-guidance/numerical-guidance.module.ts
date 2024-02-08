@@ -10,6 +10,7 @@ import { IndicatorListAdapter } from './infrastructure/adapter/persistent/indica
 import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
 import { CreateIndicatorBoardMetaDataCommandHandler } from './application/command/create-indicator-board-meta-data/create-indicator-board-meta-data.command.handler';
 import { IndicatorBoardMetaDataPersistentAdapter } from './infrastructure/adapter/persistent/indicator-board-meta-data.persistent.adapter';
+import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-indicator-board-meta-data/get-indicator-board-meta-data.query.handler';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { IndicatorBoardMetaDataPersistentAdapter } from './infrastructure/adapte
     GetFluctuatingIndicatorWithoutCacheQueryHandler,
     GetIndicatorListQueryHandler,
     CreateIndicatorBoardMetaDataCommandHandler,
+    GetIndicatorBoardMetaDataQueryHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -45,6 +47,10 @@ import { IndicatorBoardMetaDataPersistentAdapter } from './infrastructure/adapte
     },
     {
       provide: 'CreateIndicatorBoardMetaDataPort',
+      useClass: IndicatorBoardMetaDataPersistentAdapter,
+    },
+    {
+      provide: 'LoadIndicatorBoardMetaDataPort',
       useClass: IndicatorBoardMetaDataPersistentAdapter,
     },
   ],

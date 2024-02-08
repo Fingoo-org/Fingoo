@@ -16,7 +16,7 @@ export class GetIndicatorBoardMetaDataQueryHandler implements IQueryHandler {
     const id = getIndicatorBoardMetaDataQuery.id;
 
     const indicatorBoardMetaData: IndicatorBoardMetaData =
-      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetaDataPort(id);
+      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetaData(id);
 
     return indicatorBoardMetaData;
   }

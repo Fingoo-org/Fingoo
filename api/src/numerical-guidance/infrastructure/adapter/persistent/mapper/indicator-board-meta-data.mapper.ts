@@ -10,4 +10,13 @@ export class IndicatorBoardMetaDataMapper {
     indicatorBoardMetaDataEntity.member = MemberEntity.findById(indicatorBoardMetaData.memberId);
     return indicatorBoardMetaDataEntity;
   }
+
+  static async mapEntityToDomain(entity: IndicatorBoardMetaDataEntity) {
+    const indicatorBoardMetaData = IndicatorBoardMetaData.createNew(
+      entity.indicatorBoardMetaDataName,
+      entity.indicators,
+      (await entity.member).id,
+    );
+    return indicatorBoardMetaData;
+  }
 }
