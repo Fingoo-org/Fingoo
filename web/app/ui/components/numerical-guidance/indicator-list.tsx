@@ -23,9 +23,10 @@ export default React.memo(function IndicatorList() {
         onDeSelect={handleItemDeSelect}
         key={indicator.ticker}
         style={style}
-        content={indicator.name}
         selected={isSelected}
-      />
+      >
+        {indicator.name}
+      </SelectableListItem>
     );
   };
 

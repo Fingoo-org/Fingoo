@@ -30,12 +30,9 @@ export default React.memo(function MetadataList() {
     const handleSelect = () => selectMetadataById(item.id);
 
     return (
-      <SelectableListItem
-        key={item.id}
-        content={item.name}
-        selected={selectedMetadata?.id === item.id}
-        onSelect={handleSelect}
-      />
+      <SelectableListItem key={item.id} selected={selectedMetadata?.id === item.id} onSelect={handleSelect}>
+        {item.name}
+      </SelectableListItem>
     );
   };
 
