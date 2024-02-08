@@ -7,6 +7,7 @@ import React from 'react';
 
 export default function DialogMenu() {
   const isOpen = useDialogMenuStore((state) => state.isOpen);
+  const position = useDialogMenuStore((state) => state.position);
   const action = useDialogMenuStore((state) => state.action);
 
   return (
@@ -28,7 +29,7 @@ export default function DialogMenu() {
             }}
             className="fixed top-0 left-0 w-screen h-screen"
           />
-          <div className="fixed top-16 w-56">
+          <div style={{ left: position.x, top: position.y }} className="fixed w-56">
             <div
               role="dialog"
               className="relative bg-white rounded-lg shadow-lg overflow-hidden pointer-events-auto w-32 mt-2 origin-top-left ring-1 ring-black/5 focus:outline-none"

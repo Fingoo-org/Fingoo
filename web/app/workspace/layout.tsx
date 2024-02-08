@@ -1,4 +1,3 @@
-import MetadataMenu from '../ui/components/numerical-guidance/metadata-menu';
 import DialogMenu from '../ui/components/view/molocule/dialog-menu/dialog-menu';
 import SideNav from '../ui/pages/workspace/sidenav';
 export default function Layout({ children }: { children: React.ReactNode }) {
