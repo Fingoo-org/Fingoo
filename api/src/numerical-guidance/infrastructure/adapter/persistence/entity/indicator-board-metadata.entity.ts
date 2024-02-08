@@ -1,10 +1,10 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MemberEntity } from '../../../../../auth/member.entity';
 
 @Entity()
-export class IndicatorBoardMetadataEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class IndicatorBoardMetadataEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   indicatorBoardMetaDataName: string;
@@ -13,11 +13,5 @@ export class IndicatorBoardMetadataEntity extends BaseEntity {
   indicators: Record<string, string[]>;
 
   @ManyToOne(() => MemberEntity, { eager: false })
-  member: Promise<MemberEntity>;
-
-  static findById(id: number) {
-    return this.createQueryBuilder('indicatorBoardMetaDataEntity')
-      .where('indicatorBoardMetaDataEntity.id = :id', { id })
-      .getOne();
-  }
+  member: MemberEntity;
 }

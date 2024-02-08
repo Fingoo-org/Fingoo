@@ -6,6 +6,7 @@ import { IndicatorBoardMetadata } from '../../../../domain/indicator-board-metad
 import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/entity/indicator-board-metadata.entity';
 import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
+import { AuthService } from '../../../../../auth/auth.service';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -23,6 +24,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
         ConfigModule.forRoot({
           isGlobal: true,
         }),
+        TypeOrmModule.forFeature([MemberEntity, IndicatorBoardMetadataEntity]),
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           inject: [ConfigService],
@@ -40,7 +42,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
           }),
         }),
       ],
-      providers: [IndicatorBoardMetadataPersistentAdapter],
+      providers: [IndicatorBoardMetadataPersistentAdapter, AuthService],
     }).compile();
     indicatorBoardMetaDataPersistentAdapter = module.get(IndicatorBoardMetadataPersistentAdapter);
   }, 20000);
@@ -51,19 +53,18 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
   it('지표보드 메타데이터 생성 확인', async () => {
     // given
-    const member: MemberEntity = new MemberEntity();
-    await member.save();
-    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew(
-      '메타 데이터',
-      { key1: ['1', '2', '3'] },
-      member.id,
-    );
-    console.log('husky test');
+    const memberId = 1;
+    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터', {
+      key1: ['1', '2', '3'],
+    });
 
     // when
-    const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(indicatorBoardMetaData);
+    const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(
+      indicatorBoardMetaData,
+      memberId,
+    );
     const resultIndicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
-      await IndicatorBoardMetadataEntity.findById(resultId);
+      await indicatorBoardMetaDataPersistentAdapter.findOneBy(resultId);
 
     // then
     expect(resultIndicatorBoardMetaDataEntity.indicatorBoardMetaDataName).toEqual('메타 데이터');

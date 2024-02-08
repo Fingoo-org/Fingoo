@@ -10,6 +10,10 @@ import { IndicatorListAdapter } from './infrastructure/adapter/indicator-list/in
 import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
 import { CreateIndicatorBoardMetadataCommandHandler } from './application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-metadata.persistent.adapter';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { IndicatorBoardMetadataEntity } from './infrastructure/adapter/persistence/entity/indicator-board-metadata.entity';
+import { AuthService } from '../auth/auth.service';
+import { MemberEntity } from '../auth/member.entity';
 
 @Module({
   imports: [
@@ -20,9 +24,11 @@ import { IndicatorBoardMetadataPersistentAdapter } from './infrastructure/adapte
         maxRedirects: 5,
       }),
     }),
+    TypeOrmModule.forFeature([IndicatorBoardMetadataEntity, MemberEntity]),
   ],
   controllers: [NumericalGuidanceController],
   providers: [
+    AuthService,
     GetFluctuatingIndicatorQueryHandler,
     GetFluctuatingIndicatorWithoutCacheQueryHandler,
     GetIndicatorListQueryHandler,
