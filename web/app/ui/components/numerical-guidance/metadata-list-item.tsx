@@ -11,13 +11,13 @@ type MetadataListItemProps = {
 };
 
 export default function MetadataListItem({ item }: MetadataListItemProps) {
+  // Refactor: hook으로 교체 필요-> ref를 hook 안으로 넣어야함
   const iconButtonRef = useRef<HTMLButtonElement>(null);
   const action = useDialogMenuStore((state) => state.action);
   const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
 
   const handleSelect = () => {
     selectMetadataById(item.id);
-    console.log(iconButtonRef.current?.getBoundingClientRect());
   };
 
   const handleIconButton = () => {
