@@ -16,7 +16,6 @@ export class IndicatorBoardMetaDataPersistentAdapter
     if (indicatorBoardMetaDataEntity.member instanceof Promise) {
       await indicatorBoardMetaDataEntity.member;
     }
-    console.log(indicatorBoardMetaDataEntity);
     await indicatorBoardMetaDataEntity.save();
     return indicatorBoardMetaDataEntity.id;
   }
@@ -24,7 +23,6 @@ export class IndicatorBoardMetaDataPersistentAdapter
   async loadIndicatorBoardMetaData(id: number): Promise<IndicatorBoardMetaData> {
     const indicatorMetaDataEintity = await IndicatorBoardMetaDataEntity.findById(id);
     const indicatorBoardMetaData = await IndicatorBoardMetaDataMapper.mapEntityToDomain(indicatorMetaDataEintity);
-    console.log(indicatorBoardMetaData);
     return indicatorBoardMetaData;
   }
 }
