@@ -27,7 +27,7 @@ export default React.memo(function MetadataList() {
     }
   };
 
-  const renderItem = (item: IndicatorBoardMetadataResponse) => <MetadataListItem item={item} />;
+  const renderItem = (item: IndicatorBoardMetadataResponse) => <MetadataListItem key={item.id} item={item} />;
 
   return (
     <Pending isPending={isPending}>
