@@ -6,10 +6,17 @@ import { IndicatorBoardMetaData } from '../../../../domain/indicator-board-meta-
 import { IndicatorBoardMetaDataEntity } from '../../../../infrastructure/adapter/persistent/entity/indicator-board-meta-data.entity';
 import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
+import { DataSource } from 'typeorm';
 
 describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   let environment;
+  let dataSource: DataSource;
   let indicatorBoardMetaDataPersistentAdapter: IndicatorBoardMetaDataPersistentAdapter;
+  const seeding = async () => {
+    const memberRepository = dataSource.getRepository(MemberEntity);
+    await memberRepository.insert({ id: 10 });
+    memberRepository.save;
+  };
 
   beforeAll(async () => {
     environment = await new PostgreSqlContainer().start();
@@ -39,6 +46,8 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       providers: [IndicatorBoardMetaDataPersistentAdapter],
     }).compile();
     indicatorBoardMetaDataPersistentAdapter = module.get(IndicatorBoardMetaDataPersistentAdapter);
+    dataSource = module.get<DataSource>(DataSource);
+    await seeding();
   }, 20000);
 
   afterAll(async () => {
@@ -52,7 +61,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     const indicatorBoardMetaData: IndicatorBoardMetaData = IndicatorBoardMetaData.createNew(
       '메타 데이터',
       { key1: ['1', '2', '3'] },
-      member.id,
+      10,
     );
 
     // when
@@ -62,5 +71,27 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // then
     expect(resultIndicatorBoardMetaDataEntity.indicatorBoardMetaDataName).toEqual('메타 데이터');
+  });
+
+  it('생성한 지표보드 메타데이터 id로 메타데이터 가져오기', async () => {
+    // given
+    const indicatorBoardMetaData: IndicatorBoardMetaData = IndicatorBoardMetaData.createNew(
+      '메타 데이터',
+      { key1: ['1', '2', '3'] },
+      10,
+    );
+
+    // when
+    const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(indicatorBoardMetaData);
+    const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(resultId);
+
+    // then
+    const expectedName = '메타 데이터';
+    const expectedIndicatorId = { key1: '1,2,3' };
+    const expectedMemberId = 10;
+
+    expect(result.indicatorBoardMetaDataName).toEqual(expectedName);
+    expect(result.indicatorIds).toEqual(expectedIndicatorId);
+    expect(result.memberId).toEqual(expectedMemberId);
   });
 });

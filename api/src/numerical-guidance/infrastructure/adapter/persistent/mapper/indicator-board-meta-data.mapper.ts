@@ -12,10 +12,12 @@ export class IndicatorBoardMetaDataMapper {
   }
 
   static async mapEntityToDomain(entity: IndicatorBoardMetaDataEntity) {
+    const member = await entity.member;
+    const memberId = member.id;
     const indicatorBoardMetaData = IndicatorBoardMetaData.createNew(
       entity.indicatorBoardMetaDataName,
       entity.indicators,
-      (await entity.member).id,
+      memberId,
     );
     return indicatorBoardMetaData;
   }

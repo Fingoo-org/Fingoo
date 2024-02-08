@@ -13,13 +13,18 @@ export class IndicatorBoardMetaDataPersistentAdapter
   async createIndicatorBoardMetaData(indicatorBoardMetaData: IndicatorBoardMetaData): Promise<number> {
     const indicatorBoardMetaDataEntity: IndicatorBoardMetaDataEntity =
       IndicatorBoardMetaDataMapper.mapDomainToEntity(indicatorBoardMetaData);
+    if (indicatorBoardMetaDataEntity.member instanceof Promise) {
+      await indicatorBoardMetaDataEntity.member;
+    }
+    console.log(indicatorBoardMetaDataEntity);
     await indicatorBoardMetaDataEntity.save();
     return indicatorBoardMetaDataEntity.id;
   }
 
   async loadIndicatorBoardMetaData(id: number): Promise<IndicatorBoardMetaData> {
     const indicatorMetaDataEintity = await IndicatorBoardMetaDataEntity.findById(id);
-    const indicatorBoardMetaData = IndicatorBoardMetaDataMapper.mapEntityToDomain(indicatorMetaDataEintity);
+    const indicatorBoardMetaData = await IndicatorBoardMetaDataMapper.mapEntityToDomain(indicatorMetaDataEintity);
+    console.log(indicatorBoardMetaData);
     return indicatorBoardMetaData;
   }
 }

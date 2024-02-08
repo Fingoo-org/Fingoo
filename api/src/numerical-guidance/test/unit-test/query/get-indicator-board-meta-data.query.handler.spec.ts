@@ -22,7 +22,7 @@ describe('GetIndicatorBoardMetaDataQueryHandler', () => {
       ],
     }).compile();
     getIndicatorBoardMetaDataQueryHandler = module.get(GetIndicatorBoardMetaDataQueryHandler);
-  });
+  }, 10000);
 
   it('지표보드 메타데이터 id를 가지고 메타데이터를 가져온다.', async () => {
     // given
