@@ -18,7 +18,7 @@ function getDropdownMenuItems(children: React.ReactNode) {
   });
 }
 
-export default function DropdownMenuRoot({ children }: React.PropsWithChildren, ref) {
+export default function DropdownMenuRoot({ children }: React.PropsWithChildren) {
   const dropdownMenuButton = getDropdownMenuButton(children);
   const dropdownMenuItems = getDropdownMenuItems(children);
 
