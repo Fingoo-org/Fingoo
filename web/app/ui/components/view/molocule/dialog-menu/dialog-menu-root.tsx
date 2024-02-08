@@ -1,7 +1,7 @@
 'use client';
 import { Transition } from '@headlessui/react';
 import React from 'react';
-import DialogMenuItem from './dialog-menu-item';
+import { DialogMenuItem } from './dialog-menu-item';
 
 type DialogMenuProps = {
   isOpen: boolean;
@@ -16,12 +16,7 @@ const getDialogMenuItems = (children: React.ReactNode) => {
   });
 };
 
-export default function DialogMenuRoot({
-  children,
-  isOpen,
-  position,
-  onClose,
-}: React.PropsWithChildren<DialogMenuProps>) {
+export function DialogMenuRoot({ children, isOpen, position, onClose }: React.PropsWithChildren<DialogMenuProps>) {
   const dialogMenuItems = getDialogMenuItems(children);
 
   const handleOnClick = () => {

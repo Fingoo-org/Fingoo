@@ -5,7 +5,7 @@ type DropdownMenuItemProps = {
   icon: React.ElementType;
 };
 
-export default function DropdownMenuItem({ children, icon }: React.PropsWithChildren<DropdownMenuItemProps>) {
+export function DropdownMenuItem({ children, icon }: React.PropsWithChildren<DropdownMenuItemProps>) {
   const Icon = icon;
   return (
     <Menu.Item>

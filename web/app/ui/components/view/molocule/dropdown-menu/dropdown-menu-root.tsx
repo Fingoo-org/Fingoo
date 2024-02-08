@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import React from 'react';
-import DropdownMenuButton from './dropdown-menu-button';
-import DropdownMenuItem from './dropdown-menu-item';
+import { DropdownMenuButton } from './dropdown-menu-button';
+import { DropdownMenuItem } from './dropdown-menu-item';
 
 function getDropdownMenuButton(children: React.ReactNode) {
   const childArray = React.Children.toArray(children);
@@ -18,7 +18,7 @@ function getDropdownMenuItems(children: React.ReactNode) {
   });
 }
 
-export default function DropdownMenuRoot({ children }: React.PropsWithChildren) {
+export function DropdownMenuRoot({ children }: React.PropsWithChildren) {
   const dropdownMenuButton = getDropdownMenuButton(children);
   const dropdownMenuItems = getDropdownMenuItems(children);
 
