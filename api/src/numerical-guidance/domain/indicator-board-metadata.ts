@@ -5,18 +5,16 @@ import { IndicatorBoardMetaDataNameShouldNotEmptyRule } from './rule/IndicatorBo
 export class IndicatorBoardMetadata extends AggregateRoot {
   readonly indicatorBoardMetaDataName: string;
   readonly indicatorIds: Record<string, string[]>;
-  readonly memberId: number;
 
-  static createNew(indicatorBoardMetaDataName: string, indicatorIds: Record<string, string[]>, memberId: number) {
-    return new IndicatorBoardMetadata(indicatorBoardMetaDataName, indicatorIds, memberId);
+  static createNew(indicatorBoardMetaDataName: string, indicatorIds: Record<string, string[]>) {
+    return new IndicatorBoardMetadata(indicatorBoardMetaDataName, indicatorIds);
   }
 
-  constructor(indicatorBoardMetaDataName: string, indicatorIds: Record<string, string[]>, memberId: number) {
+  constructor(indicatorBoardMetaDataName: string, indicatorIds: Record<string, string[]>) {
     super();
     this.checkRule(new IndicatorBoardMetaDataCountShouldNotExceedLimitRule(indicatorIds));
     this.checkRule(new IndicatorBoardMetaDataNameShouldNotEmptyRule(indicatorBoardMetaDataName));
     this.indicatorBoardMetaDataName = indicatorBoardMetaDataName;
-    this.memberId = memberId;
     this.indicatorIds = indicatorIds;
   }
 }

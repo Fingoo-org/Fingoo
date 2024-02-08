@@ -1,5 +1,5 @@
 import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
 
 export interface CreateIndicatorBoardMetadataPort {
-  createIndicatorBoardMetaData(indicatorBoardMetaData: IndicatorBoardMetadata): Promise<number>;
+  createIndicatorBoardMetaData(indicatorBoardMetaData: IndicatorBoardMetadata, memberId: number): Promise<string>;
 }
