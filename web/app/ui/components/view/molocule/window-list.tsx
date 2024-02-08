@@ -13,7 +13,7 @@ type RowProps = {
 
 export default function WindowList<T>({ height, items, renderRow }: WindowListProps<T>) {
   return (
-    <List height={height} itemData={items} itemCount={items.length} itemSize={35} width="100%">
+    <List className="bg-gray-100" height={height} itemData={items} itemCount={items.length} itemSize={35} width="100%">
       {renderRow}
     </List>
   );
