@@ -6,13 +6,11 @@ import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-gui
 import Button from '../../components/view/atom/button';
 import Pending from '../view/molocule/pending';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
-import SelectableListItem from '../view/atom/selectable-list-item';
-import IconButton from '../view/atom/icon-button/icon-button';
-import { DotsHorizontalIcon } from '@heroicons/react/solid';
+import MetadataListItem from './metadata-list-item';
 
 export default React.memo(function MetadataList() {
   const { metadataList, createMetadata, isPending } = useIndicatoBoardrMetadataList();
-  const { selectMetadataById, selectedMetadata } = useSelectedIndicatorBoardMetadata();
+  const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
 
   const handleMetadataCreateAndSelect = async () => {
     const metadata = {
@@ -29,20 +27,7 @@ export default React.memo(function MetadataList() {
     }
   };
 
-  const renderItem = (item: IndicatorBoardMetadataResponse) => {
-    const handleSelect = () => selectMetadataById(item.id);
-
-    return (
-      <div className="relative w-full group">
-        <SelectableListItem key={item.id} selected={selectedMetadata?.id === item.id} onSelect={handleSelect}>
-          {item.name}
-        </SelectableListItem>
-        <div className="absolute invisible right-3 top-2/4 -translate-y-2/4  z-index-1 group-has-[:hover]:visible">
-          <IconButton icon={DotsHorizontalIcon} color={'violet'} />
-        </div>
-      </div>
-    );
-  };
+  const renderItem = (item: IndicatorBoardMetadataResponse) => <MetadataListItem item={item} />;
 
   return (
     <Pending isPending={isPending}>
