@@ -8,10 +8,10 @@ describe('지표보드 메타데이터', () => {
     // given
 
     // when
-    const indicatorBoardMetaData = IndicatorBoardMetadata.createNew('메타 데이터', { key1: ['1', '2', '3'] }, 1);
+    const indicatorBoardMetaData = IndicatorBoardMetadata.createNew('메타 데이터', { key1: ['1', '2', '3'] });
 
     // then
-    const expected = new IndicatorBoardMetadata('메타 데이터', { key1: ['1', '2', '3'] }, 1);
+    const expected = new IndicatorBoardMetadata('메타 데이터', { key1: ['1', '2', '3'] });
     expect(expected).toEqual(indicatorBoardMetaData);
   });
 
@@ -21,7 +21,7 @@ describe('지표보드 메타데이터', () => {
 
     //when
     function createPost() {
-      IndicatorBoardMetadata.createNew('메타 데이터', content, 1);
+      IndicatorBoardMetadata.createNew('메타 데이터', content);
     }
     const rule = new IndicatorBoardMetaDataCountShouldNotExceedLimitRule(content);
 
@@ -36,7 +36,7 @@ describe('지표보드 메타데이터', () => {
 
     //when
     function createPost() {
-      IndicatorBoardMetadata.createNew(content, { key1: ['1', '2', '3', '4', '5'] }, 1);
+      IndicatorBoardMetadata.createNew(content, { key1: ['1', '2', '3', '4', '5'] });
     }
     const rule = new IndicatorBoardMetaDataNameShouldNotEmptyRule(content);
 
@@ -51,7 +51,7 @@ describe('지표보드 메타데이터', () => {
 
     //when
     function createPost() {
-      IndicatorBoardMetadata.createNew(content, { key1: ['1', '2', '3', '4', '5'] }, 1);
+      IndicatorBoardMetadata.createNew(content, { key1: ['1', '2', '3', '4', '5'] });
     }
     const rule = new IndicatorBoardMetaDataNameShouldNotEmptyRule(content);
 
