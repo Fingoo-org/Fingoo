@@ -6,10 +6,11 @@ import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-gui
 import Button from '../../components/view/atom/button';
 import Pending from '../view/molocule/pending';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
-import SelectableListItem from '../view/atom/selectable-list-item';
+import MetadataListItem from './metadata-list-item';
+
 export default React.memo(function MetadataList() {
   const { metadataList, createMetadata, isPending } = useIndicatoBoardrMetadataList();
-  const { selectMetadataById, selectedMetadata } = useSelectedIndicatorBoardMetadata();
+  const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
 
   const handleMetadataCreateAndSelect = async () => {
     const metadata = {
@@ -26,18 +27,7 @@ export default React.memo(function MetadataList() {
     }
   };
 
-  const renderItem = (item: IndicatorBoardMetadataResponse) => {
-    const handleSelect = () => selectMetadataById(item.id);
-
-    return (
-      <SelectableListItem
-        key={item.id}
-        content={item.name}
-        selected={selectedMetadata?.id === item.id}
-        onSelect={handleSelect}
-      />
-    );
-  };
+  const renderItem = (item: IndicatorBoardMetadataResponse) => <MetadataListItem key={item.id} item={item} />;
 
   return (
     <Pending isPending={isPending}>
