@@ -8,7 +8,7 @@ import Pending from '../view/molocule/pending';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
 import MetadataListItem from './metadata-list-item';
 
-export default React.memo(function MetadataList() {
+const MetdataList = React.memo(function MetadataList() {
   const { metadataList, createMetadata, isPending } = useIndicatoBoardrMetadataList();
   const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
 
@@ -36,3 +36,5 @@ export default React.memo(function MetadataList() {
     </Pending>
   );
 });
+
+export default MetdataList;

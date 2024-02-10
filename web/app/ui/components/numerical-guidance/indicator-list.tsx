@@ -7,7 +7,7 @@ import React from 'react';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
 import clsx from 'clsx';
 
-export default React.memo(function IndicatorList() {
+const IndicatorList = React.memo(function IndicatorList() {
   const { indicatorList } = useIndicatorList();
   const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } = useSelectedIndicatorBoardMetadata();
 
@@ -36,3 +36,5 @@ export default React.memo(function IndicatorList() {
     </div>
   );
 });
+
+export default IndicatorList;
