@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useDialogMenuStore } from '@/app/store/stores/dialog-menu.store';
 
-export default function useDialogMenu(key: string) {
+export function useDialogMenu(key: string) {
   const action = useDialogMenuStore((state) => state.action);
   const isOpen = useDialogMenuStore((state) => state.isOpen[key]);
   const ref = useRef<HTMLButtonElement>(null);
@@ -30,9 +30,14 @@ export default function useDialogMenu(key: string) {
     action.open(key);
   };
 
+  const closeDialogMenu = () => {
+    action.close(key);
+  };
+
   return {
     ref,
     isOpen,
     openDialogMenu,
+    closeDialogMenu,
   };
 }
