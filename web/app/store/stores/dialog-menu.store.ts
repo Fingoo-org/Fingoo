@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { storeResetFns } from './reset-store';
 
 type Position = {
   x: number;
@@ -31,6 +32,7 @@ const initialDialogMenuState: DialogMenuState = {
 };
 
 export const useDialogMenuStore = create<DialogMenuStore>((set) => {
+  storeResetFns.add(() => set(initialDialogMenuState));
   return {
     ...initialDialogMenuState,
     action: {
