@@ -6,10 +6,7 @@ import { DIALOG_MENU_KEY } from '@/app/utils/keys/dialog-menu-key';
 export default function MetadataDialogMenu() {
   return (
     <DialogMenu dialogKey={DIALOG_MENU_KEY.metadataEditMenu}>
-      <DialogMenu.Item icon={DotsHorizontalIcon}>Edit</DialogMenu.Item>
-      <DialogMenu.Item icon={DotsHorizontalIcon}>Edit</DialogMenu.Item>
-      <DialogMenu.Item icon={DotsHorizontalIcon}>Edit</DialogMenu.Item>
-      <DialogMenu.Item icon={DotsHorizontalIcon}>Edit</DialogMenu.Item>
+      <DialogMenu.Item icon={DotsHorizontalIcon}>Delete</DialogMenu.Item>
     </DialogMenu>
   );
 }
