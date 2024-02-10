@@ -8,9 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SideNav />
       </div>
       <div className="w-full">{children}</div>
-      <div className="fixed inset-0 pointer-events-none	overflow-hidden	z-50">
-        <MetadataDialogMenu />
-      </div>
+      <MetadataDialogMenu />
     </div>
   );
 }
