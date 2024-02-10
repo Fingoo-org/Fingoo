@@ -3,14 +3,15 @@ import IconButton from '../view/atom/icon-button/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
-import { useDialogMenu } from '../view/molocule/dialog-menu/use-dialog-menu.hook';
+import { useDialogMenu } from '../view/molocule/dialog-menu';
+import { DIALOG_MENU_KEY } from '@/app/utils/keys/dialog-menu-key';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadataResponse;
 };
 
 export default function MetadataListItem({ item }: MetadataListItemProps) {
-  const { ref: iconButtonRef, openDialogMenu } = useDialogMenu('metadata');
+  const { ref: iconButtonRef, openDialogMenu } = useDialogMenu(DIALOG_MENU_KEY.metadataEditMenu);
   const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
 
   const handleSelect = () => {

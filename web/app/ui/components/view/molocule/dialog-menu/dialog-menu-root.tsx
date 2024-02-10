@@ -4,9 +4,10 @@ import { Transition } from '@headlessui/react';
 import { DialogMenuItem } from './dialog-menu-item';
 import { DialogMenuContext } from './dialog-menu.context';
 import { useDialogMenu } from './use-dialog-menu.hook';
+import { DialogMenuKey } from '@/app/utils/keys/dialog-menu-key';
 
 type DialogMenuProps = {
-  dialogKey: string;
+  dialogKey: DialogMenuKey;
 };
 
 const getDialogMenuItems = (children: React.ReactNode) => {
