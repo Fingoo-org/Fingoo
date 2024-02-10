@@ -32,6 +32,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       y: iconButtonPosition.top + iconButtonPosition.height / 2,
     };
 
+    action.setPayload(item);
     action.setPosition(newPosition);
     action.open();
   };
