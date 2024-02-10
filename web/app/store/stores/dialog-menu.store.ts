@@ -17,7 +17,6 @@ type DialogMenuState = {
 type DialogMenuAction = {
   close: (key: string) => void;
   open: (key: string) => void;
-  enroll: (key: string) => void;
   setPosition: (position: Position) => void;
   setPayload: (payload: unknown) => void;
 };
@@ -36,15 +35,6 @@ export const useDialogMenuStore = create<DialogMenuStore>((set) => {
   return {
     ...initialDialogMenuState,
     action: {
-      enroll: (key: string) => {
-        set((state) => ({
-          ...state,
-          isOpen: {
-            ...state.isOpen,
-            [key]: false,
-          },
-        }));
-      },
       close: (key: string) =>
         set((state) => ({
           ...state,
