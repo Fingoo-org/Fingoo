@@ -28,7 +28,13 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
         {item.name}
       </SelectableListItem>
       <div className="absolute invisible right-3 top-2/4 -translate-y-2/4  z-index-1 group-has-[:hover]:visible">
-        <IconButton ref={iconButtonRef} onClick={handleIconButton} icon={DotsHorizontalIcon} color={'violet'} />
+        <IconButton
+          aria-label="edit"
+          ref={iconButtonRef}
+          onClick={handleIconButton}
+          icon={DotsHorizontalIcon}
+          color={'violet'}
+        />
       </div>
     </div>
   );
