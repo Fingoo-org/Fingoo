@@ -1,5 +1,5 @@
-// Refactor: DiagloagMenu가 아닌 도메인 컴포넌트 이름으로
 import { create } from 'zustand';
+import { storeResetFns } from './reset-store';
 
 type Position = {
   x: number;
@@ -7,14 +7,18 @@ type Position = {
 };
 
 type DialogMenuState = {
-  isOpen: boolean;
+  isOpen: {
+    [key: string]: boolean | undefined;
+  };
   position: Position;
+  payload: unknown;
 };
 
 type DialogMenuAction = {
-  close: () => void;
-  open: () => void;
+  close: (key: string) => void;
+  open: (key: string) => void;
   setPosition: (position: Position) => void;
+  setPayload: (payload: unknown) => void;
 };
 
 type DialogMenuStore = DialogMenuState & {
@@ -22,17 +26,34 @@ type DialogMenuStore = DialogMenuState & {
 };
 
 const initialDialogMenuState: DialogMenuState = {
-  isOpen: false,
+  isOpen: {},
   position: { x: 0, y: 0 },
+  payload: undefined,
 };
 
 export const useDialogMenuStore = create<DialogMenuStore>((set) => {
+  storeResetFns.add(() => set(initialDialogMenuState));
   return {
     ...initialDialogMenuState,
     action: {
-      close: () => set({ isOpen: false }),
-      open: () => set({ isOpen: true }),
-      setPosition: (position: Position) => set({ position: { ...position } }),
+      close: (key: string) =>
+        set((state) => ({
+          ...state,
+          isOpen: {
+            ...state.isOpen,
+            [key]: false,
+          },
+        })),
+      open: (key: string) =>
+        set((state) => ({
+          ...state,
+          isOpen: {
+            ...state.isOpen,
+            [key]: true,
+          },
+        })),
+      setPosition: (position: Position) => set({ position }),
+      setPayload: (payload: unknown) => set({ payload }),
     },
   };
 });

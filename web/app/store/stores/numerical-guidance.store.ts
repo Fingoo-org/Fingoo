@@ -1,12 +1,5 @@
 import { create } from 'zustand';
-
-const storeResetFns = new Set<() => void>();
-
-export const resetAllStore = () => {
-  storeResetFns.forEach((resetFn) => {
-    resetFn();
-  });
-};
+import { storeResetFns } from './reset-store';
 
 type Interval = 'day' | 'week' | 'month' | 'year';
 

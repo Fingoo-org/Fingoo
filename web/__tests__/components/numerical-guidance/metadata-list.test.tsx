@@ -57,4 +57,22 @@ describe('MetadataList', () => {
     // then
     expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(5);
   });
+
+  it('사용자가 메타데이터를 선택하면, 선택한 메타데이터가 표시된다.', async () => {
+    // given
+    const user = userEvent.setup();
+    render(
+      <SWRProviderWithoutCache>
+        <MetadataList />
+      </SWRProviderWithoutCache>,
+    );
+    await waitFor(async () => expect(await screen.findByText(/metadata1/i)).toBeInTheDocument());
+
+    // when
+    expect(screen.queryByRole('tab', { selected: true })).toBeNull();
+    await user.click(await screen.findByText(/metadata1/i));
+
+    // then
+    expect(await screen.findByRole('tab', { selected: true })).toBeInTheDocument();
+  });
 });

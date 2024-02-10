@@ -1,7 +1,8 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
-import { resetAllStore, useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
+import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
+import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
 import { useIndicatoBoardrMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
 import { useIndicatorList } from '@/app/business/hooks/use-indicator-list.hook';

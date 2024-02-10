@@ -1,4 +1,4 @@
-import MetadataMenu from '../ui/components/numerical-guidance/metadata-menu';
+import MetadataDialogMenu from '../ui/components/numerical-guidance/metadata-dialog-menu';
 import SideNav from '../ui/pages/workspace/sidenav';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -8,9 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SideNav />
       </div>
       <div className="w-full">{children}</div>
-      <div className="fixed inset-0 pointer-events-none	overflow-hidden	z-50">
-        <MetadataMenu />
-      </div>
+      <MetadataDialogMenu />
     </div>
   );
 }

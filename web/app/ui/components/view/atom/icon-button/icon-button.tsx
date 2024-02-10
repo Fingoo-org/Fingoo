@@ -7,14 +7,13 @@ type NativeButtonType = React.ComponentPropsWithoutRef<'button'>;
 
 type IconButtonProps = {
   icon: React.ElementType;
-  onClick?: NativeButtonType['onClick'];
   size?: Size;
   color: Color;
   invariant?: IconVariant;
-};
+} & NativeButtonType;
 
 export default React.forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { icon, onClick, size = Sizes.SM, invariant = IconVariants.Simple, color },
+  { icon, onClick, size = Sizes.SM, invariant = IconVariants.Simple, color, ...props },
   ref,
 ) {
   const Icon = icon;
@@ -23,6 +22,7 @@ export default React.forwardRef<HTMLButtonElement, IconButtonProps>(function Ico
   const iconColorStyles = getIconColors(invariant, color);
   return (
     <button
+      {...props}
       ref={ref}
       onClick={onClick}
       className={twMerge(

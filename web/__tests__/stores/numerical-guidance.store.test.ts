@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
-import { resetAllStore } from '@/app/store/stores/numerical-guidance.store';
+import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 
 describe('useNumericalGuidanceStore', () => {
