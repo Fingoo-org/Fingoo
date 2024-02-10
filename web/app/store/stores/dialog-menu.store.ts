@@ -1,4 +1,3 @@
-// Refactor: DiagloagMenu가 아닌 도메인 컴포넌트 이름으로
 import { create } from 'zustand';
 
 type Position = {

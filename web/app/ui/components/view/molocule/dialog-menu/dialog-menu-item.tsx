@@ -6,7 +6,6 @@ type DialogMenuItemProps = {
 };
 
 export function DialogMenuItem({ children, icon }: React.PropsWithChildren<DialogMenuItemProps>) {
-  // Refactor: 부모의 onclose를 받도록 context 설정
   const { onClose } = useContext(DialogMenuContext);
   const Icon = icon;
 
