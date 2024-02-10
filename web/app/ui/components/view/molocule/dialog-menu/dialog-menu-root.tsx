@@ -3,11 +3,10 @@ import React from 'react';
 import { Transition } from '@headlessui/react';
 import { DialogMenuItem } from './dialog-menu-item';
 import { DialogMenuContext } from './dialog-menu.context';
+import { useDialogMenu } from './use-dialog-menu.hook';
 
 type DialogMenuProps = {
-  isOpen: boolean;
-  position?: { x: number; y: number };
-  onClose: () => void;
+  dialogKey: string;
 };
 
 const getDialogMenuItems = (children: React.ReactNode) => {
@@ -17,22 +16,23 @@ const getDialogMenuItems = (children: React.ReactNode) => {
   });
 };
 
-export function DialogMenuRoot({ children, isOpen, position, onClose }: React.PropsWithChildren<DialogMenuProps>) {
+export function DialogMenuRoot({ children, dialogKey }: React.PropsWithChildren<DialogMenuProps>) {
+  const { isOpen, position, closeDialogMenu } = useDialogMenu(dialogKey);
   const dialogMenuItems = getDialogMenuItems(children);
 
   const handleOnClick = () => {
-    onClose();
+    closeDialogMenu();
   };
 
   return (
     <DialogMenuContext.Provider
       value={{
-        onClose,
+        onClose: closeDialogMenu,
       }}
     >
       <Transition
         as={React.Fragment}
-        show={isOpen}
+        show={isOpen || false}
         enter="transition ease-out duration-100"
         enterFrom="transform opacity-0 scale-95"
         enterTo="transform opacity-100 scale-100"

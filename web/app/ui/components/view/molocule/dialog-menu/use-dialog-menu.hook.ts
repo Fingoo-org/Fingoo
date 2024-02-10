@@ -4,6 +4,7 @@ import { useDialogMenuStore } from '@/app/store/stores/dialog-menu.store';
 export function useDialogMenu(key: string) {
   const action = useDialogMenuStore((state) => state.action);
   const isOpen = useDialogMenuStore((state) => state.isOpen[key]);
+  const position = useDialogMenuStore((state) => state.position);
   const ref = useRef<HTMLButtonElement>(null);
 
   const openDialogMenu = (payload?: unknown) => {
@@ -30,6 +31,7 @@ export function useDialogMenu(key: string) {
   return {
     ref,
     isOpen,
+    position,
     openDialogMenu,
     closeDialogMenu,
   };
