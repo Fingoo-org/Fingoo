@@ -1,7 +1,8 @@
 'use client';
-import { Transition } from '@headlessui/react';
 import React from 'react';
+import { Transition } from '@headlessui/react';
 import { DialogMenuItem } from './dialog-menu-item';
+import { DialogMenuContext } from './dialog-menu.context';
 
 type DialogMenuProps = {
   isOpen: boolean;
@@ -24,7 +25,11 @@ export function DialogMenuRoot({ children, isOpen, position, onClose }: React.Pr
   };
 
   return (
-    <>
+    <DialogMenuContext.Provider
+      value={{
+        onClose,
+      }}
+    >
       <Transition
         as={React.Fragment}
         show={isOpen}
@@ -47,6 +52,6 @@ export function DialogMenuRoot({ children, isOpen, position, onClose }: React.Pr
           </div>
         </div>
       </Transition>
-    </>
+    </DialogMenuContext.Provider>
   );
 }
