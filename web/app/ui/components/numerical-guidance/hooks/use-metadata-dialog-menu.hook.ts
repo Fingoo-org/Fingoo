@@ -3,7 +3,7 @@ import { useDialogMenu } from '@/app/ui/components/view/hooks/use-dialog-menu.ho
 
 const KEY = 'metadata-menu';
 
-export function useMetadataMenu() {
+export function useMetadataDialogMenu() {
   const position = useDialogMenuStore((state) => state.position);
   const { ref, isOpen, openDialogMenu, closeDialogMenu } = useDialogMenu(KEY);
 

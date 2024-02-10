@@ -1,10 +1,10 @@
 'use client';
 import DialogMenu from '../view/molocule/dialog-menu';
-import { useMetadataMenu } from './hooks/use-metadata-menu.hook';
+import { useMetadataDialogMenu } from './hooks/use-metadata-dialog-menu.hook';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 
-export default function MetadataMenu() {
-  const { isOpen, position, closeDialogMenu } = useMetadataMenu();
+export default function MetadataDialogMenu() {
+  const { isOpen, position, closeDialogMenu } = useMetadataDialogMenu();
 
   return (
     <DialogMenu isOpen={isOpen || false} position={position} onClose={closeDialogMenu}>
