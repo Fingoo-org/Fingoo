@@ -7,9 +7,12 @@ import { IndicatorBoardMetadataMapper } from './mapper/indicator-board-metadata.
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuthService } from '../../../../auth/auth.service';
+import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/load-indiactor-board-metadata.port';
 
 @Injectable()
-export class IndicatorBoardMetadataPersistentAdapter implements CreateIndicatorBoardMetadataPort {
+export class IndicatorBoardMetadataPersistentAdapter
+  implements CreateIndicatorBoardMetadataPort, LoadIndicatorBoardMetadataPort
+{
   constructor(
     @InjectRepository(IndicatorBoardMetadataEntity)
     private readonly indicatorBoardMetadataRepository: Repository<IndicatorBoardMetadataEntity>,
@@ -28,6 +31,12 @@ export class IndicatorBoardMetadataPersistentAdapter implements CreateIndicatorB
     );
     await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
     return indicatorBoardMetaDataEntity.id;
+  }
+
+  async loadIndicatorBoardMetaData(id: string): Promise<IndicatorBoardMetadata> {
+    const indicatorMetaDataEintity = await this.findOneBy(id);
+    const indicatorBoardMetaData = await IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorMetaDataEintity);
+    return indicatorBoardMetaData;
   }
 
   async findOneBy(id: string) {

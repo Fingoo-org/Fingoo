@@ -14,6 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetadataEntity } from './infrastructure/adapter/persistence/entity/indicator-board-metadata.entity';
 import { AuthService } from '../auth/auth.service';
 import { MemberEntity } from '../auth/member.entity';
+import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { MemberEntity } from '../auth/member.entity';
     GetFluctuatingIndicatorWithoutCacheQueryHandler,
     GetIndicatorListQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,
+    GetIndicatorBoardMetaDataQueryHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -51,6 +53,10 @@ import { MemberEntity } from '../auth/member.entity';
     },
     {
       provide: 'CreateIndicatorBoardMetaDataPort',
+      useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'LoadIndicatorBoardMetadataPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
   ],
