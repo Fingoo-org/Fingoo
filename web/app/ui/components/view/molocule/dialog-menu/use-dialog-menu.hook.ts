@@ -1,11 +1,11 @@
 import { useRef } from 'react';
-import { useDialogMenuStore } from '@/app/store/stores/dialog-menu.store';
+import { useDialogStore } from '@/app/store/stores/dialog.store';
 import { DialogMenuKey } from '@/app/utils/keys/dialog-menu-key';
 
 export function useDialogMenu(key: DialogMenuKey) {
-  const action = useDialogMenuStore((state) => state.action);
-  const isOpen = useDialogMenuStore((state) => state.isOpen[key]);
-  const position = useDialogMenuStore((state) => state.position);
+  const action = useDialogStore((state) => state.action);
+  const isOpen = useDialogStore((state) => state.isOpen[key]);
+  const position = useDialogStore((state) => state.position);
   const ref = useRef<HTMLButtonElement>(null);
 
   const openDialogMenu = (payload?: unknown) => {

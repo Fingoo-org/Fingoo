@@ -3,14 +3,18 @@ import { DialogMenuContext } from './dialog-menu.context';
 
 type DialogMenuItemProps = {
   icon: React.ElementType;
+  onClick?: () => void;
 };
 
-export function DialogMenuItem({ children, icon }: React.PropsWithChildren<DialogMenuItemProps>) {
+export function DialogMenuItem({ children, icon, onClick }: React.PropsWithChildren<DialogMenuItemProps>) {
   const { onClose } = useContext(DialogMenuContext);
   const Icon = icon;
 
   const handleClick = () => {
     // write logic
+    if (onClick) {
+      onClick();
+    }
 
     onClose();
   };
