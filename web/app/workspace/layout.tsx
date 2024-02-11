@@ -1,7 +1,6 @@
 import MetadataDialogMenu from '../ui/components/numerical-guidance/metadata-dialog-menu';
-import { DialogRoot } from '../ui/components/view/molocule/alert-dialog/alert-dialog-root';
 import SideNav from '../ui/pages/workspace/sidenav';
-import { DIALOG_KEY } from '../utils/keys/dialog-menu-key';
+import MetadataDeleteDialog from '../ui/components/numerical-guidance/metadata-delete-dialog';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -11,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
       <div className="w-full">{children}</div>
       <MetadataDialogMenu />
-      <DialogRoot dialogKey={DIALOG_KEY.METADATA_DELETE} />
+      <MetadataDeleteDialog />
     </div>
   );
 }
