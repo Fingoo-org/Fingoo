@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button default 스타일의 버튼을 렌더링한다.. 1`] = `
+<div>
+  <button
+    class="rounded-lg border px-4 py-2 text-sm bg-blue-500 border-blue-500 hover:bg-blue-600 text-white"
+  >
+    버튼
+  </button>
+</div>
+`;
+
+exports[`Button light 스타일의 버튼을 렌더링한다. 1`] = `
+<div>
+  <button
+    class="text-sm text-blue-500 bg-transparent hover:text-blue-700"
+  >
+    버튼
+  </button>
+</div>
+`;
+
+exports[`Button primary 스타일의 버튼을 렌더링한다. 1`] = `
+<div>
+  <button
+    class="rounded-lg border px-4 py-2 text-sm bg-blue-500 border-blue-500 hover:bg-blue-600 text-white"
+  >
+    버튼
+  </button>
+</div>
+`;
+
+exports[`Button secondary 스타일의 버튼을 렌더링한다. 1`] = `
+<div>
+  <button
+    class="rounded-lg border px-4 py-2 text-sm bg-transparent border-blue-500 hover:bg-blue-500 hover:bg-opacity-20 dark:hover:bg-opacity-20 text-blue-500"
+  >
+    버튼
+  </button>
+</div>
+`;
