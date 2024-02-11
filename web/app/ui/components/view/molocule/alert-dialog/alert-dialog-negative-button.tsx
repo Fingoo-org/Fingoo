@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { AlertDialogContext } from './alert-dialog-context';
 import { useAlertDialog } from './use-alert-dialog.hook';
-import { DialogMenuKey } from '@/app/utils/keys/dialog-menu-key';
+import { DialogKey } from '@/app/utils/keys/dialog-key';
 
 type NativeButtonType = Omit<React.ComponentPropsWithoutRef<'button'>, 'onClick'>;
 
@@ -15,7 +15,7 @@ export function AlertDialogNegativeButton({
   ...props
 }: React.PropsWithChildren<AlertDialogNegativeButtonProps>) {
   const dialogKey = useContext(AlertDialogContext);
-  const { closeDialog } = useAlertDialog(dialogKey as DialogMenuKey);
+  const { closeDialog } = useAlertDialog(dialogKey as DialogKey);
 
   const handleClick = () => {
     if (onClick) {

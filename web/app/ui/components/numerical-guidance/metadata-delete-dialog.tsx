@@ -1,5 +1,5 @@
 'use client';
-import { DIALOG_KEY } from '@/app/utils/keys/dialog-menu-key';
+import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import AlertDialog from '../view/molocule/alert-dialog';
 
 export default function MetadataDeleteDialog() {

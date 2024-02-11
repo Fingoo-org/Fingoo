@@ -1,5 +1,5 @@
 'use client';
-import { DialogMenuKey } from '@/app/utils/keys/dialog-menu-key';
+import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { Dialog, Transition } from '@headlessui/react';
 import { useAlertDialog } from './use-alert-dialog.hook';
 import React from 'react';
@@ -11,7 +11,7 @@ import { AlertDialogNegativeButton } from './alert-dialog-negative-button';
 import { AlertDialogContext } from './alert-dialog-context';
 
 type DialogProps = {
-  dialogKey: DialogMenuKey;
+  dialogKey: DialogKey;
 };
 
 const getAlertDialogTitle = (children: React.ReactNode) => {

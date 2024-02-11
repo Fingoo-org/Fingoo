@@ -1,7 +1,7 @@
 'use client';
 import DialogMenu from '../view/molocule/dialog-menu';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import { DIALOG_KEY } from '@/app/utils/keys/dialog-menu-key';
+import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useAlertDialog } from '../view/molocule/alert-dialog/use-alert-dialog.hook';
 
 export default function MetadataDialogMenu() {
