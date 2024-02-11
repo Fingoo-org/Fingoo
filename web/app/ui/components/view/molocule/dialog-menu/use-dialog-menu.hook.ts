@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import { useDialogMenuStore } from '@/app/store/stores/dialog-menu.store';
+import { DialogMenuKey } from '@/app/utils/keys/dialog-menu-key';
 
-export function useDialogMenu(key: string) {
+export function useDialogMenu(key: DialogMenuKey) {
   const action = useDialogMenuStore((state) => state.action);
   const isOpen = useDialogMenuStore((state) => state.isOpen[key]);
   const position = useDialogMenuStore((state) => state.position);
