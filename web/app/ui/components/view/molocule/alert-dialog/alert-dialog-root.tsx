@@ -5,17 +5,34 @@ import { useAlertDialog } from './use-alert-dialog.hook';
 import React from 'react';
 import { AlertDialogTitle } from './alert-dialog-title';
 import { filterChildrenByType } from '@/app/utils/helper';
+import { AlertDialogBody } from './alert-dialog-body';
+import { AlertDialogPositiveButton } from './alert-dialog-positive-button';
+import { AlertDialogNegativeButton } from './alert-dialog-negative-button';
 
 type DialogProps = {
   dialogKey: DialogMenuKey;
 };
 
 const getAlertDialogTitle = (children: React.ReactNode) => {
-  return filterChildrenByType(children, AlertDialogTitle);
+  return filterChildrenByType(children, AlertDialogTitle).slice(0, 1);
+};
+const getAlertDialogBody = (children: React.ReactNode) => {
+  return filterChildrenByType(children, AlertDialogBody);
+};
+const getAlertDialogPositiveButton = (children: React.ReactNode) => {
+  return filterChildrenByType(children, AlertDialogPositiveButton).slice(0, 1);
+};
+const getAlertDialogNegativeButton = (children: React.ReactNode) => {
+  return filterChildrenByType(children, AlertDialogNegativeButton).slice(0, 1);
 };
 
 export function AlertDialogRoot({ children, dialogKey }: React.PropsWithChildren<DialogProps>) {
   const { isOpen, closeDialog } = useAlertDialog(dialogKey);
+  const alertDialogTitle = getAlertDialogTitle(children);
+  const alertDialogBody = getAlertDialogBody(children);
+  const alertDialogPositiveButton = getAlertDialogPositiveButton(children);
+  const alertDialogNegativeButton = getAlertDialogNegativeButton(children);
+
   const handleClose = () => {
     closeDialog();
   };
@@ -46,24 +63,12 @@ export function AlertDialogRoot({ children, dialogKey }: React.PropsWithChildren
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                  Payment successful
-                </Dialog.Title>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you an email with all of the details of
-                    your order.
-                  </p>
-                </div>
+                {alertDialogTitle}
+                {alertDialogBody}
 
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={handleClose}
-                  >
-                    Got it, thanks!
-                  </button>
+                <div className="flex mt-4 flex-row-reverse gap-1">
+                  {alertDialogPositiveButton}
+                  {alertDialogNegativeButton}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
