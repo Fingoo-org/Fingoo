@@ -5,16 +5,14 @@ import { DialogMenuItem } from './dialog-menu-item';
 import { DialogMenuContext } from './dialog-menu.context';
 import { useDialogMenu } from './use-dialog-menu.hook';
 import { DialogMenuKey } from '@/app/utils/keys/dialog-menu-key';
+import { filterChildrenByType } from '@/app/utils/helper';
 
 type DialogMenuProps = {
   dialogKey: DialogMenuKey;
 };
 
 const getDialogMenuItems = (children: React.ReactNode) => {
-  const childArray = React.Children.toArray(children);
-  return childArray.filter((child) => {
-    return React.isValidElement(child) && child.type === DialogMenuItem;
-  });
+  return filterChildrenByType(children, DialogMenuItem);
 };
 
 export function DialogMenuRoot({ children, dialogKey }: React.PropsWithChildren<DialogMenuProps>) {

@@ -3,9 +3,15 @@ import { DialogMenuKey } from '@/app/utils/keys/dialog-menu-key';
 import { Dialog, Transition } from '@headlessui/react';
 import { useAlertDialog } from './use-alert-dialog.hook';
 import React from 'react';
+import { AlertDialogTitle } from './alert-dialog-title';
+import { filterChildrenByType } from '@/app/utils/helper';
 
 type DialogProps = {
   dialogKey: DialogMenuKey;
+};
+
+const getAlertDialogTitle = (children: React.ReactNode) => {
+  return filterChildrenByType(children, AlertDialogTitle);
 };
 
 export function AlertDialogRoot({ children, dialogKey }: React.PropsWithChildren<DialogProps>) {
