@@ -3,4 +3,4 @@ export const DIALOG_KEY = {
   METADATA_DELETE: 'METADATA_DELETE',
 } as const;
 
-export type DialogKey = keyof typeof DIALOG_KEY;
+export type DialogKey = (typeof DIALOG_KEY)[keyof typeof DIALOG_KEY];

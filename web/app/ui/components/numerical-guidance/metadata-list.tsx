@@ -3,7 +3,7 @@ import React from 'react';
 import List from '../view/molocule/list';
 import { useIndicatoBoardrMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
 import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
-import Button from '../../components/view/atom/button';
+import Button from '../view/atom/button/button';
 import Pending from '../view/molocule/pending';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
 import MetadataListItem from './metadata-list-item';
@@ -32,7 +32,9 @@ const MetdataList = React.memo(function MetadataList() {
   return (
     <Pending isPending={isPending}>
       {metadataList && <List list={metadataList} render={renderItem} />}
-      <Button onClick={handleMetadataCreateAndSelect}>create</Button>
+      <Button color={'blue'} onClick={handleMetadataCreateAndSelect}>
+        create
+      </Button>
     </Pending>
   );
 });

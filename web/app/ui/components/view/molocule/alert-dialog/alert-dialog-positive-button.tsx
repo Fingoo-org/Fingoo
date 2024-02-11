@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AlertDialogContext } from './alert-dialog-context';
 import { useAlertDialog } from './use-alert-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
+import Button from '../../atom/button/button';
 
 type NativeButtonType = Omit<React.ComponentPropsWithoutRef<'button'>, 'onClick'>;
 
@@ -26,14 +27,8 @@ export function AlertDialogPositiveButton({
 
   // Refactor: 버튼 디자인 시스템화
   return (
-    <button
-      {...props}
-      onClick={handleClick}
-      aria-label="Confirm"
-      type="button"
-      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-    >
+    <Button {...props} color={'blue'} onClick={handleClick} aria-label="Confirm" type="button">
       {children}
-    </button>
+    </Button>
   );
 }

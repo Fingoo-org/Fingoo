@@ -9,17 +9,17 @@ type IconButtonProps = {
   icon: React.ElementType;
   size?: Size;
   color: Color;
-  invariant?: IconVariant;
+  variant?: IconVariant;
 } & NativeButtonType;
 
-export default React.forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { icon, onClick, size = Sizes.SM, invariant = IconVariants.Simple, color, ...props },
+const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
+  { icon, onClick, size = Sizes.SM, variant = IconVariants.Simple, color, className, ...props },
   ref,
 ) {
   const Icon = icon;
 
-  const iconShapeStyles = shape[invariant];
-  const iconColorStyles = getIconColors(invariant, color);
+  const iconShapeStyles = shape[variant];
+  const iconColorStyles = getIconColors(variant, color);
   return (
     <button
       {...props}
@@ -38,9 +38,12 @@ export default React.forwardRef<HTMLButtonElement, IconButtonProps>(function Ico
         iconShapeStyles?.ring,
         iconShapeStyles?.rounded,
         iconShapeStyles?.shadow,
+        className,
       )}
     >
       <Icon className={twMerge(iconSizes[size].height, iconSizes[size].width)} />
     </button>
   );
 });
+
+export default IconButton;

@@ -33,3 +33,7 @@ export type Size = (typeof sizeValues)[number];
 const iconVariantValues = ['simple', 'outlined'] as const;
 
 export type IconVariant = (typeof iconVariantValues)[number];
+
+const buttonVariantValues = ['primary', 'secondary', 'light'] as const;
+
+export type ButtonVariant = (typeof buttonVariantValues)[number];
