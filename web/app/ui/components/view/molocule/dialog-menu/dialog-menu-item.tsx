@@ -1,5 +1,7 @@
 import { useContext } from 'react';
 import { DialogMenuContext } from './dialog-menu.context';
+import { useDialogMenu } from './use-dialog-menu.hook';
+import { DialogMenuKey } from '@/app/utils/keys/dialog-menu-key';
 
 type DialogMenuItemProps = {
   icon: React.ElementType;
@@ -7,7 +9,8 @@ type DialogMenuItemProps = {
 };
 
 export function DialogMenuItem({ children, icon, onClick }: React.PropsWithChildren<DialogMenuItemProps>) {
-  const { onClose } = useContext(DialogMenuContext);
+  const dialogKey = useContext(DialogMenuContext);
+  const { closeDialogMenu } = useDialogMenu(dialogKey as DialogMenuKey);
   const Icon = icon;
 
   const handleClick = () => {
@@ -16,7 +19,7 @@ export function DialogMenuItem({ children, icon, onClick }: React.PropsWithChild
       onClick();
     }
 
-    onClose();
+    closeDialogMenu();
   };
 
   return (

@@ -24,11 +24,7 @@ export function DialogMenuRoot({ children, dialogKey }: React.PropsWithChildren<
   };
 
   return (
-    <DialogMenuContext.Provider
-      value={{
-        onClose: closeDialogMenu,
-      }}
-    >
+    <DialogMenuContext.Provider value={dialogKey}>
       <div className="fixed inset-0 pointer-events-none	overflow-hidden	z-50">
         <Transition
           as={React.Fragment}
