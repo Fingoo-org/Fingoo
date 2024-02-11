@@ -9,7 +9,7 @@ export default function MetadataDialogMenu() {
 
   return (
     <DialogMenu dialogKey={DIALOG_KEY.METADATA_EDIT_MENU}>
-      <DialogMenu.Item onClick={openDialog} icon={DotsHorizontalIcon}>
+      <DialogMenu.Item role={'menuitem'} aria-label="Delete" onClick={openDialog} icon={DotsHorizontalIcon}>
         Delete
       </DialogMenu.Item>
     </DialogMenu>
