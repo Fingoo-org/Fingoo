@@ -1,5 +1,3 @@
 import { createContext } from 'react';
 
-export const DialogMenuContext = createContext({
-  onClose: () => {},
-});
+export const DialogMenuContext = createContext('');

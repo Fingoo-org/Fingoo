@@ -2,20 +2,14 @@ import { Menu, Transition } from '@headlessui/react';
 import React from 'react';
 import { DropdownMenuButton } from './dropdown-menu-button';
 import { DropdownMenuItem } from './dropdown-menu-item';
+import { filterChildrenByType } from '@/app/utils/helper';
 
 function getDropdownMenuButton(children: React.ReactNode) {
-  const childArray = React.Children.toArray(children);
-  const button = childArray.find((child) => {
-    return React.isValidElement(child) && child.type === DropdownMenuButton;
-  });
-  return button;
+  return filterChildrenByType(children, DropdownMenuButton);
 }
 
 function getDropdownMenuItems(children: React.ReactNode) {
-  const childArray = React.Children.toArray(children);
-  return childArray.filter((child) => {
-    return React.isValidElement(child) && child.type === DropdownMenuItem;
-  });
+  return filterChildrenByType(children, DropdownMenuItem);
 }
 
 export function DropdownMenuRoot({ children }: React.PropsWithChildren) {
