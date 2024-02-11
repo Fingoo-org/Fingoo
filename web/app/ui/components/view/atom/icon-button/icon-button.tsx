@@ -13,7 +13,7 @@ type IconButtonProps = {
 } & NativeButtonType;
 
 export default React.forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { icon, onClick, size = Sizes.SM, invariant = IconVariants.Simple, color, ...props },
+  { icon, onClick, size = Sizes.SM, invariant = IconVariants.Simple, color, className, ...props },
   ref,
 ) {
   const Icon = icon;
@@ -38,6 +38,7 @@ export default React.forwardRef<HTMLButtonElement, IconButtonProps>(function Ico
         iconShapeStyles?.ring,
         iconShapeStyles?.rounded,
         iconShapeStyles?.shadow,
+        className,
       )}
     >
       <Icon className={twMerge(iconSizes[size].height, iconSizes[size].width)} />
