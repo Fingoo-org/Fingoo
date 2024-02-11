@@ -1,15 +1,15 @@
 'use client';
 import { DialogMenuKey } from '@/app/utils/keys/dialog-menu-key';
 import { Dialog, Transition } from '@headlessui/react';
-import { useDialog } from './use-dialog.hook';
+import { useAlertDialog } from './use-alert-dialog.hook';
 import React from 'react';
 
 type DialogProps = {
   dialogKey: DialogMenuKey;
 };
 
-export function DialogRoot({ children, dialogKey }: React.PropsWithChildren<DialogProps>) {
-  const { isOpen, closeDialog } = useDialog(dialogKey);
+export function AlertDialogRoot({ children, dialogKey }: React.PropsWithChildren<DialogProps>) {
+  const { isOpen, closeDialog } = useAlertDialog(dialogKey);
   const handleClose = () => {
     closeDialog();
   };

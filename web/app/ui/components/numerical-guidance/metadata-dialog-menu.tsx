@@ -2,10 +2,10 @@
 import DialogMenu from '../view/molocule/dialog-menu';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-menu-key';
-import { useDialog } from '../view/molocule/dialog/use-dialog.hook';
+import { useAlertDialog } from '../view/molocule/alert-dialog/use-alert-dialog.hook';
 
 export default function MetadataDialogMenu() {
-  const { openDialog } = useDialog(DIALOG_KEY.METADATA_DELETE);
+  const { openDialog } = useAlertDialog(DIALOG_KEY.METADATA_DELETE);
 
   return (
     <DialogMenu dialogKey={DIALOG_KEY.METADATA_EDIT_MENU}>

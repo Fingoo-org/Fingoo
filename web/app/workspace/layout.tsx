@@ -1,5 +1,5 @@
 import MetadataDialogMenu from '../ui/components/numerical-guidance/metadata-dialog-menu';
-import { DialogRoot } from '../ui/components/view/molocule/dialog/dialog-root';
+import { DialogRoot } from '../ui/components/view/molocule/alert-dialog/alert-dialog-root';
 import SideNav from '../ui/pages/workspace/sidenav';
 import { DIALOG_KEY } from '../utils/keys/dialog-menu-key';
 
