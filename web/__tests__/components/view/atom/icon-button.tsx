@@ -10,7 +10,7 @@ describe('IconButton', () => {
   });
 
   it('outlined 스타일의 아이콘 버튼을 렌더링한다.', () => {
-    const { container } = render(<IconButton icon={DotsHorizontalIcon} color={'blue'} invariant={'outlined'} />);
+    const { container } = render(<IconButton icon={DotsHorizontalIcon} color={'blue'} variant={'outlined'} />);
 
     expect(container).toMatchSnapshot();
   });

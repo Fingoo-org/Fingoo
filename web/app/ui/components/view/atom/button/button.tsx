@@ -11,7 +11,7 @@ type ButtonProps = {
   variant?: ButtonVariant;
 } & NativeButtonType;
 
-export default React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   { children, size = Sizes.SM, color = 'blue', variant = ButtonVariants.Primary, className, ...props }: ButtonProps,
   ref,
 ) {
@@ -40,3 +40,5 @@ export default React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
     </button>
   );
 });
+
+export default Button;
