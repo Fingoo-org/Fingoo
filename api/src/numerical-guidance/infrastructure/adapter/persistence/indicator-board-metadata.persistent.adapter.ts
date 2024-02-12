@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateIndicatorBoardMetadataPort } from '../../../application/port/persistence/create-indicator-board-metadata.port';
 import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
 
@@ -34,9 +34,19 @@ export class IndicatorBoardMetadataPersistentAdapter
   }
 
   async loadIndicatorBoardMetaData(id: string): Promise<IndicatorBoardMetadata> {
-    const indicatorMetaDataEintity = await this.findOneBy(id);
-    const indicatorBoardMetaData = await IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorMetaDataEintity);
-    return indicatorBoardMetaData;
+    try {
+      const indicatorMetaDataEintity = await this.findOneBy(id);
+      const indicatorBoardMetaData = await IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorMetaDataEintity);
+      return indicatorBoardMetaData;
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: 'invalid id',
+          error: error,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async findOneBy(id: string) {
