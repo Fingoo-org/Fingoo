@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Query, Res, UseFilters } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetFluctuatingIndicatorQuery } from '../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
 import { FluctuatingIndicatorDto } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
@@ -13,6 +13,7 @@ import { CreateIndicatorBoardMetadataCommand } from '../application/command/crea
 import { Response } from 'express';
 import { GetIndicatorBoardMetadataQuery } from '../application/query/get-indicator-board-metadata/get-indicator-board-metadata.query';
 import { IndicatorBoardMetadata } from '../domain/indicator-board-metadata';
+import { HttpExceptionFilter } from 'src/utils/exception-filter/execptionFilter';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/numerical-guidance')
@@ -75,6 +76,7 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터 id로 메타데이터를 가져옵니다.' })
+  @UseFilters(new HttpExceptionFilter())
   @Get('/indicator-board-metadata/:id')
   async getIndicatorBoardMetaDataById(@Param('id') id): Promise<IndicatorBoardMetadata> {
     const query = new GetIndicatorBoardMetadataQuery(id);
