@@ -1,17 +1,17 @@
 'use client';
-import { EventProps, LineChart, Title } from '@tremor/react';
+import { EventProps, LineChart } from '@tremor/react';
 import { useState } from 'react';
 
 type MultiLineChartProps = {
   data: any[];
   categories: string[];
+  noDataText?: string;
 };
 
-export default function MultiLineChart({ data, categories }: MultiLineChartProps) {
+export default function MultiLineChart({ data, categories, noDataText }: MultiLineChartProps) {
   const [value, setValue] = useState<EventProps>(null);
   return (
     <>
-      <Title>Metadata Name</Title>
       <LineChart
         className="h-72 mt-4"
         data={data}
@@ -22,6 +22,7 @@ export default function MultiLineChart({ data, categories }: MultiLineChartProps
         onValueChange={(v) => setValue(v)}
         showAnimation={true}
         animationDuration={600}
+        noDataText={noDataText}
       />
     </>
   );

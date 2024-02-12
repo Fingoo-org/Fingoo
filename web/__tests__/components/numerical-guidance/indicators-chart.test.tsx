@@ -30,7 +30,7 @@ describe('IndicatorsChart', () => {
 
     // when
     // then
-    expect(await screen.findByText(/No data/i)).toBeInTheDocument();
+    expect(await screen.findByText(/메타데이터를 선택해주세요/i)).toBeInTheDocument();
   });
 
   it('선택한 메타데이터가 있을 때, 지표를 선택하면, 차트를 보여준다.', async () => {
@@ -51,7 +51,7 @@ describe('IndicatorsChart', () => {
     await userEvent.click(await screen.findByText(/Apple Inc./i));
 
     // then
-    expect(screen.queryByText(/No data/i)).toBeNull();
+    expect(await screen.findByText('metadata1')).toBeInTheDocument();
     expect(await screen.findByText(/APPL/i)).toBeInTheDocument();
   });
 
@@ -75,6 +75,6 @@ describe('IndicatorsChart', () => {
     await userEvent.click(await screen.findByText(/Apple Inc./i));
 
     // then
-    expect(await screen.findByText(/No data/i)).toBeInTheDocument();
+    expect(await screen.findByText(/선택한 지표가 없습니다. 지표를 선택해주세요/i)).toBeInTheDocument();
   });
 });
