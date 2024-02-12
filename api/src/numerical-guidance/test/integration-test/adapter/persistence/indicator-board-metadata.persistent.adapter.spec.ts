@@ -8,7 +8,7 @@ import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from '../../../../../auth/auth.service';
 import { DataSource } from 'typeorm';
-// import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -101,16 +101,16 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     expect(result.indicatorIds).toEqual(expectedIndicatorId);
   });
 
-  // it('유효하지 않은 메타보드 id로 예외처리 메세지 불러오기', async()=>{
-  //   // given
+  it('db에 존재하지 않는 메타보드 id를 입력해 예외처리 메세지 불러오기', async () => {
+    // given
 
-  //   // when
-  //   try {
-  //     await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData('invalidId');
-  // } catch (error) {
-  //     // then
-  //     expect(error.message).toEqual('invalid id');
-  //     expect(error.getStatus()).toEqual(HttpStatus.BAD_REQUEST);
-  // }
-  // })
+    // when
+    try {
+      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData('invalidId');
+    } catch (error) {
+      // then
+      expect(error.message).toEqual('invalid id');
+      expect(error.getStatus()).toEqual(HttpStatus.BAD_REQUEST);
+    }
+  });
 });
