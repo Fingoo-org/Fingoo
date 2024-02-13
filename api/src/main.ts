@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { initializeTransactionalContext } from 'typeorm-transactional';
-import { AllExceptionFilter } from './utils/exception-filter/http-execption-filter';
+import { HttpExceptionFilter } from './utils/exception-filter/http-execption-filter';
 
 async function bootstrap() {
   initializeTransactionalContext();
@@ -29,7 +29,7 @@ async function bootstrap() {
       disableErrorMessages: false,
     }),
   );
-  app.useGlobalFilters(new AllExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(8000);
 }
 bootstrap();
