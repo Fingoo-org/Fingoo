@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
-import { defaultFetcher, deleteFetcher, updateFetcher } from '../fetcher';
+import { defaultFetcher, deleteFetcher, patchFetcher, updateFetcher } from '../fetcher';
 import useSWRMutation from 'swr/mutation';
 
 // Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까? (2/2) 분리 했음
@@ -41,6 +41,7 @@ export const useFetchIndicatorBoardMetadataList = () =>
 export const useCreateIndicatorMetadata = () =>
   useSWRMutation(API_PATH.indicatorBoardMetadata, updateFetcher<CreateIndicatorMetadataRequestBody>);
 
+// Refactor: mutation 방식 변경 필요
 export const useAddIndicatorToMetadata = (metadataId: string | null) =>
   useSWRMutation(
     API_PATH.indicatorBoardMetadata,
@@ -58,3 +59,14 @@ export const useDeleteIndicatorFromMetadata = (metadataId: string | null) =>
   useSWRMutation(API_PATH.indicatorBoardMetadata, async (url, { arg }: { arg: string }) => {
     await deleteFetcher(metadataId ? [url, metadataId] : API_PATH.indicatorBoardMetadata, { arg });
   });
+
+export type UpdateIndicatorBoardMetadataRequestBody = {
+  name: string;
+};
+
+export const useUpdateIndicatorBoardMetadata = (metadataId: string | null) => {
+  useSWRMutation(
+    metadataId ? [API_PATH.indicatorBoardMetadata, metadataId] : null,
+    patchFetcher<UpdateIndicatorBoardMetadataRequestBody>,
+  );
+};
