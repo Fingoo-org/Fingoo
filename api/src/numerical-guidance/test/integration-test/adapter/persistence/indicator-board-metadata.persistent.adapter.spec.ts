@@ -8,7 +8,7 @@ import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from '../../../../../auth/auth.service';
 import { DataSource } from 'typeorm';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, HttpStatus } from '@nestjs/common';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -112,7 +112,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       new BadRequestException({
         message: 'invalid id',
         error: Error,
-        HttpStatus: 400,
+        HttpStatus: HttpStatus.BAD_REQUEST,
       }),
     );
   });

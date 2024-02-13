@@ -41,7 +41,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     } catch (error) {
       throw new BadRequestException({
         message: 'invalid id',
-        error: Error,
+        error: error,
         HttpStatus: 400,
       });
     }
