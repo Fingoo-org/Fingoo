@@ -17,6 +17,7 @@ export default function EditableText({ text, readonly = false, onChange, classNa
       onChange(event.target.value);
     }
   };
+  console.log(text);
 
   return (
     <div className={'inline-block relative group'}>
@@ -28,7 +29,8 @@ export default function EditableText({ text, readonly = false, onChange, classNa
       >
         <input
           readOnly={readonly}
-          value={text}
+          key={text}
+          defaultValue={text}
           onChange={handleChange}
           className={clsx('focus:outline-none border-0 focus:ring-0 focus:ring-offset-0', className)}
         />
