@@ -25,7 +25,6 @@ export function AlertDialogPositiveButton({
     closeDialog();
   };
 
-  // Refactor: 버튼 디자인 시스템화
   return (
     <Button {...props} color={'blue'} onClick={handleClick} aria-label="Confirm" type="button">
       {children}

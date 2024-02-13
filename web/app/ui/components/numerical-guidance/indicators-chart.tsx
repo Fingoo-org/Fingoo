@@ -21,9 +21,13 @@ export default function IndicatorsChart() {
   return (
     <>
       <Pending isPending={isPending}>
-        <Title>
-          <EditableText>{selectedMetadata ? selectedMetadata.name : 'No metadata'}</EditableText>
-        </Title>
+        <EditableText
+          readonly={selectedMetadata ? false : true}
+          className="w-32"
+          text={selectedMetadata ? selectedMetadata.name : 'No metadata'}
+        />
+        {/* <Title>
+        </Title> */}
         <MultiLineChart
           data={formattedIndicatorsRows || []}
           categories={category}

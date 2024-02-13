@@ -25,7 +25,6 @@ export function AlertDialogNegativeButton({
     closeDialog();
   };
 
-  // Refactor: 버튼 디자인 시스템화
   return (
     <Button {...props} color={'red'} variant={'secondary'} onClick={handleClick} type="button" aria-label="Cancel">
       {children}

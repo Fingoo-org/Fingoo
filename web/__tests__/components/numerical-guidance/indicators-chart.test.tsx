@@ -51,7 +51,7 @@ describe('IndicatorsChart', () => {
     await userEvent.click(await screen.findByText(/Apple Inc./i));
 
     // then
-    expect(await screen.findByText('metadata1')).toBeInTheDocument();
+    expect(await screen.findByDisplayValue('metadata1')).toBeInTheDocument();
     expect(await screen.findByText(/APPL/i)).toBeInTheDocument();
   });
 
