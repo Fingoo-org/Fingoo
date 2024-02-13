@@ -1,7 +1,10 @@
 import { HttpResponse, http, delay } from 'msw';
 import { API_PATH } from '../store/querys/api-path';
 import { mockDB } from './db.mock';
-import { AddIndicatorToMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
+import {
+  AddIndicatorToMetadataRequestBody,
+  UpdateIndicatorBoardMetadataRequestBody,
+} from '../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { CreateIndicatorMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
 
 const delayForDevelopment = async (ms = 1000) => {
@@ -62,6 +65,16 @@ export const handlers = [
     }
     return HttpResponse.json(indicatorValue);
   }),
+  http.patch<metadataParam, UpdateIndicatorBoardMetadataRequestBody>(
+    API_PATH.indicatorBoardMetadata,
+    async ({ request, params }) => {
+      const { metadataId } = params;
+      const data = await request.json();
+      await delayForDevelopment();
+      mockDB.patchMetadata(metadataId, data);
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
 ];
 
 type metadataParam = {
