@@ -17,7 +17,6 @@ export default function EditableText({ text, readonly = false, onChange, classNa
       onChange(event.target.value);
     }
   };
-  console.log(text);
 
   return (
     <div className={'inline-block relative group'}>

@@ -65,7 +65,7 @@ describe('useIndicatoBoardrMetadataList', () => {
     const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
     server.use(
-      http.post(API_PATH.metadataList, () => {
+      http.post(API_PATH.indicatorBoardMetadata, () => {
         return new HttpResponse(null, { status: 500 });
       }),
     );

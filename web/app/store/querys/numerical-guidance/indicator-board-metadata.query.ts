@@ -36,19 +36,25 @@ export type AddIndicatorToMetadataRequestBody = {
 };
 
 export const useFetchIndicatorBoardMetadataList = () =>
-  useSWR<IndicatorBoardMetadataListResponse>(API_PATH.metadataList, defaultFetcher);
+  useSWR<IndicatorBoardMetadataListResponse>(API_PATH.indicatorBoardMetadata, defaultFetcher);
 
 export const useCreateIndicatorMetadata = () =>
-  useSWRMutation(API_PATH.metadataList, updateFetcher<CreateIndicatorMetadataRequestBody>);
+  useSWRMutation(API_PATH.indicatorBoardMetadata, updateFetcher<CreateIndicatorMetadataRequestBody>);
 
 export const useAddIndicatorToMetadata = (metadataId: string | null) =>
-  useSWRMutation(API_PATH.metadataList, async (url: string, { arg }: { arg: AddIndicatorToMetadataRequestBody }) => {
-    await updateFetcher<AddIndicatorToMetadataRequestBody>(metadataId ? [url, metadataId] : API_PATH.metadataList, {
-      arg,
-    });
-  });
+  useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (url: string, { arg }: { arg: AddIndicatorToMetadataRequestBody }) => {
+      await updateFetcher<AddIndicatorToMetadataRequestBody>(
+        metadataId ? [url, metadataId] : API_PATH.indicatorBoardMetadata,
+        {
+          arg,
+        },
+      );
+    },
+  );
 
 export const useDeleteIndicatorFromMetadata = (metadataId: string | null) =>
-  useSWRMutation(API_PATH.metadataList, async (url, { arg }: { arg: string }) => {
-    await deleteFetcher(metadataId ? [url, metadataId] : API_PATH.metadataList, { arg });
+  useSWRMutation(API_PATH.indicatorBoardMetadata, async (url, { arg }: { arg: string }) => {
+    await deleteFetcher(metadataId ? [url, metadataId] : API_PATH.indicatorBoardMetadata, { arg });
   });

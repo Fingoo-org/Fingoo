@@ -11,11 +11,11 @@ const delayForDevelopment = async (ms = 1000) => {
 };
 
 export const handlers = [
-  http.get(API_PATH.metadataList, async () => {
+  http.get(API_PATH.indicatorBoardMetadata, async () => {
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getMetadataList());
   }),
-  http.post<never, CreateIndicatorMetadataRequestBody, never>(API_PATH.metadataList, async ({ request }) => {
+  http.post<never, CreateIndicatorMetadataRequestBody, never>(API_PATH.indicatorBoardMetadata, async ({ request }) => {
     const newMetadata = await request.json();
     mockDB.postMetadataList(newMetadata);
     await delayForDevelopment();
@@ -28,7 +28,7 @@ export const handlers = [
     return HttpResponse.json(mockDB.getIndicatorList());
   }),
   http.post<metadataParam, AddIndicatorToMetadataRequestBody>(
-    `${API_PATH.metadataList}/:metadataId`,
+    `${API_PATH.indicatorBoardMetadata}/:metadataId`,
     async ({ params, request }) => {
       const { metadataId } = params;
       const indicator = await request.json();
@@ -39,7 +39,7 @@ export const handlers = [
     },
   ),
   http.delete<metadataParam & indicatorParam>(
-    `${API_PATH.metadataList}/:metadataId/:indicatorKey`,
+    `${API_PATH.indicatorBoardMetadata}/:metadataId/:indicatorKey`,
     async ({ params }) => {
       const { metadataId, indicatorKey } = params;
       mockDB.deleteIndicatorFromMetadata(metadataId, indicatorKey);

@@ -1,7 +1,7 @@
-const API_URL = 'https:mock-api.com';
+const API_URL = 'https:mock-api.com/api';
 
 export const API_PATH = {
   indicatorList: `${API_URL}/indicator-list`,
-  metadataList: `${API_URL}/metadata-list`,
+  indicatorBoardMetadata: `${API_URL}/indicator-board-metadata`,
   indicatorValue: `${API_URL}/indicator`,
 };
