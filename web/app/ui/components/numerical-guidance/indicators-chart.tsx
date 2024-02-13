@@ -4,7 +4,6 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-sele
 import MultiLineChart from '../view/molocule/multi-line-chart';
 import { useMemo } from 'react';
 import Pending from '../view/molocule/pending';
-import { Title } from '@tremor/react';
 import EditableText from '../view/atom/editable-text';
 
 export default function IndicatorsChart() {
@@ -23,11 +22,9 @@ export default function IndicatorsChart() {
       <Pending isPending={isPending}>
         <EditableText
           readonly={selectedMetadata ? false : true}
-          className="w-32"
+          className="w-40 text-lg font-medium p-0"
           text={selectedMetadata ? selectedMetadata.name : 'No metadata'}
         />
-        {/* <Title>
-        </Title> */}
         <MultiLineChart
           data={formattedIndicatorsRows || []}
           categories={category}
