@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateIndicatorBoardMetadataPort } from '../../../application/port/persistence/create-indicator-board-metadata.port';
 import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
 
@@ -39,13 +39,11 @@ export class IndicatorBoardMetadataPersistentAdapter
       const indicatorBoardMetaData = await IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorMetaDataEintity);
       return indicatorBoardMetaData;
     } catch (error) {
-      throw new HttpException(
-        {
-          message: 'invalid id',
-          error: error,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException({
+        message: 'invalid id',
+        error: Error,
+        HttpStatus: 400,
+      });
     }
   }
 
