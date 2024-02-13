@@ -104,7 +104,8 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   it('db에 존재하지 않는 메타보드 id를 입력해 예외처리 메세지 불러오기', async () => {
     // given
 
-    // when & then
+    // when
+    // then
     expect(async () => {
       await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData('invalidId');
     }).rejects.toThrow(
