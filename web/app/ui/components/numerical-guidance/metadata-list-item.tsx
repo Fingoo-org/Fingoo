@@ -11,7 +11,7 @@ type MetadataListItemProps = {
 };
 
 export default function MetadataListItem({ item }: MetadataListItemProps) {
-  const { ref: iconButtonRef, openDialogMenu } = useDialogMenu(DIALOG_KEY.METADATA_EDIT_MENU);
+  const { ref: iconButtonRef, openDialogMenuWithPayload } = useDialogMenu(DIALOG_KEY.METADATA_EDIT_MENU);
   const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
 
   const handleSelect = () => {
@@ -19,7 +19,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   const handleIconButton = () => {
-    openDialogMenu(item);
+    openDialogMenuWithPayload(item);
   };
 
   return (

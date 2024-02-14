@@ -4,11 +4,12 @@ import { DialogKey } from '@/app/utils/keys/dialog-key';
 
 export function useDialogMenu(key: DialogKey) {
   const action = useDialogStore((state) => state.action);
+  const payload = useDialogStore((state) => state.payload);
   const isOpen = useDialogStore((state) => state.isOpen[key]);
   const position = useDialogStore((state) => state.position);
   const ref = useRef<HTMLButtonElement>(null);
 
-  const openDialogMenu = (payload?: unknown) => {
+  const openDialogMenuWithPayload = (payload?: unknown) => {
     const position = ref.current?.getBoundingClientRect();
 
     if (!position) {
@@ -33,7 +34,8 @@ export function useDialogMenu(key: DialogKey) {
     ref,
     isOpen,
     position,
-    openDialogMenu,
+    payload,
+    openDialogMenuWithPayload,
     closeDialogMenu,
   };
 }
