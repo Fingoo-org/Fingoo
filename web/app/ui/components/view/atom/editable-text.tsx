@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-type NativeDivType = Omit<React.ComponentPropsWithoutRef<'div'>, 'onInput'>;
+type NativeDivType = Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange'>;
 
 type EditableTextProps = {
   text: string;

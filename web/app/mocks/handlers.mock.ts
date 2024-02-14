@@ -66,7 +66,7 @@ export const handlers = [
     return HttpResponse.json(indicatorValue);
   }),
   http.patch<metadataParam, UpdateIndicatorBoardMetadataRequestBody>(
-    API_PATH.indicatorBoardMetadata,
+    `${API_PATH.indicatorBoardMetadata}/:metadataId`,
     async ({ request, params }) => {
       const { metadataId } = params;
       const data = await request.json();
