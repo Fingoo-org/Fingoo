@@ -8,7 +8,7 @@ export default function MetadataDeleteDialog() {
       <AlertDialog.Title>Delete Metadata</AlertDialog.Title>
       <AlertDialog.Body>Are you sure you want to delete this metadata?</AlertDialog.Body>
       <AlertDialog.NegativeButton>Cancel</AlertDialog.NegativeButton>
-      <AlertDialog.PositiveButton>Delete</AlertDialog.PositiveButton>
+      <AlertDialog.PositiveButton color={'red'}>Delete</AlertDialog.PositiveButton>
     </AlertDialog>
   );
 }
