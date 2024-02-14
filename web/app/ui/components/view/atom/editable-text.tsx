@@ -11,8 +11,6 @@ type EditableTextProps = {
 
 export default function EditableText({ text, readonly = false, onChange, className }: EditableTextProps) {
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    console.log(event.target.value);
-
     if (onChange) {
       onChange(event.target.value);
     }
@@ -28,8 +26,7 @@ export default function EditableText({ text, readonly = false, onChange, classNa
       >
         <input
           readOnly={readonly}
-          key={text}
-          defaultValue={text}
+          value={text}
           onChange={handleChange}
           className={clsx('focus:outline-none border-0 focus:ring-0 focus:ring-offset-0', className)}
         />

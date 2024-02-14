@@ -5,11 +5,9 @@ import MultiLineChart from '../view/molocule/multi-line-chart';
 import { useMemo } from 'react';
 import Pending from '../view/molocule/pending';
 import EditableText from '../view/atom/editable-text';
-import { useUpdateIndicatorBoardMetadata } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
 export default function IndicatorsChart() {
-  const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { trigger } = useUpdateIndicatorBoardMetadata(selectedMetadata?.id);
+  const { selectedMetadata, updateMetadata } = useSelectedIndicatorBoardMetadata();
   const { indciatorsValueViewModel, isPending } = useIndicatorsValueViewModel();
 
   const formattedIndicatorsRows = useMemo(
@@ -20,7 +18,7 @@ export default function IndicatorsChart() {
   const category = indciatorsValueViewModel?.tickerList ? indciatorsValueViewModel.tickerList : [];
 
   const handleMetadataNameChange = (name: string) => {
-    trigger({
+    updateMetadata({
       name,
     });
   };
