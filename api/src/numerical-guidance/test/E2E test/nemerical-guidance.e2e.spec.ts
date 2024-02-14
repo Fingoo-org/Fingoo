@@ -93,7 +93,7 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.OK);
   });
 
-  it('/get 유효하지 않은 메타데이터 id를 전송한다.', () => {
+  it('/get db에 존재하지않는 메타데이터 id를 전송한다.', () => {
     return request(app.getHttpServer())
       .get('/numerical-guidance/indicator-board-metadata/invlid-id')
       .set('Content-Type', 'application/json')
