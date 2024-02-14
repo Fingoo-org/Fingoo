@@ -7,9 +7,10 @@ type EditableTextProps = {
   text: string;
   readonly?: boolean;
   onChange?: (text: string) => void;
+  inputKey?: string;
 } & NativeDivType;
 
-export default function EditableText({ text, readonly = false, onChange, className }: EditableTextProps) {
+export default function EditableText({ text, readonly = false, inputKey, onChange, className }: EditableTextProps) {
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     if (onChange) {
       onChange(event.target.value);
@@ -26,7 +27,8 @@ export default function EditableText({ text, readonly = false, onChange, classNa
       >
         <input
           readOnly={readonly}
-          value={text}
+          key={inputKey}
+          defaultValue={text}
           onChange={handleChange}
           className={clsx('focus:outline-none border-0 focus:ring-0 focus:ring-offset-0', className)}
         />

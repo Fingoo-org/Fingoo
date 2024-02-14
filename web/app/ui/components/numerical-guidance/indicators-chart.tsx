@@ -5,6 +5,7 @@ import MultiLineChart from '../view/molocule/multi-line-chart';
 import { useMemo } from 'react';
 import Pending from '../view/molocule/pending';
 import EditableText from '../view/atom/editable-text';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function IndicatorsChart() {
   const { selectedMetadata, updateMetadata } = useSelectedIndicatorBoardMetadata();
@@ -17,16 +18,17 @@ export default function IndicatorsChart() {
 
   const category = indciatorsValueViewModel?.tickerList ? indciatorsValueViewModel.tickerList : [];
 
-  const handleMetadataNameChange = (name: string) => {
+  const handleMetadataNameChange = useDebouncedCallback((name: string) => {
     updateMetadata({
       name,
     });
-  };
+  }, 500);
 
   return (
     <>
       <Pending isPending={isPending}>
         <EditableText
+          inputKey={selectedMetadata?.id}
           onChange={handleMetadataNameChange}
           readonly={selectedMetadata ? false : true}
           className="w-40 text-lg font-medium p-0"
