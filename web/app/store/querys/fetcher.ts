@@ -8,7 +8,7 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   return response;
 }, httpErrorHandler);
 
-// fetcher 정리 필요, 시점은 api 백엔드에서 제대로 나올 때
+// Refactor: fetcher 정리 필요, 각 요청별로 나누기
 export const defaultFetcher: Fetcher<any, string> = (url) => instance.get(url).then((res) => res.data);
 
 export const paramFetcher = (url: string, param: string) => instance.get(`${url}/${param}`).then((res) => res.data);
@@ -48,4 +48,13 @@ export const fetchIndicatorsValue = async ([url, ...tickers]: string[]) => {
     ),
   );
   return { indicatorsValue: indicatorsvalue };
+};
+
+export const patchFetcher = async <T>(key: string[], { arg }: { arg: T }) => {
+  const url = key.join('/');
+  try {
+    await instance.patch(url, arg);
+  } catch (e) {
+    throw e;
+  }
 };

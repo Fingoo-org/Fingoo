@@ -1,4 +1,7 @@
-import { CreateIndicatorMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
+import {
+  CreateIndicatorMetadataRequestBody,
+  UpdateIndicatorBoardMetadataRequestBody,
+} from '../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { IndicatorValueResponse, IndicatorsValueResponse } from '../store/querys/numerical-guidance/indicator.query';
 import {
   IndicatorBoardMetadataListResponse,
@@ -18,6 +21,7 @@ type MockDatabaseAction = {
   postIndicatorToMetadata: (id: string, data: AddIndicatorToMetadataRequestBody) => void;
   deleteIndicatorFromMetadata: (id: string, indicatorKey: string) => void;
   getIndicatorValue: (ticker: string) => IndicatorValueResponse | undefined;
+  patchMetadata: (id: string, data: UpdateIndicatorBoardMetadataRequestBody) => void;
 };
 
 const initialState: MockDatabase = {
@@ -101,6 +105,15 @@ export const mockDB: MockDatabaseAction = {
   },
   getIndicatorValue: (ticker) => {
     return mockDatabaseStore.indicatorsValue.find((indicator) => indicator.ticker === ticker);
+  },
+  patchMetadata: (id, data) => {
+    const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
+    const newMetadata = {
+      ...mockDatabaseStore.metadataList[index],
+      ...data,
+    };
+
+    mockDatabaseStore.metadataList[index] = newMetadata;
   },
 };
 

@@ -13,7 +13,7 @@ describe('useNumericalGuidanceStore', () => {
 
     // when
     // then
-    expect(result.current.selectedMetadataId).toBe(null);
+    expect(result.current.selectedMetadataId).toBeUndefined();
     expect(result.current.interval).toBe('day');
   });
 

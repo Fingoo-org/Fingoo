@@ -9,6 +9,7 @@ import { useIndicatorList } from '@/app/business/hooks/use-indicator-list.hook';
 
 const wrapper = SWRProviderWithoutCache;
 
+// refactor: renderhook 사용법 변경해야함
 describe('useSelectedIndicatorBoardMetadata', () => {
   beforeEach(() => {
     resetAllStore();
@@ -43,7 +44,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
 
     // when
     act(() => {
-      store.current.actions.selectMetadata(null);
+      store.current.actions.selectMetadata(undefined);
     });
 
     // then
@@ -65,7 +66,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
     });
     await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
     act(() => {
-      store.current.actions.selectMetadata(null);
+      store.current.actions.selectMetadata(undefined);
     });
     await waitFor(() => expect(result.current.selectedMetadata).toBeUndefined());
 
@@ -159,6 +160,31 @@ describe('useSelectedIndicatorBoardMetadata', () => {
 
       // then
       expect(result.current.selectedMetadata?.indicators).toEqual([]);
+    });
+
+    describe('updateMetadata', () => {
+      it('메타데이터를 선택했을 때, 선택한 메타데이터의 이름을 변경하면, 메타데이터 값에 변경된 이름이 반영된다.', async () => {
+        // given
+        const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
+        const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+        const { result: store } = renderHook(() => useNumericalGuidanceStore());
+        await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
+        act(() => {
+          if (metadataList.current.metadataList?.[0]) {
+            store.current.actions.selectMetadata(metadataList.current.metadataList?.[0].id);
+          }
+        });
+        await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+
+        // when
+        act(() => {
+          result.current.updateMetadata({ name: 'changedName' });
+        });
+        await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+
+        // then
+        expect(result.current.selectedMetadata?.name).toEqual('changedName');
+      });
     });
   });
 });

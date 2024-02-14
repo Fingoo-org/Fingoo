@@ -12,7 +12,8 @@ describe('IndicatorList', () => {
     resetAllStore();
   });
 
-  it('메타데이터가 선택되었을 때, 지표 리스트를 조회한다.', async () => {
+  it('메타데이터가 선택되었을 때, 지표 리스트를 보여준다.', async () => {
+    // given
     render(
       <SWRProviderWithoutCache>
         <IndicatorList />
