@@ -10,7 +10,7 @@ type NativeButtonType = Omit<React.ComponentPropsWithoutRef<'button'>, 'onClick'
 type AlertDialogPositiveButtonProps = {
   color?: Color;
   variant?: ButtonVariant;
-  onClick?: () => void;
+  onClick?: (payload: unknown) => void;
 } & NativeButtonType;
 
 export function AlertDialogPositiveButton({
@@ -21,11 +21,11 @@ export function AlertDialogPositiveButton({
   ...props
 }: React.PropsWithChildren<AlertDialogPositiveButtonProps>) {
   const dialogKey = useContext(AlertDialogContext);
-  const { closeDialog } = useAlertDialog(dialogKey as DialogKey);
+  const { payload, closeDialog } = useAlertDialog(dialogKey as DialogKey);
 
   const handleClick = () => {
     if (onClick) {
-      onClick();
+      onClick(payload);
     }
     closeDialog();
   };
