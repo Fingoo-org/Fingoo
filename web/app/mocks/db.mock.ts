@@ -22,6 +22,7 @@ type MockDatabaseAction = {
   deleteIndicatorFromMetadata: (id: string, indicatorKey: string) => void;
   getIndicatorValue: (ticker: string) => IndicatorValueResponse | undefined;
   patchMetadata: (id: string, data: UpdateIndicatorBoardMetadataRequestBody) => void;
+  deleteMetadata: (id: string) => void;
 };
 
 const initialState: MockDatabase = {
@@ -114,6 +115,9 @@ export const mockDB: MockDatabaseAction = {
     };
 
     mockDatabaseStore.metadataList[index] = newMetadata;
+  },
+  deleteMetadata: (id) => {
+    mockDatabaseStore.metadataList = mockDatabaseStore.metadataList.filter((metadata) => metadata.id !== id);
   },
 };
 
