@@ -82,4 +82,19 @@ describe('useIndicatoBoardrMetadataList', () => {
     expect(result.current.metadataList?.[3]).not.toEqual({ id: '4', name: 'metadata4', indicators: [] });
     expect(store.current.selectedMetadataId).toBeUndefined();
   });
+
+  it('메타데이터를 삭제하면, 삭제한 메타데이터를 포함하지 않는 메타데이터 리스트를 가져온다.', async () => {
+    // given
+    const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
+
+    // when
+    await act(() => {
+      result.current.deleteMetadata('1');
+    });
+
+    // then
+    expect(result.current.metadataList).toHaveLength(2);
+    expect(result.current.metadataList?.[0]).not.toEqual({ id: '1', name: 'metadata1', indicators: [] });
+  });
 });
