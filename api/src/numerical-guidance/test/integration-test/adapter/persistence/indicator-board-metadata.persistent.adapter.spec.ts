@@ -7,6 +7,8 @@ import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter
 import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from '../../../../../auth/auth.service';
+import { DataSource } from 'typeorm';
+import { BadRequestException, HttpStatus } from '@nestjs/common';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -14,7 +16,13 @@ jest.mock('typeorm-transactional', () => ({
 
 describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   let environment;
+  let dataSource: DataSource;
   let indicatorBoardMetaDataPersistentAdapter: IndicatorBoardMetadataPersistentAdapter;
+  const seeding = async () => {
+    const memberRepository = dataSource.getRepository(MemberEntity);
+    await memberRepository.insert({ id: 10 });
+    memberRepository.save;
+  };
 
   beforeAll(async () => {
     environment = await new PostgreSqlContainer().start();
@@ -45,6 +53,8 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       providers: [IndicatorBoardMetadataPersistentAdapter, AuthService],
     }).compile();
     indicatorBoardMetaDataPersistentAdapter = module.get(IndicatorBoardMetadataPersistentAdapter);
+    dataSource = module.get<DataSource>(DataSource);
+    await seeding();
   }, 20000);
 
   afterAll(async () => {
@@ -68,5 +78,42 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // then
     expect(resultIndicatorBoardMetaDataEntity.indicatorBoardMetaDataName).toEqual('메타 데이터');
+  });
+
+  it('생성한 지표보드 메타데이터 id로 메타데이터 가져오기', async () => {
+    // given
+    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터', {
+      key1: ['1', '2', '3'],
+    });
+
+    // when
+    const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(
+      indicatorBoardMetaData,
+      10,
+    );
+    const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(resultId);
+
+    // then
+    const expectedName = '메타 데이터';
+    const expectedIndicatorId = { key1: '1,2,3' };
+
+    expect(result.indicatorBoardMetaDataName).toEqual(expectedName);
+    expect(result.indicatorIds).toEqual(expectedIndicatorId);
+  });
+
+  it('db에 존재하지 않는 메타보드 id를 입력해 예외처리 메세지 불러오기', async () => {
+    // given
+
+    // when
+    // then
+    expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData('invalidId');
+    }).rejects.toThrow(
+      new BadRequestException({
+        message: 'invalid id',
+        error: Error,
+        HttpStatus: HttpStatus.BAD_REQUEST,
+      }),
+    );
   });
 });
