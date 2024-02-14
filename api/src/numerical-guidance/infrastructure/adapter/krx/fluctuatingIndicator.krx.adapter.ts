@@ -53,7 +53,8 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
 
       dayResponse.push({
         date: basDt,
-        ...{ srtnCd, isinCd, itmsNm, mrktCtg, clpr },
+        ...{ srtnCd, isinCd, itmsNm, mrktCtg },
+        value: clpr,
       });
     }
 
