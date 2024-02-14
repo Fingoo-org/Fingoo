@@ -8,7 +8,7 @@ describe('MetadataList', () => {
   beforeEach(() => {
     resetMockDB();
   });
-  it('메타데이터 리스트를 조회한다.', async () => {
+  it('메타데이터 리스트를 보여준다.', async () => {
     // given
     render(
       <SWRProviderWithoutCache>
@@ -23,7 +23,7 @@ describe('MetadataList', () => {
     expect(await screen.findByText(/metadata3/i)).toBeInTheDocument();
   });
 
-  it('사용자가 생성 버튼을 클릭하면, 생성한 메타데이터가 추가된 메타데이터 리스트를 조회한다', async () => {
+  it('사용자가 생성 버튼을 클릭하면, 생성한 메타데이터가 추가된 메타데이터 리스트를 보여준다.', async () => {
     // given
     const user = userEvent.setup();
     render(
@@ -40,7 +40,7 @@ describe('MetadataList', () => {
     expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(4);
   });
 
-  it('사용자가 생성 버튼을 두번 클릭하면, 생성한 메타데이터가 2개 추가된 메타데이터 리스트를 조회한다', async () => {
+  it('사용자가 생성 버튼을 두번 클릭하면, 생성한 메타데이터가 2개 추가된 메타데이터 리스트를 보여준다.', async () => {
     // given
     const user = userEvent.setup();
     render(
@@ -58,7 +58,7 @@ describe('MetadataList', () => {
     expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(5);
   });
 
-  it('사용자가 메타데이터를 선택하면, 선택한 메타데이터가 표시된다.', async () => {
+  it('사용자가 메타데이터를 클릭하면, 메타데이터가 선택된다.', async () => {
     // given
     const user = userEvent.setup();
     render(
