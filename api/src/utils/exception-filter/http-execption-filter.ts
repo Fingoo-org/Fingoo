@@ -26,6 +26,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         success: false,
         message: errorResponse.message,
         timestamp: timestamp,
+        statusCode: status,
         ...errorResponse,
       });
     }
