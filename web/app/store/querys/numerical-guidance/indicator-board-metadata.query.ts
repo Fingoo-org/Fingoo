@@ -72,9 +72,8 @@ export const useUpdateIndicatorBoardMetadata = (metadataId: string | undefined) 
   );
 };
 
-export const useDeleteIndicatorBoardMetadata = (metadataId: string | undefined) => {
-  return useSWRMutation(API_PATH.indicatorBoardMetadata, async () => {
-    if (!metadataId) return;
-    await deleteFetcher([API_PATH.indicatorBoardMetadata, metadataId]);
+export const useDeleteIndicatorBoardMetadata = () => {
+  return useSWRMutation(API_PATH.indicatorBoardMetadata, async (url, { arg: metadataId }: { arg: string }) => {
+    await deleteFetcher([url, metadataId]);
   });
 };
