@@ -80,6 +80,6 @@ describe('useIndicatoBoardrMetadataList', () => {
     // then
     expect(result.current.metadataList).toHaveLength(3);
     expect(result.current.metadataList?.[3]).not.toEqual({ id: '4', name: 'metadata4', indicators: [] });
-    expect(store.current.selectedMetadataId).toBe(null);
+    expect(store.current.selectedMetadataId).toBeUndefined();
   });
 });

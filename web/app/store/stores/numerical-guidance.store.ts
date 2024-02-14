@@ -5,12 +5,12 @@ type Interval = 'day' | 'week' | 'month' | 'year';
 
 type NumericalGuidanceState = {
   boardId: string;
-  selectedMetadataId: string | null;
+  selectedMetadataId: string | undefined;
   interval: Interval;
 };
 
 type NumericalGuidanceAction = {
-  selectMetadata: (MetadataId: string | null) => void;
+  selectMetadata: (MetadataId: string | undefined) => void;
 };
 
 type NumericalGuidanceStore = NumericalGuidanceState & {
@@ -19,7 +19,7 @@ type NumericalGuidanceStore = NumericalGuidanceState & {
 
 const initialNumericalGuidanceState: NumericalGuidanceState = {
   boardId: 'test',
-  selectedMetadataId: null,
+  selectedMetadataId: undefined,
   interval: 'day',
 };
 

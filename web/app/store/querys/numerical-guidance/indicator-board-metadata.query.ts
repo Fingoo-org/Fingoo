@@ -41,32 +41,33 @@ export const useFetchIndicatorBoardMetadataList = () =>
 export const useCreateIndicatorMetadata = () =>
   useSWRMutation(API_PATH.indicatorBoardMetadata, updateFetcher<CreateIndicatorMetadataRequestBody>);
 
-// Refactor: mutation 방식 변경 필요
-export const useAddIndicatorToMetadata = (metadataId: string | null) =>
+export const useAddIndicatorToMetadata = (metadataId: string | undefined) =>
   useSWRMutation(
     API_PATH.indicatorBoardMetadata,
     async (url: string, { arg }: { arg: AddIndicatorToMetadataRequestBody }) => {
-      await updateFetcher<AddIndicatorToMetadataRequestBody>(
-        metadataId ? [url, metadataId] : API_PATH.indicatorBoardMetadata,
-        {
-          arg,
-        },
-      );
+      if (!metadataId) return;
+      await updateFetcher<AddIndicatorToMetadataRequestBody>([url, metadataId], {
+        arg,
+      });
     },
   );
 
-export const useDeleteIndicatorFromMetadata = (metadataId: string | null) =>
+export const useDeleteIndicatorFromMetadata = (metadataId: string | undefined) =>
   useSWRMutation(API_PATH.indicatorBoardMetadata, async (url, { arg }: { arg: string }) => {
-    await deleteFetcher(metadataId ? [url, metadataId] : API_PATH.indicatorBoardMetadata, { arg });
+    if (!metadataId) return;
+    await deleteFetcher([url, metadataId], { arg });
   });
 
 export type UpdateIndicatorBoardMetadataRequestBody = {
   name: string;
 };
 
-export const useUpdateIndicatorBoardMetadata = (metadataId: string | null) => {
-  useSWRMutation(
-    metadataId ? [API_PATH.indicatorBoardMetadata, metadataId] : null,
-    patchFetcher<UpdateIndicatorBoardMetadataRequestBody>,
+export const useUpdateIndicatorBoardMetadata = (metadataId: string | undefined) => {
+  return useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (url: string, { arg }: { arg: UpdateIndicatorBoardMetadataRequestBody }) => {
+      if (!metadataId) return;
+      await patchFetcher<UpdateIndicatorBoardMetadataRequestBody>([url, metadataId], { arg });
+    },
   );
 };

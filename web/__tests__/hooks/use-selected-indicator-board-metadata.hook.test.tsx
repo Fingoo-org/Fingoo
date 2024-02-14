@@ -43,7 +43,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
 
     // when
     act(() => {
-      store.current.actions.selectMetadata(null);
+      store.current.actions.selectMetadata(undefined);
     });
 
     // then
@@ -65,7 +65,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
     });
     await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
     act(() => {
-      store.current.actions.selectMetadata(null);
+      store.current.actions.selectMetadata(undefined);
     });
     await waitFor(() => expect(result.current.selectedMetadata).toBeUndefined());
 
