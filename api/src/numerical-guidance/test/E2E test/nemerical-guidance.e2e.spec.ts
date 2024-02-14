@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import { NumericalGuidanceController } from '../../../api/numerical-guidance.controller';
+import { NumericalGuidanceController } from '../../api/numerical-guidance.controller';
 import { GetIndicatorBoardMetaDataQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata.persistent.adapter';
 import { HttpExceptionFilter } from 'src/utils/exception-filter/http-execption-filter';
@@ -86,7 +86,7 @@ describe('NumericalGuidance E2E Test', () => {
     await app.close();
   });
 
-  it('/get 메타보드 id를 전송해서 id에 해당하는 메타보를 가져온다.', async () => {
+  it('/get 메타데이터 id를 전송해서 id에 해당하는 메타데이터를 가져온다.', async () => {
     return request(app.getHttpServer())
       .get(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba73`)
       .set('Content-Type', 'application/json')
