@@ -21,7 +21,7 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
 
     const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateWeeklyAverage(testData).items.item;
 
-    const weeklyAverages = result.map((item) => item['weeklyAverage']);
+    const weeklyAverages = result.map((item) => item['value']);
 
     // then
     const expected: string[] = [
@@ -65,7 +65,7 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
 
     const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateMonthlyAverage(testData).items.item;
 
-    const monthlyAverages = result.map((item) => item['monthlyAverage']);
+    const monthlyAverages = result.map((item) => item['value']);
     // then
     const expected: string[] = ['74652.94', '73810.53', '71409.09', '67910.53', '70168.42', '66900.00'];
     expect(monthlyAverages).toEqual(expected);
@@ -83,7 +83,7 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
     const testData = FluctuatingIndicatorDto.create(jsonData);
     const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateYearlyAverage(testData).items.item;
 
-    const yearlyAverages = result.map((item) => item['yearlyAverages']);
+    const yearlyAverages = result.map((item) => item['value']);
     // then
     const expected: string[] = ['74652.94', '70656.63'];
     expect(yearlyAverages).toEqual(expected);

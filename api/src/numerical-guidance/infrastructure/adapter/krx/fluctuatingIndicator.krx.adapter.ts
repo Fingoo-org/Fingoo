@@ -19,7 +19,9 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
 
     const res = await this.api.axiosRef.get(request_url);
-    const responseData: FluctuatingIndicatorDto = res.data.response.body;
+    const { numOfRows, pageNo, totalCount, items } = res.data.response.body;
+    const type = 'k-stock';
+    const responseData = FluctuatingIndicatorDto.create({ type, numOfRows, pageNo, totalCount, items });
 
     if (!responseData) {
       throw new Error('API response body is undefined');
@@ -27,11 +29,10 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return FluctuatingIndicatorKrxAdapter.transferredByInterval(interval, responseData);
   }
 
-
   static transferredByInterval(interval: string, data: FluctuatingIndicatorDto) {
     switch (interval) {
       case 'day':
-        return data;
+        return this.transferDayResponse(data);
       case 'week':
         return this.calculateWeeklyAverage(data);
       case 'month':
@@ -41,6 +42,24 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
       default:
         return data;
     }
+  }
+
+  static transferDayResponse(data: FluctuatingIndicatorDto) {
+    const items = data.items.item;
+    const dayResponse = [];
+
+    for (let i = 0; i < items.length; i++) {
+      const { basDt, srtnCd, isinCd, itmsNm, mrktCtg, clpr } = items[i];
+
+      dayResponse.push({
+        date: basDt,
+        ...{ srtnCd, isinCd, itmsNm, mrktCtg, clpr },
+      });
+    }
+
+    data.items.item = dayResponse;
+
+    return data;
   }
 
   static calculateWeeklyAverage(data: FluctuatingIndicatorDto) {
@@ -71,17 +90,16 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
           const { basDt, srtnCd, isinCd, itmsNm, mrktCtg } = weeklyItems[0];
 
           weeklyAverages.push({
-            ...{ basDt, srtnCd, isinCd, itmsNm, mrktCtg },
-            weeklyAverage: weeklyAverage.toFixed(2),
+            date: basDt,
+            ...{ srtnCd, isinCd, itmsNm, mrktCtg },
+            value: weeklyAverage.toFixed(2),
           });
 
           processedWeeks.add(weekIdentifier);
         }
       }
     }
-
     data.items.item = weeklyAverages;
-
     return data;
   }
 
@@ -120,17 +138,16 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
           const { basDt, srtnCd, isinCd, itmsNm, mrktCtg } = monthlyItems[0];
 
           monthlyAverages.push({
-            ...{ basDt, srtnCd, isinCd, itmsNm, mrktCtg },
-            monthlyAverage: monthlyAverage.toFixed(2),
+            date: basDt,
+            ...{ srtnCd, isinCd, itmsNm, mrktCtg },
+            value: monthlyAverage.toFixed(2),
           });
 
           processedMonths.add(monthIdentifier);
         }
       }
     }
-
     data.items.item = monthlyAverages;
-
     return data;
   }
 
@@ -160,8 +177,9 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
           const { basDt, srtnCd, isinCd, itmsNm, mrktCtg } = yearlyItems[0];
 
           yearlyAverages.push({
-            ...{ basDt, srtnCd, isinCd, itmsNm, mrktCtg },
-            yearlyAverages: yearlyAverage.toFixed(2),
+            date: basDt,
+            ...{ srtnCd, isinCd, itmsNm, mrktCtg },
+            value: yearlyAverage.toFixed(2),
           });
 
           processedYears.add(yearIdentifier);
