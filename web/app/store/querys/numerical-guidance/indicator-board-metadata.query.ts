@@ -55,7 +55,7 @@ export const useAddIndicatorToMetadata = (metadataId: string | undefined) =>
 export const useDeleteIndicatorFromMetadata = (metadataId: string | undefined) =>
   useSWRMutation(API_PATH.indicatorBoardMetadata, async (url, { arg }: { arg: string }) => {
     if (!metadataId) return;
-    await deleteFetcher([url, metadataId], { arg });
+    await deleteFetcher([url, metadataId, arg]);
   });
 
 export type UpdateIndicatorBoardMetadataRequestBody = {
@@ -70,4 +70,10 @@ export const useUpdateIndicatorBoardMetadata = (metadataId: string | undefined) 
       await patchFetcher<UpdateIndicatorBoardMetadataRequestBody>([url, metadataId], { arg });
     },
   );
+};
+
+export const useDeleteIndicatorBoardMetadata = () => {
+  return useSWRMutation(API_PATH.indicatorBoardMetadata, async (url, { arg: metadataId }: { arg: string }) => {
+    await deleteFetcher([url, metadataId]);
+  });
 };

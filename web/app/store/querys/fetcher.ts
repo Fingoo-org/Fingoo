@@ -23,11 +23,8 @@ export const updateFetcher = async <RequestBody>(key: string | string[], { arg }
   }
 };
 
-type DeleteParams = string | string[];
-export const deleteFetcher = async (key: string | string[], { arg }: { arg: DeleteParams }) => {
-  const rootUrl = Array.isArray(key) ? key.join('/') : key;
-  const params = Array.isArray(arg) ? arg.join('/') : arg;
-  const url = `${rootUrl}/${params}`;
+export const deleteFetcher = async (key: string | string[]) => {
+  const url = Array.isArray(key) ? key.join('/') : key;
   try {
     await instance.delete(url);
   } catch (e) {

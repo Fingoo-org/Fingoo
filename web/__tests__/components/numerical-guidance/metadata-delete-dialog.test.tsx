@@ -100,4 +100,30 @@ describe('MetadataDeleteDialog', () => {
     // then
     expect(screen.queryByRole('dialog')).toBeNull();
   });
+  it('삭제할 수 있는 alert dialog가 보여졌을 때, 사용자가 확인 버튼을 클릭하면, 메타데이터 리스트에서 해당 메타데이터가 삭제된다.', async () => {
+    // given
+    const user = userEvent.setup();
+    render(
+      <SWRProviderWithoutCache>
+        <MetadataDialogMenu />
+        <MetdataList />
+        <MetadataDeleteDialog />
+      </SWRProviderWithoutCache>,
+    );
+    await user.hover(await screen.findByText(/metadata1/i));
+    await user.click(
+      (
+        await screen.findAllByRole('button', {
+          name: 'edit',
+        })
+      )[0],
+    );
+    await user.click(await screen.findByRole('menuitem', { name: 'Delete' }));
+
+    // when
+    await user.click(await screen.findByRole('button', { name: 'Confirm' }));
+
+    // then
+    expect(screen.queryByText(/metadata1/i)).toBeNull();
+  });
 });
