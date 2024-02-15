@@ -20,14 +20,16 @@ export type Items = {
   item: Item[];
 };
 
+export type IndicatorType = 'k-stock' | 'exchange';
+
 export class FluctuatingIndicatorDto {
-  type: string;
+  type: IndicatorType;
   numOfRows: number;
   pageNo: number;
   totalCount: number;
   items: Items;
 
-  private constructor(type: string, numOfRows: number, pageNo: number, totalCount: number, items: Items) {
+  private constructor(type: IndicatorType, numOfRows: number, pageNo: number, totalCount: number, items: Items) {
     this.type = type;
     this.numOfRows = numOfRows;
     this.pageNo = pageNo;
