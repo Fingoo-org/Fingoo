@@ -20,20 +20,24 @@ export type Items = {
   item: Item[];
 };
 
+export type IndicatorType = 'k-stock' | 'exchange';
+
 export class FluctuatingIndicatorDto {
+  type: IndicatorType;
   numOfRows: number;
   pageNo: number;
   totalCount: number;
   items: Items;
 
-  private constructor(numOfRows: number, pageNo: number, totalCount: number, items: Items) {
+  private constructor(type: IndicatorType, numOfRows: number, pageNo: number, totalCount: number, items: Items) {
+    this.type = type;
     this.numOfRows = numOfRows;
     this.pageNo = pageNo;
     this.totalCount = totalCount;
     this.items = items;
   }
 
-  static create({ numOfRows, pageNo, totalCount, items }): FluctuatingIndicatorDto {
-    return new FluctuatingIndicatorDto(numOfRows, pageNo, totalCount, items);
+  static create({ type, numOfRows, pageNo, totalCount, items }): FluctuatingIndicatorDto {
+    return new FluctuatingIndicatorDto(type, numOfRows, pageNo, totalCount, items);
   }
 }

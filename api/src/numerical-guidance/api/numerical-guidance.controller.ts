@@ -23,7 +23,7 @@ export class NumericalGuidanceController {
   ) {}
 
   @ApiOperation({ summary: '변동지표를 불러옵니다.' })
-  @Get('/fluctuatingIndicator')
+  @Get('/indicators/k-stock')
   async getFluctuatingIndicator(
     @Query() getFluctuatingIndicatorDto: GetFluctuatingIndicatorDto,
   ): Promise<FluctuatingIndicatorDto> {

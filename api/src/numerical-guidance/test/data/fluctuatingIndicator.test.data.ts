@@ -1,4 +1,5 @@
 export const fluctuatingIndicatorTestData = {
+  type: 'k-stock',
   numOfRows: 5,
   pageNo: 1,
   totalCount: 1000,

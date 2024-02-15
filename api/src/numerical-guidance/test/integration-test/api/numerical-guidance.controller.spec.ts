@@ -67,7 +67,7 @@ describe('NumericalGuidanceController', () => {
 
   it('/get 변동 지표를 불러온다.', () => {
     return request(app.getHttpServer())
-      .get('/numerical-guidance/fluctuatingIndicator')
+      .get('/numerical-guidance/indicators/k-stock')
       .query({
         dataCount: 2,
         ticker: '005930',
@@ -81,7 +81,7 @@ describe('NumericalGuidanceController', () => {
 
   it('/get 사용자가 유효하지 않는 값 전송한다.', () => {
     return request(app.getHttpServer())
-      .get('/numerical-guidance/fluctuatingIndicator')
+      .get('/numerical-guidance/indicators/k-stock')
       .query({
         dataCount: 2,
         ticker: '005930',
