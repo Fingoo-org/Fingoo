@@ -92,6 +92,7 @@ const config: Config = {
         'tremor-full': '9999px',
       },
       fontSize: {
+        'custom-inherit': ['inherit', { lineHeight: 'inherit' }],
         'tremor-label': ['0.75rem', { lineHeight: '1rem' }],
         'tremor-default': ['0.875rem', { lineHeight: '1.25rem' }],
         'tremor-title': ['1.125rem', { lineHeight: '1.75rem' }],

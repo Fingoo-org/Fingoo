@@ -4,7 +4,7 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-sele
 import MultiLineChart from '../view/molocule/multi-line-chart';
 import { useMemo } from 'react';
 import Pending from '../view/molocule/pending';
-import SelectedMetadataTittle from './selected-metadata-title';
+import SelectedMetadataTittle from './atom/selected-metadata-title';
 
 export default function IndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();

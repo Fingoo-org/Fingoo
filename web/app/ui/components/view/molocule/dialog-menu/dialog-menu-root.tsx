@@ -29,7 +29,7 @@ export function DialogMenuRoot({ children, dialogKey }: React.PropsWithChildren<
         <Transition as={React.Fragment} show={isOpen || false}>
           <div className="relative pointer-events-auto z-0">
             <div onClick={handleOnClick} className="fixed top-0 left-0 w-screen h-screen" />
-            <div style={position && { left: position.x, top: position.y }} className="fixed">
+            <div style={{ left: position.x, top: position.y }} className="fixed">
               <Transition.Child
                 as={React.Fragment}
                 enter="transition ease-out duration-100"
