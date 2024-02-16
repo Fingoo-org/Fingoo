@@ -4,8 +4,8 @@ export class IndicatorBoardMetaDataNameShouldNotEmptyRule implements BusinessRul
   constructor(private readonly indicatorBoardMetaDataName: string) {}
 
   isBroken = () =>
-    this.indicatorBoardMetaDataName == '' ||
-    this.indicatorBoardMetaDataName.trim() == '' ||
+    this.indicatorBoardMetaDataName === '' ||
+    this.indicatorBoardMetaDataName.trim() === '' ||
     this.indicatorBoardMetaDataName.length === 0 ||
     !this.indicatorBoardMetaDataName;
 
