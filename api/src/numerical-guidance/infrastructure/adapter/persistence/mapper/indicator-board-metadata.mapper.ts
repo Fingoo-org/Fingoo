@@ -6,15 +6,16 @@ export class IndicatorBoardMetadataMapper {
   static mapDomainToEntity(indicatorBoardMetaData: IndicatorBoardMetadata, member: MemberEntity) {
     const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity = new IndicatorBoardMetadataEntity();
     indicatorBoardMetaDataEntity.indicatorBoardMetaDataName = indicatorBoardMetaData.indicatorBoardMetaDataName;
-    indicatorBoardMetaDataEntity.indicators = indicatorBoardMetaData.indicatorIds;
+    indicatorBoardMetaDataEntity.tickers = indicatorBoardMetaData.tickers;
     indicatorBoardMetaDataEntity.member = member;
     return indicatorBoardMetaDataEntity;
   }
 
   static async mapEntityToDomain(entity: IndicatorBoardMetadataEntity) {
-    const indicatorBoardMetaData = IndicatorBoardMetadata.createNew(
+    const indicatorBoardMetaData = new IndicatorBoardMetadata(
+      entity.id,
       entity.indicatorBoardMetaDataName,
-      entity.indicators,
+      entity.tickers,
     );
     return indicatorBoardMetaData;
   }
