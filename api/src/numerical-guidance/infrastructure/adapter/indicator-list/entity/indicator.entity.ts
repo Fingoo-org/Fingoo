@@ -1,4 +1,4 @@
-import { Market } from 'src/type/market';
+import { Market } from 'src/utils/type/type';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
