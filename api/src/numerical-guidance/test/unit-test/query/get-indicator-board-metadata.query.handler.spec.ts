@@ -14,7 +14,7 @@ describe('GetIndicatorBoardMetaDataQueryHandler', () => {
           provide: 'LoadIndicatorBoardMetadataPort',
           useValue: {
             loadIndicatorBoardMetaData: jest.fn().mockImplementation(() => {
-              const data = IndicatorBoardMetadata.createNew('메타데이터', { key1: ['1', '2', '3'] });
+              const data = IndicatorBoardMetadata.createNew('메타데이터');
               return data;
             }),
           },
@@ -30,7 +30,7 @@ describe('GetIndicatorBoardMetaDataQueryHandler', () => {
     // when
     const result = await getIndicatorBoardMetadataQueryHandler.execute(testQuery);
     // then
-    const expected = IndicatorBoardMetadata.createNew('메타데이터', { key1: ['1', '2', '3'] });
+    const expected = IndicatorBoardMetadata.createNew('메타데이터');
     expect(result).toEqual(expected);
   });
 });
