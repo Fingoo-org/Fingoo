@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsObject, IsString } from 'class-validator';
+import { IsInt, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateIndicatorBoardMetadataDto {
@@ -8,14 +8,6 @@ export class CreateIndicatorBoardMetadataDto {
   })
   @IsString()
   indicatorBoardMetaDataName: string;
-
-  @ApiProperty({
-    example: '{"key1": ["1", "2", "3", "4", "5"]}',
-    description: '지표의 식별값들',
-  })
-  @IsObject()
-  @IsNotEmpty()
-  readonly indicatorIds: Record<string, string[]>;
 
   @ApiProperty({
     example: '1',
