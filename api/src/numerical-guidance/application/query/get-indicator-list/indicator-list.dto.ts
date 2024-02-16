@@ -1,4 +1,4 @@
-import { Market } from 'src/numerical-guidance/domain/market';
+import { Market } from 'src/type/market';
 
 export class IndicatorListDto {
   indicatorList: Indicator[];

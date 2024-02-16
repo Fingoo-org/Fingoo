@@ -1,8 +1,11 @@
 import { IndicatorEntity } from '../entity/indicator.entity';
-import { Indicator } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
+import {
+  Indicator,
+  IndicatorListDto,
+} from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 
 export class IndicatorListMapper {
-  static mapEntityToDto(indicatorEntities: IndicatorEntity[]) {
+  static mapEntityToDto(indicatorEntities: IndicatorEntity[]): IndicatorListDto {
     const indicatorList: Indicator[] = indicatorEntities.map((indicator) => ({
       id: indicator['id'],
       name: indicator['name'],
@@ -10,6 +13,7 @@ export class IndicatorListMapper {
       type: indicator['type'],
       market: indicator['market'],
     }));
-    return indicatorList;
+    const indicatorListDto = IndicatorListDto.create(indicatorList);
+    return indicatorListDto;
   }
 }
