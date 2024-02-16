@@ -1,9 +1,9 @@
 'use client';
-import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import IconButton from './icon-button/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { useDebouncedCallback } from 'use-debounce';
+import { twMerge } from 'tailwind-merge';
 
 type EditableTextProps = {
   defaultValue: string;
@@ -46,15 +46,16 @@ export default function EditableText({
     onChangeValue?.('');
   };
 
-  // refactor: css 정리
   return (
-    <div className={'inline-block relative group'}>
-      <div className={'flex items-center'}>
+    <div className="inline-block relative group">
+      <div className="flex items-center">
         <div
-          className="before:w-0 before:h-[1px] before:absolute before:z-10 before:opacity-0 before:bg-blue-400 before:bottom-0 before:right-1/2 before:ease-in before:duration-200 
-        has-[:hover]:before:w-1/2 has-[:hover]:before:opacity-100 has-[:focus]:before:w-1/2 has-[:focus]:before:opacity-100 has-[:focus]:has-[:read-only]:before:w-0
-        has-[:hover]:has-[:read-only]:before:w-0 after:w-0 after:h-[1px] after:absolute after:z-10 after:opacity-0 after:bg-blue-400 after:bottom-0 after:left-1/2 after:ease-in after:duration-200 has-[:hover]:after:w-1/2 has-[:hover]:after:opacity-100 has-[:focus]:after:w-1/2 has-[:focus]:after:opacity-100 
-        has-[:focus]:has-[:read-only]:after:w-0 has-[:hover]:has-[:read-only]:after:w-0"
+          className={twMerge(
+            'before:w-0 before:h-[1px] before:absolute before:z-10 before:opacity-0 before:bg-blue-400 before:bottom-0 before:right-1/2 before:ease-in before:duration-200',
+            'has-[:hover]:before:w-1/2 has-[:hover]:before:opacity-100 has-[:focus]:before:w-1/2 has-[:focus]:before:opacity-100 has-[:focus]:has-[:read-only]:before:w-0',
+            'has-[:hover]:has-[:read-only]:before:w-0 after:w-0 after:h-[1px] after:absolute after:z-10 after:opacity-0 after:bg-blue-400 after:bottom-0 after:left-1/2 after:ease-in after:duration-200 has-[:hover]:after:w-1/2 has-[:hover]:after:opacity-100 has-[:focus]:after:w-1/2 has-[:focus]:after:opacity-100',
+            'has-[:focus]:has-[:read-only]:after:w-0 has-[:hover]:has-[:read-only]:after:w-0',
+          )}
         >
           <input
             ref={ref}
@@ -62,7 +63,7 @@ export default function EditableText({
             key={inputKey}
             value={value}
             onChange={handleChange}
-            className={clsx('py-1 pr-2 focus:outline-none border-0 focus:ring-0 focus:ring-offset-0', className)}
+            className={twMerge('py-1 pr-2 focus:outline-none border-0 focus:ring-0 focus:ring-offset-0', className)}
           />
         </div>
         <div
