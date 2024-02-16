@@ -8,6 +8,7 @@ export class IndicatorListMapper {
       name: indicator['name'],
       ticker: indicator['ticker'],
       type: indicator['type'],
+      market: indicator['market'],
     }));
     return indicatorList;
   }

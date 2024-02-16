@@ -13,4 +13,7 @@ export class IndicatorEntity extends BaseEntity {
 
   @Column()
   type: string;
+
+  @Column({ nullable: true })
+  market: string;
 }

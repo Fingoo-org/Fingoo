@@ -15,4 +15,5 @@ export type IndicatorResponse = {
   name: string;
   ticker: string;
   type: string;
+  market: string;
 };
