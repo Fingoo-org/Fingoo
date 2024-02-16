@@ -1,37 +1,85 @@
+'use client';
 import clsx from 'clsx';
-import React from 'react';
-
-type NativeDivType = Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange'>;
+import React, { useEffect, useRef, useState } from 'react';
+import IconButton from './icon-button/icon-button';
+import { XCircleIcon } from '@heroicons/react/solid';
+import { useDebouncedCallback } from 'use-debounce';
 
 type EditableTextProps = {
-  text: string;
+  defaultValue: string;
   readonly?: boolean;
-  onChange?: (text: string) => void;
   inputKey?: string;
-} & NativeDivType;
+  resetWithButton?: boolean;
+  debounceDelay?: number;
+  className?: string;
+  onChangeValue?: (value: string) => void;
+};
 
-export default function EditableText({ text, readonly = false, inputKey, onChange, className }: EditableTextProps) {
+export default function EditableText({
+  defaultValue,
+  readonly = false,
+  inputKey,
+  resetWithButton,
+  debounceDelay = 0,
+  className,
+  onChangeValue,
+}: EditableTextProps) {
+  const ref = useRef<HTMLInputElement>(null);
+  const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [inputKey]);
+
+  const handleChangeWithDebounce = useDebouncedCallback((name: string) => {
+    onChangeValue?.(name);
+  }, debounceDelay);
+
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    if (onChange) {
-      onChange(event.target.value);
-    }
+    const { value } = event.target;
+    setValue(value);
+    handleChangeWithDebounce(value);
   };
 
+  const handleReset = () => {
+    setValue('');
+    onChangeValue?.('');
+  };
+
+  // refactor: css 정리
   return (
     <div className={'inline-block relative group'}>
-      <div
-        className="before:w-0 before:h-[1px] before:absolute before:z-10 before:opacity-0 before:bg-black before:bottom-0 before:right-1/2 before:ease-in before:duration-200 
-        group-hover:before:w-1/2 group-hover:before:opacity-100 has-[:focus]:before:w-1/2 has-[:focus]:before:opacity-100 has-[:focus]:has-[:read-only]:before:w-0
-        has-[:hover]:has-[:read-only]:before:w-0 after:w-0 after:h-[1px] after:absolute after:z-10 after:opacity-0 after:bg-black after:bottom-0 after:left-1/2 after:ease-in after:duration-200 group-hover:after:w-1/2 group-hover:after:opacity-100 has-[:focus]:after:w-1/2 has-[:focus]:after:opacity-100 
+      <div className={'flex items-center'}>
+        <div
+          className="before:w-0 before:h-[1px] before:absolute before:z-10 before:opacity-0 before:bg-blue-400 before:bottom-0 before:right-1/2 before:ease-in before:duration-200 
+        has-[:hover]:before:w-1/2 has-[:hover]:before:opacity-100 has-[:focus]:before:w-1/2 has-[:focus]:before:opacity-100 has-[:focus]:has-[:read-only]:before:w-0
+        has-[:hover]:has-[:read-only]:before:w-0 after:w-0 after:h-[1px] after:absolute after:z-10 after:opacity-0 after:bg-blue-400 after:bottom-0 after:left-1/2 after:ease-in after:duration-200 has-[:hover]:after:w-1/2 has-[:hover]:after:opacity-100 has-[:focus]:after:w-1/2 has-[:focus]:after:opacity-100 
         has-[:focus]:has-[:read-only]:after:w-0 has-[:hover]:has-[:read-only]:after:w-0"
-      >
-        <input
-          readOnly={readonly}
-          key={inputKey}
-          defaultValue={text}
-          onChange={handleChange}
-          className={clsx('focus:outline-none border-0 focus:ring-0 focus:ring-offset-0', className)}
-        />
+        >
+          <input
+            ref={ref}
+            readOnly={readonly}
+            key={inputKey}
+            value={value}
+            onChange={handleChange}
+            className={clsx('py-1 pr-2 focus:outline-none border-0 focus:ring-0 focus:ring-offset-0', className)}
+          />
+        </div>
+        <div
+          onClick={() => {
+            ref.current?.focus();
+            resetWithButton && !readonly ? handleReset() : null;
+          }}
+        >
+          {resetWithButton && !readonly ? (
+            <IconButton
+              className="invisible group-has-[:focus]:visible"
+              color={'gray'}
+              icon={XCircleIcon}
+              size={'xs'}
+            />
+          ) : null}
+        </div>
       </div>
     </div>
   );

@@ -1,21 +1,25 @@
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
 import EditableText from '../view/atom/editable-text';
-import { useDebouncedCallback } from 'use-debounce';
+import clsx from 'clsx';
 
 export default function SelectedMetadataTittle() {
   const { selectedMetadata, updateMetadata } = useSelectedIndicatorBoardMetadata();
-  const handleMetadataNameChange = useDebouncedCallback((name: string) => {
+
+  const handleMetadataNameChange = (name: string) => {
     updateMetadata({
       name,
     });
-  }, 500);
+  };
+
   return (
     <EditableText
       inputKey={selectedMetadata?.id}
-      onChange={handleMetadataNameChange}
+      onChangeValue={handleMetadataNameChange}
       readonly={selectedMetadata ? false : true}
-      className="w-40 text-lg font-medium p-0"
-      text={selectedMetadata ? selectedMetadata.name : 'No metadata'}
+      resetWithButton={true}
+      debounceDelay={500}
+      className={clsx('w-40 text-lg font-medium p-0 ', selectedMetadata && 'focus:text-gray-500')}
+      defaultValue={selectedMetadata ? selectedMetadata.name : 'No metadata'}
     />
   );
 }
