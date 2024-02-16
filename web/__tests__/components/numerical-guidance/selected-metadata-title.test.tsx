@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import SelectedMetadataTittle from '@/app/ui/components/numerical-guidance/selected-metadata-title';
+import SelectedMetadataTittle from '@/app/ui/components/numerical-guidance/atom/selected-metadata-title';
 import MetadataList from '@/app/ui/components/numerical-guidance/metadata-list';
 
 describe('SelectedMetadataTittle', () => {

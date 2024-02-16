@@ -1,5 +1,5 @@
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
-import EditableText from '../view/atom/editable-text';
+import EditableText from '../../view/atom/editable-text';
 import clsx from 'clsx';
 
 export default function SelectedMetadataTittle() {
