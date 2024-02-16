@@ -1,5 +1,8 @@
 import { IndicatorEntity } from '../entity/indicator.entity';
-import { IndicatorResponse } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
+import {
+  IndicatorResponse,
+  Market,
+} from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 
 export class IndicatorListMapper {
   static mapDomainToEntity(indicatorEntities: IndicatorEntity[]) {
@@ -8,7 +11,7 @@ export class IndicatorListMapper {
       name: indicator['name'],
       ticker: indicator['ticker'],
       type: indicator['type'],
-      market: indicator['market'],
+      market: indicator['market'] as Market,
     }));
     return indicatorList;
   }
