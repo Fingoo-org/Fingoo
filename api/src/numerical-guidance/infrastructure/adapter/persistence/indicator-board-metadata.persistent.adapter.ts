@@ -1,14 +1,15 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateIndicatorBoardMetadataPort } from '../../../application/port/persistence/create-indicator-board-metadata.port';
 import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
 
 import { IndicatorBoardMetadataEntity } from './entity/indicator-board-metadata.entity';
 import { IndicatorBoardMetadataMapper } from './mapper/indicator-board-metadata.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, QueryFailedError, Repository } from 'typeorm';
 import { AuthService } from '../../../../auth/auth.service';
 import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/load-indiactor-board-metadata.port';
 import { InsertIndicatorTickerPort } from '../../../application/port/persistence/insert-indicator-ticker.port';
+import { TypeORMError } from 'typeorm/error/TypeORMError';
 
 @Injectable()
 export class IndicatorBoardMetadataPersistentAdapter
@@ -34,10 +35,17 @@ export class IndicatorBoardMetadataPersistentAdapter
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
       return indicatorBoardMetaDataEntity.id;
     } catch (error) {
-      throw new BadRequestException({
-        message: '[ERROR] createIndicatorBoardMetaData 중에 문제가 발생했습니다.',
-        error: error,
-      });
+      if (error instanceof QueryFailedError || EntityNotFoundError) {
+        throw new NotFoundException({
+          message: '[ERROR] 해당 회원을 찾을 수 없습니다.',
+          error: error,
+        });
+      } else {
+        throw new BadRequestException({
+          message: '[ERROR] 지표보드 메타데이터를 생성하는 도중에 오류가 발생했습니다.',
+          error: error,
+        });
+      }
     }
   }
 
@@ -46,10 +54,17 @@ export class IndicatorBoardMetadataPersistentAdapter
       const indicatorMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id });
       return await IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorMetaDataEntity);
     } catch (error) {
-      throw new BadRequestException({
-        message: '[ERROR] loadIndicatorBoardMetaData 중에 문제가 발생했습니다.',
-        error: error,
-      });
+      if (error instanceof TypeError) {
+        throw new NotFoundException({
+          message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+          error: error,
+        });
+      } else {
+        throw new BadRequestException({
+          message: '[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.',
+          error: error,
+        });
+      }
     }
   }
 
@@ -64,10 +79,22 @@ export class IndicatorBoardMetadataPersistentAdapter
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
     } catch (error) {
-      throw new BadRequestException({
-        message: '[ERROR] insertIndicator 중에 문제가 발생했습니다.',
-        error: error,
-      });
+      if (error instanceof TypeError) {
+        throw new NotFoundException({
+          message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+          error: error,
+        });
+      } else if (error instanceof TypeORMError) {
+        throw new InternalServerErrorException({
+          message: '[ERROR] 지표보드 메타데이터를 업데이트하는 도중에 오류가 발생했습니다.',
+          error: error,
+        });
+      } else {
+        throw new BadRequestException({
+          message: '[ERROR] indicator를 추가하는 중에 문제가 발생했습니다.',
+          error: error,
+        });
+      }
     }
   }
 }
