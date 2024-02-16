@@ -22,6 +22,13 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
     await memberRepository.insert({ id: 10 });
     memberRepository.save;
+
+    const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
+      indicatorBoardMetaDataName: 'name',
+      tickers: { 'k-stock': [], exchange: [] },
+    });
   };
 
   beforeAll(async () => {
@@ -64,27 +71,23 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   it('지표보드 메타데이터 생성 확인', async () => {
     // given
     const memberId = 1;
-    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터', {
-      key1: ['1', '2', '3'],
-    });
+    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // when
     const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(
       indicatorBoardMetaData,
       memberId,
     );
-    const resultIndicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
-      await indicatorBoardMetaDataPersistentAdapter.findOneBy(resultId);
+    const resultIndicatorBoardMetaData: IndicatorBoardMetadata =
+      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(resultId);
 
     // then
-    expect(resultIndicatorBoardMetaDataEntity.indicatorBoardMetaDataName).toEqual('메타 데이터');
+    expect(resultIndicatorBoardMetaData.indicatorBoardMetaDataName).toEqual('메타 데이터');
   });
 
   it('생성한 지표보드 메타데이터 id로 메타데이터 가져오기', async () => {
     // given
-    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터', {
-      key1: ['1', '2', '3'],
-    });
+    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // when
     const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(
@@ -95,10 +98,10 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // then
     const expectedName = '메타 데이터';
-    const expectedIndicatorId = { key1: '1,2,3' };
+    const expectedIndicatorTicker = { 'k-stock': '', exchange: '' };
 
     expect(result.indicatorBoardMetaDataName).toEqual(expectedName);
-    expect(result.indicatorIds).toEqual(expectedIndicatorId);
+    expect(result.tickers).toEqual(expectedIndicatorTicker);
   });
 
   it('db에 존재하지 않는 메타보드 id를 입력해 예외처리 메세지 불러오기', async () => {
@@ -106,14 +109,36 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // when
     // then
-    expect(async () => {
+    await expect(async () => {
       await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData('invalidId');
     }).rejects.toThrow(
       new BadRequestException({
-        message: 'invalid id',
+        message: '[ERROR] loadIndicatorBoardMetaData 중에 문제가 발생했습니다.',
         error: Error,
         HttpStatus: HttpStatus.BAD_REQUEST,
       }),
     );
+  });
+
+  it('지표보드 메타데이터에 새로운 지표 ticker 추가하기.', async () => {
+    // given
+    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
+      'name',
+      {
+        'k-stock': ['ticker1', 'ticker2'],
+        exchange: [],
+      },
+    );
+
+    // when
+    await indicatorBoardMetaDataPersistentAdapter.addIndicatorTicker(newIndicatorBoardMetaData);
+    const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
+    );
+
+    // then
+    expect(result.indicatorBoardMetaDataName).toEqual('name');
+    expect(result.tickers['k-stock']).toEqual('ticker1,ticker2');
   });
 });
