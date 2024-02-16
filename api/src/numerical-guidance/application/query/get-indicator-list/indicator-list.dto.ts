@@ -1,21 +1,21 @@
-export class IndicatorListDto {
-  indicatorList: IndicatorResponse[];
+import { Market } from 'src/numerical-guidance/domain/market';
 
-  private constructor(indicatorList: IndicatorResponse[]) {
+export class IndicatorListDto {
+  indicatorList: Indicator[];
+
+  private constructor(indicatorList: Indicator[]) {
     this.indicatorList = indicatorList;
   }
 
-  static create(indicatorList: IndicatorResponse[]): IndicatorListDto {
+  static create(indicatorList: Indicator[]): IndicatorListDto {
     return new IndicatorListDto(indicatorList);
   }
 }
 
-export type IndicatorResponse = {
+export type Indicator = {
   id: number;
   name: string;
   ticker: string;
   type: string;
   market: Market;
 };
-
-export type Market = 'KOSPI' | 'KOSDAQ';

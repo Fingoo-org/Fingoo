@@ -1,17 +1,14 @@
 import { IndicatorEntity } from '../entity/indicator.entity';
-import {
-  IndicatorResponse,
-  Market,
-} from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
+import { Indicator } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
 
 export class IndicatorListMapper {
-  static mapDomainToEntity(indicatorEntities: IndicatorEntity[]) {
-    const indicatorList: IndicatorResponse[] = indicatorEntities.map((indicator) => ({
+  static mapEntityToDto(indicatorEntities: IndicatorEntity[]) {
+    const indicatorList: Indicator[] = indicatorEntities.map((indicator) => ({
       id: indicator['id'],
       name: indicator['name'],
       ticker: indicator['ticker'],
       type: indicator['type'],
-      market: indicator['market'] as Market,
+      market: indicator['market'],
     }));
     return indicatorList;
   }
