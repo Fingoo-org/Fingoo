@@ -23,7 +23,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   return (
-    <div className="relative w-full group">
+    <div className="relative w-full group h-16">
       <SelectableListItem key={item.id} selected={selectedMetadata?.id === item.id} onSelect={handleSelect}>
         {item.name}
       </SelectableListItem>

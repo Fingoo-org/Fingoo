@@ -19,7 +19,7 @@ export default function SelectableListItem({
   const handleClick: MouseEventHandler<HTMLButtonElement> = () => (selected ? onDeSelect?.() : onSelect());
   return (
     <button
-      className={clsx('w-full', { 'bg-gray-500 text-white': selected })}
+      className={clsx('w-full h-full', { 'bg-gray-500 text-white': selected })}
       role="tab"
       aria-selected={`${selected}`}
       onClick={handleClick}
