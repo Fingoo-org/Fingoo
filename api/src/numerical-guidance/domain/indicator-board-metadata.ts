@@ -15,15 +15,10 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   }
 
   public insertIndicatorTicker(ticker: string, type: string): void {
-    const newTickers: Record<string, string[]> = this.tickers;
-    if (this.tickers[type]?.length == 0) {
-      newTickers[type] = [ticker];
-    } else {
-      const indicatorTickers: string[] = newTickers[type]?.toString().split(',');
-      indicatorTickers?.push(ticker);
-      newTickers[type] = indicatorTickers;
-      console.log(indicatorTickers);
-    }
+    const newTickers: Record<string, string[]> = { ...this.tickers };
+    const currentTickers = newTickers[type] || [];
+    currentTickers.push(ticker);
+    newTickers[type] = currentTickers;
     this.checkRule(new NewIndicatorTypeShouldBelongToTheIndicatorTypeRule(newTickers));
     this.checkRule(new IndicatorBoardMetaDataCountShouldNotExceedLimitRule(newTickers));
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(newTickers));
