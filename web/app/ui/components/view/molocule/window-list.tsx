@@ -3,6 +3,7 @@ import { ListChildComponentProps } from 'react-window';
 
 type WindowListProps<T> = {
   height: number;
+  itemHeight: number;
   items: T[];
   renderRow: ({ index, style }: ListChildComponentProps) => React.ReactElement<RowProps>;
 };
@@ -11,9 +12,9 @@ type RowProps = {
   style: React.CSSProperties;
 };
 
-export default function WindowList<T>({ height, items, renderRow }: WindowListProps<T>) {
+export default function WindowList<T>({ height, items, itemHeight, renderRow }: WindowListProps<T>) {
   return (
-    <List height={height} itemData={items} itemCount={items.length} itemSize={35} width="100%">
+    <List height={height} itemData={items} itemCount={items.length} itemSize={itemHeight} width="100%">
       {renderRow}
     </List>
   );

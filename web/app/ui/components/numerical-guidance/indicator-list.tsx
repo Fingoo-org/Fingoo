@@ -18,21 +18,23 @@ const IndicatorList = React.memo(function IndicatorList() {
     const handleItemDeSelect = () => deleteIndicatorFromMetadata(indicator.ticker);
 
     return (
-      <SelectableListItem
-        onSelect={handleItemSelect}
-        onDeSelect={handleItemDeSelect}
-        key={indicator.ticker}
-        style={style}
-        selected={isSelected}
-      >
-        {indicator.name}
-      </SelectableListItem>
+      <div className="h-12">
+        <SelectableListItem
+          onSelect={handleItemSelect}
+          onDeSelect={handleItemDeSelect}
+          key={indicator.ticker}
+          style={style}
+          selected={isSelected}
+        >
+          {indicator.name}
+        </SelectableListItem>
+      </div>
     );
   };
 
   return (
     <div role="tablist" className={clsx({ hidden: selectedMetadata === undefined })}>
-      <WindowList height={200} items={indicatorList || []} renderRow={render} />
+      <WindowList height={200} itemHeight={48} items={indicatorList || []} renderRow={render} />
     </div>
   );
 });
