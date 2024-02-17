@@ -127,15 +127,4 @@ describe('NumericalGuidanceController', () => {
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
   });
-
-  // it('/post 메타데이터에 지표 ticker 추가하기.', () => {
-  //   return request(app.getHttpServer())
-  //     .post('/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba73')
-  //     .send({
-  //       ticker: 'ticker1',
-  //       type: 'k-stock',
-  //     })
-  //     .set('Content-Type', 'application/json')
-  //     .expect(HttpStatus.CREATED);
-  // });
 });
