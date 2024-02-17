@@ -5,7 +5,7 @@ import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata
 import { IndicatorBoardMetadataEntity } from './entity/indicator-board-metadata.entity';
 import { IndicatorBoardMetadataMapper } from './mapper/indicator-board-metadata.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundError, QueryFailedError, Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { AuthService } from '../../../../auth/auth.service';
 import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/load-indiactor-board-metadata.port';
 import { InsertIndicatorTickerPort } from '../../../application/port/persistence/insert-indicator-ticker.port';
@@ -27,6 +27,7 @@ export class IndicatorBoardMetadataPersistentAdapter
   ): Promise<string> {
     try {
       const member = await this.authService.findById(memberId);
+      this.nullCheckForEntity(member);
 
       const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity = IndicatorBoardMetadataMapper.mapDomainToEntity(
         indicatorBoardMetaData,
@@ -35,14 +36,16 @@ export class IndicatorBoardMetadataPersistentAdapter
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
       return indicatorBoardMetaDataEntity.id;
     } catch (error) {
-      if (error instanceof QueryFailedError || EntityNotFoundError) {
+      if (error instanceof NotFoundException) {
         throw new NotFoundException({
           message: '[ERROR] 해당 회원을 찾을 수 없습니다.',
           error: error,
         });
       } else {
-        throw new BadRequestException({
-          message: '[ERROR] 지표보드 메타데이터를 생성하는 도중에 오류가 발생했습니다.',
+        throw new InternalServerErrorException({
+          message: `[ERROR] 지표보드 메타데이터를 생성하는 도중에 오류가 발생했습니다. 다음과 같은 상황을 확인해보세요.
+          1. indicatorBoardMetaData 값 중 비어있는 값이 있는가
+          `,
           error: error,
         });
       }
@@ -51,17 +54,25 @@ export class IndicatorBoardMetadataPersistentAdapter
 
   async loadIndicatorBoardMetaData(id: string): Promise<IndicatorBoardMetadata> {
     try {
-      const indicatorMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id });
-      return await IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorMetaDataEntity);
+      const indicatorBoardMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id });
+      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
+      return await IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
     } catch (error) {
-      if (error instanceof TypeError) {
+      if (error instanceof NotFoundException) {
         throw new NotFoundException({
           message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
           error: error,
         });
-      } else {
+      } else if (error instanceof QueryFailedError) {
         throw new BadRequestException({
-          message: '[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.',
+          message: `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다. 다음을 확인해보세요.
+          1. id 값이 uuid 형식을 잘 따르고 있는가
+          `,
+          error: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          message: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
           error: error,
         });
       }
@@ -74,12 +85,13 @@ export class IndicatorBoardMetadataPersistentAdapter
 
       const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
         await this.indicatorBoardMetadataRepository.findOneBy({ id });
+      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
 
       indicatorBoardMetaDataEntity.tickers = indicatorBoardMetaData.tickers;
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
     } catch (error) {
-      if (error instanceof TypeError) {
+      if (error instanceof NotFoundException) {
         throw new NotFoundException({
           message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
           error: error,
@@ -90,11 +102,15 @@ export class IndicatorBoardMetadataPersistentAdapter
           error: error,
         });
       } else {
-        throw new BadRequestException({
-          message: '[ERROR] indicator를 추가하는 중에 문제가 발생했습니다.',
+        throw new InternalServerErrorException({
+          message: '[ERROR] 새로운 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.',
           error: error,
         });
       }
     }
+  }
+
+  private nullCheckForEntity(entity) {
+    if (entity == null) throw new NotFoundException();
   }
 }
