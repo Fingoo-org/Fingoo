@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application/port/external/load-fluctuatingIndicator.port';
+import { Interval, Market } from 'src/utils/type/types';
 
 @Injectable()
 export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorPort {
@@ -10,8 +11,8 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
   async loadFluctuatingIndicator(
     dataCount: number,
     ticker: string,
-    interval: string,
-    market: string,
+    interval: Interval,
+    market: Market,
     endDate: string,
   ): Promise<FluctuatingIndicatorDto> {
     // KRX API 통신 -> 현재 일자부터 이전 데이터 모두 조회
@@ -29,7 +30,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return FluctuatingIndicatorKrxAdapter.transferredByInterval(interval, responseData);
   }
 
-  static transferredByInterval(interval: string, data: FluctuatingIndicatorDto) {
+  static transferredByInterval(interval: Interval, data: FluctuatingIndicatorDto) {
     switch (interval) {
       case 'day':
         return this.transferDayResponse(data);

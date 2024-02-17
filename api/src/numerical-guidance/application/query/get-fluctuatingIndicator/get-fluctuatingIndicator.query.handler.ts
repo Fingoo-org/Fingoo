@@ -5,6 +5,7 @@ import { FluctuatingIndicatorDto } from './fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from '../../port/external/load-fluctuatingIndicator.port';
 import { LoadCachedFluctuatingIndicatorPort } from '../../port/cache/load-cached-fluctuatingIndicator.port';
 import { CachingFluctuatingIndicatorPort } from '../../port/cache/caching-fluctuatingIndicator.port';
+import { Interval } from 'src/utils/type/types';
 
 @Injectable()
 @QueryHandler(GetFluctuatingIndicatorQuery)
@@ -45,7 +46,7 @@ export class GetFluctuatingIndicatorQueryHandler implements IQueryHandler {
     return fluctuatingIndicatorDto == null;
   }
 
-  private createFluctuatingIndicatorKey(ticker: string, interval: string) {
+  private createFluctuatingIndicatorKey(ticker: string, interval: Interval) {
     const today: Date = new Date();
     const date = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today
       .getDate()

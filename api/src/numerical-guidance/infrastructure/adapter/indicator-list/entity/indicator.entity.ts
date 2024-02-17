@@ -1,4 +1,4 @@
-import { Market } from 'src/utils/type/types';
+import { IndicatorType, Market } from 'src/utils/type/types';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
@@ -13,7 +13,7 @@ export class IndicatorEntity extends BaseEntity {
   ticker: string;
 
   @Column()
-  type: string;
+  type: IndicatorType;
 
   @Column({ nullable: true })
   market: Market;

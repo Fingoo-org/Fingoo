@@ -1,9 +1,11 @@
+import { Market } from 'src/utils/type/types';
+
 export type Item = {
   basDt: string;
   srtnCd: string;
   isinCd: string;
   itmsNm: string;
-  mrktCtg: string;
+  mrktCtg: Market;
   clpr: string;
   vs: string;
   fltRt: string;

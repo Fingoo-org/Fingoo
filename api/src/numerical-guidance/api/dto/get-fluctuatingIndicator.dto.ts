@@ -2,6 +2,7 @@ import { IsInt, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { IsInterval } from '../../../utils/validation/is.interval.validation';
 import { ApiProperty } from '@nestjs/swagger';
+import { Market } from 'src/utils/type/types';
 
 type Interval = 'day' | 'week' | 'month' | 'year';
 
@@ -26,7 +27,7 @@ export class GetFluctuatingIndicatorDto {
     description: '시장구분',
   })
   @IsString()
-  readonly market: string;
+  readonly market: Market;
 
   @ApiProperty({
     example: 'day',

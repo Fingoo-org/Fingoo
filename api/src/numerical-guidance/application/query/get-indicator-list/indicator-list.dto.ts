@@ -1,4 +1,4 @@
-import { Market } from 'src/utils/type/types';
+import { IndicatorType, Market } from 'src/utils/type/types';
 
 export class IndicatorListDto {
   indicatorList: Indicator[];
@@ -16,6 +16,6 @@ export type Indicator = {
   id: number;
   name: string;
   ticker: string;
-  type: string;
+  type: IndicatorType;
   market: Market;
 };
