@@ -8,12 +8,14 @@ const testData = {
       name: '삼성전자',
       ticker: '005931',
       type: 'stock',
+      market: 'KOSPI',
     },
     {
       id: 2,
       name: '이스트아시아홀딩스',
       ticker: '900110',
       type: 'stock',
+      market: 'KOSDAQ',
     },
   ],
 };

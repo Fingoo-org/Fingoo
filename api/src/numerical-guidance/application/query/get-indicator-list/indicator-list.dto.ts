@@ -1,18 +1,21 @@
-export class IndicatorListDto {
-  indicatorList: IndicatorResponse[];
+import { IndicatorType, Market } from 'src/utils/type/type-definition';
 
-  private constructor(indicatorList: IndicatorResponse[]) {
+export class IndicatorListDto {
+  indicatorList: Indicator[];
+
+  private constructor(indicatorList: Indicator[]) {
     this.indicatorList = indicatorList;
   }
 
-  static create(indicatorList: IndicatorResponse[]): IndicatorListDto {
+  static create(indicatorList: Indicator[]): IndicatorListDto {
     return new IndicatorListDto(indicatorList);
   }
 }
 
-export type IndicatorResponse = {
+export type Indicator = {
   id: number;
   name: string;
   ticker: string;
-  type: string;
+  type: IndicatorType;
+  market: Market;
 };

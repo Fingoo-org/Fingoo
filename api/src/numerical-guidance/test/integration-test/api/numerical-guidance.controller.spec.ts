@@ -71,8 +71,8 @@ describe('NumericalGuidanceController', () => {
       .query({
         dataCount: 2,
         ticker: '005930',
-        market: 'market',
         interval: 'day',
+        market: 'KOSPI',
         endDate: '20240125',
       })
       .set('Content-Type', 'application/json')
