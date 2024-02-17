@@ -1,20 +1,23 @@
+// optimization: https://storybook.js.org/blog/optimize-storybook-7-6/
 import type { StorybookConfig } from '@storybook/nextjs';
 
 const config: StorybookConfig = {
-  stories: [
-    '../stories/**/*.mdx',
-    '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../**/*.stories.@(js|jsx|mjs|ts|tsx)',
-  ],
+  stories: ['../**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
+    {
+      name: '@storybook/addon-essentials',
+      options: { docs: false },
+    },
     '@storybook/addon-onboarding',
     '@storybook/addon-interactions',
   ],
+  typescript: {
+    reactDocgen: 'react-docgen', // or false if you don't need docgen at all
+  },
   framework: {
     name: '@storybook/nextjs',
-    options: {},
+    options: { builder: { useSWC: true } },
   },
   docs: {
     autodocs: 'tag',
