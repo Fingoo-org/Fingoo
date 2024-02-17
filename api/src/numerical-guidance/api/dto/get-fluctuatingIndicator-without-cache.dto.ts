@@ -3,6 +3,7 @@ import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInterval } from '../../../utils/validation/is.interval.validation';
 import { Interval, Market } from 'src/utils/type/types';
+import { IsMarket } from 'src/utils/validation/is.market.validation';
 
 export class GetFluctuatingIndicatorWithoutCacheDto {
   @ApiProperty({
@@ -33,7 +34,7 @@ export class GetFluctuatingIndicatorWithoutCacheDto {
     description: '시장구분',
   })
   @IsString()
-  @IsString()
+  @IsMarket()
   readonly market: Market;
 
   @ApiProperty({
