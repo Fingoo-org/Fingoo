@@ -10,13 +10,13 @@ export default class IndicatorEntitySeeder implements Seeder {
         id: 1,
         name: '삼성전자',
         ticker: '005930',
-        type: 'stock',
+        type: 'k-stock',
       },
       {
         id: 2,
         name: '이스트아시아',
         ticker: '900110',
-        type: 'stock',
+        type: 'k-stock',
       },
     ]);
   }
