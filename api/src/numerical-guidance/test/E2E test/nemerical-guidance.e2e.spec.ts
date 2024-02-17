@@ -116,16 +116,9 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/get db에 존재하지않는 메타데이터 id를 전송한다.', () => {
     return request(app.getHttpServer())
-      .get('/numerical-guidance/indicator-board-metadata/invalid-id')
+      .get('/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba22')
       .set('Content-Type', 'application/json')
-      .expect(HttpStatus.BAD_REQUEST);
-  });
-
-  it('/post db에 존재하지않는 메타데이터 id를 전송한다.', () => {
-    return request(app.getHttpServer())
-      .get('/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba73')
-      .set('Content-Type', 'application/json')
-      .expect(HttpStatus.OK);
+      .expect(HttpStatus.NOT_FOUND);
   });
 
   it('/post 지표보드 메타데이터에 새로운 지표를 추가한다.', async () => {

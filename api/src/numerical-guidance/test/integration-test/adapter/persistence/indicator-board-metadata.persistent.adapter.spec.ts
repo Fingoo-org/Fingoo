@@ -8,7 +8,7 @@ import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from '../../../../../auth/auth.service';
 import { DataSource } from 'typeorm';
-import { BadRequestException, HttpStatus } from '@nestjs/common';
+import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -70,7 +70,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
   it('지표보드 메타데이터 생성 확인', async () => {
     // given
-    const memberId = 1;
+    const memberId = 10;
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // when
@@ -83,6 +83,25 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // then
     expect(resultIndicatorBoardMetaData.indicatorBoardMetaDataName).toEqual('메타 데이터');
+  });
+
+  it('지표보드 메타데이터 생성 - 회원을 찾지 못한 경우', async () => {
+    const invalidMemberId = 11;
+    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(
+        indicatorBoardMetaData,
+        invalidMemberId,
+      );
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: '[ERROR] 해당 회원을 찾을 수 없습니다.',
+        error: Error,
+        HttpStatus: HttpStatus.NOT_FOUND,
+      }),
+    );
   });
 
   it('생성한 지표보드 메타데이터 id로 메타데이터 가져오기', async () => {
@@ -104,16 +123,36 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     expect(result.tickers).toEqual(expectedIndicatorTicker);
   });
 
-  it('db에 존재하지 않는 메타보드 id를 입력해 예외처리 메세지 불러오기', async () => {
+  it('생성한 지표보드 메타데이터 id로 메타데이터 가져오기 - DB에 존재하지 않는 경우', async () => {
     // given
+    const invalidId = 'a46240d3-7d15-48e7-a9b7-f490bf9ca6e3';
 
     // when
     // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData('invalidId');
+      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(invalidId);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+        error: Error,
+        HttpStatus: HttpStatus.NOT_FOUND,
+      }),
+    );
+  });
+
+  it('생성한 지표보드 메타데이터 id로 메타데이터 가져오기 - id 형식이 맞지 않는 경우', async () => {
+    // given
+    const invalidId = 'invalidUUID';
+
+    // when
+    // then
+    await expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(invalidId);
     }).rejects.toThrow(
       new BadRequestException({
-        message: '[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.',
+        message: `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다. 다음을 확인해보세요.
+          1. id 값이 uuid 형식을 잘 따르고 있는가
+          `,
         error: Error,
         HttpStatus: HttpStatus.BAD_REQUEST,
       }),
