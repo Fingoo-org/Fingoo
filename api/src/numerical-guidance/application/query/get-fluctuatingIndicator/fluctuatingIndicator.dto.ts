@@ -1,4 +1,4 @@
-import { Market } from 'src/utils/type/type-definition';
+import { IndicatorType, Market } from 'src/utils/type/type-definition';
 
 export type Item = {
   basDt: string;
@@ -21,8 +21,6 @@ export type Item = {
 export type Items = {
   item: Item[];
 };
-
-export type IndicatorType = 'k-stock' | 'exchange';
 
 export class FluctuatingIndicatorDto {
   type: IndicatorType;
