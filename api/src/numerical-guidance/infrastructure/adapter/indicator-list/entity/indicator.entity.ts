@@ -1,4 +1,4 @@
-import { IndicatorType, Market } from 'src/utils/type/types';
+import { IndicatorType, Market } from 'src/utils/type/type-definition';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()

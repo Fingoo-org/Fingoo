@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application/port/external/load-fluctuatingIndicator.port';
-import { Interval, Market } from 'src/utils/type/types';
+import { Interval, Market } from 'src/utils/type/type-definition';
 
 @Injectable()
 export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorPort {

@@ -2,7 +2,7 @@ import { IsInt, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInterval } from '../../../utils/validation/is.interval.validation';
-import { Interval, Market } from 'src/utils/type/types';
+import { Interval, Market } from 'src/utils/type/type-definition';
 import { IsMarket } from 'src/utils/validation/is.market.validation';
 
 export class GetFluctuatingIndicatorWithoutCacheDto {

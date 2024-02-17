@@ -5,7 +5,7 @@ import { FluctuatingIndicatorDto } from './fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from '../../port/external/load-fluctuatingIndicator.port';
 import { LoadCachedFluctuatingIndicatorPort } from '../../port/cache/load-cached-fluctuatingIndicator.port';
 import { CachingFluctuatingIndicatorPort } from '../../port/cache/caching-fluctuatingIndicator.port';
-import { Interval } from 'src/utils/type/types';
+import { Interval } from 'src/utils/type/type-definition';
 
 @Injectable()
 @QueryHandler(GetFluctuatingIndicatorQuery)

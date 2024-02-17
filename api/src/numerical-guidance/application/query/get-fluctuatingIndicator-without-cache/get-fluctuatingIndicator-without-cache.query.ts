@@ -1,5 +1,5 @@
 import { IQuery } from '@nestjs/cqrs';
-import { Interval, Market } from 'src/utils/type/types';
+import { Interval, Market } from 'src/utils/type/type-definition';
 
 export class GetFluctuatingIndicatorWithoutCacheQuery implements IQuery {
   constructor(

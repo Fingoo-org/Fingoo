@@ -1,4 +1,4 @@
-import { Market } from 'src/utils/type/types';
+import { Market } from 'src/utils/type/type-definition';
 
 export type Item = {
   basDt: string;
