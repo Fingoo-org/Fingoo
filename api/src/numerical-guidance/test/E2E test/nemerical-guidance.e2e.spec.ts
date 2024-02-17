@@ -13,6 +13,11 @@ import { IndicatorBoardMetadataEntity } from 'src/numerical-guidance/infrastruct
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from 'src/auth/auth.service';
 import { DataSource } from 'typeorm';
+import { InsertIndicatorTickerCommandHandler } from '../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
+
+jest.mock('typeorm-transactional', () => ({
+  Transactional: () => () => ({}),
+}));
 
 describe('NumericalGuidance E2E Test', () => {
   let app: INestApplication;
@@ -23,7 +28,14 @@ describe('NumericalGuidance E2E Test', () => {
     await indicatorBoardMetaDataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetaDataName: 'name',
-      tickers: { 'k-stock': ['ticker1', 'ticker2'], exchange: [] },
+      tickers: { 'k-stock': ['ticker1'], exchange: [] },
+    });
+    indicatorBoardMetaDataRepository.save;
+
+    await indicatorBoardMetaDataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
+      indicatorBoardMetaDataName: 'name',
+      tickers: { 'k-stock': ['ticker1'], exchange: [] },
     });
     indicatorBoardMetaDataRepository.save;
   };
@@ -59,8 +71,17 @@ describe('NumericalGuidance E2E Test', () => {
         providers: [
           AuthService,
           GetIndicatorBoardMetaDataQueryHandler,
+          InsertIndicatorTickerCommandHandler,
+          {
+            provide: 'CreateIndicatorBoardMetadataPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
           {
             provide: 'LoadIndicatorBoardMetadataPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
+            provide: 'InsertIndicatorTickerPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
         ],
@@ -105,5 +126,27 @@ describe('NumericalGuidance E2E Test', () => {
       .get('/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba73')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
+  });
+
+  it('/post 지표보드 메타데이터에 새로운 지표를 추가한다.', async () => {
+    return request(app.getHttpServer())
+      .post(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
+      .send({
+        ticker: 'ticker2',
+        type: 'k-stock',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.CREATED);
+  });
+
+  it('/post 지표보드 메타데이터에 새로운 지표를 추가할 때 중복 데이터를 넣는다', async () => {
+    return request(app.getHttpServer())
+      .post(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
+      .send({
+        ticker: 'ticker1',
+        type: 'k-stock',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
   });
 });
