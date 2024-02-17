@@ -16,13 +16,20 @@ export class IndicatorBoardMetadata extends AggregateRoot {
 
   public insertIndicatorTicker(ticker: string, type: string): void {
     const newTickers: Record<string, string[]> = { ...this.tickers };
-    const currentTickers = newTickers[type] || [];
+    const currentTickers = this.convertToArray(newTickers[type]?.toString());
     currentTickers.push(ticker);
     newTickers[type] = currentTickers;
     this.checkRule(new NewIndicatorTypeShouldBelongToTheIndicatorTypeRule(newTickers));
-    this.checkRule(new IndicatorBoardMetaDataCountShouldNotExceedLimitRule(newTickers));
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(newTickers));
+    this.checkRule(new IndicatorBoardMetaDataCountShouldNotExceedLimitRule(newTickers));
     this.tickers = newTickers;
+  }
+
+  private convertToArray(tickers: string): string[] {
+    if (tickers) {
+      return tickers.split(',');
+    }
+    return [];
   }
 
   constructor(id: string, indicatorBoardMetaDataName: string, tickers: Record<string, string[]>) {
