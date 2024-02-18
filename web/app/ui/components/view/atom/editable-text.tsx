@@ -9,7 +9,7 @@ type EditableTextProps = {
   defaultValue: string;
   readonly?: boolean;
   inputKey?: string;
-  resetWithButton?: boolean;
+  withResetButton?: boolean;
   debounceDelay?: number;
   className?: string;
   onChangeValue?: (value: string) => void;
@@ -19,7 +19,7 @@ export default function EditableText({
   defaultValue,
   readonly = false,
   inputKey,
-  resetWithButton,
+  withResetButton,
   debounceDelay = 0,
   className,
   onChangeValue,
@@ -69,10 +69,10 @@ export default function EditableText({
         <div
           onClick={() => {
             ref.current?.focus();
-            resetWithButton && !readonly ? handleReset() : null;
+            withResetButton && !readonly ? handleReset() : null;
           }}
         >
-          {resetWithButton && !readonly ? (
+          {withResetButton && !readonly ? (
             <IconButton
               className="invisible group-has-[:focus]:visible"
               color={'gray'}
