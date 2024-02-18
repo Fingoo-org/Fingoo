@@ -21,8 +21,9 @@ export default function MetadataDialogMenu() {
     <DialogMenu size={'md'} dialogKey={DIALOG_KEY.METADATA_EDIT_MENU}>
       <DialogMenu.Header>
         <TinyInput
-          value={metadata !== undefined ? metadata.name : ''}
+          defaultValue={metadata !== undefined ? metadata.name : ''}
           withResetButton={true}
+          withDebounce={500}
           onValueChange={handleMetadataUpdate}
         />
       </DialogMenu.Header>

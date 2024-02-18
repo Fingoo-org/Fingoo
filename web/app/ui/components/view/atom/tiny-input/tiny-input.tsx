@@ -1,20 +1,36 @@
 import IconButton from '../icon-button/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
+import { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 type TinyInputProps = {
-  value: string;
+  defaultValue: string;
   withResetButton?: boolean;
+  withDebounce?: number;
   onValueChange?: (value: string) => void;
 };
 
-export default function TinyInput({ value, withResetButton = false, onValueChange }: TinyInputProps) {
+export default function TinyInput({
+  defaultValue,
+  withResetButton = false,
+  withDebounce = 0,
+  onValueChange,
+}: TinyInputProps) {
+  const [value, setValue] = useState(defaultValue);
+
+  const handleValueChangeWithDebounce = useDebouncedCallback((value: string) => {
+    onValueChange?.(value);
+  }, withDebounce);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    onValueChange?.(value);
+    setValue(value);
+    handleValueChangeWithDebounce(value);
   };
 
   const handleReset = () => {
-    onValueChange?.('');
+    setValue('');
+    handleValueChangeWithDebounce('');
   };
 
   return (
