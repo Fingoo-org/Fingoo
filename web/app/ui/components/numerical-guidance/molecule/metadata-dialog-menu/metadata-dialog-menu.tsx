@@ -1,6 +1,6 @@
 'use client';
 import DialogMenu from '../../../view/molocule/dialog-menu';
-import { DotsHorizontalIcon } from '@heroicons/react/solid';
+import { TrashIcon } from '@heroicons/react/solid';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useAlertDialog } from '../../../view/molocule/alert-dialog/use-alert-dialog.hook';
 import TinyInput from '../../../view/atom/tiny-input/tiny-input';
@@ -12,9 +12,12 @@ export default function MetadataDialogMenu() {
   return (
     <DialogMenu size={'md'} dialogKey={DIALOG_KEY.METADATA_EDIT_MENU}>
       <DialogMenu.Header>
-        <TinyInput value={typeof payload !== 'undefined' ? (payload as IndicatorBoardMetadataResponse).name : ''} />
+        <TinyInput
+          value={typeof payload !== 'undefined' ? (payload as IndicatorBoardMetadataResponse).name : ''}
+          withResetButton={true}
+        />
       </DialogMenu.Header>
-      <DialogMenu.Item role={'menuitem'} aria-label="Delete" onClick={openDialogWithPayload} icon={DotsHorizontalIcon}>
+      <DialogMenu.Item role={'menuitem'} aria-label="Delete" onClick={openDialogWithPayload} icon={TrashIcon}>
         Delete
       </DialogMenu.Item>
     </DialogMenu>
