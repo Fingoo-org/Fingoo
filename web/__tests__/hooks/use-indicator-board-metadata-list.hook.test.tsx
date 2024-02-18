@@ -1,4 +1,4 @@
-import { useIndicatoBoardrMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
+import { useIndicatorBoardMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
 import { renderHook, waitFor } from '@testing-library/react';
 import { server } from '@/app/mocks/server.mock';
 import { HttpResponse, http } from 'msw';
@@ -11,7 +11,7 @@ import { resetMockDB } from '@/app/mocks/db.mock';
 
 const wrapper = SWRProviderWithoutCache;
 
-describe('useIndicatoBoardrMetadataList', () => {
+describe('useIndicatorBoardMetadataList', () => {
   beforeEach(() => {
     resetAllStore();
     resetMockDB();
@@ -19,7 +19,7 @@ describe('useIndicatoBoardrMetadataList', () => {
 
   it('메타데이터 리스트를 가져온다', async () => {
     // given
-    const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    const { result } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
     await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
 
     // when
@@ -45,7 +45,7 @@ describe('useIndicatoBoardrMetadataList', () => {
 
   it('메타데이터를 생성하면, 생성한 메타데이터를 포함한 메타데이터 리스트를 가져온다.', async () => {
     // given
-    const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    const { result } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
     await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
 
     // when
@@ -62,7 +62,7 @@ describe('useIndicatoBoardrMetadataList', () => {
   // Risk: https://mswjs.io/docs/limitations#parallel-runs
   it('서버에 장애가 있을 때, 메타데이터를 생성하면, 생성한 메타데이터를 포함하지 않는 메타데이터 리스트를 가져온다.', async () => {
     // given
-    const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    const { result } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
     server.use(
       http.post(API_PATH.indicatorBoardMetadata, () => {
@@ -85,7 +85,7 @@ describe('useIndicatoBoardrMetadataList', () => {
 
   it('메타데이터를 삭제하면, 삭제한 메타데이터를 포함하지 않는 메타데이터 리스트를 가져온다.', async () => {
     // given
-    const { result } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    const { result } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
     await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
 
     // when

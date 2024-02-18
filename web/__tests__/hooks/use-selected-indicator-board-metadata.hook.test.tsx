@@ -4,7 +4,7 @@ import { resetMockDB } from '@/app/mocks/db.mock';
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
-import { useIndicatoBoardrMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
+import { useIndicatorBoardMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
 import { useIndicatorList } from '@/app/business/hooks/use-indicator-list.hook';
 
 const wrapper = SWRProviderWithoutCache;
@@ -19,7 +19,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
   it('메타데이터를 선택하면, 선택한 메타데이터 값을 가져온다.', async () => {
     // given
     const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
-    const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
     await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
 
@@ -38,7 +38,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
   it('메타데이터를 선택하지 않으면, 선택한 메타데이터 값이 존재하지 않는다.', async () => {
     // given
     const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
-    const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
     await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
 
@@ -54,7 +54,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
   it('메타데이터를 선택했다가 해제하면, 선택한 메타데이터 값이 존재하지 않는다.', async () => {
     // given
     const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
-    const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
     await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
 
@@ -77,7 +77,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
   it('메타데이터를 선택했다가 다른 메타데이터를 선택하면, 마지막에 선택한 메타데이터 값을 가져온다', async () => {
     // given
     const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
-    const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+    const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
     await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
 
@@ -104,7 +104,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       // given
       const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
       const { result: indicatorList } = renderHook(() => useIndicatorList(), { wrapper });
-      const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+      const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
       const { result: store } = renderHook(() => useNumericalGuidanceStore());
       await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
       await waitFor(() => expect(indicatorList.current.indicatorList).not.toBeUndefined());
@@ -133,7 +133,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       // given
       const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
       const { result: indicatorList } = renderHook(() => useIndicatorList(), { wrapper });
-      const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+      const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
       const { result: store } = renderHook(() => useNumericalGuidanceStore());
       await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
       await waitFor(() => expect(indicatorList.current.indicatorList).not.toBeUndefined());
@@ -166,7 +166,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       it('메타데이터를 선택했을 때, 선택한 메타데이터의 이름을 변경하면, 메타데이터 값에 변경된 이름이 반영된다.', async () => {
         // given
         const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
-        const { result: metadataList } = renderHook(() => useIndicatoBoardrMetadataList(), { wrapper });
+        const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
         const { result: store } = renderHook(() => useNumericalGuidanceStore());
         await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
         act(() => {

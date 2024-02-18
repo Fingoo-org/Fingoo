@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import List from '../../view/molocule/list';
-import { useIndicatoBoardrMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
+import { useIndicatorBoardMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
 import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import Button from '../../view/atom/button/button';
 import Pending from '../../view/molocule/pending';
@@ -9,7 +9,7 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-sele
 import MetadataListItem from '../atom/metadata-list-item';
 
 const MetdataList = React.memo(function MetadataList() {
-  const { metadataList, createMetadata, isPending } = useIndicatoBoardrMetadataList();
+  const { metadataList, createMetadata, isPending } = useIndicatorBoardMetadataList();
   const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
 
   const handleMetadataCreateAndSelect = async () => {
