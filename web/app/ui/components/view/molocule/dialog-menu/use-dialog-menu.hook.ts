@@ -12,17 +12,15 @@ export function useDialogMenu(key: DialogKey) {
   const openDialogMenuWithPayload = (payload?: unknown) => {
     const position = ref.current?.getBoundingClientRect();
 
-    if (!position) {
-      return;
+    if (position) {
+      const newPosition = {
+        x: position.left,
+        y: position.top + position.height / 2,
+      };
+      action.setPosition(newPosition);
     }
 
-    const newPosition = {
-      x: position.left,
-      y: position.top + position.height / 2,
-    };
-
     action.setPayload(payload);
-    action.setPosition(newPosition);
     action.open(key);
   };
 
