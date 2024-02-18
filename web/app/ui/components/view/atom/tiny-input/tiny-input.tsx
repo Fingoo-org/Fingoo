@@ -30,7 +30,7 @@ export default function TinyInput({
 
   const handleReset = () => {
     setValue('');
-    handleValueChangeWithDebounce('');
+    onValueChange?.('');
   };
 
   return (

@@ -17,7 +17,7 @@ export default function SelectedMetadataTittle() {
       onChangeValue={handleMetadataNameChange}
       readonly={selectedMetadata ? false : true}
       withResetButton={true}
-      debounceDelay={500}
+      withDebounce={500}
       className={clsx('w-40 text-lg font-medium p-0 ', {
         'focus:text-gray-500': selectedMetadata,
       })}

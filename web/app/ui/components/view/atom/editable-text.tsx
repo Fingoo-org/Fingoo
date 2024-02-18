@@ -10,7 +10,7 @@ type EditableTextProps = {
   readonly?: boolean;
   inputKey?: string;
   withResetButton?: boolean;
-  debounceDelay?: number;
+  withDebounce?: number;
   className?: string;
   onChangeValue?: (value: string) => void;
 };
@@ -20,7 +20,7 @@ export default function EditableText({
   readonly = false,
   inputKey,
   withResetButton,
-  debounceDelay = 0,
+  withDebounce = 0,
   className,
   onChangeValue,
 }: EditableTextProps) {
@@ -31,14 +31,14 @@ export default function EditableText({
     setValue(defaultValue);
   }, [inputKey]);
 
-  const handleChangeWithDebounce = useDebouncedCallback((name: string) => {
+  const handleValueChangeWithDebounce = useDebouncedCallback((name: string) => {
     onChangeValue?.(name);
-  }, debounceDelay);
+  }, withDebounce);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const { value } = event.target;
     setValue(value);
-    handleChangeWithDebounce(value);
+    handleValueChangeWithDebounce(value);
   };
 
   const handleReset = () => {
