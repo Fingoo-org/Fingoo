@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import MetdataList from '@/app/ui/components/numerical-guidance/metadata-list';
-import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/metadata-dialog-menu';
+import MetdataList from '@/app/ui/components/numerical-guidance/molecule/metadata-list';
+import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/molecule/metadata-dialog-menu';
 import userEvent from '@testing-library/user-event';
 
 describe('MetadataDialogMenu', () => {

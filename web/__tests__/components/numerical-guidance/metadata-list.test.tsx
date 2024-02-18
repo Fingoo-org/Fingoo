@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import MetadataList from '@/app/ui/components/numerical-guidance/metadata-list';
+import MetadataList from '@/app/ui/components/numerical-guidance/molecule/metadata-list';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
 

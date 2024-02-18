@@ -1,6 +1,6 @@
 'use client';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import AlertDialog from '../view/molocule/alert-dialog';
+import AlertDialog from '../../view/molocule/alert-dialog';
 import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useIndicatoBoardrMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
 
