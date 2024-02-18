@@ -180,4 +180,70 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     expect(result.indicatorBoardMetaDataName).toEqual('name');
     expect(result.tickers['k-stock']).toEqual('ticker1,ticker2');
   });
+
+  it('지표보드 메타데이터에 새로운 지표 ticker 추가하기. - DB에 존재하지 않는 경우', async () => {
+    // given
+    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
+      'name',
+      {
+        'k-stock': ['ticker1', 'ticker2'],
+        exchange: [],
+      },
+    );
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.addIndicatorTicker(newIndicatorBoardMetaData);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        error: Error,
+        HttpStatus: HttpStatus.NOT_FOUND,
+      }),
+    );
+  });
+
+  it('지표보드 메타데이터에서 지표 ticker 삭제하기.', async () => {
+    // given
+    const deleteIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
+      'name',
+      {
+        'k-stock': ['ticker1', 'ticker2'],
+        exchange: [],
+      },
+    );
+    // when
+    await indicatorBoardMetaDataPersistentAdapter.addIndicatorTicker(deleteIndicatorBoardMetadata);
+    const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
+    );
+
+    // then
+    expect(result.indicatorBoardMetaDataName).toEqual('name');
+    expect(result.tickers['k-stock']).toEqual('ticker1,ticker2');
+  });
+
+  it('지표보드 메타데이터에서 지표 ticker 삭제하기. - DB에 존재하지 않는 경우', async () => {
+    // given
+    const deleteIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
+      'name',
+      {
+        'k-stock': ['ticker1', 'ticker2'],
+        exchange: [],
+      },
+    );
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.addIndicatorTicker(deleteIndicatorBoardMetadata);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        error: Error,
+        HttpStatus: HttpStatus.NOT_FOUND,
+      }),
+    );
+  });
 });
