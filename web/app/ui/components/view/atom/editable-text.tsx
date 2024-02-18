@@ -28,8 +28,11 @@ export default function EditableText({
   const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
+    if (value === defaultValue) {
+      return;
+    }
     setValue(defaultValue);
-  }, [inputKey]);
+  }, [inputKey, defaultValue]);
 
   const handleValueChangeWithDebounce = useDebouncedCallback((name: string) => {
     onChangeValue?.(name);

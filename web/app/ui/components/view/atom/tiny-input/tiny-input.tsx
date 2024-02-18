@@ -1,6 +1,6 @@
 import IconButton from '../icon-button/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 type TinyInputProps = {
@@ -17,6 +17,13 @@ export default function TinyInput({
   onValueChange,
 }: TinyInputProps) {
   const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    if (value === defaultValue) {
+      return;
+    }
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const handleValueChangeWithDebounce = useDebouncedCallback((value: string) => {
     onValueChange?.(value);
