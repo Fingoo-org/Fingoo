@@ -41,3 +41,4 @@ export class FluctuatingIndicatorDto {
     return new FluctuatingIndicatorDto(type, numOfRows, pageNo, totalCount, items);
   }
 }
+export { IndicatorType };
