@@ -2,9 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import MetdataList from '@/app/ui/components/numerical-guidance/metadata-list';
-import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/metadata-dialog-menu';
+import MetdataList from '@/app/ui/components/numerical-guidance/molecule/metadata-list';
+import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/molecule/metadata-dialog-menu/metadata-dialog-menu';
 import userEvent from '@testing-library/user-event';
+import SelectedMetadataTittle from '@/app/ui/components/numerical-guidance/atom/selected-metadata-title';
 
 describe('MetadataDialogMenu', () => {
   beforeEach(() => {
@@ -34,6 +35,7 @@ describe('MetadataDialogMenu', () => {
     );
 
     // then
+    expect(await screen.findByDisplayValue('metadata1')).toBeInTheDocument();
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
     expect(await screen.findByText(/Delete/i)).toBeInTheDocument();
   });
@@ -63,5 +65,34 @@ describe('MetadataDialogMenu', () => {
 
     // then
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('dialog menu를 보고 있을 때, 사용자가 메타데이터 이름을 수정하면, dialog menu와 metadata list에 수정한 이름을 보여준다.', async () => {
+    // given
+    const user = userEvent.setup();
+    render(
+      <SWRProviderWithoutCache>
+        <MetadataDialogMenu />
+        <MetdataList />
+      </SWRProviderWithoutCache>,
+    );
+
+    await user.hover(await screen.findByText(/metadata1/i));
+    await user.click(
+      (
+        await screen.findAllByRole('button', {
+          name: 'edit',
+        })
+      )[0],
+    );
+    const input = await screen.findByDisplayValue('metadata1');
+
+    // when
+    await userEvent.clear(input);
+    await userEvent.type(input, 'changedata');
+
+    // then
+    expect(await screen.findByDisplayValue('changedata')).toBeInTheDocument();
+    expect(await screen.findByText(/changedata/i)).toBeInTheDocument();
   });
 });

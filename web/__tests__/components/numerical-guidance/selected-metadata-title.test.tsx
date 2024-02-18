@@ -4,7 +4,7 @@ import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import SelectedMetadataTittle from '@/app/ui/components/numerical-guidance/atom/selected-metadata-title';
-import MetadataList from '@/app/ui/components/numerical-guidance/metadata-list';
+import MetadataList from '@/app/ui/components/numerical-guidance/molecule/metadata-list';
 
 describe('SelectedMetadataTittle', () => {
   beforeEach(() => {

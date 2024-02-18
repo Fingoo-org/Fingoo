@@ -9,8 +9,8 @@ type EditableTextProps = {
   defaultValue: string;
   readonly?: boolean;
   inputKey?: string;
-  resetWithButton?: boolean;
-  debounceDelay?: number;
+  withResetButton?: boolean;
+  withDebounce?: number;
   className?: string;
   onChangeValue?: (value: string) => void;
 };
@@ -19,8 +19,8 @@ export default function EditableText({
   defaultValue,
   readonly = false,
   inputKey,
-  resetWithButton,
-  debounceDelay = 0,
+  withResetButton,
+  withDebounce = 0,
   className,
   onChangeValue,
 }: EditableTextProps) {
@@ -28,17 +28,20 @@ export default function EditableText({
   const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
+    if (value === defaultValue) {
+      return;
+    }
     setValue(defaultValue);
-  }, [inputKey]);
+  }, [inputKey, defaultValue]);
 
-  const handleChangeWithDebounce = useDebouncedCallback((name: string) => {
+  const handleValueChangeWithDebounce = useDebouncedCallback((name: string) => {
     onChangeValue?.(name);
-  }, debounceDelay);
+  }, withDebounce);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const { value } = event.target;
     setValue(value);
-    handleChangeWithDebounce(value);
+    handleValueChangeWithDebounce(value);
   };
 
   const handleReset = () => {
@@ -69,10 +72,10 @@ export default function EditableText({
         <div
           onClick={() => {
             ref.current?.focus();
-            resetWithButton && !readonly ? handleReset() : null;
+            withResetButton && !readonly ? handleReset() : null;
           }}
         >
-          {resetWithButton && !readonly ? (
+          {withResetButton && !readonly ? (
             <IconButton
               className="invisible group-has-[:focus]:visible"
               color={'gray'}

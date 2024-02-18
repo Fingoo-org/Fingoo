@@ -3,21 +3,33 @@ import React from 'react';
 import { Transition } from '@headlessui/react';
 import { DialogMenuItem } from './dialog-menu-item';
 import { DialogMenuContext } from './dialog-menu.context';
+import { DialogMenuHeader } from './dialog-menu-header';
 import { useDialogMenu } from './use-dialog-menu.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { filterChildrenByType } from '@/app/utils/helper';
+import { Size } from '@/app/utils/style';
+import { DialogMenuSize } from './dialog-menu.style';
+import { twMerge } from 'tailwind-merge';
 
 type DialogMenuProps = {
   dialogKey: DialogKey;
+  size?: Size;
+};
+
+const getDialogMenuHeader = (children: React.ReactNode) => {
+  return filterChildrenByType(children, DialogMenuHeader);
 };
 
 const getDialogMenuItems = (children: React.ReactNode) => {
   return filterChildrenByType(children, DialogMenuItem);
 };
 
-export function DialogMenuRoot({ children, dialogKey }: React.PropsWithChildren<DialogMenuProps>) {
+export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.PropsWithChildren<DialogMenuProps>) {
   const { isOpen, position, closeDialogMenu } = useDialogMenu(dialogKey);
+  const dialogMenuHeader = getDialogMenuHeader(children);
   const dialogMenuItems = getDialogMenuItems(children);
+
+  const dialogSize = DialogMenuSize[size];
 
   const handleOnClick = () => {
     closeDialogMenu();
@@ -41,8 +53,12 @@ export function DialogMenuRoot({ children, dialogKey }: React.PropsWithChildren<
               >
                 <div
                   role="dialog"
-                  className="relative bg-white rounded-lg shadow-lg overflow-hidden pointer-events-auto w-32 mt-2 origin-top-left ring-1 ring-black/5 focus:outline-none"
+                  className={twMerge(
+                    'relative bg-white rounded-lg shadow-lg overflow-hidden pointer-events-auto mt-2 origin-top-left ring-1 ring-black/5 focus:outline-none',
+                    dialogSize,
+                  )}
                 >
+                  <div className="pt-4 px-3 pb-1">{dialogMenuHeader}</div>
                   {dialogMenuItems}
                 </div>
               </Transition.Child>

@@ -6,7 +6,7 @@ import {
 import { useFetchIndicatorBoardMetadataList } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useRef } from 'react';
 
-export const useIndicatoBoardrMetadataList = () => {
+export const useIndicatorBoardMetadataList = () => {
   const { data, isValidating } = useFetchIndicatorBoardMetadataList();
   const { trigger: deleteMetadataTrigger } = useDeleteIndicatorBoardMetadata();
   const { trigger: createMetadataTrigger, isMutating } = useCreateIndicatorMetadata();

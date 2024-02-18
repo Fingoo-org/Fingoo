@@ -1,12 +1,12 @@
 import { ListChildComponentProps } from 'react-window';
-import WindowList from '../view/molocule/window-list';
-import SelectableListItem from '../view/atom/selectable-list-item';
+import WindowList from '../../view/molocule/window-list';
+import SelectableListItem from '../../view/atom/selectable-list-item';
 import { useIndicatorList } from '@/app/business/hooks/use-indicator-list.hook';
 import { IndicatorResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import React from 'react';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
 import clsx from 'clsx';
-import IndicatorListItem from './atom/indicator-list-item';
+import IndicatorListItem from '../atom/indicator-list-item';
 
 const IndicatorList = React.memo(function IndicatorList() {
   const { indicatorList } = useIndicatorList();

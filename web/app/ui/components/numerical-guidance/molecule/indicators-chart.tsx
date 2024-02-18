@@ -1,10 +1,10 @@
 'use client';
 import { useIndicatorsValueViewModel } from '@/app/business/hooks/use-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
-import MultiLineChart from '../view/molocule/multi-line-chart';
+import MultiLineChart from '../../view/molocule/multi-line-chart';
 import { useMemo } from 'react';
-import Pending from '../view/molocule/pending';
-import SelectedMetadataTittle from './atom/selected-metadata-title';
+import Pending from '../../view/molocule/pending';
+import SelectedMetadataTittle from '../atom/selected-metadata-title';
 
 export default function IndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
