@@ -15,26 +15,26 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    value: '',
+    defaultValue: '',
   },
 };
 
 export const WithResetButton: Story = {
   args: {
-    value: '',
+    defaultValue: '',
     withResetButton: true,
   },
 };
 
 export const WithFullText: Story = {
   args: {
-    value: 'Hello ssssssssssssssssssssssssssss',
+    defaultValue: 'Hello ssssssssssssssssssssssssssss',
   },
 };
 
 export const WithResetButtonAndFullText: Story = {
   args: {
-    value: 'Hello ssssssssssssssssssssssssssssss',
+    defaultValue: 'Hello ssssssssssssssssssssssssssssss',
     withResetButton: true,
   },
 };
