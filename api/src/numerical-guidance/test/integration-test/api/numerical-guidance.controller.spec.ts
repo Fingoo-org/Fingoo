@@ -7,6 +7,7 @@ import { GetFluctuatingIndicatorQueryHandler } from '../../../application/query/
 import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';
 import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
+import { InsertIndicatorTickerCommandHandler } from '../../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
 
 const testData = fluctuatingIndicatorTestData;
 
@@ -25,6 +26,7 @@ describe('NumericalGuidanceController', () => {
         providers: [
           GetFluctuatingIndicatorQueryHandler,
           CreateIndicatorBoardMetadataCommandHandler,
+          InsertIndicatorTickerCommandHandler,
           {
             provide: 'LoadCachedFluctuatingIndicatorPort',
             useValue: {
@@ -51,6 +53,18 @@ describe('NumericalGuidanceController', () => {
             provide: 'CreateIndicatorBoardMetaDataPort',
             useValue: {
               createIndicatorBoardMetaData: jest.fn(),
+            },
+          },
+          {
+            provide: 'LoadIndicatorBoardMetadataPort',
+            useValue: {
+              loadIndicatorBoardMetaData: jest.fn(),
+            },
+          },
+          {
+            provide: 'InsertIndicatorTickerPort',
+            useValue: {
+              addIndicatorTicker: jest.fn(),
             },
           },
         ],
@@ -97,19 +111,17 @@ describe('NumericalGuidanceController', () => {
       .post('/numerical-guidance/indicator-board-metadata')
       .send({
         indicatorBoardMetaDataName: '메타데이터',
-        indicatorIds: { key1: ['1', '2', '3'] },
         memberId: 1,
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);
   });
 
-  it('지표보드 메타데이터를 생성할 때 사용자가 유효하지 않는 값 전송한다.', () => {
+  it('/post 지표보드 메타데이터를 생성할 때 사용자가 유효하지 않는 값 전송한다.', () => {
     return request(app.getHttpServer())
       .post('/numerical-guidance/indicator-board-metadata')
       .send({
-        indicatorBoardMetaDataName: '메타데이터',
-        indicatorIds: { key1: ['1', '2', '3', '4', '5', '6'] },
+        indicatorBoardMetaDataName: ' ',
         memberId: 1,
       })
       .set('Content-Type', 'application/json')

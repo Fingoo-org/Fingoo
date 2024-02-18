@@ -13,6 +13,8 @@ import { CreateIndicatorBoardMetadataCommand } from '../application/command/crea
 import { Response } from 'express';
 import { GetIndicatorBoardMetadataQuery } from '../application/query/get-indicator-board-metadata/get-indicator-board-metadata.query';
 import { IndicatorBoardMetadata } from '../domain/indicator-board-metadata';
+import { InsertIndicatorTickerCommand } from '../application/command/insert-indicator-ticker/insert-indicator-ticker.command';
+import { InsertIndicatorDto } from './dto/insert-indicator.dto';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/numerical-guidance')
@@ -67,7 +69,6 @@ export class NumericalGuidanceController {
   ) {
     const command = new CreateIndicatorBoardMetadataCommand(
       createIndicatorBoardMetaDataDto.indicatorBoardMetaDataName,
-      createIndicatorBoardMetaDataDto.indicatorIds,
       createIndicatorBoardMetaDataDto.memberId,
     );
     await this.commandBus.execute(command);
@@ -79,5 +80,13 @@ export class NumericalGuidanceController {
   async getIndicatorBoardMetaDataById(@Param('id') id): Promise<IndicatorBoardMetadata> {
     const query = new GetIndicatorBoardMetadataQuery(id);
     return await this.queryBus.execute(query);
+  }
+
+  @ApiOperation({ summary: '지표보드 메타데이터에 지표 ticker 추가합니다.' })
+  @Post('/indicator-board-metadata/:id')
+  async insertNewIndicatorTicker(@Param('id') id, @Body() insertIndicatorDto: InsertIndicatorDto) {
+    const command = new InsertIndicatorTickerCommand(id, insertIndicatorDto.ticker, insertIndicatorDto.type);
+
+    await this.commandBus.execute(command);
   }
 }

@@ -10,7 +10,7 @@ export class IndicatorBoardMetadataEntity {
   indicatorBoardMetaDataName: string;
 
   @Column({ type: 'hstore', nullable: true })
-  indicators: Record<string, string[]>;
+  tickers: Record<string, string[]>;
 
   @ManyToOne(() => MemberEntity, { eager: false })
   member: MemberEntity;

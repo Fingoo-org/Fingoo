@@ -15,6 +15,7 @@ import { IndicatorBoardMetadataEntity } from './infrastructure/adapter/persisten
 import { AuthService } from '../auth/auth.service';
 import { MemberEntity } from '../auth/member.entity';
 import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
+import { InsertIndicatorTickerCommandHandler } from './application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-i
     GetIndicatorListQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,
     GetIndicatorBoardMetaDataQueryHandler,
+    InsertIndicatorTickerCommandHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -57,6 +59,10 @@ import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-i
     },
     {
       provide: 'LoadIndicatorBoardMetadataPort',
+      useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'InsertIndicatorTickerPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
   ],
