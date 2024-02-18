@@ -1,4 +1,4 @@
-import MetadataDialogMenu from '../ui/components/numerical-guidance/molecule/metadata-dialog-menu';
+import MetadataDialogMenu from '../ui/components/numerical-guidance/molecule/metadata-dialog-menu/metadata-dialog-menu';
 import SideNav from '../ui/pages/workspace/sidenav';
 import MetadataDeleteDialog from '../ui/components/numerical-guidance/molecule/metadata-delete-dialog';
 
