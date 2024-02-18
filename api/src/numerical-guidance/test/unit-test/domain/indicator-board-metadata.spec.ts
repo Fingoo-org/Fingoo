@@ -4,6 +4,7 @@ import { BusinessRuleValidationException } from '../../../../utils/domain/busine
 import { IndicatorBoardMetaDataNameShouldNotEmptyRule } from '../../../domain/rule/IndicatorBoardMetaDataNameShouldNotEmpty.rule';
 import { IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule } from '../../../domain/rule/IndicatorInIndicatorBoardMetadataShouldNotDuplicate.rule';
 import { NewIndicatorTypeShouldBelongToTheIndicatorTypeRule } from '../../../domain/rule/NewIndicatorTypeShouldBelongToTheIndicatorType.rule';
+import { OnlyRegisteredTickersCanBeRemovedRule } from '../../../domain/rule/OnlyRegisteredTickersCanBeRemoved.rule';
 
 describe('지표보드 메타데이터', () => {
   it('지표보드 메타데이터 도메인 생성', () => {
@@ -122,5 +123,42 @@ describe('지표보드 메타데이터', () => {
     //then
     expect(createNewIndicator).toThrow(BusinessRuleValidationException);
     expect(createNewIndicator).toThrow(rule.Message);
+  });
+
+  it('지표보드 메타데이터에서 지표 ticker 삭제', () => {
+    // given
+    const indicatorBoardMetaData = new IndicatorBoardMetadata('id1', 'name', {
+      'k-stock': ['ticker1', 'ticker2'],
+      exchange: [],
+    });
+    const ticker = 'ticker1';
+
+    // when
+    indicatorBoardMetaData.deleteIndicatorTicker(ticker);
+
+    // then
+    const expected = {
+      'k-stock': ['ticker2'],
+      exchange: [],
+    };
+    expect(expected).toEqual(indicatorBoardMetaData.tickers);
+  });
+  it('지표보드 메타데이터에서 지표 ticker 삭제 - 등록되지 않은 지표 요청', () => {
+    // given
+    const indicatorBoardMetaData = new IndicatorBoardMetadata('id1', 'name', {
+      'k-stock': ['ticker1'],
+      exchange: [],
+    });
+    const ticker = 'invalidTicker';
+
+    // when
+    function deleteIndicatorTicker() {
+      indicatorBoardMetaData.deleteIndicatorTicker(ticker);
+    }
+    const rule = new OnlyRegisteredTickersCanBeRemovedRule(indicatorBoardMetaData.tickers, ticker);
+
+    //then
+    expect(deleteIndicatorTicker).toThrow(BusinessRuleValidationException);
+    expect(deleteIndicatorTicker).toThrow(rule.Message);
   });
 });
