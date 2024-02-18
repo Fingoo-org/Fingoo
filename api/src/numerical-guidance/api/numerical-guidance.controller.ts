@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Query, Res } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetFluctuatingIndicatorQuery } from '../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
 import { FluctuatingIndicatorDto } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
@@ -15,6 +15,7 @@ import { GetIndicatorBoardMetadataQuery } from '../application/query/get-indicat
 import { IndicatorBoardMetadata } from '../domain/indicator-board-metadata';
 import { InsertIndicatorTickerCommand } from '../application/command/insert-indicator-ticker/insert-indicator-ticker.command';
 import { InsertIndicatorDto } from './dto/insert-indicator.dto';
+import { DeleteIndicatorTickerCommand } from '../application/command/delete-indicator-ticker/delete-indicator-ticker.command';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/numerical-guidance')
@@ -63,7 +64,7 @@ export class NumericalGuidanceController {
 
   @ApiOperation({ summary: '지표보드 메타데이터를 생성합니다.' })
   @Post('/indicator-board-metadata')
-  async createIndicatorBoardMetaData(
+  async createIndicatorBoardMetadata(
     @Body() createIndicatorBoardMetaDataDto: CreateIndicatorBoardMetadataDto,
     @Res() res: Response,
   ) {
@@ -86,6 +87,14 @@ export class NumericalGuidanceController {
   @Post('/indicator-board-metadata/:id')
   async insertNewIndicatorTicker(@Param('id') id, @Body() insertIndicatorDto: InsertIndicatorDto) {
     const command = new InsertIndicatorTickerCommand(id, insertIndicatorDto.ticker, insertIndicatorDto.type);
+
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '지표보드 메타데이터에 지표 ticker 삭제합니다.' })
+  @Delete('/indicator-board-metadata/:indicatorBoardMetaDataId/indicator/:ticker')
+  async deleteIndicatorTicker(@Param('indicatorBoardMetaDataId') indicatorBoardMetaDataId, @Param('ticker') ticker) {
+    const command = new DeleteIndicatorTickerCommand(indicatorBoardMetaDataId, ticker);
 
     await this.commandBus.execute(command);
   }
