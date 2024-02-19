@@ -108,6 +108,7 @@ export class IndicatorBoardMetadataPersistentAdapter
       if (error instanceof QueryFailedError) {
         throw new BadRequestException({
           message: '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
+          error: error,
         });
       } else {
         throw new InternalServerErrorException({
