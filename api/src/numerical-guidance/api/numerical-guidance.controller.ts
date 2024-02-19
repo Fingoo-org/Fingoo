@@ -15,6 +15,7 @@ import { GetIndicatorBoardMetadataQuery } from '../application/query/get-indicat
 import { IndicatorBoardMetadata } from '../domain/indicator-board-metadata';
 import { InsertIndicatorTickerCommand } from '../application/command/insert-indicator-ticker/insert-indicator-ticker.command';
 import { InsertIndicatorDto } from './dto/insert-indicator.dto';
+import { GetUserIndicatorBoardMetadataListQuery } from '../application/query/get-user-indicator-board-metadata-list/get-user-indicator-board-metadata-list.query';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/numerical-guidance')
@@ -79,6 +80,13 @@ export class NumericalGuidanceController {
   @Get('/indicator-board-metadata/:id')
   async getIndicatorBoardMetaDataById(@Param('id') id): Promise<IndicatorBoardMetadata> {
     const query = new GetIndicatorBoardMetadataQuery(id);
+    return await this.queryBus.execute(query);
+  }
+
+  @ApiOperation({ summary: '특정 사용자의 member id로 메타데이터 리스트를 가져옵니다.' })
+  @Get('/user-indicator-board-metadata-list/:memberId')
+  async getIndicatorBoardMetadataListByMember(@Param(':memberId') memberId): Promise<IndicatorBoardMetadata[]> {
+    const query = new GetUserIndicatorBoardMetadataListQuery(memberId);
     return await this.queryBus.execute(query);
   }
 

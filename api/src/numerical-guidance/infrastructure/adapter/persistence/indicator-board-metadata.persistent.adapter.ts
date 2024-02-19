@@ -88,12 +88,14 @@ export class IndicatorBoardMetadataPersistentAdapter
     try {
       const userIndicatorBoardMetadataList = [];
       const memberEntity = await this.authService.findById(memberId);
+
       const query = this.indicatorBoardMetadataRepository.createQueryBuilder('IndicatorBoardMetadataEntity');
       query.where('IndicatorBoardMetadataEntity.memberId = :memberId', { memberId: memberEntity.id });
 
       const userIndicatorBoardMetadataEntityList = await query.getMany();
+
       for (let i = 0; i < userIndicatorBoardMetadataEntityList.length; i++) {
-        const userIndicatorBoardMetadata = IndicatorBoardMetadataMapper.mapEntityToDomain(
+        const userIndicatorBoardMetadata = await IndicatorBoardMetadataMapper.mapEntityToDomain(
           userIndicatorBoardMetadataEntityList[i],
         );
         userIndicatorBoardMetadataList.push(userIndicatorBoardMetadata);
