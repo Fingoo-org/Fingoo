@@ -88,6 +88,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     try {
       const userIndicatorBoardMetadataList = [];
       const memberEntity = await this.authService.findById(memberId);
+      this.nullCheckForEntity(memberEntity);
 
       const query = this.indicatorBoardMetadataRepository.createQueryBuilder('IndicatorBoardMetadataEntity');
       query.where('IndicatorBoardMetadataEntity.memberId = :memberId', { memberId: memberEntity.id });
@@ -102,7 +103,24 @@ export class IndicatorBoardMetadataPersistentAdapter
       }
 
       return userIndicatorBoardMetadataList;
-    } catch (error) {}
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          message: '[ERROR] 해당 회원을 찾을 수 없습니다.',
+          error: error,
+        });
+      }
+      if (error instanceof QueryFailedError) {
+        throw new BadRequestException({
+          message: '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
+        });
+      } else {
+        throw new InternalServerErrorException({
+          message: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          error: error,
+        });
+      }
+    }
   }
 
   async addIndicatorTicker(indicatorBoardMetaData: IndicatorBoardMetadata): Promise<void> {
