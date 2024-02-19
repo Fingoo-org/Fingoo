@@ -16,6 +16,7 @@ import { IndicatorBoardMetadata } from '../domain/indicator-board-metadata';
 import { InsertIndicatorTickerCommand } from '../application/command/insert-indicator-ticker/insert-indicator-ticker.command';
 import { InsertIndicatorDto } from './dto/insert-indicator.dto';
 import { DeleteIndicatorTickerCommand } from '../application/command/delete-indicator-ticker/delete-indicator-ticker.command';
+import { DeleteIndicatorBoardMetadataCommand } from '../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/numerical-guidance')
@@ -64,7 +65,7 @@ export class NumericalGuidanceController {
 
   @ApiOperation({ summary: '지표보드 메타데이터를 생성합니다.' })
   @Post('/indicator-board-metadata')
-  async createIndicatorBoardMetadata(
+  async createIndicatorBoardMetaData(
     @Body() createIndicatorBoardMetaDataDto: CreateIndicatorBoardMetadataDto,
     @Res() res: Response,
   ) {
@@ -95,6 +96,14 @@ export class NumericalGuidanceController {
   @Delete('/indicator-board-metadata/:indicatorBoardMetaDataId/indicator/:ticker')
   async deleteIndicatorTicker(@Param('indicatorBoardMetaDataId') indicatorBoardMetaDataId, @Param('ticker') ticker) {
     const command = new DeleteIndicatorTickerCommand(indicatorBoardMetaDataId, ticker);
+
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '지표보드 메타데이터를 삭제합니다.' })
+  @Delete('/indicator-board-metadata/:id')
+  async deleteIndicatorBoardMetadata(@Param('id') id) {
+    const command = new DeleteIndicatorBoardMetadataCommand(id);
 
     await this.commandBus.execute(command);
   }
