@@ -11,7 +11,7 @@ import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata
 import { IndicatorBoardMetadataEntity } from './entity/indicator-board-metadata.entity';
 import { IndicatorBoardMetadataMapper } from './mapper/indicator-board-metadata.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { AuthService } from '../../../../auth/auth.service';
 import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/load-indiactor-board-metadata.port';
 import { InsertIndicatorTickerPort } from '../../../application/port/persistence/insert-indicator-ticker.port';

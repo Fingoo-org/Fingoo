@@ -168,9 +168,23 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/get 사용자 id를 전송하여 메타데이터 리스트를 가져온다.', async () => {
     return request(app.getHttpServer())
-      .get('/numerical-guidance/user-indicator-board-metadata-list/10')
+      .get('/numerical-guidance/indicator-board-metadata/member/10')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
+  });
+
+  it('/get db에 없는 사용자 id를 전송한다.', async () => {
+    return request(app.getHttpServer())
+      .get('/numerical-guidance/indicator-board-metadata/member/5')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.NOT_FOUND);
+  });
+
+  it('/get 유효하지 않은 사용자 id를 전송한다.', async () => {
+    return request(app.getHttpServer())
+      .get('/numerical-guidance/indicator-board-metadata/member/invlidId')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
   });
 
   it('/delete 지표보드 메타데이터에서 지표를 삭제한다.', async () => {
@@ -178,13 +192,6 @@ describe('NumericalGuidance E2E Test', () => {
       .delete('/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/ticker1')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
-  });
-
-  it('/ db에 없는 사용자 id를 전송한다.', async () => {
-    return request(app.getHttpServer())
-      .get('/numerical-guidance/user-indicator-board-metadata-list/5')
-      .set('Content-Type', 'application/json')
-      .expect(HttpStatus.BAD_REQUEST);
   });
 
   it('/delete 지표보드 메타데이터에서 지표를 삭제할 때, tickers에 존재하지 않는 값을 요청한다.', async () => {
@@ -203,13 +210,6 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.NOT_FOUND);
   });
 
-  it('/ 유효하지 않은 사용자 id를 전송한다.', async () => {
-    return request(app.getHttpServer())
-      .get('/numerical-guidance/user-indicator-board-metadata-list/invlidId')
-      .set('Content-Type', 'application/json')
-      .expect(HttpStatus.BAD_REQUEST);
-  });
-  
   it('/delete 지표보드 메타데이터를 삭제한다.', async () => {
     return request(app.getHttpServer())
       .delete(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)

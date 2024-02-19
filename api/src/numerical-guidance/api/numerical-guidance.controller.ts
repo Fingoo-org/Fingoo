@@ -86,7 +86,7 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '특정 사용자의 member id로 메타데이터 리스트를 가져옵니다.' })
-  @Get('/user-indicator-board-metadata-list/:memberId')
+  @Get('/indicator-board-metadata/member/:memberId')
   async getIndicatorBoardMetadataListByMember(@Param('memberId') memberId: number): Promise<IndicatorBoardMetadata[]> {
     const query = new GetUserIndicatorBoardMetadataListQuery(memberId);
     return await this.queryBus.execute(query);
