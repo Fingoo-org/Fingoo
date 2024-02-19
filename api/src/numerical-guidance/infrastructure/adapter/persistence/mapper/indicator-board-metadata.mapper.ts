@@ -20,12 +20,12 @@ export class IndicatorBoardMetadataMapper {
     return indicatorBoardMetaData;
   }
 
-  static async mapEntityListToDomainList(entityList: IndicatorBoardMetadataEntity[]) {
-    const DominList = await Promise.all(
-      entityList.map(async (entity) => {
+  static async mapEntitiesToDomains(entities: IndicatorBoardMetadataEntity[]) {
+    const Domins = await Promise.all(
+      entities.map(async (entity) => {
         return await this.mapEntityToDomain(entity);
       }),
     );
-    return DominList;
+    return Domins;
   }
 }

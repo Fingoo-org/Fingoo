@@ -105,7 +105,7 @@ export class IndicatorBoardMetadataPersistentAdapter
       query.where('IndicatorBoardMetadataEntity.memberId = :memberId', { memberId: memberEntity.id });
 
       const userIndicatorBoardMetadataEntityList = await query.getMany();
-      const userIndicatorBoardMetadataList = await IndicatorBoardMetadataMapper.mapEntityListToDomainList(
+      const userIndicatorBoardMetadataList = await IndicatorBoardMetadataMapper.mapEntitiesToDomains(
         userIndicatorBoardMetadataEntityList,
       );
 
