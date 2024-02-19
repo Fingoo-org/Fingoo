@@ -17,6 +17,8 @@ import { MemberEntity } from '../auth/member.entity';
 import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { InsertIndicatorTickerCommandHandler } from './application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
 import { GetUserIndicatorBoardMetadataListQueryHandler } from './application/query/get-user-indicator-board-metadata-list/get-usser-indicator-board-metadata-list.query.handler';
+import { DeleteIndicatorTickerCommandHandler } from './application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
+import { DeleteIndicatorBoardMetadataCommandHandler } from './application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { GetUserIndicatorBoardMetadataListQueryHandler } from './application/que
     GetIndicatorBoardMetaDataQueryHandler,
     InsertIndicatorTickerCommandHandler,
     GetUserIndicatorBoardMetadataListQueryHandler,
+    DeleteIndicatorTickerCommandHandler,
+    DeleteIndicatorBoardMetadataCommandHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -69,6 +73,14 @@ import { GetUserIndicatorBoardMetadataListQueryHandler } from './application/que
     },
     {
       provide: 'LoadUserIndicatorBoardMetadataListPort',
+      useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'DeleteIndicatorTickerPort',
+      useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'DeleteIndicatorBoardMetadataPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
   ],

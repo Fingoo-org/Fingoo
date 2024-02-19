@@ -15,6 +15,8 @@ import { AuthService } from 'src/auth/auth.service';
 import { DataSource } from 'typeorm';
 import { InsertIndicatorTickerCommandHandler } from '../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
 import { GetUserIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-user-indicator-board-metadata-list/get-usser-indicator-board-metadata-list.query.handler';
+import { DeleteIndicatorTickerCommandHandler } from '../../application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
+import { DeleteIndicatorBoardMetadataCommandHandler } from '../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -79,6 +81,8 @@ describe('NumericalGuidance E2E Test', () => {
           GetIndicatorBoardMetaDataQueryHandler,
           InsertIndicatorTickerCommandHandler,
           GetUserIndicatorBoardMetadataListQueryHandler,
+          DeleteIndicatorTickerCommandHandler,
+          DeleteIndicatorBoardMetadataCommandHandler,
           {
             provide: 'CreateIndicatorBoardMetadataPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
@@ -93,6 +97,14 @@ describe('NumericalGuidance E2E Test', () => {
           },
           {
             provide: 'LoadUserIndicatorBoardMetadataListPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
+            provide: 'DeleteIndicatorTickerPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
+            provide: 'DeleteIndicatorBoardMetadataPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
         ],
@@ -161,9 +173,32 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.OK);
   });
 
+  it('/delete 지표보드 메타데이터에서 지표를 삭제한다.', async () => {
+    return request(app.getHttpServer())
+      .delete('/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/ticker1')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
   it('/ db에 없는 사용자 id를 전송한다.', async () => {
     return request(app.getHttpServer())
       .get('/numerical-guidance/user-indicator-board-metadata-list/5')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/delete 지표보드 메타데이터에서 지표를 삭제할 때, tickers에 존재하지 않는 값을 요청한다.', async () => {
+    return request(app.getHttpServer())
+      .delete(
+        `/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/invalidTicker`,
+      )
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/delete 지표보드 메타데이터에서 지표를 삭제할 때, 존재하지 않는 지표보드 메타데이터를 요청한다.', async () => {
+    return request(app.getHttpServer())
+      .delete(`/numerical-guidance/indicator-board-metadata/e46240d3-7d15-48e7-a9b7-f490bf9ca6e0/indicator/ticker1`)
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);
   });
@@ -173,5 +208,19 @@ describe('NumericalGuidance E2E Test', () => {
       .get('/numerical-guidance/user-indicator-board-metadata-list/invlidId')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
+  });
+  
+  it('/delete 지표보드 메타데이터를 삭제한다.', async () => {
+    return request(app.getHttpServer())
+      .delete(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/delete 지표보드 메타데이터를 삭제할때, 존재하지 않는 id를 요청한다.', async () => {
+    return request(app.getHttpServer())
+      .delete(`/numerical-guidance/indicator-board-metadata/e46240d3-7d15-48e7-a9b7-f490bf9ca6e0`)
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.NOT_FOUND);
   });
 });
