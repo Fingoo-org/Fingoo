@@ -14,6 +14,7 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from 'src/auth/auth.service';
 import { DataSource } from 'typeorm';
 import { InsertIndicatorTickerCommandHandler } from '../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
+import { GetUserIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-user-indicator-board-metadata-list/get-usser-indicator-board-metadata-list.query.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -24,11 +25,16 @@ describe('NumericalGuidance E2E Test', () => {
   let dataSource: DataSource;
   let environment;
   const seeding = async () => {
+    const memberEntity = dataSource.getRepository(MemberEntity);
+    await memberEntity.insert({ id: 10 });
+    memberEntity.save;
+
     const indicatorBoardMetaDataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
     await indicatorBoardMetaDataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetaDataName: 'name',
       tickers: { 'k-stock': ['ticker1'], exchange: [] },
+      member: { id: 10 },
     });
     indicatorBoardMetaDataRepository.save;
 
@@ -72,6 +78,7 @@ describe('NumericalGuidance E2E Test', () => {
           AuthService,
           GetIndicatorBoardMetaDataQueryHandler,
           InsertIndicatorTickerCommandHandler,
+          GetUserIndicatorBoardMetadataListQueryHandler,
           {
             provide: 'CreateIndicatorBoardMetadataPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
@@ -82,6 +89,10 @@ describe('NumericalGuidance E2E Test', () => {
           },
           {
             provide: 'InsertIndicatorTickerPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
+            provide: 'LoadUserIndicatorBoardMetadataListPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
         ],
@@ -139,6 +150,27 @@ describe('NumericalGuidance E2E Test', () => {
         ticker: 'ticker1',
         type: 'k-stock',
       })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/get 사용자 id를 전송하여 메타데이터 리스트를 가져온다.', async () => {
+    return request(app.getHttpServer())
+      .get('/numerical-guidance/user-indicator-board-metadata-list/10')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/ db에 없는 사용자 id를 전송한다.', async () => {
+    return request(app.getHttpServer())
+      .get('/numerical-guidance/user-indicator-board-metadata-list/5')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.NOT_FOUND);
+  });
+
+  it('/ 유효하지 않은 사용자 id를 전송한다.', async () => {
+    return request(app.getHttpServer())
+      .get('/numerical-guidance/user-indicator-board-metadata-list/invlidId')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
   });
