@@ -193,6 +193,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     // given
     // when
     const result = await indicatorBoardMetaDataPersistentAdapter.loadUserIndicatorBoardMetadataList(5);
+
     // then
     const expectedFirstTickerId = '0d73cea1-35a5-432f-bcd1-27ae3541ba72';
     expect(result[0]['id']).toEqual(expectedFirstTickerId);
@@ -216,7 +217,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   it('사용자 id로 메타데이터 리스트를 가져오기 - 유효하지 않은 member id값일 경우', async () => {
     // given
     // when
-    // thesn
+    // then
     expect(async () => {
       const id = 'invalid id';
       await indicatorBoardMetaDataPersistentAdapter.loadUserIndicatorBoardMetadataList(id);
@@ -238,6 +239,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
         exchange: [],
       },
     );
+
     // when // then
     await expect(async () => {
       await indicatorBoardMetaDataPersistentAdapter.addIndicatorTicker(newIndicatorBoardMetaData);
@@ -260,6 +262,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
         exchange: [],
       },
     );
+
     // when
     await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorTicker(deleteIndicatorBoardMetadata);
     const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(
