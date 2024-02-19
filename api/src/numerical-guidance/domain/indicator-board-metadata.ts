@@ -3,7 +3,6 @@ import { IndicatorBoardMetaDataCountShouldNotExceedLimitRule } from './rule/Indi
 import { IndicatorBoardMetaDataNameShouldNotEmptyRule } from './rule/IndicatorBoardMetaDataNameShouldNotEmpty.rule';
 import { IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule } from './rule/IndicatorInIndicatorBoardMetadataShouldNotDuplicate.rule';
 import { NewIndicatorTypeShouldBelongToTheIndicatorTypeRule } from './rule/NewIndicatorTypeShouldBelongToTheIndicatorType.rule';
-import { DeletedIndicatorTickerDoesNotExistRule } from './rule/DeletedIndicatorTickerDoesNotExist.rule';
 import { OnlyRegisteredTickersCanBeRemovedRule } from './rule/OnlyRegisteredTickersCanBeRemoved.rule';
 
 export class IndicatorBoardMetadata extends AggregateRoot {
@@ -34,8 +33,6 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     Object.keys(updateTickers).forEach((key) => {
       updateTickers[key] = this.convertToArray(updateTickers[key].toString()).filter((value) => value !== ticker);
     });
-
-    this.checkRule(new DeletedIndicatorTickerDoesNotExistRule(updateTickers, ticker));
     this.tickers = updateTickers;
   }
 
