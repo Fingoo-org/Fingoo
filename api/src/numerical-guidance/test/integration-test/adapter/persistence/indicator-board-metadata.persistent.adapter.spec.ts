@@ -21,6 +21,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
     await memberRepository.insert({ id: 10 });
+    await memberRepository.insert({ id: 5 });
     memberRepository.save;
 
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
@@ -28,6 +29,14 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetaDataName: 'name',
       tickers: { 'k-stock': [], exchange: [] },
+      member: { id: 10 },
+    });
+
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba72',
+      indicatorBoardMetaDataName: 'name',
+      tickers: { 'k-stock': [], exchange: [] },
+      member: { id: 5 },
     });
   };
 
@@ -179,5 +188,44 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     // then
     expect(result.indicatorBoardMetaDataName).toEqual('name');
     expect(result.tickers['k-stock']).toEqual('ticker1,ticker2');
+  });
+
+  it('사용자 id로 메타데이터 리스트 가져오기.', async () => {
+    // given
+    // when
+    const result = await indicatorBoardMetaDataPersistentAdapter.loadUserIndicatorBoardMetadataList(5);
+    // then
+    const expectedFirstTickerId = '0d73cea1-35a5-432f-bcd1-27ae3541ba72';
+    expect(result[0]['id']).toEqual(expectedFirstTickerId);
+    expect(result.length).toEqual(1);
+  });
+
+  it('사용자 id로 메타데이터 리스트를 가져오기 - 해당 회원이 없을 경우', async () => {
+    // given
+    // when
+    // then
+    expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.loadUserIndicatorBoardMetadataList(154);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: '[ERROR] 해당 회원을 찾을 수 없습니다.',
+        error: Error,
+      }),
+    );
+  });
+
+  it('사용자 id로 메타데이터 리스트를 가져오기 - 유효하지 않은 member id값일 경우', async () => {
+    // given
+    // when
+    // thesn
+    expect(async () => {
+      const id = 'invalid id';
+      await indicatorBoardMetaDataPersistentAdapter.loadUserIndicatorBoardMetadataList(id);
+    }).rejects.toThrow(
+      new BadRequestException({
+        message: '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
+        error: Error,
+      }),
+    );
   });
 });

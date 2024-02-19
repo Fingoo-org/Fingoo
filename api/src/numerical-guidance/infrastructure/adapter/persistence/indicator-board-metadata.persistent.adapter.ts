@@ -84,7 +84,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     }
   }
 
-  async loadUserIndicatorBoardMetadataList(memberId: number): Promise<IndicatorBoardMetadata[]> {
+  async loadUserIndicatorBoardMetadataList(memberId): Promise<IndicatorBoardMetadata[]> {
     try {
       const memberEntity = await this.authService.findById(memberId);
       this.nullCheckForEntity(memberEntity);
@@ -93,7 +93,7 @@ export class IndicatorBoardMetadataPersistentAdapter
       query.where('IndicatorBoardMetadataEntity.memberId = :memberId', { memberId: memberEntity.id });
 
       const userIndicatorBoardMetadataEntityList = await query.getMany();
-      const userIndicatorBoardMetadataList = IndicatorBoardMetadataMapper.mapEntityListToDomainList(
+      const userIndicatorBoardMetadataList = await IndicatorBoardMetadataMapper.mapEntityListToDomainList(
         userIndicatorBoardMetadataEntityList,
       );
 
