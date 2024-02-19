@@ -150,9 +150,8 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(invalidId);
     }).rejects.toThrow(
       new BadRequestException({
-        message: `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다. 다음을 확인해보세요.
-          1. id 값이 uuid 형식을 잘 따르고 있는가
-          `,
+        message: `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
         error: Error,
         HttpStatus: HttpStatus.BAD_REQUEST,
       }),
@@ -214,7 +213,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       },
     );
     // when
-    await indicatorBoardMetaDataPersistentAdapter.addIndicatorTicker(deleteIndicatorBoardMetadata);
+    await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorTicker(deleteIndicatorBoardMetadata);
     const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
     );
@@ -237,12 +236,64 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.addIndicatorTicker(deleteIndicatorBoardMetadata);
+      await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorTicker(deleteIndicatorBoardMetadata);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
         error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+      }),
+    );
+  });
+
+  it('지표보드 메타데이터 삭제하기.', async () => {
+    // given
+    const deleteIndicatorBoardMetadataId: string = '0d73cea1-35a5-432f-bcd1-27ae3541ba73';
+
+    // when
+    await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorBoardMetadata(deleteIndicatorBoardMetadataId);
+
+    // then
+    await expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(deleteIndicatorBoardMetadataId);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        error: Error,
+        HttpStatus: HttpStatus.NOT_FOUND,
+      }),
+    );
+  });
+
+  it('지표보드 메타데이터 삭제하기. - DB에 존재하지 않는 경우', async () => {
+    // given
+    const invalidId: string = 'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0';
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorBoardMetadata(invalidId);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        error: Error,
+        HttpStatus: HttpStatus.NOT_FOUND,
+      }),
+    );
+  });
+
+  it('지표보드 메타데이터 삭제하기. - id 형식이 올바르지 않은 경우', async () => {
+    // given
+    const invalidId: string = 'invalidId';
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorBoardMetadata(invalidId);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+        error: Error,
+        HttpStatus: HttpStatus.BAD_REQUEST,
       }),
     );
   });
