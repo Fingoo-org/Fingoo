@@ -10,10 +10,15 @@ import { AuthService } from '../../../../auth/auth.service';
 import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/load-indiactor-board-metadata.port';
 import { InsertIndicatorTickerPort } from '../../../application/port/persistence/insert-indicator-ticker.port';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
+import { LoadUserIndicatorBoardMetadataListPort } from 'src/numerical-guidance/application/port/persistence/load-user-indicator-board-metadata-list.port';
 
 @Injectable()
 export class IndicatorBoardMetadataPersistentAdapter
-  implements CreateIndicatorBoardMetadataPort, LoadIndicatorBoardMetadataPort, InsertIndicatorTickerPort
+  implements
+    CreateIndicatorBoardMetadataPort,
+    LoadIndicatorBoardMetadataPort,
+    InsertIndicatorTickerPort,
+    LoadUserIndicatorBoardMetadataListPort
 {
   constructor(
     @InjectRepository(IndicatorBoardMetadataEntity)
@@ -77,6 +82,25 @@ export class IndicatorBoardMetadataPersistentAdapter
         });
       }
     }
+  }
+
+  async loadUserIndicatorBoardMetadataList(memberId: number): Promise<IndicatorBoardMetadata[]> {
+    try {
+      const userIndicatorBoardMetadataList = [];
+      const memberEntity = await this.authService.findById(memberId);
+      const query = this.indicatorBoardMetadataRepository.createQueryBuilder('IndicatorBoardMetadataEntity');
+      query.where('IndicatorBoardMetadataEntity.memberId = :memberId', { memberId: memberEntity.id });
+
+      const userIndicatorBoardMetadataEntityList = await query.getMany();
+      for (let i = 0; i < userIndicatorBoardMetadataEntityList.length; i++) {
+        const userIndicatorBoardMetadata = IndicatorBoardMetadataMapper.mapEntityToDomain(
+          userIndicatorBoardMetadataEntityList[i],
+        );
+        userIndicatorBoardMetadataList.push(userIndicatorBoardMetadata);
+      }
+
+      return userIndicatorBoardMetadataList;
+    } catch (error) {}
   }
 
   async addIndicatorTicker(indicatorBoardMetaData: IndicatorBoardMetadata): Promise<void> {
