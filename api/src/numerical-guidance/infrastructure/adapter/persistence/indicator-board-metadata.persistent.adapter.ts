@@ -146,6 +146,34 @@ export class IndicatorBoardMetadataPersistentAdapter
     }
   }
 
+  async deleteIndicatorBoardMetadata(id: string) {
+    try {
+      const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
+        await this.indicatorBoardMetadataRepository.findOneBy({ id });
+      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
+
+      await this.indicatorBoardMetadataRepository.remove(indicatorBoardMetaDataEntity);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+          error: error,
+        });
+      } else if (error instanceof TypeORMError) {
+        throw new BadRequestException({
+          message: `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+          error: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          message: '[ERROR] 지표보드 메타데이터를 삭제하는 도중에 예상치 못한 문제가 발생했습니다.',
+          error: error,
+        });
+      }
+    }
+  }
+
   private nullCheckForEntity(entity) {
     if (entity == null) throw new NotFoundException();
   }
