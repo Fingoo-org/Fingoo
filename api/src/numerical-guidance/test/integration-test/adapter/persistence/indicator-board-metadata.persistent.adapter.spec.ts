@@ -210,6 +210,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       new NotFoundException({
         message: '[ERROR] 해당 회원을 찾을 수 없습니다.',
         error: Error,
+        HttpStatus: HttpStatus.NOT_FOUND,
       }),
     );
   });
@@ -225,6 +226,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       new BadRequestException({
         message: '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
         error: Error,
+        HttpStatus: HttpStatus.BAD_REQUEST,
       }),
     );
   });
