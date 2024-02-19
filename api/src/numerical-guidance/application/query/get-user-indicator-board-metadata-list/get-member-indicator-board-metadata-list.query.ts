@@ -1,5 +1,5 @@
 import { IQuery } from '@nestjs/cqrs';
 
-export class GetUserIndicatorBoardMetadataListQuery implements IQuery {
+export class GetMemberIndicatorBoardMetadataListQuery implements IQuery {
   constructor(readonly memberId: number) {}
 }

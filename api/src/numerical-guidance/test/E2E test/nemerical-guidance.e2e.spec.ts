@@ -14,7 +14,7 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from 'src/auth/auth.service';
 import { DataSource } from 'typeorm';
 import { InsertIndicatorTickerCommandHandler } from '../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
-import { GetUserIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-user-indicator-board-metadata-list/get-usser-indicator-board-metadata-list.query.handler';
+import { GetMemberIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query.handler';
 import { DeleteIndicatorTickerCommandHandler } from '../../application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from '../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 
@@ -80,7 +80,7 @@ describe('NumericalGuidance E2E Test', () => {
           AuthService,
           GetIndicatorBoardMetaDataQueryHandler,
           InsertIndicatorTickerCommandHandler,
-          GetUserIndicatorBoardMetadataListQueryHandler,
+          GetMemberIndicatorBoardMetadataListQueryHandler,
           DeleteIndicatorTickerCommandHandler,
           DeleteIndicatorBoardMetadataCommandHandler,
           {
@@ -96,7 +96,7 @@ describe('NumericalGuidance E2E Test', () => {
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
-            provide: 'LoadUserIndicatorBoardMetadataListPort',
+            provide: 'LoadMemberIndicatorBoardMetadataListPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {

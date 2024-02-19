@@ -16,7 +16,7 @@ import { AuthService } from '../../../../auth/auth.service';
 import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/load-indiactor-board-metadata.port';
 import { InsertIndicatorTickerPort } from '../../../application/port/persistence/insert-indicator-ticker.port';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
-import { LoadUserIndicatorBoardMetadataListPort } from 'src/numerical-guidance/application/port/persistence/load-user-indicator-board-metadata-list.port';
+import { LoadMemberIndicatorBoardMetadataListPort } from 'src/numerical-guidance/application/port/persistence/load-member-indicator-board-metadata-list.port';
 import { DeleteIndicatorTickerPort } from '../../../application/port/persistence/delete-indicator-ticker.port';
 import { DeleteIndicatorBoardMetadataPort } from '../../../application/port/persistence/delete-indicator-board-metadata.port';
 
@@ -26,7 +26,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     CreateIndicatorBoardMetadataPort,
     LoadIndicatorBoardMetadataPort,
     InsertIndicatorTickerPort,
-    LoadUserIndicatorBoardMetadataListPort,
+    LoadMemberIndicatorBoardMetadataListPort,
     DeleteIndicatorTickerPort,
     DeleteIndicatorBoardMetadataPort
 {
@@ -96,7 +96,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     }
   }
 
-  async loadUserIndicatorBoardMetadataList(memberId): Promise<IndicatorBoardMetadata[]> {
+  async loadMemberIndicatorBoardMetadataList(memberId): Promise<IndicatorBoardMetadata[]> {
     try {
       const memberEntity = await this.authService.findById(memberId);
       this.nullCheckForEntity(memberEntity);
