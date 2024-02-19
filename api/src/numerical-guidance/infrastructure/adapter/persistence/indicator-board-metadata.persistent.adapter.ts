@@ -10,10 +10,15 @@ import { AuthService } from '../../../../auth/auth.service';
 import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/load-indiactor-board-metadata.port';
 import { InsertIndicatorTickerPort } from '../../../application/port/persistence/insert-indicator-ticker.port';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
+import { DeleteIndicatorTickerPort } from '../../../application/port/persistence/delete-indicator-ticker.port';
 
 @Injectable()
 export class IndicatorBoardMetadataPersistentAdapter
-  implements CreateIndicatorBoardMetadataPort, LoadIndicatorBoardMetadataPort, InsertIndicatorTickerPort
+  implements
+    CreateIndicatorBoardMetadataPort,
+    LoadIndicatorBoardMetadataPort,
+    InsertIndicatorTickerPort,
+    DeleteIndicatorTickerPort
 {
   constructor(
     @InjectRepository(IndicatorBoardMetadataEntity)
@@ -80,6 +85,37 @@ export class IndicatorBoardMetadataPersistentAdapter
   }
 
   async addIndicatorTicker(indicatorBoardMetaData: IndicatorBoardMetadata): Promise<void> {
+    try {
+      const id = indicatorBoardMetaData.id;
+
+      const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
+        await this.indicatorBoardMetadataRepository.findOneBy({ id });
+      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
+
+      indicatorBoardMetaDataEntity.tickers = indicatorBoardMetaData.tickers;
+
+      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+          error: error,
+        });
+      } else if (error instanceof TypeORMError) {
+        throw new InternalServerErrorException({
+          message: '[ERROR] 지표보드 메타데이터를 업데이트하는 도중에 오류가 발생했습니다.',
+          error: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          message: '[ERROR] 새로운 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.',
+          error: error,
+        });
+      }
+    }
+  }
+
+  async deleteIndicatorTicker(indicatorBoardMetaData: IndicatorBoardMetadata): Promise<void> {
     try {
       const id = indicatorBoardMetaData.id;
 

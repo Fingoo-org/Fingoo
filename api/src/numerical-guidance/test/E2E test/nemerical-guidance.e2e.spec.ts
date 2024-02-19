@@ -14,6 +14,7 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from 'src/auth/auth.service';
 import { DataSource } from 'typeorm';
 import { InsertIndicatorTickerCommandHandler } from '../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
+import { DeleteIndicatorTickerCommandHandler } from '../../application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -72,6 +73,7 @@ describe('NumericalGuidance E2E Test', () => {
           AuthService,
           GetIndicatorBoardMetaDataQueryHandler,
           InsertIndicatorTickerCommandHandler,
+          DeleteIndicatorTickerCommandHandler,
           {
             provide: 'CreateIndicatorBoardMetadataPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
@@ -82,6 +84,10 @@ describe('NumericalGuidance E2E Test', () => {
           },
           {
             provide: 'InsertIndicatorTickerPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
+            provide: 'DeleteIndicatorTickerPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
         ],
@@ -139,6 +145,22 @@ describe('NumericalGuidance E2E Test', () => {
         ticker: 'ticker1',
         type: 'k-stock',
       })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/delete 지표보드 메타데이터에서 지표를 삭제한다.', async () => {
+    return request(app.getHttpServer())
+      .delete(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/ticker1`)
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/delete 지표보드 메타데이터에서 지표를 삭제할 때, tickers에 존재하지 않는 값을 요청한다.', async () => {
+    return request(app.getHttpServer())
+      .delete(
+        `/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/invalidTicker`,
+      )
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
   });
