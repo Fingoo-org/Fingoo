@@ -16,6 +16,7 @@ import { AuthService } from '../auth/auth.service';
 import { MemberEntity } from '../auth/member.entity';
 import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { InsertIndicatorTickerCommandHandler } from './application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
+import { GetMemberIndicatorBoardMetadataListQueryHandler } from './application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query.handler';
 import { DeleteIndicatorTickerCommandHandler } from './application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from './application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 
@@ -39,6 +40,7 @@ import { DeleteIndicatorBoardMetadataCommandHandler } from './application/comman
     CreateIndicatorBoardMetadataCommandHandler,
     GetIndicatorBoardMetaDataQueryHandler,
     InsertIndicatorTickerCommandHandler,
+    GetMemberIndicatorBoardMetadataListQueryHandler,
     DeleteIndicatorTickerCommandHandler,
     DeleteIndicatorBoardMetadataCommandHandler,
     {
@@ -67,6 +69,10 @@ import { DeleteIndicatorBoardMetadataCommandHandler } from './application/comman
     },
     {
       provide: 'InsertIndicatorTickerPort',
+      useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'LoadMemberIndicatorBoardMetadataListPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
     {
