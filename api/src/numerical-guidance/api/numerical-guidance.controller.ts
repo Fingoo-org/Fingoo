@@ -15,6 +15,7 @@ import { GetIndicatorBoardMetadataQuery } from '../application/query/get-indicat
 import { IndicatorBoardMetadata } from '../domain/indicator-board-metadata';
 import { InsertIndicatorTickerCommand } from '../application/command/insert-indicator-ticker/insert-indicator-ticker.command';
 import { InsertIndicatorDto } from './dto/insert-indicator.dto';
+import { GetMemberIndicatorBoardMetadataListQuery } from '../application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query';
 import { DeleteIndicatorTickerCommand } from '../application/command/delete-indicator-ticker/delete-indicator-ticker.command';
 import { DeleteIndicatorBoardMetadataCommand } from '../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command';
 import { UpdateIndicatorBoardMetadataNameDto } from './dto/update-indicator-board-metadata-name.dto';
@@ -88,6 +89,13 @@ export class NumericalGuidanceController {
   @Get('/indicator-board-metadata/:id')
   async getIndicatorBoardMetaDataById(@Param('id') id): Promise<IndicatorBoardMetadata> {
     const query = new GetIndicatorBoardMetadataQuery(id);
+    return await this.queryBus.execute(query);
+  }
+
+  @ApiOperation({ summary: '특정 사용자의 member id로 메타데이터 리스트를 가져옵니다.' })
+  @Get('/indicator-board-metadata')
+  async getIndicatorBoardMetadataListByMember(@Member() member: MemberEntity): Promise<IndicatorBoardMetadata[]> {
+    const query = new GetMemberIndicatorBoardMetadataListQuery(member.id);
     return await this.queryBus.execute(query);
   }
 
