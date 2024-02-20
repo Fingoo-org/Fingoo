@@ -18,6 +18,7 @@ import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-i
 import { InsertIndicatorTickerCommandHandler } from './application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
 import { DeleteIndicatorTickerCommandHandler } from './application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from './application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
+import { UpdateIndicatorBoardMetadataNameCommandHandler } from './application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { DeleteIndicatorBoardMetadataCommandHandler } from './application/comman
     InsertIndicatorTickerCommandHandler,
     DeleteIndicatorTickerCommandHandler,
     DeleteIndicatorBoardMetadataCommandHandler,
+    UpdateIndicatorBoardMetadataNameCommandHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -75,6 +77,10 @@ import { DeleteIndicatorBoardMetadataCommandHandler } from './application/comman
     },
     {
       provide: 'DeleteIndicatorBoardMetadataPort',
+      useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'UpdateIndicatorBoardMetadataNamePort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
   ],
