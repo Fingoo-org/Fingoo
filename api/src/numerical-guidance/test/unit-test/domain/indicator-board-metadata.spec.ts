@@ -178,7 +178,7 @@ describe('지표보드 메타데이터', () => {
     expect(expected).toEqual(indicatorBoardMetaData.indicatorBoardMetaDataName);
   });
 
-  it('지표보드 메타데이터의 이름을 수정한다. ', () => {
+  it('지표보드 메타데이터의 이름을 수정한다. - 이름이 비어있을 때 ', () => {
     // given
     const indicatorBoardMetaData = new IndicatorBoardMetadata('id1', 'name', {
       'k-stock': ['ticker1'],
