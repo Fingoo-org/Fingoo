@@ -11,11 +11,12 @@ import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata
 import { IndicatorBoardMetadataEntity } from './entity/indicator-board-metadata.entity';
 import { IndicatorBoardMetadataMapper } from './mapper/indicator-board-metadata.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { AuthService } from '../../../../auth/auth.service';
 import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/load-indiactor-board-metadata.port';
 import { InsertIndicatorTickerPort } from '../../../application/port/persistence/insert-indicator-ticker.port';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
+import { LoadMemberIndicatorBoardMetadataListPort } from 'src/numerical-guidance/application/port/persistence/load-member-indicator-board-metadata-list.port';
 import { DeleteIndicatorTickerPort } from '../../../application/port/persistence/delete-indicator-ticker.port';
 import { DeleteIndicatorBoardMetadataPort } from '../../../application/port/persistence/delete-indicator-board-metadata.port';
 
@@ -27,6 +28,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     CreateIndicatorBoardMetadataPort,
     LoadIndicatorBoardMetadataPort,
     InsertIndicatorTickerPort,
+    LoadMemberIndicatorBoardMetadataListPort,
     DeleteIndicatorTickerPort,
     DeleteIndicatorBoardMetadataPort,
     UpdateIndicatorBoardMetadataNamePort
@@ -73,7 +75,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     try {
       const indicatorBoardMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id });
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
-      return await IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
+      return IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
@@ -93,6 +95,41 @@ export class IndicatorBoardMetadataPersistentAdapter
           message: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
           error: error,
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+        });
+      }
+    }
+  }
+
+  async loadMemberIndicatorBoardMetadataList(memberId): Promise<IndicatorBoardMetadata[]> {
+    try {
+      const memberEntity = await this.authService.findById(memberId);
+      this.nullCheckForEntity(memberEntity);
+
+      const query = this.indicatorBoardMetadataRepository.createQueryBuilder('IndicatorBoardMetadataEntity');
+      query.where('IndicatorBoardMetadataEntity.memberId = :memberId', { memberId: memberEntity.id });
+
+      const userIndicatorBoardMetadataEntityList = await query.getMany();
+      const userIndicatorBoardMetadataList = userIndicatorBoardMetadataEntityList.map((entity) => {
+        return IndicatorBoardMetadataMapper.mapEntityToDomain(entity);
+      });
+
+      return userIndicatorBoardMetadataList;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          message: '[ERROR] 해당 회원을 찾을 수 없습니다.',
+          error: error,
+        });
+      }
+      if (error instanceof QueryFailedError) {
+        throw new BadRequestException({
+          message: '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
+          error: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          message: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          error: error,
         });
       }
     }
