@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query, Res } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetFluctuatingIndicatorQuery } from '../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
 import { FluctuatingIndicatorDto } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
@@ -17,6 +17,8 @@ import { InsertIndicatorTickerCommand } from '../application/command/insert-indi
 import { InsertIndicatorDto } from './dto/insert-indicator.dto';
 import { DeleteIndicatorTickerCommand } from '../application/command/delete-indicator-ticker/delete-indicator-ticker.command';
 import { DeleteIndicatorBoardMetadataCommand } from '../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command';
+import { UpdateIndicatorBoardMetadataNameDto } from './dto/update-indicator-board-metadata-name.dto';
+import { UpdateIndicatorBoardMetadataNameCommand } from '../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/numerical-guidance')
@@ -104,6 +106,17 @@ export class NumericalGuidanceController {
   @Delete('/indicator-board-metadata/:id')
   async deleteIndicatorBoardMetadata(@Param('id') id) {
     const command = new DeleteIndicatorBoardMetadataCommand(id);
+
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '지표보드 메타데이터의 이름을 수정합니다.' })
+  @Patch('/indicator-board-metadata/:id')
+  async updateIndicatorBoardMetadataName(
+    @Param('id') id,
+    @Body() updateIndicatorBoardMetadataNameDto: UpdateIndicatorBoardMetadataNameDto,
+  ) {
+    const command = new UpdateIndicatorBoardMetadataNameCommand(id, updateIndicatorBoardMetadataNameDto.name);
 
     await this.commandBus.execute(command);
   }
