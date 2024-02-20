@@ -19,6 +19,8 @@ import { TypeORMError } from 'typeorm/error/TypeORMError';
 import { DeleteIndicatorTickerPort } from '../../../application/port/persistence/delete-indicator-ticker.port';
 import { DeleteIndicatorBoardMetadataPort } from '../../../application/port/persistence/delete-indicator-board-metadata.port';
 
+import { UpdateIndicatorBoardMetadataNamePort } from '../../../application/port/persistence/update-indicator-board-metadata-name.port';
+
 @Injectable()
 export class IndicatorBoardMetadataPersistentAdapter
   implements
@@ -26,7 +28,8 @@ export class IndicatorBoardMetadataPersistentAdapter
     LoadIndicatorBoardMetadataPort,
     InsertIndicatorTickerPort,
     DeleteIndicatorTickerPort,
-    DeleteIndicatorBoardMetadataPort
+    DeleteIndicatorBoardMetadataPort,
+    UpdateIndicatorBoardMetadataNamePort
 {
   constructor(
     @InjectRepository(IndicatorBoardMetadataEntity)
@@ -89,6 +92,7 @@ export class IndicatorBoardMetadataPersistentAdapter
         throw new InternalServerErrorException({
           message: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
           error: error,
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
         });
       }
     }
@@ -110,16 +114,19 @@ export class IndicatorBoardMetadataPersistentAdapter
         throw new NotFoundException({
           message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
           error: error,
+          HttpStatus: HttpStatus.NOT_FOUND,
         });
       } else if (error instanceof TypeORMError) {
         throw new BadRequestException({
           message: '[ERROR] 지표보드 메타데이터를 업데이트하는 도중에 entity 오류가 발생했습니다.',
           error: error,
+          HttpStatus: HttpStatus.BAD_REQUEST,
         });
       } else {
         throw new InternalServerErrorException({
           message: '[ERROR] 새로운 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.',
           error: error,
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
         });
       }
     }
@@ -141,17 +148,20 @@ export class IndicatorBoardMetadataPersistentAdapter
         throw new NotFoundException({
           message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
           error: error,
+          HttpStatus: HttpStatus.NOT_FOUND,
         });
       } else if (error instanceof TypeORMError) {
         throw new BadRequestException({
           message: `[ERROR] 지표보드 메타데이터 지표 ticker를 삭제하는 도중에 entity 오류가 발생했습니다.
           1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
           error: error,
+          HttpStatus: HttpStatus.BAD_REQUEST,
         });
       } else {
         throw new InternalServerErrorException({
           message: '[ERROR] 새로운 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.',
           error: error,
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
         });
       }
     }
@@ -180,6 +190,41 @@ export class IndicatorBoardMetadataPersistentAdapter
         throw new InternalServerErrorException({
           message: '[ERROR] 지표보드 메타데이터를 삭제하는 도중에 예상치 못한 문제가 발생했습니다.',
           error: error,
+        });
+      }
+    }
+  }
+
+  async updateIndicatorBoardMetadataName(indicatorBoardMetaData: IndicatorBoardMetadata): Promise<void> {
+    try {
+      const id = indicatorBoardMetaData.id;
+
+      const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
+        await this.indicatorBoardMetadataRepository.findOneBy({ id });
+      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
+
+      indicatorBoardMetaDataEntity.indicatorBoardMetaDataName = indicatorBoardMetaData.indicatorBoardMetaDataName;
+
+      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+          error: error,
+          HttpStatus: HttpStatus.NOT_FOUND,
+        });
+      } else if (error instanceof TypeORMError) {
+        throw new BadRequestException({
+          message: `[ERROR] 지표보드 메타데이터의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+          error: error,
+          HttpStatus: HttpStatus.BAD_REQUEST,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          message: '[ERROR] 지표보드 메타데이터의 이름을 수정하는 중에 예상치 못한 문제가 발생했습니다.',
+          error: error,
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
         });
       }
     }
