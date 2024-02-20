@@ -11,21 +11,12 @@ export class IndicatorBoardMetadataMapper {
     return indicatorBoardMetaDataEntity;
   }
 
-  static async mapEntityToDomain(entity: IndicatorBoardMetadataEntity) {
+  static mapEntityToDomain(entity: IndicatorBoardMetadataEntity) {
     const indicatorBoardMetaData = new IndicatorBoardMetadata(
       entity.id,
       entity.indicatorBoardMetaDataName,
       entity.tickers,
     );
     return indicatorBoardMetaData;
-  }
-
-  static async mapEntitiesToDomains(entities: IndicatorBoardMetadataEntity[]) {
-    const Domains = await Promise.all(
-      entities.map(async (entity) => {
-        return await this.mapEntityToDomain(entity);
-      }),
-    );
-    return Domains;
   }
 }

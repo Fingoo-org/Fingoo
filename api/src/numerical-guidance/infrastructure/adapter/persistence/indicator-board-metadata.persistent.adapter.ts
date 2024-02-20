@@ -72,7 +72,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     try {
       const indicatorBoardMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id });
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
-      return await IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
+      return IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
@@ -105,8 +105,10 @@ export class IndicatorBoardMetadataPersistentAdapter
       query.where('IndicatorBoardMetadataEntity.memberId = :memberId', { memberId: memberEntity.id });
 
       const userIndicatorBoardMetadataEntityList = await query.getMany();
-      const userIndicatorBoardMetadataList = await IndicatorBoardMetadataMapper.mapEntitiesToDomains(
-        userIndicatorBoardMetadataEntityList,
+      const userIndicatorBoardMetadataList = await Promise.all(
+        userIndicatorBoardMetadataEntityList.map(async (entity) => {
+          return IndicatorBoardMetadataMapper.mapEntityToDomain(entity);
+        }),
       );
 
       return userIndicatorBoardMetadataList;
