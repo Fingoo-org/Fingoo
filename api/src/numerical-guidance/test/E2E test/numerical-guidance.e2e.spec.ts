@@ -14,9 +14,12 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from 'src/auth/auth.service';
 import { DataSource } from 'typeorm';
 import { InsertIndicatorTickerCommandHandler } from '../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
+import { GetMemberIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query.handler';
 import { DeleteIndicatorTickerCommandHandler } from '../../application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from '../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
+import { AuthGuard } from '../../../auth/auth.guard';
+import { of } from 'rxjs';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -27,11 +30,19 @@ describe('NumericalGuidance E2E Test', () => {
   let dataSource: DataSource;
   let environment;
   const seeding = async () => {
+    const memberEntity = dataSource.getRepository(MemberEntity);
+    await memberEntity.insert({ id: 10 });
+    memberEntity.save;
+
+    await memberEntity.insert({ id: 1 });
+    memberEntity.save;
+
     const indicatorBoardMetaDataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
     await indicatorBoardMetaDataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetaDataName: 'name',
       tickers: { 'k-stock': ['ticker1'], exchange: [] },
+      member: { id: 10 },
     });
     indicatorBoardMetaDataRepository.save;
 
@@ -82,6 +93,7 @@ describe('NumericalGuidance E2E Test', () => {
           AuthService,
           GetIndicatorBoardMetaDataQueryHandler,
           InsertIndicatorTickerCommandHandler,
+          GetMemberIndicatorBoardMetadataListQueryHandler,
           DeleteIndicatorTickerCommandHandler,
           DeleteIndicatorBoardMetadataCommandHandler,
           UpdateIndicatorBoardMetadataNameCommandHandler,
@@ -98,6 +110,10 @@ describe('NumericalGuidance E2E Test', () => {
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
+            provide: 'LoadMemberIndicatorBoardMetadataListPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
             provide: 'DeleteIndicatorTickerPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
@@ -108,6 +124,17 @@ describe('NumericalGuidance E2E Test', () => {
           {
             provide: 'UpdateIndicatorBoardMetadataNamePort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
+            provide: AuthGuard,
+            useValue: {
+              canActivate: jest.fn().mockImplementation((context) => {
+                const request = context.switchToHttp().getRequest();
+                const member: MemberEntity = { id: 1 };
+                request.member = member;
+                return of(true);
+              }),
+            },
           },
         ],
       }).compile(),
@@ -124,6 +151,7 @@ describe('NumericalGuidance E2E Test', () => {
       }),
     );
     app.useGlobalFilters(new HttpExceptionFilter());
+    app.useGlobalGuards(new AuthGuard());
     await app.init();
   }, 30000);
 
@@ -168,9 +196,16 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.BAD_REQUEST);
   });
 
+  it('/get 사용자 id를 전송하여 메타데이터 리스트를 가져온다.', async () => {
+    return request(app.getHttpServer())
+      .get('/numerical-guidance/indicator-board-metadata')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
   it('/delete 지표보드 메타데이터에서 지표를 삭제한다.', async () => {
     return request(app.getHttpServer())
-      .delete(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/ticker1`)
+      .delete('/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/ticker1')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });
