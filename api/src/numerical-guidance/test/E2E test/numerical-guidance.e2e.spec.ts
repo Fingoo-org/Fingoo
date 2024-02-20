@@ -16,6 +16,7 @@ import { DataSource } from 'typeorm';
 import { InsertIndicatorTickerCommandHandler } from '../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
 import { DeleteIndicatorTickerCommandHandler } from '../../application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from '../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
+import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -36,6 +37,13 @@ describe('NumericalGuidance E2E Test', () => {
 
     await indicatorBoardMetaDataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
+      indicatorBoardMetaDataName: 'name',
+      tickers: { 'k-stock': ['ticker1'], exchange: [] },
+    });
+    indicatorBoardMetaDataRepository.save;
+
+    await indicatorBoardMetaDataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba50',
       indicatorBoardMetaDataName: 'name',
       tickers: { 'k-stock': ['ticker1'], exchange: [] },
     });
@@ -76,6 +84,7 @@ describe('NumericalGuidance E2E Test', () => {
           InsertIndicatorTickerCommandHandler,
           DeleteIndicatorTickerCommandHandler,
           DeleteIndicatorBoardMetadataCommandHandler,
+          UpdateIndicatorBoardMetadataNameCommandHandler,
           {
             provide: 'CreateIndicatorBoardMetadataPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
@@ -94,6 +103,10 @@ describe('NumericalGuidance E2E Test', () => {
           },
           {
             provide: 'DeleteIndicatorBoardMetadataPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
+            provide: 'UpdateIndicatorBoardMetadataNamePort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
         ],
@@ -190,5 +203,25 @@ describe('NumericalGuidance E2E Test', () => {
       .delete(`/numerical-guidance/indicator-board-metadata/e46240d3-7d15-48e7-a9b7-f490bf9ca6e0`)
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);
+  });
+
+  it('/patch 지표보드 메타데이터의 이름을 수정한다.', async () => {
+    return request(app.getHttpServer())
+      .patch(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba50`)
+      .send({
+        name: 'updateName',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/patch 지표보드 메타데이터의 이름을 수정할 때, 이름이 빈값으로 들어온다.', async () => {
+    return request(app.getHttpServer())
+      .patch(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba50`)
+      .send({
+        name: '',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
   });
 });

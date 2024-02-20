@@ -45,13 +45,13 @@ describe('DeleteIndicatorTickerCommandHandler', () => {
 
   it('지표보드 메타데이터에서 지표 ticker를 삭제한다.', async () => {
     //given
-    const indicatorBoardMetadata = await loadIndicatorBoardMetadataPort.loadIndicatorBoardMetaData('id');
-    const command: DeleteIndicatorTickerCommand = new DeleteIndicatorTickerCommand(indicatorBoardMetadata.id, 'ticker');
+    const command: DeleteIndicatorTickerCommand = new DeleteIndicatorTickerCommand('id', 'ticker');
 
     //when
     await deleteIndicatorTickerCommandHandler.execute(command);
 
     //then
+    expect(loadIndicatorBoardMetadataPort.loadIndicatorBoardMetaData).toHaveBeenCalledTimes(1);
     expect(deleteIndicatorTickerPort.deleteIndicatorTicker).toHaveBeenCalledTimes(1);
   });
 });
