@@ -38,6 +38,12 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       tickers: { 'k-stock': [], exchange: [] },
       member: { id: 5 },
     });
+
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
+      indicatorBoardMetaDataName: 'name',
+      tickers: { 'k-stock': [], exchange: [] },
+    });
   };
 
   beforeAll(async () => {
@@ -344,6 +350,73 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+        error: Error,
+        HttpStatus: HttpStatus.BAD_REQUEST,
+      }),
+    );
+  });
+
+  it('지표보드 메타데이터 이름 수정하기.', async () => {
+    // given
+    const updateIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
+      'updateName',
+      {
+        'k-stock': ['ticker1', 'ticker2'],
+        exchange: [],
+      },
+    );
+    // when
+    await indicatorBoardMetaDataPersistentAdapter.updateIndicatorBoardMetadataName(updateIndicatorBoardMetadata);
+    const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
+    );
+
+    // then
+    expect(result.indicatorBoardMetaDataName).toEqual('updateName');
+  });
+
+  it('지표보드 메타데이터 이름 수정하기. - DB에 존재하지 않는 경우', async () => {
+    // given
+    const invalidIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
+      'updateName',
+      {
+        'k-stock': ['ticker1', 'ticker2'],
+        exchange: [],
+      },
+    );
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.updateIndicatorBoardMetadataName(invalidIndicatorBoardMetadata);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        error: Error,
+        HttpStatus: HttpStatus.NOT_FOUND,
+      }),
+    );
+  });
+
+  it('지표보드 메타데이터 이름 수정하기. - id 형식이 올바르지 않은 경우', async () => {
+    // given
+    const invalidIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      'invalidId',
+      'updateName',
+      {
+        'k-stock': ['ticker1', 'ticker2'],
+        exchange: [],
+      },
+    );
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetaDataPersistentAdapter.updateIndicatorBoardMetadataName(invalidIndicatorBoardMetadata);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: `[ERROR] 지표보드 메타데이터의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
           1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
         error: Error,
         HttpStatus: HttpStatus.BAD_REQUEST,

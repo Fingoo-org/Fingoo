@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetFluctuatingIndicatorQuery } from '../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
 import { FluctuatingIndicatorDto } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
@@ -18,6 +18,11 @@ import { InsertIndicatorDto } from './dto/insert-indicator.dto';
 import { GetMemberIndicatorBoardMetadataListQuery } from '../application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query';
 import { DeleteIndicatorTickerCommand } from '../application/command/delete-indicator-ticker/delete-indicator-ticker.command';
 import { DeleteIndicatorBoardMetadataCommand } from '../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command';
+import { UpdateIndicatorBoardMetadataNameDto } from './dto/update-indicator-board-metadata-name.dto';
+import { UpdateIndicatorBoardMetadataNameCommand } from '../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command';
+import { AuthGuard } from '../../auth/auth.guard';
+import { Member } from '../../auth/get-member.decorator';
+import { MemberEntity } from '../../auth/member.entity';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/numerical-guidance')
@@ -65,14 +70,16 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터를 생성합니다.' })
+  @UseGuards(AuthGuard)
   @Post('/indicator-board-metadata')
   async createIndicatorBoardMetaData(
     @Body() createIndicatorBoardMetaDataDto: CreateIndicatorBoardMetadataDto,
     @Res() res: Response,
+    @Member() member: MemberEntity,
   ) {
     const command = new CreateIndicatorBoardMetadataCommand(
       createIndicatorBoardMetaDataDto.indicatorBoardMetaDataName,
-      createIndicatorBoardMetaDataDto.memberId,
+      member.id,
     );
     await this.commandBus.execute(command);
     res.status(HttpStatus.CREATED).send();
@@ -86,9 +93,9 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '특정 사용자의 member id로 메타데이터 리스트를 가져옵니다.' })
-  @Get('/indicator-board-metadata/member/:memberId')
-  async getIndicatorBoardMetadataListByMember(@Param('memberId') memberId: number): Promise<IndicatorBoardMetadata[]> {
-    const query = new GetMemberIndicatorBoardMetadataListQuery(memberId);
+  @Get('/indicator-board-metadata')
+  async getIndicatorBoardMetadataListByMember(@Member() member: MemberEntity): Promise<IndicatorBoardMetadata[]> {
+    const query = new GetMemberIndicatorBoardMetadataListQuery(member.id);
     return await this.queryBus.execute(query);
   }
 
@@ -112,6 +119,17 @@ export class NumericalGuidanceController {
   @Delete('/indicator-board-metadata/:id')
   async deleteIndicatorBoardMetadata(@Param('id') id) {
     const command = new DeleteIndicatorBoardMetadataCommand(id);
+
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '지표보드 메타데이터의 이름을 수정합니다.' })
+  @Patch('/indicator-board-metadata/:id')
+  async updateIndicatorBoardMetadataName(
+    @Param('id') id,
+    @Body() updateIndicatorBoardMetadataNameDto: UpdateIndicatorBoardMetadataNameDto,
+  ) {
+    const command = new UpdateIndicatorBoardMetadataNameCommand(id, updateIndicatorBoardMetadataNameDto.name);
 
     await this.commandBus.execute(command);
   }

@@ -45,17 +45,13 @@ describe('InsertIndicatorTickerCommandHandler', () => {
 
   it('지표보드 메타데이터에 지표 ticker를 추가한다.', async () => {
     //given
-    const indicatorBoardMetadata = await loadIndicatorBoardMetadataPort.loadIndicatorBoardMetaData('id');
-    const command: InsertIndicatorTickerCommand = new InsertIndicatorTickerCommand(
-      indicatorBoardMetadata.id,
-      'ticker',
-      'k-stock',
-    );
+    const command: InsertIndicatorTickerCommand = new InsertIndicatorTickerCommand('id', 'ticker', 'k-stock');
 
     //when
     await insertIndicatorTickerCommandHandler.execute(command);
 
     //then
+    expect(loadIndicatorBoardMetadataPort.loadIndicatorBoardMetaData).toHaveBeenCalledTimes(1);
     expect(insertIndicatorTickerPort.addIndicatorTicker).toHaveBeenCalledTimes(1);
   });
 });

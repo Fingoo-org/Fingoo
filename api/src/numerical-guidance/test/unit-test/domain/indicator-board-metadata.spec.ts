@@ -143,6 +143,7 @@ describe('지표보드 메타데이터', () => {
     };
     expect(expected).toEqual(indicatorBoardMetaData.tickers);
   });
+
   it('지표보드 메타데이터에서 지표 ticker 삭제 - 등록되지 않은 지표 요청', () => {
     // given
     const indicatorBoardMetaData = new IndicatorBoardMetadata('id1', 'name', {
@@ -160,5 +161,39 @@ describe('지표보드 메타데이터', () => {
     //then
     expect(deleteIndicatorTicker).toThrow(BusinessRuleValidationException);
     expect(deleteIndicatorTicker).toThrow(rule.Message);
+  });
+
+  it('지표보드 메타데이터의 이름을 수정한다. ', () => {
+    // given
+    const indicatorBoardMetaData = new IndicatorBoardMetadata('id1', 'name', {
+      'k-stock': ['ticker1'],
+      exchange: [],
+    });
+
+    // when
+    indicatorBoardMetaData.updateIndicatorBoardMetaDataName('updateName');
+    const expected = 'updateName';
+
+    //then
+    expect(expected).toEqual(indicatorBoardMetaData.indicatorBoardMetaDataName);
+  });
+
+  it('지표보드 메타데이터의 이름을 수정한다. - 이름이 비어있을 때 ', () => {
+    // given
+    const indicatorBoardMetaData = new IndicatorBoardMetadata('id1', 'name', {
+      'k-stock': ['ticker1'],
+      exchange: [],
+    });
+    const invalidName = '';
+
+    // when
+    function updateIndicatorBoardMetaDataName() {
+      indicatorBoardMetaData.updateIndicatorBoardMetaDataName(invalidName);
+    }
+    const rule = new IndicatorBoardMetaDataNameShouldNotEmptyRule(invalidName);
+
+    //then
+    expect(updateIndicatorBoardMetaDataName).toThrow(BusinessRuleValidationException);
+    expect(updateIndicatorBoardMetaDataName).toThrow(rule.Message);
   });
 });
