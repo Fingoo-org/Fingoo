@@ -21,11 +21,11 @@ export class IndicatorBoardMetadataMapper {
   }
 
   static async mapEntitiesToDomains(entities: IndicatorBoardMetadataEntity[]) {
-    const Domins = await Promise.all(
+    const Domains = await Promise.all(
       entities.map(async (entity) => {
         return await this.mapEntityToDomain(entity);
       }),
     );
-    return Domins;
+    return Domains;
   }
 }
