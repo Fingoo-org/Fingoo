@@ -105,11 +105,9 @@ export class IndicatorBoardMetadataPersistentAdapter
       query.where('IndicatorBoardMetadataEntity.memberId = :memberId', { memberId: memberEntity.id });
 
       const userIndicatorBoardMetadataEntityList = await query.getMany();
-      const userIndicatorBoardMetadataList = await Promise.all(
-        userIndicatorBoardMetadataEntityList.map(async (entity) => {
-          return IndicatorBoardMetadataMapper.mapEntityToDomain(entity);
-        }),
-      );
+      const userIndicatorBoardMetadataList = userIndicatorBoardMetadataEntityList.map((entity) => {
+        return IndicatorBoardMetadataMapper.mapEntityToDomain(entity);
+      });
 
       return userIndicatorBoardMetadataList;
     } catch (error) {
