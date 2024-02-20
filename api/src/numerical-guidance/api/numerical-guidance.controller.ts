@@ -20,7 +20,7 @@ import { DeleteIndicatorBoardMetadataCommand } from '../application/command/dele
 import { UpdateIndicatorBoardMetadataNameDto } from './dto/update-indicator-board-metadata-name.dto';
 import { UpdateIndicatorBoardMetadataNameCommand } from '../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command';
 import { AuthGuard } from '../../auth/auth.guard';
-import { GetMember } from '../../auth/get-member.decorator';
+import { Member } from '../../auth/get-member.decorator';
 import { MemberEntity } from '../../auth/member.entity';
 
 @ApiTags('NumericalGuidanceController')
@@ -74,7 +74,7 @@ export class NumericalGuidanceController {
   async createIndicatorBoardMetaData(
     @Body() createIndicatorBoardMetaDataDto: CreateIndicatorBoardMetadataDto,
     @Res() res: Response,
-    @GetMember() member: MemberEntity,
+    @Member() member: MemberEntity,
   ) {
     const command = new CreateIndicatorBoardMetadataCommand(
       createIndicatorBoardMetaDataDto.indicatorBoardMetaDataName,
