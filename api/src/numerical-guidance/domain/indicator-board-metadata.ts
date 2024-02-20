@@ -36,6 +36,11 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.tickers = updateTickers;
   }
 
+  public updateIndicatorBoardMetaDataName(name: string) {
+    this.checkRule(new IndicatorBoardMetaDataNameShouldNotEmptyRule(name));
+    this.indicatorBoardMetaDataName = name;
+  }
+
   private convertToArray(tickers: string): string[] {
     if (tickers) {
       return tickers.split(',');
