@@ -11,7 +11,7 @@ export class IndicatorBoardMetadataMapper {
     return indicatorBoardMetaDataEntity;
   }
 
-  static async mapEntityToDomain(entity: IndicatorBoardMetadataEntity) {
+  static mapEntityToDomain(entity: IndicatorBoardMetadataEntity) {
     const indicatorBoardMetaData = new IndicatorBoardMetadata(
       entity.id,
       entity.indicatorBoardMetaDataName,
