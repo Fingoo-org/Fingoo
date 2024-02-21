@@ -3,9 +3,15 @@ import { HttpService } from '@nestjs/axios';
 import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application/port/external/load-fluctuatingIndicator.port';
 import { Interval, Market } from 'src/utils/type/type-definition';
+import { LoadLiveIndicatorPort } from '../../../application/port/external/load-live-indicator.port';
+
+export const DAY_DATA_COUNT = 35;
+export const WEEK_DATA_COUNT = 245;
+export const MONTH_DATA_COUNT = 1050;
+export const YEAR_DATA_COUNT = 12775;
 
 @Injectable()
-export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorPort {
+export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorPort, LoadLiveIndicatorPort {
   constructor(private readonly api: HttpService) {}
 
   async loadFluctuatingIndicator(
@@ -15,9 +21,47 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     market: Market,
     endDate: string,
   ): Promise<FluctuatingIndicatorDto> {
+    const startDate = this.getStartDate(endDate, dataCount);
+    const responseData = await this.createKRXResponseData(dataCount, ticker, market, startDate, endDate);
+    return FluctuatingIndicatorKrxAdapter.transferredByInterval(interval, responseData);
+  }
+
+  async loadLiveIndicator(ticker: string, interval: Interval, market: Market): Promise<FluctuatingIndicatorDto> {
+    const endDate = this.dateFormatter(new Date());
+    let startDate: string;
+    let responseData: FluctuatingIndicatorDto;
+    switch (interval) {
+      case 'day':
+        startDate = this.getStartDate(endDate, DAY_DATA_COUNT);
+        responseData = await this.createKRXResponseData(DAY_DATA_COUNT, ticker, market, startDate, endDate);
+        break;
+      case 'week':
+        startDate = this.getStartDate(endDate, WEEK_DATA_COUNT);
+        responseData = await this.createKRXResponseData(WEEK_DATA_COUNT, ticker, market, startDate, endDate);
+        break;
+      case 'month':
+        startDate = this.getStartDate(endDate, MONTH_DATA_COUNT);
+        responseData = await this.createKRXResponseData(MONTH_DATA_COUNT, ticker, market, startDate, endDate);
+        break;
+      case 'year':
+        startDate = this.getStartDate(endDate, YEAR_DATA_COUNT);
+        responseData = await this.createKRXResponseData(YEAR_DATA_COUNT, ticker, market, startDate, endDate);
+        break;
+    }
+
+    return FluctuatingIndicatorKrxAdapter.transferredByInterval(interval, responseData);
+  }
+
+  async createKRXResponseData(
+    dataCount: number,
+    ticker: string,
+    market: Market,
+    startDate: string,
+    endDate: string,
+  ): Promise<FluctuatingIndicatorDto> {
     // KRX API 통신 -> 현재 일자부터 이전 데이터 모두 조회
     const serviceKey: string = process.env.SERVICE_KEY;
-    const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
+    const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=${startDate}&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
 
     const res = await this.api.axiosRef.get(request_url);
     const { numOfRows, pageNo, totalCount, items } = res.data.response.body;
@@ -27,7 +71,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     if (!responseData) {
       throw new Error('API response body is undefined');
     }
-    return FluctuatingIndicatorKrxAdapter.transferredByInterval(interval, responseData);
+    return responseData;
   }
 
   static transferredByInterval(interval: Interval, data: FluctuatingIndicatorDto) {
@@ -192,5 +236,24 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     data.items.item = yearlyAverages;
 
     return data;
+  }
+
+  private dateFormatter(today: Date): string {
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}${month}${day}`;
+  }
+
+  private getStartDate(baseDateString: string, numOfDays: number) {
+    const year = baseDateString.substring(0, 4);
+    const month = baseDateString.substring(4, 6);
+    const day = baseDateString.substring(6, 8);
+
+    const baseDate = new Date(`${year}-${month}-${day}`);
+    const pastDate = new Date(baseDate);
+    pastDate.setDate(baseDate.getDate() - numOfDays);
+
+    return this.dateFormatter(pastDate);
   }
 }
