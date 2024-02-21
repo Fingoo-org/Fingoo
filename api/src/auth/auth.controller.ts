@@ -1,7 +1,7 @@
 import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
-import { GetMember } from './get-member.decorator';
+import { Member } from './get-member.decorator';
 import { MemberEntity } from './member.entity';
 
 @Controller('auth')
@@ -15,7 +15,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('/signIn')
-  signIn(@GetMember() member: MemberEntity): number {
+  signIn(@Member() member: MemberEntity): number {
     this.authService.findById(member.id);
     return member.id;
   }
