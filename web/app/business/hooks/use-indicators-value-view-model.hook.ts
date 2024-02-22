@@ -7,14 +7,14 @@ export const useIndicatorsValueViewModel = () => {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const { data: indicatorsValueData, isLoading } = useFetchIndicatorsValue(selectedMetadata?.indicators);
 
-  const indciatorsValueViewModel = useMemo(() => {
+  const convertedIndciatorsValue = useMemo(() => {
     if (!indicatorsValueData) return undefined;
 
     return convertIndicatorsValueViewModel(indicatorsValueData);
   }, [indicatorsValueData]);
 
   return {
-    indciatorsValueViewModel,
+    indicatorsValue: convertedIndciatorsValue,
     isPending: isLoading,
   };
 };

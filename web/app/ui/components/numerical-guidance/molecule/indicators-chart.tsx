@@ -8,14 +8,11 @@ import SelectedMetadataTittle from '../atom/selected-metadata-title';
 
 export default function IndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { indciatorsValueViewModel, isPending } = useIndicatorsValueViewModel();
+  const { indicatorsValue, isPending } = useIndicatorsValueViewModel();
 
-  const formattedIndicatorsRows = useMemo(
-    () => indciatorsValueViewModel?.formattedIndicatorsInRow,
-    [indciatorsValueViewModel],
-  );
+  const formattedIndicatorsRows = useMemo(() => indicatorsValue?.formattedIndicatorsInRow, [indicatorsValue]);
 
-  const category = indciatorsValueViewModel?.tickerList ? indciatorsValueViewModel.tickerList : [];
+  const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
 
   return (
     <>
