@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application/port/external/load-fluctuatingIndicator.port';
@@ -23,6 +23,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
   ): Promise<FluctuatingIndicatorDto> {
     const startDate = this.getStartDate(endDate, dataCount);
     const responseData = await this.createKRXResponseData(dataCount, ticker, market, startDate, endDate);
+
     return FluctuatingIndicatorKrxAdapter.transferredByInterval(interval, responseData);
   }
 
@@ -59,41 +60,55 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     startDate: string,
     endDate: string,
   ): Promise<FluctuatingIndicatorDto> {
-    // KRX API 통신 -> 현재 일자부터 이전 데이터 모두 조회
-    const serviceKey: string = process.env.SERVICE_KEY;
-    const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=${startDate}&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
+    try {
+      const serviceKey: string = process.env.SERVICE_KEY;
+      const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=${startDate}&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
 
-    const res = await this.api.axiosRef.get(request_url);
-    const totalCount = res.data.response.body.totalCount;
-    const rawItems = res.data.response.body.items.item;
+      const res = await this.api.axiosRef.get(request_url);
+      const totalCount = res.data.response.body.totalCount;
+      const rawItems = res.data.response.body.items.item;
 
-    const items = [];
-    for (let i = 0; i < rawItems.length; i++) {
-      const { basDt, clpr } = rawItems[i];
+      const items = [];
+      for (let i = 0; i < rawItems.length; i++) {
+        const { basDt, clpr } = rawItems[i];
 
-      items.push({
-        date: basDt,
-        value: clpr,
+        items.push({
+          date: basDt,
+          value: clpr,
+        });
+      }
+
+      const type = 'k-stock';
+      const responseData = FluctuatingIndicatorDto.create({
+        type,
+        ticker,
+        name: rawItems.itmsNm,
+        market,
+        totalCount,
+        items,
       });
-    }
 
-    const type = 'k-stock';
-    const responseData = FluctuatingIndicatorDto.create({
-      type,
-      ticker,
-      name: rawItems.itmsNm,
-      market,
-      totalCount,
-      items,
-    });
+      this.checkResponseData(responseData);
 
-    if (!responseData) {
-      throw new NotFoundException('[ERROR] API response body is undefined');
+      return responseData;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new NotFoundException({
+          message: '[ERROR] API response body 값을 찾을 수 없습니다.',
+          error: error,
+          HttpStatus: HttpStatus.NOT_FOUND,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          message: `[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.`,
+          error: error,
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+        });
+      }
     }
-    return responseData;
   }
 
-  static transferredByInterval(interval: Interval, data: FluctuatingIndicatorDto) {
+  static transferredByInterval(interval: Interval, data: FluctuatingIndicatorDto): FluctuatingIndicatorDto {
     switch (interval) {
       case 'day':
         return data;
@@ -106,7 +121,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     }
   }
 
-  static calculateWeeklyAverage(data: FluctuatingIndicatorDto) {
+  static calculateWeeklyAverage(data: FluctuatingIndicatorDto): FluctuatingIndicatorDto {
     const items = data.items;
     const weeklyAverages = [];
     const processedWeeks = new Set();
@@ -146,7 +161,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return data;
   }
 
-  static getISOWeekNumber(date: Date) {
+  static getISOWeekNumber(date: Date): number {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
@@ -154,7 +169,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return weekNumber;
   }
 
-  static calculateMonthlyAverage(data: FluctuatingIndicatorDto) {
+  static calculateMonthlyAverage(data: FluctuatingIndicatorDto): FluctuatingIndicatorDto {
     const items = data.items;
     const monthlyAverages = [];
     const processedMonths = new Set();
@@ -193,7 +208,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return data;
   }
 
-  static calculateYearlyAverage(data: FluctuatingIndicatorDto) {
+  static calculateYearlyAverage(data: FluctuatingIndicatorDto): FluctuatingIndicatorDto {
     const items = data.items;
     const yearlyAverages = [];
     const processedYears = new Set();
@@ -233,6 +248,12 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return data;
   }
 
+  private checkResponseData(responseData: FluctuatingIndicatorDto) {
+    if (!responseData) {
+      throw new Error();
+    }
+  }
+
   private dateFormatter(today: Date): string {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -240,7 +261,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return `${year}${month}${day}`;
   }
 
-  private getStartDate(baseDateString: string, numOfDays: number) {
+  private getStartDate(baseDateString: string, numOfDays: number): string {
     const year = baseDateString.substring(0, 4);
     const month = baseDateString.substring(4, 6);
     const day = baseDateString.substring(6, 8);
