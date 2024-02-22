@@ -12,8 +12,8 @@ import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuat
 const testData = fluctuatingIndicatorTestData;
 const testRedis = new Map<string, string>();
 
-describe('GetfluctuatingIndicatorQueryHandler', () => {
-  let getfluctuatingIndicatorQueryHandler: GetFluctuatingIndicatorQueryHandler;
+describe('GetFluctuatingIndicatorQueryHandler', () => {
+  let getFluctuatingIndicatorQueryHandler: GetFluctuatingIndicatorQueryHandler;
   let loadCachedFluctuatingIndicatorPort: LoadCachedFluctuatingIndicatorPort;
   let loadFluctuatingIndicatorPort: LoadFluctuatingIndicatorPort;
   let cachingFluctuatingIndicatorPort: CachingFluctuatingIndicatorPort;
@@ -50,7 +50,7 @@ describe('GetfluctuatingIndicatorQueryHandler', () => {
       ],
     }).compile();
 
-    getfluctuatingIndicatorQueryHandler = module.get(GetFluctuatingIndicatorQueryHandler);
+    getFluctuatingIndicatorQueryHandler = module.get(GetFluctuatingIndicatorQueryHandler);
     loadCachedFluctuatingIndicatorPort = module.get('LoadCachedFluctuatingIndicatorPort');
     loadFluctuatingIndicatorPort = module.get('LoadFluctuatingIndicatorPort');
     cachingFluctuatingIndicatorPort = module.get('CachingFluctuatingIndicatorPort');
@@ -67,7 +67,7 @@ describe('GetfluctuatingIndicatorQueryHandler', () => {
     );
 
     //when
-    await getfluctuatingIndicatorQueryHandler.execute(getfluctuatingIndicatorQuery);
+    await getFluctuatingIndicatorQueryHandler.execute(getfluctuatingIndicatorQuery);
 
     //then
     expect(loadFluctuatingIndicatorPort.loadFluctuatingIndicator).toHaveBeenCalledTimes(1);
@@ -85,8 +85,8 @@ describe('GetfluctuatingIndicatorQueryHandler', () => {
     );
 
     //when
-    await getfluctuatingIndicatorQueryHandler.execute(getfluctuatingIndicatorQuery);
-    await getfluctuatingIndicatorQueryHandler.execute(getfluctuatingIndicatorQuery);
+    await getFluctuatingIndicatorQueryHandler.execute(getfluctuatingIndicatorQuery);
+    await getFluctuatingIndicatorQueryHandler.execute(getfluctuatingIndicatorQuery);
 
     //then
     expect(loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator).toHaveBeenCalledTimes(2);
