@@ -20,6 +20,7 @@ import { GetMemberIndicatorBoardMetadataListQueryHandler } from './application/q
 import { DeleteIndicatorTickerCommandHandler } from './application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from './application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from './application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
+import { GetLiveIndicatorQueryHandler } from './application/query/get-live-indicator/get-live-indicator.query.handler';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UpdateIndicatorBoardMetadataNameCommandHandler } from './application/co
   providers: [
     AuthService,
     GetFluctuatingIndicatorQueryHandler,
+    GetLiveIndicatorQueryHandler,
     GetFluctuatingIndicatorWithoutCacheQueryHandler,
     GetIndicatorListQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,
@@ -51,6 +53,10 @@ import { UpdateIndicatorBoardMetadataNameCommandHandler } from './application/co
     },
     {
       provide: 'LoadFluctuatingIndicatorPort',
+      useClass: FluctuatingIndicatorKrxAdapter,
+    },
+    {
+      provide: 'LoadLiveIndicatorPort',
       useClass: FluctuatingIndicatorKrxAdapter,
     },
     {
