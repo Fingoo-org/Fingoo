@@ -7,11 +7,7 @@ import { fluctuatingIndicatorTestData } from 'src/numerical-guidance/test/data/f
 
 const testData = fluctuatingIndicatorTestData;
 
-// axios 관련 일시적 오류로 테스트 임시 중단
 describe('FluctuatingIndicatorKrxAdapter', () => {
-  it('테스트', () => {
-    expect(true).toBe(true);
-  });
   let fluctuatingIndicatorKrxAdapter: FluctuatingIndicatorKrxAdapter;
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -29,7 +25,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     fluctuatingIndicatorKrxAdapter = module.get(FluctuatingIndicatorKrxAdapter);
   });
 
-  it('캐시 없이 외부 데이터 가져오기', async () => {
+  it('krx에서 지표를 가져온다.', async () => {
     // given
     // when
     const responseData: FluctuatingIndicatorDto = await fluctuatingIndicatorKrxAdapter.loadFluctuatingIndicator(
@@ -53,6 +49,22 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
       '900110',
       'day',
       'KOSDAQ',
+      '20240125',
+    );
+    const result: string = responseData['market'];
+    // then
+    const expected: string = 'KOSDAQ';
+    expect(result).toEqual(expected);
+  }, 15000);
+
+  it('krx response Data를 생성한다.', async () => {
+    // given
+    // when
+    const responseData: FluctuatingIndicatorDto = await fluctuatingIndicatorKrxAdapter.createKRXResponseData(
+      7,
+      '900110',
+      'KOSDAQ',
+      '20240118',
       '20240125',
     );
     const result: string = responseData['market'];
