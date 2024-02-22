@@ -1,44 +1,36 @@
 import { IndicatorType, Market } from 'src/utils/type/type-definition';
 
 export type Item = {
-  basDt: string;
-  srtnCd: string;
-  isinCd: string;
-  itmsNm: string;
-  mrktCtg: Market;
-  clpr: string;
-  vs: string;
-  fltRt: string;
-  mkp: string;
-  hipr: string;
-  lopr: string;
-  trqu: string;
-  trPrc: string;
-  lstgStCnt: string;
-  mrktTotAmt: string;
-};
-
-export type Items = {
-  item: Item[];
+  date: string;
+  value: string;
 };
 
 export class FluctuatingIndicatorDto {
   type: IndicatorType;
-  numOfRows: number;
-  pageNo: number;
+  ticker: string;
+  name: string;
+  market: Market;
   totalCount: number;
-  items: Items;
+  items: Item[];
 
-  private constructor(type: IndicatorType, numOfRows: number, pageNo: number, totalCount: number, items: Items) {
+  private constructor(
+    type: IndicatorType,
+    ticker: string,
+    name: string,
+    market: Market,
+    totalCount: number,
+    items: Item[],
+  ) {
     this.type = type;
-    this.numOfRows = numOfRows;
-    this.pageNo = pageNo;
+    this.ticker = ticker;
+    this.name = name;
+    this.market = market;
     this.totalCount = totalCount;
     this.items = items;
   }
 
-  static create({ type, numOfRows, pageNo, totalCount, items }): FluctuatingIndicatorDto {
-    return new FluctuatingIndicatorDto(type, numOfRows, pageNo, totalCount, items);
+  static create({ type, ticker, name, market, totalCount, items }): FluctuatingIndicatorDto {
+    return new FluctuatingIndicatorDto(type, ticker, name, market, totalCount, items);
   }
 }
 export { IndicatorType };
