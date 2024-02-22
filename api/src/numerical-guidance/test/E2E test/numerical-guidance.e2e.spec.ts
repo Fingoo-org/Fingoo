@@ -20,6 +20,12 @@ import { DeleteIndicatorBoardMetadataCommandHandler } from '../../application/co
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 import { AuthGuard } from '../../../auth/auth.guard';
 import { of } from 'rxjs';
+import { GetLiveIndicatorQueryHandler } from '../../application/query/get-live-indicator/get-live-indicator.query.handler';
+import { FluctuatingIndicatorRedisAdapter } from '../../infrastructure/adapter/redis/fluctuatingIndicator.redis.adapter';
+import { FluctuatingIndicatorKrxAdapter } from '../../infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
+import { HttpModule } from '@nestjs/axios';
+import { RedisModule } from '@nestjs-modules/ioredis';
+import { RedisContainer } from '@testcontainers/redis';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -28,7 +34,10 @@ jest.mock('typeorm-transactional', () => ({
 describe('NumericalGuidance E2E Test', () => {
   let app: INestApplication;
   let dataSource: DataSource;
-  let environment;
+  let DBenvironment;
+  let redisEnvironment;
+  let fluctuatingIndicatorRedisAdapter: FluctuatingIndicatorRedisAdapter;
+
   const seeding = async () => {
     const memberEntity = dataSource.getRepository(MemberEntity);
     await memberEntity.insert({ id: 10 });
@@ -62,7 +71,8 @@ describe('NumericalGuidance E2E Test', () => {
   };
 
   beforeAll(async () => {
-    environment = await new PostgreSqlContainer().start();
+    DBenvironment = await new PostgreSqlContainer().start();
+    redisEnvironment = await new RedisContainer().start();
     const [module] = await Promise.all([
       Test.createTestingModule({
         imports: [
@@ -78,25 +88,52 @@ describe('NumericalGuidance E2E Test', () => {
               type: 'postgres',
               retryAttempts: 20,
               retryDelay: 5000,
-              host: environment.getHost(),
-              port: environment.getPort(),
-              username: environment.getUsername(),
-              password: environment.getPassword(),
-              database: environment.getDatabase(),
+              host: DBenvironment.getHost(),
+              port: DBenvironment.getPort(),
+              username: DBenvironment.getUsername(),
+              password: DBenvironment.getPassword(),
+              database: DBenvironment.getDatabase(),
               entities: [IndicatorBoardMetadataEntity, MemberEntity],
               synchronize: true,
+            }),
+          }),
+          HttpModule.registerAsync({
+            useFactory: () => ({
+              timeout: 10000,
+              maxRedirects: 5,
+            }),
+          }),
+          RedisModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: () => ({
+              type: 'single',
+              url: redisEnvironment.getConnectionUrl(),
             }),
           }),
         ],
         controllers: [NumericalGuidanceController],
         providers: [
           AuthService,
+          GetLiveIndicatorQueryHandler,
           GetIndicatorBoardMetaDataQueryHandler,
           InsertIndicatorTickerCommandHandler,
           GetMemberIndicatorBoardMetadataListQueryHandler,
           DeleteIndicatorTickerCommandHandler,
           DeleteIndicatorBoardMetadataCommandHandler,
           UpdateIndicatorBoardMetadataNameCommandHandler,
+          FluctuatingIndicatorRedisAdapter,
+          {
+            provide: 'LoadCachedFluctuatingIndicatorPort',
+            useClass: FluctuatingIndicatorRedisAdapter,
+          },
+          {
+            provide: 'LoadLiveIndicatorPort',
+            useClass: FluctuatingIndicatorKrxAdapter,
+          },
+          {
+            provide: 'CachingFluctuatingIndicatorPort',
+            useClass: FluctuatingIndicatorRedisAdapter,
+          },
           {
             provide: 'CreateIndicatorBoardMetadataPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
@@ -139,6 +176,7 @@ describe('NumericalGuidance E2E Test', () => {
         ],
       }).compile(),
     ]);
+    fluctuatingIndicatorRedisAdapter = module.get(FluctuatingIndicatorRedisAdapter);
     dataSource = module.get<DataSource>(DataSource);
     await seeding();
     app = module.createNestApplication();
@@ -156,8 +194,22 @@ describe('NumericalGuidance E2E Test', () => {
   }, 30000);
 
   afterAll(async () => {
-    await environment.stop();
+    await DBenvironment.stop();
+    await redisEnvironment.stop();
+    await fluctuatingIndicatorRedisAdapter.disconnectRedis();
     await app.close();
+  });
+
+  it('/get live 지표 값을 불러온다.', async () => {
+    return request(app.getHttpServer())
+      .get(`/numerical-guidance/indicators/k-stock/live`)
+      .query({
+        ticker: '005930',
+        market: 'KOSPI',
+        interval: 'day',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
   });
 
   it('/get 메타데이터 id를 전송해서 id에 해당하는 메타데이터를 가져온다.', async () => {
