@@ -28,6 +28,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     }).compile();
     fluctuatingIndicatorKrxAdapter = module.get(FluctuatingIndicatorKrxAdapter);
   });
+
   it('캐시 없이 외부 데이터 가져오기', async () => {
     // given
     // when
@@ -38,11 +39,12 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
       'KOSPI',
       '20240125',
     );
-    const result: string = responseData.items.item[0]['srtnCd'];
+    const result: string = responseData['ticker'];
     // then
-    const expected: string = FluctuatingIndicatorDto.create(testData).items.item[0]['srtnCd'];
+    const expected: string = FluctuatingIndicatorDto.create(testData)['ticker'];
     expect(result).toEqual(expected);
   }, 15000);
+
   it('KOSDAQ 종목의 지표 데이터를 요청할 경우, 올바르게 데이터를 가져오는지 확인하기', async () => {
     // given
     // when
@@ -53,7 +55,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
       'KOSDAQ',
       '20240125',
     );
-    const result: string = responseData.items.item[0]['mrktCtg'];
+    const result: string = responseData['market'];
     // then
     const expected: string = 'KOSDAQ';
     expect(result).toEqual(expected);
