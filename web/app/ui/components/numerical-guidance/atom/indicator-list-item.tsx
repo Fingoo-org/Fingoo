@@ -1,9 +1,9 @@
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
-import { IndicatorResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import SelectableListItem from '../../view/atom/selectable-list-item';
+import { Indicator } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 
 type IndicatorListItemProps = {
-  item: IndicatorResponse;
+  item: Indicator;
   style?: React.CSSProperties; // for react-window
 };
 
