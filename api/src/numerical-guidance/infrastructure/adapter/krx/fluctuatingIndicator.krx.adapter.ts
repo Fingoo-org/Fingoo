@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application/port/external/load-fluctuatingIndicator.port';
@@ -6,9 +6,9 @@ import { Interval, Market } from 'src/utils/type/type-definition';
 import { LoadLiveIndicatorPort } from '../../../application/port/external/load-live-indicator.port';
 
 export const DAY_DATA_COUNT = 35;
-export const WEEK_DATA_COUNT = 245;
-export const MONTH_DATA_COUNT = 1050;
-export const YEAR_DATA_COUNT = 12775;
+export const WEEK_DATA_COUNT = 240;
+export const MONTH_DATA_COUNT = 1000;
+export const YEAR_DATA_COUNT = 10000;
 
 @Injectable()
 export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorPort, LoadLiveIndicatorPort {
@@ -69,7 +69,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     const responseData = FluctuatingIndicatorDto.create({ type, numOfRows, pageNo, totalCount, items });
 
     if (!responseData) {
-      throw new Error('API response body is undefined');
+      throw new NotFoundException('[ERROR] API response body is undefined');
     }
     return responseData;
   }
