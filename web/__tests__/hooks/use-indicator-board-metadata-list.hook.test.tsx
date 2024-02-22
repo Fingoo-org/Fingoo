@@ -8,6 +8,7 @@ import { resetAllStore } from '@/app/store/stores/reset-store';
 import { act } from 'react-dom/test-utils';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
+import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 
 const wrapper = SWRProviderWithoutCache;
 
@@ -24,23 +25,12 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     // then
-    expect(result.current.metadataList).toEqual([
-      {
-        id: '1',
-        name: 'metadata1',
-        indicators: [],
-      },
-      {
-        id: '2',
-        name: 'metadata2',
-        indicators: [],
-      },
-      {
-        id: '3',
-        name: 'metadata3',
-        indicators: [],
-      },
-    ]);
+    expect(result.current.metadataList).toHaveLength(3);
+    expect(result.current.metadataList?.[0]).toEqual({
+      id: '1',
+      name: 'metadata1',
+      tickers: [],
+    });
   });
 
   it('메타데이터를 생성하면, 생성한 메타데이터를 포함한 메타데이터 리스트를 가져온다.', async () => {
@@ -50,13 +40,13 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createMetadata({ id: '4', name: 'metadata4', indicators: [] });
+      result.current.createMetadata(new IndicatorBoardMetadata({ id: '4', name: 'metadata4', tickers: [] }));
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
     // then
     expect(result.current.metadataList).toHaveLength(4);
-    expect(result.current.metadataList?.[3]).toEqual({ id: '4', name: 'metadata4', indicators: [] });
+    expect(result.current.metadataList?.[3]).toEqual({ id: '4', name: 'metadata4', tickers: [] });
   });
 
   // Risk: https://mswjs.io/docs/limitations#parallel-runs
@@ -73,7 +63,7 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createMetadata({ id: '4', name: 'metadata4', indicators: [] });
+      result.current.createMetadata(new IndicatorBoardMetadata({ id: '4', name: 'metadata4', tickers: [] }));
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 

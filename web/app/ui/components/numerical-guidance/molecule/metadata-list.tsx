@@ -16,10 +16,10 @@ const MetdataList = React.memo(function MetadataList() {
     const metadata = {
       id: Math.random().toString(36),
       name: 'metadata1',
-      indicators: [],
+      tickers: [],
     };
     try {
-      await createMetadata(metadata);
+      await createMetadata(new IndicatorBoardMetadata(metadata));
       selectMetadataById(metadata.id);
     } catch (e) {
       // error: 위에서 처리, 넘겨줄 필요 있나?

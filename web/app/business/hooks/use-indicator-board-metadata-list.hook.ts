@@ -5,7 +5,10 @@ import {
 } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useFetchIndicatorBoardMetadataList } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useMemo, useRef } from 'react';
-import { convertIndcatorBoardMetadataList } from '../services/view-model/indicator-board-metadata-view-model.service';
+import {
+  IndicatorBoardMetadata,
+  convertIndcatorBoardMetadataList,
+} from '../services/view-model/indicator-board-metadata-view-model.service';
 
 export const useIndicatorBoardMetadataList = () => {
   const { data, isValidating } = useFetchIndicatorBoardMetadataList();
@@ -23,9 +26,9 @@ export const useIndicatorBoardMetadataList = () => {
     }
   }
 
-  const createMetadata = async (metadata: CreateIndicatorMetadataRequestBody) => {
+  const createMetadata = async (metadata: IndicatorBoardMetadata) => {
     try {
-      await createMetadataTrigger(metadata);
+      await createMetadataTrigger(metadata.formattedIndicatorBoardMetadata);
     } catch {
       // error: 전역 에러 처리 or 에러 바운더리에서 처리
     }
@@ -42,6 +45,7 @@ export const useIndicatorBoardMetadataList = () => {
     });
   };
 
+  // refactor: 위에 선언하는게 맞는가 아래에 선언하는게 맞는가? 무엇을 무엇으로부터 보호하는 것인가?
   const metadataList = useMemo(() => {
     if (!data) return undefined;
 
