@@ -23,6 +23,8 @@ import { UpdateIndicatorBoardMetadataNameCommand } from '../application/command/
 import { AuthGuard } from '../../auth/auth.guard';
 import { Member } from '../../auth/get-member.decorator';
 import { MemberEntity } from '../../auth/member.entity';
+import { GetLiveIndicatorQuery } from '../application/query/get-live-indicator/get-live-indicator.query';
+import { GetLiveIndicatorDto } from './dto/get-live-indicator.dto';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/numerical-guidance')
@@ -43,6 +45,17 @@ export class NumericalGuidanceController {
       getFluctuatingIndicatorDto.market,
       getFluctuatingIndicatorDto.interval,
       getFluctuatingIndicatorDto.endDate,
+    );
+    return this.queryBus.execute(query);
+  }
+
+  @ApiOperation({ summary: '고정된 화면에 보여주는 지표 API입니다.' })
+  @Get('/indicators/k-stock/live')
+  async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<FluctuatingIndicatorDto> {
+    const query = new GetLiveIndicatorQuery(
+      getLiveIndicatorDto.ticker,
+      getLiveIndicatorDto.market,
+      getLiveIndicatorDto.interval,
     );
     return this.queryBus.execute(query);
   }
