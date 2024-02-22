@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application/port/external/load-fluctuatingIndicator.port';
@@ -23,6 +23,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
   ): Promise<FluctuatingIndicatorDto> {
     const startDate = this.getStartDate(endDate, dataCount);
     const responseData = await this.createKRXResponseData(dataCount, ticker, market, startDate, endDate);
+
     return FluctuatingIndicatorKrxAdapter.transferredByInterval(interval, responseData);
   }
 
@@ -59,65 +60,77 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     startDate: string,
     endDate: string,
   ): Promise<FluctuatingIndicatorDto> {
-    // KRX API 통신 -> 현재 일자부터 이전 데이터 모두 조회
-    const serviceKey: string = process.env.SERVICE_KEY;
-    const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=${startDate}&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
+    try {
+      const serviceKey: string = process.env.SERVICE_KEY;
+      const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=${startDate}&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
 
-    const res = await this.api.axiosRef.get(request_url);
-    const { numOfRows, pageNo, totalCount, items } = res.data.response.body;
-    const type = 'k-stock';
-    const responseData = FluctuatingIndicatorDto.create({ type, numOfRows, pageNo, totalCount, items });
+      const res = await this.api.axiosRef.get(request_url);
+      const totalCount = res.data.response.body.totalCount;
+      const rawItems = res.data.response.body.items.item;
 
-    if (!responseData) {
-      throw new NotFoundException('[ERROR] API response body is undefined');
+      const items = [];
+      for (let i = 0; i < rawItems.length; i++) {
+        const { basDt, clpr } = rawItems[i];
+
+        items.push({
+          date: basDt,
+          value: clpr,
+        });
+      }
+
+      const type = 'k-stock';
+      const responseData = FluctuatingIndicatorDto.create({
+        type,
+        ticker,
+        name: rawItems.itmsNm,
+        market,
+        totalCount,
+        items,
+      });
+
+      this.checkResponseData(responseData);
+
+      return responseData;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new NotFoundException({
+          message: '[ERROR] API response body 값을 찾을 수 없습니다.',
+          error: error,
+          HttpStatus: HttpStatus.NOT_FOUND,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          message: `[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.`,
+          error: error,
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+        });
+      }
     }
-    return responseData;
   }
 
-  static transferredByInterval(interval: Interval, data: FluctuatingIndicatorDto) {
+  static transferredByInterval(interval: Interval, data: FluctuatingIndicatorDto): FluctuatingIndicatorDto {
     switch (interval) {
       case 'day':
-        return this.transferDayResponse(data);
+        return data;
       case 'week':
         return this.calculateWeeklyAverage(data);
       case 'month':
         return this.calculateMonthlyAverage(data);
       case 'year':
         return this.calculateYearlyAverage(data);
-      default:
-        return data;
     }
   }
 
-  static transferDayResponse(data: FluctuatingIndicatorDto) {
-    const items = data.items.item;
-    const dayResponse = [];
-
-    for (let i = 0; i < items.length; i++) {
-      const { basDt, srtnCd, isinCd, itmsNm, mrktCtg, clpr } = items[i];
-
-      dayResponse.push({
-        date: basDt,
-        ...{ srtnCd, isinCd, itmsNm, mrktCtg },
-        value: clpr,
-      });
-    }
-
-    data.items.item = dayResponse;
-
-    return data;
-  }
-
-  static calculateWeeklyAverage(data: FluctuatingIndicatorDto) {
-    const items = data.items.item;
+  static calculateWeeklyAverage(data: FluctuatingIndicatorDto): FluctuatingIndicatorDto {
+    const items = data.items;
     const weeklyAverages = [];
     const processedWeeks = new Set();
 
     for (let i = 0; i < items.length; i++) {
-      const currentDate = new Date(items[i].basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+      const currentDate = new Date(items[i].date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
 
       const weeklyItems = items.filter((item) => {
-        const itemDate = new Date(item.basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+        const itemDate = new Date(item.date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
 
         const isSameWeek =
           currentDate.getFullYear() === itemDate.getFullYear() &&
@@ -130,14 +143,13 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
         const weekIdentifier = `${currentDate.getFullYear()}-${this.getISOWeekNumber(currentDate)}`;
 
         if (!processedWeeks.has(weekIdentifier)) {
-          const weeklyClprSum = weeklyItems.reduce((sum, item) => sum + parseInt(item.clpr), 0);
-          const weeklyAverage = weeklyClprSum / weeklyItems.length;
+          const weeklyValueSum = weeklyItems.reduce((sum, item) => sum + parseInt(item.value), 0);
+          const weeklyAverage = weeklyValueSum / weeklyItems.length;
 
-          const { basDt, srtnCd, isinCd, itmsNm, mrktCtg } = weeklyItems[0];
+          const { date } = weeklyItems[0];
 
           weeklyAverages.push({
-            date: basDt,
-            ...{ srtnCd, isinCd, itmsNm, mrktCtg },
+            date,
             value: weeklyAverage.toFixed(2),
           });
 
@@ -145,11 +157,11 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
         }
       }
     }
-    data.items.item = weeklyAverages;
+    data.items = weeklyAverages;
     return data;
   }
 
-  static getISOWeekNumber(date: Date) {
+  static getISOWeekNumber(date: Date): number {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
@@ -157,16 +169,16 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return weekNumber;
   }
 
-  static calculateMonthlyAverage(data: FluctuatingIndicatorDto) {
-    const items = data.items.item;
+  static calculateMonthlyAverage(data: FluctuatingIndicatorDto): FluctuatingIndicatorDto {
+    const items = data.items;
     const monthlyAverages = [];
     const processedMonths = new Set();
 
     for (let i = 0; i < items.length; i++) {
-      const currentDate = new Date(items[i].basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+      const currentDate = new Date(items[i].date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
 
       const monthlyItems = items.filter((item) => {
-        const itemDate = new Date(item.basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+        const itemDate = new Date(item.date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
 
         const isSameMonth =
           currentDate.getFullYear() === itemDate.getFullYear() && currentDate.getMonth() === itemDate.getMonth();
@@ -178,14 +190,13 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
         const monthIdentifier = currentDate.getMonth();
 
         if (!processedMonths.has(monthIdentifier)) {
-          const monthlyClprSum = monthlyItems.reduce((sum, item) => sum + parseInt(item.clpr), 0);
-          const monthlyAverage = monthlyClprSum / monthlyItems.length;
+          const monthlyValueSum = monthlyItems.reduce((sum, item) => sum + parseInt(item.value), 0);
+          const monthlyAverage = monthlyValueSum / monthlyItems.length;
 
-          const { basDt, srtnCd, isinCd, itmsNm, mrktCtg } = monthlyItems[0];
+          const { date } = monthlyItems[0];
 
           monthlyAverages.push({
-            date: basDt,
-            ...{ srtnCd, isinCd, itmsNm, mrktCtg },
+            date,
             value: monthlyAverage.toFixed(2),
           });
 
@@ -193,20 +204,20 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
         }
       }
     }
-    data.items.item = monthlyAverages;
+    data.items = monthlyAverages;
     return data;
   }
 
-  static calculateYearlyAverage(data: FluctuatingIndicatorDto) {
-    const items = data.items.item;
+  static calculateYearlyAverage(data: FluctuatingIndicatorDto): FluctuatingIndicatorDto {
+    const items = data.items;
     const yearlyAverages = [];
     const processedYears = new Set();
 
     for (let i = 0; i < items.length; i++) {
-      const currentDate = new Date(items[i].basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+      const currentDate = new Date(items[i].date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
 
       const yearlyItems = items.filter((item) => {
-        const itemDate = new Date(item.basDt.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
+        const itemDate = new Date(item.date.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'));
 
         const isSameYear = currentDate.getFullYear() === itemDate.getFullYear();
 
@@ -217,14 +228,13 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
         const yearIdentifier = currentDate.getFullYear();
 
         if (!processedYears.has(yearIdentifier)) {
-          const yearlyClprSum = yearlyItems.reduce((sum, item) => sum + parseInt(item.clpr), 0);
-          const yearlyAverage = yearlyClprSum / yearlyItems.length;
+          const yearlyValueSum = yearlyItems.reduce((sum, item) => sum + parseInt(item.value), 0);
+          const yearlyAverage = yearlyValueSum / yearlyItems.length;
 
-          const { basDt, srtnCd, isinCd, itmsNm, mrktCtg } = yearlyItems[0];
+          const { date } = yearlyItems[0];
 
           yearlyAverages.push({
-            date: basDt,
-            ...{ srtnCd, isinCd, itmsNm, mrktCtg },
+            date,
             value: yearlyAverage.toFixed(2),
           });
 
@@ -233,9 +243,15 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
       }
     }
 
-    data.items.item = yearlyAverages;
+    data.items = yearlyAverages;
 
     return data;
+  }
+
+  private checkResponseData(responseData: FluctuatingIndicatorDto) {
+    if (!responseData) {
+      throw new Error();
+    }
   }
 
   private dateFormatter(today: Date): string {
@@ -245,7 +261,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     return `${year}${month}${day}`;
   }
 
-  private getStartDate(baseDateString: string, numOfDays: number) {
+  private getStartDate(baseDateString: string, numOfDays: number): string {
     const year = baseDateString.substring(0, 4);
     const month = baseDateString.substring(4, 6);
     const day = baseDateString.substring(6, 8);

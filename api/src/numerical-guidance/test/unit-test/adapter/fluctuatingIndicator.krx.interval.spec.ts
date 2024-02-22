@@ -16,10 +16,28 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
 
     const data = fs.readFileSync(filePath, 'utf8');
     const jsonData = JSON.parse(data);
+    const rawItems = jsonData.items.item;
 
-    const testData = FluctuatingIndicatorDto.create(jsonData);
+    const items = [];
+    for (let i = 0; i < rawItems.length; i++) {
+      const { basDt, clpr } = rawItems[i];
 
-    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateWeeklyAverage(testData).items.item;
+      items.push({
+        date: basDt,
+        value: clpr,
+      });
+    }
+
+    const testData = FluctuatingIndicatorDto.create({
+      type: 'k-stock',
+      ticker: rawItems[0].srtnCd,
+      name: rawItems[0].itmsNm,
+      market: rawItems[0].mrktCtg,
+      totalCount: jsonData.totalCount,
+      items: items,
+    });
+
+    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateWeeklyAverage(testData).items;
 
     const weeklyAverages = result.map((item) => item['value']);
 
@@ -60,10 +78,28 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
 
     const data = fs.readFileSync(filePath, 'utf8');
     const jsonData = JSON.parse(data);
+    const rawItems = jsonData.items.item;
 
-    const testData = FluctuatingIndicatorDto.create(jsonData);
+    const items = [];
+    for (let i = 0; i < rawItems.length; i++) {
+      const { basDt, clpr } = rawItems[i];
 
-    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateMonthlyAverage(testData).items.item;
+      items.push({
+        date: basDt,
+        value: clpr,
+      });
+    }
+
+    const testData = FluctuatingIndicatorDto.create({
+      type: 'k-stock',
+      ticker: rawItems[0].srtnCd,
+      name: rawItems[0].itmsNm,
+      market: rawItems[0].mrktCtg,
+      totalCount: jsonData.totalCount,
+      items: items,
+    });
+
+    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateMonthlyAverage(testData).items;
 
     const monthlyAverages = result.map((item) => item['value']);
     // then
@@ -79,9 +115,28 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
 
     const data = fs.readFileSync(filePath, 'utf8');
     const jsonData = JSON.parse(data);
+    const rawItems = jsonData.items.item;
 
-    const testData = FluctuatingIndicatorDto.create(jsonData);
-    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateYearlyAverage(testData).items.item;
+    const items = [];
+    for (let i = 0; i < rawItems.length; i++) {
+      const { basDt, clpr } = rawItems[i];
+
+      items.push({
+        date: basDt,
+        value: clpr,
+      });
+    }
+
+    const testData = FluctuatingIndicatorDto.create({
+      type: 'k-stock',
+      ticker: rawItems[0].srtnCd,
+      name: rawItems[0].itmsNm,
+      market: rawItems[0].mrktCtg,
+      totalCount: jsonData.totalCount,
+      items: items,
+    });
+
+    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateYearlyAverage(testData).items;
 
     const yearlyAverages = result.map((item) => item['value']);
     // then
