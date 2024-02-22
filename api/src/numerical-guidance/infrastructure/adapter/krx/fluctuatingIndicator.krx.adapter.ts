@@ -5,10 +5,10 @@ import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application
 import { Interval, Market } from 'src/utils/type/type-definition';
 import { LoadLiveIndicatorPort } from '../../../application/port/external/load-live-indicator.port';
 
-export const DAY_DATA_COUNT = 35;
-export const WEEK_DATA_COUNT = 240;
-export const MONTH_DATA_COUNT = 1000;
-export const YEAR_DATA_COUNT = 10000;
+export const DAY_NUMBER_OF_DAYS = 35;
+export const WEEK_NUMBER_OF_DAYS = 240;
+export const MONTH_NUMBER_OF_DAYS = 1000;
+export const YEAR_NUMBER_OF_DAYS = 10000;
 
 @Injectable()
 export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorPort, LoadLiveIndicatorPort {
@@ -32,20 +32,20 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     let responseData: FluctuatingIndicatorDto;
     switch (interval) {
       case 'day':
-        startDate = this.getStartDate(endDate, DAY_DATA_COUNT);
-        responseData = await this.createKRXResponseData(DAY_DATA_COUNT, ticker, market, startDate, endDate);
+        startDate = this.getStartDate(endDate, DAY_NUMBER_OF_DAYS);
+        responseData = await this.createKRXResponseData(DAY_NUMBER_OF_DAYS, ticker, market, startDate, endDate);
         break;
       case 'week':
-        startDate = this.getStartDate(endDate, WEEK_DATA_COUNT);
-        responseData = await this.createKRXResponseData(WEEK_DATA_COUNT, ticker, market, startDate, endDate);
+        startDate = this.getStartDate(endDate, WEEK_NUMBER_OF_DAYS);
+        responseData = await this.createKRXResponseData(WEEK_NUMBER_OF_DAYS, ticker, market, startDate, endDate);
         break;
       case 'month':
-        startDate = this.getStartDate(endDate, MONTH_DATA_COUNT);
-        responseData = await this.createKRXResponseData(MONTH_DATA_COUNT, ticker, market, startDate, endDate);
+        startDate = this.getStartDate(endDate, MONTH_NUMBER_OF_DAYS);
+        responseData = await this.createKRXResponseData(MONTH_NUMBER_OF_DAYS, ticker, market, startDate, endDate);
         break;
       case 'year':
-        startDate = this.getStartDate(endDate, YEAR_DATA_COUNT);
-        responseData = await this.createKRXResponseData(YEAR_DATA_COUNT, ticker, market, startDate, endDate);
+        startDate = this.getStartDate(endDate, YEAR_NUMBER_OF_DAYS);
+        responseData = await this.createKRXResponseData(YEAR_NUMBER_OF_DAYS, ticker, market, startDate, endDate);
         break;
     }
 
