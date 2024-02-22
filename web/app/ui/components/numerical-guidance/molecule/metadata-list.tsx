@@ -2,11 +2,11 @@
 import React from 'react';
 import List from '../../view/molocule/list';
 import { useIndicatorBoardMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
-import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import Button from '../../view/atom/button/button';
 import Pending from '../../view/molocule/pending';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
 import MetadataListItem from '../atom/metadata-list-item';
+import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 
 const MetdataList = React.memo(function MetadataList() {
   const { metadataList, createMetadata, isPending } = useIndicatorBoardMetadataList();
@@ -27,7 +27,7 @@ const MetdataList = React.memo(function MetadataList() {
     }
   };
 
-  const renderItem = (item: IndicatorBoardMetadataResponse) => <MetadataListItem key={item.id} item={item} />;
+  const renderItem = (item: IndicatorBoardMetadata) => <MetadataListItem key={item.id} item={item} />;
 
   return (
     <Pending isPending={isPending}>

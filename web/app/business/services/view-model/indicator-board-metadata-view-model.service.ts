@@ -24,40 +24,16 @@ export class IndicatorBoardMetadata {
   }
 }
 
-export class IndicatorBoardMetadataList {
-  readonly metadataList: IndicatorBoardMetadata[];
+export class IndicatorBoardMetadataList extends Array {
   constructor({ metadataList }: IndicatorBoardMetadataListResponse) {
-    this.metadataList = metadataList.map((metadata) => new IndicatorBoardMetadata(metadata));
+    super();
+    metadataList.forEach((metadata) => {
+      this.push(new IndicatorBoardMetadata(metadata));
+    });
   }
 
-  get length() {
-    return this.metadataList.length;
-  }
-
-  getMetadataById(id: string) {
-    return this.metadataList.find((metadata) => metadata.id === id);
-  }
-
-  getMetadataByIndex(index: number): IndicatorBoardMetadata | undefined {
-    return this.metadataList[index];
-  }
-
-  [Symbol.iterator]() {
-    let index = 0;
-    return {
-      next: () => {
-        if (index < this.metadataList.length) {
-          return {
-            value: this.metadataList[index++],
-            done: false,
-          };
-        } else {
-          return {
-            done: true,
-          };
-        }
-      },
-    };
+  static get [Symbol.species]() {
+    return Array;
   }
 }
 

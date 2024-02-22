@@ -4,7 +4,8 @@ import {
   useDeleteIndicatorBoardMetadata,
 } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useFetchIndicatorBoardMetadataList } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
+import { convertIndcatorBoardMetadataList } from '../services/view-model/indicator-board-metadata-view-model.service';
 
 export const useIndicatorBoardMetadataList = () => {
   const { data, isValidating } = useFetchIndicatorBoardMetadataList();
@@ -41,8 +42,14 @@ export const useIndicatorBoardMetadataList = () => {
     });
   };
 
+  const metadataList = useMemo(() => {
+    if (!data) return undefined;
+
+    return convertIndcatorBoardMetadataList(data);
+  }, [data]);
+
   return {
-    metadataList: data?.metadataList,
+    metadataList,
     isPending: isPending.current,
     createMetadata,
     deleteMetadata,
