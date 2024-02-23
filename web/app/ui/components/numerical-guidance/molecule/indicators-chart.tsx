@@ -1,6 +1,6 @@
 'use client';
 import { useIndicatorsValueViewModel } from '@/app/business/hooks/use-indicators-value-view-model.hook';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata-view-model.hook';
 import MultiLineChart from '../../view/molocule/multi-line-chart';
 import { useMemo } from 'react';
 import Pending from '../../view/molocule/pending';
@@ -8,14 +8,11 @@ import SelectedMetadataTittle from '../atom/selected-metadata-title';
 
 export default function IndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { indciatorsValueViewModel, isPending } = useIndicatorsValueViewModel();
+  const { indicatorsValue, isPending } = useIndicatorsValueViewModel();
 
-  const formattedIndicatorsRows = useMemo(
-    () => indciatorsValueViewModel?.formattedIndicatorsInRow,
-    [indciatorsValueViewModel],
-  );
+  const formattedIndicatorsRows = useMemo(() => indicatorsValue?.formattedIndicatorsInRow, [indicatorsValue]);
 
-  const category = indciatorsValueViewModel?.tickerList ? indciatorsValueViewModel.tickerList : [];
+  const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
 
   return (
     <>

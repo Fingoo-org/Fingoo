@@ -12,7 +12,7 @@ export type IndicatorResponse = {
 export type IndicatorBoardMetadataResponse = {
   id: string;
   name: string;
-  indicators: IndicatorResponse[];
+  tickers: IndicatorResponse[];
 };
 
 export type IndicatorBoardMetadataListResponse = {
@@ -27,7 +27,7 @@ export type IndicatorRequestBody = {
 export type CreateIndicatorMetadataRequestBody = {
   id: string;
   name: string;
-  indicators: IndicatorRequestBody[];
+  tickers: IndicatorRequestBody[];
 };
 
 export type AddIndicatorToMetadataRequestBody = {

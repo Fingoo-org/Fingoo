@@ -30,17 +30,17 @@ const initialState: MockDatabase = {
     {
       id: '1',
       name: 'metadata1',
-      indicators: [],
+      tickers: [],
     },
     {
       id: '2',
       name: 'metadata2',
-      indicators: [],
+      tickers: [],
     },
     {
       id: '3',
       name: 'metadata3',
-      indicators: [],
+      tickers: [],
     },
   ],
   indicatorList: [
@@ -88,7 +88,7 @@ export const mockDB: MockDatabaseAction = {
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
-      indicators: [...mockDatabaseStore.metadataList[index].indicators, data],
+      tickers: [...mockDatabaseStore.metadataList[index].tickers, data],
     };
 
     mockDatabaseStore.metadataList[index] = newMetadata;
@@ -97,9 +97,7 @@ export const mockDB: MockDatabaseAction = {
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
-      indicators: mockDatabaseStore.metadataList[index].indicators.filter(
-        (indicator) => indicator.ticker !== indicatorKey,
-      ),
+      tickers: mockDatabaseStore.metadataList[index].tickers.filter((ticker) => ticker.ticker !== indicatorKey),
     };
 
     mockDatabaseStore.metadataList[index] = newMetadata;

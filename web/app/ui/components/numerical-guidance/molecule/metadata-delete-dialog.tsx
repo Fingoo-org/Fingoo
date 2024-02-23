@@ -1,13 +1,13 @@
 'use client';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import AlertDialog from '../../view/molocule/alert-dialog';
-import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
-import { useIndicatorBoardMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list.hook';
+import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
+import { useIndicatorBoardMetadataList } from '@/app/business/hooks/use-indicator-board-metadata-list-view-model.hook';
 
 export default function MetadataDeleteDialog() {
   const { deleteMetadata } = useIndicatorBoardMetadataList();
   const handleClick = (payload: unknown) => {
-    deleteMetadata((payload as IndicatorBoardMetadataResponse).id);
+    deleteMetadata((payload as IndicatorBoardMetadata).id);
   };
 
   return (
