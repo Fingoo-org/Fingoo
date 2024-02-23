@@ -1,8 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { MemberEntity } from '../../../../../auth/member.entity';
+import { MemberEntity } from '../../../../../../auth/member.entity';
+import { BaseEntity } from '../../base.entity';
 
-@Entity()
-export class IndicatorBoardMetadataEntity {
+@Entity({ name: 'IndicatorBoardMetadata' })
+export class IndicatorBoardMetadataEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

@@ -9,6 +9,8 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   readonly id: string;
   indicatorBoardMetaDataName: string;
   tickers: Record<string, string[]>;
+  createdAt: Date;
+  updatedAt: Date;
 
   static createNew(indicatorBoardMetaDataName: string): IndicatorBoardMetadata {
     const initTickers: Record<string, string[]> = { 'k-stock': [], exchange: [] };
@@ -39,6 +41,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   public updateIndicatorBoardMetaDataName(name: string) {
     this.checkRule(new IndicatorBoardMetaDataNameShouldNotEmptyRule(name));
     this.indicatorBoardMetaDataName = name;
+    this.updatedAt = new Date();
   }
 
   private convertToArray(tickers: string): string[] {
@@ -57,5 +60,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.id = id;
     this.indicatorBoardMetaDataName = indicatorBoardMetaDataName;
     this.tickers = tickers;
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
   }
 }
