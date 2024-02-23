@@ -6,7 +6,7 @@ import {
   useUpdateIndicatorBoardMetadata,
 } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useNumericalGuidanceStore } from '../../store/stores/numerical-guidance.store';
-import { useIndicatorBoardMetadataList } from './use-indicator-board-metadata-list.hook';
+import { useIndicatorBoardMetadataList } from './use-indicator-board-metadata-list-view-model.hook';
 
 export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);

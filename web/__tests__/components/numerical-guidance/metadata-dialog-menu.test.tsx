@@ -5,7 +5,6 @@ import { resetAllStore } from '@/app/store/stores/reset-store';
 import MetdataList from '@/app/ui/components/numerical-guidance/molecule/metadata-list';
 import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/molecule/metadata-dialog-menu/metadata-dialog-menu';
 import userEvent from '@testing-library/user-event';
-import SelectedMetadataTittle from '@/app/ui/components/numerical-guidance/atom/selected-metadata-title';
 
 describe('MetadataDialogMenu', () => {
   beforeEach(() => {

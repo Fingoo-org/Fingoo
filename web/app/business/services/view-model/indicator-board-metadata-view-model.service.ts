@@ -17,6 +17,7 @@ export class IndicatorBoardMetadata {
   // 여기는 response와 같아야함
   readonly id: string;
   readonly name: string;
+  // 변경된 부분은 private으로 client에서 못사용하게
   private tickers: Indicator[];
   constructor({ id, name, tickers }: IndicatorBoardMetadataResponse) {
     this.id = id;
@@ -24,7 +25,7 @@ export class IndicatorBoardMetadata {
     this.tickers = tickers.map((ticker) => new Indicator(ticker));
   }
 
-  // 다른건 여기서 보내줘야함
+  // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
   get indicators() {
     return this.tickers;
   }

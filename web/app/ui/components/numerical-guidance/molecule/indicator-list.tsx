@@ -3,7 +3,7 @@ import WindowList from '../../view/molocule/window-list';
 import { useIndicatorList } from '@/app/business/hooks/use-indicator-list.hook';
 import { Indicator } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 import React from 'react';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata-view-model.hook';
 import clsx from 'clsx';
 import IndicatorListItem from '../atom/indicator-list-item';
 

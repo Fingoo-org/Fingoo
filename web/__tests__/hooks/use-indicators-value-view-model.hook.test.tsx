@@ -4,7 +4,7 @@ import { resetMockDB, mockDB } from '@/app/mocks/db.mock';
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useIndicatorsValueViewModel } from '@/app/business/hooks/use-indicators-value-view-model.hook';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata-view-model.hook';
 import { IndicatorsValue } from '@/app/business/services/view-model/indicators-value-view-model.service';
 
 const wrapper = SWRProviderWithoutCache;

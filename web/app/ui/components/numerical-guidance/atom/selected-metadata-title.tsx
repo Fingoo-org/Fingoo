@@ -1,4 +1,4 @@
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata-view-model.hook';
 import EditableText from '../../view/atom/editable-text';
 import clsx from 'clsx';
 

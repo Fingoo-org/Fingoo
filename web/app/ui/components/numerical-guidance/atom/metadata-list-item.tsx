@@ -2,7 +2,7 @@ import SelectableListItem from '../../view/atom/selectable-list-item';
 import IconButton from '../../view/atom/icon-button/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata-view-model.hook';
 import { useDialogMenu } from '../../view/molocule/dialog-menu';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 

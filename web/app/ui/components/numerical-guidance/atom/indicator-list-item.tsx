@@ -1,4 +1,4 @@
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata-view-model.hook';
 import SelectableListItem from '../../view/atom/selectable-list-item';
 import { Indicator } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 
