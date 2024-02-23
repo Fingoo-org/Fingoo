@@ -11,7 +11,7 @@ import {
 } from '../services/view-model/indicator-board-metadata-view-model.service';
 
 export const useIndicatorBoardMetadataList = () => {
-  const { data, isValidating } = useFetchIndicatorBoardMetadataList();
+  const { data: metadataList, isValidating } = useFetchIndicatorBoardMetadataList();
   const { trigger: deleteMetadataTrigger } = useDeleteIndicatorBoardMetadata();
   const { trigger: createMetadataTrigger, isMutating } = useCreateIndicatorMetadata();
   const isPending = useRef(false);
@@ -26,6 +26,12 @@ export const useIndicatorBoardMetadataList = () => {
     }
   }
 
+  const convertedMetadataList = useMemo(() => {
+    if (!metadataList) return undefined;
+
+    return convertIndcatorBoardMetadataList(metadataList);
+  }, [metadataList]);
+
   const createMetadata = async (metadata: IndicatorBoardMetadata) => {
     try {
       await createMetadataTrigger(metadata.formattedIndicatorBoardMetadata);
@@ -37,23 +43,17 @@ export const useIndicatorBoardMetadataList = () => {
   const deleteMetadata = async (metadataId: string) => {
     deleteMetadataTrigger(metadataId, {
       optimisticData: () => {
+        convertedMetadataList?.deleteMetadata(metadataId);
         return {
-          metadataList: data?.metadataList?.filter((metadata) => metadata.id !== metadataId),
+          metadataList: convertedMetadataList?.formattedIndicatorBoardMetadataList,
         };
       },
       revalidate: false,
     });
   };
 
-  // refactor: 위에 선언하는게 맞는가 아래에 선언하는게 맞는가? 무엇을 무엇으로부터 보호하는 것인가?
-  const metadataList = useMemo(() => {
-    if (!data) return undefined;
-
-    return convertIndcatorBoardMetadataList(data);
-  }, [data]);
-
   return {
-    metadataList,
+    metadataList: convertedMetadataList,
     isPending: isPending.current,
     createMetadata,
     deleteMetadata,

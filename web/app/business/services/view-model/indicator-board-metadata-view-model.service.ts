@@ -63,6 +63,13 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     return Array;
   }
 
+  deleteMetadata(metadataId: string) {
+    const index = this.findIndex((metadata) => metadata.id === metadataId);
+    if (index === -1) return;
+
+    this.splice(index, 1);
+  }
+
   addIndicatorToMetadataById(metadataId: string | undefined, indicator: Indicator) {
     const metadata = this.find((metadata) => metadata.id === metadataId);
     if (!metadata) return;
