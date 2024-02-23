@@ -37,6 +37,14 @@ export const Light: Story = {
   },
 };
 
+export const Disabled: Story = {
+  args: {
+    text: 'ToggleButton',
+    icon: CheckCircleIcon,
+    disabled: true,
+  },
+};
+
 export const WithIcon: Story = {
   args: {
     text: 'ToggleButton',

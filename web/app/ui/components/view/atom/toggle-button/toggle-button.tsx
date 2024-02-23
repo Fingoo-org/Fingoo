@@ -11,15 +11,17 @@ type ToggleButtonProps = {
   variant?: ButtonVariant;
   size?: Size;
   icon?: React.ElementType;
+  disabled?: boolean;
   onActivated?: () => void;
 };
 
 export default function ToggleButton({
   text,
+  icon,
   activeColor = 'blue',
   size = 'md',
-  icon,
   variant = 'light',
+  disabled = false,
   onActivated,
 }: ToggleButtonProps): JSX.Element {
   const [active, setActive] = useState(false);
@@ -35,7 +37,13 @@ export default function ToggleButton({
   };
 
   return (
-    <Button size={size} variant={variant} onClick={handleToggle} color={active ? activeColor : 'gray'}>
+    <Button
+      disabled={disabled}
+      size={size}
+      variant={variant}
+      onClick={handleToggle}
+      color={active ? activeColor : 'gray'}
+    >
       <div className="flex items-center">
         {icon ? <IconButton color={active ? activeColor : 'gray'} variant={'simple'} icon={icon} size={size} /> : null}
         {text}
