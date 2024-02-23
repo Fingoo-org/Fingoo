@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { IndicatorBoardMetadataPersistentAdapter } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata.persistent.adapter';
+import { IndicatorBoardMetadataPersistentAdapter } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetadata } from '../../../../domain/indicator-board-metadata';
-import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/entity/indicator-board-metadata.entity';
+import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
 import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from '../../../../../auth/auth.service';
