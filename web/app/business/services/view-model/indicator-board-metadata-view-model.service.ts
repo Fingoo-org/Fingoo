@@ -40,6 +40,14 @@ export class IndicatorBoardMetadata {
       tickers: this.indicators,
     };
   }
+
+  addIndicator(indicator: Indicator) {
+    this.tickers = [...this.tickers, indicator];
+  }
+
+  deleteIndicator(indicatorKey: string) {
+    this.tickers = this.tickers.filter((indicator) => indicator.ticker !== indicatorKey);
+  }
 }
 
 export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
@@ -58,7 +66,7 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     const metadata = this.find((metadata) => metadata.id === metadataId);
     if (!metadata) return;
 
-    metadata.indicators = [...metadata.indicators, indicator];
+    metadata.addIndicator(indicator);
   }
 
   updateIndicatorBoardMetadatNameaById(metadataId: string | undefined, name: string) {
@@ -74,7 +82,7 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     const metadata = this.find((metadata) => metadata.id === metadataId);
     if (!metadata) return;
 
-    metadata.indicators = metadata.indicators.filter((indicator) => indicator.ticker !== indicatorKey);
+    metadata.deleteIndicator(indicatorKey);
   }
 
   get formattedIndicatorBoardMetadataList() {
