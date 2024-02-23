@@ -16,9 +16,9 @@ export function DropdownMenuItem({ children, icon }: React.PropsWithChildren<Dro
           } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
         >
           {active ? (
-            <Icon className="w-5 h-5 mr-2 text-violet-300" aria-hidden="true" />
+            <Icon className="mr-2 h-5 w-5 text-violet-300" aria-hidden="true" />
           ) : (
-            <Icon className="w-5 h-5 mr-2 text-violet-400" aria-hidden="true" />
+            <Icon className="mr-2 h-5 w-5 text-violet-400" aria-hidden="true" />
           )}
           {children}
         </button>

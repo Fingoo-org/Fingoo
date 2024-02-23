@@ -68,7 +68,7 @@ export function AlertDialogRoot({ children, dialogKey }: React.PropsWithChildren
                   {alertDialogTitle}
                   {alertDialogBody}
 
-                  <div className="flex mt-4 flex-row-reverse gap-1">
+                  <div className="mt-4 flex flex-row-reverse gap-1">
                     {alertDialogPositiveButton}
                     {alertDialogNegativeButton}
                   </div>

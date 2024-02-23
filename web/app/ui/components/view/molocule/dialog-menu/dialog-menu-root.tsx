@@ -37,10 +37,10 @@ export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.Props
 
   return (
     <DialogMenuContext.Provider value={dialogKey}>
-      <div className="fixed inset-0 pointer-events-none	overflow-hidden	z-50">
+      <div className="pointer-events-none fixed inset-0	z-50	overflow-hidden">
         <Transition as={React.Fragment} show={isOpen || false}>
-          <div className="relative pointer-events-auto z-0">
-            <div onClick={handleOnClick} className="fixed top-0 left-0 w-screen h-screen" />
+          <div className="pointer-events-auto relative z-0">
+            <div onClick={handleOnClick} className="fixed left-0 top-0 h-screen w-screen" />
             <div style={{ left: position.x, top: position.y }} className="fixed">
               <Transition.Child
                 as={React.Fragment}
@@ -54,11 +54,11 @@ export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.Props
                 <div
                   role="dialog"
                   className={twMerge(
-                    'relative bg-white rounded-lg shadow-lg overflow-hidden pointer-events-auto mt-2 origin-top-left ring-1 ring-black/5 focus:outline-none',
+                    'pointer-events-auto relative mt-2 origin-top-left overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none',
                     dialogSize,
                   )}
                 >
-                  <div className="pt-4 px-3 pb-1">{dialogMenuHeader}</div>
+                  <div className="px-3 pb-1 pt-4">{dialogMenuHeader}</div>
                   {dialogMenuItems}
                 </div>
               </Transition.Child>

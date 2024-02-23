@@ -41,11 +41,11 @@ export default function TinyInput({
   };
 
   return (
-    <div className="bg-gray-100	 flex w-full rounded-lg text-sm has-[:focus]:ring-2 has=[:focus]:ring-blue-200 duration-100 ">
+    <div className="has=[:focus]:ring-blue-200 flex w-full rounded-lg bg-gray-100 text-sm duration-100 has-[:focus]:ring-2 ">
       <input
         value={value}
         onChange={handleChange}
-        className=" bg-gray-100	 pl-2 py-0.5 focus:outline-none rounded-lg text-custom-inherit focus:ring-0 focus:ring-offset-0 border-none w-full p-0"
+        className=" w-full rounded-lg border-none bg-gray-100 p-0 py-0.5 pl-2 text-custom-inherit focus:outline-none focus:ring-0 focus:ring-offset-0"
       />
       {withResetButton ? <IconButton color={'gray'} icon={XCircleIcon} size={'xs'} onClick={handleReset} /> : null}
     </div>
