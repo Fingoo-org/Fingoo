@@ -27,7 +27,7 @@ import { GetLiveIndicatorQuery } from '../application/query/get-live-indicator/g
 import { GetLiveIndicatorDto } from './dto/get-live-indicator.dto';
 
 @ApiTags('NumericalGuidanceController')
-@Controller('/numerical-guidance')
+@Controller('/api/numerical-guidance')
 export class NumericalGuidanceController {
   constructor(
     private queryBus: QueryBus,

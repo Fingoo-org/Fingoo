@@ -4,7 +4,7 @@ import { MemberEntity } from './member.entity';
 import { AuthGuard } from './auth.guard';
 import { Member } from './get-member.decorator';
 
-@Controller('auth')
+@Controller('/api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 

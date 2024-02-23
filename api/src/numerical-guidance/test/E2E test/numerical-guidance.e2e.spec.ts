@@ -4,12 +4,12 @@ import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { NumericalGuidanceController } from '../../api/numerical-guidance.controller';
 import { GetIndicatorBoardMetaDataQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
-import { IndicatorBoardMetadataPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata.persistent.adapter';
+import { IndicatorBoardMetadataPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { HttpExceptionFilter } from 'src/utils/exception-filter/http-execption-filter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MemberEntity } from 'src/auth/member.entity';
-import { IndicatorBoardMetadataEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/entity/indicator-board-metadata.entity';
+import { IndicatorBoardMetadataEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from 'src/auth/auth.service';
 import { DataSource } from 'typeorm';
@@ -202,7 +202,7 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/get live 지표 값을 불러온다.', async () => {
     return request(app.getHttpServer())
-      .get(`/numerical-guidance/indicators/k-stock/live`)
+      .get(`/api/numerical-guidance/indicators/k-stock/live`)
       .query({
         ticker: '005930',
         market: 'KOSPI',
@@ -214,21 +214,21 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/get 메타데이터 id를 전송해서 id에 해당하는 메타데이터를 가져온다.', async () => {
     return request(app.getHttpServer())
-      .get(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba73`)
+      .get(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba73`)
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });
 
   it('/get db에 존재하지않는 메타데이터 id를 전송한다.', () => {
     return request(app.getHttpServer())
-      .get('/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba22')
+      .get('/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba22')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);
   });
 
   it('/post 지표보드 메타데이터에 새로운 지표를 추가한다.', async () => {
     return request(app.getHttpServer())
-      .post(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
+      .post(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
       .send({
         ticker: 'ticker2',
         type: 'k-stock',
@@ -239,7 +239,7 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/post 지표보드 메타데이터에 새로운 지표를 추가할 때 중복 데이터를 넣는다', async () => {
     return request(app.getHttpServer())
-      .post(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
+      .post(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
       .send({
         ticker: 'ticker1',
         type: 'k-stock',
@@ -250,14 +250,14 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/get 사용자 id를 전송하여 메타데이터 리스트를 가져온다.', async () => {
     return request(app.getHttpServer())
-      .get('/numerical-guidance/indicator-board-metadata')
+      .get('/api/numerical-guidance/indicator-board-metadata')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });
 
   it('/delete 지표보드 메타데이터에서 지표를 삭제한다.', async () => {
     return request(app.getHttpServer())
-      .delete('/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/ticker1')
+      .delete('/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/ticker1')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });
@@ -265,7 +265,7 @@ describe('NumericalGuidance E2E Test', () => {
   it('/delete 지표보드 메타데이터에서 지표를 삭제할 때, tickers에 존재하지 않는 값을 요청한다.', async () => {
     return request(app.getHttpServer())
       .delete(
-        `/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/invalidTicker`,
+        `/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/invalidTicker`,
       )
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
@@ -273,28 +273,28 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/delete 지표보드 메타데이터에서 지표를 삭제할 때, 존재하지 않는 지표보드 메타데이터를 요청한다.', async () => {
     return request(app.getHttpServer())
-      .delete(`/numerical-guidance/indicator-board-metadata/e46240d3-7d15-48e7-a9b7-f490bf9ca6e0/indicator/ticker1`)
+      .delete(`/api/numerical-guidance/indicator-board-metadata/e46240d3-7d15-48e7-a9b7-f490bf9ca6e0/indicator/ticker1`)
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);
   });
 
   it('/delete 지표보드 메타데이터를 삭제한다.', async () => {
     return request(app.getHttpServer())
-      .delete(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
+      .delete(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });
 
   it('/delete 지표보드 메타데이터를 삭제할때, 존재하지 않는 id를 요청한다.', async () => {
     return request(app.getHttpServer())
-      .delete(`/numerical-guidance/indicator-board-metadata/e46240d3-7d15-48e7-a9b7-f490bf9ca6e0`)
+      .delete(`/api/numerical-guidance/indicator-board-metadata/e46240d3-7d15-48e7-a9b7-f490bf9ca6e0`)
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);
   });
 
   it('/patch 지표보드 메타데이터의 이름을 수정한다.', async () => {
     return request(app.getHttpServer())
-      .patch(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba50`)
+      .patch(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba50`)
       .send({
         name: 'updateName',
       })
@@ -304,7 +304,7 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/patch 지표보드 메타데이터의 이름을 수정할 때, 이름이 빈값으로 들어온다.', async () => {
     return request(app.getHttpServer())
-      .patch(`/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba50`)
+      .patch(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba50`)
       .send({
         name: '',
       })

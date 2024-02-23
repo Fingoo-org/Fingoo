@@ -37,14 +37,14 @@ describe('CommunityController', () => {
   });
 
   it('/get 포스팅 리스트를 조회한다', () => {
-    return request(app.getHttpServer()).get('/community').expect(200);
+    return request(app.getHttpServer()).get('/api/community').expect(200);
   });
 
   it('/post 포스팅을 게시한다', () => {
     const content = '*'.repeat(10);
 
     return request(app.getHttpServer())
-      .post('/community/post')
+      .post('/api/community/post')
       .send({ content: content })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);
@@ -54,7 +54,7 @@ describe('CommunityController', () => {
     const content = '*'.repeat(3);
 
     return request(app.getHttpServer())
-      .post('/community/post')
+      .post('/api/community/post')
       .send({ content: content })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
@@ -64,7 +64,7 @@ describe('CommunityController', () => {
     const content = '*'.repeat(CONTENT_LIMIT_RULE + 1);
 
     return request(app.getHttpServer())
-      .post('/community/post')
+      .post('/api/community/post')
       .send({ content: content })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
