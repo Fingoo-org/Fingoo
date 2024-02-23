@@ -5,6 +5,8 @@ import MultiLineChart from '../../view/molocule/multi-line-chart';
 import { useMemo } from 'react';
 import Pending from '../../view/molocule/pending';
 import SelectedMetadataTittle from '../atom/selected-metadata-title';
+import ToggleButton from '../../view/atom/toggle-button/toggle-button';
+import { CheckCircleIcon } from '@heroicons/react/outline';
 
 export default function IndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
@@ -17,7 +19,12 @@ export default function IndicatorsChart() {
   return (
     <>
       <Pending isPending={isPending}>
-        <SelectedMetadataTittle />
+        <div className="flex items-center justify-center">
+          <SelectedMetadataTittle />
+        </div>
+        <div>
+          <ToggleButton disabled={selectedMetadata ? false : true} icon={CheckCircleIcon} text={'자세한 차트'} />
+        </div>
         <MultiLineChart
           data={formattedIndicatorsRows || []}
           categories={category}
