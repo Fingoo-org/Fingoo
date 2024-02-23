@@ -1,11 +1,11 @@
 import { IndicatorType, Market } from 'src/utils/type/type-definition';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
 
 @Entity({ name: 'Indicator' })
 export class IndicatorEntity extends BaseEntity {
-  @PrimaryColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
