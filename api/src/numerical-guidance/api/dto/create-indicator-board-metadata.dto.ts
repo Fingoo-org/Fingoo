@@ -7,7 +7,7 @@ export class CreateIndicatorBoardMetadataDto {
     description: '메타데이터 이름',
   })
   @IsString()
-  indicatorBoardMetaDataName: string;
+  indicatorBoardMetadataName: string;
 
   @ApiProperty({
     example: '1',

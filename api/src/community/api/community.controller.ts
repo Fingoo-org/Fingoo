@@ -5,7 +5,7 @@ import { GetPostsQuery } from 'src/community/application/query/get-posts/get-pos
 import { Response } from 'express';
 import { CreatePostDto } from './dto/create-post.dto';
 
-@Controller('/community')
+@Controller('/api/community')
 export class CommunityController {
   constructor(
     private commandBus: CommandBus,

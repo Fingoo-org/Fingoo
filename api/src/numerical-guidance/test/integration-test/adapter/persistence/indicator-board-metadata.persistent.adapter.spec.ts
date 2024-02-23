@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { IndicatorBoardMetadataPersistentAdapter } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata.persistent.adapter';
+import { IndicatorBoardMetadataPersistentAdapter } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetadata } from '../../../../domain/indicator-board-metadata';
-import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/entity/indicator-board-metadata.entity';
+import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
 import { MemberEntity } from '../../../../../auth/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from '../../../../../auth/auth.service';
@@ -14,10 +14,10 @@ jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
 }));
 
-describe('IndicatorBoardMetaDataPersistentAdapter', () => {
+describe('IndicatorBoardMetadataPersistentAdapter', () => {
   let environment;
   let dataSource: DataSource;
-  let indicatorBoardMetaDataPersistentAdapter: IndicatorBoardMetadataPersistentAdapter;
+  let indicatorBoardMetadataPersistentAdapter: IndicatorBoardMetadataPersistentAdapter;
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
     await memberRepository.insert({ id: 10 });
@@ -27,21 +27,21 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
-      indicatorBoardMetaDataName: 'name',
+      indicatorBoardMetadataName: 'name',
       tickers: { 'k-stock': [], exchange: [] },
       member: { id: 10 },
     });
 
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba72',
-      indicatorBoardMetaDataName: 'name',
+      indicatorBoardMetadataName: 'name',
       tickers: { 'k-stock': [], exchange: [] },
       member: { id: 5 },
     });
 
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
-      indicatorBoardMetaDataName: 'name',
+      indicatorBoardMetadataName: 'name',
       tickers: { 'k-stock': [], exchange: [] },
     });
   };
@@ -74,7 +74,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       ],
       providers: [IndicatorBoardMetadataPersistentAdapter, AuthService],
     }).compile();
-    indicatorBoardMetaDataPersistentAdapter = module.get(IndicatorBoardMetadataPersistentAdapter);
+    indicatorBoardMetadataPersistentAdapter = module.get(IndicatorBoardMetadataPersistentAdapter);
     dataSource = module.get<DataSource>(DataSource);
     await seeding();
   }, 20000);
@@ -89,15 +89,15 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // when
-    const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(
+    const resultId = await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetaData(
       indicatorBoardMetaData,
       memberId,
     );
     const resultIndicatorBoardMetaData: IndicatorBoardMetadata =
-      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(resultId);
+      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(resultId);
 
     // then
-    expect(resultIndicatorBoardMetaData.indicatorBoardMetaDataName).toEqual('메타 데이터');
+    expect(resultIndicatorBoardMetaData.indicatorBoardMetadataName).toEqual('메타 데이터');
   });
 
   it('지표보드 메타데이터 생성 - 회원을 찾지 못한 경우', async () => {
@@ -106,7 +106,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(
+      await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetaData(
         indicatorBoardMetaData,
         invalidMemberId,
       );
@@ -124,17 +124,17 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // when
-    const resultId = await indicatorBoardMetaDataPersistentAdapter.createIndicatorBoardMetaData(
+    const resultId = await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetaData(
       indicatorBoardMetaData,
       10,
     );
-    const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(resultId);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(resultId);
 
     // then
     const expectedName = '메타 데이터';
     const expectedIndicatorTicker = { 'k-stock': '', exchange: '' };
 
-    expect(result.indicatorBoardMetaDataName).toEqual(expectedName);
+    expect(result.indicatorBoardMetadataName).toEqual(expectedName);
     expect(result.tickers).toEqual(expectedIndicatorTicker);
   });
 
@@ -145,7 +145,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     // when
     // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(invalidId);
+      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(invalidId);
     }).rejects.toThrow(
       new NotFoundException({
         message: '[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.',
@@ -162,7 +162,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     // when
     // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(invalidId);
+      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(invalidId);
     }).rejects.toThrow(
       new BadRequestException({
         message: `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.
@@ -185,20 +185,20 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     );
 
     // when
-    await indicatorBoardMetaDataPersistentAdapter.addIndicatorTicker(newIndicatorBoardMetaData);
-    const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(
+    await indicatorBoardMetadataPersistentAdapter.addIndicatorTicker(newIndicatorBoardMetaData);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
     );
 
     // then
-    expect(result.indicatorBoardMetaDataName).toEqual('name');
+    expect(result.indicatorBoardMetadataName).toEqual('name');
     expect(result.tickers['k-stock']).toEqual('ticker1,ticker2');
   });
 
   it('사용자 id로 메타데이터 리스트 가져오기.', async () => {
     // given
     // when
-    const result = await indicatorBoardMetaDataPersistentAdapter.loadMemberIndicatorBoardMetadataList(5);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadMemberIndicatorBoardMetadataList(5);
 
     // then
     const expectedFirstTickerId = '0d73cea1-35a5-432f-bcd1-27ae3541ba72';
@@ -211,7 +211,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     // when
     // then
     expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.loadMemberIndicatorBoardMetadataList(154);
+      await indicatorBoardMetadataPersistentAdapter.loadMemberIndicatorBoardMetadataList(154);
     }).rejects.toThrow(
       new NotFoundException({
         message: '[ERROR] 해당 회원을 찾을 수 없습니다.',
@@ -227,7 +227,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     // then
     expect(async () => {
       const id = 'invalid id';
-      await indicatorBoardMetaDataPersistentAdapter.loadMemberIndicatorBoardMetadataList(id);
+      await indicatorBoardMetadataPersistentAdapter.loadMemberIndicatorBoardMetadataList(id);
     }).rejects.toThrow(
       new BadRequestException({
         message: '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
@@ -250,7 +250,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.addIndicatorTicker(newIndicatorBoardMetaData);
+      await indicatorBoardMetadataPersistentAdapter.addIndicatorTicker(newIndicatorBoardMetaData);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
@@ -272,13 +272,13 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     );
 
     // when
-    await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorTicker(deleteIndicatorBoardMetadata);
-    const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(
+    await indicatorBoardMetadataPersistentAdapter.deleteIndicatorTicker(deleteIndicatorBoardMetadata);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
     );
 
     // then
-    expect(result.indicatorBoardMetaDataName).toEqual('name');
+    expect(result.indicatorBoardMetadataName).toEqual('name');
     expect(result.tickers['k-stock']).toEqual('ticker1,ticker2');
   });
 
@@ -295,7 +295,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorTicker(deleteIndicatorBoardMetadata);
+      await indicatorBoardMetadataPersistentAdapter.deleteIndicatorTicker(deleteIndicatorBoardMetadata);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
@@ -310,11 +310,11 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
     const deleteIndicatorBoardMetadataId: string = '0d73cea1-35a5-432f-bcd1-27ae3541ba73';
 
     // when
-    await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorBoardMetadata(deleteIndicatorBoardMetadataId);
+    await indicatorBoardMetadataPersistentAdapter.deleteIndicatorBoardMetadata(deleteIndicatorBoardMetadataId);
 
     // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(deleteIndicatorBoardMetadataId);
+      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(deleteIndicatorBoardMetadataId);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
@@ -330,7 +330,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorBoardMetadata(invalidId);
+      await indicatorBoardMetadataPersistentAdapter.deleteIndicatorBoardMetadata(invalidId);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
@@ -346,7 +346,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.deleteIndicatorBoardMetadata(invalidId);
+      await indicatorBoardMetadataPersistentAdapter.deleteIndicatorBoardMetadata(invalidId);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
@@ -368,13 +368,13 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
       },
     );
     // when
-    await indicatorBoardMetaDataPersistentAdapter.updateIndicatorBoardMetadataName(updateIndicatorBoardMetadata);
-    const result = await indicatorBoardMetaDataPersistentAdapter.loadIndicatorBoardMetaData(
+    await indicatorBoardMetadataPersistentAdapter.updateIndicatorBoardMetadataName(updateIndicatorBoardMetadata);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
     );
 
     // then
-    expect(result.indicatorBoardMetaDataName).toEqual('updateName');
+    expect(result.indicatorBoardMetadataName).toEqual('updateName');
   });
 
   it('지표보드 메타데이터 이름 수정하기. - DB에 존재하지 않는 경우', async () => {
@@ -390,7 +390,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.updateIndicatorBoardMetadataName(invalidIndicatorBoardMetadata);
+      await indicatorBoardMetadataPersistentAdapter.updateIndicatorBoardMetadataName(invalidIndicatorBoardMetadata);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
@@ -413,7 +413,7 @@ describe('IndicatorBoardMetaDataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetaDataPersistentAdapter.updateIndicatorBoardMetadataName(invalidIndicatorBoardMetadata);
+      await indicatorBoardMetadataPersistentAdapter.updateIndicatorBoardMetadataName(invalidIndicatorBoardMetadata);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] 지표보드 메타데이터의 이름을 수정하는 도중에 entity 오류가 발생했습니다.

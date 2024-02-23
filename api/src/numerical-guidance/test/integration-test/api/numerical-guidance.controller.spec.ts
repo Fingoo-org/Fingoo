@@ -81,7 +81,7 @@ describe('NumericalGuidanceController', () => {
 
   it('/get 변동 지표를 불러온다.', () => {
     return request(app.getHttpServer())
-      .get('/numerical-guidance/indicators/k-stock')
+      .get('/api/numerical-guidance/indicators/k-stock')
       .query({
         dataCount: 2,
         ticker: '005930',
@@ -95,7 +95,7 @@ describe('NumericalGuidanceController', () => {
 
   it('/get 사용자가 유효하지 않는 값 전송한다.', () => {
     return request(app.getHttpServer())
-      .get('/numerical-guidance/indicators/k-stock')
+      .get('/api/numerical-guidance/indicators/k-stock')
       .query({
         dataCount: 2,
         ticker: '005930',
@@ -108,9 +108,9 @@ describe('NumericalGuidanceController', () => {
 
   it('/post 지표보드 메타데이터를 생성한다.', () => {
     return request(app.getHttpServer())
-      .post('/numerical-guidance/indicator-board-metadata')
+      .post('/api/numerical-guidance/indicator-board-metadata')
       .send({
-        indicatorBoardMetaDataName: '메타데이터',
+        indicatorBoardMetadataName: '메타데이터',
         memberId: 1,
       })
       .set('Content-Type', 'application/json')
@@ -119,9 +119,9 @@ describe('NumericalGuidanceController', () => {
 
   it('/post 지표보드 메타데이터를 생성할 때 사용자가 유효하지 않는 값 전송한다.', () => {
     return request(app.getHttpServer())
-      .post('/numerical-guidance/indicator-board-metadata')
+      .post('/api/numerical-guidance/indicator-board-metadata')
       .send({
-        indicatorBoardMetaDataName: ' ',
+        indicatorBoardMetadataName: ' ',
         memberId: 1,
       })
       .set('Content-Type', 'application/json')

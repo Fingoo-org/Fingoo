@@ -1,7 +1,8 @@
 import { IndicatorType, Market } from 'src/utils/type/type-definition';
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity } from '../../base.entity';
 
-@Entity()
+@Entity({ name: 'Indicator' })
 export class IndicatorEntity extends BaseEntity {
   @PrimaryColumn()
   id: number;

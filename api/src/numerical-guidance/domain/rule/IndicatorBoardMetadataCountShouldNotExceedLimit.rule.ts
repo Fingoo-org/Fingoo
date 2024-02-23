@@ -2,7 +2,7 @@ import { BusinessRule } from '../../../utils/domain/business.rule';
 
 const INDICATOR_KEY_MAXIMUM = 5;
 
-export class IndicatorBoardMetaDataCountShouldNotExceedLimitRule implements BusinessRule {
+export class IndicatorBoardMetadataCountShouldNotExceedLimitRule implements BusinessRule {
   constructor(private readonly tickers: Record<string, string[]>) {}
 
   isBroken = () =>

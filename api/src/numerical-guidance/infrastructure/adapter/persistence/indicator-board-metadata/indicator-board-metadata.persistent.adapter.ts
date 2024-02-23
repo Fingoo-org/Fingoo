@@ -5,22 +5,22 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateIndicatorBoardMetadataPort } from '../../../application/port/persistence/create-indicator-board-metadata.port';
-import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
+import { CreateIndicatorBoardMetadataPort } from '../../../../application/port/persistence/create-indicator-board-metadata.port';
+import { IndicatorBoardMetadata } from '../../../../domain/indicator-board-metadata';
 
 import { IndicatorBoardMetadataEntity } from './entity/indicator-board-metadata.entity';
 import { IndicatorBoardMetadataMapper } from './mapper/indicator-board-metadata.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
-import { AuthService } from '../../../../auth/auth.service';
+import { AuthService } from '../../../../../auth/auth.service';
 import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/load-indiactor-board-metadata.port';
-import { InsertIndicatorTickerPort } from '../../../application/port/persistence/insert-indicator-ticker.port';
+import { InsertIndicatorTickerPort } from '../../../../application/port/persistence/insert-indicator-ticker.port';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
 import { LoadMemberIndicatorBoardMetadataListPort } from 'src/numerical-guidance/application/port/persistence/load-member-indicator-board-metadata-list.port';
-import { DeleteIndicatorTickerPort } from '../../../application/port/persistence/delete-indicator-ticker.port';
-import { DeleteIndicatorBoardMetadataPort } from '../../../application/port/persistence/delete-indicator-board-metadata.port';
+import { DeleteIndicatorTickerPort } from '../../../../application/port/persistence/delete-indicator-ticker.port';
+import { DeleteIndicatorBoardMetadataPort } from '../../../../application/port/persistence/delete-indicator-board-metadata.port';
 
-import { UpdateIndicatorBoardMetadataNamePort } from '../../../application/port/persistence/update-indicator-board-metadata-name.port';
+import { UpdateIndicatorBoardMetadataNamePort } from '../../../../application/port/persistence/update-indicator-board-metadata-name.port';
 
 @Injectable()
 export class IndicatorBoardMetadataPersistentAdapter
@@ -240,7 +240,7 @@ export class IndicatorBoardMetadataPersistentAdapter
         await this.indicatorBoardMetadataRepository.findOneBy({ id });
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
 
-      indicatorBoardMetaDataEntity.indicatorBoardMetaDataName = indicatorBoardMetaData.indicatorBoardMetaDataName;
+      indicatorBoardMetaDataEntity.indicatorBoardMetadataName = indicatorBoardMetaData.indicatorBoardMetadataName;
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
     } catch (error) {

@@ -22,7 +22,7 @@ export class UpdateIndicatorBoardMetadataNameCommandHandler implements ICommandH
     const indicatorBoardMetaData: IndicatorBoardMetadata =
       await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetaData(id);
 
-    indicatorBoardMetaData.updateIndicatorBoardMetaDataName(name);
+    indicatorBoardMetaData.updateIndicatorBoardMetadataName(name);
 
     await this.updateIndicatorBoardMetadataNamePort.updateIndicatorBoardMetadataName(indicatorBoardMetaData);
   }

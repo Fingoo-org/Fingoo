@@ -18,9 +18,9 @@ export class DeleteIndicatorTickerCommandHandler implements ICommandHandler {
 
   @Transactional()
   async execute(command: DeleteIndicatorTickerCommand) {
-    const { indicatorBoardMetaDataId, ticker } = command;
+    const { indicatorBoardMetadataId, ticker } = command;
     const indicatorBoardMetaData: IndicatorBoardMetadata =
-      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetaData(indicatorBoardMetaDataId);
+      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetaData(indicatorBoardMetadataId);
 
     indicatorBoardMetaData.deleteIndicatorTicker(ticker);
 

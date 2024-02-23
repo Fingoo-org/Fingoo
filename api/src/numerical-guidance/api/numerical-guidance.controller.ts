@@ -27,7 +27,7 @@ import { GetLiveIndicatorQuery } from '../application/query/get-live-indicator/g
 import { GetLiveIndicatorDto } from './dto/get-live-indicator.dto';
 
 @ApiTags('NumericalGuidanceController')
-@Controller('/numerical-guidance')
+@Controller('/api/numerical-guidance')
 export class NumericalGuidanceController {
   constructor(
     private queryBus: QueryBus,
@@ -91,7 +91,7 @@ export class NumericalGuidanceController {
     @Member() member: MemberEntity,
   ) {
     const command = new CreateIndicatorBoardMetadataCommand(
-      createIndicatorBoardMetaDataDto.indicatorBoardMetaDataName,
+      createIndicatorBoardMetaDataDto.indicatorBoardMetadataName,
       member.id,
     );
     await this.commandBus.execute(command);
