@@ -8,12 +8,13 @@ type NativeButtonType = React.ComponentPropsWithoutRef<'button'>;
 type IconButtonProps = {
   icon: React.ElementType;
   size?: Size;
-  color: Color;
+  color?: Color;
   variant?: IconVariant;
+  disabled?: boolean;
 } & NativeButtonType;
 
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { icon, onClick, size = Sizes.SM, variant = IconVariants.Simple, color, className, ...props },
+  { icon, onClick, size = Sizes.SM, variant = IconVariants.Simple, color = 'blue', disabled, className, ...props },
   ref,
 ) {
   const Icon = icon;
@@ -23,6 +24,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function
   return (
     <button
       {...props}
+      disabled={disabled}
       ref={ref}
       onClick={onClick}
       className={twMerge(

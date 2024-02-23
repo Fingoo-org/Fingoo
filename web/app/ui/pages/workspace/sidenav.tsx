@@ -15,9 +15,9 @@ export default function SideNav() {
 
 function SideNavHeader() {
   return (
-    <div className="flex items-center h-full md:px-2 bg-red-700">
-      <div className="w-14 h-14 bg-gray-300 rounded-lg md:mx-8"></div>
-      <div className="text-white text-xl">Logo</div>
+    <div className="flex h-full items-center bg-red-700 md:px-2">
+      <div className="h-14 w-14 rounded-lg bg-gray-300 md:mx-8"></div>
+      <div className="text-xl text-white">Logo</div>
     </div>
   );
 }

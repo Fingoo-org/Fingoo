@@ -23,11 +23,11 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   return (
-    <div className="relative w-full group h-16">
+    <div className="group relative h-16 w-full">
       <SelectableListItem key={item.id} selected={selectedMetadata?.id === item.id} onSelect={handleSelect}>
         {item.name}
       </SelectableListItem>
-      <div className="absolute invisible right-3 top-2/4 -translate-y-2/4  z-index-1 group-has-[:hover]:visible">
+      <div className="z-index-1 invisible absolute right-3 top-2/4  -translate-y-2/4 group-has-[:hover]:visible">
         <IconButton
           aria-label="edit"
           ref={iconButtonRef}

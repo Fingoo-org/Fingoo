@@ -8,7 +8,7 @@ export default function ListItem({ children, style }: PropsWithChildren<Selectab
   return (
     <div
       style={style}
-      className=" hover:text-blue-700 hover:opacity-20 hover:bg-blue-50 rounded flex h-full items-center font-medium"
+      className=" flex h-full items-center rounded font-medium hover:bg-blue-50 hover:text-blue-700 hover:opacity-20"
     >
       {children}
     </div>

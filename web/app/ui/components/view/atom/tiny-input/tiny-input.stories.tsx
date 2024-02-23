@@ -3,11 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import TinyInput from './tiny-input';
 
 const meta = {
-  title: 'Example/TinyInput',
+  title: 'view/atom/TinyInput',
   component: TinyInput,
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof TinyInput>;
 
 export default meta;

@@ -7,12 +7,12 @@ type NativeButtonType = React.ComponentPropsWithoutRef<'button'>;
 
 type ButtonProps = {
   size?: Size;
-  color: Color;
+  color?: Color;
   variant?: ButtonVariant;
 } & NativeButtonType;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { children, size = Sizes.SM, color, variant = ButtonVariants.Primary, className, ...props }: ButtonProps,
+  { children, size = Sizes.SM, color = 'blue', variant = ButtonVariants.Primary, className, ...props }: ButtonProps,
   ref,
 ) {
   const buttonShapeStyles = variant !== ButtonVariants.Light ? 'rounded-lg border' : '';

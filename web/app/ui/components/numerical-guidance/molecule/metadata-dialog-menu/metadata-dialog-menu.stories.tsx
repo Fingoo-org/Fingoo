@@ -6,11 +6,8 @@ import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useEffect } from 'react';
 
 const meta = {
-  title: 'Example/MetadataDialogMenu',
+  title: 'numberical-guidance/molecule/MetadataDialogMenu',
   component: MetadataDialogMenu,
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof MetadataDialogMenu>;
 
 export default meta;
