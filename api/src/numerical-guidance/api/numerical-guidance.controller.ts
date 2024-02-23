@@ -91,7 +91,7 @@ export class NumericalGuidanceController {
     @Member() member: MemberEntity,
   ) {
     const command = new CreateIndicatorBoardMetadataCommand(
-      createIndicatorBoardMetaDataDto.indicatorBoardMetaDataName,
+      createIndicatorBoardMetaDataDto.indicatorBoardMetadataName,
       member.id,
     );
     await this.commandBus.execute(command);

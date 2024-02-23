@@ -240,7 +240,7 @@ export class IndicatorBoardMetadataPersistentAdapter
         await this.indicatorBoardMetadataRepository.findOneBy({ id });
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
 
-      indicatorBoardMetaDataEntity.indicatorBoardMetaDataName = indicatorBoardMetaData.indicatorBoardMetaDataName;
+      indicatorBoardMetaDataEntity.indicatorBoardMetadataName = indicatorBoardMetaData.indicatorBoardMetadataName;
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
     } catch (error) {

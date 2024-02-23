@@ -4,21 +4,21 @@ import { MemberEntity } from '../../../../../../auth/member.entity';
 
 export class IndicatorBoardMetadataMapper {
   static mapDomainToEntity(indicatorBoardMetaData: IndicatorBoardMetadata, member: MemberEntity) {
-    const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity = new IndicatorBoardMetadataEntity();
-    indicatorBoardMetaDataEntity.indicatorBoardMetaDataName = indicatorBoardMetaData.indicatorBoardMetaDataName;
-    indicatorBoardMetaDataEntity.tickers = indicatorBoardMetaData.tickers;
-    indicatorBoardMetaDataEntity.member = member;
-    indicatorBoardMetaDataEntity.createdAt = indicatorBoardMetaData.createdAt;
-    indicatorBoardMetaDataEntity.updatedAt = indicatorBoardMetaData.updatedAt;
-    return indicatorBoardMetaDataEntity;
+    const indicatorBoardMetadataEntity: IndicatorBoardMetadataEntity = new IndicatorBoardMetadataEntity();
+    indicatorBoardMetadataEntity.indicatorBoardMetadataName = indicatorBoardMetaData.indicatorBoardMetadataName;
+    indicatorBoardMetadataEntity.tickers = indicatorBoardMetaData.tickers;
+    indicatorBoardMetadataEntity.member = member;
+    indicatorBoardMetadataEntity.createdAt = indicatorBoardMetaData.createdAt;
+    indicatorBoardMetadataEntity.updatedAt = indicatorBoardMetaData.updatedAt;
+    return indicatorBoardMetadataEntity;
   }
 
   static mapEntityToDomain(entity: IndicatorBoardMetadataEntity) {
-    const indicatorBoardMetaData = new IndicatorBoardMetadata(
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
       entity.id,
-      entity.indicatorBoardMetaDataName,
+      entity.indicatorBoardMetadataName,
       entity.tickers,
     );
-    return indicatorBoardMetaData;
+    return indicatorBoardMetadata;
   }
 }

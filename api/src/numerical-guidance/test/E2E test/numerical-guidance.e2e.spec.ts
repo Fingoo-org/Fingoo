@@ -46,28 +46,28 @@ describe('NumericalGuidance E2E Test', () => {
     await memberEntity.insert({ id: 1 });
     memberEntity.save;
 
-    const indicatorBoardMetaDataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
-    await indicatorBoardMetaDataRepository.insert({
+    const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
+    await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
-      indicatorBoardMetaDataName: 'name',
+      indicatorBoardMetadataName: 'name',
       tickers: { 'k-stock': ['ticker1'], exchange: [] },
       member: { id: 10 },
     });
-    indicatorBoardMetaDataRepository.save;
+    indicatorBoardMetadataRepository.save;
 
-    await indicatorBoardMetaDataRepository.insert({
+    await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
-      indicatorBoardMetaDataName: 'name',
+      indicatorBoardMetadataName: 'name',
       tickers: { 'k-stock': ['ticker1'], exchange: [] },
     });
-    indicatorBoardMetaDataRepository.save;
+    indicatorBoardMetadataRepository.save;
 
-    await indicatorBoardMetaDataRepository.insert({
+    await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba50',
-      indicatorBoardMetaDataName: 'name',
+      indicatorBoardMetadataName: 'name',
       tickers: { 'k-stock': ['ticker1'], exchange: [] },
     });
-    indicatorBoardMetaDataRepository.save;
+    indicatorBoardMetadataRepository.save;
   };
 
   beforeAll(async () => {

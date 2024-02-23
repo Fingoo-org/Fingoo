@@ -31,6 +31,6 @@ describe('GetIndicatorBoardMetaDataQueryHandler', () => {
     const result = await getIndicatorBoardMetadataQueryHandler.execute(testQuery);
     // then
     const expected = '메타데이터';
-    expect(result.indicatorBoardMetaDataName).toEqual(expected);
+    expect(result.indicatorBoardMetadataName).toEqual(expected);
   });
 });

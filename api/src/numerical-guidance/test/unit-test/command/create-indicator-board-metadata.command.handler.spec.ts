@@ -41,7 +41,7 @@ describe('CreateIndicatorBoardMetaDataCommandHandler', () => {
       await createIndicatorBoardMetaDataCommandHandler.execute(command);
 
     //then
-    expect(indicatorBoardMetaData.indicatorBoardMetaDataName).toEqual('메타데이터');
+    expect(indicatorBoardMetaData.indicatorBoardMetadataName).toEqual('메타데이터');
     expect(createIndicatorBoardMetaDataPort.createIndicatorBoardMetaData).toHaveBeenCalledTimes(1);
   });
 });

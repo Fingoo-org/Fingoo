@@ -110,7 +110,7 @@ describe('NumericalGuidanceController', () => {
     return request(app.getHttpServer())
       .post('/api/numerical-guidance/indicator-board-metadata')
       .send({
-        indicatorBoardMetaDataName: '메타데이터',
+        indicatorBoardMetadataName: '메타데이터',
         memberId: 1,
       })
       .set('Content-Type', 'application/json')
@@ -121,7 +121,7 @@ describe('NumericalGuidanceController', () => {
     return request(app.getHttpServer())
       .post('/api/numerical-guidance/indicator-board-metadata')
       .send({
-        indicatorBoardMetaDataName: ' ',
+        indicatorBoardMetadataName: ' ',
         memberId: 1,
       })
       .set('Content-Type', 'application/json')

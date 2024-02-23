@@ -8,7 +8,7 @@ export class IndicatorBoardMetadataEntity extends BaseEntity {
   id: string;
 
   @Column()
-  indicatorBoardMetaDataName: string;
+  indicatorBoardMetadataName: string;
 
   @Column({ type: 'hstore', nullable: true })
   tickers: Record<string, string[]>;
