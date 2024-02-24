@@ -62,7 +62,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
   ): Promise<FluctuatingIndicatorDto> {
     try {
       const serviceKey: string = process.env.SERVICE_KEY;
-      const request_url: string = `https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=${startDate}&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
+      const request_url: string = `http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=${startDate}&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
 
       const res = await this.api.axiosRef.get(request_url);
       const totalCount = res.data.response.body.totalCount;
