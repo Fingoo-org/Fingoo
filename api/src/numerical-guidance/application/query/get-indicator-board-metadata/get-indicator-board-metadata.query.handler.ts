@@ -2,7 +2,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject, Injectable } from '@nestjs/common';
 import { GetIndicatorBoardMetadataQuery } from './get-indicator-board-metadata.query';
 import { IndicatorBoardMetadata } from 'src/numerical-guidance/domain/indicator-board-metadata';
-import { LoadIndicatorBoardMetadataPort } from '../../port/persistence/load-indiactor-board-metadata.port';
+import { LoadIndicatorBoardMetadataPort } from '../../port/persistence/indicator-board-metadata/load-indiactor-board-metadata.port';
 
 @Injectable()
 @QueryHandler(GetIndicatorBoardMetadataQuery)

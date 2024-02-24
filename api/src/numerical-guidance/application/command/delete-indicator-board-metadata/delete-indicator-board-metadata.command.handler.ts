@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Inject, Injectable } from '@nestjs/common';
-import { DeleteIndicatorBoardMetadataPort } from '../../port/persistence/delete-indicator-board-metadata.port';
+import { DeleteIndicatorBoardMetadataPort } from '../../port/persistence/indicator-board-metadata/delete-indicator-board-metadata.port';
 import { Transactional } from 'typeorm-transactional';
 import { DeleteIndicatorBoardMetadataCommand } from './delete-indicator-board-metadata.command';
 

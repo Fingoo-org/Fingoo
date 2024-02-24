@@ -1,5 +1,5 @@
 import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
-import { CreateIndicatorBoardMetadataPort } from '../../../application/port/persistence/create-indicator-board-metadata.port';
+import { CreateIndicatorBoardMetadataPort } from '../../../application/port/persistence/indicator-board-metadata/create-indicator-board-metadata.port';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';

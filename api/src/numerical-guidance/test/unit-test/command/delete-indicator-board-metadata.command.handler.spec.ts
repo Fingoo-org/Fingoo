@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { DeleteIndicatorBoardMetadataCommandHandler } from '../../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
-import { DeleteIndicatorBoardMetadataPort } from '../../../application/port/persistence/delete-indicator-board-metadata.port';
+import { DeleteIndicatorBoardMetadataPort } from '../../../application/port/persistence/indicator-board-metadata/delete-indicator-board-metadata.port';
 import { DeleteIndicatorBoardMetadataCommand } from '../../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command';
 
 jest.mock('typeorm-transactional', () => ({

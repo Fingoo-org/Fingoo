@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateIndicatorBoardMetadataCommand } from './create-indicator-board-metadata.command';
-import { CreateIndicatorBoardMetadataPort } from '../../port/persistence/create-indicator-board-metadata.port';
+import { CreateIndicatorBoardMetadataPort } from '../../port/persistence/indicator-board-metadata/create-indicator-board-metadata.port';
 import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
 import { Transactional } from 'typeorm-transactional';
 
