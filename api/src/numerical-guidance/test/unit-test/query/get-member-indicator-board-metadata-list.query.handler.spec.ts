@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
-import { GetMemberIndicatorBoardMetadataListQuery } from 'src/numerical-guidance/application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query';
-import { GetMemberIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query.handler';
+import { GetMemberIndicatorBoardMetadataListQuery } from 'src/numerical-guidance/application/query/get-member-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query';
+import { GetMemberIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-member-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query.handler';
 import { IndicatorBoardMetadata } from 'src/numerical-guidance/domain/indicator-board-metadata';
 
-describe('Get user indicator board metadata list query handler', () => {
+describe('Get Member indicator board metadata list query handler', () => {
   let getMemberIndicatorBoardMetadataListQueryHandler: GetMemberIndicatorBoardMetadataListQueryHandler;
 
   beforeEach(async () => {
