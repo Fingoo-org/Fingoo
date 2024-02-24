@@ -1,24 +1,15 @@
 import { IsString } from 'class-validator';
 import { IsInterval } from '../../../utils/validation/is.interval.validation';
 import { ApiProperty } from '@nestjs/swagger';
-import { Interval, Market } from 'src/utils/type/type-definition';
-import { IsMarket } from 'src/utils/validation/is.market.validation';
+import { Interval } from 'src/utils/type/type-definition';
 
 export class GetLiveIndicatorDto {
   @ApiProperty({
-    example: '005930',
-    description: 'KRX 주가 단축코드',
+    example: '160e5499-4925-4e38-bb00-8ea6d8056484',
+    description: '지표 PK (UUID)',
   })
   @IsString()
-  readonly ticker: string;
-
-  @ApiProperty({
-    example: 'KOSPI',
-    description: '시장구분',
-  })
-  @IsString()
-  @IsMarket()
-  readonly market: Market;
+  readonly indicatorId: string;
 
   @ApiProperty({
     example: 'day',

@@ -1,10 +1,9 @@
 import { IQuery } from '@nestjs/cqrs';
-import { Interval, Market } from '../../../../utils/type/type-definition';
+import { Interval } from '../../../../utils/type/type-definition';
 
 export class GetLiveIndicatorQuery implements IQuery {
   constructor(
-    readonly ticker: string,
-    readonly market: Market,
+    readonly indicatorId: string,
     readonly interval: Interval,
   ) {}
 }

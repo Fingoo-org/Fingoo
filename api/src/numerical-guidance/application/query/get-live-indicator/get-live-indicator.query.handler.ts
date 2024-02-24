@@ -6,6 +6,7 @@ import { FluctuatingIndicatorDto } from '../get-fluctuatingIndicator/fluctuating
 import { Interval } from '../../../../utils/type/type-definition';
 import { CachingFluctuatingIndicatorPort } from '../../port/cache/caching-fluctuatingIndicator.port';
 import { LoadCachedFluctuatingIndicatorPort } from '../../port/cache/load-cached-fluctuatingIndicator.port';
+import { LoadIndicatorPort } from '../../port/persistence/indicator/load-indicator.port';
 
 @Injectable()
 @QueryHandler(GetLiveIndicatorQuery)
@@ -18,12 +19,17 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
     private readonly loadCachedFluctuatingIndicatorPort: LoadCachedFluctuatingIndicatorPort,
     @Inject('CachingFluctuatingIndicatorPort')
     private readonly cachingFluctuatingIndicatorPort: CachingFluctuatingIndicatorPort,
+    @Inject('LoadIndicatorPort')
+    private readonly loadIndicatorPort: LoadIndicatorPort,
   ) {}
 
   async execute(query: GetLiveIndicatorQuery): Promise<FluctuatingIndicatorDto> {
-    const { ticker, interval, market } = query;
+    const { indicatorId, interval } = query;
 
-    const key = this.createLiveIndicatorKey(ticker, interval);
+    const indicatorDto = await this.loadIndicatorPort.loadIndicator(indicatorId);
+    const { ticker, market } = indicatorDto.indicator;
+
+    const key = this.createLiveIndicatorKey(indicatorId, interval);
 
     let fluctuatingIndicatorDto: FluctuatingIndicatorDto =
       await this.loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator(key);
