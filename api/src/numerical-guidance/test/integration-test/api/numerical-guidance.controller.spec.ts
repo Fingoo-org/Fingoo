@@ -7,7 +7,7 @@ import { GetFluctuatingIndicatorQueryHandler } from '../../../application/query/
 import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';
 import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
-import { InsertIndicatorTickerCommandHandler } from '../../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
+import { InsertIndicatorIdCommandHandler } from '../../../application/command/insert-indicator-id/insert-indicator-id.command.handler';
 
 const testData = fluctuatingIndicatorTestData;
 
@@ -26,7 +26,7 @@ describe('NumericalGuidanceController', () => {
         providers: [
           GetFluctuatingIndicatorQueryHandler,
           CreateIndicatorBoardMetadataCommandHandler,
-          InsertIndicatorTickerCommandHandler,
+          InsertIndicatorIdCommandHandler,
           {
             provide: 'LoadCachedFluctuatingIndicatorPort',
             useValue: {
@@ -62,9 +62,9 @@ describe('NumericalGuidanceController', () => {
             },
           },
           {
-            provide: 'InsertIndicatorTickerPort',
+            provide: 'InsertIndicatorIdPort',
             useValue: {
-              addIndicatorTicker: jest.fn(),
+              addIndicatorId: jest.fn(),
             },
           },
         ],

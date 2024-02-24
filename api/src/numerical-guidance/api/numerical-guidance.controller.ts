@@ -4,8 +4,8 @@ import { GetFluctuatingIndicatorQuery } from '../application/query/get-fluctuati
 import { FluctuatingIndicatorDto } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorDto } from './dto/get-fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
-import { IndicatorListDto } from 'src/numerical-guidance/application/query/get-indicator-list/indicator-list.dto';
-import { GetIndicatorListQuery } from 'src/numerical-guidance/application/query/get-indicator-list/get-indicator-list.query';
+import { IndicatorDto } from 'src/numerical-guidance/application/query/get-indicator/indicator.dto';
+import { GetIndicatorsQuery } from 'src/numerical-guidance/application/query/get-indicator/get-indicators.query';
 import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-metadata.dto';
@@ -13,10 +13,10 @@ import { CreateIndicatorBoardMetadataCommand } from '../application/command/crea
 import { Response } from 'express';
 import { GetIndicatorBoardMetadataQuery } from '../application/query/get-indicator-board-metadata/get-indicator-board-metadata.query';
 import { IndicatorBoardMetadata } from '../domain/indicator-board-metadata';
-import { InsertIndicatorTickerCommand } from '../application/command/insert-indicator-ticker/insert-indicator-ticker.command';
+import { InsertIndicatorIdCommand } from '../application/command/insert-indicator-id/insert-indicator-id.command';
 import { InsertIndicatorDto } from './dto/insert-indicator.dto';
-import { GetMemberIndicatorBoardMetadataListQuery } from '../application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query';
-import { DeleteIndicatorTickerCommand } from '../application/command/delete-indicator-ticker/delete-indicator-ticker.command';
+import { GetMemberIndicatorBoardMetadataListQuery } from '../application/query/get-member-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query';
+import { DeleteIndicatorIdCommand } from '../application/command/delete-indicator-id/delete-indicator-id.command';
 import { DeleteIndicatorBoardMetadataCommand } from '../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command';
 import { UpdateIndicatorBoardMetadataNameDto } from './dto/update-indicator-board-metadata-name.dto';
 import { UpdateIndicatorBoardMetadataNameCommand } from '../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command';
@@ -52,11 +52,7 @@ export class NumericalGuidanceController {
   @ApiOperation({ summary: '고정된 화면에 보여주는 지표 API입니다.' })
   @Get('/indicators/k-stock/live')
   async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<FluctuatingIndicatorDto> {
-    const query = new GetLiveIndicatorQuery(
-      getLiveIndicatorDto.ticker,
-      getLiveIndicatorDto.market,
-      getLiveIndicatorDto.interval,
-    );
+    const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
     return this.queryBus.execute(query);
   }
 
@@ -76,9 +72,9 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표 리스트를 불러옵니다.' })
-  @Get('/indicator-list')
-  async getIndicatorList(): Promise<IndicatorListDto> {
-    const query = new GetIndicatorListQuery();
+  @Get('/indicator')
+  async getIndicatorList(): Promise<IndicatorDto> {
+    const query = new GetIndicatorsQuery();
     return this.queryBus.execute(query);
   }
 
@@ -112,18 +108,24 @@ export class NumericalGuidanceController {
     return await this.queryBus.execute(query);
   }
 
-  @ApiOperation({ summary: '지표보드 메타데이터에 지표 ticker 추가합니다.' })
+  @ApiOperation({ summary: '지표보드 메타데이터에 지표 id를 추가합니다.' })
   @Post('/indicator-board-metadata/:id')
-  async insertNewIndicatorTicker(@Param('id') id, @Body() insertIndicatorDto: InsertIndicatorDto) {
-    const command = new InsertIndicatorTickerCommand(id, insertIndicatorDto.ticker, insertIndicatorDto.type);
+  async insertNewIndicatorTicker(
+    @Param('id') indicatorBoardMetadataId,
+    @Body() insertIndicatorDto: InsertIndicatorDto,
+  ) {
+    const command = new InsertIndicatorIdCommand(indicatorBoardMetadataId, insertIndicatorDto.indicatorId);
 
     await this.commandBus.execute(command);
   }
 
-  @ApiOperation({ summary: '지표보드 메타데이터에 지표 ticker 삭제합니다.' })
-  @Delete('/indicator-board-metadata/:indicatorBoardMetaDataId/indicator/:ticker')
-  async deleteIndicatorTicker(@Param('indicatorBoardMetaDataId') indicatorBoardMetaDataId, @Param('ticker') ticker) {
-    const command = new DeleteIndicatorTickerCommand(indicatorBoardMetaDataId, ticker);
+  @ApiOperation({ summary: '지표보드 메타데이터에 지표 id를 삭제합니다.' })
+  @Delete('/indicator-board-metadata/:indicatorBoardMetaDataId/indicator/:indicatorId')
+  async deleteIndicatorTicker(
+    @Param('indicatorBoardMetaDataId') indicatorBoardMetaDataId,
+    @Param('indicatorId') indicatorId,
+  ) {
+    const command = new DeleteIndicatorIdCommand(indicatorBoardMetaDataId, indicatorId);
 
     await this.commandBus.execute(command);
   }
