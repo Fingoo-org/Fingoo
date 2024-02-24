@@ -3,96 +3,75 @@ import { IndicatorBoardMetadataCountShouldNotExceedLimitRule } from '../../../do
 import { BusinessRuleValidationException } from '../../../../utils/domain/business-rule-validation.exception';
 import { IndicatorBoardMetadataNameShouldNotEmptyRule } from '../../../domain/rule/IndicatorBoardMetadataNameShouldNotEmpty.rule';
 import { IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule } from '../../../domain/rule/IndicatorInIndicatorBoardMetadataShouldNotDuplicate.rule';
-import { NewIndicatorTypeShouldBelongToTheIndicatorTypeRule } from '../../../domain/rule/NewIndicatorTypeShouldBelongToTheIndicatorType.rule';
-import { OnlyRegisteredTickersCanBeRemovedRule } from '../../../domain/rule/OnlyRegisteredTickersCanBeRemoved.rule';
+import { OnlyRegisteredIdCanBeRemovedRule } from '../../../domain/rule/OnlyRegisteredIdCanBeRemoved.rule';
 
 describe('지표보드 메타데이터', () => {
   it('지표보드 메타데이터 도메인 생성', () => {
     // given
 
     // when
-    const indicatorBoardMetadataName = IndicatorBoardMetadata.createNew('메타 데이터');
+    const indicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // then
-    const expected = new IndicatorBoardMetadata(null, '메타 데이터', { 'k-stock': [], exchange: [] });
-    expect(expected).toEqual(indicatorBoardMetadataName);
+    const expected = new IndicatorBoardMetadata(null, '메타 데이터', []);
+    expect(expected).toEqual(indicatorBoardMetadata);
   });
 
-  it('지표보드 메타데이터에 새로운 지표 ticker 추가', () => {
+  it('지표보드 메타데이터에 새로운 지표 id 추가', () => {
     // given
-    const indicatorBoardMetadataName = IndicatorBoardMetadata.createNew('name');
-    const type = 'k-stock';
-    const ticker = 'ticker1';
+    const indicatorBoardMetadata = IndicatorBoardMetadata.createNew('name');
+    const indicatorId = '160e5499-4925-4e38-bb00-8ea6d8056484';
 
     // when
-    indicatorBoardMetadataName.insertIndicatorTicker(ticker, type);
+    indicatorBoardMetadata.insertIndicatorId(indicatorId);
 
     // then
-    const expected = {
-      'k-stock': ['ticker1'],
-      exchange: [],
-    };
-    expect(expected).toEqual(indicatorBoardMetadataName.tickers);
+    const expected = ['160e5499-4925-4e38-bb00-8ea6d8056484'];
+    expect(expected.toString()).toEqual(indicatorBoardMetadata.indicatorIds.toString());
   });
 
-  it('지표보드 메타데이터의 ticker 개수는 최대 5개를 넘을 수 없다.', () => {
+  it('지표보드 메타데이터의 id 개수는 최대 5개를 넘을 수 없다.', () => {
     //given
-    const indicatorBoardMetadataName = new IndicatorBoardMetadata('id1', 'name', {
-      'k-stock': ['ticker1', 'ticker2', 'ticker3'],
-      exchange: ['ticker4', 'ticker5'],
-    });
-    const type = 'k-stock';
-    const ticker = 'ticker6';
+    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
+      'indicatorId1',
+      'indicatorId2',
+      'indicatorId3',
+      'indicatorId4',
+      'indicatorId5',
+    ]);
+    const indicatorId = 'indicatorId6';
 
     //when
-    function insertIndicatorTicker() {
-      indicatorBoardMetadataName.insertIndicatorTicker(ticker, type);
+    function insertIndicatorId() {
+      indicatorBoardMetadata.insertIndicatorId(indicatorId);
     }
-    const rule = new IndicatorBoardMetadataCountShouldNotExceedLimitRule(indicatorBoardMetadataName.tickers);
+    const rule = new IndicatorBoardMetadataCountShouldNotExceedLimitRule(indicatorBoardMetadata.indicatorIds);
 
     //then
-    expect(insertIndicatorTicker).toThrow(BusinessRuleValidationException);
-    expect(insertIndicatorTicker).toThrow(rule.Message);
+    expect(insertIndicatorId).toThrow(BusinessRuleValidationException);
+    expect(insertIndicatorId).toThrow(rule.Message);
   });
 
-  it('지표보드 메타데이터의 지표 ticker는 중복될 수 없다.', () => {
+  it('지표보드 메타데이터의 지표 id는 중복될 수 없다.', () => {
     //given
-    const indicatorBoardMetadataName = new IndicatorBoardMetadata('id2', 'name', {
-      'k-stock': ['ticker1'],
-      exchange: ['ticker4'],
-    });
-    const type = 'k-stock';
-    const ticker = 'ticker1';
+    const indicatorBoardMetadata = new IndicatorBoardMetadata('id2', 'name', [
+      'indicatorId1',
+      'indicatorId2',
+      'indicatorId3',
+      'indicatorId4',
+      'indicatorId5',
+    ]);
+    const indicatorId = 'indicatorId1';
 
     //when
-    function insertIndicatorTicker() {
-      indicatorBoardMetadataName.insertIndicatorTicker(ticker, type);
+    function insertIndicatorId() {
+      indicatorBoardMetadata.insertIndicatorId(indicatorId);
     }
-    const rule = new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(indicatorBoardMetadataName.tickers);
+    const rule = new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(indicatorBoardMetadata.indicatorIds);
 
     //then
-    expect(insertIndicatorTicker).toThrow(BusinessRuleValidationException);
-    expect(insertIndicatorTicker).toThrow(rule.Message);
-  });
-
-  it('지표보드 메타데이터의 지표 type 값이 잘못 들어온 경우', () => {
-    //given
-    const indicatorBoardMetadataName = new IndicatorBoardMetadata('id3', 'name', {
-      'k-stock': ['ticker1'],
-      exchange: ['ticker4'],
-    });
-    const type = 'invalidType';
-    const ticker = 'ticker3';
-
-    //when
-    function insertIndicatorTicker() {
-      indicatorBoardMetadataName.insertIndicatorTicker(ticker, type);
-    }
-    const rule = new NewIndicatorTypeShouldBelongToTheIndicatorTypeRule(indicatorBoardMetadataName.tickers);
-
-    //then
-    expect(insertIndicatorTicker).toThrow(BusinessRuleValidationException);
-    expect(insertIndicatorTicker).toThrow(rule.Message);
+    expect(insertIndicatorId).toThrow(BusinessRuleValidationException);
+    expect(insertIndicatorId).toThrow(rule.Message);
   });
 
   it('지표보드 메타데이터의 이름은 비워질 수 없다. (빈 문자열인 경우)', () => {
@@ -125,65 +104,74 @@ describe('지표보드 메타데이터', () => {
     expect(createNewIndicator).toThrow(rule.Message);
   });
 
-  it('지표보드 메타데이터에서 지표 ticker 삭제', () => {
+  it('지표보드 메타데이터에서 지표 id 삭제', () => {
     // given
-    const indicatorBoardMetadataName = new IndicatorBoardMetadata('id1', 'name', {
-      'k-stock': ['ticker1', 'ticker2'],
-      exchange: [],
-    });
-    const ticker = 'ticker1';
+    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
+      'indicatorId1',
+      'indicatorId2',
+      'indicatorId3',
+      'indicatorId4',
+      'indicatorId5',
+    ]);
+    const indicatorId = 'indicatorId1';
 
     // when
-    indicatorBoardMetadataName.deleteIndicatorTicker(ticker);
+    indicatorBoardMetadata.deleteIndicatorId(indicatorId);
 
     // then
-    const expected = {
-      'k-stock': ['ticker2'],
-      exchange: [],
-    };
-    expect(expected).toEqual(indicatorBoardMetadataName.tickers);
+    const expected = ['indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'];
+    expect(expected).toEqual(indicatorBoardMetadata.indicatorIds);
   });
 
-  it('지표보드 메타데이터에서 지표 ticker 삭제 - 등록되지 않은 지표 요청', () => {
+  it('지표보드 메타데이터에서 지표 id 삭제 - 등록되지 않은 지표 요청', () => {
     // given
-    const indicatorBoardMetadataName = new IndicatorBoardMetadata('id1', 'name', {
-      'k-stock': ['ticker1'],
-      exchange: [],
-    });
-    const ticker = 'invalidTicker';
+    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
+      'indicatorId1',
+      'indicatorId2',
+      'indicatorId3',
+      'indicatorId4',
+      'indicatorId5',
+    ]);
+    const invalidIndicatorId = 'invalidId';
 
     // when
-    function deleteIndicatorTicker() {
-      indicatorBoardMetadataName.deleteIndicatorTicker(ticker);
+    function deleteIndicatorId() {
+      indicatorBoardMetadata.deleteIndicatorId(invalidIndicatorId);
     }
-    const rule = new OnlyRegisteredTickersCanBeRemovedRule(indicatorBoardMetadataName.tickers, ticker);
+    const rule = new OnlyRegisteredIdCanBeRemovedRule(indicatorBoardMetadata.indicatorIds, invalidIndicatorId);
 
     //then
-    expect(deleteIndicatorTicker).toThrow(BusinessRuleValidationException);
-    expect(deleteIndicatorTicker).toThrow(rule.Message);
+    expect(deleteIndicatorId).toThrow(BusinessRuleValidationException);
+    expect(deleteIndicatorId).toThrow(rule.Message);
   });
 
   it('지표보드 메타데이터의 이름을 수정한다. ', () => {
     // given
-    const indicatorBoardMetadataName = new IndicatorBoardMetadata('id1', 'name', {
-      'k-stock': ['ticker1'],
-      exchange: [],
-    });
+    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
+      'indicatorId1',
+      'indicatorId2',
+      'indicatorId3',
+      'indicatorId4',
+      'indicatorId5',
+    ]);
 
     // when
-    indicatorBoardMetadataName.updateIndicatorBoardMetadataName('updateName');
+    indicatorBoardMetadata.updateIndicatorBoardMetadataName('updateName');
     const expected = 'updateName';
 
     //then
-    expect(expected).toEqual(indicatorBoardMetadataName.indicatorBoardMetadataName);
+    expect(expected).toEqual(indicatorBoardMetadata.indicatorBoardMetadataName);
   });
 
   it('지표보드 메타데이터의 이름을 수정한다. - 이름이 비어있을 때 ', () => {
     // given
-    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', {
-      'k-stock': ['ticker1'],
-      exchange: [],
-    });
+    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
+      'indicatorId1',
+      'indicatorId2',
+      'indicatorId3',
+      'indicatorId4',
+      'indicatorId5',
+    ]);
     const invalidName = '';
 
     // when
