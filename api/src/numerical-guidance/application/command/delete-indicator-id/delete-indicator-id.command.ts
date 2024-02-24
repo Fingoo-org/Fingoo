@@ -1,8 +1,8 @@
 import { ICommand } from '@nestjs/cqrs';
 
-export class DeleteIndicatorTickerCommand implements ICommand {
+export class DeleteIndicatorIdCommand implements ICommand {
   constructor(
     readonly indicatorBoardMetadataId: string,
-    readonly ticker: string,
+    readonly indicatorId: string,
   ) {}
 }
