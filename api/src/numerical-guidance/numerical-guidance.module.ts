@@ -5,8 +5,8 @@ import { FluctuatingIndicatorRedisAdapter } from './infrastructure/adapter/redis
 import { FluctuatingIndicatorKrxAdapter } from './infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
 import { CqrsModule } from '@nestjs/cqrs';
 import { HttpModule } from '@nestjs/axios';
-import { GetIndicatorListQueryHandler } from './application/query/get-indicator-list/get-indicator-list.query.handler';
-import { IndicatorListAdapter } from './infrastructure/adapter/persistence/indicator-list/indicator-list.adapter';
+import { GetIndicatorsQueryHandler } from './application/query/get-indicator/get-indicators.query.handler';
+import { IndicatorPersistentAdapter } from './infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
 import { CreateIndicatorBoardMetadataCommandHandler } from './application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
@@ -15,12 +15,13 @@ import { IndicatorBoardMetadataEntity } from './infrastructure/adapter/persisten
 import { AuthService } from '../auth/auth.service';
 import { MemberEntity } from '../auth/member.entity';
 import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
-import { InsertIndicatorTickerCommandHandler } from './application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
-import { GetMemberIndicatorBoardMetadataListQueryHandler } from './application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query.handler';
-import { DeleteIndicatorTickerCommandHandler } from './application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
+import { InsertIndicatorIdCommandHandler } from './application/command/insert-indicator-id/insert-indicator-id.command.handler';
+import { GetIndicatorBoardMetadataListQueryHandler } from './application/query/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query.handler';
+import { DeleteIndicatorIdCommandHandler } from './application/command/delete-indicator-id/delete-indicator-id.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from './application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from './application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 import { GetLiveIndicatorQueryHandler } from './application/query/get-live-indicator/get-live-indicator.query.handler';
+import { IndicatorEntity } from './infrastructure/adapter/persistence/indicator/entity/indicator.entity';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { GetLiveIndicatorQueryHandler } from './application/query/get-live-indic
         maxRedirects: 5,
       }),
     }),
-    TypeOrmModule.forFeature([IndicatorBoardMetadataEntity, MemberEntity]),
+    TypeOrmModule.forFeature([IndicatorBoardMetadataEntity, MemberEntity, IndicatorEntity]),
   ],
   controllers: [NumericalGuidanceController],
   providers: [
@@ -39,12 +40,12 @@ import { GetLiveIndicatorQueryHandler } from './application/query/get-live-indic
     GetFluctuatingIndicatorQueryHandler,
     GetLiveIndicatorQueryHandler,
     GetFluctuatingIndicatorWithoutCacheQueryHandler,
-    GetIndicatorListQueryHandler,
+    GetIndicatorsQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,
     GetIndicatorBoardMetaDataQueryHandler,
-    InsertIndicatorTickerCommandHandler,
-    GetMemberIndicatorBoardMetadataListQueryHandler,
-    DeleteIndicatorTickerCommandHandler,
+    InsertIndicatorIdCommandHandler,
+    GetIndicatorBoardMetadataListQueryHandler,
+    DeleteIndicatorIdCommandHandler,
     DeleteIndicatorBoardMetadataCommandHandler,
     UpdateIndicatorBoardMetadataNameCommandHandler,
     {
@@ -64,8 +65,12 @@ import { GetLiveIndicatorQueryHandler } from './application/query/get-live-indic
       useClass: FluctuatingIndicatorRedisAdapter,
     },
     {
-      provide: 'LoadIndicatorListPort',
-      useClass: IndicatorListAdapter,
+      provide: 'LoadIndicatorsPort',
+      useClass: IndicatorPersistentAdapter,
+    },
+    {
+      provide: 'LoadIndicatorPort',
+      useClass: IndicatorPersistentAdapter,
     },
     {
       provide: 'CreateIndicatorBoardMetaDataPort',
@@ -76,15 +81,15 @@ import { GetLiveIndicatorQueryHandler } from './application/query/get-live-indic
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
     {
-      provide: 'InsertIndicatorTickerPort',
+      provide: 'InsertIndicatorIdPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
     {
-      provide: 'LoadMemberIndicatorBoardMetadataListPort',
+      provide: 'LoadIndicatorBoardMetadataListPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
     {
-      provide: 'DeleteIndicatorTickerPort',
+      provide: 'DeleteIndicatorIdPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
     {

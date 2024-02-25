@@ -13,9 +13,9 @@ import { IndicatorBoardMetadataEntity } from 'src/numerical-guidance/infrastruct
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from 'src/auth/auth.service';
 import { DataSource } from 'typeorm';
-import { InsertIndicatorTickerCommandHandler } from '../../application/command/insert-indicator-ticker/insert-indicator-ticker.command.handler';
-import { GetMemberIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-user-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query.handler';
-import { DeleteIndicatorTickerCommandHandler } from '../../application/command/delete-indicator-ticker/delete-indicator-ticker.command.handler';
+import { InsertIndicatorIdCommandHandler } from '../../application/command/insert-indicator-id/insert-indicator-id.command.handler';
+import { GetIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query.handler';
+import { DeleteIndicatorIdCommandHandler } from '../../application/command/delete-indicator-id/delete-indicator-id.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from '../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 import { AuthGuard } from '../../../auth/auth.guard';
@@ -26,6 +26,8 @@ import { FluctuatingIndicatorKrxAdapter } from '../../infrastructure/adapter/krx
 import { HttpModule } from '@nestjs/axios';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { RedisContainer } from '@testcontainers/redis';
+import { IndicatorEntity } from '../../infrastructure/adapter/persistence/indicator/entity/indicator.entity';
+import { IndicatorPersistentAdapter } from '../../infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -39,6 +41,18 @@ describe('NumericalGuidance E2E Test', () => {
   let fluctuatingIndicatorRedisAdapter: FluctuatingIndicatorRedisAdapter;
 
   const seeding = async () => {
+    const indicatorEntity = dataSource.getRepository(IndicatorEntity);
+    await indicatorEntity.insert({
+      id: '160e5499-4925-4e38-bb00-8ea6d8056484',
+      name: '삼성전자',
+      ticker: '005930',
+      type: 'k-stock',
+      market: 'KOSPI',
+      createdAt: new Date('2024-02-23 10:00:02.292086'),
+      updatedAt: new Date('2024-02-23 10:00:02.292086'),
+    });
+    indicatorEntity.save;
+
     const memberEntity = dataSource.getRepository(MemberEntity);
     await memberEntity.insert({ id: 10 });
     memberEntity.save;
@@ -50,22 +64,28 @@ describe('NumericalGuidance E2E Test', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetadataName: 'name',
-      tickers: { 'k-stock': ['ticker1'], exchange: [] },
+      indicatorIds: { indicatorIds: ['indicatorId1'] },
       member: { id: 10 },
+      createdAt: new Date('2024-02-23 10:00:02.292086'),
+      updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
     indicatorBoardMetadataRepository.save;
 
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       indicatorBoardMetadataName: 'name',
-      tickers: { 'k-stock': ['ticker1'], exchange: [] },
+      indicatorIds: { indicatorIds: ['indicatorId1'] },
+      createdAt: new Date('2024-02-23 10:00:02.292086'),
+      updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
     indicatorBoardMetadataRepository.save;
 
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba50',
       indicatorBoardMetadataName: 'name',
-      tickers: { 'k-stock': ['ticker1'], exchange: [] },
+      indicatorIds: { indicatorIds: ['indicatorId1'] },
+      createdAt: new Date('2024-02-23 10:00:02.292086'),
+      updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
     indicatorBoardMetadataRepository.save;
   };
@@ -80,7 +100,7 @@ describe('NumericalGuidance E2E Test', () => {
           ConfigModule.forRoot({
             isGlobal: true,
           }),
-          TypeOrmModule.forFeature([MemberEntity, IndicatorBoardMetadataEntity]),
+          TypeOrmModule.forFeature([MemberEntity, IndicatorBoardMetadataEntity, IndicatorEntity]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -93,7 +113,7 @@ describe('NumericalGuidance E2E Test', () => {
               username: DBenvironment.getUsername(),
               password: DBenvironment.getPassword(),
               database: DBenvironment.getDatabase(),
-              entities: [IndicatorBoardMetadataEntity, MemberEntity],
+              entities: [IndicatorBoardMetadataEntity, MemberEntity, IndicatorEntity],
               synchronize: true,
             }),
           }),
@@ -116,9 +136,9 @@ describe('NumericalGuidance E2E Test', () => {
           AuthService,
           GetLiveIndicatorQueryHandler,
           GetIndicatorBoardMetaDataQueryHandler,
-          InsertIndicatorTickerCommandHandler,
-          GetMemberIndicatorBoardMetadataListQueryHandler,
-          DeleteIndicatorTickerCommandHandler,
+          InsertIndicatorIdCommandHandler,
+          GetIndicatorBoardMetadataListQueryHandler,
+          DeleteIndicatorIdCommandHandler,
           DeleteIndicatorBoardMetadataCommandHandler,
           UpdateIndicatorBoardMetadataNameCommandHandler,
           FluctuatingIndicatorRedisAdapter,
@@ -143,15 +163,23 @@ describe('NumericalGuidance E2E Test', () => {
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
-            provide: 'InsertIndicatorTickerPort',
+            provide: 'InsertIndicatorIdPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
-            provide: 'LoadMemberIndicatorBoardMetadataListPort',
+            provide: 'LoadIndicatorsPort',
+            useClass: IndicatorPersistentAdapter,
+          },
+          {
+            provide: 'LoadIndicatorPort',
+            useClass: IndicatorPersistentAdapter,
+          },
+          {
+            provide: 'LoadIndicatorBoardMetadataListPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
-            provide: 'DeleteIndicatorTickerPort',
+            provide: 'DeleteIndicatorIdPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
@@ -204,8 +232,7 @@ describe('NumericalGuidance E2E Test', () => {
     return request(app.getHttpServer())
       .get(`/api/numerical-guidance/indicators/k-stock/live`)
       .query({
-        ticker: '005930',
-        market: 'KOSPI',
+        indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
         interval: 'day',
       })
       .set('Content-Type', 'application/json')
@@ -230,8 +257,7 @@ describe('NumericalGuidance E2E Test', () => {
     return request(app.getHttpServer())
       .post(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
       .send({
-        ticker: 'ticker2',
-        type: 'k-stock',
+        indicatorId: 'indicatorId2',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);
@@ -241,8 +267,7 @@ describe('NumericalGuidance E2E Test', () => {
     return request(app.getHttpServer())
       .post(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
       .send({
-        ticker: 'ticker1',
-        type: 'k-stock',
+        indicatorId: 'indicatorId1',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
@@ -257,7 +282,9 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/delete 지표보드 메타데이터에서 지표를 삭제한다.', async () => {
     return request(app.getHttpServer())
-      .delete('/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/ticker1')
+      .delete(
+        '/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/indicatorId2',
+      )
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });

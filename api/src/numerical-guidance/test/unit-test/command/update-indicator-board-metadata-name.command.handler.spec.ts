@@ -2,10 +2,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
-import { UpdateIndicatorBoardMetadataNamePort } from '../../../application/port/persistence/update-indicator-board-metadata-name.port';
+import { UpdateIndicatorBoardMetadataNamePort } from '../../../application/port/persistence/indicator-board-metadata/update-indicator-board-metadata-name.port';
 import { UpdateIndicatorBoardMetadataNameCommand } from '../../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command';
 import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
-import { LoadIndicatorBoardMetadataPort } from '../../../application/port/persistence/load-indiactor-board-metadata.port';
+import { LoadIndicatorBoardMetadataPort } from '../../../application/port/persistence/indicator-board-metadata/load-indiactor-board-metadata.port';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -31,7 +31,7 @@ describe('UpdateIndicatorBoardMetadataNameCommandHandler', () => {
           provide: 'LoadIndicatorBoardMetadataPort',
           useValue: {
             loadIndicatorBoardMetaData: jest.fn().mockImplementation(() => {
-              return new IndicatorBoardMetadata('id', 'name', { 'k-stock': ['ticker'], exchange: [] });
+              return new IndicatorBoardMetadata('id', 'name', []);
             }),
           },
         },
