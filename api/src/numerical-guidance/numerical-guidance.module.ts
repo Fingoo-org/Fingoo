@@ -16,7 +16,7 @@ import { AuthService } from '../auth/auth.service';
 import { MemberEntity } from '../auth/member.entity';
 import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { InsertIndicatorIdCommandHandler } from './application/command/insert-indicator-id/insert-indicator-id.command.handler';
-import { GetMemberIndicatorBoardMetadataListQueryHandler } from './application/query/get-member-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query.handler';
+import { GetIndicatorBoardMetadataListQueryHandler } from './application/query/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query.handler';
 import { DeleteIndicatorIdCommandHandler } from './application/command/delete-indicator-id/delete-indicator-id.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from './application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from './application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
@@ -44,7 +44,7 @@ import { IndicatorEntity } from './infrastructure/adapter/persistence/indicator/
     CreateIndicatorBoardMetadataCommandHandler,
     GetIndicatorBoardMetaDataQueryHandler,
     InsertIndicatorIdCommandHandler,
-    GetMemberIndicatorBoardMetadataListQueryHandler,
+    GetIndicatorBoardMetadataListQueryHandler,
     DeleteIndicatorIdCommandHandler,
     DeleteIndicatorBoardMetadataCommandHandler,
     UpdateIndicatorBoardMetadataNameCommandHandler,
@@ -85,7 +85,7 @@ import { IndicatorEntity } from './infrastructure/adapter/persistence/indicator/
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
     {
-      provide: 'LoadMemberIndicatorBoardMetadataListPort',
+      provide: 'LoadIndicatorBoardMetadataListPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
     {

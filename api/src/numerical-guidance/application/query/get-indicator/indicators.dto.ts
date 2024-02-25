@@ -15,7 +15,6 @@ export class IndicatorsDto {
       ticker: indicator.ticker,
       type: indicator.type,
     }));
-    console.log(new IndicatorsDto(resultIndicators));
     return new IndicatorsDto(resultIndicators);
   }
 }

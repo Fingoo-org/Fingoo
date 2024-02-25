@@ -14,7 +14,7 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from 'src/auth/auth.service';
 import { DataSource } from 'typeorm';
 import { InsertIndicatorIdCommandHandler } from '../../application/command/insert-indicator-id/insert-indicator-id.command.handler';
-import { GetMemberIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-member-indicator-board-metadata-list/get-member-indicator-board-metadata-list.query.handler';
+import { GetIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query.handler';
 import { DeleteIndicatorIdCommandHandler } from '../../application/command/delete-indicator-id/delete-indicator-id.command.handler';
 import { DeleteIndicatorBoardMetadataCommandHandler } from '../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
@@ -137,7 +137,7 @@ describe('NumericalGuidance E2E Test', () => {
           GetLiveIndicatorQueryHandler,
           GetIndicatorBoardMetaDataQueryHandler,
           InsertIndicatorIdCommandHandler,
-          GetMemberIndicatorBoardMetadataListQueryHandler,
+          GetIndicatorBoardMetadataListQueryHandler,
           DeleteIndicatorIdCommandHandler,
           DeleteIndicatorBoardMetadataCommandHandler,
           UpdateIndicatorBoardMetadataNameCommandHandler,
@@ -175,7 +175,7 @@ describe('NumericalGuidance E2E Test', () => {
             useClass: IndicatorPersistentAdapter,
           },
           {
-            provide: 'LoadMemberIndicatorBoardMetadataListPort',
+            provide: 'LoadIndicatorBoardMetadataListPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
