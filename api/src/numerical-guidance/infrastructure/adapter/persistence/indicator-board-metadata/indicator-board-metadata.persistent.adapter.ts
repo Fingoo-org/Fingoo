@@ -105,15 +105,13 @@ export class IndicatorBoardMetadataPersistentAdapter
       const memberEntity = await this.authService.findById(memberId);
       this.nullCheckForEntity(memberEntity);
 
-      const query = this.indicatorBoardMetadataRepository.createQueryBuilder('IndicatorBoardMetadataEntity');
-      query.where('IndicatorBoardMetadataEntity.memberId = :memberId', { memberId: memberEntity.id });
-
-      const userIndicatorBoardMetadataEntityList = await query.getMany();
-      const userIndicatorBoardMetadataList = userIndicatorBoardMetadataEntityList.map((entity) => {
+      const indicatorBoardMetadataEntities: IndicatorBoardMetadataEntity[] =
+        await this.indicatorBoardMetadataRepository.findBy({
+          member: memberEntity,
+        });
+      return indicatorBoardMetadataEntities.map((entity) => {
         return IndicatorBoardMetadataMapper.mapEntityToDomain(entity);
       });
-
-      return userIndicatorBoardMetadataList;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({

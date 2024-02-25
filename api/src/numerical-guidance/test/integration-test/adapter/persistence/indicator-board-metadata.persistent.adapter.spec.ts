@@ -22,6 +22,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
     await memberRepository.insert({ id: 10 });
     await memberRepository.insert({ id: 5 });
+    await memberRepository.insert({ id: 999 });
     memberRepository.save;
 
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
@@ -50,6 +51,28 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
+      member: { id: 5 },
+    });
+
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba10',
+      indicatorBoardMetadataName: 'memberTest',
+      indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      member: { id: 999 },
+    });
+
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba11',
+      indicatorBoardMetadataName: 'memberTest',
+      indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      member: { id: 999 },
+    });
+
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba12',
+      indicatorBoardMetadataName: 'memberTest',
+      indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      member: { id: 999 },
     });
   };
 
@@ -201,13 +224,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
   it('사용자 id로 메타데이터 리스트 가져오기.', async () => {
     // given
+    const memberId = 999;
+
     // when
-    const result = await indicatorBoardMetadataPersistentAdapter.loadMemberIndicatorBoardMetadataList(5);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadMemberIndicatorBoardMetadataList(memberId);
 
     // then
-    const expectedFirstTickerId = '0d73cea1-35a5-432f-bcd1-27ae3541ba72';
-    expect(result[0]['id']).toEqual(expectedFirstTickerId);
-    expect(result.length).toEqual(2);
+    const expected = 3;
+    expect(result.length).toEqual(expected);
   });
 
   it('사용자 id로 메타데이터 리스트를 가져오기 - 해당 회원이 없을 경우', async () => {

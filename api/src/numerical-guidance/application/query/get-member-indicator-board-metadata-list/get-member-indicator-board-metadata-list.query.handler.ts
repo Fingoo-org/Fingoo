@@ -15,8 +15,8 @@ export class GetMemberIndicatorBoardMetadataListQueryHandler implements IQueryHa
     getMemberIndicatorBoardMetadataQuery: GetMemberIndicatorBoardMetadataListQuery,
   ): Promise<IndicatorBoardMetadata[]> {
     const memberId = getMemberIndicatorBoardMetadataQuery.memberId;
-    const MemberIndicatorBoardMetadataList: IndicatorBoardMetadata[] =
+    const indicatorBoardMetadataList: IndicatorBoardMetadata[] =
       await this.loadMemberIndicatorBoardMetadataPort.loadMemberIndicatorBoardMetadataList(memberId);
-    return MemberIndicatorBoardMetadataList;
+    return indicatorBoardMetadataList;
   }
 }
