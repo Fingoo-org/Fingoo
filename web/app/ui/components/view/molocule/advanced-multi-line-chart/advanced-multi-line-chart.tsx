@@ -11,6 +11,7 @@ import {
   MouseCoordinateX,
 } from 'react-financial-charts';
 import { format } from 'd3-format';
+import { timeFormat } from 'd3-time-format';
 
 type AdvancedMultiLineChartProps<T> = {
   data: T[];
@@ -47,7 +48,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
       width={600}
       height={300}
       seriesName="data"
-      ratio={3}
+      ratio={1}
     >
       <Chart id={1} height={100} yExtents={yExtents}>
         <XAxis showTicks={false} showGridLines axisAt="bottom" orient="bottom" />
