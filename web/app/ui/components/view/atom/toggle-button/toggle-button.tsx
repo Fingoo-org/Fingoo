@@ -13,6 +13,7 @@ type ToggleButtonProps = {
   icon?: React.ElementType;
   disabled?: boolean;
   onActivated?: () => void;
+  onDeactivated?: () => void;
 };
 
 export default function ToggleButton({
@@ -23,12 +24,15 @@ export default function ToggleButton({
   variant = 'light',
   disabled = false,
   onActivated,
+  onDeactivated,
 }: ToggleButtonProps): JSX.Element {
   const [active, setActive] = useState(false);
 
   useEffect(() => {
     if (active) {
       onActivated?.();
+    } else {
+      onDeactivated?.();
     }
   }, [active]);
 
