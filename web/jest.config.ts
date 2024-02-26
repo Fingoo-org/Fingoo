@@ -10,7 +10,6 @@ const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
   dir: './',
 });
-
 const config: Config = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -203,4 +202,13 @@ const config: Config = {
   // watchman: true,
 };
 
-export default createJestConfig(config);
+// https://stackoverflow.com/questions/71427330/nextjs-jest-transform-transformignorepatterns-not-working-with-esm-modules
+// https://github.com/react-financial/react-financial-charts/issues/488
+const overrideNextJestOptions = async () => {
+  return {
+    ...(await createJestConfig(config)()),
+    transformIgnorePatterns: ['/node_modules/(?!react-financial-charts|@react-financial-charts|d3|internmap)'],
+  };
+};
+
+export default overrideNextJestOptions;
