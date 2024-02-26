@@ -17,14 +17,22 @@ import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { useResponsive } from './use-responsive';
 
-type AdvancedMultiLineChartProps<T> = {
-  data: T[];
+const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
+
+const calculateDate = (date: Date, rowsToDownload: number) => {
+  const newDate = new Date(date);
+  newDate.setDate(newDate.getDate() - rowsToDownload);
+  return newDate;
 };
 
-const colors = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
+type AdvancedMultiLineChartProps<T> = {
+  data: T[];
+  onLoadData?: (startDate: Date) => void;
+};
 
 export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   data,
+  onLoadData,
 }: AdvancedMultiLineChartProps<T>) {
   const { containerRef, sizes } = useResponsive();
 
@@ -32,13 +40,17 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
 
   const { data: scaledData, xScale, xAccessor, displayXAccessor } = ScaleProvider(data);
 
-  const maxDate = scaledData[scaledData.length - 1];
-  const minDate = scaledData[Math.max(0, scaledData.length - 40)];
-  const xExtents = [xAccessor(minDate), xAccessor(maxDate)];
+  const endData = scaledData[scaledData.length - 1];
+  const startData = scaledData[0];
+  const xExtents = [xAccessor(startData), xAccessor(endData)];
 
-  // const handleLoadBefore = (start: number, end: number) => {
-  //   const rowsToDownload = end - Math.ceil(start);
-  // };
+  const handleLoadBefore = (start: number, end: number) => {
+    const rowsToDownload = end - Math.ceil(start);
+
+    const newStartDate = calculateDate(startData.date, rowsToDownload);
+
+    onLoadData?.(newStartDate);
+  };
 
   const yExtents = (d: T) => {
     return Object.keys(d).reduce(
@@ -55,15 +67,19 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
       if (typeof scaledData[0][key] === 'number') {
         return (
           <>
-            <CurrentCoordinate fillStyle={colors[idx]} strokeStyle={colors[idx]} yAccessor={(d) => d[key]} />
-            <LineSeries key={key} strokeStyle={colors[idx]} yAccessor={(d) => d[key]} />
+            <CurrentCoordinate
+              fillStyle={INDICATOR_COLORS[idx]}
+              strokeStyle={INDICATOR_COLORS[idx]}
+              yAccessor={(d) => d[key]}
+            />
+            <LineSeries key={key} strokeStyle={INDICATOR_COLORS[idx]} yAccessor={(d) => d[key]} />
             ;
             <SingleValueTooltip
               yAccessor={(d) => d[key]}
               yLabel={key}
               yDisplayFormat={format('.2f')}
-              valueFill={colors[idx]}
-              labelFill={colors[idx]}
+              valueFill={INDICATOR_COLORS[idx]}
+              labelFill={INDICATOR_COLORS[idx]}
               origin={[8, 16 * (idx + 1)]}
             />
           </>
