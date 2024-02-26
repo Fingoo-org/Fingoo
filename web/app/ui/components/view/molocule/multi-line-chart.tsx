@@ -13,7 +13,7 @@ export default function MultiLineChart({ data, categories, noDataText }: MultiLi
   return (
     <>
       <LineChart
-        className="mt-4 h-72"
+        className="h-full"
         data={data}
         index="date"
         categories={categories}

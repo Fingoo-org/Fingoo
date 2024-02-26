@@ -88,6 +88,8 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
     });
   };
 
+  if (data.length === 0) return null;
+
   return (
     <div ref={containerRef} className="h-full w-full">
       <ChartCanvas
