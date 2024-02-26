@@ -18,6 +18,8 @@ type AdvancedMultiLineChartProps<T> = {
   data: T[];
 };
 
+const colors = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
+
 export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   data,
 }: AdvancedMultiLineChartProps<T>) {
@@ -35,6 +37,14 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
       },
       [0],
     );
+  };
+
+  const renderLienSeries = () => {
+    return Object.keys(scaledData[0]).map((key, idx) => {
+      if (typeof scaledData[0][key] === 'number') {
+        return <LineSeries key={key} strokeStyle={colors[idx]} yAccessor={(d) => d[key]} />;
+      }
+    });
   };
 
   const max = xAccessor(scaledData[scaledData.length - 1]);
@@ -58,9 +68,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
         <Chart id={1} height={sizes.containerHeight - 50} yExtents={yExtents}>
           <XAxis showTicks={false} showGridLines axisAt="bottom" orient="bottom" />
           <YAxis />
-          <LineSeries yAccessor={(d) => d.AAPL} />
-          <LineSeries yAccessor={(d) => d.GOOG} />
-          <LineSeries yAccessor={(d) => d.MSFT} />
+          {renderLienSeries()}
           <MouseCoordinateY at="right" orient="right" displayFormat={format('.2f')} />
           <MouseCoordinateX at="bottom" orient="bottom" displayFormat={timeFormat('%Y-%m-%d')} />
         </Chart>
