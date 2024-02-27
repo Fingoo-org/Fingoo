@@ -40,16 +40,19 @@ const initialState: MockDatabase = {
       id: '1',
       name: 'metadata1',
       tickers: [],
+      customForecastIndicatorIds: [],
     },
     {
       id: '2',
       name: 'metadata2',
       tickers: [],
+      customForecastIndicatorIds: [],
     },
     {
       id: '3',
       name: 'metadata3',
       tickers: [],
+      customForecastIndicatorIds: [],
     },
   ],
   indicatorList: [
@@ -102,7 +105,11 @@ export const mockDB: MockDatabaseAction = {
       metadataList: mockDatabaseStore.metadataList,
     };
   },
-  postMetadataList: (newMetadata) => {
+  postMetadataList: (data) => {
+    const newMetadata = {
+      ...data,
+      customForecastIndicatorIds: [],
+    };
     mockDatabaseStore.metadataList = [...mockDatabaseStore.metadataList, newMetadata];
   },
   getIndicatorList: () => {

@@ -30,6 +30,7 @@ describe('useIndicatorBoardMetadataList', () => {
       id: '1',
       name: 'metadata1',
       tickers: [],
+      customForecastIndicatorIds: [],
     });
   });
 
@@ -40,13 +41,20 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createMetadata(new IndicatorBoardMetadata({ id: '4', name: 'metadata4', tickers: [] }));
+      result.current.createMetadata(
+        new IndicatorBoardMetadata({ id: '4', name: 'metadata4', tickers: [], customForecastIndicatorIds: [] }),
+      );
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
     // then
     expect(result.current.metadataList).toHaveLength(4);
-    expect(result.current.metadataList?.[3]).toEqual({ id: '4', name: 'metadata4', tickers: [] });
+    expect(result.current.metadataList?.[3]).toEqual({
+      id: '4',
+      name: 'metadata4',
+      tickers: [],
+      customForecastIndicatorIds: [],
+    });
   });
 
   // Risk: https://mswjs.io/docs/limitations#parallel-runs
