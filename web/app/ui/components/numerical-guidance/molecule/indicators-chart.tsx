@@ -1,6 +1,6 @@
 'use client';
-import { useIndicatorsValueViewModel } from '@/app/business/hooks/use-indicators-value-view-model.hook';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata-view-model.hook';
+import { useIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-indicators-value-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import MultiLineChart from '../../view/molocule/multi-line-chart';
 import { useMemo, useState } from 'react';
 import Pending from '../../view/molocule/pending';

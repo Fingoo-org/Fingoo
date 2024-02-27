@@ -13,6 +13,7 @@ export type IndicatorBoardMetadataResponse = {
   id: string;
   name: string;
   tickers: IndicatorResponse[];
+  customForecastIndicatorIds: string[];
 };
 
 export type IndicatorBoardMetadataListResponse = {

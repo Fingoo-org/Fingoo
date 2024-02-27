@@ -4,4 +4,5 @@ export const API_PATH = {
   indicatorList: `${API_URL}/indicator-list`,
   indicatorBoardMetadata: `${API_URL}/indicator-board-metadata`,
   indicatorValue: `${API_URL}/numerical-guidance/indicators`,
+  customForecastIndicator: `${API_URL}/numerical-guidance/custom-forecast-indicator`,
 };

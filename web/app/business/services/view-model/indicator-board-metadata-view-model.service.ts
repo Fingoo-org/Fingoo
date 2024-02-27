@@ -17,12 +17,15 @@ export class IndicatorBoardMetadata {
   // 여기는 response와 같아야함
   readonly id: string;
   readonly name: string;
+  readonly customForecastIndicatorIds: string[];
   // 변경된 부분은 private으로 client에서 못사용하게
   private tickers: Indicator[];
-  constructor({ id, name, tickers }: IndicatorBoardMetadataResponse) {
+
+  constructor({ id, name, tickers, customForecastIndicatorIds }: IndicatorBoardMetadataResponse) {
     this.id = id;
     this.name = name;
     this.tickers = tickers.map((ticker) => new Indicator(ticker));
+    this.customForecastIndicatorIds = customForecastIndicatorIds;
   }
 
   // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
@@ -39,6 +42,7 @@ export class IndicatorBoardMetadata {
       id: this.id,
       name: this.name,
       tickers: this.indicators,
+      customForecastIndicatorIds: this.customForecastIndicatorIds,
     };
   }
 

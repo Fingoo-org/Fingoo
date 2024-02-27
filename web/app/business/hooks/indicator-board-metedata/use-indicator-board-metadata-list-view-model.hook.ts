@@ -2,13 +2,13 @@ import {
   CreateIndicatorMetadataRequestBody,
   useCreateIndicatorMetadata,
   useDeleteIndicatorBoardMetadata,
-} from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { useFetchIndicatorBoardMetadataList } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
+} from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
+import { useFetchIndicatorBoardMetadataList } from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useMemo, useRef } from 'react';
 import {
   IndicatorBoardMetadata,
   convertIndcatorBoardMetadataList,
-} from '../services/view-model/indicator-board-metadata-view-model.service';
+} from '../../services/view-model/indicator-board-metadata-view-model.service';
 
 export const useIndicatorBoardMetadataList = () => {
   const { data: metadataList, isValidating } = useFetchIndicatorBoardMetadataList();

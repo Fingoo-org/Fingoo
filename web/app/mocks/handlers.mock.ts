@@ -6,12 +6,31 @@ import {
   UpdateIndicatorBoardMetadataRequestBody,
 } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { CreateIndicatorMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
+import { CreateCustomForecastIndicatorRequestBody } from '../store/querys/numerical-guidance/custom-forecast-indicator.query';
 
 const delayForDevelopment = async (ms = 1000) => {
   if (process.env.NODE_ENV === 'development') {
     await delay(ms);
   }
 };
+
+const customForecastIndicatorHandlers = [
+  http.get(API_PATH.customForecastIndicator, async () => {
+    await delayForDevelopment();
+    return HttpResponse.json(mockDB.getCustomForecastIndicatorList());
+  }),
+  http.post<never, CreateCustomForecastIndicatorRequestBody, never>(
+    API_PATH.indicatorBoardMetadata,
+    async ({ request }) => {
+      const newdata = await request.json();
+      mockDB.postCustomForecastIndicator(newdata);
+      await delayForDevelopment();
+      return HttpResponse.json({
+        status: 200,
+      });
+    },
+  ),
+];
 
 export const handlers = [
   http.get(API_PATH.indicatorBoardMetadata, async () => {
@@ -82,6 +101,7 @@ export const handlers = [
 
     return HttpResponse.json({ status: 200 });
   }),
+  ...customForecastIndicatorHandlers,
 ];
 
 type metadataParam = {

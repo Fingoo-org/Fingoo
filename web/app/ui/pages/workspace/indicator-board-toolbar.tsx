@@ -3,6 +3,7 @@ import { Tab } from '@headlessui/react';
 import MetadataListContainer from './metadata-list-container';
 import IndicatorListContainer from './indicator-list-container';
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
+import CustomForecastIndicatorListContainer from './custom-forecast-indicator-list-container';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -12,14 +13,18 @@ export default function IndicatorBoardToolbar() {
   const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
   return (
     <div className=" bg-red-800">
-      <Tab.Group>
+      <Tab.Group defaultIndex={2}>
         <Tab.List className="flex space-x-1   p-1">
-          <ToolbarTab disable={selectedMetadataId ? false : true} tabName="Tool Bar" />
-          <ToolbarTab tabName="Meta Data" />
+          <ToolbarTab disable={selectedMetadataId ? false : true} tabName="지표 추가" />
+          <ToolbarTab disable={selectedMetadataId ? false : true} tabName="예측 지표" />
+          <ToolbarTab tabName="메타 데이터" />
         </Tab.List>
         <Tab.Panels className="md:h-96">
           <Tab.Panel>
             <IndicatorListContainer />
+          </Tab.Panel>
+          <Tab.Panel>
+            <CustomForecastIndicatorListContainer />
           </Tab.Panel>
           <Tab.Panel>
             <MetadataListContainer />

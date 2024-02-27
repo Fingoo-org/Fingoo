@@ -58,7 +58,7 @@ export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.Props
                     dialogSize,
                   )}
                 >
-                  <div className="px-3 pb-1 pt-4">{dialogMenuHeader}</div>
+                  {dialogMenuHeader.length !== 0 ? <div className="px-3 pb-1 pt-4">{dialogMenuHeader}</div> : null}
                   {dialogMenuItems}
                 </div>
               </Transition.Child>
