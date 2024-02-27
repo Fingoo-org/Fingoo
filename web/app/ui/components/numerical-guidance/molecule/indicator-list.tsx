@@ -19,7 +19,7 @@ const IndicatorList = React.memo(function IndicatorList() {
 
   return (
     <div role="tablist" className={clsx({ hidden: selectedMetadata === undefined })}>
-      <WindowList height={200} itemHeight={48} items={indicatorList || []} renderRow={render} />
+      <WindowList height={200} itemHeight={64} items={indicatorList || []} renderRow={render} />
     </div>
   );
 });

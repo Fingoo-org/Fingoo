@@ -1,16 +1,19 @@
 import { PropsWithChildren } from 'react';
 
-type SelectableListItemProps = {
+type ListItemProps = {
+  withHoverComponent?: React.ReactNode;
   style?: React.CSSProperties;
 };
 
-export default function ListItem({ children, style }: PropsWithChildren<SelectableListItemProps>) {
+export default function ListItem({ style, withHoverComponent, children }: PropsWithChildren<ListItemProps>) {
   return (
-    <div
-      style={style}
-      className=" flex h-full items-center rounded font-medium hover:bg-blue-50 hover:text-blue-700 hover:opacity-20"
-    >
+    <div style={style} className="group relative h-16 w-full">
       {children}
+      {withHoverComponent ? (
+        <div className="z-index-1 invisible absolute right-3 top-2/4  -translate-y-2/4 group-has-[:hover]:visible">
+          {withHoverComponent}
+        </div>
+      ) : null}
     </div>
   );
 }

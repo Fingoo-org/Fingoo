@@ -3,15 +3,13 @@ import { clsx } from 'clsx';
 
 type SelectableListItemProps = {
   selected: boolean;
-  style?: React.CSSProperties;
   onSelect: () => void;
   onDeSelect?: () => void;
 };
 
-export default function SelectableListItem({
+export default function SelectableItem({
   children,
   selected,
-  style,
   onSelect,
   onDeSelect,
 }: React.PropsWithChildren<SelectableListItemProps>) {
@@ -23,10 +21,7 @@ export default function SelectableListItem({
       aria-selected={`${selected}`}
       onClick={handleClick}
     >
-      <div
-        style={style}
-        className=" flex h-full items-center rounded font-medium hover:bg-blue-50 hover:text-blue-700 hover:opacity-20"
-      >
+      <div className=" flex h-full items-center rounded font-medium hover:bg-blue-50 hover:text-blue-700 hover:opacity-20">
         {children}
       </div>
     </button>

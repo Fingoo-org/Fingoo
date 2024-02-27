@@ -1,6 +1,7 @@
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata-view-model.hook';
-import SelectableListItem from '../../view/atom/selectable-list-item';
+import SelectableItem from '../../view/atom/selectable-item';
 import { Indicator } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
+import ListItem from '../../view/atom/list-item';
 
 type IndicatorListItemProps = {
   item: Indicator;
@@ -14,16 +15,15 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
   const handleItemDeSelect = () => deleteIndicatorFromMetadata(item.ticker);
 
   return (
-    <div className="h-12">
-      <SelectableListItem
+    <ListItem style={style}>
+      <SelectableItem
         onSelect={handleItemSelect}
         onDeSelect={handleItemDeSelect}
         key={item.ticker}
-        style={style}
         selected={isSelected}
       >
         {item.name}
-      </SelectableListItem>
-    </div>
+      </SelectableItem>
+    </ListItem>
   );
 }
