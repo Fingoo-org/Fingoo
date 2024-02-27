@@ -1,5 +1,8 @@
 import { useFetchCustomForecastIndicatorList } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { CustomForecastIndicatorList } from '../../services/view-model/custom-forecast-indicator-view-model.service';
+import {
+  CustomForecastIndicators,
+  convertCustomForecastIndicatorsViewModel,
+} from '../../services/view-model/custom-forecast-indicator-view-model.service';
 import { useMemo } from 'react';
 
 export const useCustomForecastIndicatorListViewModel = () => {
@@ -8,7 +11,7 @@ export const useCustomForecastIndicatorListViewModel = () => {
   const convertedCustomForecastIndicatorList = useMemo(() => {
     if (!customForecastIndicatorList) return undefined;
 
-    return new CustomForecastIndicatorList(customForecastIndicatorList);
+    return convertCustomForecastIndicatorsViewModel(customForecastIndicatorList);
   }, [customForecastIndicatorList]);
 
   return {

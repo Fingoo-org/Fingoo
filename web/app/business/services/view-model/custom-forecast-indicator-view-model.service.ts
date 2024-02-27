@@ -16,7 +16,7 @@ export class CustomForecastIndicator {
   }
 }
 
-export class CustomForecastIndicatorList {
+export class CustomForecastIndicators {
   readonly customForecastIndicatorList: CustomForecastIndicator[];
   constructor({ customForecastIndicatorList }: CustomForecastIndicatorListResponse) {
     this.customForecastIndicatorList = customForecastIndicatorList.map(
@@ -24,3 +24,9 @@ export class CustomForecastIndicatorList {
     );
   }
 }
+
+export const convertCustomForecastIndicatorsViewModel = (
+  customForecastIndicatorList: CustomForecastIndicatorListResponse,
+) => {
+  return new CustomForecastIndicators(customForecastIndicatorList);
+};
