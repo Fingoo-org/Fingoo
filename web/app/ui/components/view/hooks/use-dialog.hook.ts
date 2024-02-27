@@ -2,16 +2,16 @@ import { useRef } from 'react';
 import { useDialogStore } from '@/app/store/stores/dialog.store';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 
-export function useDialogMenu(key: DialogKey) {
+export function useDialog(key: DialogKey) {
   const action = useDialogStore((state) => state.action);
   const payload = useDialogStore((state) => state.payload);
   const isOpen = useDialogStore((state) => state.isOpen[key]);
   const position = useDialogStore((state) => state.position);
-  const ref = useRef<HTMLButtonElement>(null);
+  const dialogPositionRef = useRef<HTMLButtonElement>(null);
 
-  const openDialogMenuWithPayload = (payload?: unknown) => {
-    if (ref.current) {
-      const position = ref.current?.getBoundingClientRect();
+  const openDialogWithPayload = (payload?: unknown) => {
+    if (dialogPositionRef.current) {
+      const position = dialogPositionRef.current?.getBoundingClientRect();
 
       if (position) {
         const newPosition = {
@@ -26,16 +26,16 @@ export function useDialogMenu(key: DialogKey) {
     action.open(key);
   };
 
-  const closeDialogMenu = () => {
+  const closeDialog = () => {
     action.close(key);
   };
 
   return {
-    ref,
+    dialogPositionRef,
     isOpen,
     position,
     payload,
-    openDialogMenuWithPayload,
-    closeDialogMenu,
+    openDialogWithPayload,
+    closeDialog,
   };
 }

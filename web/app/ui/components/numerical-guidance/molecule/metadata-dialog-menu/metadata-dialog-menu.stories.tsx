@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import MetadataDialogMenu from './metadata-dialog-menu';
-import { useDialogMenu } from '../../../view/molocule/dialog-menu';
+import { useDialog } from '../../../view/molocule/dialog-menu';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useEffect } from 'react';
 
@@ -15,10 +15,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: () => {
-    const { openDialogMenuWithPayload } = useDialogMenu(DIALOG_KEY.METADATA_EDIT_MENU);
+    const { openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
 
     useEffect(() => {
-      openDialogMenuWithPayload({
+      openDialogWithPayload({
         id: '1',
         name: 'metadata1',
         indicators: [],

@@ -4,7 +4,7 @@ import { Transition } from '@headlessui/react';
 import { DialogMenuItem } from './dialog-menu-item';
 import { DialogMenuContext } from './dialog-menu.context';
 import { DialogMenuHeader } from './dialog-menu-header';
-import { useDialogMenu } from '../../hooks/use-dialog-menu.hook';
+import { useDialog } from '../../hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { filterChildrenByType } from '@/app/utils/helper';
 import { Size } from '@/app/utils/style';
@@ -25,14 +25,14 @@ const getDialogMenuItems = (children: React.ReactNode) => {
 };
 
 export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.PropsWithChildren<DialogMenuProps>) {
-  const { isOpen, position, closeDialogMenu } = useDialogMenu(dialogKey);
+  const { isOpen, position, closeDialog } = useDialog(dialogKey);
   const dialogMenuHeader = getDialogMenuHeader(children);
   const dialogMenuItems = getDialogMenuItems(children);
 
   const dialogSize = DialogMenuSize[size];
 
   const handleOnClick = () => {
-    closeDialogMenu();
+    closeDialog();
   };
 
   return (
