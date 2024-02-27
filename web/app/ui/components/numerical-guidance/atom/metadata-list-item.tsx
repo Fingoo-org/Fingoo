@@ -23,18 +23,20 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     openDialogWithPayload(item);
   };
 
+  const hoverRender = () => {
+    return (
+      <IconButton
+        aria-label="edit"
+        ref={iconButtonRef}
+        onClick={handleIconButton}
+        icon={DotsHorizontalIcon}
+        color={'violet'}
+      />
+    );
+  };
+
   return (
-    <ListItem
-      withHoverComponent={
-        <IconButton
-          aria-label="edit"
-          ref={iconButtonRef}
-          onClick={handleIconButton}
-          icon={DotsHorizontalIcon}
-          color={'violet'}
-        />
-      }
-    >
+    <ListItem hoverRender={hoverRender}>
       <SelectableItem key={item.id} selected={selectedMetadata?.id === item.id} onSelect={handleSelect}>
         {item.name}
       </SelectableItem>
