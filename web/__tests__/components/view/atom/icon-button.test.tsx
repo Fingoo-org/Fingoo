@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import IconButton from '@/app/ui/components/view/atom/icon-button/icon-button';
+import IconButton from '@/app/ui/components/view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 
 describe('IconButton', () => {

@@ -1,4 +1,4 @@
-import IconButton from '../icon-button/icon-button';
+import IconButton from '../icons/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';

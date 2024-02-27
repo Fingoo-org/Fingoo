@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import 'jest-canvas-mock';
 import { server } from './app/mocks/server.mock';
 import { createElement } from 'react';
 

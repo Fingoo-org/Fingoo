@@ -1,7 +1,7 @@
 'use client';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { Dialog, Transition } from '@headlessui/react';
-import { useAlertDialog } from './use-alert-dialog.hook';
+import { useDialog } from '../../hooks/use-dialog.hook';
 import React from 'react';
 import { AlertDialogTitle } from './alert-dialog-title';
 import { filterChildrenByType } from '@/app/utils/helper';
@@ -28,7 +28,7 @@ const getAlertDialogNegativeButton = (children: React.ReactNode) => {
 };
 
 export function AlertDialogRoot({ children, dialogKey }: React.PropsWithChildren<DialogProps>) {
-  const { isOpen, closeDialog } = useAlertDialog(dialogKey);
+  const { isOpen, closeDialog } = useDialog(dialogKey);
   const alertDialogTitle = getAlertDialogTitle(children);
   const alertDialogBody = getAlertDialogBody(children);
   const alertDialogPositiveButton = getAlertDialogPositiveButton(children);

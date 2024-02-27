@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { DialogMenuContext } from './dialog-menu.context';
-import { useDialogMenu } from './use-dialog-menu.hook';
+import { useDialog } from '../../hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 
 type NativeButtonType = Omit<React.ComponentPropsWithoutRef<'button'>, 'onClick'>;
@@ -12,7 +12,7 @@ type DialogMenuItemProps = {
 
 export function DialogMenuItem({ children, icon, onClick, ...props }: React.PropsWithChildren<DialogMenuItemProps>) {
   const dialogKey = useContext(DialogMenuContext);
-  const { payload, closeDialogMenu } = useDialogMenu(dialogKey as DialogKey);
+  const { payload, closeDialog } = useDialog(dialogKey as DialogKey);
   const Icon = icon;
 
   const handleClick = () => {
@@ -21,7 +21,7 @@ export function DialogMenuItem({ children, icon, onClick, ...props }: React.Prop
       onClick(payload);
     }
 
-    closeDialogMenu();
+    closeDialog();
   };
 
   return (
