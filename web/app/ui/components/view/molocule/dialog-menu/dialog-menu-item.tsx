@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { DialogMenuContext } from './dialog-menu.context';
-import { useDialogMenu } from './use-dialog-menu.hook';
+import { useDialogMenu } from '../../hooks/use-dialog-menu.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 
 type NativeButtonType = Omit<React.ComponentPropsWithoutRef<'button'>, 'onClick'>;

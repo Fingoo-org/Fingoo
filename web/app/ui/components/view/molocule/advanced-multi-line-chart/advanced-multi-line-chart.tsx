@@ -15,7 +15,7 @@ import {
 } from 'react-financial-charts';
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
-import { useResponsive } from './use-responsive';
+import { useResponsive } from '../../hooks/use-responsive';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 

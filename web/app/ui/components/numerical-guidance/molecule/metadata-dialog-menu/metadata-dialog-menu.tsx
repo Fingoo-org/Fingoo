@@ -2,7 +2,7 @@
 import DialogMenu from '../../../view/molocule/dialog-menu';
 import { TrashIcon } from '@heroicons/react/solid';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import { useAlertDialog } from '../../../view/molocule/alert-dialog/use-alert-dialog.hook';
+import { useAlertDialog } from '../../../view/hooks/use-alert-dialog.hook';
 import TinyInput from '../../../view/atom/tiny-input/tiny-input';
 import { useIndicatorBoardMetadata } from '@/app/business/hooks/use-indicator-board-metadata.hook';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';

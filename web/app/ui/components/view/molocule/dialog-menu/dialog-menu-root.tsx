@@ -4,7 +4,7 @@ import { Transition } from '@headlessui/react';
 import { DialogMenuItem } from './dialog-menu-item';
 import { DialogMenuContext } from './dialog-menu.context';
 import { DialogMenuHeader } from './dialog-menu-header';
-import { useDialogMenu } from './use-dialog-menu.hook';
+import { useDialogMenu } from '../../hooks/use-dialog-menu.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { filterChildrenByType } from '@/app/utils/helper';
 import { Size } from '@/app/utils/style';
