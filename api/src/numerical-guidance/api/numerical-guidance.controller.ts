@@ -49,7 +49,7 @@ export class NumericalGuidanceController {
     return this.queryBus.execute(query);
   }
 
-  @ApiOperation({ summary: '고정된 화면에 보여주는 지표 API입니다.' })
+  @ApiOperation({ summary: 'Live 지표를 불러옵니다.' })
   @Get('/indicators/k-stock/live')
   async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<FluctuatingIndicatorDto> {
     const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
