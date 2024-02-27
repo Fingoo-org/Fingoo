@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Button from '../button/button';
 import { ButtonVariant, Color, Size } from '@/app/utils/style';
-import IconButton from '../icons/icon-button';
+import Icon from '../icons/icon';
 
 type ToggleButtonProps = {
   text: string;
@@ -43,7 +43,7 @@ export default function ToggleButton({
       color={active ? activeColor : 'gray'}
     >
       <div className="flex items-center">
-        {icon ? <IconButton color={active ? activeColor : 'gray'} variant={'simple'} icon={icon} size={size} /> : null}
+        {icon ? <Icon color={active ? activeColor : 'gray'} variant={'simple'} icon={icon} size={size} /> : null}
         {text}
       </div>
     </Button>
