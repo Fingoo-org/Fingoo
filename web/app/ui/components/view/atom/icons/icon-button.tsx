@@ -1,7 +1,7 @@
 import { Sizes, IconVariants } from './icon-button.style';
 import { Color, Size, IconVariant } from '@/app/utils/style';
 import React from 'react';
-import Icon from './icon';
+import Icon from './variant-icon';
 
 type NativeButtonType = React.ComponentPropsWithoutRef<'button'>;
 
