@@ -10,14 +10,16 @@ export function useDialogMenu(key: DialogKey) {
   const ref = useRef<HTMLButtonElement>(null);
 
   const openDialogMenuWithPayload = (payload?: unknown) => {
-    const position = ref.current?.getBoundingClientRect();
+    if (ref.current) {
+      const position = ref.current?.getBoundingClientRect();
 
-    if (position) {
-      const newPosition = {
-        x: position.left,
-        y: position.top + position.height / 2,
-      };
-      action.setPosition(newPosition);
+      if (position) {
+        const newPosition = {
+          x: position.left,
+          y: position.top + position.height / 2,
+        };
+        action.setPosition(newPosition);
+      }
     }
 
     action.setPayload(payload);
