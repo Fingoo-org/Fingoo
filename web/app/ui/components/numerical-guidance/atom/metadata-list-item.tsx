@@ -1,5 +1,5 @@
 import SelectableListItem from '../../view/atom/selectable-list-item';
-import IconButton from '../../view/atom/icon-button/icon-button';
+import IconButton from '../../view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/use-selected-indicator-board-metadata-view-model.hook';

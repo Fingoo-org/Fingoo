@@ -3,30 +3,20 @@ import { Color, Size, IconVariant } from '@/app/utils/style';
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
-type NativeButtonType = React.ComponentPropsWithoutRef<'button'>;
-
-type IconButtonProps = {
+type IconProps = {
   icon: React.ElementType;
   size?: Size;
   color?: Color;
   variant?: IconVariant;
-  disabled?: boolean;
-} & NativeButtonType;
+};
 
-const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { icon, onClick, size = Sizes.SM, variant = IconVariants.Simple, color = 'blue', disabled, className, ...props },
-  ref,
-) {
+export default function Icon({ icon, size = Sizes.SM, variant = IconVariants.Simple, color = 'blue' }: IconProps) {
   const Icon = icon;
 
   const iconShapeStyles = shape[variant];
   const iconColorStyles = getIconColors(variant, color);
   return (
-    <button
-      {...props}
-      disabled={disabled}
-      ref={ref}
-      onClick={onClick}
+    <div
       className={twMerge(
         wrapperProportions[size].paddingX,
         wrapperProportions[size].paddingY,
@@ -40,12 +30,9 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function
         iconShapeStyles?.ring,
         iconShapeStyles?.rounded,
         iconShapeStyles?.shadow,
-        className,
       )}
     >
       <Icon className={twMerge(iconSizes[size].height, iconSizes[size].width)} />
-    </button>
+    </div>
   );
-});
-
-export default IconButton;
+}

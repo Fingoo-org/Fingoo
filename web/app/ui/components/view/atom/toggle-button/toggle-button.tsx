@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Button from '../button/button';
 import { ButtonVariant, Color, Size } from '@/app/utils/style';
-import IconButton from '../icon-button/icon-button';
+import IconButton from '../icons/icon-button';
 
 type ToggleButtonProps = {
   text: string;
