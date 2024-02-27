@@ -4,7 +4,7 @@ import { TrashIcon } from '@heroicons/react/solid';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import TinyInput from '../../../view/atom/tiny-input/tiny-input';
-import { useIndicatorBoardMetadata } from '@/app/business/hooks/use-indicator-board-metadata.hook';
+import { useIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata.hook';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 
 export default function MetadataDialogMenu() {

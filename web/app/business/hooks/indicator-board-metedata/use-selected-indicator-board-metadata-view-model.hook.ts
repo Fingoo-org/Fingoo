@@ -4,8 +4,8 @@ import {
   useAddIndicatorToMetadata,
   useDeleteIndicatorFromMetadata,
   useUpdateIndicatorBoardMetadata,
-} from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { useNumericalGuidanceStore } from '../../store/stores/numerical-guidance.store';
+} from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
+import { useNumericalGuidanceStore } from '../../../store/stores/numerical-guidance.store';
 import { useIndicatorBoardMetadataList } from './use-indicator-board-metadata-list-view-model.hook';
 
 export const useSelectedIndicatorBoardMetadata = () => {
