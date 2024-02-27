@@ -10,8 +10,15 @@ import {
 import { IndicatorListResponse } from '../store/querys/numerical-guidance/indicator.query';
 import { AddIndicatorToMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from './mock-data/indicators-value.mock';
+import {
+  CreateCustomForecastIndicatorRequestBody,
+  CustomForecastIndicatorListResponse,
+} from '../store/querys/numerical-guidance/custom-forecast-indicator.query';
 
-type MockDatabase = IndicatorBoardMetadataListResponse & IndicatorListResponse & IndicatorsValueResponse;
+type MockDatabase = IndicatorBoardMetadataListResponse &
+  IndicatorListResponse &
+  IndicatorsValueResponse &
+  CustomForecastIndicatorListResponse;
 
 type MockDatabaseAction = {
   getMetadataList: () => IndicatorBoardMetadataListResponse;
@@ -23,6 +30,8 @@ type MockDatabaseAction = {
   getIndicatorValue: (ticker: string) => IndicatorValueResponse | undefined;
   patchMetadata: (id: string, data: UpdateIndicatorBoardMetadataRequestBody) => void;
   deleteMetadata: (id: string) => void;
+  getCustomForecastIndicatorList: () => CustomForecastIndicatorListResponse;
+  postCustomForecastIndicator: (data: CreateCustomForecastIndicatorRequestBody) => void;
 };
 
 const initialState: MockDatabase = {
@@ -58,6 +67,26 @@ const initialState: MockDatabase = {
     },
   ],
   indicatorsValue: indicatorsValueMockData,
+  customForecastIndicatorList: [
+    {
+      id: '1',
+      name: 'customForecastIndicator1',
+      targetIndicatorId: 'AAPL',
+      sourceIndicatorIds: ['MSFT', 'GOOG'],
+    },
+    {
+      id: '2',
+      name: 'customForecastIndicator2',
+      targetIndicatorId: 'MSFT',
+      sourceIndicatorIds: ['AAPL', 'GOOG'],
+    },
+    {
+      id: '3',
+      name: 'customForecastIndicator3',
+      targetIndicatorId: 'GOOG',
+      sourceIndicatorIds: ['AAPL', 'MSFT'],
+    },
+  ],
 };
 
 // mock이라 성능상의 문제가 필요 없음으로 사용
@@ -116,6 +145,22 @@ export const mockDB: MockDatabaseAction = {
   },
   deleteMetadata: (id) => {
     mockDatabaseStore.metadataList = mockDatabaseStore.metadataList.filter((metadata) => metadata.id !== id);
+  },
+  getCustomForecastIndicatorList: () => {
+    return {
+      customForecastIndicatorList: mockDatabaseStore.customForecastIndicatorList,
+    };
+  },
+  postCustomForecastIndicator: (data) => {
+    const newCustomForecastIndicator = {
+      ...data,
+      id: Math.random().toString(36),
+      sourceIndicatorIds: [],
+    };
+    mockDatabaseStore.customForecastIndicatorList = [
+      ...mockDatabaseStore.customForecastIndicatorList,
+      newCustomForecastIndicator,
+    ];
   },
 };
 
