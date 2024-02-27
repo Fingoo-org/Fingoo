@@ -60,7 +60,6 @@ describe('IndicatorsChart', () => {
     render(
       <SWRProviderWithoutCache>
         <IndicatorsChart />
-
         <IndicatorList />
       </SWRProviderWithoutCache>,
     );
@@ -76,5 +75,31 @@ describe('IndicatorsChart', () => {
 
     // then
     expect(await screen.findByText(/선택한 지표가 없습니다. 지표를 선택해주세요/i)).toBeInTheDocument();
+  });
+
+  it('선택한 메타데이터가 있을 때, 지표를 선택하고 토글 버튼을 클릭하면, 자세한 차트를 보여준다', async () => {
+    // given
+    render(
+      <SWRProviderWithoutCache>
+        <IndicatorsChart />
+        <IndicatorList />
+      </SWRProviderWithoutCache>,
+    );
+    const { result: store } = renderHook(() => useNumericalGuidanceStore());
+    act(() => {
+      store.current.actions.selectMetadata('1');
+    });
+    await waitFor(() => expect(screen.getByRole('tablist')).toBeVisible());
+
+    // when
+    await userEvent.click(await screen.findByText(/Apple Inc./i));
+    expect(screen.queryByTestId('advanced-multi-line-chart')).not.toBeInTheDocument();
+
+    await userEvent.click(await screen.findByRole('button', { name: 'toggle-button' }));
+
+    // then
+    expect(await screen.findByTestId('advanced-multi-line-chart')).toBeInTheDocument();
+    // expect(await screen.findByText(/AAPL/i)).toBeInTheDocument();
+    // expect(await screen.findByText(/Apple Inc./i)).toBeInTheDocument();
   });
 });

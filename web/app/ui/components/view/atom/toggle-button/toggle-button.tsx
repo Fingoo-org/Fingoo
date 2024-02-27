@@ -40,6 +40,7 @@ export default function ToggleButton({
       size={size}
       variant={variant}
       onClick={handleToggle}
+      aria-label="toggle-button"
       color={active ? activeColor : 'gray'}
     >
       <div className="flex items-center">
