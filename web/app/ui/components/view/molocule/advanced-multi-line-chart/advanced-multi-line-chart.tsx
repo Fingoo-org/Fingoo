@@ -25,6 +25,28 @@ const calculateDate = (date: Date, rowsToDownload: number) => {
   return newDate;
 };
 
+function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx: number }) {
+  return (
+    <>
+      <CurrentCoordinate
+        fillStyle={INDICATOR_COLORS[idx]}
+        strokeStyle={INDICATOR_COLORS[idx]}
+        yAccessor={(d) => d[indicatorKey]}
+      />
+      <LineSeries strokeStyle={INDICATOR_COLORS[idx]} yAccessor={(d) => d[indicatorKey]} />
+      ;
+      <SingleValueTooltip
+        yAccessor={(d) => d[indicatorKey]}
+        yLabel={indicatorKey}
+        yDisplayFormat={format('.2f')}
+        valueFill={INDICATOR_COLORS[idx]}
+        labelFill={INDICATOR_COLORS[idx]}
+        origin={[8, 16 * (idx + 1)]}
+      />
+    </>
+  );
+}
+
 type AdvancedMultiLineChartProps<T> = {
   data: T[];
   onLoadData?: (startDate: Date) => void;
@@ -65,25 +87,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   const renderLienSeries = () => {
     return Object.keys(scaledData[0]).map((key, idx) => {
       if (typeof scaledData[0][key] === 'number') {
-        return (
-          <>
-            <CurrentCoordinate
-              fillStyle={INDICATOR_COLORS[idx]}
-              strokeStyle={INDICATOR_COLORS[idx]}
-              yAccessor={(d) => d[key]}
-            />
-            <LineSeries key={key} strokeStyle={INDICATOR_COLORS[idx]} yAccessor={(d) => d[key]} />
-            ;
-            <SingleValueTooltip
-              yAccessor={(d) => d[key]}
-              yLabel={key}
-              yDisplayFormat={format('.2f')}
-              valueFill={INDICATOR_COLORS[idx]}
-              labelFill={INDICATOR_COLORS[idx]}
-              origin={[8, 16 * (idx + 1)]}
-            />
-          </>
-        );
+        return <IndicatorLineSeries key={key} indicatorKey={key} idx={idx} />;
       }
     });
   };
@@ -91,7 +95,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   if (data.length === 0) return null;
 
   return (
-    <div ref={containerRef} className="h-full w-full">
+    <div data-testid="advanced-multi-line-chart" ref={containerRef} className="h-full w-full">
       <ChartCanvas
         xExtents={xExtents}
         xScale={xScale}
