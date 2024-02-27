@@ -1,4 +1,4 @@
-import { render, renderHook, screen, waitFor } from '@testing-library/react';
+import { act, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
 import { resetAllStore } from '@/app/store/stores/reset-store';
@@ -19,7 +19,9 @@ describe('CustomForecastIndicatorList', () => {
       </SWRProviderWithoutCache>,
     );
     const { result: store } = renderHook(() => useNumericalGuidanceStore());
-    store.current.actions.selectMetadata('1');
+    act(() => {
+      store.current.actions.selectMetadata('1');
+    });
     await waitFor(() => expect(screen.getByRole('tablist')).toBeVisible());
 
     // when
