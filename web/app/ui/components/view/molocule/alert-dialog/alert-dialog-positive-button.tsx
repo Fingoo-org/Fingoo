@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { AlertDialogContext } from './alert-dialog-context';
-import { useAlertDialog } from '../../hooks/use-alert-dialog.hook';
+import { useDialog } from '../../hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import Button from '../../atom/button/button';
 import { ButtonVariant, Color } from '@/app/utils/style';
@@ -21,7 +21,7 @@ export function AlertDialogPositiveButton({
   ...props
 }: React.PropsWithChildren<AlertDialogPositiveButtonProps>) {
   const dialogKey = useContext(AlertDialogContext);
-  const { payload, closeDialog } = useAlertDialog(dialogKey as DialogKey);
+  const { payload, closeDialog } = useDialog(dialogKey as DialogKey);
 
   const handleClick = () => {
     if (onClick) {
