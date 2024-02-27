@@ -71,7 +71,9 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createMetadata(new IndicatorBoardMetadata({ id: '4', name: 'metadata4', tickers: [] }));
+      result.current.createMetadata(
+        new IndicatorBoardMetadata({ id: '4', name: 'metadata4', tickers: [], customForecastIndicatorIds: [] }),
+      );
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 

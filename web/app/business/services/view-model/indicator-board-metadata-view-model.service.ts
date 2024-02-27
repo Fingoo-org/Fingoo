@@ -42,6 +42,7 @@ export class IndicatorBoardMetadata {
       id: this.id,
       name: this.name,
       tickers: this.indicators,
+      customForecastIndicatorIds: this.customForecastIndicatorIds,
     };
   }
 
