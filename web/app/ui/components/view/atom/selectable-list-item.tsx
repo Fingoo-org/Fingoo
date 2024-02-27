@@ -1,4 +1,3 @@
-import ListItem from './list-item';
 import React, { MouseEventHandler } from 'react';
 import { clsx } from 'clsx';
 
@@ -24,7 +23,12 @@ export default function SelectableListItem({
       aria-selected={`${selected}`}
       onClick={handleClick}
     >
-      <ListItem style={style}>{children}</ListItem>
+      <div
+        style={style}
+        className=" flex h-full items-center rounded font-medium hover:bg-blue-50 hover:text-blue-700 hover:opacity-20"
+      >
+        {children}
+      </div>
     </button>
   );
 }
