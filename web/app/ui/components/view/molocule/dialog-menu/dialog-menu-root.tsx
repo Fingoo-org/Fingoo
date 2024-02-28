@@ -41,7 +41,7 @@ export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.Props
         <Transition as={React.Fragment} show={isOpen || false}>
           <div className="pointer-events-auto relative z-0">
             <div onClick={handleOnClick} className="fixed left-0 top-0 h-screen w-screen" />
-            <div style={{ left: position.x, top: position.y }} className="fixed">
+            <div role="dialog" style={{ left: position.x, top: position.y }} className="fixed">
               <Transition.Child
                 as={React.Fragment}
                 enter="transition ease-out duration-100"
@@ -52,7 +52,7 @@ export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.Props
                 leaveTo="transform opacity-0 scale-95"
               >
                 <div
-                  role="dialog"
+                  role="menu"
                   className={twMerge(
                     'pointer-events-auto relative mt-2 origin-top-left overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none',
                     dialogSize,
