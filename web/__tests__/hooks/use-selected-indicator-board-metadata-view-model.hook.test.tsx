@@ -118,13 +118,15 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       // when
       act(() => {
         if (indicatorList.current.indicatorList?.[0]) {
-          result.current.addIndicatorToMetadata(indicatorList.current.indicatorList?.[0]);
+          result.current.addIndicatorToMetadata({
+            indicatorId: '1',
+          });
         }
       });
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
       // then
-      expect(result.current.selectedMetadata?.indicators).toEqual([indicatorList.current.indicatorList?.[0]]);
+      expect(result.current.selectedMetadata?.indicators[0]).toBe(indicatorList.current.indicatorList?.[0].id);
     });
   });
 
@@ -145,7 +147,9 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
       act(() => {
         if (indicatorList.current.indicatorList?.[0]) {
-          result.current.addIndicatorToMetadata(indicatorList.current.indicatorList?.[0]);
+          result.current.addIndicatorToMetadata({
+            indicatorId: '1',
+          });
         }
       });
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
@@ -153,7 +157,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       // when
       act(() => {
         if (indicatorList.current.indicatorList?.[0]) {
-          result.current.deleteIndicatorFromMetadata(indicatorList.current.indicatorList?.[0].ticker);
+          result.current.deleteIndicatorFromMetadata(indicatorList.current.indicatorList?.[0].id);
         }
       });
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());

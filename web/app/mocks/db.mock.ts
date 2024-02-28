@@ -27,7 +27,7 @@ type MockDatabaseAction = {
   getMetadata: (id: string) => IndicatorBoardMetadataResponse | undefined;
   postIndicatorToMetadata: (id: string, data: AddIndicatorToMetadataRequestBody) => void;
   deleteIndicatorFromMetadata: (id: string, indicatorKey: string) => void;
-  getIndicatorValue: (ticker: string) => IndicatorValueResponse | undefined;
+  getIndicatorValue: (id: string) => IndicatorValueResponse | undefined;
   patchMetadata: (id: string, data: UpdateIndicatorBoardMetadataRequestBody) => void;
   deleteMetadata: (id: string) => void;
   getCustomForecastIndicatorList: () => CustomForecastIndicatorListResponse;
@@ -39,32 +39,35 @@ const initialState: MockDatabase = {
     {
       id: '1',
       name: 'metadata1',
-      tickers: [],
+      indicatorIds: [],
       customForecastIndicatorIds: [],
     },
     {
       id: '2',
       name: 'metadata2',
-      tickers: [],
+      indicatorIds: [],
       customForecastIndicatorIds: [],
     },
     {
       id: '3',
       name: 'metadata3',
-      tickers: [],
+      indicatorIds: [],
       customForecastIndicatorIds: [],
     },
   ],
   indicatorList: [
     {
+      id: '1',
       ticker: 'AAPL',
       name: 'Apple Inc.',
     },
     {
+      id: '2',
       ticker: 'MSFT',
       name: 'Microsoft Corporation',
     },
     {
+      id: '3',
       ticker: 'GOOG',
       name: 'Alphabet Inc.',
     },
@@ -108,7 +111,7 @@ export const mockDB: MockDatabaseAction = {
   postMetadataList: (data) => {
     const newMetadata = {
       ...data,
-      tickers: [],
+      indicatorIds: [],
       customForecastIndicatorIds: [],
     };
     mockDatabaseStore.metadataList = [...mockDatabaseStore.metadataList, newMetadata];
@@ -125,7 +128,7 @@ export const mockDB: MockDatabaseAction = {
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
-      tickers: [...mockDatabaseStore.metadataList[index].tickers, data],
+      indicatorIds: [...mockDatabaseStore.metadataList[index].indicatorIds, data.indicatorId],
     };
 
     mockDatabaseStore.metadataList[index] = newMetadata;
@@ -134,13 +137,13 @@ export const mockDB: MockDatabaseAction = {
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
-      tickers: mockDatabaseStore.metadataList[index].tickers.filter((ticker) => ticker.ticker !== indicatorKey),
+      indicatorIds: mockDatabaseStore.metadataList[index].indicatorIds.filter((id) => id !== indicatorKey),
     };
 
     mockDatabaseStore.metadataList[index] = newMetadata;
   },
-  getIndicatorValue: (ticker) => {
-    return mockDatabaseStore.indicatorsValue.find((indicator) => indicator.ticker === ticker);
+  getIndicatorValue: (id) => {
+    return mockDatabaseStore.indicatorsValue.find((indicator) => indicator.id === id);
   },
   patchMetadata: (id, data) => {
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);

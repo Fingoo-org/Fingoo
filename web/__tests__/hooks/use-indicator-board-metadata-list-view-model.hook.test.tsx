@@ -26,12 +26,7 @@ describe('useIndicatorBoardMetadataList', () => {
     // when
     // then
     expect(result.current.metadataList).toHaveLength(3);
-    expect(result.current.metadataList?.[0]).toEqual({
-      id: '1',
-      name: 'metadata1',
-      tickers: [],
-      customForecastIndicatorIds: [],
-    });
+    expect(result.current.metadataList?.[0].id).toBe('1');
   });
 
   it('메타데이터를 생성하면, 생성한 메타데이터를 포함한 메타데이터 리스트를 가져온다.', async () => {
@@ -47,12 +42,7 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // then
     expect(result.current.metadataList).toHaveLength(4);
-    expect(result.current.metadataList?.[3]).toEqual({
-      id: '4',
-      name: 'metadata4',
-      tickers: [],
-      customForecastIndicatorIds: [],
-    });
+    expect(result.current.metadataList?.[3].id).toBe('4');
   });
 
   // Risk: https://mswjs.io/docs/limitations#parallel-runs

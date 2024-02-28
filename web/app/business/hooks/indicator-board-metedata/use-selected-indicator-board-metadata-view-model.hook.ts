@@ -22,15 +22,15 @@ export const useSelectedIndicatorBoardMetadata = () => {
   );
 
   // 뷰모델로 매핑 안하고 사용 시
-  const addIndicatorToMetadata = (indicator: AddIndicatorToMetadataRequestBody) => {
+  const addIndicatorToMetadata = (data: AddIndicatorToMetadataRequestBody) => {
     if (!selectedMetadata) {
       return;
     }
 
     try {
-      addIndicatorTrigger(indicator, {
+      addIndicatorTrigger(data, {
         optimisticData: () => {
-          metadataList?.addIndicatorToMetadataById(selectedMetadataId, indicator);
+          metadataList?.addIndicatorToMetadataById(selectedMetadataId, data.indicatorId);
           return {
             metadataList: metadataList?.formattedIndicatorBoardMetadataList,
           };

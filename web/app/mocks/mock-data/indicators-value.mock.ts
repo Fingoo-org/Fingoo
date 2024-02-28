@@ -2,6 +2,7 @@ import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/in
 
 export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
+    id: '1',
     ticker: 'AAPL',
     items: [
       {
@@ -227,6 +228,7 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
     ],
   },
   {
+    id: '2',
     ticker: 'MSFT',
     items: [
       {
@@ -376,6 +378,7 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
     ],
   },
   {
+    id: '3',
     ticker: 'GOOG',
     items: [
       {
