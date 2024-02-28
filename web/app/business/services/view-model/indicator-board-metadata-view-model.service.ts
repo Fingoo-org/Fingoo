@@ -5,11 +5,12 @@ import {
 
 export class IndicatorBoardMetadata {
   // 여기는 response와 같아야함
+  // 변경된 부분은 private으로 client에서 못사용하게
+  // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
   readonly id: string;
   readonly name: string;
   readonly customForecastIndicatorIds: string[];
-  // 변경된 부분은 private으로 client에서 못사용하게
-  private indicatorIds: string[];
+  public indicatorIds: string[];
 
   constructor({ id, name, indicatorIds, customForecastIndicatorIds }: IndicatorBoardMetadataResponse) {
     this.id = id;
@@ -18,30 +19,21 @@ export class IndicatorBoardMetadata {
     this.customForecastIndicatorIds = customForecastIndicatorIds;
   }
 
-  // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
-  get indicators() {
-    return this.indicatorIds;
-  }
-
-  set indicators(indicators: string[]) {
-    this.indicatorIds = indicators;
-  }
-
   get formattedIndicatorBoardMetadata() {
     return {
       id: this.id,
       name: this.name,
-      indicatorIds: this.indicators,
+      indicatorIds: this.indicatorIds,
       customForecastIndicatorIds: this.customForecastIndicatorIds,
     };
   }
 
   addIndicator(indicatorId: string) {
-    this.indicators = [...this.indicators, indicatorId];
+    this.indicatorIds = [...this.indicatorIds, indicatorId];
   }
 
   deleteIndicator(indicatorKey: string) {
-    this.indicators = this.indicators.filter((indicatorId) => indicatorId !== indicatorKey);
+    this.indicatorIds = this.indicatorIds.filter((indicatorId) => indicatorId !== indicatorKey);
   }
 }
 

@@ -21,6 +21,7 @@ class IndicatorValueItem {
 }
 
 class IndicatorValue {
+  readonly id: string;
   readonly ticker: string;
   readonly items: IndicatorValueItem[];
   constructor({ id, ticker, items }: IndicatorValueResponse) {

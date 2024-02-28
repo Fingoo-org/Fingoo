@@ -126,7 +126,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
       // then
-      expect(result.current.selectedMetadata?.indicators[0]).toBe(indicatorList.current.indicatorList?.[0].id);
+      expect(result.current.selectedMetadata?.indicatorIds[0]).toBe(indicatorList.current.indicatorList?.[0].id);
     });
   });
 
@@ -163,7 +163,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
       // then
-      expect(result.current.selectedMetadata?.indicators).toEqual([]);
+      expect(result.current.selectedMetadata?.indicatorIds).toEqual([]);
     });
 
     describe('updateMetadata', () => {
