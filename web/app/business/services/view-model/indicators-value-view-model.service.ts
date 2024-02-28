@@ -23,7 +23,8 @@ class IndicatorValueItem {
 class IndicatorValue {
   readonly ticker: string;
   readonly items: IndicatorValueItem[];
-  constructor({ ticker, items }: IndicatorValueResponse) {
+  constructor({ id, ticker, items }: IndicatorValueResponse) {
+    this.id = id;
     this.ticker = ticker;
     this.items = items.map((item) => new IndicatorValueItem(item));
   }

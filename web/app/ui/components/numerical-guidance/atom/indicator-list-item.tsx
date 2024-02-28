@@ -36,12 +36,7 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
   };
   return (
     <ListItem style={style} hoverRender={hoverRender}>
-      <SelectableItem
-        onSelect={handleItemSelect}
-        onDeSelect={handleItemDeSelect}
-        key={item.ticker}
-        selected={isSelected}
-      >
+      <SelectableItem onSelect={handleItemSelect} onDeSelect={handleItemDeSelect} key={item.id} selected={isSelected}>
         {item.name}
       </SelectableItem>
     </ListItem>

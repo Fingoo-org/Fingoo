@@ -72,11 +72,11 @@ export const handlers = [
   ),
   http.get(API_PATH.indicatorValue, async ({ request }) => {
     const url = new URL(request.url);
-    const indicatorKey = url.searchParams.get('ticker');
-    if (indicatorKey === null) {
+    const indicatorId = url.searchParams.get('indicatorId');
+    if (indicatorId === null) {
       return HttpResponse.json(null, { status: 400 });
     }
-    const indicatorValue = mockDB.getIndicatorValue(indicatorKey);
+    const indicatorValue = mockDB.getIndicatorValue(indicatorId);
     // Risk: 해당하는 값이 없을 때는? 에러 아니면 빈 객체?
     await delayForDevelopment();
     if (!indicatorValue) {
