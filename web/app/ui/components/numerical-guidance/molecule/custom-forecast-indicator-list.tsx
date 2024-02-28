@@ -5,9 +5,10 @@ import React from 'react';
 import List from '../../view/molocule/list';
 import { CustomForecastIndicator } from '@/app/business/services/view-model/custom-forecast-indicator-view-model.service';
 import CustomForecastIndicatorListItem from '../atom/custom-forecast-indicator-list-item';
+import Pending from '../../view/molocule/pending';
 
 const CustomForecastIndicatorList = React.memo(function CustomForecastIndicatorList() {
-  const { customForecastIndicatorList } = useCustomForecastIndicatorListViewModel();
+  const { customForecastIndicatorList, isPending } = useCustomForecastIndicatorListViewModel();
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
 
   const renderItem = (item: CustomForecastIndicator) => {
@@ -15,11 +16,13 @@ const CustomForecastIndicatorList = React.memo(function CustomForecastIndicatorL
   };
 
   return (
-    <div role="tablist" className={clsx({ hidden: selectedMetadata === undefined })}>
-      {customForecastIndicatorList ? (
-        <List list={customForecastIndicatorList.customForecastIndicatorList} render={renderItem} />
-      ) : null}
-    </div>
+    <Pending isPending={isPending}>
+      <div role="tablist" className={clsx({ hidden: selectedMetadata === undefined })}>
+        {customForecastIndicatorList ? (
+          <List list={customForecastIndicatorList.customForecastIndicatorList} render={renderItem} />
+        ) : null}
+      </div>
+    </Pending>
   );
 });
 
