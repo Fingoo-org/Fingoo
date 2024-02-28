@@ -3,14 +3,20 @@
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import DialogMenu from '../../view/molocule/dialog-menu';
 import { PlusCircleIcon } from '@heroicons/react/outline';
-import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
+import { useDialog } from '../../view/hooks/use-dialog.hook';
+import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
 
 export default function IndicatorDialogMenu() {
+  const payload = useDialog(DIALOG_KEY.INDICATOR_EDIT_MENU).payload as IndicatorInfoResponse;
+  const { createCustomForecastIndicator } = useCustomForecastIndicatorListViewModel();
   const { transitionToCustomForecastTab } = useIndicatorBoard();
 
-  const handleCustomForecastIndicatorCreate = () => {
+  const handleCustomForecastIndicatorCreate = async () => {
     transitionToCustomForecastTab();
+
+    await createCustomForecastIndicator(payload.id);
   };
 
   return (

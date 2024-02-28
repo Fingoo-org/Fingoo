@@ -1,5 +1,4 @@
 import {
-  CreateCustomForecastIndicatorRequestBody,
   useCreateCustomForecastIndicator,
   useFetchCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
@@ -21,8 +20,13 @@ export const useCustomForecastIndicatorListViewModel = () => {
     return convertCustomForecastIndicatorsViewModel(customForecastIndicatorList);
   }, [customForecastIndicatorList]);
 
-  const createCustomForecastIndicator = async (data: CreateCustomForecastIndicatorRequestBody) => {
-    await createCustomForecastIndicatorTrigger(data);
+  const createCustomForecastIndicator = async (targetIndicatorId: string) => {
+    const body = {
+      name: '새로운 예측 지표',
+      targetIndicatorId,
+    };
+
+    await createCustomForecastIndicatorTrigger(body);
   };
 
   return {

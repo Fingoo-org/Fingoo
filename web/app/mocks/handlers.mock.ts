@@ -20,7 +20,7 @@ const customForecastIndicatorHandlers = [
     return HttpResponse.json(mockDB.getCustomForecastIndicatorList());
   }),
   http.post<never, CreateCustomForecastIndicatorRequestBody, never>(
-    API_PATH.indicatorBoardMetadata,
+    API_PATH.customForecastIndicator,
     async ({ request }) => {
       const newdata = await request.json();
       mockDB.postCustomForecastIndicator(newdata);
