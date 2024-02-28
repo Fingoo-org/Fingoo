@@ -108,6 +108,7 @@ export const mockDB: MockDatabaseAction = {
   postMetadataList: (data) => {
     const newMetadata = {
       ...data,
+      tickers: [],
       customForecastIndicatorIds: [],
     };
     mockDatabaseStore.metadataList = [...mockDatabaseStore.metadataList, newMetadata];

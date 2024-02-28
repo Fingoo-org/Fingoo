@@ -16,11 +16,9 @@ const MetdataList = React.memo(function MetadataList() {
     const metadata = {
       id: Math.random().toString(36),
       name: 'metadata1',
-      tickers: [],
-      customForecastIndicatorIds: [],
     };
     try {
-      await createMetadata(new IndicatorBoardMetadata(metadata));
+      await createMetadata(metadata);
       selectMetadataById(metadata.id);
     } catch (e) {
       // error: 위에서 처리, 넘겨줄 필요 있나?

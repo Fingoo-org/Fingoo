@@ -32,9 +32,9 @@ export const useIndicatorBoardMetadataList = () => {
     return convertIndcatorBoardMetadataList(metadataList);
   }, [metadataList]);
 
-  const createMetadata = async (metadata: IndicatorBoardMetadata) => {
+  const createMetadata = async (data: CreateIndicatorMetadataRequestBody) => {
     try {
-      await createMetadataTrigger(metadata.formattedIndicatorBoardMetadata);
+      await createMetadataTrigger(data);
     } catch {
       // error: 전역 에러 처리 or 에러 바운더리에서 처리
     }

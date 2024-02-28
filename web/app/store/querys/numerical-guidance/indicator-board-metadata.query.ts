@@ -28,7 +28,6 @@ export type IndicatorRequestBody = {
 export type CreateIndicatorMetadataRequestBody = {
   id: string;
   name: string;
-  tickers: IndicatorRequestBody[];
 };
 
 export type AddIndicatorToMetadataRequestBody = {
