@@ -1,26 +1,31 @@
 'use client';
 import React from 'react';
 import { Transition } from '@headlessui/react';
-import { DialogMenuItem } from './dialog-menu-item';
 import { DialogMenuContext } from './dialog-menu.context';
 import { DialogMenuHeader } from './dialog-menu-header';
 import { useDialog } from '../../hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { filterChildrenByType } from '@/app/utils/helper';
-import { Size } from '@/app/utils/style';
+import { Size, cn, getColorClassNames } from '@/app/utils/style';
 import { DialogMenuSize } from './dialog-menu.style';
-import { twMerge } from 'tailwind-merge';
+import { Color, colorPalette } from '@/app/utils/style';
 
 type DialogMenuProps = {
   dialogKey: DialogKey;
   size?: Size;
+  color?: Color;
 };
 
 const getDialogMenuHeader = (children: React.ReactNode) => {
   return filterChildrenByType(children, DialogMenuHeader);
 };
 
-export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.PropsWithChildren<DialogMenuProps>) {
+export function DialogMenuRoot({
+  color = 'white',
+  children,
+  dialogKey,
+  size = 'xs',
+}: React.PropsWithChildren<DialogMenuProps>) {
   const { isOpen, position, closeDialog } = useDialog(dialogKey);
   const dialogMenuHeader = getDialogMenuHeader(children);
 
@@ -52,9 +57,10 @@ export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.Props
               >
                 <div
                   role="menu"
-                  className={twMerge(
-                    'pointer-events-auto relative mt-2 origin-top-left overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none',
+                  className={cn(
+                    'pointer-events-auto relative mt-2 origin-top-left overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5 focus:outline-none',
                     dialogSize,
+                    getColorClassNames(color, colorPalette.background).bgColor,
                   )}
                 >
                   {dialogMenuHeader.length !== 0 ? <div className="px-3 pb-1 pt-4">{dialogMenuHeader}</div> : null}

@@ -5,7 +5,7 @@ import IndicatorSearchList from '../ui/components/numerical-guidance/molecule/in
 export default function Page() {
   return (
     <div className="v-screen flex w-screen items-center justify-center">
-      <Card className="h-72 w-72">
+      <Card className="h-28 w-72 p-1.5">
         <IndicatorSearchList />
       </Card>
     </div>

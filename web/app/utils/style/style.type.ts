@@ -21,6 +21,7 @@ const colorValues = [
   'fuchsia',
   'pink',
   'rose',
+  'white',
 ] as const;
 
 export type Color = (typeof colorValues)[number];
