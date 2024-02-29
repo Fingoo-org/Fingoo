@@ -21,16 +21,16 @@ export const useSelectedIndicatorBoardMetadata = () => {
     [selectedMetadataId, metadataList],
   );
 
-  // 뷰모델로 매핑 안하고 사용 시
-  const addIndicatorToMetadata = (indicator: AddIndicatorToMetadataRequestBody) => {
+  // Refactor: 컴포넌트는 AddIndicatorToMetadataRequestBody를 몰라도 된다.
+  const addIndicatorToMetadata = (data: AddIndicatorToMetadataRequestBody) => {
     if (!selectedMetadata) {
       return;
     }
 
     try {
-      addIndicatorTrigger(indicator, {
+      addIndicatorTrigger(data, {
         optimisticData: () => {
-          metadataList?.addIndicatorToMetadataById(selectedMetadataId, indicator);
+          metadataList?.addIndicatorToMetadataById(selectedMetadataId, data.indicatorId);
           return {
             metadataList: metadataList?.formattedIndicatorBoardMetadataList,
           };
@@ -78,6 +78,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
   };
 
   return {
+    selectedMetadataId,
     selectedMetadata,
     addIndicatorToMetadata,
     deleteIndicatorFromMetadata,

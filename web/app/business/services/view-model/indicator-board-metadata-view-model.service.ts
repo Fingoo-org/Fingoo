@@ -1,57 +1,39 @@
 import {
   IndicatorBoardMetadataListResponse,
   IndicatorBoardMetadataResponse,
-  IndicatorResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
-
-export class Indicator {
-  readonly ticker: string;
-  readonly name: string;
-  constructor({ ticker, name }: IndicatorResponse) {
-    this.ticker = ticker;
-    this.name = name;
-  }
-}
 
 export class IndicatorBoardMetadata {
   // 여기는 response와 같아야함
+  // 변경된 부분은 private으로 client에서 못사용하게
+  // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
   readonly id: string;
   readonly name: string;
   readonly customForecastIndicatorIds: string[];
-  // 변경된 부분은 private으로 client에서 못사용하게
-  private tickers: Indicator[];
+  public indicatorIds: string[];
 
-  constructor({ id, name, tickers, customForecastIndicatorIds }: IndicatorBoardMetadataResponse) {
+  constructor({ id, name, indicatorIds, customForecastIndicatorIds }: IndicatorBoardMetadataResponse) {
     this.id = id;
     this.name = name;
-    this.tickers = tickers.map((ticker) => new Indicator(ticker));
+    this.indicatorIds = indicatorIds;
     this.customForecastIndicatorIds = customForecastIndicatorIds;
-  }
-
-  // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
-  get indicators() {
-    return this.tickers;
-  }
-
-  set indicators(indicators: Indicator[]) {
-    this.tickers = indicators;
   }
 
   get formattedIndicatorBoardMetadata() {
     return {
       id: this.id,
       name: this.name,
-      tickers: this.indicators,
+      indicatorIds: this.indicatorIds,
       customForecastIndicatorIds: this.customForecastIndicatorIds,
     };
   }
 
-  addIndicator(indicator: Indicator) {
-    this.tickers = [...this.tickers, indicator];
+  addIndicator(indicatorId: string) {
+    this.indicatorIds = [...this.indicatorIds, indicatorId];
   }
 
   deleteIndicator(indicatorKey: string) {
-    this.tickers = this.tickers.filter((indicator) => indicator.ticker !== indicatorKey);
+    this.indicatorIds = this.indicatorIds.filter((indicatorId) => indicatorId !== indicatorKey);
   }
 }
 
@@ -74,11 +56,11 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     this.splice(index, 1);
   }
 
-  addIndicatorToMetadataById(metadataId: string | undefined, indicator: Indicator) {
+  addIndicatorToMetadataById(metadataId: string | undefined, indicatorId: string) {
     const metadata = this.find((metadata) => metadata.id === metadataId);
     if (!metadata) return;
 
-    metadata.addIndicator(indicator);
+    metadata.addIndicator(indicatorId);
   }
 
   updateIndicatorBoardMetadatNameaById(metadataId: string | undefined, name: string) {

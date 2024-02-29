@@ -27,7 +27,7 @@ export default function MetadataDialogMenu() {
           onValueChange={handleMetadataUpdate}
         />
       </DialogMenu.Header>
-      <DialogMenu.Item role={'menuitem'} aria-label="Delete" onClick={openDialogWithPayload} icon={TrashIcon}>
+      <DialogMenu.Item aria-label="Delete" onClick={openDialogWithPayload} icon={TrashIcon}>
         Delete
       </DialogMenu.Item>
     </DialogMenu>

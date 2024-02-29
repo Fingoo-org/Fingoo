@@ -8,11 +8,13 @@ type NumericalGuidanceState = {
   selectedMetadataId: string | undefined;
   interval: Interval;
   isAdvancedChart: boolean;
+  tabIndex: number;
 };
 
 type NumericalGuidanceAction = {
   selectMetadata: (MetadataId: string | undefined) => void;
   setIsAdvancedChart: (isAdvancedChart: boolean) => void;
+  setTabIndex: (tabIndex: number) => void;
 };
 
 type NumericalGuidanceStore = NumericalGuidanceState & {
@@ -24,6 +26,7 @@ const initialNumericalGuidanceState: NumericalGuidanceState = {
   selectedMetadataId: undefined,
   interval: 'day',
   isAdvancedChart: false,
+  tabIndex: 2,
 };
 
 export const useNumericalGuidanceStore = create<NumericalGuidanceStore>()((set) => {
@@ -33,6 +36,7 @@ export const useNumericalGuidanceStore = create<NumericalGuidanceStore>()((set) 
     actions: {
       selectMetadata: (metadataId) => set({ selectedMetadataId: metadataId }),
       setIsAdvancedChart: (isAdvancedChart) => set({ isAdvancedChart }),
+      setTabIndex: (tabIndex) => set({ tabIndex }),
     },
   };
 });

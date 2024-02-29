@@ -3,6 +3,7 @@ import { API_PATH } from '../api-path';
 import { defaultFetcher, fetchIndicatorsValue } from '../fetcher';
 
 export type IndicatorInfoResponse = {
+  id: string;
   ticker: string;
   name: string;
 };
@@ -16,6 +17,7 @@ export type IndicatorsValueResponse = {
 };
 
 export type IndicatorValueResponse = {
+  id: string;
   ticker: string;
   items: IndicatorValueItemResponse[];
 };
@@ -27,8 +29,8 @@ export type IndicatorValueItemResponse = {
 
 export const useFetchIndicatorList = () => useSWR<IndicatorListResponse>(API_PATH.indicatorList, defaultFetcher);
 
-export const useFetchIndicatorsValue = (indicators: IndicatorInfoResponse[] | undefined) => {
-  const key = indicators ? [API_PATH.indicatorValue, ...indicators.map((indicator) => indicator.ticker)] : null;
+export const useFetchIndicatorsValue = (indicatorIds: string[] | undefined) => {
+  const key = indicatorIds ? [API_PATH.indicatorValue, ...indicatorIds] : null;
 
   return useSWR<IndicatorsValueResponse, any, string[] | null>(key, fetchIndicatorsValue);
 };

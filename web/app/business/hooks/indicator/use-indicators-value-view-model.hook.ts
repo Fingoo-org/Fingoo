@@ -5,7 +5,7 @@ import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/u
 
 export const useIndicatorsValueViewModel = () => {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { data: indicatorsValueData, isLoading } = useFetchIndicatorsValue(selectedMetadata?.indicators);
+  const { data: indicatorsValueData, isLoading } = useFetchIndicatorsValue(selectedMetadata?.indicatorIds);
 
   const convertedIndciatorsValue = useMemo(() => {
     if (!indicatorsValueData) return undefined;

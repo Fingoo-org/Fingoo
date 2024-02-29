@@ -33,7 +33,9 @@ describe('useIndicatorsValueViewModel', () => {
 
     // // when
     act(() => {
-      result.current.addIndicatorToMetadata(mockDB.getIndicatorList().indicatorList[0]);
+      result.current.addIndicatorToMetadata({
+        indicatorId: '1',
+      });
     });
     await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());
 
@@ -60,10 +62,14 @@ describe('useIndicatorsValueViewModel', () => {
 
     // // when
     act(() => {
-      result.current.addIndicatorToMetadata(mockDB.getIndicatorList().indicatorList[0]);
+      result.current.addIndicatorToMetadata({
+        indicatorId: '1',
+      });
     });
     act(() => {
-      result.current.addIndicatorToMetadata(mockDB.getIndicatorList().indicatorList[1]);
+      result.current.addIndicatorToMetadata({
+        indicatorId: '2',
+      });
     });
     await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());
 
@@ -97,11 +103,13 @@ describe('useIndicatorsValueViewModel', () => {
 
     // // when
     act(() => {
-      result.current.addIndicatorToMetadata(mockDB.getIndicatorList().indicatorList[0]);
+      result.current.addIndicatorToMetadata({
+        indicatorId: '1',
+      });
     });
     await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());
     act(() => {
-      result.current.deleteIndicatorFromMetadata(mockDB.getIndicatorList().indicatorList[0].ticker);
+      result.current.deleteIndicatorFromMetadata(mockDB.getIndicatorList().indicatorList[0].id);
     });
 
     // then
