@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { SearchIcon } from '@heroicons/react/solid';
 import TinyInput from './tiny-input';
 
 const meta = {
@@ -33,5 +34,12 @@ export const WithResetButtonAndFullText: Story = {
   args: {
     defaultValue: 'Hello ssssssssssssssssssssssssssssss',
     withResetButton: true,
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    defaultValue: '',
+    icon: SearchIcon,
   },
 };
