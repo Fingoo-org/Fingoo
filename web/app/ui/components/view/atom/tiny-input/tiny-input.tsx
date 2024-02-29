@@ -5,6 +5,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import Icon from '../icons/variant-icon';
 import { cn } from '@/app/utils/style';
 
+// Refactor: value가 맞지 않니?
 type TinyInputProps = {
   defaultValue: string;
   withResetButton?: boolean;
