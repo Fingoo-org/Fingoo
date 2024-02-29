@@ -24,6 +24,11 @@ export function useResponsive() {
   }, []);
 
   useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') {
+      setContainerSize(200, 200);
+      return;
+    }
+
     let callback = (entries: ResizeObserverEntry[]) => {
       const { width: containerWidth, height: containerHeight } = entries[0].contentRect;
       setContainerSize(containerWidth, containerHeight);
@@ -36,6 +41,7 @@ export function useResponsive() {
     }
 
     const { width: containerWidth, height: containerHeight } = containerRef.current.getBoundingClientRect();
+    console.log(containerWidth, containerHeight);
     setContainerSize(containerWidth, containerHeight);
 
     observer.observe(containerRef.current);
