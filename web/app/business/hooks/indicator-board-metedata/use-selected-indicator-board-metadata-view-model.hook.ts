@@ -21,7 +21,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
     [selectedMetadataId, metadataList],
   );
 
-  // 뷰모델로 매핑 안하고 사용 시
+  // Refactor: 컴포넌트는 AddIndicatorToMetadataRequestBody를 몰라도 된다.
   const addIndicatorToMetadata = (data: AddIndicatorToMetadataRequestBody) => {
     if (!selectedMetadata) {
       return;
@@ -78,6 +78,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
   };
 
   return {
+    selectedMetadataId,
     selectedMetadata,
     addIndicatorToMetadata,
     deleteIndicatorFromMetadata,

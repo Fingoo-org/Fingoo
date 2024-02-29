@@ -2,21 +2,21 @@
 import { Tab } from '@headlessui/react';
 import MetadataListContainer from './metadata-list-container';
 import IndicatorListContainer from './indicator-list-container';
-import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 import CustomForecastIndicatorListContainer from './custom-forecast-indicator-list-container';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function IndicatorBoardToolbar() {
-  const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
-  const tabIndex = useNumericalGuidanceStore((state) => state.tabIndex);
-  const actions = useNumericalGuidanceStore((state) => state.actions);
+  const { selectedMetadataId } = useSelectedIndicatorBoardMetadata();
+  const { tabIndex, setTabIndex } = useIndicatorBoard();
 
   return (
     <div className=" bg-red-800">
-      <Tab.Group selectedIndex={tabIndex} onChange={actions.setTabIndex}>
+      <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
         <Tab.List className="flex space-x-1   p-1">
           <ToolbarTab disable={selectedMetadataId ? false : true} tabName="지표 추가" />
           <ToolbarTab disable={selectedMetadataId ? false : true} tabName="예측 지표" />
