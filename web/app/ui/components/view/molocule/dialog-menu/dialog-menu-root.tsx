@@ -20,14 +20,13 @@ const getDialogMenuHeader = (children: React.ReactNode) => {
   return filterChildrenByType(children, DialogMenuHeader);
 };
 
-const getDialogMenuItems = (children: React.ReactNode) => {
-  return filterChildrenByType(children, DialogMenuItem);
-};
-
 export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.PropsWithChildren<DialogMenuProps>) {
   const { isOpen, position, closeDialog } = useDialog(dialogKey);
   const dialogMenuHeader = getDialogMenuHeader(children);
-  const dialogMenuItems = getDialogMenuItems(children);
+
+  const childrenWithoutHeader = React.Children.toArray(children).filter((child) => {
+    return !React.isValidElement(child) || (child as React.ReactElement).type !== DialogMenuHeader;
+  });
 
   const dialogSize = DialogMenuSize[size];
 
@@ -59,7 +58,7 @@ export function DialogMenuRoot({ children, dialogKey, size = 'xs' }: React.Props
                   )}
                 >
                   {dialogMenuHeader.length !== 0 ? <div className="px-3 pb-1 pt-4">{dialogMenuHeader}</div> : null}
-                  {dialogMenuItems}
+                  {childrenWithoutHeader}
                 </div>
               </Transition.Child>
             </div>
