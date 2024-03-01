@@ -22,6 +22,11 @@ import { DeleteIndicatorBoardMetadataCommandHandler } from './application/comman
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from './application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 import { GetLiveIndicatorQueryHandler } from './application/query/get-live-indicator/get-live-indicator.query.handler';
 import { IndicatorEntity } from './infrastructure/adapter/persistence/indicator/entity/indicator.entity';
+import { GetHistoryIndicatorQueryHandler } from './application/query/get-history-indicator/get-history-indicator.query.handler';
+import { HistoryIndicatorPersistentAdapter } from './infrastructure/adapter/persistence/history-indicator/history-indicator.persistent.adapter';
+import { HistoryIndicatorValueEntity } from './infrastructure/adapter/persistence/history-indicator-value/entity/history-indicator-value.entity';
+import { HistoryIndicatorEntity } from './infrastructure/adapter/persistence/history-indicator/entity/history-indicator.entity';
+import { AdjustIndicatorValue } from './util/adjust-indicator-value';
 
 @Module({
   imports: [
@@ -32,13 +37,21 @@ import { IndicatorEntity } from './infrastructure/adapter/persistence/indicator/
         maxRedirects: 5,
       }),
     }),
-    TypeOrmModule.forFeature([IndicatorBoardMetadataEntity, MemberEntity, IndicatorEntity]),
+    TypeOrmModule.forFeature([
+      IndicatorBoardMetadataEntity,
+      MemberEntity,
+      IndicatorEntity,
+      HistoryIndicatorEntity,
+      HistoryIndicatorValueEntity,
+    ]),
   ],
   controllers: [NumericalGuidanceController],
   providers: [
+    AdjustIndicatorValue,
     AuthService,
     GetFluctuatingIndicatorQueryHandler,
     GetLiveIndicatorQueryHandler,
+    GetHistoryIndicatorQueryHandler,
     GetFluctuatingIndicatorWithoutCacheQueryHandler,
     GetIndicatorsQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,
@@ -59,6 +72,10 @@ import { IndicatorEntity } from './infrastructure/adapter/persistence/indicator/
     {
       provide: 'LoadLiveIndicatorPort',
       useClass: FluctuatingIndicatorKrxAdapter,
+    },
+    {
+      provide: 'LoadHistoryIndicatorPort',
+      useClass: HistoryIndicatorPersistentAdapter,
     },
     {
       provide: 'CachingFluctuatingIndicatorPort',
@@ -99,6 +116,10 @@ import { IndicatorEntity } from './infrastructure/adapter/persistence/indicator/
     {
       provide: 'UpdateIndicatorBoardMetadataNamePort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'IndicatorValueManager',
+      useClass: AdjustIndicatorValue,
     },
   ],
 })
