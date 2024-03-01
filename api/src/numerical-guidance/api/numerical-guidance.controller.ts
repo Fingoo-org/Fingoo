@@ -25,6 +25,10 @@ import { Member } from '../../auth/get-member.decorator';
 import { MemberEntity } from '../../auth/member.entity';
 import { GetLiveIndicatorQuery } from '../application/query/get-live-indicator/get-live-indicator.query';
 import { GetLiveIndicatorDto } from './dto/get-live-indicator.dto';
+import { GetHistoryIndicatorDto } from './dto/get-history-indicator.dto';
+import { GetHistoryIndicatorQuery } from '../application/query/get-history-indicator/get-history-indicator.query';
+import { CursorPageDto } from '../../utils/pagination/cursor-page.dto';
+import { HistoryIndicatorDto } from '../application/query/get-history-indicator/history-indicator.dto';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/api/numerical-guidance')
@@ -53,6 +57,21 @@ export class NumericalGuidanceController {
   @Get('/indicators/k-stock/live')
   async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<FluctuatingIndicatorDto> {
     const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
+    return this.queryBus.execute(query);
+  }
+
+  @ApiOperation({ summary: 'History 지표를 불러옵니다.' })
+  @Get('/indicators/history')
+  async getHistoryIndicator(
+    @Query() cursorPageOptionsDto: GetHistoryIndicatorDto,
+  ): Promise<CursorPageDto<HistoryIndicatorDto>> {
+    const query = new GetHistoryIndicatorQuery(
+      cursorPageOptionsDto.indicatorId,
+      cursorPageOptionsDto.interval,
+      cursorPageOptionsDto.startDate,
+      cursorPageOptionsDto.endDate,
+    );
+
     return this.queryBus.execute(query);
   }
 
