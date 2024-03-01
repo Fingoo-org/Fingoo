@@ -6,7 +6,9 @@ import TinyInput from '../../view/atom/tiny-input/tiny-input';
 import { SearchIcon } from '@heroicons/react/solid';
 import SelectableItem from '../../view/atom/selectable-item';
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
-import { useMemo } from 'react';
+import ToolTip from '../../view/atom/tooltip';
+import { SparklesIcon } from '@heroicons/react/outline';
+import Icon from '../../view/atom/icons/variant-icon';
 
 export default function SourceIndicatorSearchList() {
   const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
@@ -27,13 +29,19 @@ export default function SourceIndicatorSearchList() {
 
     const indicatorDisplayName = `${indicator.ticker}(${indicator.name})`;
 
-    const isSelected =
-      selectedCustomForecastIndicator?.sourceIndicatorIds?.includes(indicator.id) ||
-      selectedCustomForecastIndicator?.targetIndicatorId === indicator.id;
+    const isTargetIndicator = selectedCustomForecastIndicator?.targetIndicatorId === indicator.id;
+    const isSelected = selectedCustomForecastIndicator?.sourceIndicatorIds?.includes(indicator.id) || isTargetIndicator;
 
     return (
       <SelectableItem selected={isSelected} onSelect={handleSelect} onDeSelect={handleDeSelect} style={style}>
-        <span className="text-xs">{indicatorDisplayName}</span>
+        <div className="flex w-full items-center justify-between">
+          <span className="text-xs">{indicatorDisplayName}</span>
+          {isTargetIndicator ? (
+            <ToolTip message="대상 지표입니다.">
+              <Icon size={'xs'} icon={SparklesIcon} />
+            </ToolTip>
+          ) : null}
+        </div>
       </SelectableItem>
     );
   };
