@@ -60,7 +60,8 @@ export function DialogMenuRoot({
                   className={cn(
                     'pointer-events-auto relative mt-2 origin-top-left overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5 focus:outline-none',
                     dialogSize,
-                    getColorClassNames(color, colorPalette.background).bgColor,
+                    getColorClassNames(color, 100).bgColor,
+                    'opacity-80',
                   )}
                 >
                   {dialogMenuHeader.length !== 0 ? <div className="px-3 pb-1 pt-4">{dialogMenuHeader}</div> : null}

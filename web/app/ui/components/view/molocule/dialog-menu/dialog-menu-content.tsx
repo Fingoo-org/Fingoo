@@ -9,5 +9,5 @@ export function DialogMenuContent({ children }: React.PropsWithChildren<DialogMe
   const dialogKey = useContext(DialogMenuContext);
   const { payload } = useDialog(dialogKey as DialogKey);
 
-  return <div>{children}</div>;
+  return <div className="px-4 py-2">{children}</div>;
 }
