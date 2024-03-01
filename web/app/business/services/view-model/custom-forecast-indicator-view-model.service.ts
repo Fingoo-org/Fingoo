@@ -30,3 +30,7 @@ export const convertCustomForecastIndicatorsViewModel = (
 ) => {
   return new CustomForecastIndicators(customForecastIndicatorList);
 };
+
+export const convertCustomForecastIndicatorViewModel = (customForecastIndicator: CustomForecastIndicatorResponse) => {
+  return new CustomForecastIndicator(customForecastIndicator);
+};

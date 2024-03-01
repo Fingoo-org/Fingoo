@@ -64,7 +64,7 @@ export function DialogMenuRoot({
                     'opacity-80',
                   )}
                 >
-                  {dialogMenuHeader.length !== 0 ? <div className="px-3 pb-1 pt-4">{dialogMenuHeader}</div> : null}
+                  {dialogMenuHeader.length !== 0 ? <div className="px-4 pb-1 pt-4">{dialogMenuHeader}</div> : null}
                   {childrenWithoutHeader}
                 </div>
               </Transition.Child>
