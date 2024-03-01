@@ -7,9 +7,9 @@ import { Card } from '@tremor/react';
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 
 export default function CustomForecastIndicatorDialogMenu() {
-  const { customForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
+  const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
 
-  console.log(customForecastIndicator);
+  console.log(selectedCustomForecastIndicator);
   const handleCustomForecastIndicatorNameChange = (name: string) => {
     // logic: 예측 지표 이름 변경
     console.log(name);
@@ -19,7 +19,7 @@ export default function CustomForecastIndicatorDialogMenu() {
     <DialogMenu color={'gray'} size={'xl'} dialogKey={DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU}>
       <DialogMenu.Header>
         <TinyInput
-          defaultValue={customForecastIndicator ? customForecastIndicator.name : ''}
+          defaultValue={selectedCustomForecastIndicator ? selectedCustomForecastIndicator.name : ''}
           withResetButton={true}
           withDebounce={500}
           onValueChange={handleCustomForecastIndicatorNameChange}

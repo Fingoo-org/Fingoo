@@ -7,18 +7,21 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useNumericalGuidanceStore(
     (state) => state.selectedCustomForecastIndicatorId,
   );
+  const { selectCustomForecastIndicator } = useNumericalGuidanceStore((state) => state.actions);
   const { data: customForecastIndicatorList } = useFetchCustomForecastIndicatorList();
+
   const customForecastIndicator = customForecastIndicatorList?.customForecastIndicatorList.find(
     (customForecastIndicator) => customForecastIndicator.id === selectedCustomForecastIndicatorId,
   );
 
-  const convertedCustomForecastIndicator = useMemo(() => {
+  const convertedSelectedCustomForecastIndicator = useMemo(() => {
     if (!customForecastIndicator) return undefined;
 
     return convertCustomForecastIndicatorViewModel(customForecastIndicator);
   }, [customForecastIndicator]);
 
   return {
-    customForecastIndicator: convertedCustomForecastIndicator,
+    selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,
+    selectCustomForecastIndicator,
   };
 };
