@@ -11,6 +11,7 @@ import { IndicatorListResponse } from '../store/querys/numerical-guidance/indica
 import { AddIndicatorToMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from './mock-data/indicators-value.mock';
 import {
+  AddSourceIndicatorToCustomForecastIndicatorRequestBody,
   CreateCustomForecastIndicatorRequestBody,
   CustomForecastIndicatorListResponse,
 } from '../store/querys/numerical-guidance/custom-forecast-indicator.query';
@@ -32,6 +33,10 @@ type MockDatabaseAction = {
   deleteMetadata: (id: string) => void;
   getCustomForecastIndicatorList: () => CustomForecastIndicatorListResponse;
   postCustomForecastIndicator: (data: CreateCustomForecastIndicatorRequestBody) => void;
+  postSourceIndicatorToCustomForecastIndicator: (
+    id: string,
+    data: AddSourceIndicatorToCustomForecastIndicatorRequestBody,
+  ) => void;
 };
 
 const initialState: MockDatabase = {
@@ -199,6 +204,20 @@ export const mockDB: MockDatabaseAction = {
       ...mockDatabaseStore.customForecastIndicatorList,
       newCustomForecastIndicator,
     ];
+  },
+  postSourceIndicatorToCustomForecastIndicator: (id, data) => {
+    const index = mockDatabaseStore.customForecastIndicatorList.findIndex(
+      (customForecastIndicator) => customForecastIndicator.id === id,
+    );
+    const newCustomForecastIndicator = {
+      ...mockDatabaseStore.customForecastIndicatorList[index],
+      sourceIndicatorIdsAndweights: [
+        ...mockDatabaseStore.customForecastIndicatorList[index].sourceIndicatorIdsAndweights,
+        ...data.sourceIndicatorsAndweights,
+      ],
+    };
+
+    mockDatabaseStore.customForecastIndicatorList[index] = newCustomForecastIndicator;
   },
 };
 

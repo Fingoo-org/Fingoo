@@ -31,3 +31,19 @@ export const useFetchCustomForecastIndicatorList = () => {
 export const useCreateCustomForecastIndicator = () => {
   return useSWRMutation(API_PATH.customForecastIndicator, updateFetcher<CreateCustomForecastIndicatorRequestBody>);
 };
+
+export type AddSourceIndicatorToCustomForecastIndicatorRequestBody = {
+  sourceIndicatorsAndweights: sourceIndicator[];
+};
+
+export const useAddSourceIndicatorToCustomForecastIndicator = (customForecastIndicatorId: string | undefined) => {
+  return useSWRMutation(
+    API_PATH.customForecastIndicator,
+    async (url: string, { arg }: { arg: AddSourceIndicatorToCustomForecastIndicatorRequestBody }) => {
+      if (!customForecastIndicatorId) return;
+      await updateFetcher<AddSourceIndicatorToCustomForecastIndicatorRequestBody>([url, customForecastIndicatorId], {
+        arg,
+      });
+    },
+  );
+};
