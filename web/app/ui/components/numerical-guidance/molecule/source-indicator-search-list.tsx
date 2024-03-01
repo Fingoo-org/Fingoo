@@ -5,8 +5,11 @@ import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/ind
 import TinyInput from '../../view/atom/tiny-input/tiny-input';
 import { SearchIcon } from '@heroicons/react/solid';
 import SelectableItem from '../../view/atom/selectable-item';
+import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import { useMemo } from 'react';
 
 export default function SourceIndicatorSearchList() {
+  const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
   const { indicatorList } = useIndicatorList();
 
   const render = ({ index, style, data }: ListChildComponentProps<IndicatorInfoResponse[]>) => {
@@ -22,9 +25,15 @@ export default function SourceIndicatorSearchList() {
       console.log('handleDeSelect');
     };
 
+    const indicatorDisplayName = `${indicator.ticker}(${indicator.name})`;
+
+    const isSelected =
+      selectedCustomForecastIndicator?.sourceIndicatorIds?.includes(indicator.id) ||
+      selectedCustomForecastIndicator?.targetIndicatorId === indicator.id;
+
     return (
-      <SelectableItem selected={false} onSelect={handleSelect} onDeSelect={handleDeSelect} style={style}>
-        <span className="text-xs">{indicator.name}</span>
+      <SelectableItem selected={isSelected} onSelect={handleSelect} onDeSelect={handleDeSelect} style={style}>
+        <span className="text-xs">{indicatorDisplayName}</span>
       </SelectableItem>
     );
   };
