@@ -6,7 +6,7 @@ import TinyInput from '../../view/atom/tiny-input/tiny-input';
 import { SearchIcon } from '@heroicons/react/solid';
 import SelectableItem from '../../view/atom/selectable-item';
 
-export default function IndicatorSearchList() {
+export default function SourceIndicatorSearchList() {
   const { indicatorList } = useIndicatorList();
 
   const render = ({ index, style, data }: ListChildComponentProps<IndicatorInfoResponse[]>) => {
