@@ -8,6 +8,9 @@ export class HistoryIndicatorEntity {
   id: string;
 
   @Column()
+  name: string;
+
+  @Column()
   type: IndicatorType;
 
   @Column()
