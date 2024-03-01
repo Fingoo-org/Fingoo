@@ -5,10 +5,13 @@ import TinyInput from '../../../view/atom/tiny-input/tiny-input';
 import IndicatorSearchList from '../indicator-search-list';
 import { Card } from '@tremor/react';
 import { useCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-view-model';
+import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 
 export default function CustomForecastIndicatorDialogMenu() {
-  const payload = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU).payload as { id?: string };
-  const { customForecastIndicator } = useCustomForecastIndicatorViewModel(payload?.id);
+  const selectedCustomForecastIndicatorId = useNumericalGuidanceStore(
+    (state) => state.selectedCustomForecastIndicatorId,
+  );
+  const { customForecastIndicator } = useCustomForecastIndicatorViewModel(selectedCustomForecastIndicatorId);
 
   console.log(customForecastIndicator);
   const handleCustomForecastIndicatorNameChange = (name: string) => {
@@ -20,7 +23,7 @@ export default function CustomForecastIndicatorDialogMenu() {
     <DialogMenu color={'gray'} size={'xl'} dialogKey={DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU}>
       <DialogMenu.Header>
         <TinyInput
-          defaultValue={'에측 지표 이름'} // payload에서 id 받아서 or store로 관리? hook으로 해당 예측지표 가져오고 로직 처리해야함
+          defaultValue={customForecastIndicator ? customForecastIndicator.name : ''}
           withResetButton={true}
           withDebounce={500}
           onValueChange={handleCustomForecastIndicatorNameChange}

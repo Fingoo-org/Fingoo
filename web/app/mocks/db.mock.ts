@@ -77,20 +77,20 @@ const initialState: MockDatabase = {
     {
       id: '1',
       name: 'customForecastIndicator1',
-      targetIndicatorId: 'AAPL',
-      sourceIndicatorIds: ['MSFT', 'GOOG'],
+      targetIndicatorId: '1',
+      sourceIndicatorIds: ['2', '3'],
     },
     {
       id: '2',
       name: 'customForecastIndicator2',
-      targetIndicatorId: 'MSFT',
-      sourceIndicatorIds: ['AAPL', 'GOOG'],
+      targetIndicatorId: '2',
+      sourceIndicatorIds: ['1', '3'],
     },
     {
       id: '3',
       name: 'customForecastIndicator3',
-      targetIndicatorId: 'GOOG',
-      sourceIndicatorIds: ['AAPL', 'MSFT'],
+      targetIndicatorId: '3',
+      sourceIndicatorIds: ['1', '2'],
     },
   ],
 };

@@ -4,11 +4,14 @@ import CustomForecastIndicatorDialogMenu from '../ui/components/numerical-guidan
 import { useDialog } from '../ui/components/view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '../utils/keys/dialog-key';
 import { useEffect } from 'react';
+import { useNumericalGuidanceStore } from '../store/stores/numerical-guidance.store';
 
 export default function Page() {
+  const { selectCustomForecastIndicator } = useNumericalGuidanceStore((state) => state.actions);
   const { openDialogWithPayload } = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU);
 
   useEffect(() => {
+    selectCustomForecastIndicator('1');
     openDialogWithPayload({
       id: '1',
     });
