@@ -4,14 +4,10 @@ import DialogMenu from '../../../view/molocule/dialog-menu';
 import TinyInput from '../../../view/atom/tiny-input/tiny-input';
 import IndicatorSearchList from '../indicator-search-list';
 import { Card } from '@tremor/react';
-import { useCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-view-model';
-import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
+import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 
 export default function CustomForecastIndicatorDialogMenu() {
-  const selectedCustomForecastIndicatorId = useNumericalGuidanceStore(
-    (state) => state.selectedCustomForecastIndicatorId,
-  );
-  const { customForecastIndicator } = useCustomForecastIndicatorViewModel(selectedCustomForecastIndicatorId);
+  const { customForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
 
   console.log(customForecastIndicator);
   const handleCustomForecastIndicatorNameChange = (name: string) => {
