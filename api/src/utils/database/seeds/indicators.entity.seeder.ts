@@ -27,6 +27,7 @@ export default class IndicatorEntitySeeder implements Seeder {
 
     await dataSource.getRepository(HistoryIndicatorEntity).insert({
       id: indicatorEntity.id,
+      name: indicatorEntity.name,
       type: indicatorEntity.type,
       ticker: indicatorEntity.ticker,
       market: indicatorEntity.market,
