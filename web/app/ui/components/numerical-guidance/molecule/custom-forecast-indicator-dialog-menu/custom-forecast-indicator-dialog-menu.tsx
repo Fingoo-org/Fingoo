@@ -5,6 +5,7 @@ import TinyInput from '../../../view/atom/tiny-input/tiny-input';
 import IndicatorSearchList from '../indicator-search-list';
 import { Card } from '@tremor/react';
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import SourceIndicatorBadgeGroup from '../source-indicator-badge-group';
 
 export default function CustomForecastIndicatorDialogMenu() {
   const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
@@ -26,6 +27,9 @@ export default function CustomForecastIndicatorDialogMenu() {
           color={'white'}
         />
       </DialogMenu.Header>
+      <DialogMenu.Content>
+        <SourceIndicatorBadgeGroup />
+      </DialogMenu.Content>
       <DialogMenu.Content>
         <Card className="h-28 p-1.5">
           <IndicatorSearchList />
