@@ -3,11 +3,16 @@ import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
 import { defaultFetcher, updateFetcher } from '../fetcher';
 
+export type sourceIndicator = {
+  id: string;
+  weight: number;
+};
+
 export type CustomForecastIndicatorResponse = {
   id: string;
   name: string;
   targetIndicatorId: string;
-  sourceIndicatorIds: string[];
+  sourceIndicatorIdsAndweights: sourceIndicator[];
 };
 
 export type CustomForecastIndicatorListResponse = {

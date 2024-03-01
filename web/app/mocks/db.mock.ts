@@ -78,19 +78,46 @@ const initialState: MockDatabase = {
       id: '1',
       name: 'customForecastIndicator1',
       targetIndicatorId: '1',
-      sourceIndicatorIds: ['2', '3'],
+      sourceIndicatorIdsAndweights: [
+        {
+          id: '2',
+          weight: 0.5,
+        },
+        {
+          id: '3',
+          weight: 0.5,
+        },
+      ],
     },
     {
       id: '2',
       name: 'customForecastIndicator2',
       targetIndicatorId: '2',
-      sourceIndicatorIds: ['1', '3'],
+      sourceIndicatorIdsAndweights: [
+        {
+          id: '1',
+          weight: 0.5,
+        },
+        {
+          id: '3',
+          weight: 0.5,
+        },
+      ],
     },
     {
       id: '3',
       name: 'customForecastIndicator3',
       targetIndicatorId: '3',
-      sourceIndicatorIds: ['1', '2'],
+      sourceIndicatorIdsAndweights: [
+        {
+          id: '1',
+          weight: 0.5,
+        },
+        {
+          id: '2',
+          weight: 0.5,
+        },
+      ],
     },
   ],
 };
@@ -166,7 +193,7 @@ export const mockDB: MockDatabaseAction = {
     const newCustomForecastIndicator = {
       ...data,
       id: Math.random().toString(36),
-      sourceIndicatorIds: [],
+      sourceIndicatorIdsAndweights: [],
     };
     mockDatabaseStore.customForecastIndicatorList = [
       ...mockDatabaseStore.customForecastIndicatorList,
