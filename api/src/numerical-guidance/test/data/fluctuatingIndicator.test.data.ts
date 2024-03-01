@@ -4,7 +4,7 @@ export const fluctuatingIndicatorTestData = {
   name: '삼성전자',
   market: 'KOSPI',
   totalCount: 1000,
-  items: [
+  values: [
     {
       date: '20240118',
       value: '71700',

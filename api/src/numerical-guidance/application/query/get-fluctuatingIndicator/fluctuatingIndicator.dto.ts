@@ -1,6 +1,6 @@
 import { IndicatorType, Market } from 'src/utils/type/type-definition';
 
-export type Item = {
+export type IndicatorValue = {
   date: string;
   value: string;
 };
@@ -11,7 +11,7 @@ export class FluctuatingIndicatorDto {
   name: string;
   market: Market;
   totalCount: number;
-  items: Item[];
+  values: IndicatorValue[];
 
   private constructor(
     type: IndicatorType,
@@ -19,18 +19,18 @@ export class FluctuatingIndicatorDto {
     name: string,
     market: Market,
     totalCount: number,
-    items: Item[],
+    values: IndicatorValue[],
   ) {
     this.type = type;
     this.ticker = ticker;
     this.name = name;
     this.market = market;
     this.totalCount = totalCount;
-    this.items = items;
+    this.values = values;
   }
 
-  static create({ type, ticker, name, market, totalCount, items }): FluctuatingIndicatorDto {
-    return new FluctuatingIndicatorDto(type, ticker, name, market, totalCount, items);
+  static create({ type, ticker, name, market, totalCount, values }): FluctuatingIndicatorDto {
+    return new FluctuatingIndicatorDto(type, ticker, name, market, totalCount, values);
   }
 }
 export { IndicatorType };

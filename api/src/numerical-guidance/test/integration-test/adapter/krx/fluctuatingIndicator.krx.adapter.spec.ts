@@ -4,6 +4,7 @@ import { Test } from '@nestjs/testing';
 import { FluctuatingIndicatorDto } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { FluctuatingIndicatorKrxAdapter } from 'src/numerical-guidance/infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
 import { fluctuatingIndicatorTestData } from 'src/numerical-guidance/test/data/fluctuatingIndicator.test.data';
+import { AdjustIndicatorValue } from '../../../../util/adjust-indicator-value';
 
 const testData = fluctuatingIndicatorTestData;
 
@@ -20,7 +21,13 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
           }),
         }),
       ],
-      providers: [FluctuatingIndicatorKrxAdapter],
+      providers: [
+        FluctuatingIndicatorKrxAdapter,
+        {
+          provide: 'IndicatorValueManager',
+          useClass: AdjustIndicatorValue,
+        },
+      ],
     }).compile();
     fluctuatingIndicatorKrxAdapter = module.get(FluctuatingIndicatorKrxAdapter);
   });
