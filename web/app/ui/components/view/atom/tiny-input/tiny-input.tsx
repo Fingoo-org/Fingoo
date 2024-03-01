@@ -3,7 +3,7 @@ import { XCircleIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import Icon from '../icons/variant-icon';
-import { cn } from '@/app/utils/style';
+import { Color, cn, getColorClassNames } from '@/app/utils/style';
 
 // Refactor: value가 맞지 않니?
 type TinyInputProps = {
@@ -11,6 +11,7 @@ type TinyInputProps = {
   withResetButton?: boolean;
   withDebounce?: number;
   icon?: React.ElementType;
+  color?: Color;
   onValueChange?: (value: string) => void;
 };
 
@@ -19,6 +20,7 @@ export default function TinyInput({
   withResetButton = false,
   withDebounce = 0,
   icon,
+  color = 'gray',
   onValueChange,
 }: TinyInputProps) {
   const [value, setValue] = useState(defaultValue);
@@ -46,14 +48,20 @@ export default function TinyInput({
   };
 
   return (
-    <div className="has=[:focus]:ring-blue-200 flex w-full rounded-lg bg-gray-100 text-sm duration-100 has-[:focus]:ring-2 ">
+    <div
+      className={cn(
+        'has=[:focus]:ring-blue-200 flex w-full rounded-lg text-sm duration-100 has-[:focus]:ring-2 ',
+        getColorClassNames(color, 100).bgColor,
+      )}
+    >
       {icon ? <Icon icon={icon} size={'xs'} color={'gray'} /> : null}
       <input
         value={value}
         onChange={handleChange}
         className={cn(
-          'w-full rounded-lg border-none bg-gray-100 p-0 py-0.5 pl-2 text-custom-inherit focus:outline-none focus:ring-0 focus:ring-offset-0',
+          'w-full rounded-lg border-none p-0 py-0.5 pl-2 text-custom-inherit focus:outline-none focus:ring-0 focus:ring-offset-0',
           icon ? 'pl-0' : 'pl-2',
+          getColorClassNames(color, 100).bgColor,
         )}
       />
       {withResetButton ? <IconButton color={'gray'} icon={XCircleIcon} size={'xs'} onClick={handleReset} /> : null}
