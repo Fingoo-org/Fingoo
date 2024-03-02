@@ -4,7 +4,7 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
     id: '1',
     ticker: 'AAPL',
-    items: [
+    values: [
       {
         date: '2024-01-01',
         value: 100,
@@ -230,7 +230,7 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
     id: '2',
     ticker: 'MSFT',
-    items: [
+    values: [
       {
         date: '2024-01-01',
         value: 220,
@@ -380,7 +380,7 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
     id: '3',
     ticker: 'GOOG',
-    items: [
+    values: [
       {
         date: '2024-01-01',
         value: 321,
@@ -490,7 +490,7 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
     id: '9785ba85-c924-4269-8238-e1f10b404177',
     ticker: '005930',
-    items: [
+    values: [
       {
         date: '2024-01-01',
         value: 100,

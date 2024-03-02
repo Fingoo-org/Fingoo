@@ -23,15 +23,15 @@ class IndicatorValueItem {
 class IndicatorValue {
   readonly id: string;
   readonly ticker: string;
-  readonly items: IndicatorValueItem[];
-  constructor({ id, ticker, items }: IndicatorValueResponse) {
+  readonly values: IndicatorValueItem[];
+  constructor({ id, ticker, values }: IndicatorValueResponse) {
     this.id = id;
     this.ticker = ticker;
-    this.items = items.map((item) => new IndicatorValueItem(item));
+    this.values = values.map((item) => new IndicatorValueItem(item));
   }
 
   get formattedItemsByDate(): Record<string, formattedItem> {
-    return this.items.reduce((acc, item) => {
+    return this.values.reduce((acc, item) => {
       return {
         ...acc,
         [item.date]: {
