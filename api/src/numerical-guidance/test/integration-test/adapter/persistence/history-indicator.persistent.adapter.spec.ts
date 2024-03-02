@@ -12,6 +12,7 @@ import { GetHistoryIndicatorQuery } from '../../../../application/query/get-hist
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { HistoryIndicatorDto } from '../../../../application/query/get-history-indicator/history-indicator.dto';
 import { AdjustIndicatorValue } from '../../../../util/adjust-indicator-value';
+import { HttpStatus, NotFoundException } from '@nestjs/common';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -221,5 +222,27 @@ describe('HistoryIndicatorPersistentAdapter', () => {
     expect(expectedTotalCount).toEqual(cursorPageDto.meta.total);
     expect(expectedIndicator).toEqual(cursorPageDto.data.indicator);
     expect(expectedValues).toEqual(cursorPageDto.data.values);
+  });
+
+  it('history 지표 불러오기 - 날짜 형식이 잘못된 경우', async () => {
+    // given
+    const invalidStartDate = '9999999';
+    const { indicatorId, interval, startDate, endDate }: GetHistoryIndicatorQuery = {
+      indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
+      interval: 'day',
+      startDate: invalidStartDate,
+      endDate: '20240227',
+    };
+
+    // when // then
+    await expect(async () => {
+      await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, startDate, endDate);
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: `[ERROR] 지표를 cursor pagination 하는 중에 startDate, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
+        error: Error,
+        HttpStatus: HttpStatus.NOT_FOUND,
+      }),
+    );
   });
 });
