@@ -19,7 +19,8 @@ import { useResponsive } from '../../hooks/use-responsive';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 
-const calculateDate = (date: Date, rowsToDownload: number) => {
+// Refactor: 여기 위치하면 안될 듯
+export const calculateDate = (date: Date | string, rowsToDownload: number) => {
   const newDate = new Date(date);
   newDate.setDate(newDate.getDate() - rowsToDownload);
   return newDate;
@@ -49,7 +50,7 @@ function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx:
 
 type AdvancedMultiLineChartProps<T> = {
   data: T[];
-  onLoadData?: (startDate: Date) => void;
+  onLoadData?: (rowsToDownload: number) => void;
 };
 
 export default function AdvancedMultiLineChart<T extends Record<string, any>>({
@@ -69,9 +70,10 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   const handleLoadBefore = (start: number, end: number) => {
     const rowsToDownload = end - Math.ceil(start);
 
-    const newStartDate = calculateDate(startData.date, rowsToDownload);
+    console.log(start);
+    // const newStartDate = calculateDate(startData.date, rowsToDownload);
 
-    onLoadData?.(newStartDate);
+    onLoadData?.(rowsToDownload);
   };
 
   const yExtents = (d: T) => {

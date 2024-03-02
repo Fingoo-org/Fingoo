@@ -24,6 +24,8 @@ export default function IndicatorsChart() {
     setIsAdvancedChart(active);
   };
 
+  const handleLoadData = (data: number) => {};
+
   return (
     <>
       <Pending isPending={isPending}>
@@ -40,7 +42,7 @@ export default function IndicatorsChart() {
         </div>
         <div className="mt-4 h-72 w-full">
           {isAdvancedChart ? (
-            <AdvancedMultiLineChart data={formattedIndicatorsRows || []} />
+            <AdvancedMultiLineChart onLoadData={handleLoadData} data={formattedIndicatorsRows || []} />
           ) : (
             <MultiLineChart
               data={formattedIndicatorsRows || []}
