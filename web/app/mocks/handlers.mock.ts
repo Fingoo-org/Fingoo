@@ -6,7 +6,10 @@ import {
   UpdateIndicatorBoardMetadataRequestBody,
 } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { CreateIndicatorMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { CreateCustomForecastIndicatorRequestBody } from '../store/querys/numerical-guidance/custom-forecast-indicator.query';
+import {
+  AddSourceIndicatorToCustomForecastIndicatorRequestBody,
+  CreateCustomForecastIndicatorRequestBody,
+} from '../store/querys/numerical-guidance/custom-forecast-indicator.query';
 
 const delayForDevelopment = async (ms = 1000) => {
   if (process.env.NODE_ENV === 'development') {
@@ -14,6 +17,9 @@ const delayForDevelopment = async (ms = 1000) => {
   }
 };
 
+type customForecastIndicatorParam = {
+  customForecastIndicatorId: string;
+};
 const customForecastIndicatorHandlers = [
   http.get(API_PATH.customForecastIndicator, async () => {
     await delayForDevelopment();
@@ -28,6 +34,16 @@ const customForecastIndicatorHandlers = [
       return HttpResponse.json({
         status: 200,
       });
+    },
+  ),
+  http.post<customForecastIndicatorParam, AddSourceIndicatorToCustomForecastIndicatorRequestBody>(
+    `${API_PATH.customForecastIndicator}/:customForecastIndicatorId`,
+    async ({ params, request }) => {
+      const { customForecastIndicatorId } = params;
+      const data = await request.json();
+      mockDB.postSourceIndicatorToCustomForecastIndicator(customForecastIndicatorId, data);
+      await delayForDevelopment();
+      return HttpResponse.json({ status: 200 });
     },
   ),
 ];

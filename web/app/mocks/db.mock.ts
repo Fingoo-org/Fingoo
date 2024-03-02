@@ -11,6 +11,7 @@ import { IndicatorListResponse } from '../store/querys/numerical-guidance/indica
 import { AddIndicatorToMetadataRequestBody } from '../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from './mock-data/indicators-value.mock';
 import {
+  AddSourceIndicatorToCustomForecastIndicatorRequestBody,
   CreateCustomForecastIndicatorRequestBody,
   CustomForecastIndicatorListResponse,
 } from '../store/querys/numerical-guidance/custom-forecast-indicator.query';
@@ -32,6 +33,10 @@ type MockDatabaseAction = {
   deleteMetadata: (id: string) => void;
   getCustomForecastIndicatorList: () => CustomForecastIndicatorListResponse;
   postCustomForecastIndicator: (data: CreateCustomForecastIndicatorRequestBody) => void;
+  postSourceIndicatorToCustomForecastIndicator: (
+    id: string,
+    data: AddSourceIndicatorToCustomForecastIndicatorRequestBody,
+  ) => void;
 };
 
 const initialState: MockDatabase = {
@@ -77,20 +82,47 @@ const initialState: MockDatabase = {
     {
       id: '1',
       name: 'customForecastIndicator1',
-      targetIndicatorId: 'AAPL',
-      sourceIndicatorIds: ['MSFT', 'GOOG'],
+      targetIndicatorId: '1',
+      sourceIndicatorIdsAndweights: [
+        {
+          id: '2',
+          weight: 0.5,
+        },
+        {
+          id: '3',
+          weight: 0.5,
+        },
+      ],
     },
     {
       id: '2',
       name: 'customForecastIndicator2',
-      targetIndicatorId: 'MSFT',
-      sourceIndicatorIds: ['AAPL', 'GOOG'],
+      targetIndicatorId: '2',
+      sourceIndicatorIdsAndweights: [
+        {
+          id: '1',
+          weight: 0.5,
+        },
+        {
+          id: '3',
+          weight: 0.5,
+        },
+      ],
     },
     {
       id: '3',
       name: 'customForecastIndicator3',
-      targetIndicatorId: 'GOOG',
-      sourceIndicatorIds: ['AAPL', 'MSFT'],
+      targetIndicatorId: '3',
+      sourceIndicatorIdsAndweights: [
+        {
+          id: '1',
+          weight: 0.5,
+        },
+        {
+          id: '2',
+          weight: 0.5,
+        },
+      ],
     },
   ],
 };
@@ -166,12 +198,26 @@ export const mockDB: MockDatabaseAction = {
     const newCustomForecastIndicator = {
       ...data,
       id: Math.random().toString(36),
-      sourceIndicatorIds: [],
+      sourceIndicatorIdsAndweights: [],
     };
     mockDatabaseStore.customForecastIndicatorList = [
       ...mockDatabaseStore.customForecastIndicatorList,
       newCustomForecastIndicator,
     ];
+  },
+  postSourceIndicatorToCustomForecastIndicator: (id, data) => {
+    const index = mockDatabaseStore.customForecastIndicatorList.findIndex(
+      (customForecastIndicator) => customForecastIndicator.id === id,
+    );
+    const newCustomForecastIndicator = {
+      ...mockDatabaseStore.customForecastIndicatorList[index],
+      sourceIndicatorIdsAndweights: [
+        ...mockDatabaseStore.customForecastIndicatorList[index].sourceIndicatorIdsAndweights,
+        ...data.sourceIndicatorsAndweights,
+      ],
+    };
+
+    mockDatabaseStore.customForecastIndicatorList[index] = newCustomForecastIndicator;
   },
 };
 

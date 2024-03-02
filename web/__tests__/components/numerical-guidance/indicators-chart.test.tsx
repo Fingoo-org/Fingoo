@@ -7,13 +7,6 @@ import { resetAllStore } from '@/app/store/stores/reset-store';
 import IndicatorsChart from '@/app/ui/components/numerical-guidance/molecule/indicators-chart';
 import IndicatorList from '@/app/ui/components/numerical-guidance/molecule/indicator-list';
 
-// chart 테스트 목적으로 전역 `ResizeObserver` 클래스를 모킹
-global.ResizeObserver = jest.fn().mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-}));
-
 describe('IndicatorsChart', () => {
   beforeEach(() => {
     resetMockDB();
