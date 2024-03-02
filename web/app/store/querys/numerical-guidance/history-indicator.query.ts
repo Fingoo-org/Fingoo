@@ -8,13 +8,17 @@ export const parseTime = utcParse('%Y%m%d');
 export const formatTime = utcFormat('%Y%m%d');
 
 export type HistoryIndicatorsValueResponse = {
-  indicatorsValue: HistoryIndicatorValueResponse[];
+  indicatorsValue: HistoryIndicatorValueDataResponse[];
+};
+
+export type HistoryIndicatorValueDataResponse = {
+  data: HistoryIndicatorValueResponse;
+  meta: HistoryIndicatorPagniationMeta;
 };
 
 export type HistoryIndicatorValueResponse = {
   indicator: HistoryIndicatorInfo;
-  value: HistoryIndicatorValueItemResponse[];
-  meta: HistoryIndicatorPagniationMeta;
+  values: HistoryIndicatorValueItemResponse[];
 };
 
 export type HistoryIndicatorPagniationMeta = {
@@ -44,7 +48,9 @@ export const useFetchHistoryIndicatorValue = (indicatorIdS: string[]) => {
           .map((indicator) => indicator.meta.cursor)
           .sort()
           .pop()
-      : '20240201';
+      : '20240101';
+
+    console.log('history', previousPageData);
 
     if (!maxCursorDate) return null;
 

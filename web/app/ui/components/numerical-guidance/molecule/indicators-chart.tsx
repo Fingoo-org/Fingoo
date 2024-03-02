@@ -9,8 +9,10 @@ import ToggleButton from '../../view/atom/toggle-button/toggle-button';
 import { CheckCircleIcon } from '@heroicons/react/outline';
 import AdvancedMultiLineChart from '../../view/molocule/advanced-multi-line-chart/advanced-multi-line-chart';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import { useHistoryIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-history-indicators-value-view-model.hook';
 
 export default function IndicatorsChart() {
+  const { historyIndicatorsValue, setSize } = useHistoryIndicatorsValueViewModel();
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
 
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
@@ -18,13 +20,21 @@ export default function IndicatorsChart() {
 
   const formattedIndicatorsRows = useMemo(() => indicatorsValue?.formattedIndicatorsInRow, [indicatorsValue]);
 
+  // Refactor: 분리해야함
+  const data = historyIndicatorsValue?.formattedIndicatorsInRow;
+  const formattedAdvencedIndicatorsRows = [...(data || []), ...(formattedIndicatorsRows || [])];
+  console.log(data);
+  console.log(formattedAdvencedIndicatorsRows);
+
   const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
 
   const handleToggle = (active: boolean) => {
     setIsAdvancedChart(active);
   };
 
-  const handleLoadData = (data: number) => {};
+  const handleLoadData = (data: number) => {
+    setSize((prev) => prev + 1);
+  };
 
   return (
     <>
@@ -42,7 +52,7 @@ export default function IndicatorsChart() {
         </div>
         <div className="mt-4 h-72 w-full">
           {isAdvancedChart ? (
-            <AdvancedMultiLineChart onLoadData={handleLoadData} data={formattedIndicatorsRows || []} />
+            <AdvancedMultiLineChart onLoadData={handleLoadData} data={formattedAdvencedIndicatorsRows || []} />
           ) : (
             <MultiLineChart
               data={formattedIndicatorsRows || []}

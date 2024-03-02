@@ -1,8 +1,12 @@
+import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import {
   IndicatorValueItemResponse,
   IndicatorValueResponse,
   IndicatorsValueResponse,
 } from '../../../store/querys/numerical-guidance/indicator.query';
+import { utcFormat, utcParse } from 'd3-time-format';
+const parseTime = utcParse('%Y%m%d');
+const formatTime = utcFormat('%Y-%m-%d');
 
 type formattedItem = {
   [key: string]: {
@@ -13,7 +17,7 @@ type formattedItem = {
 // Risk: item이 길어지면 오버헤드
 class IndicatorValueItem {
   readonly date: string;
-  readonly value: number;
+  readonly value: number | string;
   constructor({ date, value }: IndicatorValueItemResponse) {
     this.date = date;
     this.value = value;
@@ -35,7 +39,7 @@ class IndicatorValue {
       return {
         ...acc,
         [item.date]: {
-          [this.ticker]: item.value,
+          [this.ticker]: typeof item.value === 'number' ? item.value : parseInt(item.value),
         },
       };
     }, {});
@@ -56,7 +60,13 @@ export class IndicatorsValue {
     return this.indicatorsValue.reduce((acc: Record<string, formattedItem>, indicator) => {
       const formattedItems = indicator.formattedItemsByDate;
       Object.keys(formattedItems).forEach((date) => {
-        acc[date] = { ...acc[date], ...formattedItems[date] };
+        let formattedDate: string | Date = new Date(date);
+        if (formattedDate.toString().startsWith('Invalid')) {
+          formattedDate = parseTime(date) ?? new Date(date);
+        }
+        formattedDate = formatTime(formattedDate);
+
+        acc[formattedDate] = { ...acc[date], ...formattedItems[date] };
       });
       return acc;
     }, {});
@@ -79,4 +89,18 @@ export class IndicatorsValue {
 
 export const convertIndicatorsValueViewModel = (indicators: IndicatorsValueResponse) => {
   return new IndicatorsValue(indicators);
+};
+
+export const convertHistoryIndicatorsValueViewModel = (indicators: HistoryIndicatorValueResponse[]) => {
+  const formmatedIndicators = indicators.map((indicator) => {
+    return {
+      id: indicator.indicator.id,
+      ticker: indicator.indicator.ticker,
+      values: indicator.values,
+    };
+  });
+
+  return new IndicatorsValue({
+    indicatorsValue: formmatedIndicators,
+  });
 };
