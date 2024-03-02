@@ -1,6 +1,6 @@
 import {
   FluctuatingIndicatorDto,
-  Item,
+  IndicatorValue,
 } from '../../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 
 export class FluctuatingIndicatorMapper {
@@ -11,7 +11,7 @@ export class FluctuatingIndicatorMapper {
       name: number;
       market: number;
       totalCount: number;
-      items: Item[];
+      values: IndicatorValue[];
     } = JSON.parse(stringData);
 
     return FluctuatingIndicatorDto.create({
@@ -20,7 +20,7 @@ export class FluctuatingIndicatorMapper {
       name: data.name,
       market: data.market,
       totalCount: data.totalCount,
-      items: data.items,
+      values: data.values,
     });
   }
 }

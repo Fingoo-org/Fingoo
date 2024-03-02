@@ -1,17 +1,16 @@
 import {
   FluctuatingIndicatorDto,
-  Item,
+  IndicatorValue,
 } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
-import { FluctuatingIndicatorKrxAdapter } from 'src/numerical-guidance/infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
 import * as fs from 'fs';
+import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
+import { Interval } from '../../../../utils/type/type-definition';
 
 describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
   beforeEach(async () => {});
 
   it('interval을 week로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
     // given
-
-    // when
     const filePath = './src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
 
     const data = fs.readFileSync(filePath, 'utf8');
@@ -34,10 +33,13 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
       name: rawItems[0].itmsNm,
       market: rawItems[0].mrktCtg,
       totalCount: jsonData.totalCount,
-      items: items,
+      values: items,
     });
+    const interval: Interval = 'week';
 
-    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateWeeklyAverage(testData).items;
+    // when
+    const adjustIndicatorValue = new AdjustIndicatorValue();
+    const result: IndicatorValue[] = await adjustIndicatorValue.adjustValuesByInterval(testData.values, interval);
 
     const weeklyAverages = result.map((item) => item['value']);
 
@@ -72,8 +74,6 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
 
   it('interval을 month로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
     // given
-
-    // when
     const filePath = './src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
 
     const data = fs.readFileSync(filePath, 'utf8');
@@ -96,10 +96,12 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
       name: rawItems[0].itmsNm,
       market: rawItems[0].mrktCtg,
       totalCount: jsonData.totalCount,
-      items: items,
+      values: items,
     });
-
-    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateMonthlyAverage(testData).items;
+    const interval: Interval = 'month';
+    // when
+    const adjustIndicatorValue = new AdjustIndicatorValue();
+    const result: IndicatorValue[] = await adjustIndicatorValue.adjustValuesByInterval(testData.values, interval);
 
     const monthlyAverages = result.map((item) => item['value']);
     // then
@@ -109,8 +111,6 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
 
   it('interval을 year로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
     //given
-
-    //when
     const filePath = './src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
 
     const data = fs.readFileSync(filePath, 'utf8');
@@ -133,10 +133,13 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
       name: rawItems[0].itmsNm,
       market: rawItems[0].mrktCtg,
       totalCount: jsonData.totalCount,
-      items: items,
+      values: items,
     });
+    const interval = 'year';
 
-    const result: Item[] = FluctuatingIndicatorKrxAdapter.calculateYearlyAverage(testData).items;
+    //when
+    const adjustIndicatorValue = new AdjustIndicatorValue();
+    const result: IndicatorValue[] = await adjustIndicatorValue.adjustValuesByInterval(testData.values, interval);
 
     const yearlyAverages = result.map((item) => item['value']);
     // then

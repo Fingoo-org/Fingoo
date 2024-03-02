@@ -28,6 +28,12 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 import { RedisContainer } from '@testcontainers/redis';
 import { IndicatorEntity } from '../../infrastructure/adapter/persistence/indicator/entity/indicator.entity';
 import { IndicatorPersistentAdapter } from '../../infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
+import { GetHistoryIndicatorQueryHandler } from '../../application/query/get-history-indicator/get-history-indicator.query.handler';
+import { AdjustIndicatorValue } from '../../util/adjust-indicator-value';
+import { HistoryIndicatorPersistentAdapter } from '../../infrastructure/adapter/persistence/history-indicator/history-indicator.persistent.adapter';
+import { HistoryIndicatorEntity } from '../../infrastructure/adapter/persistence/history-indicator/entity/history-indicator.entity';
+import { HistoryIndicatorValueEntity } from '../../infrastructure/adapter/persistence/history-indicator-value/entity/history-indicator-value.entity';
+import * as fs from 'fs';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -48,8 +54,6 @@ describe('NumericalGuidance E2E Test', () => {
       ticker: '005930',
       type: 'k-stock',
       market: 'KOSPI',
-      createdAt: new Date('2024-02-23 10:00:02.292086'),
-      updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
     indicatorEntity.save;
 
@@ -66,8 +70,6 @@ describe('NumericalGuidance E2E Test', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: ['indicatorId1'] },
       member: { id: 10 },
-      createdAt: new Date('2024-02-23 10:00:02.292086'),
-      updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
     indicatorBoardMetadataRepository.save;
 
@@ -88,6 +90,48 @@ describe('NumericalGuidance E2E Test', () => {
       updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
     indicatorBoardMetadataRepository.save;
+
+    const indicatorEntityByTicker = await dataSource.getRepository(IndicatorEntity).findOneBy({ ticker: '005930' });
+
+    await dataSource.getRepository(HistoryIndicatorEntity).insert({
+      id: indicatorEntityByTicker.id,
+      name: indicatorEntityByTicker.name,
+      type: indicatorEntityByTicker.type,
+      ticker: indicatorEntityByTicker.ticker,
+      market: indicatorEntityByTicker.market,
+      values: [],
+    });
+
+    const historyIndicatorEntity: HistoryIndicatorEntity = await dataSource
+      .getRepository(HistoryIndicatorEntity)
+      .findOneBy({ id: indicatorEntityByTicker.id });
+
+    const filePath = './src/numerical-guidance/test/data/history-indicator.json';
+
+    const data = fs.readFileSync(filePath, 'utf8');
+
+    const mockHistoryIndicatorValues = JSON.parse(data);
+    const historyIndicatorValues = mockHistoryIndicatorValues.map((value) => {
+      return {
+        date: new Date(value.date),
+        close: value.close,
+        compare: value.compare,
+        fluctuation: value.fluctuation,
+        open: value.open,
+        high: value.high,
+        low: value.low,
+        volume: value.volume,
+        tradingValue: value.tradingValue,
+        marketCapitalization: value.marketCapitalization,
+        outstandingShares: value.outstandingShares,
+      };
+    });
+    await dataSource.getRepository(HistoryIndicatorValueEntity).insert(historyIndicatorValues);
+    const historyIndicatorValueEntities = await dataSource.getRepository(HistoryIndicatorValueEntity).find();
+    historyIndicatorValueEntities.forEach((entity) => {
+      entity.historyIndicator = historyIndicatorEntity;
+    });
+    await dataSource.getRepository(HistoryIndicatorValueEntity).save(historyIndicatorValueEntities);
   };
 
   beforeAll(async () => {
@@ -100,7 +144,13 @@ describe('NumericalGuidance E2E Test', () => {
           ConfigModule.forRoot({
             isGlobal: true,
           }),
-          TypeOrmModule.forFeature([MemberEntity, IndicatorBoardMetadataEntity, IndicatorEntity]),
+          TypeOrmModule.forFeature([
+            MemberEntity,
+            IndicatorBoardMetadataEntity,
+            IndicatorEntity,
+            HistoryIndicatorEntity,
+            HistoryIndicatorValueEntity,
+          ]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -113,7 +163,13 @@ describe('NumericalGuidance E2E Test', () => {
               username: DBenvironment.getUsername(),
               password: DBenvironment.getPassword(),
               database: DBenvironment.getDatabase(),
-              entities: [IndicatorBoardMetadataEntity, MemberEntity, IndicatorEntity],
+              entities: [
+                IndicatorBoardMetadataEntity,
+                MemberEntity,
+                IndicatorEntity,
+                HistoryIndicatorEntity,
+                HistoryIndicatorValueEntity,
+              ],
               synchronize: true,
             }),
           }),
@@ -133,8 +189,10 @@ describe('NumericalGuidance E2E Test', () => {
         ],
         controllers: [NumericalGuidanceController],
         providers: [
+          AdjustIndicatorValue,
           AuthService,
           GetLiveIndicatorQueryHandler,
+          GetHistoryIndicatorQueryHandler,
           GetIndicatorBoardMetaDataQueryHandler,
           InsertIndicatorIdCommandHandler,
           GetIndicatorBoardMetadataListQueryHandler,
@@ -149,6 +207,10 @@ describe('NumericalGuidance E2E Test', () => {
           {
             provide: 'LoadLiveIndicatorPort',
             useClass: FluctuatingIndicatorKrxAdapter,
+          },
+          {
+            provide: 'LoadHistoryIndicatorPort',
+            useClass: HistoryIndicatorPersistentAdapter,
           },
           {
             provide: 'CachingFluctuatingIndicatorPort',
@@ -189,6 +251,10 @@ describe('NumericalGuidance E2E Test', () => {
           {
             provide: 'UpdateIndicatorBoardMetadataNamePort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
+            provide: 'IndicatorValueManager',
+            useClass: AdjustIndicatorValue,
           },
           {
             provide: AuthGuard,
@@ -234,6 +300,19 @@ describe('NumericalGuidance E2E Test', () => {
       .query({
         indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
         interval: 'day',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/get history 지표 값을 불러온다.', async () => {
+    return request(app.getHttpServer())
+      .get(`/api/numerical-guidance/indicators/history`)
+      .query({
+        indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
+        interval: 'day',
+        startDate: '20221220',
+        endDate: '20230119',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
@@ -289,10 +368,10 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.OK);
   });
 
-  it('/delete 지표보드 메타데이터에서 지표를 삭제할 때, tickers에 존재하지 않는 값을 요청한다.', async () => {
+  it('/delete 지표보드 메타데이터에서 지표를 삭제할 때, indicatorIds 에 존재하지 않는 값을 요청한다.', async () => {
     return request(app.getHttpServer())
       .delete(
-        `/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/invalidTicker`,
+        `/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/invalidId`,
       )
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);

@@ -2,10 +2,8 @@ import { IsInt, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { IsInterval } from '../../../utils/validation/is.interval.validation';
 import { ApiProperty } from '@nestjs/swagger';
-import { Market } from 'src/utils/type/type-definition';
+import { Interval, Market } from 'src/utils/type/type-definition';
 import { IsMarket } from 'src/utils/validation/is.market.validation';
-
-type Interval = 'day' | 'week' | 'month' | 'year';
 
 export class GetFluctuatingIndicatorDto {
   @ApiProperty({
