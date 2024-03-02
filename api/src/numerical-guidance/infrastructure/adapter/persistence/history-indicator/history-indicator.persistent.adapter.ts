@@ -1,5 +1,5 @@
 import { LoadHistoryIndicatorPort } from '../../../../application/port/persistence/indicator/load-history-indicator.port';
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HistoryIndicatorEntity } from './entity/history-indicator.entity';
 import { Between, LessThanOrEqual, Repository } from 'typeorm';
@@ -62,14 +62,22 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
   }
 
   async findEntitiesByCursorToken(startDateToken: Date, endDateToken: Date) {
-    return await this.historyIndicatorValueRepository.findAndCount({
-      where: {
-        date: Between(startDateToken, endDateToken),
-      },
-      order: {
-        date: ORDER_TYPE as any,
-      },
-    });
+    try {
+      return await this.historyIndicatorValueRepository.findAndCount({
+        where: {
+          date: Between(startDateToken, endDateToken),
+        },
+        order: {
+          date: ORDER_TYPE as any,
+        },
+      });
+    } catch (error) {
+      throw new BadRequestException({
+        message: `[ERROR] 지표를 cursor pagination 하는 중에 startDate, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
+        error: error,
+        HttpStatus: HttpStatus.BAD_REQUEST,
+      });
+    }
   }
 
   async getCursorToken(startDateToken: Date) {
