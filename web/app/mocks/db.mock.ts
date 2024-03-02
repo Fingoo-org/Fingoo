@@ -76,6 +76,11 @@ const initialState: MockDatabase = {
       ticker: 'GOOG',
       name: 'Alphabet Inc.',
     },
+    {
+      id: '9785ba85-c924-4269-8238-e1f10b404177',
+      name: '삼성전자',
+      ticker: '005930',
+    },
   ],
   indicatorsValue: indicatorsValueMockData,
   customForecastIndicatorList: [

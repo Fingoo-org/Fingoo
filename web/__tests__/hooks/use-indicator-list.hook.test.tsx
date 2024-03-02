@@ -12,9 +12,10 @@ describe('useIndicatorList', () => {
 
     // when
     // then
-    expect(result.current.indicatorList).toHaveLength(3);
+    expect(result.current.indicatorList).toHaveLength(4);
     expect(result.current.indicatorList?.[0].ticker).toBe('AAPL');
     expect(result.current.indicatorList?.[1].ticker).toBe('MSFT');
     expect(result.current.indicatorList?.[2].ticker).toBe('GOOG');
+    expect(result.current.indicatorList?.[3].ticker).toBe('005930');
   });
 });
