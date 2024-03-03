@@ -7,13 +7,9 @@ import { useMemo } from 'react';
 import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicators-value-view-model.service';
 
 export const useHistoryIndicatorsValueViewModel = () => {
-  const {
-    data: historyIndicatorsValuePages,
-    size,
-    setSize,
-  } = useFetchHistoryIndicatorValue(['9785ba85-c924-4269-8238-e1f10b404177']);
-
-  console.log(historyIndicatorsValuePages);
+  const { data: historyIndicatorsValuePages, setSize } = useFetchHistoryIndicatorValue([
+    '9785ba85-c924-4269-8238-e1f10b404177',
+  ]);
 
   // merge
   const historyIndicatorsValue = useMemo(() => {
@@ -43,8 +39,6 @@ export const useHistoryIndicatorsValueViewModel = () => {
 
   // view 모델 변환
 
-  console.log(convertedHistoryIndicatorsValue);
-  console.log(convertedHistoryIndicatorsValue?.formattedIndicatorsInRow);
   return {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
     setSize,

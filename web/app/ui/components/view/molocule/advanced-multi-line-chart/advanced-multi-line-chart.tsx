@@ -16,6 +16,7 @@ import {
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { useResponsive } from '../../hooks/use-responsive';
+import { useRef } from 'react';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 
@@ -59,19 +60,30 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
 }: AdvancedMultiLineChartProps<T>) {
   const { containerRef, sizes } = useResponsive();
 
-  const ScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor((d: T) => new Date(d.date));
+  // 위에서 같이 주입 받아야할 듯
+  const initialIndex = useRef(0);
+
+  const indexCalculator = discontinuousTimeScaleProviderBuilder()
+    .inputDateAccessor((d: T) => new Date(d.date))
+    .initialIndex(initialIndex.current)
+    .indexCalculator();
+  const { index } = indexCalculator(data);
+
+  const ScaleProvider = discontinuousTimeScaleProviderBuilder()
+    .inputDateAccessor((d: T) => new Date(d.date))
+    .withIndex(index);
 
   const { data: scaledData, xScale, xAccessor, displayXAccessor } = ScaleProvider(data);
+  console.log('scaled', scaledData);
 
   const endData = scaledData[scaledData.length - 1];
   const startData = scaledData[0];
   const xExtents = [xAccessor(startData), xAccessor(endData)];
 
   const handleLoadBefore = (start: number, end: number) => {
-    const rowsToDownload = end - Math.ceil(start);
+    initialIndex.current = Math.ceil(start);
 
-    console.log(start);
-    // const newStartDate = calculateDate(startData.date, rowsToDownload);
+    const rowsToDownload = end - Math.ceil(start);
 
     onLoadData?.(rowsToDownload);
   };
@@ -99,7 +111,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   return (
     <div data-testid="advanced-multi-line-chart" ref={containerRef} className="h-full w-full">
       <ChartCanvas
-        xExtents={xExtents}
+        // xExtents={xExtents}
         xScale={xScale}
         data={scaledData}
         displayXAccessor={displayXAccessor}

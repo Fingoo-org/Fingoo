@@ -23,10 +23,10 @@ export default function IndicatorsChart() {
   // Refactor: 분리해야함
   const data = historyIndicatorsValue?.formattedIndicatorsInRow;
   const formattedAdvencedIndicatorsRows = [...(data || []), ...(formattedIndicatorsRows || [])];
-  console.log(data);
-  console.log(formattedAdvencedIndicatorsRows);
 
   const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
+
+  console.log('rerendering');
 
   const handleToggle = (active: boolean) => {
     setIsAdvancedChart(active);

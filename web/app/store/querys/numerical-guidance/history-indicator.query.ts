@@ -50,8 +50,6 @@ export const useFetchHistoryIndicatorValue = (indicatorIdS: string[]) => {
           .pop()
       : '20240101';
 
-    console.log('history', previousPageData);
-
     if (!maxCursorDate) return null;
 
     const newStartDate = formatTime(calculateDate(parseTime(maxCursorDate) ?? maxCursorDate, 10));
