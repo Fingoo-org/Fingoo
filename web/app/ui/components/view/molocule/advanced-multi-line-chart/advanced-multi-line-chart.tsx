@@ -51,7 +51,7 @@ function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx:
 
 type AdvancedMultiLineChartProps<T> = {
   data: T[];
-  onLoadData?: (rowsToDownload: number) => void;
+  onLoadData?: (rowsToDownload: number, pageIndex: number) => void;
 };
 
 export default function AdvancedMultiLineChart<T extends Record<string, any>>({
@@ -61,8 +61,6 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   const { containerRef, sizes } = useResponsive();
   const [initialLength] = useState(data.length);
   const initialIndex = initialLength - data.length;
-
-  // 위에서 같이 주입 받아야할 듯
 
   const indexCalculator = discontinuousTimeScaleProviderBuilder()
     .inputDateAccessor((d: T) => new Date(d.date))
@@ -75,7 +73,6 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
     .withIndex(index);
 
   const { data: scaledData, xScale, xAccessor, displayXAccessor } = ScaleProvider(data);
-  console.log('scaled', scaledData);
 
   const endData = scaledData[scaledData.length - 1];
   const startData = scaledData[0];
@@ -84,7 +81,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   const handleLoadBefore = (start: number, end: number) => {
     const rowsToDownload = end - Math.ceil(start);
 
-    onLoadData?.(rowsToDownload);
+    onLoadData?.(rowsToDownload, -Math.ceil(start));
   };
 
   const yExtents = (d: T) => {
