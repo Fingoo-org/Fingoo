@@ -3,13 +3,21 @@ import {
   HistoryIndicatorsValueResponse,
   useFetchHistoryIndicatorValue,
 } from '@/app/store/querys/numerical-guidance/history-indicator.query';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicators-value-view-model.service';
 
 export const useHistoryIndicatorsValueViewModel = () => {
-  const { data: historyIndicatorsValuePages, setSize } = useFetchHistoryIndicatorValue([
-    '9785ba85-c924-4269-8238-e1f10b404177',
-  ]);
+  const [rowsToDownload, setRowsToDownload] = useState<number | undefined>(undefined);
+  const { data: historyIndicatorsValuePages, setSize } = useFetchHistoryIndicatorValue(
+    ['9785ba85-c924-4269-8238-e1f10b404177'],
+    rowsToDownload,
+  );
+
+  useEffect(() => {
+    if (rowsToDownload === undefined) return;
+
+    setSize((prev) => prev + 1);
+  }, [rowsToDownload]);
 
   // merge
   const historyIndicatorsValue = useMemo(() => {
@@ -42,5 +50,6 @@ export const useHistoryIndicatorsValueViewModel = () => {
   return {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
     setSize,
+    setRowsToDownload,
   };
 };

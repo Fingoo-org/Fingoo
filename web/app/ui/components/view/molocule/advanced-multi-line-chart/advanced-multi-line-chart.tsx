@@ -51,7 +51,7 @@ function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx:
 
 type AdvancedMultiLineChartProps<T> = {
   data: T[];
-  onLoadData?: (rowsToDownload: number, pageIndex: number) => void;
+  onLoadData?: (rowsToDownload: number, initialIndex: number) => void;
 };
 
 export default function AdvancedMultiLineChart<T extends Record<string, any>>({

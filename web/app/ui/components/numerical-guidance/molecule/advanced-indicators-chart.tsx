@@ -4,7 +4,7 @@ import { useIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-
 import { useMemo } from 'react';
 
 export default function AdvancedIndicatorsChart() {
-  const { historyIndicatorsValue, setSize } = useHistoryIndicatorsValueViewModel();
+  const { historyIndicatorsValue, setSize, setRowsToDownload } = useHistoryIndicatorsValueViewModel();
   const { indicatorsValue } = useIndicatorsValueViewModel();
 
   const formattedIndicatorsRows = useMemo(() => indicatorsValue?.formattedIndicatorsInRow, [indicatorsValue]);
@@ -12,9 +12,8 @@ export default function AdvancedIndicatorsChart() {
   const data = historyIndicatorsValue?.formattedIndicatorsInRow;
   const formattedAdvencedIndicatorsRows = [...(data || []), ...(formattedIndicatorsRows || [])];
 
-  const handleLoadData = (rowsToDownload: number, pageIndex: number) => {
-    console.log('rowsToDownload', rowsToDownload, pageIndex);
-    setSize((prev) => prev + 1);
+  const handleLoadData = (rowsToDownload: number, initialIndex: number) => {
+    setRowsToDownload(rowsToDownload);
   };
 
   return <AdvancedMultiLineChart onLoadData={handleLoadData} data={formattedAdvencedIndicatorsRows || []} />;

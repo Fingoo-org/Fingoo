@@ -38,27 +38,36 @@ export type HistoryIndicatorValueItemResponse = {
   value: number;
 };
 
-export const useFetchHistoryIndicatorValue = (indicatorIdS: string[]) => {
+const getFetchHistoryIndicatorValueKey = (
+  pageIndex: number,
+  previousPageData: HistoryIndicatorsValueResponse | null,
+) => {
+  const maxCursorDate = previousPageData
+    ? previousPageData.indicatorsValue
+        .map((indicator) => indicator.meta.cursor)
+        .sort()
+        .pop()
+    : '20240101';
+
+  if (!maxCursorDate) return null;
+
+  return [`${API_PATH.indicatorValue}/history`, maxCursorDate, 'day'];
+};
+
+export const useFetchHistoryIndicatorValue = (indicatorIds: string[], rowsToDownload = 10) => {
   // logic: interval 로직 추가 필요
-  const INTERVAL = 'day';
 
-  const getKey = (pageIndex: number, previousPageData: HistoryIndicatorsValueResponse | null) => {
-    const maxCursorDate = previousPageData
-      ? previousPageData.indicatorsValue
-          .map((indicator) => indicator.meta.cursor)
-          .sort()
-          .pop()
-      : '20240101';
+  return useSWRInfinite<HistoryIndicatorsValueResponse>(
+    getFetchHistoryIndicatorValueKey,
+    ([url, maxCursorDate, interval]) => {
+      console.log('trigger', rowsToDownload);
+      const newStartDate = formatTime(calculateDate(parseTime(maxCursorDate) ?? maxCursorDate, rowsToDownload + 5));
+      const formattedUrl = `${url}?startDate=${newStartDate}&endDate=${maxCursorDate}&interval=${interval}`;
 
-    if (!maxCursorDate) return null;
-
-    const newStartDate = formatTime(calculateDate(parseTime(maxCursorDate) ?? maxCursorDate, 10));
-
-    const url = `${API_PATH.indicatorValue}/history?startDate=${newStartDate}&endDate=${maxCursorDate}&interval=${INTERVAL}`;
-    return [url, ...indicatorIdS];
-  };
-
-  return useSWRInfinite<HistoryIndicatorsValueResponse>(getKey, fetchIndicatorsValue, {
-    initialSize: 0,
-  });
+      return fetchIndicatorsValue([formattedUrl, ...indicatorIds]);
+    },
+    {
+      initialSize: 0,
+    },
+  );
 };
