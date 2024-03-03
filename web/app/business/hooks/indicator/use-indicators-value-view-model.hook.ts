@@ -13,8 +13,14 @@ export const useIndicatorsValueViewModel = () => {
     return convertIndicatorsValueViewModel(indicatorsValueData);
   }, [indicatorsValueData]);
 
+  const formattedIndicatorsRows = useMemo(
+    () => convertedIndciatorsValue?.formattedIndicatorsInRow,
+    [convertedIndciatorsValue],
+  );
+
   return {
     indicatorsValue: convertedIndciatorsValue,
     isPending: isLoading,
+    formattedIndicatorsRows,
   };
 };

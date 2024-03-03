@@ -1,6 +1,5 @@
 import {
   HistoryIndicatorValueResponse,
-  HistoryIndicatorsValueResponse,
   useFetchHistoryIndicatorValue,
 } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { useEffect, useMemo, useState } from 'react';
@@ -19,7 +18,7 @@ export const useHistoryIndicatorsValueViewModel = () => {
     setSize((prev) => prev + 1);
   }, [rowsToDownload]);
 
-  // merge
+  // merge pagination data
   const historyIndicatorsValue = useMemo(() => {
     return historyIndicatorsValuePages?.reduce((acc: HistoryIndicatorValueResponse[], page, index) => {
       if (index === 0) {
@@ -45,10 +44,13 @@ export const useHistoryIndicatorsValueViewModel = () => {
     return convertHistoryIndicatorsValueViewModel(historyIndicatorsValue);
   }, [historyIndicatorsValue]);
 
+  const formattedHistoryIndicatorsRows = convertedHistoryIndicatorsValue?.formattedIndicatorsInRow;
+
   // view 모델 변환
 
   return {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
+    formattedHistoryIndicatorsRows,
     setSize,
     setRowsToDownload,
   };
