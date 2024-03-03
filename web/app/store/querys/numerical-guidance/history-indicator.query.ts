@@ -51,10 +51,10 @@ const getFetchHistoryIndicatorValueKey = (
 
   if (!maxCursorDate) return null;
 
-  return [`${API_PATH.indicatorValue}/history`, maxCursorDate, 'day'];
+  return [API_PATH.historyIndicatorsValue, maxCursorDate, 'day'];
 };
 
-export const useFetchHistoryIndicatorValue = (indicatorIds: string[], rowsToDownload = 10) => {
+export const useFetchHistoryIndicatorValue = (indicatorIds: string[] | undefined, rowsToDownload = 10) => {
   // logic: interval 로직 추가 필요
 
   return useSWRInfinite<HistoryIndicatorsValueResponse>(
@@ -63,7 +63,8 @@ export const useFetchHistoryIndicatorValue = (indicatorIds: string[], rowsToDown
       const newStartDate = formatTime(calculateDate(parseTime(maxCursorDate) ?? maxCursorDate, rowsToDownload + 5));
       const formattedUrl = `${url}?startDate=${newStartDate}&endDate=${maxCursorDate}&interval=${interval}`;
 
-      return fetchIndicatorsValue([formattedUrl, ...indicatorIds]);
+      // not null-assertion: indicatorIds가 null 인 상황에서는 호출되지 않음
+      return fetchIndicatorsValue([formattedUrl, ...indicatorIds!]);
     },
     {
       initialSize: 0,

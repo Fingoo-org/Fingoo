@@ -4,11 +4,14 @@ import {
 } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { useEffect, useMemo, useState } from 'react';
 import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicators-value-view-model.service';
+import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 
 export const useHistoryIndicatorsValueViewModel = () => {
   const [rowsToDownload, setRowsToDownload] = useState<number | undefined>(undefined);
+  const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
+
   const { data: historyIndicatorsValuePages, setSize } = useFetchHistoryIndicatorValue(
-    ['9785ba85-c924-4269-8238-e1f10b404177'],
+    selectedMetadata?.indicatorIds,
     rowsToDownload,
   );
 

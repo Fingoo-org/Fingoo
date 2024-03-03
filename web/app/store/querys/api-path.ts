@@ -6,4 +6,5 @@ export const API_PATH = {
   indicatorBoardMetadata: `${API_URL}/indicator-board-metadata`,
   indicatorValue: `${API_URL}/numerical-guidance/indicators`,
   customForecastIndicator: `${API_URL}/numerical-guidance/custom-forecast-indicator`,
+  historyIndicatorsValue: `${API_URL}/numerical-guidance/indicators/history`,
 };
