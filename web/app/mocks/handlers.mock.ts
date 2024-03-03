@@ -48,6 +48,23 @@ const customForecastIndicatorHandlers = [
   ),
 ];
 
+const historyIndicatorsValueHandlers = [
+  http.get(API_PATH.historyIndicatorsValue, async ({ request }) => {
+    const url = new URL(request.url);
+
+    const indicatorId = url.searchParams.get('indicatorId');
+    const startDate = url.searchParams.get('startDate');
+    const endDate = url.searchParams.get('endDate');
+
+    if (indicatorId === null || startDate === null || endDate === null) {
+      return HttpResponse.json(null, { status: 400 });
+    }
+
+    await delayForDevelopment();
+    return HttpResponse.json(mockDB.getHistoryIndicatorValue(indicatorId, startDate, endDate));
+  }),
+];
+
 export const handlers = [
   http.get(API_PATH.indicatorBoardMetadata, async () => {
     await delayForDevelopment();
@@ -118,6 +135,7 @@ export const handlers = [
     return HttpResponse.json({ status: 200 });
   }),
   ...customForecastIndicatorHandlers,
+  ...historyIndicatorsValueHandlers,
 ];
 
 type metadataParam = {
