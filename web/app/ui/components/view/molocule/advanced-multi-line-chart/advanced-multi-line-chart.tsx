@@ -16,7 +16,7 @@ import {
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { useResponsive } from '../../hooks/use-responsive';
-import { useRef } from 'react';
+import { useState } from 'react';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 
@@ -59,13 +59,14 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   onLoadData,
 }: AdvancedMultiLineChartProps<T>) {
   const { containerRef, sizes } = useResponsive();
+  const [initialLength] = useState(data.length);
+  const initialIndex = initialLength - data.length;
 
   // 위에서 같이 주입 받아야할 듯
-  const initialIndex = useRef(0);
 
   const indexCalculator = discontinuousTimeScaleProviderBuilder()
     .inputDateAccessor((d: T) => new Date(d.date))
-    .initialIndex(initialIndex.current)
+    .initialIndex(initialIndex)
     .indexCalculator();
   const { index } = indexCalculator(data);
 
@@ -81,8 +82,6 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   const xExtents = [xAccessor(startData), xAccessor(endData)];
 
   const handleLoadBefore = (start: number, end: number) => {
-    initialIndex.current = Math.ceil(start);
-
     const rowsToDownload = end - Math.ceil(start);
 
     onLoadData?.(rowsToDownload);

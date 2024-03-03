@@ -26,8 +26,6 @@ export default function IndicatorsChart() {
 
   const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
 
-  console.log('rerendering');
-
   const handleToggle = (active: boolean) => {
     setIsAdvancedChart(active);
   };
