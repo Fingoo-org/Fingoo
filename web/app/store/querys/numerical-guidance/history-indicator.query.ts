@@ -60,7 +60,6 @@ export const useFetchHistoryIndicatorValue = (indicatorIds: string[], rowsToDown
   return useSWRInfinite<HistoryIndicatorsValueResponse>(
     getFetchHistoryIndicatorValueKey,
     ([url, maxCursorDate, interval]) => {
-      console.log('trigger', rowsToDownload);
       const newStartDate = formatTime(calculateDate(parseTime(maxCursorDate) ?? maxCursorDate, rowsToDownload + 5));
       const formattedUrl = `${url}?startDate=${newStartDate}&endDate=${maxCursorDate}&interval=${interval}`;
 

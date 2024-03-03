@@ -11,7 +11,6 @@ import AdvancedIndicatorsChart from './advanced-indicators-chart';
 
 export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
-
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const { indicatorsValue, formattedIndicatorsRows, isPending } = useIndicatorsValueViewModel();
 
