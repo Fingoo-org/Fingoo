@@ -5,7 +5,7 @@ import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { NumericalGuidanceController } from '../../api/numerical-guidance.controller';
 import { GetIndicatorBoardMetaDataQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
-import { HttpExceptionFilter } from 'src/utils/exception-filter/http-execption-filter';
+import { HttpExceptionFilter } from 'src/utils/exception-filter/http-exception-filter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MemberEntity } from 'src/auth/member.entity';
