@@ -86,9 +86,9 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.ts", "!src/main.ts", "!src/**/*.module.ts", "!src/**/*.entity.ts", "!src/**/*.seed.ts", "!src/utils/config/**"
     ],
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "./coverage",
     "testEnvironment": "node"
   },
   "lint-staged": {
