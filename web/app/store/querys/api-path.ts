@@ -1,5 +1,7 @@
-// refactor: cors 설정에 맞춰서 변경 필요
-const API_URL = 'https://symmetrical-giggle-vqxr9w77xr6f4qr-8000.app.github.dev/api';
+const API_URL =
+  process.env.NEXT_PUBLIC_CODESPACES === 'true'
+    ? 'https://' + process.env.NEXT_PUBLIC_CODESPACE_NAME + '-8000.app.github.dev/api'
+    : 'http://localhost:8000/api';
 
 export const API_PATH = {
   indicatorList: `${API_URL}/indicator-list`,
