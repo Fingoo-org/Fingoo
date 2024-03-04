@@ -3,7 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { NumericalGuidanceController } from '../../api/numerical-guidance.controller';
-import { GetIndicatorBoardMetaDataQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
+import { GetIndicatorBoardMetadataQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { HttpExceptionFilter } from 'src/utils/exception-filter/http-exception-filter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -193,7 +193,7 @@ describe('NumericalGuidance E2E Test', () => {
           AuthService,
           GetLiveIndicatorQueryHandler,
           GetHistoryIndicatorQueryHandler,
-          GetIndicatorBoardMetaDataQueryHandler,
+          GetIndicatorBoardMetadataQueryHandler,
           InsertIndicatorIdCommandHandler,
           GetIndicatorBoardMetadataListQueryHandler,
           DeleteIndicatorIdCommandHandler,
@@ -391,7 +391,7 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.OK);
   });
 
-  it('/delete 지표보드 메타데이터를 삭제할때, 존재하지 않는 id를 요청한다.', async () => {
+  it('/delete 지표보드 메타데이터를 삭제할 때, 존재하지 않는 id를 요청한다.', async () => {
     return request(app.getHttpServer())
       .delete(`/api/numerical-guidance/indicator-board-metadata/e46240d3-7d15-48e7-a9b7-f490bf9ca6e0`)
       .set('Content-Type', 'application/json')

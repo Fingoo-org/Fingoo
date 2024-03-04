@@ -50,9 +50,9 @@ describe('NumericalGuidanceController', () => {
             },
           },
           {
-            provide: 'CreateIndicatorBoardMetaDataPort',
+            provide: 'CreateIndicatorBoardMetadataPort',
             useValue: {
-              createIndicatorBoardMetaData: jest.fn(),
+              createIndicatorBoardMetadata: jest.fn(),
             },
           },
           {

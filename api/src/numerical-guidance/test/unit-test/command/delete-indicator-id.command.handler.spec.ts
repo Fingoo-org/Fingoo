@@ -11,7 +11,7 @@ jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
 }));
 
-describe('DeleteIndicatorTickerCommandHandler', () => {
+describe('DeleteIndicatorIdCommandHandler', () => {
   let deleteIndicatorIdCommandHandler: DeleteIndicatorIdCommandHandler;
   let deleteIndicatorIdPort: DeleteIndicatorIdPort;
   let loadIndicatorBoardMetadataPort: LoadIndicatorBoardMetadataPort;
@@ -30,7 +30,7 @@ describe('DeleteIndicatorTickerCommandHandler', () => {
         {
           provide: 'LoadIndicatorBoardMetadataPort',
           useValue: {
-            loadIndicatorBoardMetaData: jest.fn().mockImplementation(() => {
+            loadIndicatorBoardMetadata: jest.fn().mockImplementation(() => {
               return new IndicatorBoardMetadata('id', 'name', ['160e5499-4925-4e38-bb00-8ea6d8056484']);
             }),
           },
@@ -54,7 +54,7 @@ describe('DeleteIndicatorTickerCommandHandler', () => {
     await deleteIndicatorIdCommandHandler.execute(command);
 
     //then
-    expect(loadIndicatorBoardMetadataPort.loadIndicatorBoardMetaData).toHaveBeenCalledTimes(1);
+    expect(loadIndicatorBoardMetadataPort.loadIndicatorBoardMetadata).toHaveBeenCalledTimes(1);
     expect(deleteIndicatorIdPort.deleteIndicatorId).toHaveBeenCalledTimes(1);
   });
 });

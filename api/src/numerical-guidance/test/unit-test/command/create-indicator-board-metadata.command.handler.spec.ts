@@ -10,9 +10,9 @@ jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
 }));
 
-describe('CreateIndicatorBoardMetaDataCommandHandler', () => {
-  let createIndicatorBoardMetaDataCommandHandler: CreateIndicatorBoardMetadataCommandHandler;
-  let createIndicatorBoardMetaDataPort: CreateIndicatorBoardMetadataPort;
+describe('CreateIndicatorBoardMetadataCommandHandler', () => {
+  let createIndicatorBoardMetadataCommandHandler: CreateIndicatorBoardMetadataCommandHandler;
+  let createIndicatorBoardMetadataPort: CreateIndicatorBoardMetadataPort;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -20,16 +20,16 @@ describe('CreateIndicatorBoardMetaDataCommandHandler', () => {
       providers: [
         CreateIndicatorBoardMetadataCommandHandler,
         {
-          provide: 'CreateIndicatorBoardMetaDataPort',
+          provide: 'CreateIndicatorBoardMetadataPort',
           useValue: {
-            createIndicatorBoardMetaData: jest.fn(),
+            createIndicatorBoardMetadata: jest.fn(),
           },
         },
       ],
     }).compile();
 
-    createIndicatorBoardMetaDataCommandHandler = module.get(CreateIndicatorBoardMetadataCommandHandler);
-    createIndicatorBoardMetaDataPort = module.get('CreateIndicatorBoardMetaDataPort');
+    createIndicatorBoardMetadataCommandHandler = module.get(CreateIndicatorBoardMetadataCommandHandler);
+    createIndicatorBoardMetadataPort = module.get('CreateIndicatorBoardMetadataPort');
   }, 10000);
 
   it('지표보드 메타데이터를 생성한다.', async () => {
@@ -38,10 +38,10 @@ describe('CreateIndicatorBoardMetaDataCommandHandler', () => {
 
     //when
     const indicatorBoardMetaData: IndicatorBoardMetadata =
-      await createIndicatorBoardMetaDataCommandHandler.execute(command);
+      await createIndicatorBoardMetadataCommandHandler.execute(command);
 
     //then
     expect(indicatorBoardMetaData.indicatorBoardMetadataName).toEqual('메타데이터');
-    expect(createIndicatorBoardMetaDataPort.createIndicatorBoardMetaData).toHaveBeenCalledTimes(1);
+    expect(createIndicatorBoardMetadataPort.createIndicatorBoardMetadata).toHaveBeenCalledTimes(1);
   });
 });

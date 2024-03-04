@@ -39,7 +39,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     private readonly authService: AuthService,
   ) {}
 
-  async createIndicatorBoardMetaData(
+  async createIndicatorBoardMetadata(
     indicatorBoardMetaData: IndicatorBoardMetadata,
     memberId: number,
   ): Promise<string> {
@@ -71,9 +71,9 @@ export class IndicatorBoardMetadataPersistentAdapter
     }
   }
 
-  async loadIndicatorBoardMetaData(id: string): Promise<IndicatorBoardMetadata> {
+  async loadIndicatorBoardMetadata(id: string): Promise<IndicatorBoardMetadata> {
     try {
-      const indicatorBoardMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id });
+      const indicatorBoardMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id: id });
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
       return IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
     } catch (error) {
@@ -144,7 +144,6 @@ export class IndicatorBoardMetadataPersistentAdapter
       indicatorBoardMetaDataEntity.indicatorIds = { indicatorIds: indicatorBoardMetaData.indicatorIds };
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
-      console.log(indicatorBoardMetaDataEntity.indicatorIds);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
@@ -206,7 +205,7 @@ export class IndicatorBoardMetadataPersistentAdapter
   async deleteIndicatorBoardMetadata(id: string) {
     try {
       const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
-        await this.indicatorBoardMetadataRepository.findOneBy({ id });
+        await this.indicatorBoardMetadataRepository.findOneBy({ id: id });
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
 
       await this.indicatorBoardMetadataRepository.remove(indicatorBoardMetaDataEntity);

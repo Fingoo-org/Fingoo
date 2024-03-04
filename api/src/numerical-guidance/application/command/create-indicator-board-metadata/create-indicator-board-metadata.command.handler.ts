@@ -9,8 +9,8 @@ import { Transactional } from 'typeorm-transactional';
 @CommandHandler(CreateIndicatorBoardMetadataCommand)
 export class CreateIndicatorBoardMetadataCommandHandler implements ICommandHandler {
   constructor(
-    @Inject('CreateIndicatorBoardMetaDataPort')
-    private readonly createIndicatorBoardMetaDataPort: CreateIndicatorBoardMetadataPort,
+    @Inject('CreateIndicatorBoardMetadataPort')
+    private readonly createIndicatorBoardMetadataPort: CreateIndicatorBoardMetadataPort,
   ) {}
 
   @Transactional()
@@ -18,7 +18,7 @@ export class CreateIndicatorBoardMetadataCommandHandler implements ICommandHandl
     const { indicatorBoardMetadataName, memberId } = command;
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew(indicatorBoardMetadataName);
 
-    await this.createIndicatorBoardMetaDataPort.createIndicatorBoardMetaData(indicatorBoardMetaData, memberId);
+    await this.createIndicatorBoardMetadataPort.createIndicatorBoardMetadata(indicatorBoardMetaData, memberId);
 
     return indicatorBoardMetaData;
   }

@@ -20,7 +20,7 @@ export class UpdateIndicatorBoardMetadataNameCommandHandler implements ICommandH
   async execute(command: UpdateIndicatorBoardMetadataNameCommand) {
     const { id, name } = command;
     const indicatorBoardMetaData: IndicatorBoardMetadata =
-      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetaData(id);
+      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetadata(id);
 
     indicatorBoardMetaData.updateIndicatorBoardMetadataName(name);
 
