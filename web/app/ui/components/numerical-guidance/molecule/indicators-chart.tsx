@@ -2,21 +2,17 @@
 import { useIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import MultiLineChart from '../../view/molocule/multi-line-chart';
-import { useMemo, useState } from 'react';
 import Pending from '../../view/molocule/pending';
 import SelectedMetadataTittle from '../atom/selected-metadata-title';
 import ToggleButton from '../../view/atom/toggle-button/toggle-button';
 import { CheckCircleIcon } from '@heroicons/react/outline';
-import AdvancedMultiLineChart from '../../view/molocule/advanced-multi-line-chart/advanced-multi-line-chart';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import AdvancedIndicatorsChart from './advanced-indicators-chart';
 
 export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
-
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { indicatorsValue, isPending } = useIndicatorsValueViewModel();
-
-  const formattedIndicatorsRows = useMemo(() => indicatorsValue?.formattedIndicatorsInRow, [indicatorsValue]);
+  const { indicatorsValue, formattedIndicatorsRows, isPending } = useIndicatorsValueViewModel();
 
   const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
 
@@ -40,7 +36,7 @@ export default function IndicatorsChart() {
         </div>
         <div className="mt-4 h-72 w-full">
           {isAdvancedChart ? (
-            <AdvancedMultiLineChart data={formattedIndicatorsRows || []} />
+            <AdvancedIndicatorsChart />
           ) : (
             <MultiLineChart
               data={formattedIndicatorsRows || []}

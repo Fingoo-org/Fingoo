@@ -15,11 +15,15 @@ import {
   CreateCustomForecastIndicatorRequestBody,
   CustomForecastIndicatorListResponse,
 } from '../store/querys/numerical-guidance/custom-forecast-indicator.query';
+import { historyIndicatorsValueMockData } from './mock-data/history-indicators-value.mock';
+import { HistoryIndicatorValueCursorPaginationResponse } from '../store/querys/numerical-guidance/history-indicator.query';
 
 type MockDatabase = IndicatorBoardMetadataListResponse &
   IndicatorListResponse &
   IndicatorsValueResponse &
-  CustomForecastIndicatorListResponse;
+  CustomForecastIndicatorListResponse & {
+    historyIndicatorsValue: historyIndicatorsValueMockData;
+  };
 
 type MockDatabaseAction = {
   getMetadataList: () => IndicatorBoardMetadataListResponse;
@@ -37,6 +41,11 @@ type MockDatabaseAction = {
     id: string,
     data: AddSourceIndicatorToCustomForecastIndicatorRequestBody,
   ) => void;
+  getHistoryIndicatorValue: (
+    id: string,
+    startDate: string,
+    endDate: string,
+  ) => HistoryIndicatorValueCursorPaginationResponse | undefined;
 };
 
 const initialState: MockDatabase = {
@@ -76,8 +85,14 @@ const initialState: MockDatabase = {
       ticker: 'GOOG',
       name: 'Alphabet Inc.',
     },
+    {
+      id: '9785ba85-c924-4269-8238-e1f10b404177',
+      name: '삼성전자',
+      ticker: '005930',
+    },
   ],
   indicatorsValue: indicatorsValueMockData,
+  historyIndicatorsValue: historyIndicatorsValueMockData,
   customForecastIndicatorList: [
     {
       id: '1',
@@ -218,6 +233,19 @@ export const mockDB: MockDatabaseAction = {
     };
 
     mockDatabaseStore.customForecastIndicatorList[index] = newCustomForecastIndicator;
+  },
+  getHistoryIndicatorValue: (id, startDate, endDate) => {
+    const historyIndicatorValue = mockDatabaseStore.historyIndicatorsValue.find((indicator) => indicator.id === id);
+
+    if (historyIndicatorValue === undefined) return undefined;
+
+    return {
+      ...historyIndicatorValue,
+      data: {
+        ...historyIndicatorValue?.data,
+        values: historyIndicatorValue?.data.values.filter((value) => value.date >= startDate && value.date <= endDate),
+      },
+    };
   },
 };
 

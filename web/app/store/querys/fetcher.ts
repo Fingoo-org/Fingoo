@@ -2,7 +2,9 @@ import { type Fetcher } from 'swr';
 import axios, { AxiosResponse } from 'axios';
 import { httpErrorHandler } from '../../utils/http/http-error-handler';
 
-const instance = axios.create();
+const instance = axios.create({
+  withCredentials: true,
+});
 
 instance.interceptors.response.use((response: AxiosResponse) => {
   return response;
