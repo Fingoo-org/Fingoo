@@ -16,4 +16,26 @@ export class CustomForecastIndicatorMapper {
 
     return customForecastIndicatorEntity;
   }
+
+  static mapEntityToDomain(entity: CustomForecastIndicatorEntity): CustomForecastIndicator {
+    const {
+      id,
+      customForecastIndicatorName,
+      type,
+      targetIndicatorId,
+      grangerVerification,
+      cointJohansenVerification,
+      sourceIndicatorIdsAndWeights,
+    } = entity;
+    const customForecastIndicator: CustomForecastIndicator = new CustomForecastIndicator(
+      id,
+      customForecastIndicatorName,
+      type,
+      targetIndicatorId,
+      grangerVerification,
+      cointJohansenVerification,
+      sourceIndicatorIdsAndWeights,
+    );
+    return customForecastIndicator;
+  }
 }

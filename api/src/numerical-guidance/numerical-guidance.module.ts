@@ -30,6 +30,7 @@ import { AdjustIndicatorValue } from './util/adjust-indicator-value';
 import { CreateCustomForecastIndicatorCommandHandler } from './application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
 import { CustomForecastIndicatorPersistentAdapter } from './infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
 import { CustomForecastIndicatorEntity } from './infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
+import { GetCustomForecastIndicatorQueryHandler } from './application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { CustomForecastIndicatorEntity } from './infrastructure/adapter/persiste
     DeleteIndicatorBoardMetadataCommandHandler,
     UpdateIndicatorBoardMetadataNameCommandHandler,
     CreateCustomForecastIndicatorCommandHandler,
+    GetCustomForecastIndicatorQueryHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -128,6 +130,10 @@ import { CustomForecastIndicatorEntity } from './infrastructure/adapter/persiste
     },
     {
       provide: 'CreateCustomForecastIndicatorPort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
+    },
+    {
+      provide: 'LoadCustomForecastIndicatorPort',
       useClass: CustomForecastIndicatorPersistentAdapter,
     },
   ],

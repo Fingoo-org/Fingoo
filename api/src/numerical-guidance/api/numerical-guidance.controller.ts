@@ -31,6 +31,8 @@ import { CursorPageDto } from '../../utils/pagination/cursor-page.dto';
 import { HistoryIndicatorDto } from '../application/query/get-history-indicator/history-indicator.dto';
 import { CreateCustomForecatIndicatorDto } from './dto/create-custom-forecast-indicator.dto';
 import { CreateCustomForecastIndicatorCommand } from '../application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command';
+import { CustomForecastIndicator } from '../domain/custom-forecast-indicator';
+import { GetCustomForecastIndicatorQuery } from '../application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/api/numerical-guidance')
@@ -182,5 +184,14 @@ export class NumericalGuidanceController {
     );
     await this.commandBus.execute(command);
     res.status(HttpStatus.CREATED).send();
+  }
+
+  @ApiOperation({ summary: '예측지표 id로 예측지표를 불러옵니다.' })
+  @Get('/api/numerical-guidance/custom-forecast-indicators/:customForecastIndicatorId')
+  async loadCustomForecastIndicator(
+    @Param('customForecastIndicatorId') customForecastIndicatorId,
+  ): Promise<CustomForecastIndicator> {
+    const query = new GetCustomForecastIndicatorQuery(customForecastIndicatorId);
+    return await this.queryBus.execute(query);
   }
 }
