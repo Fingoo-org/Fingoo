@@ -51,7 +51,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.indicatorIds = newIndicatorIds;
   }
 
-  public deleteIndicatorId(id: string) {
+  public deleteIndicatorId(id: string): void {
     let updateIds: string[] = [...this.indicatorIds];
     this.checkRule(new OnlyRegisteredIdCanBeRemovedRule(updateIds, id));
 
@@ -66,7 +66,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   }
 
   private convertToArray(indicatorIds: string[]): string[] {
-    if (indicatorIds.length == 0) {
+    if (indicatorIds.length == 1 && indicatorIds[0] == '') {
       return [];
     }
     return indicatorIds;
