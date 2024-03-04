@@ -195,7 +195,7 @@ export class IndicatorBoardMetadataPersistentAdapter
         });
       } else {
         throw new InternalServerErrorException({
-          message: '[ERROR] 새로운 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '[ERROR] 지표 id를 삭제하는 중에 예상치 못한 문제가 발생했습니다.',
           error: error,
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
         });
