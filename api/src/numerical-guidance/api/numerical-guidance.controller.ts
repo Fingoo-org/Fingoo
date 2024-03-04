@@ -136,13 +136,13 @@ export class NumericalGuidanceController {
   )
   @UseGuards(AuthGuard)
   @Post('/indicator-board-metadata')
-  async createIndicatorBoardMetaData(
-    @Body() createIndicatorBoardMetaDataDto: CreateIndicatorBoardMetadataDto,
+  async createIndicatorBoardMetadata(
+    @Body() createIndicatorBoardMetadataDto: CreateIndicatorBoardMetadataDto,
     @Res() res: Response,
     @Member() member: MemberEntity,
   ) {
     const command = new CreateIndicatorBoardMetadataCommand(
-      createIndicatorBoardMetaDataDto.indicatorBoardMetadataName,
+      createIndicatorBoardMetadataDto.indicatorBoardMetadataName,
       member.id,
     );
     await this.commandBus.execute(command);
@@ -164,7 +164,7 @@ export class NumericalGuidanceController {
     required: true,
   })
   @Get('/indicator-board-metadata/:id')
-  async getIndicatorBoardMetaDataById(@Param('id') id): Promise<IndicatorBoardMetadata> {
+  async getIndicatorBoardMetadataById(@Param('id') id): Promise<IndicatorBoardMetadata> {
     const query = new GetIndicatorBoardMetadataQuery(id);
     return await this.queryBus.execute(query);
   }
@@ -216,7 +216,7 @@ export class NumericalGuidanceController {
   )
   @ApiExceptionResponse(500, '[ERROR] 지표 id를 삭제하는 중에 예상치 못한 문제가 발생했습니다.')
   @ApiParam({
-    name: 'id',
+    name: 'indicatorBoardMetadataId',
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
@@ -225,11 +225,11 @@ export class NumericalGuidanceController {
     example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
     required: true,
   })
-  @Delete('/indicator-board-metadata/:indicatorBoardMetaDataId/indicator/:indicatorId')
+  @Delete('/indicator-board-metadata/:indicatorBoardMetadataId/indicator/:indicatorId')
   async deleteIndicatorId(
     @Param('indicatorBoardMetadataId') indicatorBoardMetadataId,
     @Param('indicatorId') indicatorId,
-  ) {
+  ): Promise<void> {
     const command = new DeleteIndicatorIdCommand(indicatorBoardMetadataId, indicatorId);
 
     await this.commandBus.execute(command);
