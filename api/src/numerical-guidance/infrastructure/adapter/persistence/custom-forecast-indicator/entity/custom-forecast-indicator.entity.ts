@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
-import { IndicatorType } from 'src/utils/type/type-definition';
+import { IndicatorType, SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
 
 @Entity({ name: 'CustomForecastIndicator' })
 export class CustomForecastIndicatorEntity extends BaseEntity {
@@ -23,5 +23,5 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   cointJohansenVerification: string[];
 
   @Column('jsonb', { nullable: true })
-  sourceIndicatorIdsAndWeights: string[];
+  sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[];
 }

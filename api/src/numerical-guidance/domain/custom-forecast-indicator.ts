@@ -2,6 +2,7 @@ import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { IndicatorType } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { v1 as uuid } from 'uuid';
 import { CustomForecastIndicatorNameShouldNotEmpty } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
+import { SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
 
 export class CustomForecastIndicator extends AggregateRoot {
   readonly id: string;
@@ -10,7 +11,7 @@ export class CustomForecastIndicator extends AggregateRoot {
   targetIndicatorId: string;
   grangerVerification: string[];
   cointJohansenVerification: string[];
-  sourceIndicatorIdsAndWeights: string[];
+  sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[];
   createdAt: Date;
   updatedAt: Date;
 
@@ -21,7 +22,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     targetIndicatorId: string,
     grangerVerification: string[],
     cointJohansenVerification: string[],
-    sourceIndicatorIdsAndWeights: string[],
+    sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[],
   ) {
     super();
     this.checkRule(new CustomForecastIndicatorNameShouldNotEmpty(customForecastIndicatorName));
@@ -40,7 +41,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     const id = uuid();
     const grangerVerification: string[] = [];
     const cointJohansenVerification: string[] = [];
-    const sourceIndicatorIdsAndWeights: string[] = [];
+    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
     const type: IndicatorType = 'CustomForecastIndicator';
     return new CustomForecastIndicator(
       id,
