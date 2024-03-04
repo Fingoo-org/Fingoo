@@ -13,17 +13,17 @@ export class DeleteIndicatorIdCommandHandler implements ICommandHandler {
     @Inject('DeleteIndicatorIdPort')
     private readonly deleteIndicatorIdPort: DeleteIndicatorIdPort,
     @Inject('LoadIndicatorBoardMetadataPort')
-    private readonly loadIndicatorBoardMetaDataPort: LoadIndicatorBoardMetadataPort,
+    private readonly loadIndicatorBoardMetadataPort: LoadIndicatorBoardMetadataPort,
   ) {}
 
   @Transactional()
   async execute(command: DeleteIndicatorIdCommand) {
     const { indicatorBoardMetadataId, indicatorId } = command;
-    const indicatorBoardMetaData: IndicatorBoardMetadata =
-      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetaData(indicatorBoardMetadataId);
+    const indicatorBoardMetadata: IndicatorBoardMetadata =
+      await this.loadIndicatorBoardMetadataPort.loadIndicatorBoardMetadata(indicatorBoardMetadataId);
 
-    indicatorBoardMetaData.deleteIndicatorId(indicatorId);
+    indicatorBoardMetadata.deleteIndicatorId(indicatorId);
 
-    await this.deleteIndicatorIdPort.deleteIndicatorId(indicatorBoardMetaData);
+    await this.deleteIndicatorIdPort.deleteIndicatorId(indicatorBoardMetadata);
   }
 }

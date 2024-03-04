@@ -119,12 +119,12 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // when
-    const resultId = await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetaData(
+    const resultId = await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetadata(
       indicatorBoardMetaData,
       memberId,
     );
     const resultIndicatorBoardMetaData: IndicatorBoardMetadata =
-      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(resultId);
+      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(resultId);
 
     // then
     expect(resultIndicatorBoardMetaData.indicatorBoardMetadataName).toEqual('메타 데이터');
@@ -136,7 +136,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetaData(
+      await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetadata(
         indicatorBoardMetaData,
         invalidMemberId,
       );
@@ -154,11 +154,11 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // when
-    const resultId = await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetaData(
+    const resultId = await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetadata(
       indicatorBoardMetaData,
       10,
     );
-    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(resultId);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(resultId);
 
     // then
     const expectedName = '메타 데이터';
@@ -175,7 +175,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // when
     // then
     await expect(async () => {
-      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(invalidId);
+      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(invalidId);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] indicatorBoardMetadataId: ${invalidId} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
@@ -192,7 +192,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // when
     // then
     await expect(async () => {
-      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(invalidId);
+      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(invalidId);
     }).rejects.toThrow(
       new BadRequestException({
         message: `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.
@@ -213,7 +213,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // when
     await indicatorBoardMetadataPersistentAdapter.addIndicatorId(newIndicatorBoardMetaData);
-    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
     );
 
@@ -296,7 +296,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // when
     await indicatorBoardMetadataPersistentAdapter.deleteIndicatorId(deleteIndicatorBoardMetadata);
-    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
     );
 
@@ -334,7 +334,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // then
     await expect(async () => {
-      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(deleteIndicatorBoardMetadataId);
+      await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(deleteIndicatorBoardMetadataId);
     }).rejects.toThrow(
       new NotFoundException({
         message: `[ERROR] indicatorBoardMetadataId: ${deleteIndicatorBoardMetadataId} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
@@ -386,7 +386,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     );
     // when
     await indicatorBoardMetadataPersistentAdapter.updateIndicatorBoardMetadataName(updateIndicatorBoardMetadata);
-    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetaData(
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
     );
 

@@ -14,7 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetadataEntity } from './infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
 import { AuthService } from '../auth/auth.service';
 import { MemberEntity } from '../auth/member.entity';
-import { GetIndicatorBoardMetaDataQueryHandler } from './application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
+import { GetIndicatorBoardMetadataQueryHandler } from './application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { InsertIndicatorIdCommandHandler } from './application/command/insert-indicator-id/insert-indicator-id.command.handler';
 import { GetIndicatorBoardMetadataListQueryHandler } from './application/query/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query.handler';
 import { DeleteIndicatorIdCommandHandler } from './application/command/delete-indicator-id/delete-indicator-id.command.handler';
@@ -55,7 +55,7 @@ import { AdjustIndicatorValue } from './util/adjust-indicator-value';
     GetFluctuatingIndicatorWithoutCacheQueryHandler,
     GetIndicatorsQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,
-    GetIndicatorBoardMetaDataQueryHandler,
+    GetIndicatorBoardMetadataQueryHandler,
     InsertIndicatorIdCommandHandler,
     GetIndicatorBoardMetadataListQueryHandler,
     DeleteIndicatorIdCommandHandler,
@@ -90,7 +90,7 @@ import { AdjustIndicatorValue } from './util/adjust-indicator-value';
       useClass: IndicatorPersistentAdapter,
     },
     {
-      provide: 'CreateIndicatorBoardMetaDataPort',
+      provide: 'CreateIndicatorBoardMetadataPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
     {
