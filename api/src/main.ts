@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { initializeTransactionalContext } from 'typeorm-transactional';
-import { HttpExceptionFilter } from './utils/exception-filter/http-execption-filter';
+import { HttpExceptionFilter } from './utils/exception-filter/http-exception-filter';
 import { AuthGuard } from './auth/auth.guard';
 
 async function bootstrap() {
