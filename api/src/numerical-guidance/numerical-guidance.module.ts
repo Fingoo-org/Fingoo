@@ -27,6 +27,9 @@ import { HistoryIndicatorPersistentAdapter } from './infrastructure/adapter/pers
 import { HistoryIndicatorValueEntity } from './infrastructure/adapter/persistence/history-indicator-value/entity/history-indicator-value.entity';
 import { HistoryIndicatorEntity } from './infrastructure/adapter/persistence/history-indicator/entity/history-indicator.entity';
 import { AdjustIndicatorValue } from './util/adjust-indicator-value';
+import { CreateCustomForecastIndicatorCommandHandler } from './application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
+import { CustomForecastIndicatorPersistentAdapter } from './infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
+import { CustomForecastIndicatorEntity } from './infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
 
 @Module({
   imports: [
@@ -43,6 +46,7 @@ import { AdjustIndicatorValue } from './util/adjust-indicator-value';
       IndicatorEntity,
       HistoryIndicatorEntity,
       HistoryIndicatorValueEntity,
+      CustomForecastIndicatorEntity,
     ]),
   ],
   controllers: [NumericalGuidanceController],
@@ -61,6 +65,7 @@ import { AdjustIndicatorValue } from './util/adjust-indicator-value';
     DeleteIndicatorIdCommandHandler,
     DeleteIndicatorBoardMetadataCommandHandler,
     UpdateIndicatorBoardMetadataNameCommandHandler,
+    CreateCustomForecastIndicatorCommandHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -120,6 +125,10 @@ import { AdjustIndicatorValue } from './util/adjust-indicator-value';
     {
       provide: 'IndicatorValueManager',
       useClass: AdjustIndicatorValue,
+    },
+    {
+      provide: 'CreateCustomForecastIndicatorPort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
     },
   ],
 })
