@@ -19,7 +19,7 @@ export class HistoryIndicatorDto {
   indicator: Indicator;
   values: IndicatorValue[];
 
-  private constructor(indicator: Indicator, values: IndicatorValue[]) {
+  public constructor(indicator: Indicator, values: IndicatorValue[]) {
     this.indicator = indicator;
     this.values = values;
   }

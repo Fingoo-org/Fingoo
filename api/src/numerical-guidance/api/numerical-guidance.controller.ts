@@ -1,13 +1,19 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetFluctuatingIndicatorQuery } from '../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
-import { FluctuatingIndicatorDto } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import {
+  FluctuatingIndicatorDto,
+  IndicatorValueSwaggerSchema,
+} from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorDto } from './dto/get-fluctuatingIndicator.dto';
 import { GetFluctuatingIndicatorWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
-import { IndicatorDto } from 'src/numerical-guidance/application/query/get-indicator/indicator.dto';
+import {
+  Indicator,
+  IndicatorSwaggerSchema,
+} from 'src/numerical-guidance/application/query/get-indicator/indicator.dto';
 import { GetIndicatorsQuery } from 'src/numerical-guidance/application/query/get-indicator/get-indicators.query';
 import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-metadata.dto';
 import { CreateIndicatorBoardMetadataCommand } from '../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command';
 import { Response } from 'express';
@@ -29,6 +35,8 @@ import { GetHistoryIndicatorDto } from './dto/get-history-indicator.dto';
 import { GetHistoryIndicatorQuery } from '../application/query/get-history-indicator/get-history-indicator.query';
 import { CursorPageDto } from '../../utils/pagination/cursor-page.dto';
 import { HistoryIndicatorDto } from '../application/query/get-history-indicator/history-indicator.dto';
+import { ApiPaginatedResponseDecorator } from '../../utils/pagination/api-paginated-response.decorator';
+import { ApiExceptionResponse } from '../../utils/exception-filter/api-exception-response.decorator';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/api/numerical-guidance')
@@ -39,6 +47,10 @@ export class NumericalGuidanceController {
   ) {}
 
   @ApiOperation({ summary: '변동지표를 불러옵니다.' })
+  @ApiOkResponse({ type: FluctuatingIndicatorDto })
+  @ApiExceptionResponse(400, 'interval을 잘못 보냈을 때') // TODO: 예외 처리해야함
+  @ApiExceptionResponse(404, '[ERROR] API response body 값을 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.')
   @Get('/indicators/k-stock')
   async getFluctuatingIndicator(
     @Query() getFluctuatingIndicatorDto: GetFluctuatingIndicatorDto,
@@ -54,28 +66,21 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: 'Live 지표를 불러옵니다.' })
+  @ApiOkResponse({ type: FluctuatingIndicatorDto })
+  @ApiExceptionResponse(400, 'interval을 잘못 보냈을 때') // TODO: 예외 처리해야함
+  @ApiExceptionResponse(404, '[ERROR] API response body 값을 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.')
   @Get('/indicators/k-stock/live')
   async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<FluctuatingIndicatorDto> {
     const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
     return this.queryBus.execute(query);
   }
 
-  @ApiOperation({ summary: 'History 지표를 불러옵니다.' })
-  @Get('/indicators/history')
-  async getHistoryIndicator(
-    @Query() cursorPageOptionsDto: GetHistoryIndicatorDto,
-  ): Promise<CursorPageDto<HistoryIndicatorDto>> {
-    const query = new GetHistoryIndicatorQuery(
-      cursorPageOptionsDto.indicatorId,
-      cursorPageOptionsDto.interval,
-      cursorPageOptionsDto.startDate,
-      cursorPageOptionsDto.endDate,
-    );
-
-    return this.queryBus.execute(query);
-  }
-
   @ApiOperation({ summary: '캐시와 상관없이 변동지표를 불러옵니다.' })
+  @ApiOkResponse({ type: FluctuatingIndicatorDto })
+  @ApiExceptionResponse(400, 'interval을 잘못 보냈을 때') // TODO: 예외 처리해야함
+  @ApiExceptionResponse(404, '[ERROR] API response body 값을 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.')
   @Get('/without-cache')
   async getFluctuatingIndicatorWithoutCache(
     @Query() getFluctuatingIndicatorWithoutCacheDto: GetFluctuatingIndicatorWithoutCacheDto,
@@ -91,13 +96,44 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표 리스트를 불러옵니다.' })
+  @ApiOkResponse({ type: [IndicatorSwaggerSchema] })
+  @ApiExceptionResponse(400, '[ERROR] 지표를 불러오는 도중에 entity 오류가 발생했습니다.') // TODO: 예외 처리해야함
+  @ApiExceptionResponse(404, '[ERROR] 지표들를 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.')
   @Get('/indicator')
-  async getIndicatorList(): Promise<IndicatorDto> {
+  async getIndicatorList(): Promise<Indicator[]> {
     const query = new GetIndicatorsQuery();
     return this.queryBus.execute(query);
   }
 
+  @ApiOperation({ summary: 'History 지표를 불러옵니다.' })
+  @ApiPaginatedResponseDecorator(IndicatorValueSwaggerSchema)
+  @ApiExceptionResponse(
+    404,
+    '[ERROR] 지표를 cursor pagination 하는 중에 startDate, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.',
+  )
+  @Get('/indicators/history')
+  async getHistoryIndicator(
+    @Query() getHistoryIndicatorDto: GetHistoryIndicatorDto,
+  ): Promise<CursorPageDto<HistoryIndicatorDto>> {
+    const query = new GetHistoryIndicatorQuery(
+      getHistoryIndicatorDto.indicatorId,
+      getHistoryIndicatorDto.interval,
+      getHistoryIndicatorDto.startDate,
+      getHistoryIndicatorDto.endDate,
+    );
+
+    return this.queryBus.execute(query);
+  }
+
   @ApiOperation({ summary: '지표보드 메타데이터를 생성합니다.' })
+  @ApiCreatedResponse()
+  @ApiExceptionResponse(404, '[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.')
+  @ApiExceptionResponse(
+    500,
+    `[ERROR] 지표보드 메타데이터를 생성하는 도중에 오류가 발생했습니다. 다음과 같은 상황을 확인해보세요.
+          1. indicatorBoardMetaData 값 중 비어있는 값이 있는지 확인해주세요.`,
+  )
   @UseGuards(AuthGuard)
   @Post('/indicator-board-metadata')
   async createIndicatorBoardMetaData(
@@ -114,6 +150,19 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터 id로 메타데이터를 가져옵니다.' })
+  @ApiOkResponse({ type: IndicatorBoardMetadata })
+  @ApiExceptionResponse(
+    400,
+    `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+  )
+  @ApiExceptionResponse(404, '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiParam({
+    name: 'id',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Get('/indicator-board-metadata/:id')
   async getIndicatorBoardMetaDataById(@Param('id') id): Promise<IndicatorBoardMetadata> {
     const query = new GetIndicatorBoardMetadataQuery(id);
@@ -121,6 +170,13 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '특정 사용자의 member id로 메타데이터 리스트를 가져옵니다.' })
+  @ApiOkResponse({ type: [IndicatorBoardMetadata] })
+  @ApiExceptionResponse(
+    400,
+    '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
+  )
+  @ApiExceptionResponse(404, '[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.')
   @Get('/indicator-board-metadata')
   async getIndicatorBoardMetadataListByMember(@Member() member: MemberEntity): Promise<IndicatorBoardMetadata[]> {
     const query = new GetIndicatorBoardMetadataListQuery(member.id);
@@ -128,28 +184,71 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터에 지표 id를 추가합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(400, '[ERROR] 지표보드 메타데이터를 업데이트하는 도중에 entity 오류가 발생했습니다.')
+  @ApiExceptionResponse(
+    404,
+    '[ERROR] indicatorBoardMetadataId: ${indicatorBoardMetaData.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(500, '[ERROR] 새로운 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiParam({
+    name: 'id',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Post('/indicator-board-metadata/:id')
-  async insertNewIndicatorTicker(
-    @Param('id') indicatorBoardMetadataId,
-    @Body() insertIndicatorDto: InsertIndicatorDto,
-  ) {
+  async insertNewIndicatorId(@Param('id') indicatorBoardMetadataId, @Body() insertIndicatorDto: InsertIndicatorDto) {
     const command = new InsertIndicatorIdCommand(indicatorBoardMetadataId, insertIndicatorDto.indicatorId);
 
     await this.commandBus.execute(command);
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터에 지표 id를 삭제합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(
+    400,
+    `[ERROR] 지표보드 메타데이터 지표 id를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+  )
+  @ApiExceptionResponse(
+    404,
+    '[ERROR] indicatorBoardMetadataId: ${indicatorBoardMetaData.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(500, '[ERROR] 지표 id를 삭제하는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiParam({
+    name: 'id',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
+  @ApiParam({
+    name: 'indicatorId',
+    example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
+    required: true,
+  })
   @Delete('/indicator-board-metadata/:indicatorBoardMetaDataId/indicator/:indicatorId')
-  async deleteIndicatorTicker(
-    @Param('indicatorBoardMetaDataId') indicatorBoardMetaDataId,
+  async deleteIndicatorId(
+    @Param('indicatorBoardMetadataId') indicatorBoardMetadataId,
     @Param('indicatorId') indicatorId,
   ) {
-    const command = new DeleteIndicatorIdCommand(indicatorBoardMetaDataId, indicatorId);
+    const command = new DeleteIndicatorIdCommand(indicatorBoardMetadataId, indicatorId);
 
     await this.commandBus.execute(command);
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터를 삭제합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(
+    400,
+    `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+  )
+  @ApiExceptionResponse(404, '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, '[ERROR] 지표보드 메타데이터를 삭제하는 도중에 예상치 못한 문제가 발생했습니다.')
+  @ApiParam({
+    name: 'id',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Delete('/indicator-board-metadata/:id')
   async deleteIndicatorBoardMetadata(@Param('id') id) {
     const command = new DeleteIndicatorBoardMetadataCommand(id);
@@ -158,6 +257,19 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터의 이름을 수정합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(
+    400,
+    `[ERROR] 지표보드 메타데이터의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+  )
+  @ApiExceptionResponse(404, '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, '[ERROR] 지표보드 메타데이터의 이름을 수정하는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiParam({
+    name: 'id',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Patch('/indicator-board-metadata/:id')
   async updateIndicatorBoardMetadataName(
     @Param('id') id,
