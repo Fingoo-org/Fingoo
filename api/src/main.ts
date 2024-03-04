@@ -30,6 +30,19 @@ async function bootstrap() {
       disableErrorMessages: false,
     }),
   );
+
+  // codespace 환경에서 포트포워딩을 위해 설정
+  const applicationHost =
+    process.env.CODESPACES === 'true'
+      ? 'https://' + process.env.CODESPACE_NAME + '-3000.app.github.dev'
+      : 'http://localhost';
+
+  console.log('applicationHost', applicationHost);
+  app.enableCors({
+    origin: applicationHost,
+    credentials: true,
+  });
+
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(8000);
 
