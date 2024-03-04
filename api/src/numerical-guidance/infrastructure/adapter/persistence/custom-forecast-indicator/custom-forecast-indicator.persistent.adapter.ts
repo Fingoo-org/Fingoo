@@ -34,11 +34,12 @@ export class CustomForecastIndicatorPersistentAdapter
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
           message: `[ERROR] 해당 예측지표를 찾을 수 없습니다.`,
+          error: error,
         });
       }
       if (error instanceof QueryFailedError) {
         throw new BadRequestException({
-          message: '[ERROR] 예측지표를 불러오는 중 오류가 발생했습니다.',
+          message: '[ERROR] 예측지표를 불러오는 중 오류가 발생했습니다. 잘못된 요청입니다.',
           error: error,
         });
       } else {
