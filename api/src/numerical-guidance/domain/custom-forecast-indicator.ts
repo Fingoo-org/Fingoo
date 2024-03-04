@@ -1,6 +1,7 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { IndicatorType } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
 import { v1 as uuid } from 'uuid';
+import { CustomForecastIndicatorNameShouldNotEmpty } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 
 export class CustomForecastIndicator extends AggregateRoot {
   readonly id: string;
@@ -23,6 +24,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     sourceIndicatorIdsAndWeights: string[],
   ) {
     super();
+    this.checkRule(new CustomForecastIndicatorNameShouldNotEmpty(customForecastIndicatorName));
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.type = type;
