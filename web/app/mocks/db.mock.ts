@@ -16,7 +16,7 @@ import {
   CustomForecastIndicatorListResponse,
 } from '../store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { historyIndicatorsValueMockData } from './mock-data/history-indicators-value.mock';
-import { HistoryIndicatorValueDataResponse } from '../store/querys/numerical-guidance/history-indicator.query';
+import { HistoryIndicatorValueCursorPaginationResponse } from '../store/querys/numerical-guidance/history-indicator.query';
 
 type MockDatabase = IndicatorBoardMetadataListResponse &
   IndicatorListResponse &
@@ -45,7 +45,7 @@ type MockDatabaseAction = {
     id: string,
     startDate: string,
     endDate: string,
-  ) => HistoryIndicatorValueDataResponse | undefined;
+  ) => HistoryIndicatorValueCursorPaginationResponse | undefined;
 };
 
 const initialState: MockDatabase = {

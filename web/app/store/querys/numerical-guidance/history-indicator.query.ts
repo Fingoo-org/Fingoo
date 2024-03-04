@@ -8,12 +8,12 @@ export const parseTime = utcParse('%Y%m%d');
 export const formatTime = utcFormat('%Y%m%d');
 
 export type HistoryIndicatorsValueResponse = {
-  indicatorsValue: HistoryIndicatorValueDataResponse[];
+  indicatorsValue: HistoryIndicatorValueCursorPaginationResponse[];
 };
 
-export type HistoryIndicatorValueDataResponse = {
+export type HistoryIndicatorValueCursorPaginationResponse = {
   data: HistoryIndicatorValueResponse;
-  meta: HistoryIndicatorPagniationMeta;
+  meta: HistoryIndicatorCursorPaginationMetadataResponse;
 };
 
 export type HistoryIndicatorValueResponse = {
@@ -21,7 +21,7 @@ export type HistoryIndicatorValueResponse = {
   values: HistoryIndicatorValueItemResponse[];
 };
 
-export type HistoryIndicatorPagniationMeta = {
+export type HistoryIndicatorCursorPaginationMetadataResponse = {
   total: number;
   hasNextData: true;
   cursor: string;

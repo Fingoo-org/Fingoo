@@ -1,6 +1,6 @@
-import { HistoryIndicatorValueDataResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
+import { HistoryIndicatorValueCursorPaginationResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 
-export type historyIndicatorsValueMockData = (HistoryIndicatorValueDataResponse & {
+export type historyIndicatorsValueMockData = (HistoryIndicatorValueCursorPaginationResponse & {
   id: string;
 })[];
 export const historyIndicatorsValueMockData: historyIndicatorsValueMockData = JSON.parse(`[{
