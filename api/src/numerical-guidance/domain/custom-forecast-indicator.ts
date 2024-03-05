@@ -1,6 +1,5 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { IndicatorType } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
-import { v1 as uuid } from 'uuid';
 import { CustomForecastIndicatorNameShouldNotEmpty } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 import { SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
 
@@ -38,13 +37,12 @@ export class CustomForecastIndicator extends AggregateRoot {
   }
 
   static createNew(customForecastIndicatorName: string, targetIndicatorId: string): CustomForecastIndicator {
-    const id = uuid();
     const grangerVerification: string[] = [];
     const cointJohansenVerification: string[] = [];
     const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
     const type: IndicatorType = 'customForecastIndicator';
     return new CustomForecastIndicator(
-      id,
+      null,
       customForecastIndicatorName,
       type,
       targetIndicatorId,

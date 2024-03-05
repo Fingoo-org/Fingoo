@@ -4,7 +4,6 @@ import { CustomForecastIndicatorEntity } from '../entity/custom-forecast-indicat
 export class CustomForecastIndicatorMapper {
   static mapDomainToEntity(customForecastIndicator: CustomForecastIndicator): CustomForecastIndicatorEntity {
     const customForecastIndicatorEntity: CustomForecastIndicatorEntity = new CustomForecastIndicatorEntity();
-    customForecastIndicatorEntity.id = customForecastIndicator.id;
     customForecastIndicatorEntity.customForecastIndicatorName = customForecastIndicator.customForecastIndicatorName;
     customForecastIndicatorEntity.type = customForecastIndicator.type;
     customForecastIndicatorEntity.targetIndicatorId = customForecastIndicator.targetIndicatorId;
