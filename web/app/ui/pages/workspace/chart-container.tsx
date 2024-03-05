@@ -1,6 +1,6 @@
 'use client';
 import { Card } from '@tremor/react';
-import IndicatorsChart from '../../components/numerical-guidance/molecule/indicators-chart';
+import IndicatorsChart from '../../components/numerical-guidance/indicator/indicators-chart';
 import { SWRConfig } from 'swr';
 import ClientDataSuspense from '../../components/view/atom/client-data-suspense';
 

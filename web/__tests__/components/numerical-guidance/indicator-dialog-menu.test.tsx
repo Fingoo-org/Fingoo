@@ -2,10 +2,10 @@ import { act, render, renderHook, screen } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import IndicatorList from '@/app/ui/components/numerical-guidance/molecule/indicator-list';
+import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list';
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 import userEvent from '@testing-library/user-event';
-import IndicatorDialogMenu from '@/app/ui/components/numerical-guidance/molecule/indicator-dialog-menu';
+import IndicatorDialogMenu from '@/app/ui/components/numerical-guidance/indicator/indicator-dialog-menu';
 import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list';
 
 describe('indicator-dialog-menu', () => {

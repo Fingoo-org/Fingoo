@@ -4,8 +4,8 @@ import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db.mock';
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import IndicatorsChart from '@/app/ui/components/numerical-guidance/molecule/indicators-chart';
-import IndicatorList from '@/app/ui/components/numerical-guidance/molecule/indicator-list';
+import IndicatorsChart from '@/app/ui/components/numerical-guidance/indicator/indicators-chart';
+import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list';
 
 describe('IndicatorsChart', () => {
   beforeEach(() => {
