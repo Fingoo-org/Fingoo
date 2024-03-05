@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
-import { resetMockDB } from '@/app/mocks/db.mock';
+import { resetMockDB } from '@/app/mocks/db';
 
 describe('MetadataList', () => {
   beforeEach(() => {

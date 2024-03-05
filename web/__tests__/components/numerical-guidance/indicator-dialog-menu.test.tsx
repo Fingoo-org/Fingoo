@@ -1,6 +1,6 @@
 import { act, render, renderHook, screen } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
-import { resetMockDB } from '@/app/mocks/db.mock';
+import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list';
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';

@@ -1,7 +1,7 @@
 import { act, render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
-import { resetMockDB } from '@/app/mocks/db.mock';
+import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import SelectedMetadataTittle from '@/app/ui/components/numerical-guidance/indicator-board-metadata/selected-metadata-title';
 import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list';
