@@ -5,6 +5,6 @@ export type Interval = 'day' | 'week' | 'month' | 'year';
 export type IndicatorType = 'k-stock' | 'exchange' | 'customForecastIndicator';
 
 export type SourceIndicatorIdAndWeightType = {
-  SourceIndicatorId: string;
-  Weight: float;
+  sourceIndicatorId: string;
+  weight: float;
 };
