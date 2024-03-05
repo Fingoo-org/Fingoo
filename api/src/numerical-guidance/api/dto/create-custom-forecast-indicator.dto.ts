@@ -6,7 +6,7 @@ export class CreateCustomForecatIndicatorDto {
   @IsString()
   customForecastIndicatorName: string;
 
-  @ApiProperty({ example: '목표 지표 id', description: '목표 지표 id' })
+  @ApiProperty({ example: 'uuid example', description: '목표 지표 id' })
   @IsString()
   targetIndicatorId: string;
 }
