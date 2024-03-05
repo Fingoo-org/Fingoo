@@ -5,10 +5,10 @@ import { useIndicatorBoardMetadataList } from '@/app/business/hooks/indicator-bo
 import Button from '../../view/atom/button/button';
 import Pending from '../../view/molocule/pending';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import MetadataListItem from '../atom/metadata-list-item';
+import MetadataListItem from './metadata-list-item';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 
-const MetdataList = React.memo(function MetadataList() {
+const MetadataList = React.memo(function MetadataList() {
   const { metadataList, createMetadata, isPending } = useIndicatorBoardMetadataList();
   const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
 
@@ -38,4 +38,4 @@ const MetdataList = React.memo(function MetadataList() {
   );
 });
 
-export default MetdataList;
+export default MetadataList;

@@ -3,7 +3,7 @@ import { useIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import MultiLineChart from '../../view/molocule/multi-line-chart';
 import Pending from '../../view/molocule/pending';
-import SelectedMetadataTittle from '../atom/selected-metadata-title';
+import SelectedMetadataTittle from '../indicator-board-metadata/selected-metadata-title';
 import ToggleButton from '../../view/atom/toggle-button/toggle-button';
 import { CheckCircleIcon } from '@heroicons/react/outline';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
