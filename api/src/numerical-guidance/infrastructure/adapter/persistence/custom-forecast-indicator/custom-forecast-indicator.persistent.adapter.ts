@@ -59,8 +59,7 @@ export class CustomForecastIndicatorPersistentAdapter
       return customForecastIndicatorEntity.id;
     } catch (error) {
       throw new InternalServerErrorException({
-        message: `[ERROR] 지표보드 메타데이터를 생성하는 도중에 오류가 발생했습니다. 다음과 같은 상황을 확인해보세요.
-        1. indicatorBoardMetaData 값 중 비어있는 값이 있는지 확인해주세요.`,
+        message: `[ERROR] 예측지표를 생성하는 중 예상치 못한 문제가 발생했습니다.`,
         error: error,
         HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
       });

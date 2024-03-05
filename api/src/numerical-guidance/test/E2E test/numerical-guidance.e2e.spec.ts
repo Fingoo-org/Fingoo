@@ -34,6 +34,10 @@ import { HistoryIndicatorPersistentAdapter } from '../../infrastructure/adapter/
 import { HistoryIndicatorEntity } from '../../infrastructure/adapter/persistence/history-indicator/entity/history-indicator.entity';
 import { HistoryIndicatorValueEntity } from '../../infrastructure/adapter/persistence/history-indicator-value/entity/history-indicator-value.entity';
 import * as fs from 'fs';
+import { CreateCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
+import { GetCustomForecastIndicatorQueryHandler } from 'src/numerical-guidance/application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
+import { CustomForecastIndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
+import { CustomForecastIndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -132,6 +136,20 @@ describe('NumericalGuidance E2E Test', () => {
       entity.historyIndicator = historyIndicatorEntity;
     });
     await dataSource.getRepository(HistoryIndicatorValueEntity).save(historyIndicatorValueEntities);
+
+    const customForecastIndicatorEntity = dataSource.getRepository(CustomForecastIndicatorEntity);
+    await customForecastIndicatorEntity.insert({
+      id: 'f5206520-da94-11ee-b91b-3551e6db3bbd',
+      customForecastIndicatorName: 'my second custom forecast indicators',
+      type: 'CustomForecastIndicator',
+      targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
+      grangerVerification: [],
+      cointJohansenVerification: [],
+      sourceIndicatorIdsAndWeights: [],
+      createdAt: new Date('2024-02-23 10:00:02.292086'),
+      updatedAt: new Date('2024-02-23 10:00:02.292086'),
+    });
+    customForecastIndicatorEntity.save;
   };
 
   beforeAll(async () => {
@@ -150,6 +168,7 @@ describe('NumericalGuidance E2E Test', () => {
             IndicatorEntity,
             HistoryIndicatorEntity,
             HistoryIndicatorValueEntity,
+            CustomForecastIndicatorEntity,
           ]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
@@ -169,6 +188,7 @@ describe('NumericalGuidance E2E Test', () => {
                 IndicatorEntity,
                 HistoryIndicatorEntity,
                 HistoryIndicatorValueEntity,
+                CustomForecastIndicatorEntity,
               ],
               synchronize: true,
             }),
@@ -200,6 +220,8 @@ describe('NumericalGuidance E2E Test', () => {
           DeleteIndicatorBoardMetadataCommandHandler,
           UpdateIndicatorBoardMetadataNameCommandHandler,
           FluctuatingIndicatorRedisAdapter,
+          CreateCustomForecastIndicatorCommandHandler,
+          GetCustomForecastIndicatorQueryHandler,
           {
             provide: 'LoadCachedFluctuatingIndicatorPort',
             useClass: FluctuatingIndicatorRedisAdapter,
@@ -255,6 +277,14 @@ describe('NumericalGuidance E2E Test', () => {
           {
             provide: 'IndicatorValueManager',
             useClass: AdjustIndicatorValue,
+          },
+          {
+            provide: 'CreateCustomForecastIndicatorPort',
+            useClass: CustomForecastIndicatorPersistentAdapter,
+          },
+          {
+            provide: 'LoadCustomForecastIndicatorPort',
+            useClass: CustomForecastIndicatorPersistentAdapter,
           },
           {
             provide: AuthGuard,
@@ -416,5 +446,23 @@ describe('NumericalGuidance E2E Test', () => {
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('예측 지표를 생성한다.', async () => {
+    return request(app.getHttpServer())
+      .post('/api/numerical-guidance/custom-forecast-indicators')
+      .send({
+        customForecastIndicatorName: '예측지표',
+        targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.CREATED);
+  });
+
+  it('예측 지표 id로 예측지표를 불러온다.', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/custom-forecast-indicators/f5206520-da94-11ee-b91b-3551e6db3bbd')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
   });
 });

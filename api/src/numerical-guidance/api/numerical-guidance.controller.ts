@@ -173,7 +173,7 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '예측지표를 생성합니다.' })
-  @Post('/api/numerical-guidance/custom-forecast-indicators')
+  @Post('/custom-forecast-indicators')
   async createCustomForecastIndicator(
     @Body() createCustomForecastIndicatorDto: CreateCustomForecatIndicatorDto,
     @Res() res: Response,
@@ -187,7 +187,7 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '예측지표 id로 예측지표를 불러옵니다.' })
-  @Get('/api/numerical-guidance/custom-forecast-indicators/:customForecastIndicatorId')
+  @Get('/custom-forecast-indicators/:customForecastIndicatorId')
   async loadCustomForecastIndicator(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
   ): Promise<CustomForecastIndicator> {
