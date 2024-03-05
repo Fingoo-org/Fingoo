@@ -54,7 +54,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
     // given
     const customForecastIndicator: CustomForecastIndicator = CustomForecastIndicator.createNew(
       '예측지표 이름',
-      '목표지표 uuid',
+      'f5206520-da94-11ee-b91b-3551e6db3bbd',
     );
 
     // when
