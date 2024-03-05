@@ -4,24 +4,24 @@ import { TrashIcon } from '@heroicons/react/solid';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import TinyInput from '../../../view/atom/tiny-input/tiny-input';
-import { useIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata.hook';
+import { useIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 
 export default function MetadataDialogMenu() {
   const { payload, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_DELETE);
-  const { metadata, updateMetadata } = useIndicatorBoardMetadata(
+  const { indicatorBoardMetadata, updateIndicatorBoardMetadata } = useIndicatorBoardMetadata(
     typeof payload !== 'undefined' ? (payload as IndicatorBoardMetadata).id : undefined,
   );
 
   const handleMetadataUpdate = (name: string) => {
-    updateMetadata({ name });
+    updateIndicatorBoardMetadata({ name });
   };
 
   return (
     <DialogMenu size={'md'} dialogKey={DIALOG_KEY.METADATA_EDIT_MENU}>
       <DialogMenu.Header>
         <TinyInput
-          defaultValue={metadata !== undefined ? metadata.name : ''}
+          defaultValue={indicatorBoardMetadata !== undefined ? indicatorBoardMetadata.name : ''}
           withResetButton={true}
           withDebounce={500}
           onValueChange={handleMetadataUpdate}

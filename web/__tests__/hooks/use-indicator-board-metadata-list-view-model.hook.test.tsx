@@ -7,7 +7,7 @@ import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { act } from 'react-dom/test-utils';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
-import { resetMockDB } from '@/app/mocks/db.mock';
+import { resetMockDB } from '@/app/mocks/db';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 
 const wrapper = SWRProviderWithoutCache;
@@ -36,7 +36,7 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createMetadata({ id: '4', name: 'metadata4' });
+      result.current.createIndicatorBoardMetadata({ id: '4', name: 'metadata4' });
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
@@ -59,7 +59,7 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createMetadata({ id: '4', name: 'metadata4' });
+      result.current.createIndicatorBoardMetadata({ id: '4', name: 'metadata4' });
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
@@ -76,7 +76,7 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.deleteMetadata('1');
+      result.current.deleteIndicatorBoardMetadata('1');
     });
 
     // then

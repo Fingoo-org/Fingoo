@@ -1,9 +1,9 @@
 import { act, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
-import { resetMockDB } from '@/app/mocks/db.mock';
+import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
-import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/molecule/custom-forecast-indicator-list';
+import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list';
 
 describe('CustomForecastIndicatorList', () => {
   beforeEach(() => {

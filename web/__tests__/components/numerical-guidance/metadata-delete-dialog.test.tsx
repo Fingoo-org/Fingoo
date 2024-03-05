@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
-import { resetMockDB } from '@/app/mocks/db.mock';
+import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import MetdataList from '@/app/ui/components/numerical-guidance/molecule/metadata-list';
-import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/molecule/metadata-dialog-menu/metadata-dialog-menu';
-import MetadataDeleteDialog from '@/app/ui/components/numerical-guidance/molecule/metadata-delete-dialog';
+import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
+import MetadataDeleteDialog from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-delete-dialog';
 import userEvent from '@testing-library/user-event';
+import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
@@ -25,7 +25,7 @@ describe('MetadataDeleteDialog', () => {
     render(
       <SWRProviderWithoutCache>
         <MetadataDialogMenu />
-        <MetdataList />
+        <MetadataList />
         <MetadataDeleteDialog />
       </SWRProviderWithoutCache>,
     );
@@ -51,7 +51,7 @@ describe('MetadataDeleteDialog', () => {
     render(
       <SWRProviderWithoutCache>
         <MetadataDialogMenu />
-        <MetdataList />
+        <MetadataList />
         <MetadataDeleteDialog />
       </SWRProviderWithoutCache>,
     );
@@ -79,7 +79,7 @@ describe('MetadataDeleteDialog', () => {
     render(
       <SWRProviderWithoutCache>
         <MetadataDialogMenu />
-        <MetdataList />
+        <MetadataList />
         <MetadataDeleteDialog />
       </SWRProviderWithoutCache>,
     );
@@ -106,7 +106,7 @@ describe('MetadataDeleteDialog', () => {
     render(
       <SWRProviderWithoutCache>
         <MetadataDialogMenu />
-        <MetdataList />
+        <MetadataList />
         <MetadataDeleteDialog />
       </SWRProviderWithoutCache>,
     );

@@ -1,5 +1,5 @@
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
-import SourceIndicatorSlider from '../atom/source-indicator-slider';
+import SourceIndicatorSlider from './source-indicator-slider';
 
 export default function SourceIndicatorSliderGroup() {
   const { sourceIndicatorList } = useSelectedCustomForecastIndicatorViewModel();

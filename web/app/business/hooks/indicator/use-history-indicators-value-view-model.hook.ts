@@ -2,7 +2,7 @@ import {
   HistoryIndicatorValueResponse,
   useFetchHistoryIndicatorValue,
 } from '@/app/store/querys/numerical-guidance/history-indicator.query';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicators-value-view-model.service';
 import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 
@@ -10,7 +10,7 @@ export const useHistoryIndicatorsValueViewModel = () => {
   const [rowsToDownload, setRowsToDownload] = useState<number | undefined>(undefined);
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
 
-  const { data: historyIndicatorsValuePages, setSize } = useFetchHistoryIndicatorValue(
+  const { data: historyIndicatorsValuePages, setSize: setPageSize } = useFetchHistoryIndicatorValue(
     selectedMetadata?.indicatorIds,
     rowsToDownload,
   );
@@ -18,17 +18,16 @@ export const useHistoryIndicatorsValueViewModel = () => {
   useEffect(() => {
     if (rowsToDownload === undefined) return;
 
-    setSize((prev) => prev + 1);
+    setPageSize((prev) => prev + 1);
   }, [rowsToDownload]);
 
-  // merge pagination data
-  const historyIndicatorsValue = useMemo(() => {
+  const mergePaginationData = useCallback(() => {
     return historyIndicatorsValuePages?.reduce((acc: HistoryIndicatorValueResponse[], page, index) => {
       if (index === 0) {
         return page.indicatorsValue.map((indicator) => indicator.data);
       }
 
-      return (acc as HistoryIndicatorValueResponse[]).map((indicator, index) => {
+      return (acc as HistoryIndicatorValueResponse[]).map((indicator) => {
         const targetIndicator = page.indicatorsValue.find(
           (pageIndicator) => pageIndicator.data.indicator.id === indicator.indicator.id,
         ) ?? { data: { values: [] } };
@@ -41,6 +40,10 @@ export const useHistoryIndicatorsValueViewModel = () => {
     }, []);
   }, [historyIndicatorsValuePages]);
 
+  const historyIndicatorsValue = useMemo(() => {
+    return mergePaginationData();
+  }, [mergePaginationData]);
+
   const convertedHistoryIndicatorsValue = useMemo(() => {
     if (!historyIndicatorsValue) return undefined;
 
@@ -49,12 +52,9 @@ export const useHistoryIndicatorsValueViewModel = () => {
 
   const formattedHistoryIndicatorsRows = convertedHistoryIndicatorsValue?.formattedIndicatorsInRow;
 
-  // view 모델 변환
-
   return {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
     formattedHistoryIndicatorsRows,
-    setSize,
     setRowsToDownload,
   };
 };
