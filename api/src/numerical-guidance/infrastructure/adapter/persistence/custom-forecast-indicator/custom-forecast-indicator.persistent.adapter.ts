@@ -11,7 +11,7 @@ import { CustomForecastIndicatorEntity } from './entity/custom-forecast-indicato
 import { QueryFailedError, Repository } from 'typeorm';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorMapper } from './mapper/custom-forecast-indicator.mapper';
-import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/laod-custom-forecast-indicator.port';
+import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 
 @Injectable()
 export class CustomForecastIndicatorPersistentAdapter

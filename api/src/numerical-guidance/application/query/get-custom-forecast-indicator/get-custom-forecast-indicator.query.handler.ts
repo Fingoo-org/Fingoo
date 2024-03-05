@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCustomForecastIndicatorQuery } from './get-custom-forecast-indicator.query';
-import { LoadCustomForecastIndicatorPort } from '../../port/persistence/custom-forecast-indicator/laod-custom-forecast-indicator.port';
+import { LoadCustomForecastIndicatorPort } from '../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 
 @Injectable()
