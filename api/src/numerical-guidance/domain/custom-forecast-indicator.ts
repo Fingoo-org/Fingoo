@@ -42,7 +42,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     const grangerVerification: string[] = [];
     const cointJohansenVerification: string[] = [];
     const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
-    const type: IndicatorType = 'CustomForecastIndicator';
+    const type: IndicatorType = 'customForecastIndicator';
     return new CustomForecastIndicator(
       id,
       customForecastIndicatorName,

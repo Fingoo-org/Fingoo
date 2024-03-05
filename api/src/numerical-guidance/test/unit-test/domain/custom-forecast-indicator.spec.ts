@@ -12,7 +12,7 @@ describe('Custom forecast indicator', () => {
     );
 
     // then
-    const type: IndicatorType = 'CustomForecastIndicator';
+    const type: IndicatorType = 'customForecastIndicator';
     const expected = new CustomForecastIndicator(
       'uuid',
       '예측지표 이름',

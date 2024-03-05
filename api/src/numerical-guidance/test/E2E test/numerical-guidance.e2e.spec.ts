@@ -141,7 +141,7 @@ describe('NumericalGuidance E2E Test', () => {
     await customForecastIndicatorEntity.insert({
       id: 'f5206520-da94-11ee-b91b-3551e6db3bbd',
       customForecastIndicatorName: 'my second custom forecast indicators',
-      type: 'CustomForecastIndicator',
+      type: 'customForecastIndicator',
       targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
       grangerVerification: [],
       cointJohansenVerification: [],
