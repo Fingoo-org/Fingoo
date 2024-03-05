@@ -6,7 +6,7 @@ import IndicatorList from '@/app/ui/components/numerical-guidance/molecule/indic
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 import userEvent from '@testing-library/user-event';
 import IndicatorDialogMenu from '@/app/ui/components/numerical-guidance/molecule/indicator-dialog-menu';
-import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/molecule/custom-forecast-indicator-list';
+import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list';
 
 describe('indicator-dialog-menu', () => {
   beforeEach(() => {

@@ -4,7 +4,7 @@ import { ListChildComponentProps } from 'react-window';
 import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
 import TinyInput from '../../view/atom/tiny-input/tiny-input';
 import { SearchIcon } from '@heroicons/react/solid';
-import SourceIndicatorSearchListItem from '../atom/source-indicator-search-list-item';
+import SourceIndicatorSearchListItem from './source-indicator-search-list-item';
 import { useMemo, useState } from 'react';
 
 export default function SourceIndicatorSearchList() {
