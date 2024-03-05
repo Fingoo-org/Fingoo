@@ -12,8 +12,8 @@ export class GetCustomForecastIndicatorQueryHandler implements IQueryHandler {
     private readonly loadCustomForecastIndicatorPort: LoadCustomForecastIndicatorPort,
   ) {}
 
-  async execute(getCustomForecastIndicatorQuery: GetCustomForecastIndicatorQuery): Promise<CustomForecastIndicator> {
-    const customForecastIndicatorId = getCustomForecastIndicatorQuery.customForecastIndicatorId;
+  async execute(query: GetCustomForecastIndicatorQuery): Promise<CustomForecastIndicator> {
+    const customForecastIndicatorId = query.customForecastIndicatorId;
     const customForecastIndicator: CustomForecastIndicator =
       await this.loadCustomForecastIndicatorPort.loadCustomForecastIndicator(customForecastIndicatorId);
     return customForecastIndicator;

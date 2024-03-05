@@ -20,8 +20,8 @@ export class GetFluctuatingIndicatorQueryHandler implements IQueryHandler {
     private readonly cachingFluctuatingIndicatorPort: CachingFluctuatingIndicatorPort,
   ) {}
 
-  async execute(getFluctuatingIndicatorQuery: GetFluctuatingIndicatorQuery): Promise<FluctuatingIndicatorDto> {
-    const { dataCount, ticker, market, interval, endDate } = getFluctuatingIndicatorQuery;
+  async execute(query: GetFluctuatingIndicatorQuery): Promise<FluctuatingIndicatorDto> {
+    const { dataCount, ticker, market, interval, endDate } = query;
 
     const key = this.createFluctuatingIndicatorKey(ticker, interval);
 
