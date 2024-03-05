@@ -34,7 +34,7 @@ type MockDatabaseAction = {
   deleteIndicatorFromMetadata: (id: string, indicatorKey: string) => void;
   getIndicatorValue: (id: string) => IndicatorValueResponse | undefined;
   patchMetadata: (id: string, data: UpdateIndicatorBoardMetadataRequestBody) => void;
-  deleteMetadata: (id: string) => void;
+  deleteIndicatorBoardMetadata: (id: string) => void;
   getCustomForecastIndicatorList: () => CustomForecastIndicatorListResponse;
   postCustomForecastIndicator: (data: CreateCustomForecastIndicatorRequestBody) => void;
   postSourceIndicatorToCustomForecastIndicator: (
@@ -201,7 +201,7 @@ export const mockDB: MockDatabaseAction = {
 
     mockDatabaseStore.metadataList[index] = newMetadata;
   },
-  deleteMetadata: (id) => {
+  deleteIndicatorBoardMetadata: (id) => {
     mockDatabaseStore.metadataList = mockDatabaseStore.metadataList.filter((metadata) => metadata.id !== id);
   },
   getCustomForecastIndicatorList: () => {

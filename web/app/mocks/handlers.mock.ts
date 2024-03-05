@@ -129,7 +129,7 @@ export const handlers = [
   ),
   http.delete<metadataParam>(`${API_PATH.indicatorBoardMetadata}/:metadataId`, async ({ params }) => {
     const { metadataId } = params;
-    mockDB.deleteMetadata(metadataId);
+    mockDB.deleteIndicatorBoardMetadata(metadataId);
     await delayForDevelopment();
 
     return HttpResponse.json({ status: 200 });

@@ -5,9 +5,9 @@ import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indic
 import { useIndicatorBoardMetadataList } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 
 export default function MetadataDeleteDialog() {
-  const { deleteMetadata } = useIndicatorBoardMetadataList();
+  const { deleteIndicatorBoardMetadata } = useIndicatorBoardMetadataList();
   const handleClick = (payload: unknown) => {
-    deleteMetadata((payload as IndicatorBoardMetadata).id);
+    deleteIndicatorBoardMetadata((payload as IndicatorBoardMetadata).id);
   };
 
   return (

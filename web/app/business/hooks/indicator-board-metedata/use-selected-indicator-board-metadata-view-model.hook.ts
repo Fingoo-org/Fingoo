@@ -3,23 +3,31 @@ import {
   AddIndicatorToMetadataRequestBody,
   useAddIndicatorToMetadata,
   useDeleteIndicatorFromMetadata,
+  useFetchIndicatorBoardMetadataList,
   useUpdateIndicatorBoardMetadata,
 } from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useNumericalGuidanceStore } from '../../../store/stores/numerical-guidance.store';
-import { useIndicatorBoardMetadataList } from './use-indicator-board-metadata-list-view-model.hook';
+import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
 
 export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
   const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
-  const { metadataList } = useIndicatorBoardMetadataList();
+  const { data: indicatorBoardMetadataList } = useFetchIndicatorBoardMetadataList();
+
   const { trigger: addIndicatorTrigger } = useAddIndicatorToMetadata(selectedMetadataId);
   const { trigger: deleteIndicatorTrigger } = useDeleteIndicatorFromMetadata(selectedMetadataId);
   const { trigger: updateTrigger } = useUpdateIndicatorBoardMetadata(selectedMetadataId);
 
-  const selectedMetadata = useMemo(
-    () => metadataList?.find((metadata) => metadata.id === selectedMetadataId),
-    [selectedMetadataId, metadataList],
-  );
+  const convertedIndicatorBoardMetadataList = useMemo(() => {
+    if (!indicatorBoardMetadataList) return undefined;
+
+    return convertIndcatorBoardMetadataList(indicatorBoardMetadataList);
+  }, [indicatorBoardMetadataList]);
+
+  const selectedMetadata = useMemo(() => {
+    if (!selectedMetadataId) return undefined;
+    return convertedIndicatorBoardMetadataList?.findIndicatorBoardMetadataById(selectedMetadataId);
+  }, [selectedMetadataId, convertedIndicatorBoardMetadataList]);
 
   // Refactor: 컴포넌트는 AddIndicatorToMetadataRequestBody를 몰라도 된다.
   const addIndicatorToMetadata = (data: AddIndicatorToMetadataRequestBody) => {
@@ -30,9 +38,9 @@ export const useSelectedIndicatorBoardMetadata = () => {
     try {
       addIndicatorTrigger(data, {
         optimisticData: () => {
-          metadataList?.addIndicatorToMetadataById(selectedMetadataId, data.indicatorId);
+          convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, data.indicatorId);
           return {
-            metadataList: metadataList?.formattedIndicatorBoardMetadataList,
+            metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
           };
         },
         revalidate: false,
@@ -50,9 +58,9 @@ export const useSelectedIndicatorBoardMetadata = () => {
     try {
       deleteIndicatorTrigger(indicatorKey, {
         optimisticData: () => {
-          metadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorKey);
+          convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorKey);
           return {
-            metadataList: metadataList?.formattedIndicatorBoardMetadataList,
+            metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
           };
         },
         revalidate: false,
@@ -68,9 +76,9 @@ export const useSelectedIndicatorBoardMetadata = () => {
     }
     updateTrigger(data, {
       optimisticData: () => {
-        metadataList?.updateIndicatorBoardMetadatNameaById(selectedMetadataId, data.name);
+        convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(selectedMetadataId, data.name);
         return {
-          metadataList: metadataList?.formattedIndicatorBoardMetadataList,
+          metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
         };
       },
       revalidate: false,

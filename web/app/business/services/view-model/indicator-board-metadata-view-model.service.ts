@@ -49,7 +49,11 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     return Array;
   }
 
-  deleteMetadata(metadataId: string) {
+  findIndicatorBoardMetadataById(metadataId: string) {
+    return this.find((metadata) => metadata.id === metadataId);
+  }
+
+  deleteIndicatorBoardMetadata(metadataId: string) {
     const index = this.findIndex((metadata) => metadata.id === metadataId);
     if (index === -1) return;
 
@@ -63,7 +67,7 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     metadata.addIndicator(indicatorId);
   }
 
-  updateIndicatorBoardMetadatNameaById(metadataId: string | undefined, name: string) {
+  updateIndicatorBoardMetadataNameById(metadataId: string | undefined, name: string) {
     const index = this.findIndex((metadata) => metadata.id === metadataId);
     if (index === -1) return;
 

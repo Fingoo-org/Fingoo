@@ -9,7 +9,7 @@ import MetadataListItem from './metadata-list-item';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 
 const MetadataList = React.memo(function MetadataList() {
-  const { metadataList, createMetadata, isPending } = useIndicatorBoardMetadataList();
+  const { metadataList, createIndicatorBoardMetadata, isPending } = useIndicatorBoardMetadataList();
   const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
 
   const handleMetadataCreateAndSelect = async () => {
@@ -18,7 +18,7 @@ const MetadataList = React.memo(function MetadataList() {
       name: 'metadata1',
     };
     try {
-      await createMetadata(metadata);
+      await createIndicatorBoardMetadata(metadata);
       selectMetadataById(metadata.id);
     } catch (e) {
       // error: 위에서 처리, 넘겨줄 필요 있나?

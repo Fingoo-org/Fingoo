@@ -9,33 +9,34 @@ import { convertIndcatorBoardMetadataList } from '../../services/view-model/indi
 import { calculateIsPending } from '@/app/utils/helper';
 
 export const useIndicatorBoardMetadataList = () => {
-  const { data: metadataList, isValidating } = useFetchIndicatorBoardMetadataList();
-  const { trigger: deleteMetadataTrigger } = useDeleteIndicatorBoardMetadata();
-  const { trigger: createMetadataTrigger, isMutating } = useCreateIndicatorMetadata();
+  const { data: indicatorBoardMetadataList, isValidating } = useFetchIndicatorBoardMetadataList();
+  const { trigger: deleteIndicatorBoardMetadataTrigger } = useDeleteIndicatorBoardMetadata();
+  const { trigger: createIndicatorBoardMetadataTrigger, isMutating: isCreateIndicatorMetadataMutationg } =
+    useCreateIndicatorMetadata();
   const isPending = useRef(false);
 
-  isPending.current = calculateIsPending(isValidating, isMutating);
+  isPending.current = calculateIsPending(isValidating, isCreateIndicatorMetadataMutationg);
 
-  const convertedMetadataList = useMemo(() => {
-    if (!metadataList) return undefined;
+  const convertedIndicatorBoardMetadataList = useMemo(() => {
+    if (!indicatorBoardMetadataList) return undefined;
 
-    return convertIndcatorBoardMetadataList(metadataList);
-  }, [metadataList]);
+    return convertIndcatorBoardMetadataList(indicatorBoardMetadataList);
+  }, [indicatorBoardMetadataList]);
 
-  const createMetadata = async (data: CreateIndicatorMetadataRequestBody) => {
+  const createIndicatorBoardMetadata = async (data: CreateIndicatorMetadataRequestBody) => {
     try {
-      await createMetadataTrigger(data);
+      await createIndicatorBoardMetadataTrigger(data);
     } catch {
       // error: 전역 에러 처리 or 에러 바운더리에서 처리
     }
   };
 
-  const deleteMetadata = async (metadataId: string) => {
-    deleteMetadataTrigger(metadataId, {
+  const deleteIndicatorBoardMetadata = async (metadataId: string) => {
+    deleteIndicatorBoardMetadataTrigger(metadataId, {
       optimisticData: () => {
-        convertedMetadataList?.deleteMetadata(metadataId);
+        convertedIndicatorBoardMetadataList?.deleteIndicatorBoardMetadata(metadataId);
         return {
-          metadataList: convertedMetadataList?.formattedIndicatorBoardMetadataList,
+          metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
         };
       },
       revalidate: false,
@@ -43,9 +44,9 @@ export const useIndicatorBoardMetadataList = () => {
   };
 
   return {
-    metadataList: convertedMetadataList,
+    metadataList: convertedIndicatorBoardMetadataList,
     isPending: isPending.current,
-    createMetadata,
-    deleteMetadata,
+    createIndicatorBoardMetadata,
+    deleteIndicatorBoardMetadata,
   };
 };
