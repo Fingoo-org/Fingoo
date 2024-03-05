@@ -146,7 +146,7 @@ describe('NumericalGuidanceController', () => {
 
   it('/post 예측지표를 생성한다.', () => {
     return request(app.getHttpServer())
-      .post('/api/numerical-guidance/custom-forecast-indicators')
+      .post('/api/numerical-guidance/custom-forecast-indicator')
       .send({
         customForecastIndicatorName: '예측지표',
         targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',

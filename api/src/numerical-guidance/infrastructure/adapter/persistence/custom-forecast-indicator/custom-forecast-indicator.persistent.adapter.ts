@@ -39,12 +39,12 @@ export class CustomForecastIndicatorPersistentAdapter
       }
       if (error instanceof QueryFailedError) {
         throw new BadRequestException({
-          message: '[ERROR] 예측지표를 불러오는 중 오류가 발생했습니다. 잘못된 요청입니다.',
+          message: '[ERROR] 예측지표를 불러오는 중 오류가 발생했습니다. id 형식이 uuid인지 확인해주세요.',
           error: error,
         });
       } else {
         throw new InternalServerErrorException({
-          message: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '[ERROR] 얘측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
           error: error,
         });
       }

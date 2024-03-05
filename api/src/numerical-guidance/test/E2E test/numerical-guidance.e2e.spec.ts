@@ -450,7 +450,7 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('예측 지표를 생성한다.', async () => {
     return request(app.getHttpServer())
-      .post('/api/numerical-guidance/custom-forecast-indicators')
+      .post('/api/numerical-guidance/custom-forecast-indicator')
       .send({
         customForecastIndicatorName: '예측지표',
         targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
@@ -461,7 +461,7 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('예측 지표 id로 예측지표를 불러온다.', async () => {
     return request(app.getHttpServer())
-      .get('/api/numerical-guidance/custom-forecast-indicators/f5206520-da94-11ee-b91b-3551e6db3bbd')
+      .get('/api/numerical-guidance/custom-forecast-indicator/f5206520-da94-11ee-b91b-3551e6db3bbd')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });
