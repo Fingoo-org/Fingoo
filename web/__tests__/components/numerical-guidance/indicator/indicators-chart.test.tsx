@@ -92,7 +92,5 @@ describe('IndicatorsChart', () => {
 
     // then
     expect(await screen.findByTestId('advanced-multi-line-chart')).toBeInTheDocument();
-    // expect(await screen.findByText(/AAPL/i)).toBeInTheDocument();
-    // expect(await screen.findByText(/Apple Inc./i)).toBeInTheDocument();
   });
 });

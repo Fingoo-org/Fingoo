@@ -36,7 +36,7 @@ describe('MetadataDialogMenu', () => {
     // then
     expect(await screen.findByDisplayValue('metadata1')).toBeInTheDocument();
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
-    expect(await screen.findByText(/Delete/i)).toBeInTheDocument();
+    expect(await screen.findByRole('menuitem', { name: 'Delete' })).toBeInTheDocument();
   });
 
   it('dialog menu를 보고 있을 때, 사용자가 dialog menu 내부의 item을 클릭하면, dialog menu를 숨긴다.', async () => {
@@ -48,7 +48,6 @@ describe('MetadataDialogMenu', () => {
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
-
     await user.hover(await screen.findByText(/metadata1/i));
     await user.click(
       (

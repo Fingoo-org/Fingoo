@@ -16,7 +16,9 @@ export default function IndicatorDialogMenu() {
   const handleCustomForecastIndicatorCreate = async () => {
     transitionToCustomForecastTab();
 
-    await createCustomForecastIndicator(payload.id);
+    await createCustomForecastIndicator({
+      targetIndicatorId: payload.id,
+    });
   };
 
   return (

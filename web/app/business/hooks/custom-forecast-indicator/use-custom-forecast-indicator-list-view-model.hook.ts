@@ -20,7 +20,7 @@ export const useCustomForecastIndicatorListViewModel = () => {
     return convertCustomForecastIndicatorsViewModel(customForecastIndicatorList);
   }, [customForecastIndicatorList]);
 
-  const createCustomForecastIndicator = async (targetIndicatorId: string) => {
+  const createCustomForecastIndicator = async ({ targetIndicatorId }: { targetIndicatorId: string }) => {
     const body = {
       name: '새로운 예측 지표',
       targetIndicatorId,

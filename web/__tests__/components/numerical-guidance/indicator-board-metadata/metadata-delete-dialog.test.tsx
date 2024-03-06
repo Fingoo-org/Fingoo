@@ -19,7 +19,7 @@ describe('MetadataDeleteDialog', () => {
     resetAllStore();
   });
 
-  it('사용자가 메타데이터 편집 dialog menu에서 삭제 버튼을 클릭하면, 삭제할 수 있는 alert dialog 를 보여준다', async () => {
+  it('메타데이터 편집 dialog menu가 띄어져 있을 때, 사용자가 dialog에서 삭제 버튼을 클릭하면, 삭제할 수 있는 alert dialog 를 보여준다', async () => {
     // given
     const user = userEvent.setup();
     render(
@@ -42,7 +42,7 @@ describe('MetadataDeleteDialog', () => {
     await user.click(await screen.findByRole('menuitem', { name: 'Delete' }));
 
     // then
-    await user.click(await screen.findByText(/Delete Metadata/i));
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
   });
 
   it('삭제할 수 있는 alert dialog가 보여졌을 때, 사용자가 확인 버튼을 클릭하면, alert dialog를 숨긴다.', async () => {
@@ -100,6 +100,7 @@ describe('MetadataDeleteDialog', () => {
     // then
     expect(screen.queryByRole('dialog')).toBeNull();
   });
+
   it('삭제할 수 있는 alert dialog가 보여졌을 때, 사용자가 확인 버튼을 클릭하면, 메타데이터 리스트에서 해당 메타데이터가 삭제된다.', async () => {
     // given
     const user = userEvent.setup();
