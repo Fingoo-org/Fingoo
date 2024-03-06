@@ -28,6 +28,18 @@ export class CustomForecastIndicators {
       (customForecastIndicator) => new CustomForecastIndicator(customForecastIndicator),
     );
   }
+
+  get length() {
+    return this.customForecastIndicatorList.length;
+  }
+
+  findCustomForecastIndicatorById(id: string) {
+    return this.customForecastIndicatorList.find((customForecastIndicator) => customForecastIndicator.id === id);
+  }
+
+  findCustomForecastIndicatorByIndex(index: number) {
+    return this.customForecastIndicatorList[index];
+  }
 }
 
 export const convertCustomForecastIndicatorsViewModel = (
