@@ -13,6 +13,9 @@ import { IndicatorValue } from '../../../../application/query/get-fluctuatingInd
 import { IndicatorValueManager } from '../../../../util/indicator-value-manager';
 
 const ORDER_TYPE: string = 'DESC';
+const INDEXING_COUNT: number = 1;
+const DECREASE_NUMBER_OF_DAYS: number = 1;
+const EMPTY_VALUE_SIZE: number = 0;
 
 @Injectable()
 export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPort {
@@ -49,9 +52,8 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
 
     const historyIndicatorDto = HistoryIndicatorMapper.mapEntitiesToDto(historyIndicatorEntity, indicatorValues);
 
-    const historyIndicatorValueEntity: HistoryIndicatorValueEntity =
-      historyIndicatorValueEntities[historyIndicatorValueEntities.length - 1];
-    const startDate = historyIndicatorValueEntity.date;
+    const startDateIndex = historyIndicatorValueEntities.length - INDEXING_COUNT;
+    const startDate = historyIndicatorValueEntities[startDateIndex].date;
     const cursorToken = await this.getCursorToken(startDate);
     const { hasNextData, cursor } = this.cursorController(cursorToken, historyIndicatorValueEntities.length);
     const cursorPageMetaDto = new CursorPageMetaDto({
@@ -85,7 +87,7 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
 
   async getCursorToken(startDateToken: Date) {
     const tokenOption = new Date(startDateToken);
-    tokenOption.setDate(startDateToken.getDate() - 1);
+    tokenOption.setDate(startDateToken.getDate() - DECREASE_NUMBER_OF_DAYS);
 
     return await this.historyIndicatorValueRepository.findOne({
       where: {
@@ -98,7 +100,7 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
     let hasNextData = true;
     let cursor: string;
 
-    if (!cursorToken || valueSize <= 0) {
+    if (!cursorToken || valueSize <= EMPTY_VALUE_SIZE) {
       hasNextData = false;
       cursor = null;
     } else {
