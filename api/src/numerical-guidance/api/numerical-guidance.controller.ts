@@ -119,7 +119,7 @@ export class NumericalGuidanceController {
     const query = new GetHistoryIndicatorQuery(
       getHistoryIndicatorDto.indicatorId,
       getHistoryIndicatorDto.interval,
-      getHistoryIndicatorDto.startDate,
+      getHistoryIndicatorDto.dataCount,
       getHistoryIndicatorDto.endDate,
     );
 

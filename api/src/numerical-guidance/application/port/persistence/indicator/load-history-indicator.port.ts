@@ -6,7 +6,7 @@ export interface LoadHistoryIndicatorPort {
   loadHistoryIndicator(
     indicatorId: string,
     interval: Interval,
-    startDate: string,
+    dataCount: number,
     endDate: string,
   ): Promise<CursorPageDto<HistoryIndicatorDto>>;
 }

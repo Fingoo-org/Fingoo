@@ -121,16 +121,16 @@ describe('HistoryIndicatorPersistentAdapter', () => {
 
   it('history 지표 불러오기', async () => {
     // given
-    const { indicatorId, interval, startDate, endDate }: GetHistoryIndicatorQuery = {
+    const { indicatorId, interval, dataCount, endDate }: GetHistoryIndicatorQuery = {
       indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
       interval: 'day',
-      startDate: '20240129',
+      dataCount: 19,
       endDate: '20240227',
     };
 
     // when
     const cursorPageDto: CursorPageDto<HistoryIndicatorDto> =
-      await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, startDate, endDate);
+      await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, dataCount, endDate);
 
     // then
     const expectedTotalCount = 19;
@@ -226,20 +226,20 @@ describe('HistoryIndicatorPersistentAdapter', () => {
 
   it('history 지표 불러오기 - 날짜 형식이 잘못된 경우', async () => {
     // given
-    const invalidStartDate = '9999999';
-    const { indicatorId, interval, startDate, endDate }: GetHistoryIndicatorQuery = {
+    const invalidStartDate = -10;
+    const { indicatorId, interval, dataCount, endDate }: GetHistoryIndicatorQuery = {
       indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
       interval: 'day',
-      startDate: invalidStartDate,
+      dataCount: invalidStartDate,
       endDate: '20240227',
     };
 
     // when // then
     await expect(async () => {
-      await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, startDate, endDate);
+      await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, dataCount, endDate);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] 지표를 cursor pagination 하는 중에 startDate, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
+        message: `[ERROR] 지표를 cursor pagination 하는 중에 dataCount, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
         error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
       }),

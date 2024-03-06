@@ -311,8 +311,8 @@ describe('NumericalGuidance E2E Test', () => {
       .query({
         indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
         interval: 'day',
-        startDate: '20221220',
-        endDate: '20230119',
+        dataCount: 19,
+        endDate: '20240227',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
