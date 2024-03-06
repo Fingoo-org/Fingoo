@@ -36,7 +36,7 @@ describe('GetLiveIndicatorQueryHandler', () => {
     const getHistoryIndicatorQuery: GetHistoryIndicatorQuery = new GetHistoryIndicatorQuery(
       '160e5499-4925-4e38-bb00-8ea6d8056484',
       'day',
-      '20240129',
+      19,
       '20240227',
     );
 

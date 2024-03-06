@@ -2,7 +2,7 @@ import { LoadHistoryIndicatorPort } from '../../../../application/port/persisten
 import { BadRequestException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HistoryIndicatorEntity } from './entity/history-indicator.entity';
-import { Between, LessThanOrEqual, Repository } from 'typeorm';
+import { LessThan, LessThanOrEqual, Repository } from 'typeorm';
 import { HistoryIndicatorValueEntity } from '../history-indicator-value/entity/history-indicator-value.entity';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { HistoryIndicatorDto } from '../../../../application/query/get-history-indicator/history-indicator.dto';
@@ -13,6 +13,9 @@ import { IndicatorValue } from '../../../../application/query/get-fluctuatingInd
 import { IndicatorValueManager } from '../../../../util/indicator-value-manager';
 
 const ORDER_TYPE: string = 'DESC';
+const INDEXING_COUNT: number = 1;
+const DECREASE_NUMBER_OF_DAYS: number = 1;
+const EMPTY_VALUE_SIZE: number = 0;
 
 @Injectable()
 export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPort {
@@ -28,16 +31,15 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
   async loadHistoryIndicator(
     indicatorId: string,
     interval: Interval,
-    startDate: string,
+    dataCount: number,
     endDate: string,
   ): Promise<CursorPageDto<HistoryIndicatorDto>> {
     const historyIndicatorEntity: HistoryIndicatorEntity = await this.historyIndicatorRepository.findOneBy({
       id: indicatorId,
     });
 
-    const startDateToken = this.indicatorValueManager.formatStringToDate(startDate);
     const endDateToken = this.indicatorValueManager.formatStringToDate(endDate);
-    const [historyIndicatorValueEntities, total] = await this.findEntitiesByCursorToken(startDateToken, endDateToken);
+    const [historyIndicatorValueEntities, total] = await this.findEntitiesByCursorToken(dataCount, endDateToken);
 
     const historyIndicatorValues = HistoryIndicatorMapper.mapEntitiesToVO(historyIndicatorValueEntities);
     let indicatorValues: IndicatorValue[] = historyIndicatorValues.map((historyIndicatorValue) => {
@@ -50,7 +52,9 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
 
     const historyIndicatorDto = HistoryIndicatorMapper.mapEntitiesToDto(historyIndicatorEntity, indicatorValues);
 
-    const cursorToken = await this.getCursorToken(startDateToken);
+    const startDateIndex = historyIndicatorValueEntities.length - INDEXING_COUNT;
+    const startDate = historyIndicatorValueEntities[startDateIndex].date;
+    const cursorToken = await this.getCursorToken(startDate);
     const { hasNextData, cursor } = this.cursorController(cursorToken, historyIndicatorValueEntities.length);
     const cursorPageMetaDto = new CursorPageMetaDto({
       total: this.getTotalCount(total, indicatorValues),
@@ -61,11 +65,12 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
     return new CursorPageDto<HistoryIndicatorDto>(historyIndicatorDto, cursorPageMetaDto);
   }
 
-  async findEntitiesByCursorToken(startDateToken: Date, endDateToken: Date) {
+  async findEntitiesByCursorToken(dataCount: number, endDateToken: Date) {
     try {
       return await this.historyIndicatorValueRepository.findAndCount({
+        take: dataCount,
         where: {
-          date: Between(startDateToken, endDateToken),
+          date: LessThan(endDateToken),
         },
         order: {
           date: ORDER_TYPE as any,
@@ -73,7 +78,7 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
       });
     } catch (error) {
       throw new BadRequestException({
-        message: `[ERROR] 지표를 cursor pagination 하는 중에 startDate, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
+        message: `[ERROR] 지표를 cursor pagination 하는 중에 dataCount, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
         error: error,
         HttpStatus: HttpStatus.BAD_REQUEST,
       });
@@ -82,7 +87,7 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
 
   async getCursorToken(startDateToken: Date) {
     const tokenOption = new Date(startDateToken);
-    tokenOption.setDate(startDateToken.getDate() - 1);
+    tokenOption.setDate(startDateToken.getDate() - DECREASE_NUMBER_OF_DAYS);
 
     return await this.historyIndicatorValueRepository.findOne({
       where: {
@@ -95,7 +100,7 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
     let hasNextData = true;
     let cursor: string;
 
-    if (!cursorToken || valueSize <= 0) {
+    if (!cursorToken || valueSize <= EMPTY_VALUE_SIZE) {
       hasNextData = false;
       cursor = null;
     } else {

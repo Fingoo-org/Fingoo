@@ -21,11 +21,11 @@ export class GetHistoryIndicatorDto {
   readonly interval: Interval;
 
   @ApiProperty({
-    example: '20240129',
-    description: '기준일자가 검색값보다 큰 데이터를 검색할 때 사용하는 기준일자',
+    example: 35,
+    description: '요청 Data의 개수',
   })
   @IsString()
-  readonly startDate: string;
+  readonly dataCount: number;
 
   @ApiProperty({
     example: '20240227',

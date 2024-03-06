@@ -5,7 +5,7 @@ export class GetHistoryIndicatorQuery implements IQuery {
   constructor(
     readonly indicatorId: string,
     readonly interval: Interval,
-    readonly startDate: string,
+    readonly dataCount: number,
     readonly endDate: string,
   ) {}
 }
