@@ -3,37 +3,28 @@ import { CustomForecastIndicatorEntity } from '../entity/custom-forecast-indicat
 
 export class CustomForecastIndicatorMapper {
   static mapDomainToEntity(customForecastIndicator: CustomForecastIndicator): CustomForecastIndicatorEntity {
-    const customForecastIndicatorEntity: CustomForecastIndicatorEntity = new CustomForecastIndicatorEntity();
-    customForecastIndicatorEntity.customForecastIndicatorName = customForecastIndicator.customForecastIndicatorName;
-    customForecastIndicatorEntity.type = customForecastIndicator.type;
-    customForecastIndicatorEntity.targetIndicatorId = customForecastIndicator.targetIndicatorId;
-    customForecastIndicatorEntity.grangerVerification = customForecastIndicator.grangerVerification;
-    customForecastIndicatorEntity.cointJohansenVerification = customForecastIndicator.cointJohansenVerification;
-    customForecastIndicatorEntity.sourceIndicatorIdsAndWeights = customForecastIndicator.sourceIndicatorIdsAndWeights;
-    customForecastIndicatorEntity.createdAt = customForecastIndicator.createdAt;
-    customForecastIndicatorEntity.updatedAt = customForecastIndicator.updatedAt;
-
+    const customForecastIndicatorEntity: CustomForecastIndicatorEntity = CustomForecastIndicatorEntity.createNew(
+      customForecastIndicator.customForecastIndicatorName,
+      customForecastIndicator.type,
+      customForecastIndicator.targetIndicatorId,
+      customForecastIndicator.grangerVerification,
+      customForecastIndicator.cointJohansenVerification,
+      customForecastIndicator.sourceIndicatorIdsAndWeights,
+      customForecastIndicator.createdAt,
+      customForecastIndicator.updatedAt,
+    );
     return customForecastIndicatorEntity;
   }
 
   static mapEntityToDomain(entity: CustomForecastIndicatorEntity): CustomForecastIndicator {
-    const {
-      id,
-      customForecastIndicatorName,
-      type,
-      targetIndicatorId,
-      grangerVerification,
-      cointJohansenVerification,
-      sourceIndicatorIdsAndWeights,
-    } = entity;
     const customForecastIndicator: CustomForecastIndicator = new CustomForecastIndicator(
-      id,
-      customForecastIndicatorName,
-      type,
-      targetIndicatorId,
-      grangerVerification,
-      cointJohansenVerification,
-      sourceIndicatorIdsAndWeights,
+      entity.id,
+      entity.customForecastIndicatorName,
+      entity.type,
+      entity.targetIndicatorId,
+      entity.grangerVerification,
+      entity.cointJohansenVerification,
+      entity.sourceIndicatorIdsAndWeights,
     );
     return customForecastIndicator;
   }

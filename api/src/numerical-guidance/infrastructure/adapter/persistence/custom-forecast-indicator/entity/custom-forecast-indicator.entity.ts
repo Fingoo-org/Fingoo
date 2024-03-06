@@ -24,4 +24,47 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
 
   @Column('jsonb', { nullable: true })
   sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[];
+
+  constructor(
+    customForecastIndicatorName: string,
+    type: IndicatorType,
+    targetIndicatorId: string,
+    grangerVerification: string[],
+    cointJohansenVerification: string[],
+    sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[],
+    createdAt: Date,
+    updatedAt: Date,
+  ) {
+    super();
+    this.customForecastIndicatorName = customForecastIndicatorName;
+    this.type = type;
+    this.targetIndicatorId = targetIndicatorId;
+    this.grangerVerification = grangerVerification;
+    this.cointJohansenVerification = cointJohansenVerification;
+    this.sourceIndicatorIdsAndWeights = sourceIndicatorIdsAndWeights;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+  }
+
+  static createNew(
+    customForecastIndicatorName: string,
+    type: IndicatorType,
+    targetIndicatorId: string,
+    grangerVerification: string[],
+    cointJohansenVerification: string[],
+    sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[],
+    createdAt: Date,
+    updatedAt: Date,
+  ) {
+    return new CustomForecastIndicatorEntity(
+      customForecastIndicatorName,
+      type,
+      targetIndicatorId,
+      grangerVerification,
+      cointJohansenVerification,
+      sourceIndicatorIdsAndWeights,
+      createdAt,
+      updatedAt,
+    );
+  }
 }
