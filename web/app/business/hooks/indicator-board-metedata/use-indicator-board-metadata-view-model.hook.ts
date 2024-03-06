@@ -5,7 +5,7 @@ import {
 import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
 import { useMemo } from 'react';
 
-export const useIndicatorBoardMetadata = (metadataId: string | undefined) => {
+export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefined) => {
   const { data: indicatorBoardMetadataList } = useFetchIndicatorBoardMetadataList();
   const { trigger: updateIndicatorBoardMetadataTrigger } = useUpdateIndicatorBoardMetadata(metadataId);
 
