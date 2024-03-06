@@ -366,7 +366,7 @@ describe('NumericalGuidance E2E Test', () => {
     return request(app.getHttpServer())
       .post(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
       .send({
-        indicatorId: 'indicatorId2',
+        indicatorId: 'a79eface-1fd3-4b85-92ae-9628d37951fb',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);
@@ -392,7 +392,7 @@ describe('NumericalGuidance E2E Test', () => {
   it('/delete 지표보드 메타데이터에서 지표를 삭제한다.', async () => {
     return request(app.getHttpServer())
       .delete(
-        '/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/indicatorId2',
+        '/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/indicator/a79eface-1fd3-4b85-92ae-9628d37951fb',
       )
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
