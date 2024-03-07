@@ -6,6 +6,7 @@ import {
   NotFoundError,
   UnauthorizedError,
   BadRequestError,
+  InternetServerError,
 } from '../../../utils/http/http-error';
 
 export const onActionHttpError = (toast: (props: Toast) => any, error: unknown) => {
@@ -33,6 +34,18 @@ export const onActionHttpError = (toast: (props: Toast) => any, error: unknown) 
     toast({
       variant: 'destructive',
       description: '네트워크 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.',
+    });
+  } else if (error instanceof InternetServerError) {
+    // 서버 에러 처리 로직
+    toast({
+      variant: 'destructive',
+      description: '서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.',
+    });
+  } else {
+    // 그 외의 에러 처리 로직
+    toast({
+      variant: 'destructive',
+      description: '알 수 없는 에러가 발생했습니다. 잠시 후 다시 시도해주세요.',
     });
   }
 };

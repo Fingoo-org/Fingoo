@@ -58,3 +58,10 @@ export class NotFoundError extends HttpError {
     this.name = 'NotFoundError';
   }
 }
+
+export class InternetServerError extends HttpError {
+  constructor({ message = 'Internal Server Error', statusCode = 500, response }: ErrorConstrutor) {
+    super(statusCode, message, response);
+    this.name = 'InternetServerError';
+  }
+}

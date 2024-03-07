@@ -7,6 +7,7 @@ import {
   NotFoundError,
   TimeoutError,
   UnauthorizedError,
+  InternetServerError,
 } from './http-error';
 
 export interface ErrorResponseData {
@@ -57,6 +58,14 @@ export const httpErrorHandler = (error: AxiosError<ErrorResponseData> | Error) =
         case HttpStatusCode.NotFound:
           promiseError = Promise.reject(
             new NotFoundError({
+              message,
+              response,
+            }),
+          );
+          break;
+        case HttpStatusCode.InternalServerError:
+          promiseError = Promise.reject(
+            new InternetServerError({
               message,
               response,
             }),
