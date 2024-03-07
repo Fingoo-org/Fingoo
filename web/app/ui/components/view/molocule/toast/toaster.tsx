@@ -10,7 +10,7 @@ import {
 } from '@/app/ui/components/view/molocule/toast/toast';
 import { useToast } from '../../hooks/use-toast';
 
-export function Toaster() {
+export default function Toaster() {
   const { toasts } = useToast();
 
   return (
