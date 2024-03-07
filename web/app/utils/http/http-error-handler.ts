@@ -12,7 +12,8 @@ import {
 
 export interface ErrorResponseData {
   statusCode: number;
-  message: string;
+  errorMessage: string;
+  descritpion: string;
   timestamp: Date | string;
   url: string;
 }
@@ -28,7 +29,7 @@ export const httpErrorHandler = (error: AxiosError<ErrorResponseData> | Error) =
     } else {
       const { response } = error as AxiosError<ErrorResponseData>;
       const status = response?.status;
-      const message = response?.data.message;
+      const message = response?.data.errorMessage;
 
       switch (status) {
         case HttpStatusCode.Unauthorized:
