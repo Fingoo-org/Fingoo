@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { initializeTransactionalContext } from 'typeorm-transactional';
-import { HttpExceptionFilter } from './utils/exception-filter/http-execption-filter';
+import { HttpExceptionFilter } from './utils/exception-filter/http-exception-filter';
 import { AuthGuard } from './auth/auth.guard';
 
 async function bootstrap() {
@@ -30,6 +30,19 @@ async function bootstrap() {
       disableErrorMessages: false,
     }),
   );
+
+  // codespace 환경에서 포트포워딩을 위해 설정
+  const applicationHost =
+    process.env.CODESPACES === 'true'
+      ? 'https://' + process.env.CODESPACE_NAME + '-3000.app.github.dev'
+      : 'http://localhost';
+
+  console.log('applicationHost', applicationHost);
+  app.enableCors({
+    origin: applicationHost,
+    credentials: true,
+  });
+
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(8000);
 

@@ -20,7 +20,7 @@ export class InsertIndicatorIdCommandHandler implements ICommandHandler {
   async execute(command: InsertIndicatorIdCommand) {
     const { indicatorBoardMetadataId, indicatorId } = command;
     const indicatorBoardMetaData: IndicatorBoardMetadata =
-      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetaData(indicatorBoardMetadataId);
+      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetadata(indicatorBoardMetadataId);
 
     indicatorBoardMetaData.insertIndicatorId(indicatorId);
 

@@ -30,7 +30,7 @@ describe('UpdateIndicatorBoardMetadataNameCommandHandler', () => {
         {
           provide: 'LoadIndicatorBoardMetadataPort',
           useValue: {
-            loadIndicatorBoardMetaData: jest.fn().mockImplementation(() => {
+            loadIndicatorBoardMetadata: jest.fn().mockImplementation(() => {
               return new IndicatorBoardMetadata('id', 'name', []);
             }),
           },
@@ -51,7 +51,7 @@ describe('UpdateIndicatorBoardMetadataNameCommandHandler', () => {
     await updateIndicatorBoardMetadataNameCommandHandler.execute(command);
 
     //then
-    expect(loadIndicatorBoardMetadataPort.loadIndicatorBoardMetaData).toHaveBeenCalledTimes(1);
+    expect(loadIndicatorBoardMetadataPort.loadIndicatorBoardMetadata).toHaveBeenCalledTimes(1);
     expect(updateIndicatorBoardMetadataNamePort.updateIndicatorBoardMetadataName).toHaveBeenCalledTimes(1);
   });
 });

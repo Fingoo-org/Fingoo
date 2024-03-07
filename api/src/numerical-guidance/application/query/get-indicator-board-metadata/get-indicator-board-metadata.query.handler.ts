@@ -6,16 +6,16 @@ import { LoadIndicatorBoardMetadataPort } from '../../port/persistence/indicator
 
 @Injectable()
 @QueryHandler(GetIndicatorBoardMetadataQuery)
-export class GetIndicatorBoardMetaDataQueryHandler implements IQueryHandler {
+export class GetIndicatorBoardMetadataQueryHandler implements IQueryHandler {
   constructor(
     @Inject('LoadIndicatorBoardMetadataPort')
-    private readonly loadIndicatorBoardMetaDataPort: LoadIndicatorBoardMetadataPort,
+    private readonly loadIndicatorBoardMetadataPort: LoadIndicatorBoardMetadataPort,
   ) {}
 
   async execute(query: GetIndicatorBoardMetadataQuery): Promise<IndicatorBoardMetadata> {
     const id = query.id;
     const indicatorBoardMetaData: IndicatorBoardMetadata =
-      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetaData(id);
+      await this.loadIndicatorBoardMetadataPort.loadIndicatorBoardMetadata(id);
     return indicatorBoardMetaData;
   }
 }

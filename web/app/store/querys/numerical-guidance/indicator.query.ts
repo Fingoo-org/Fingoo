@@ -19,7 +19,7 @@ export type IndicatorsValueResponse = {
 export type IndicatorValueResponse = {
   id: string;
   ticker: string;
-  items: IndicatorValueItemResponse[];
+  values: IndicatorValueItemResponse[];
 };
 
 export type IndicatorValueItemResponse = {

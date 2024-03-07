@@ -1,6 +1,6 @@
 'use client';
 import { Card } from '@tremor/react';
-import CustomForecastIndicatorDialogMenu from '../ui/components/numerical-guidance/molecule/custom-forecast-indicator-dialog-menu/custom-forecast-indicator-dialog-menu';
+import CustomForecastIndicatorDialogMenu from '../ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-dialog-menu/custom-forecast-indicator-dialog-menu';
 import { useDialog } from '../ui/components/view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '../utils/keys/dialog-key';
 import { useEffect } from 'react';

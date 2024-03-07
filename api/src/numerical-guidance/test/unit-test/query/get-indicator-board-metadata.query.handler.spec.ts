@@ -1,19 +1,19 @@
 import { Test } from '@nestjs/testing';
 import { GetIndicatorBoardMetadataQuery } from 'src/numerical-guidance/application/query/get-indicator-board-metadata/get-indicator-board-metadata.query';
-import { GetIndicatorBoardMetaDataQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
+import { GetIndicatorBoardMetadataQueryHandler } from 'src/numerical-guidance/application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { IndicatorBoardMetadata } from 'src/numerical-guidance/domain/indicator-board-metadata';
 
-describe('GetIndicatorBoardMetaDataQueryHandler', () => {
-  let getIndicatorBoardMetadataQueryHandler: GetIndicatorBoardMetaDataQueryHandler;
+describe('GetIndicatorBoardMetadataQueryHandler', () => {
+  let getIndicatorBoardMetadataQueryHandler: GetIndicatorBoardMetadataQueryHandler;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
-        GetIndicatorBoardMetaDataQueryHandler,
+        GetIndicatorBoardMetadataQueryHandler,
         {
           provide: 'LoadIndicatorBoardMetadataPort',
           useValue: {
-            loadIndicatorBoardMetaData: jest.fn().mockImplementation(() => {
+            loadIndicatorBoardMetadata: jest.fn().mockImplementation(() => {
               const data = IndicatorBoardMetadata.createNew('메타데이터');
               return data;
             }),
@@ -21,7 +21,7 @@ describe('GetIndicatorBoardMetaDataQueryHandler', () => {
         },
       ],
     }).compile();
-    getIndicatorBoardMetadataQueryHandler = module.get(GetIndicatorBoardMetaDataQueryHandler);
+    getIndicatorBoardMetadataQueryHandler = module.get(GetIndicatorBoardMetadataQueryHandler);
   }, 10000);
 
   it('지표보드 메타데이터 id를 가지고 메타데이터를 가져온다.', async () => {

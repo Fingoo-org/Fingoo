@@ -1,5 +1,5 @@
 import { Disclosure, Transition } from '@headlessui/react';
-import IndicatorList from '../../components/numerical-guidance/molecule/indicator-list';
+import IndicatorList from '../../components/numerical-guidance/indicator/indicator-list';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 
 export default function IndicatorListContainer() {

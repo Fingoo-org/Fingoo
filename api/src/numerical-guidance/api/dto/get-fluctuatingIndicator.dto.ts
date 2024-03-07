@@ -7,7 +7,7 @@ import { IsMarket } from 'src/utils/validation/is.market.validation';
 
 export class GetFluctuatingIndicatorDto {
   @ApiProperty({
-    example: '100',
+    example: 100,
     description: '변동지표 주가 정보 한 페이지 결과 수',
   })
   @Transform(({ value }) => parseInt(value, 10))

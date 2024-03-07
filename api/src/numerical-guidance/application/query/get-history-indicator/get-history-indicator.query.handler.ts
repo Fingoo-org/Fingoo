@@ -14,8 +14,8 @@ export class GetHistoryIndicatorQueryHandler implements IQueryHandler {
   ) {}
 
   async execute(query: GetHistoryIndicatorQuery): Promise<CursorPageDto<HistoryIndicatorDto>> {
-    const { indicatorId, interval, startDate, endDate } = query;
+    const { indicatorId, interval, dataCount, endDate } = query;
 
-    return this.loadHistoryIndicatorPort.loadHistoryIndicator(indicatorId, interval, startDate, endDate);
+    return this.loadHistoryIndicatorPort.loadHistoryIndicator(indicatorId, interval, dataCount, endDate);
   }
 }
