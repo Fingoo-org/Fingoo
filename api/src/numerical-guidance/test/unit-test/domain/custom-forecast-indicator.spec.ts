@@ -28,7 +28,7 @@ describe('예측지표', () => {
     expect(expected.targetIndicatorId).toEqual(customForecastIndicator.targetIndicatorId);
   });
 
-  it('예측지표생성-자표이름이 빈 값일 경우', () => {
+  it('예측지표생성-자표이름이 빈 값일 경우 - 빈 문자열일 경우', () => {
     // given
     const content = '';
     // when
@@ -42,7 +42,7 @@ describe('예측지표', () => {
     expect(createNewCustomForecastIndicator).toThrow(rule.Message);
   });
 
-  it('예측지표생성-자표이름이 빈 값일 경우', () => {
+  it('예측지표생성-자표이름이 빈 값일 경우 - 공백일 경우', () => {
     // given
     const content = '      ';
     // when
