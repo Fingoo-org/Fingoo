@@ -35,6 +35,10 @@ import { GetHistoryIndicatorDto } from './dto/get-history-indicator.dto';
 import { GetHistoryIndicatorQuery } from '../application/query/get-history-indicator/get-history-indicator.query';
 import { CursorPageDto } from '../../utils/pagination/cursor-page.dto';
 import { HistoryIndicatorDto } from '../application/query/get-history-indicator/history-indicator.dto';
+import { CreateCustomForecatIndicatorDto } from './dto/create-custom-forecast-indicator.dto';
+import { CreateCustomForecastIndicatorCommand } from '../application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command';
+import { CustomForecastIndicator } from '../domain/custom-forecast-indicator';
+import { GetCustomForecastIndicatorQuery } from '../application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query';
 import { ApiPaginatedResponseDecorator } from '../../utils/pagination/api-paginated-response.decorator';
 import { ApiExceptionResponse } from '../../utils/exception-filter/api-exception-response.decorator';
 
@@ -278,5 +282,28 @@ export class NumericalGuidanceController {
     const command = new UpdateIndicatorBoardMetadataNameCommand(id, updateIndicatorBoardMetadataNameDto.name);
 
     await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '예측지표를 생성합니다.' })
+  @Post('/custom-forecast-indicator')
+  async createCustomForecastIndicator(
+    @Body() createCustomForecastIndicatorDto: CreateCustomForecatIndicatorDto,
+    @Res() res: Response,
+  ) {
+    const command = new CreateCustomForecastIndicatorCommand(
+      createCustomForecastIndicatorDto.customForecastIndicatorName,
+      createCustomForecastIndicatorDto.targetIndicatorId,
+    );
+    await this.commandBus.execute(command);
+    res.status(HttpStatus.CREATED).send();
+  }
+
+  @ApiOperation({ summary: '예측지표 id로 예측지표를 불러옵니다.' })
+  @Get('/custom-forecast-indicator/:customForecastIndicatorId')
+  async loadCustomForecastIndicator(
+    @Param('customForecastIndicatorId') customForecastIndicatorId,
+  ): Promise<CustomForecastIndicator> {
+    const query = new GetCustomForecastIndicatorQuery(customForecastIndicatorId);
+    return await this.queryBus.execute(query);
   }
 }

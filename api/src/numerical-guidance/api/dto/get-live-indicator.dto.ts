@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 import { IsInterval } from '../../../utils/validation/is.interval.validation';
 import { ApiProperty } from '@nestjs/swagger';
 import { Interval } from 'src/utils/type/type-definition';
@@ -9,6 +9,7 @@ export class GetLiveIndicatorDto {
     description: '지표 PK (UUID)',
   })
   @IsString()
+  @IsUUID()
   readonly indicatorId: string;
 
   @ApiProperty({

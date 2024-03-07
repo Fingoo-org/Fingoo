@@ -12,10 +12,8 @@ export class GetFluctuatingIndicatorWithoutCacheQueryHandler implements IQueryHa
     private readonly loadFluctuatingIndicatorPort: LoadFluctuatingIndicatorPort,
   ) {}
 
-  async execute(
-    getFluctuatingIndicatorWithoutCacheQuery: GetFluctuatingIndicatorWithoutCacheQuery,
-  ): Promise<FluctuatingIndicatorDto> {
-    const { dataCount, ticker, interval, market, endDate } = getFluctuatingIndicatorWithoutCacheQuery;
+  async execute(query: GetFluctuatingIndicatorWithoutCacheQuery): Promise<FluctuatingIndicatorDto> {
+    const { dataCount, ticker, interval, market, endDate } = query;
 
     return await this.loadFluctuatingIndicatorPort.loadFluctuatingIndicator(
       dataCount,

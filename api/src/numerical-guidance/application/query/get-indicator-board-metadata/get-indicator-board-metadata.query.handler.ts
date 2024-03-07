@@ -12,8 +12,8 @@ export class GetIndicatorBoardMetadataQueryHandler implements IQueryHandler {
     private readonly loadIndicatorBoardMetadataPort: LoadIndicatorBoardMetadataPort,
   ) {}
 
-  async execute(getIndicatorBoardMetaDataQuery: GetIndicatorBoardMetadataQuery): Promise<IndicatorBoardMetadata> {
-    const id = getIndicatorBoardMetaDataQuery.id;
+  async execute(query: GetIndicatorBoardMetadataQuery): Promise<IndicatorBoardMetadata> {
+    const id = query.id;
     const indicatorBoardMetaData: IndicatorBoardMetadata =
       await this.loadIndicatorBoardMetadataPort.loadIndicatorBoardMetadata(id);
     return indicatorBoardMetaData;

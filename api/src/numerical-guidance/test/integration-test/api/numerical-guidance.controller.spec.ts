@@ -8,6 +8,8 @@ import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuat
 import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';
 import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
 import { InsertIndicatorIdCommandHandler } from '../../../application/command/insert-indicator-id/insert-indicator-id.command.handler';
+import { GetCustomForecastIndicatorQueryHandler } from 'src/numerical-guidance/application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
+import { CreateCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
 
 const testData = fluctuatingIndicatorTestData;
 
@@ -27,6 +29,8 @@ describe('NumericalGuidanceController', () => {
           GetFluctuatingIndicatorQueryHandler,
           CreateIndicatorBoardMetadataCommandHandler,
           InsertIndicatorIdCommandHandler,
+          CreateCustomForecastIndicatorCommandHandler,
+          GetCustomForecastIndicatorQueryHandler,
           {
             provide: 'LoadCachedFluctuatingIndicatorPort',
             useValue: {
@@ -65,6 +69,18 @@ describe('NumericalGuidanceController', () => {
             provide: 'InsertIndicatorIdPort',
             useValue: {
               addIndicatorId: jest.fn(),
+            },
+          },
+          {
+            provide: 'CreateCustomForecastIndicatorPort',
+            useValue: {
+              createCustomForecastIndicator: jest.fn(),
+            },
+          },
+          {
+            provide: 'LoadCustomForecastIndicatorPort',
+            useValue: {
+              loadCustomForecastIndicator: jest.fn(),
             },
           },
         ],
@@ -126,5 +142,16 @@ describe('NumericalGuidanceController', () => {
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/post 예측지표를 생성한다.', () => {
+    return request(app.getHttpServer())
+      .post('/api/numerical-guidance/custom-forecast-indicator')
+      .send({
+        customForecastIndicatorName: '예측지표',
+        targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.CREATED);
   });
 });
