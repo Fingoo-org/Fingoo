@@ -142,9 +142,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       );
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] memberId: ${invalidMemberId} 해당 회원을 찾을 수 없습니다.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        error: `[ERROR] memberId: ${invalidMemberId} 해당 회원을 찾을 수 없습니다.`,
+        message: '회원 정보가 올바른지 확인해주세요.',
+        cause: Error,
       }),
     );
   });
@@ -178,9 +179,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(invalidId);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] indicatorBoardMetadataId: ${invalidId} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${invalidId} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        cause: Error,
       }),
     );
   });
@@ -195,10 +197,11 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(invalidId);
     }).rejects.toThrow(
       new BadRequestException({
-        message: `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.
-          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
-        error: Error,
         HttpStatus: HttpStatus.BAD_REQUEST,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+        cause: Error,
       }),
     );
   });
@@ -243,25 +246,27 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadataList(invalidId);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] memberId: ${invalidId} 해당 회원을 찾을 수 없습니다.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] memberId: ${invalidId} 해당 회원을 찾을 수 없습니다.`,
+        cause: Error,
       }),
     );
   });
 
   it('사용자 id로 메타데이터 리스트를 가져오기 - 유효하지 않은 member id값일 경우', async () => {
     // given
-    // when
-    // then
+    const id = 'invalid id';
+
+    // when // then
     await expect(async () => {
-      const id = 'invalid id';
       await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadataList(id);
     }).rejects.toThrow(
       new BadRequestException({
-        message: '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
-        error: Error,
         HttpStatus: HttpStatus.BAD_REQUEST,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
+        cause: Error,
       }),
     );
   });
@@ -279,9 +284,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.addIndicatorId(newIndicatorBoardMetaData);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] indicatorBoardMetadataId: ${newIndicatorBoardMetaData.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${newIndicatorBoardMetaData.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        cause: Error,
       }),
     );
   });
@@ -318,9 +324,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.deleteIndicatorId(deleteIndicatorBoardMetadata);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] indicatorBoardMetadataId: ${deleteIndicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${deleteIndicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        cause: Error,
       }),
     );
   });
@@ -337,9 +344,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(deleteIndicatorBoardMetadataId);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] indicatorBoardMetadataId: ${deleteIndicatorBoardMetadataId} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${deleteIndicatorBoardMetadataId} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        cause: Error,
       }),
     );
   });
@@ -353,9 +361,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.deleteIndicatorBoardMetadata(invalidId);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] indicatorBoardMetadataId: ${invalidId} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${invalidId} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        cause: Error,
       }),
     );
   });
@@ -369,10 +378,11 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.deleteIndicatorBoardMetadata(invalidId);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
-          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
-        error: Error,
         HttpStatus: HttpStatus.BAD_REQUEST,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+        cause: Error,
       }),
     );
   });
@@ -407,9 +417,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.updateIndicatorBoardMetadataName(invalidIndicatorBoardMetadata);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] indicatorBoardMetadataId: ${invalidIndicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${invalidIndicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        cause: Error,
       }),
     );
   });
@@ -427,10 +438,11 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       await indicatorBoardMetadataPersistentAdapter.updateIndicatorBoardMetadataName(invalidIndicatorBoardMetadata);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] 지표보드 메타데이터의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
-          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
-        error: Error,
         HttpStatus: HttpStatus.BAD_REQUEST,
+        message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+        error: `[ERROR] 지표보드 메타데이터의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+        cause: Error,
       }),
     );
   });

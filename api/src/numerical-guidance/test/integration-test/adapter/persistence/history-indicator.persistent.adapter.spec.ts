@@ -239,9 +239,10 @@ describe('HistoryIndicatorPersistentAdapter', () => {
       await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, dataCount, endDate);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] 지표를 cursor pagination 하는 중에 dataCount, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        error: `[ERROR] 지표를 cursor pagination 하는 중에 dataCount, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
+        message: '입력값이 올바른지 확인해주세요.',
+        cause: Error,
       }),
     );
   });
