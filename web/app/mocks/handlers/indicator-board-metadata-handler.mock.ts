@@ -13,7 +13,7 @@ export type metadataParam = {
 };
 
 export type indicatorParam = {
-  indicatorKey: string;
+  indicatorId: string;
 };
 
 export const indicatorBoardMetadataHandlers = [
@@ -41,10 +41,10 @@ export const indicatorBoardMetadataHandlers = [
     },
   ),
   http.delete<metadataParam & indicatorParam>(
-    `${API_PATH.indicatorBoardMetadata}/:metadataId/:indicatorKey`,
+    `${API_PATH.indicatorBoardMetadata}/:metadataId/:indicatorId`,
     async ({ params }) => {
-      const { metadataId, indicatorKey } = params;
-      mockDB.deleteIndicatorFromMetadata(metadataId, indicatorKey);
+      const { metadataId, indicatorId } = params;
+      mockDB.deleteIndicatorFromMetadata(metadataId, indicatorId);
       await delayForDevelopment();
 
       return HttpResponse.json({ status: 200 });

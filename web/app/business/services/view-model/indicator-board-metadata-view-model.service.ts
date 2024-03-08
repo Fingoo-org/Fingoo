@@ -39,8 +39,8 @@ export class IndicatorBoardMetadata {
     this.indicatorIds = [...this.indicatorIds, indicatorId];
   }
 
-  deleteIndicator(indicatorKey: string) {
-    this.indicatorIds = this.indicatorIds.filter((indicatorId) => indicatorId !== indicatorKey);
+  deleteIndicator(indicatorId: string) {
+    this.indicatorIds = this.indicatorIds.filter((id) => id !== indicatorId);
   }
 }
 
@@ -86,11 +86,11 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     });
   }
 
-  deleteIndicatorFromMetadataById(metadataId: string | undefined, indicatorKey: string) {
+  deleteIndicatorFromMetadataById(metadataId: string | undefined, indicatorId: string) {
     const metadata = this.find((metadata) => metadata.id === metadataId);
     if (!metadata) return;
 
-    metadata.deleteIndicator(indicatorKey);
+    metadata.deleteIndicator(indicatorId);
   }
 
   get formattedIndicatorBoardMetadataList() {

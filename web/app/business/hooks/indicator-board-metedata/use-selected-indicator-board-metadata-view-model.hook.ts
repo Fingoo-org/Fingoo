@@ -49,15 +49,15 @@ export const useSelectedIndicatorBoardMetadata = () => {
     }
   };
 
-  const deleteIndicatorFromMetadata = (indicatorKey: string) => {
+  const deleteIndicatorFromMetadata = (indicatorId: string) => {
     if (!selectedMetadata) {
       return;
     }
 
     try {
-      deleteIndicatorTrigger(indicatorKey, {
+      deleteIndicatorTrigger(indicatorId, {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorKey);
+          convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorId);
           return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
