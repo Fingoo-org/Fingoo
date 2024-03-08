@@ -13,10 +13,14 @@ import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-fo
 import { CustomForecastIndicatorMapper } from './mapper/custom-forecast-indicator.mapper';
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { AuthService } from 'src/auth/auth.service';
+import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
 
 @Injectable()
 export class CustomForecastIndicatorPersistentAdapter
-  implements CreateCustomForecastIndicatorPort, LoadCustomForecastIndicatorPort
+  implements
+    CreateCustomForecastIndicatorPort,
+    LoadCustomForecastIndicatorPort,
+    LoadCustomForecastIndicatorsByMemberIdPort
 {
   constructor(
     @InjectRepository(CustomForecastIndicatorEntity)
@@ -51,6 +55,21 @@ export class CustomForecastIndicatorPersistentAdapter
         });
       }
     }
+  }
+
+  async loadCustomForecastIndicatorsByMemberId(memberId: number): Promise<CustomForecastIndicator[]> {
+    try {
+      const member = await this.authService.findById(memberId);
+      this.nullCheckForEntity(member);
+
+      const customForecastIndicatorEntities: CustomForecastIndicatorEntity[] =
+        await this.customForecastIndicatorRepository.findBy({ member: member });
+      const customForecastIndicators = customForecastIndicatorEntities.map((entity) => {
+        return CustomForecastIndicatorMapper.mapEntityToDomain(entity);
+      });
+
+      return customForecastIndicators;
+    } catch (error) {}
   }
 
   async createCustomForecastIndicator(
