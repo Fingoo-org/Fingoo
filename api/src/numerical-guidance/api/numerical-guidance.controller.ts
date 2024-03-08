@@ -50,11 +50,46 @@ export class NumericalGuidanceController {
     private commandBus: CommandBus,
   ) {}
 
+  @ApiOperation({ summary: 'Live 지표를 불러옵니다.' })
+  @ApiOkResponse({ type: FluctuatingIndicatorDto })
+  @ApiExceptionResponse(
+    400,
+    '입력값이 올바른지 확인해주세요. 지표는 day, week, month, year 별로 확인 가능합니다.',
+    '[ERROR] 잘못된 요청값입니다. indicatorId, interval이 올바른지 확인해주세요.',
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] API response body 값을 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다.',
+    '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.',
+  )
+  @Get('/indicators/live')
+  async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<FluctuatingIndicatorDto> {
+    const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
+    return this.queryBus.execute(query);
+  }
+
   @ApiOperation({ summary: '변동지표를 불러옵니다.' })
   @ApiOkResponse({ type: FluctuatingIndicatorDto })
-  @ApiExceptionResponse(400, 'interval을 잘못 보냈을 때') // TODO: 예외 처리해야함
-  @ApiExceptionResponse(404, '[ERROR] API response body 값을 찾을 수 없습니다.')
-  @ApiExceptionResponse(500, '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.')
+  @ApiExceptionResponse(
+    400,
+    '입력값이 올바른지 확인해주세요. 지표는 day, week, month, year 별로 확인 가능합니다.',
+    '[ERROR] 잘못된 요청값입니다. indicatorId, interval이 올바른지 확인해주세요.',
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] API response body 값을 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다.',
+    '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.',
+  )
   @Get('/indicators/k-stock')
   async getFluctuatingIndicator(
     @Query() getFluctuatingIndicatorDto: GetFluctuatingIndicatorDto,
@@ -69,22 +104,23 @@ export class NumericalGuidanceController {
     return this.queryBus.execute(query);
   }
 
-  @ApiOperation({ summary: 'Live 지표를 불러옵니다.' })
-  @ApiOkResponse({ type: FluctuatingIndicatorDto })
-  @ApiExceptionResponse(400, 'interval을 잘못 보냈을 때') // TODO: 예외 처리해야함
-  @ApiExceptionResponse(404, '[ERROR] API response body 값을 찾을 수 없습니다.')
-  @ApiExceptionResponse(500, '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.')
-  @Get('/indicators/k-stock/live')
-  async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<FluctuatingIndicatorDto> {
-    const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
-    return this.queryBus.execute(query);
-  }
-
   @ApiOperation({ summary: '캐시와 상관없이 변동지표를 불러옵니다.' })
   @ApiOkResponse({ type: FluctuatingIndicatorDto })
-  @ApiExceptionResponse(400, 'interval을 잘못 보냈을 때') // TODO: 예외 처리해야함
-  @ApiExceptionResponse(404, '[ERROR] API response body 값을 찾을 수 없습니다.')
-  @ApiExceptionResponse(500, '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.')
+  @ApiExceptionResponse(
+    400,
+    '입력값이 올바른지 확인해주세요. 지표는 day, week, month, year 별로 확인 가능합니다.',
+    '[ERROR] 잘못된 요청값입니다. indicatorId, interval이 올바른지 확인해주세요.',
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] API response body 값을 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.',
+  )
   @Get('/without-cache')
   async getFluctuatingIndicatorWithoutCache(
     @Query() getFluctuatingIndicatorWithoutCacheDto: GetFluctuatingIndicatorWithoutCacheDto,
@@ -101,11 +137,23 @@ export class NumericalGuidanceController {
 
   @ApiOperation({ summary: '지표 리스트를 불러옵니다.' })
   @ApiOkResponse({ type: [IndicatorSwaggerSchema] })
-  @ApiExceptionResponse(400, '[ERROR] 지표를 불러오는 도중에 entity 오류가 발생했습니다.') // TODO: 예외 처리해야함
-  @ApiExceptionResponse(404, '[ERROR] 지표들를 찾을 수 없습니다.')
-  @ApiExceptionResponse(500, '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiExceptionResponse(
+    400,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] 지표를 불러오는 도중에 entity 오류가 발생했습니다.',
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] 지표들을 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+  )
   @Get('/indicator')
-  async getIndicatorList(): Promise<Indicator[]> {
+  async getIndicators(): Promise<Indicator[]> {
     const query = new GetIndicatorsQuery();
     return this.queryBus.execute(query);
   }
@@ -114,7 +162,8 @@ export class NumericalGuidanceController {
   @ApiPaginatedResponseDecorator(IndicatorValueSwaggerSchema)
   @ApiExceptionResponse(
     404,
-    '[ERROR] 지표를 cursor pagination 하는 중에 startDate, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.',
+    '입력값이 올바른지 확인해주세요.',
+    `[ERROR] 지표를 cursor pagination 하는 중에 dataCount, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
   )
   @Get('/indicators/history')
   async getHistoryIndicator(
@@ -132,9 +181,19 @@ export class NumericalGuidanceController {
 
   @ApiOperation({ summary: '지표보드 메타데이터를 생성합니다.' })
   @ApiCreatedResponse()
-  @ApiExceptionResponse(404, '[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.')
+  @ApiExceptionResponse(
+    400,
+    '지표보드 메타데이터의 이름은 비워둘 수 없습니다.',
+    '지표보드 메타데이터의 이름은 비워둘 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    404,
+    '회원 정보가 올바른지 확인해주세요.',
+    '[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.',
+  )
   @ApiExceptionResponse(
     500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 지표보드 메타데이터를 생성하는 도중에 오류가 발생했습니다. 다음과 같은 상황을 확인해보세요.
           1. indicatorBoardMetaData 값 중 비어있는 값이 있는지 확인해주세요.`,
   )
@@ -157,11 +216,20 @@ export class NumericalGuidanceController {
   @ApiOkResponse({ type: IndicatorBoardMetadata })
   @ApiExceptionResponse(
     400,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
     `[ERROR] 지표보드 메타데이터를 불러오는 도중에 오류가 발생했습니다.
           1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
   )
-  @ApiExceptionResponse(404, '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.')
-  @ApiExceptionResponse(500, '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+  )
   @ApiParam({
     name: 'id',
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
@@ -177,10 +245,19 @@ export class NumericalGuidanceController {
   @ApiOkResponse({ type: [IndicatorBoardMetadata] })
   @ApiExceptionResponse(
     400,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
     '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
   )
-  @ApiExceptionResponse(404, '[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.')
-  @ApiExceptionResponse(500, '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiExceptionResponse(
+    404,
+    '[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.',
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+  )
   @Get('/indicator-board-metadata')
   async getIndicatorBoardMetadataListByMember(@Member() member: MemberEntity): Promise<IndicatorBoardMetadata[]> {
     const query = new GetIndicatorBoardMetadataListQuery(member.id);
@@ -188,13 +265,22 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터에 지표 id를 추가합니다.' })
-  @ApiOkResponse()
-  @ApiExceptionResponse(400, '[ERROR] 지표보드 메타데이터를 업데이트하는 도중에 entity 오류가 발생했습니다.')
+  @ApiCreatedResponse()
+  @ApiExceptionResponse(
+    400,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 지표보드 메타데이터를 업데이트하는 도중에 entity 오류가 발생했습니다.',
+  )
   @ApiExceptionResponse(
     404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
     '[ERROR] indicatorBoardMetadataId: ${indicatorBoardMetaData.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
   )
-  @ApiExceptionResponse(500, '[ERROR] 새로운 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 새로운 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.',
+  )
   @ApiParam({
     name: 'id',
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
@@ -211,14 +297,20 @@ export class NumericalGuidanceController {
   @ApiOkResponse()
   @ApiExceptionResponse(
     400,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 지표보드 메타데이터 지표 id를 삭제하는 도중에 entity 오류가 발생했습니다.
           1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
   )
   @ApiExceptionResponse(
     404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
     '[ERROR] indicatorBoardMetadataId: ${indicatorBoardMetaData.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
   )
-  @ApiExceptionResponse(500, '[ERROR] 지표 id를 삭제하는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 지표 id를 삭제하는 중에 예상치 못한 문제가 발생했습니다.',
+  )
   @ApiParam({
     name: 'indicatorBoardMetadataId',
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
@@ -243,11 +335,20 @@ export class NumericalGuidanceController {
   @ApiOkResponse()
   @ApiExceptionResponse(
     400,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
     `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
           1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
   )
-  @ApiExceptionResponse(404, '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.')
-  @ApiExceptionResponse(500, '[ERROR] 지표보드 메타데이터를 삭제하는 도중에 예상치 못한 문제가 발생했습니다.')
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 지표보드 메타데이터를 삭제하는 도중에 예상치 못한 문제가 발생했습니다.',
+  )
   @ApiParam({
     name: 'id',
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
@@ -264,11 +365,20 @@ export class NumericalGuidanceController {
   @ApiOkResponse()
   @ApiExceptionResponse(
     400,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 지표보드 메타데이터의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
           1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
   )
-  @ApiExceptionResponse(404, '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.')
-  @ApiExceptionResponse(500, '[ERROR] 지표보드 메타데이터의 이름을 수정하는 중에 예상치 못한 문제가 발생했습니다.')
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 지표보드 메타데이터의 이름을 수정하는 중에 예상치 못한 문제가 발생했습니다.',
+  )
   @ApiParam({
     name: 'id',
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
