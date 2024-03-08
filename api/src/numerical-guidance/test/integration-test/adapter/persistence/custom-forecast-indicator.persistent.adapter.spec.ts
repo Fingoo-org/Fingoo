@@ -3,9 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
+import { AuthService } from 'src/auth/auth.service';
+import { MemberEntity } from 'src/auth/member.entity';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
 import { CustomForecastIndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
+import { DataSource } from 'typeorm';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -13,7 +16,13 @@ jest.mock('typeorm-transactional', () => ({
 
 describe('CustomForecastIndicatorPersistentAdapter', () => {
   let environment;
+  let dataSource: DataSource;
   let customForecastIndicatorPersistentAdapter: CustomForecastIndicatorPersistentAdapter;
+  const seeding = async () => {
+    const memberRepository = dataSource.getRepository(MemberEntity);
+    await memberRepository.insert({ id: 10 });
+    memberRepository.save;
+  };
 
   beforeEach(async () => {
     environment = await new PostgreSqlContainer().start();
@@ -23,7 +32,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
         ConfigModule.forRoot({
           isGlobal: true,
         }),
-        TypeOrmModule.forFeature([CustomForecastIndicatorEntity]),
+        TypeOrmModule.forFeature([CustomForecastIndicatorEntity, MemberEntity]),
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           inject: [ConfigService],
@@ -36,14 +45,16 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
             username: environment.getUsername(),
             password: environment.getPassword(),
             database: environment.getDatabase(),
-            entities: [CustomForecastIndicatorEntity],
+            entities: [CustomForecastIndicatorEntity, MemberEntity],
             synchronize: true,
           }),
         }),
       ],
-      providers: [CustomForecastIndicatorPersistentAdapter],
+      providers: [CustomForecastIndicatorPersistentAdapter, AuthService],
     }).compile();
     customForecastIndicatorPersistentAdapter = module.get(CustomForecastIndicatorPersistentAdapter);
+    dataSource = module.get<DataSource>(DataSource);
+    await seeding();
   }, 20000);
 
   afterAll(async () => {
@@ -56,16 +67,43 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       '예측지표 이름',
       'f5206520-da94-11ee-b91b-3551e6db3bbd',
     );
+    const memberId = 10;
 
     // when
-    const resultId =
-      await customForecastIndicatorPersistentAdapter.createCustomForecastIndicator(customForecastIndicator);
+    const resultId = await customForecastIndicatorPersistentAdapter.createCustomForecastIndicator(
+      customForecastIndicator,
+      memberId,
+    );
     const resultCustomForecastIndicator: CustomForecastIndicator =
       await customForecastIndicatorPersistentAdapter.loadCustomForecastIndicator(resultId);
 
     // then
     expect(customForecastIndicator.customForecastIndicatorName).toEqual(
       resultCustomForecastIndicator.customForecastIndicatorName,
+    );
+  });
+
+  it('예측지표 생성 - 회원을 찾지 못한 경우', async () => {
+    // given
+    const customForecastIndicator: CustomForecastIndicator = CustomForecastIndicator.createNew(
+      '예측지표 이름',
+      'f5206520-da94-11ee-b91b-3551e6db3bbd',
+    );
+    const invalidMemberId = 11;
+
+    // when
+    // then
+    await expect(async () => {
+      await customForecastIndicatorPersistentAdapter.createCustomForecastIndicator(
+        customForecastIndicator,
+        invalidMemberId,
+      );
+    }).rejects.toThrow(
+      new NotFoundException({
+        message: Error,
+        error: `[ERROR] memberId: ${invalidMemberId} 해당 회원을 찾을 수 없습니다.`,
+        HttpStatus: HttpStatus.NOT_FOUND,
+      }),
     );
   });
 

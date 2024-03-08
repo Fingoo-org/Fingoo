@@ -150,8 +150,33 @@ describe('NumericalGuidanceController', () => {
       .send({
         customForecastIndicatorName: '예측지표',
         targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
+        memberId: 1,
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);
+  });
+
+  it('/post 예측지표를 생성할 때 유효하지 않은 데이터를 전송한다. - 예측 지표이름을 빈 값으로 전송', () => {
+    return request(app.getHttpServer())
+      .post('/api/numerical-guidance/custom-forecast-indicator')
+      .send({
+        customForecastIndicatorName: '  ',
+        targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
+        memberId: 1,
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/post 예측지표를 생성할 때 유효하지 않은 데이터를 전송한다. - 유효하지 않은 uuid 전송', () => {
+    return request(app.getHttpServer())
+      .post('/api/numerical-guidance/custom-forecast-indicator')
+      .send({
+        customForecastIndicatorName: '예측지표',
+        targetIndicatorId: 'invalid-uuid',
+        memberId: 1,
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
   });
 });

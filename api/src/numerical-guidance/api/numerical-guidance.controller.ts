@@ -284,18 +284,22 @@ export class NumericalGuidanceController {
     await this.commandBus.execute(command);
   }
 
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: '예측지표를 생성합니다.' })
   @ApiOkResponse()
-  @ApiExceptionResponse(400, '예측지표의 이름은 비워둘 수 없습니다.')
+  @ApiExceptionResponse(400, '[ERROR] 예측지표의 이름은 비워둘 수 없습니다.')
+  @ApiExceptionResponse(404, '[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.')
   @ApiExceptionResponse(500, `[ERROR] 예측지표를 생성하는 중 예상치 못한 문제가 발생했습니다.`)
   @Post('/custom-forecast-indicator')
   async createCustomForecastIndicator(
     @Body() createCustomForecastIndicatorDto: CreateCustomForecatIndicatorDto,
     @Res() res: Response,
+    @Member() member: MemberEntity,
   ) {
     const command = new CreateCustomForecastIndicatorCommand(
       createCustomForecastIndicatorDto.customForecastIndicatorName,
       createCustomForecastIndicatorDto.targetIndicatorId,
+      member.id,
     );
     await this.commandBus.execute(command);
     res.status(HttpStatus.CREATED).send();

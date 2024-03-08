@@ -448,18 +448,19 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.BAD_REQUEST);
   });
 
-  it('예측 지표를 생성한다.', async () => {
+  it('/post 예측 지표를 생성한다.', async () => {
     return request(app.getHttpServer())
       .post('/api/numerical-guidance/custom-forecast-indicator')
       .send({
         customForecastIndicatorName: '예측지표',
         targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
+        memberId: 1,
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);
   });
 
-  it('예측 지표 id로 예측지표를 불러온다.', async () => {
+  it('/get 예측 지표 id로 예측지표를 불러온다.', async () => {
     return request(app.getHttpServer())
       .get('/api/numerical-guidance/custom-forecast-indicator/f5206520-da94-11ee-b91b-3551e6db3bbd')
       .set('Content-Type', 'application/json')

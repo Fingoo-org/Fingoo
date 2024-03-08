@@ -12,6 +12,7 @@ import { QueryFailedError, Repository } from 'typeorm';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorMapper } from './mapper/custom-forecast-indicator.mapper';
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class CustomForecastIndicatorPersistentAdapter
@@ -20,6 +21,7 @@ export class CustomForecastIndicatorPersistentAdapter
   constructor(
     @InjectRepository(CustomForecastIndicatorEntity)
     private readonly customForecastIndicatorRepository: Repository<CustomForecastIndicatorEntity>,
+    private readonly authService: AuthService,
   ) {}
 
   async loadCustomForecastIndicator(customForecastIndicatorId: string): Promise<CustomForecastIndicator> {
@@ -51,18 +53,33 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async createCustomForecastIndicator(customForecastIndicator: CustomForecastIndicator): Promise<string> {
+  async createCustomForecastIndicator(
+    customForecastIndicator: CustomForecastIndicator,
+    memberId: number,
+  ): Promise<string> {
     try {
+      const member = await this.authService.findById(memberId);
+      this.nullCheckForEntity(member);
+
       const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
-        CustomForecastIndicatorMapper.mapDomainToEntity(customForecastIndicator);
+        CustomForecastIndicatorMapper.mapDomainToEntity(customForecastIndicator, member);
+
       await this.customForecastIndicatorRepository.save(customForecastIndicatorEntity);
       return customForecastIndicatorEntity.id;
     } catch (error) {
-      throw new InternalServerErrorException({
-        message: `[ERROR] 예측지표를 생성하는 중 예상치 못한 문제가 발생했습니다.`,
-        error: error,
-        HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
-      });
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          message: error,
+          error: `[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.`,
+          HttpStatus: HttpStatus.NOT_FOUND,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          message: `[ERROR] 예측지표를 생성하는 중 예상치 못한 문제가 발생했습니다.`,
+          error: error,
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+        });
+      }
     }
   }
 
