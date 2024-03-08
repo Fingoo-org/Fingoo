@@ -31,6 +31,8 @@ export type HistoryIndicatorInfo = {
   id: string;
   ticker: string;
   name: string;
+  market: string;
+  type: string;
 };
 
 export type HistoryIndicatorValueItemResponse = {
@@ -51,7 +53,7 @@ const getFetchHistoryIndicatorValueKey = (
 
   if (!maxCursorDate) return null;
 
-  return [API_PATH.historyIndicatorsValue, maxCursorDate, 'day'];
+  return [API_PATH.historyIndicatorsValue, 'day', maxCursorDate];
 };
 
 export const useFetchHistoryIndicatorValue = (indicatorIds: string[] | undefined, rowsToDownload = 10) => {
@@ -59,11 +61,11 @@ export const useFetchHistoryIndicatorValue = (indicatorIds: string[] | undefined
 
   return useSWRInfinite<HistoryIndicatorsValueResponse>(
     getFetchHistoryIndicatorValueKey,
-    ([url, maxCursorDate, interval]) => {
-      const formattedUrl = `${url}?dataCount=${rowsToDownload}&endDate=${maxCursorDate}&interval=${interval}`;
+    ([url, interval, maxCursorDate]) => {
+      const formattedUrl = `${url}?dataCount=${rowsToDownload}&endDate=${maxCursorDate}`;
 
       // not null-assertion: indicatorIds가 null 인 상황에서는 호출되지 않음
-      return fetchIndicatorsValue([formattedUrl, ...indicatorIds!]);
+      return fetchIndicatorsValue([formattedUrl, interval, ...indicatorIds!]);
     },
     {
       initialSize: 0,

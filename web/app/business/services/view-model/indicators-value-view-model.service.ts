@@ -27,10 +27,14 @@ class IndicatorValueItem {
 class IndicatorValue {
   readonly id: string;
   readonly ticker: string;
+  readonly market: string;
+  readonly type: string;
   readonly values: IndicatorValueItem[];
-  constructor({ id, ticker, values }: IndicatorValueResponse) {
+  constructor({ id, ticker, market, type, values }: IndicatorValueResponse) {
     this.id = id;
     this.ticker = ticker;
+    this.market = market;
+    this.type = type;
     this.values = values.map((item) => new IndicatorValueItem(item));
   }
 
@@ -94,8 +98,7 @@ export const convertLiveIndicatorsValueViewModel = (indicators: IndicatorsValueR
 export const convertHistoryIndicatorsValueViewModel = (indicators: HistoryIndicatorValueResponse[]) => {
   const formmatedIndicators = indicators.map((indicator) => {
     return {
-      id: indicator.indicator.id,
-      ticker: indicator.indicator.ticker,
+      ...indicator.indicator,
       values: indicator.values,
     };
   });

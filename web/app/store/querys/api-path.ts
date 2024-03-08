@@ -6,7 +6,7 @@ const API_URL =
 export const API_PATH = {
   indicatorList: `${API_URL}/numerical-guidance/indicator`,
   indicatorBoardMetadata: `${API_URL}/numerical-guidance/indicator-board-metadata`,
-  indicatorValue: `${API_URL}/numerical-guidance/indicators`,
+  liveIndicatorValue: `${API_URL}/numerical-guidance/indicators/k-stock/live`, // refactor: be 수정되면 k-stock 사라져야함
   customForecastIndicator: `${API_URL}/numerical-guidance/custom-forecast-indicator`,
   historyIndicatorsValue: `${API_URL}/numerical-guidance/indicators/history`,
 };
