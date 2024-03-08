@@ -6,14 +6,14 @@ import useSWRMutation from 'swr/mutation';
 // Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까? (2/2) 분리 했음
 export type IndicatorBoardMetadataResponse = {
   id: string;
-  name: string;
+  indicatorBoardMetadataName: string;
   indicatorIds: string[];
   customForecastIndicatorIds: string[];
 };
 
 export type CreateIndicatorMetadataRequestBody = {
   id: string;
-  name: string;
+  indicatorBoardMetadataName: string;
 };
 
 export type AddIndicatorToMetadataRequestBody = {

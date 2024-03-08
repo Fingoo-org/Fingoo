@@ -15,7 +15,7 @@ const MetadataList = React.memo(function MetadataList() {
   const handleMetadataCreateAndSelect = async () => {
     const metadata = {
       id: Math.random().toString(36),
-      name: 'metadata1',
+      indicatorBoardMetadataName: 'metadata1',
     };
     try {
       await createIndicatorBoardMetadata(metadata);

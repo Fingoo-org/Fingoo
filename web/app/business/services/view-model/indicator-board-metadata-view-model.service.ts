@@ -5,21 +5,31 @@ export class IndicatorBoardMetadata {
   // 변경된 부분은 private으로 client에서 못사용하게
   // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
   readonly id: string;
-  readonly name: string;
+  readonly indicatorBoardMetadataName: string;
+  // private name: string;
   readonly customForecastIndicatorIds: string[];
   public indicatorIds: string[];
 
-  constructor({ id, name, indicatorIds, customForecastIndicatorIds }: IndicatorBoardMetadataResponse) {
+  constructor({
+    id,
+    indicatorBoardMetadataName,
+    indicatorIds,
+    customForecastIndicatorIds,
+  }: IndicatorBoardMetadataResponse) {
     this.id = id;
-    this.name = name;
+    this.indicatorBoardMetadataName = indicatorBoardMetadataName;
     this.indicatorIds = indicatorIds;
     this.customForecastIndicatorIds = customForecastIndicatorIds;
+  }
+
+  get name() {
+    return this.indicatorBoardMetadataName;
   }
 
   get formattedIndicatorBoardMetadata() {
     return {
       id: this.id,
-      name: this.name,
+      indicatorBoardMetadataName: this.name,
       indicatorIds: this.indicatorIds,
       customForecastIndicatorIds: this.customForecastIndicatorIds,
     };
@@ -64,13 +74,16 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     metadata.addIndicator(indicatorId);
   }
 
-  updateIndicatorBoardMetadataNameById(metadataId: string | undefined, name: string) {
+  updateIndicatorBoardMetadataNameById(metadataId: string | undefined, indicatorBoardMetadataName: string) {
     const index = this.findIndex((metadata) => metadata.id === metadataId);
     if (index === -1) return;
 
     const metadata = this[index];
 
-    this[index] = new IndicatorBoardMetadata({ ...metadata.formattedIndicatorBoardMetadata, name });
+    this[index] = new IndicatorBoardMetadata({
+      ...metadata.formattedIndicatorBoardMetadata,
+      indicatorBoardMetadataName,
+    });
   }
 
   deleteIndicatorFromMetadataById(metadataId: string | undefined, indicatorKey: string) {
