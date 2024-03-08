@@ -23,7 +23,7 @@ export type HistoryIndicatorValueResponse = {
 
 export type HistoryIndicatorCursorPaginationMetadataResponse = {
   total: number;
-  hasNextData: true;
+  hasNextData: boolean;
   cursor: string;
 };
 
@@ -60,8 +60,7 @@ export const useFetchHistoryIndicatorValue = (indicatorIds: string[] | undefined
   return useSWRInfinite<HistoryIndicatorsValueResponse>(
     getFetchHistoryIndicatorValueKey,
     ([url, maxCursorDate, interval]) => {
-      const newStartDate = formatTime(calculateDate(parseTime(maxCursorDate) ?? maxCursorDate, rowsToDownload + 5));
-      const formattedUrl = `${url}?startDate=${newStartDate}&endDate=${maxCursorDate}&interval=${interval}`;
+      const formattedUrl = `${url}?dataCount=${rowsToDownload}&endDate=${maxCursorDate}&interval=${interval}`;
 
       // not null-assertion: indicatorIds가 null 인 상황에서는 호출되지 않음
       return fetchIndicatorsValue([formattedUrl, ...indicatorIds!]);

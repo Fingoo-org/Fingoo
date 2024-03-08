@@ -12,15 +12,17 @@ export const indicatorHandlers = [
     const url = new URL(request.url);
 
     const indicatorId = url.searchParams.get('indicatorId');
-    const startDate = url.searchParams.get('startDate');
+    const dataCount = url.searchParams.get('dataCount');
     const endDate = url.searchParams.get('endDate');
 
-    if (indicatorId === null || startDate === null || endDate === null) {
+    if (indicatorId === null || dataCount === null || endDate === null) {
       return HttpResponse.json(null, { status: 400 });
     }
 
+    const data = mockDB.getHistoryIndicatorValue(indicatorId, parseInt(dataCount), endDate);
+
     await delayForDevelopment();
-    return HttpResponse.json(mockDB.getHistoryIndicatorValue(indicatorId, startDate, endDate));
+    return HttpResponse.json(data);
   }),
   http.get(API_PATH.indicatorValue, async ({ request }) => {
     const url = new URL(request.url);
