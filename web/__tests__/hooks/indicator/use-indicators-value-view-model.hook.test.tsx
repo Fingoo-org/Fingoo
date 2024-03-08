@@ -3,13 +3,13 @@ import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB, mockDB } from '@/app/mocks/db';
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import { useIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-indicators-value-view-model.hook';
+import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { IndicatorsValue } from '@/app/business/services/view-model/indicators-value-view-model.service';
 
 const wrapper = SWRProviderWithoutCache;
 
-describe('useIndicatorsValueViewModel', () => {
+describe('useLiveIndicatorsValueViewModel', () => {
   beforeEach(() => {
     resetAllStore();
     resetMockDB();
@@ -19,7 +19,7 @@ describe('useIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { indicatorsValue } = useIndicatorsValueViewModel();
+        const { indicatorsValue } = useLiveIndicatorsValueViewModel();
         const { selectedMetadata, addIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
         const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
         return { indicatorsValue, selectedMetadata, addIndicatorToMetadata, selectMetadata };
@@ -48,7 +48,7 @@ describe('useIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { indicatorsValue } = useIndicatorsValueViewModel();
+        const { indicatorsValue } = useLiveIndicatorsValueViewModel();
         const { selectedMetadata, addIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
         const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
         return { indicatorsValue, selectedMetadata, addIndicatorToMetadata, selectMetadata };
@@ -82,7 +82,7 @@ describe('useIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { indicatorsValue } = useIndicatorsValueViewModel();
+        const { indicatorsValue } = useLiveIndicatorsValueViewModel();
         const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } =
           useSelectedIndicatorBoardMetadata();
         const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);

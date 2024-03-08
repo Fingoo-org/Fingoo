@@ -1,5 +1,5 @@
 'use client';
-import { useIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-indicators-value-view-model.hook';
+import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import MultiLineChart from '../../view/molocule/multi-line-chart';
 import Pending from '../../view/molocule/pending';
@@ -12,7 +12,7 @@ import AdvancedIndicatorsChart from './advanced-indicators-chart';
 export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { indicatorsValue, formattedIndicatorsRows, isPending } = useIndicatorsValueViewModel();
+  const { indicatorsValue, formattedIndicatorsRows, isPending } = useLiveIndicatorsValueViewModel();
 
   const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
 

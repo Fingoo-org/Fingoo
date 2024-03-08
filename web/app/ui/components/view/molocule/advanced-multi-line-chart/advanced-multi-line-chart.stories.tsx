@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { indicatorsValueMockData } from '@/app/mocks/mock-data/indicators-value.mock';
-import { convertIndicatorsValueViewModel } from '@/app/business/services/view-model/indicators-value-view-model.service';
+import { convertLiveIndicatorsValueViewModel } from '@/app/business/services/view-model/indicators-value-view-model.service';
 import AdvancedMultiLineChart from './advanced-multi-line-chart';
 import { Card } from '@tremor/react';
 
@@ -24,7 +24,7 @@ const data = {
   indicatorsValue: indicatorsValueMockData,
 };
 
-const convertedData = convertIndicatorsValueViewModel(data);
+const convertedData = convertLiveIndicatorsValueViewModel(data);
 
 export const Default: Story = {
   args: {

@@ -87,7 +87,7 @@ export class IndicatorsValue {
   }
 }
 
-export const convertIndicatorsValueViewModel = (indicators: IndicatorsValueResponse) => {
+export const convertLiveIndicatorsValueViewModel = (indicators: IndicatorsValueResponse) => {
   return new IndicatorsValue(indicators);
 };
 

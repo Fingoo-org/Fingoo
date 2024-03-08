@@ -29,7 +29,7 @@ export type IndicatorValueItemResponse = {
 
 export const useFetchIndicatorList = () => useSWR<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);
 
-export const useFetchIndicatorsValue = (indicatorIds: string[] | undefined) => {
+export const useFetchLiveIndicatorsValue = (indicatorIds: string[] | undefined) => {
   const key = indicatorIds ? [API_PATH.indicatorValue, ...indicatorIds] : null;
 
   return useSWR<IndicatorsValueResponse, any, string[] | null>(key, fetchIndicatorsValue);
