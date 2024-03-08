@@ -326,7 +326,7 @@ describe('NumericalGuidance E2E Test', () => {
 
   it('/get live 지표 값을 불러온다.', async () => {
     return request(app.getHttpServer())
-      .get(`/api/numerical-guidance/indicators/k-stock/live`)
+      .get(`/api/numerical-guidance/indicators/live`)
       .query({
         indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
         interval: 'day',
