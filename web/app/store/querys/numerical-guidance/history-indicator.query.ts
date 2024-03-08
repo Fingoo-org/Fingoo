@@ -67,6 +67,7 @@ export const useFetchHistoryIndicatorValue = (indicatorIds: string[] | undefined
     },
     {
       initialSize: 0,
+      revalidateFirstPage: false,
     },
   );
 };

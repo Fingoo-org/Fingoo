@@ -7,19 +7,19 @@ import { convertHistoryIndicatorsValueViewModel } from '../../services/view-mode
 import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 
 export const useHistoryIndicatorsValueViewModel = () => {
-  const [rowsToDownload, setRowsToDownload] = useState<number | undefined>(undefined);
+  const [paginationData, setPaginationData] = useState<{ rowsToDownload: number } | undefined>(undefined);
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
 
   const { data: historyIndicatorsValuePages, setSize: setPageSize } = useFetchHistoryIndicatorValue(
     selectedMetadata?.indicatorIds,
-    rowsToDownload,
+    paginationData?.rowsToDownload,
   );
 
   useEffect(() => {
-    if (rowsToDownload === undefined) return;
+    if (paginationData === undefined) return;
 
     setPageSize((prev) => prev + 1);
-  }, [rowsToDownload]);
+  }, [paginationData]);
 
   const mergePaginationData = useCallback(() => {
     return historyIndicatorsValuePages?.reduce((acc: HistoryIndicatorValueResponse[], page, index) => {
@@ -51,10 +51,11 @@ export const useHistoryIndicatorsValueViewModel = () => {
   }, [historyIndicatorsValue]);
 
   const formattedHistoryIndicatorsRows = convertedHistoryIndicatorsValue?.formattedIndicatorsInRow;
+  console.log('formattedHistoryIndicatorsRows', formattedHistoryIndicatorsRows);
 
   return {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
     formattedHistoryIndicatorsRows,
-    setRowsToDownload,
+    setPaginationData,
   };
 };

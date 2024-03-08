@@ -3,7 +3,7 @@ import AdvancedMultiLineChart from '../../view/molocule/advanced-multi-line-char
 import { useIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-indicators-value-view-model.hook';
 
 export default function AdvancedIndicatorsChart() {
-  const { formattedHistoryIndicatorsRows, setRowsToDownload } = useHistoryIndicatorsValueViewModel();
+  const { formattedHistoryIndicatorsRows, setPaginationData } = useHistoryIndicatorsValueViewModel();
   const { formattedIndicatorsRows } = useIndicatorsValueViewModel();
 
   const formattedAdvencedIndicatorsRows = [
@@ -12,7 +12,9 @@ export default function AdvancedIndicatorsChart() {
   ];
 
   const handleLoadData = (rowsToDownload: number, initialIndex: number) => {
-    setRowsToDownload(rowsToDownload);
+    setPaginationData({
+      rowsToDownload,
+    });
   };
 
   return <AdvancedMultiLineChart onLoadData={handleLoadData} data={formattedAdvencedIndicatorsRows || []} />;
