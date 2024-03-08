@@ -1,4 +1,5 @@
 import {
+  IndicatorBoardMetadataResponse,
   useFetchIndicatorBoardMetadataList,
   useUpdateIndicatorBoardMetadata,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
@@ -21,11 +22,9 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
 
   const updateIndicatorBoardMetadata = (newData: { name: string }) => {
     updateIndicatorBoardMetadataTrigger(newData, {
-      optimisticData: () => {
+      optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
         convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(metadataId, newData.name);
-        return {
-          metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
-        };
+        return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
       },
       revalidate: false,
     });

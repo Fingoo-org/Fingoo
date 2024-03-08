@@ -1,5 +1,6 @@
 import {
   CreateIndicatorMetadataRequestBody,
+  IndicatorBoardMetadataResponse,
   useCreateIndicatorMetadata,
   useDeleteIndicatorBoardMetadata,
 } from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
@@ -33,11 +34,9 @@ export const useIndicatorBoardMetadataList = () => {
 
   const deleteIndicatorBoardMetadata = async (metadataId: string) => {
     deleteIndicatorBoardMetadataTrigger(metadataId, {
-      optimisticData: () => {
+      optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
         convertedIndicatorBoardMetadataList?.deleteIndicatorBoardMetadata(metadataId);
-        return {
-          metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
-        };
+        return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
       },
       revalidate: false,
     });

@@ -1,7 +1,4 @@
-import {
-  IndicatorBoardMetadataListResponse,
-  IndicatorBoardMetadataResponse,
-} from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
+import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
 export class IndicatorBoardMetadata {
   // 여기는 response와 같아야함
@@ -38,7 +35,7 @@ export class IndicatorBoardMetadata {
 }
 
 export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
-  constructor({ metadataList }: IndicatorBoardMetadataListResponse) {
+  constructor(metadataList: IndicatorBoardMetadataResponse[]) {
     super();
     metadataList.forEach((metadata) => {
       this.push(new IndicatorBoardMetadata(metadata));
@@ -88,6 +85,6 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
   }
 }
 
-export const convertIndcatorBoardMetadataList = (response: IndicatorBoardMetadataListResponse) => {
+export const convertIndcatorBoardMetadataList = (response: IndicatorBoardMetadataResponse[]) => {
   return new IndicatorBoardMetadataList(response);
 };

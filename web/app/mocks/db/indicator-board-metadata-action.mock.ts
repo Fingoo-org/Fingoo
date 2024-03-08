@@ -1,14 +1,13 @@
 import {
-  IndicatorBoardMetadataListResponse,
-  CreateIndicatorMetadataRequestBody,
   IndicatorBoardMetadataResponse,
+  CreateIndicatorMetadataRequestBody,
   AddIndicatorToMetadataRequestBody,
   UpdateIndicatorBoardMetadataRequestBody,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { mockDatabaseStore } from '.';
 
 export type MockIndicatorBoardMetadataAction = {
-  getMetadataList: () => IndicatorBoardMetadataListResponse;
+  getMetadataList: () => IndicatorBoardMetadataResponse[];
   postMetadataList: (newMetadata: CreateIndicatorMetadataRequestBody) => void;
   getMetadata: (id: string) => IndicatorBoardMetadataResponse | undefined;
   postIndicatorToMetadata: (id: string, data: AddIndicatorToMetadataRequestBody) => void;
@@ -19,9 +18,7 @@ export type MockIndicatorBoardMetadataAction = {
 
 export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction = {
   getMetadataList: () => {
-    return {
-      metadataList: mockDatabaseStore.metadataList,
-    };
+    return mockDatabaseStore.metadataList;
   },
   postMetadataList: (data) => {
     const newMetadata = {

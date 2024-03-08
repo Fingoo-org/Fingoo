@@ -11,10 +11,6 @@ export type IndicatorBoardMetadataResponse = {
   customForecastIndicatorIds: string[];
 };
 
-export type IndicatorBoardMetadataListResponse = {
-  metadataList: IndicatorBoardMetadataResponse[];
-};
-
 export type CreateIndicatorMetadataRequestBody = {
   id: string;
   name: string;
@@ -25,7 +21,7 @@ export type AddIndicatorToMetadataRequestBody = {
 };
 
 export const useFetchIndicatorBoardMetadataList = () =>
-  useSWR<IndicatorBoardMetadataListResponse>(API_PATH.indicatorBoardMetadata, defaultFetcher);
+  useSWR<IndicatorBoardMetadataResponse[]>(API_PATH.indicatorBoardMetadata, defaultFetcher);
 
 export const useCreateIndicatorMetadata = () =>
   useSWRMutation(API_PATH.indicatorBoardMetadata, postFetcher<CreateIndicatorMetadataRequestBody>);

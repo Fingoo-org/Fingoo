@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import {
   AddIndicatorToMetadataRequestBody,
+  IndicatorBoardMetadataResponse,
   useAddIndicatorToMetadata,
   useDeleteIndicatorFromMetadata,
   useFetchIndicatorBoardMetadataList,
@@ -37,11 +38,9 @@ export const useSelectedIndicatorBoardMetadata = () => {
 
     try {
       addIndicatorTrigger(data, {
-        optimisticData: () => {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
           convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, data.indicatorId);
-          return {
-            metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
-          };
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       });
@@ -57,11 +56,9 @@ export const useSelectedIndicatorBoardMetadata = () => {
 
     try {
       deleteIndicatorTrigger(indicatorKey, {
-        optimisticData: () => {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
           convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorKey);
-          return {
-            metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
-          };
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       });
@@ -75,11 +72,9 @@ export const useSelectedIndicatorBoardMetadata = () => {
       return;
     }
     updateTrigger(data, {
-      optimisticData: () => {
+      optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
         convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(selectedMetadataId, data.name);
-        return {
-          metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
-        };
+        return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
       },
       revalidate: false,
     });
