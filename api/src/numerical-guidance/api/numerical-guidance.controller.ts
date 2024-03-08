@@ -285,6 +285,9 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '예측지표를 생성합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(400, '예측지표의 이름은 비워둘 수 없습니다.')
+  @ApiExceptionResponse(500, `[ERROR] 예측지표를 생성하는 중 예상치 못한 문제가 발생했습니다.`)
   @Post('/custom-forecast-indicator')
   async createCustomForecastIndicator(
     @Body() createCustomForecastIndicatorDto: CreateCustomForecatIndicatorDto,
@@ -299,6 +302,10 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '예측지표 id로 예측지표를 불러옵니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(400, '[ERROR] 해당 예측지표를 찾을 수 없습니다.')
+  @ApiExceptionResponse(404, '[ERROR] 해당 예측지표를 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, `[ERROR] 예측지표를 불러오는 중 예상치 못한 문제가 발생했습니다.`)
   @Get('/custom-forecast-indicator/:customForecastIndicatorId')
   async loadCustomForecastIndicator(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
