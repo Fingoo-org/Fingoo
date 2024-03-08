@@ -109,7 +109,7 @@ describe('useIndicatorsValueViewModel', () => {
     });
     await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());
     act(() => {
-      result.current.deleteIndicatorFromMetadata(mockDB.getIndicatorList().indicatorList[0].id);
+      result.current.deleteIndicatorFromMetadata(mockDB.getIndicatorList()[0].id);
     });
 
     // then

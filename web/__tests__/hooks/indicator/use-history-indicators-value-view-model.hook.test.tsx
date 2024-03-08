@@ -9,7 +9,7 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicato
 const wrapper = SWRProviderWithoutCache;
 
 const findIndicatorByName = (indicatorName: string) => {
-  return mockDB.getIndicatorList().indicatorList.find((indicator) => indicator.name === indicatorName);
+  return mockDB.getIndicatorList().find((indicator) => indicator.name === indicatorName);
 };
 
 describe('useHistoryIndicatorsValueViewModel', () => {

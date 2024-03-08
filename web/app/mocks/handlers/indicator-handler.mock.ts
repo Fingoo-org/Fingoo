@@ -4,6 +4,7 @@ import { API_PATH } from '../../store/querys/api-path';
 import { mockDB } from '../db';
 
 export const indicatorHandlers = [
+  // db 연동
   http.get(API_PATH.indicatorList, async () => {
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getIndicatorList());

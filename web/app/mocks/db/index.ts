@@ -1,6 +1,5 @@
-import { IndicatorsValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
+import { IndicatorInfoResponse, IndicatorsValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
 import { IndicatorBoardMetadataListResponse } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { IndicatorListResponse } from '../../store/querys/numerical-guidance/indicator.query';
 import { indicatorsValueMockData } from '../mock-data/indicators-value.mock';
 import { CustomForecastIndicatorListResponse } from '../../store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { historyIndicatorsValueMockData } from '../mock-data/history-indicators-value.mock';
@@ -15,10 +14,11 @@ import {
 } from './custom-forecast-indicator-action.mock';
 
 type MockDatabase = IndicatorBoardMetadataListResponse &
-  IndicatorListResponse &
   IndicatorsValueResponse &
   CustomForecastIndicatorListResponse & {
     historyIndicatorsValue: historyIndicatorsValueMockData;
+  } & {
+    indicatorList: IndicatorInfoResponse[];
   };
 
 type MockDatabaseAction = MockCustomForecastIndicatorAction & MockIndicatorBoardMetadataAction & MockIndicatorAction;

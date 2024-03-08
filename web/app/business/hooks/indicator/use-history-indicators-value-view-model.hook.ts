@@ -51,7 +51,6 @@ export const useHistoryIndicatorsValueViewModel = () => {
   }, [historyIndicatorsValue]);
 
   const formattedHistoryIndicatorsRows = convertedHistoryIndicatorsValue?.formattedIndicatorsInRow;
-  console.log('formattedHistoryIndicatorsRows', formattedHistoryIndicatorsRows);
 
   return {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
