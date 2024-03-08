@@ -41,6 +41,7 @@ import { CustomForecastIndicator } from '../domain/custom-forecast-indicator';
 import { GetCustomForecastIndicatorQuery } from '../application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query';
 import { ApiPaginatedResponseDecorator } from '../../utils/pagination/api-paginated-response.decorator';
 import { ApiExceptionResponse } from '../../utils/exception-filter/api-exception-response.decorator';
+import { GetCustomForecastIndicatorsByMemberIdQuery } from '../application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/api/numerical-guidance')
@@ -315,6 +316,13 @@ export class NumericalGuidanceController {
     @Param('customForecastIndicatorId') customForecastIndicatorId,
   ): Promise<CustomForecastIndicator> {
     const query = new GetCustomForecastIndicatorQuery(customForecastIndicatorId);
+    return await this.queryBus.execute(query);
+  }
+
+  @ApiOperation({ summary: '사용자 id로 예측지표 리스트를 불러옵니다.' })
+  @Get('/custom-forecast-indicator')
+  async loadCustomForecastIndicatorsByMemberId(@Member() member: MemberEntity): Promise<CustomForecastIndicator[]> {
+    const query = new GetCustomForecastIndicatorsByMemberIdQuery(member.id);
     return await this.queryBus.execute(query);
   }
 }
