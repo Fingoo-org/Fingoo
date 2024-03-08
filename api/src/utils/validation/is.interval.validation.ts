@@ -14,7 +14,7 @@ export function IsInterval(validationOptions?: ValidationOptions) {
           return validValues.includes(value);
         },
         defaultMessage() {
-          return "[ERROR] 올바른 interval 을 입력해주세요. ('day', 'week', 'month', 'year')";
+          return "올바른 interval 을 입력해주세요. ('day', 'week', 'month', 'year')";
         },
       },
     });
