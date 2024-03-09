@@ -463,7 +463,6 @@ describe('NumericalGuidance E2E Test', () => {
       .send({
         customForecastIndicatorName: '예측지표',
         targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
-        memberId: 1,
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);

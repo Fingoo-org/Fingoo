@@ -294,15 +294,16 @@ export class NumericalGuidanceController {
   @Post('/custom-forecast-indicator')
   async createCustomForecastIndicator(
     @Body() createCustomForecastIndicatorDto: CreateCustomForecatIndicatorDto,
+    @Res() res: Response,
     @Member() member: MemberEntity,
-  ): Promise<CustomForecastIndicator> {
+  ) {
     const command = new CreateCustomForecastIndicatorCommand(
       createCustomForecastIndicatorDto.customForecastIndicatorName,
       createCustomForecastIndicatorDto.targetIndicatorId,
       member.id,
     );
-    const responseId = await this.commandBus.execute(command);
-    return responseId;
+    await this.commandBus.execute(command);
+    res.status(HttpStatus.CREATED).send();
   }
 
   @ApiOperation({ summary: '예측지표 id로 예측지표를 불러옵니다.' })
