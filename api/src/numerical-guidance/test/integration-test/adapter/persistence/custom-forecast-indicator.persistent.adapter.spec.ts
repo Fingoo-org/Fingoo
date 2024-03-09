@@ -89,7 +89,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       '예측지표 이름',
       'f5206520-da94-11ee-b91b-3551e6db3bbd',
     );
-    const invalidMemberId = 11;
+    const invalidMemberId = 100;
 
     // when
     // then
@@ -100,9 +100,10 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       );
     }).rejects.toThrow(
       new NotFoundException({
-        message: Error,
-        error: `[ERROR] memberId: ${invalidMemberId} 해당 회원을 찾을 수 없습니다.`,
         HttpStatus: HttpStatus.NOT_FOUND,
+        error: `[ERROR] memberId: ${invalidMemberId} 해당 회원을 찾을 수 없습니다.`,
+        message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+        cause: Error,
       }),
     );
   });
@@ -117,9 +118,10 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       await customForecastIndicatorPersistentAdapter.loadCustomForecastIndicator(invalidId);
     }).rejects.toThrow(
       new NotFoundException({
-        message: `[ERROR] 해당 예측지표를 찾을 수 없습니다.`,
-        error: Error,
         HttpStatus: HttpStatus.NOT_FOUND,
+        error: `[ERROR] 해당 예측지표를 찾을 수 없습니다.`,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        cause: Error,
       }),
     );
   });

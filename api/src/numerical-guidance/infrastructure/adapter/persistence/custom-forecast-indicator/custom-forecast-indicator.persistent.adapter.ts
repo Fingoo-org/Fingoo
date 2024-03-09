@@ -39,19 +39,25 @@ export class CustomForecastIndicatorPersistentAdapter
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
-          message: `[ERROR] 해당 예측지표를 찾을 수 없습니다.`,
-          error: error,
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] 해당 예측지표를 찾을 수 없습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
         });
       }
       if (error instanceof QueryFailedError) {
         throw new BadRequestException({
-          message: '[ERROR] 예측지표를 불러오는 중 오류가 발생했습니다. id 형식이 uuid인지 확인해주세요.',
-          error: error,
+          HttpStatus: HttpStatus.BAD_REQUEST,
+          error: '[ERROR] 예측지표를 불러오는 중 오류가 발생했습니다. id 형식이 uuid인지 확인해주세요.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
         });
       } else {
         throw new InternalServerErrorException({
-          message: '[ERROR] 얘측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
-          error: error,
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 얘측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
         });
       }
     }
@@ -69,7 +75,24 @@ export class CustomForecastIndicatorPersistentAdapter
       });
 
       return customForecastIndicators;
-    } catch (error) {}
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        console.log(memberId);
+        throw new NotFoundException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.`,
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 얘측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      }
+    }
   }
 
   async createCustomForecastIndicator(
@@ -88,15 +111,17 @@ export class CustomForecastIndicatorPersistentAdapter
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
-          message: error,
-          error: `[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.`,
           HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.`,
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
         });
       } else {
         throw new InternalServerErrorException({
-          message: `[ERROR] 예측지표를 생성하는 중 예상치 못한 문제가 발생했습니다.`,
-          error: error,
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 얘측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
         });
       }
     }
