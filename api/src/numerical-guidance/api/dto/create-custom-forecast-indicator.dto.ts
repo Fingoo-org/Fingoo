@@ -1,4 +1,4 @@
-import { IsInt, IsString, IsUUID } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCustomForecatIndicatorDto {
@@ -10,11 +10,4 @@ export class CreateCustomForecatIndicatorDto {
   @IsString()
   @IsUUID()
   targetIndicatorId: string;
-
-  @ApiProperty({
-    example: '1',
-    description: '요청 유저의 pk',
-  })
-  @IsInt()
-  readonly memberId: number;
 }

@@ -1,4 +1,4 @@
-import { IsInt, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateIndicatorBoardMetadataDto {
@@ -8,11 +8,4 @@ export class CreateIndicatorBoardMetadataDto {
   })
   @IsString()
   indicatorBoardMetadataName: string;
-
-  @ApiProperty({
-    example: '1',
-    description: '요청 유저의 pk',
-  })
-  @IsInt()
-  readonly memberId: number;
 }
