@@ -96,4 +96,14 @@ export class CustomForecastIndicator extends AggregateRoot {
       sourceIndicatorIdsAndWeights,
     );
   }
+
+  public updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[]) {
+    const newSourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [...this.sourceIndicatorIdsAndWeights];
+
+    for (let i = 0; i < sourceIndicatorIdsAndWeights.length; i++) {
+      newSourceIndicatorIdsAndWeights.push(sourceIndicatorIdsAndWeights[i]);
+    }
+
+    this.sourceIndicatorIdsAndWeights = newSourceIndicatorIdsAndWeights;
+  }
 }
