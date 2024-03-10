@@ -1,17 +1,19 @@
 import {
-  FluctuatingIndicatorDto,
+  LiveIndicatorDto,
   IndicatorValue,
-} from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+} from 'src/numerical-guidance/application/query/get-live-indicator/live-indicator.dto';
 import * as fs from 'fs';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 import { Interval } from '../../../../utils/type/type-definition';
 
-describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
+const indicatorId: string = '160e5499-4925-4e38-bb00-8ea6d8056484';
+
+describe('LiveIndicatorKrxIntervalAdapter', () => {
   beforeEach(async () => {});
 
   it('interval을 week로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
     // given
-    const filePath = './src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
+    const filePath = './src/numerical-guidance/test/data/liveIndicatorKrxIntervalTestData.json';
 
     const data = fs.readFileSync(filePath, 'utf8');
     const jsonData = JSON.parse(data);
@@ -27,7 +29,8 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
       });
     }
 
-    const testData = FluctuatingIndicatorDto.create({
+    const testData = LiveIndicatorDto.create({
+      indicatorId,
       type: 'k-stock',
       ticker: rawItems[0].srtnCd,
       name: rawItems[0].itmsNm,
@@ -74,7 +77,7 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
 
   it('interval을 month로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
     // given
-    const filePath = './src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
+    const filePath = './src/numerical-guidance/test/data/liveIndicatorKrxIntervalTestData.json';
 
     const data = fs.readFileSync(filePath, 'utf8');
     const jsonData = JSON.parse(data);
@@ -90,7 +93,8 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
       });
     }
 
-    const testData = FluctuatingIndicatorDto.create({
+    const testData = LiveIndicatorDto.create({
+      indicatorId,
       type: 'k-stock',
       ticker: rawItems[0].srtnCd,
       name: rawItems[0].itmsNm,
@@ -111,7 +115,7 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
 
   it('interval을 year로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
     //given
-    const filePath = './src/numerical-guidance/test/data/fluctuatingIndicatorKrxIntervalTestData.json';
+    const filePath = './src/numerical-guidance/test/data/liveIndicatorKrxIntervalTestData.json';
 
     const data = fs.readFileSync(filePath, 'utf8');
     const jsonData = JSON.parse(data);
@@ -127,7 +131,8 @@ describe('FluctuatingIndicatorKrxIntervalAdapter', () => {
       });
     }
 
-    const testData = FluctuatingIndicatorDto.create({
+    const testData = LiveIndicatorDto.create({
+      indicatorId,
       type: 'k-stock',
       ticker: rawItems[0].srtnCd,
       name: rawItems[0].itmsNm,

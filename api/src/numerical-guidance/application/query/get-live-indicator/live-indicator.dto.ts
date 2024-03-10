@@ -6,7 +6,13 @@ export type IndicatorValue = {
   value: string;
 };
 
-export class FluctuatingIndicatorDto {
+export class LiveIndicatorDto {
+  @ApiProperty({
+    example: 'e1fa7b2a-4823-4351-8d26-738680cb6aa1',
+    description: '지표 PK',
+  })
+  indicatorId: string;
+
   @ApiProperty({
     example: 'k-stock',
     description: '지표 종류',
@@ -32,7 +38,7 @@ export class FluctuatingIndicatorDto {
   market: Market;
 
   @ApiProperty({
-    example: 67,
+    example: 2,
     description: 'cursor metadata',
   })
   totalCount: number;
@@ -53,6 +59,7 @@ export class FluctuatingIndicatorDto {
   values: IndicatorValue[];
 
   private constructor(
+    indicatorId: string,
     type: IndicatorType,
     ticker: string,
     name: string,
@@ -60,6 +67,7 @@ export class FluctuatingIndicatorDto {
     totalCount: number,
     values: IndicatorValue[],
   ) {
+    this.indicatorId = indicatorId;
     this.type = type;
     this.ticker = ticker;
     this.name = name;
@@ -68,8 +76,8 @@ export class FluctuatingIndicatorDto {
     this.values = values;
   }
 
-  static create({ type, ticker, name, market, totalCount, values }): FluctuatingIndicatorDto {
-    return new FluctuatingIndicatorDto(type, ticker, name, market, totalCount, values);
+  static create({ indicatorId, type, ticker, name, market, totalCount, values }): LiveIndicatorDto {
+    return new LiveIndicatorDto(indicatorId, type, ticker, name, market, totalCount, values);
   }
 }
 export { IndicatorType };

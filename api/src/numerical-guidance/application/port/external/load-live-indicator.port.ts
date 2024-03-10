@@ -1,5 +1,5 @@
-import { FluctuatingIndicatorDto } from '../../query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { LiveIndicatorDto } from '../../query/get-live-indicator/live-indicator.dto';
 
 export interface LoadLiveIndicatorPort {
-  loadLiveIndicator(ticker: string, interval: string, market: string): Promise<FluctuatingIndicatorDto>;
+  loadLiveIndicator(indicatorId: string, ticker: string, interval: string, market: string): Promise<LiveIndicatorDto>;
 }

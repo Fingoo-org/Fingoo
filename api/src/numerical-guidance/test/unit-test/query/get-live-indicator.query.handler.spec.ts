@@ -1,17 +1,17 @@
 import { Test } from '@nestjs/testing';
-import { CachingFluctuatingIndicatorPort } from '../../../application/port/cache/caching-fluctuatingIndicator.port';
-import { LoadCachedFluctuatingIndicatorPort } from '../../../application/port/cache/load-cached-fluctuatingIndicator.port';
-import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';
+import { CachingLiveIndicatorPort } from '../../../application/port/cache/caching-live-indicator.port';
+import { LoadCachedLiveIndicatorPort } from '../../../application/port/cache/load-cached-live-indicator.port';
+import { liveIndicatorTestData } from '../../data/liveIndicator.test.data';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
-import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { LiveIndicatorDto } from '../../../application/query/get-live-indicator/live-indicator.dto';
 import { GetLiveIndicatorQueryHandler } from '../../../application/query/get-live-indicator/get-live-indicator.query.handler';
 import { LoadLiveIndicatorPort } from '../../../application/port/external/load-live-indicator.port';
 import { GetLiveIndicatorQuery } from '../../../application/query/get-live-indicator/get-live-indicator.query';
 import { Indicator, IndicatorDto } from '../../../application/query/get-indicator/indicator.dto';
 import { LoadIndicatorPort } from '../../../application/port/persistence/indicator/load-indicator.port';
 
-const testData = fluctuatingIndicatorTestData;
+const testData = liveIndicatorTestData;
 const testIndicator: Indicator = {
   id: '160e5499-4925-4e38-bb00-8ea6d8056484',
   name: '삼성전자',
@@ -22,10 +22,10 @@ const testIndicator: Indicator = {
 
 describe('GetLiveIndicatorQueryHandler', () => {
   let getLiveIndicatorQueryHandler: GetLiveIndicatorQueryHandler;
-  let loadCachedFluctuatingIndicatorPort: LoadCachedFluctuatingIndicatorPort;
+  let loadCachedLiveIndicatorPort: LoadCachedLiveIndicatorPort;
   let loadLiveIndicatorPort: LoadLiveIndicatorPort;
   let loadIndicatorPort: LoadIndicatorPort;
-  let cachingFluctuatingIndicatorPort: CachingFluctuatingIndicatorPort;
+  let cachingLiveIndicatorPort: CachingLiveIndicatorPort;
 
   beforeEach(async () => {
     const testRedis = new Map<string, string>();
@@ -34,9 +34,9 @@ describe('GetLiveIndicatorQueryHandler', () => {
       providers: [
         GetLiveIndicatorQueryHandler,
         {
-          provide: 'LoadCachedFluctuatingIndicatorPort',
+          provide: 'LoadCachedLiveIndicatorPort',
           useValue: {
-            loadCachedFluctuatingIndicator: jest.fn().mockImplementation((key) => {
+            loadCachedLiveIndicator: jest.fn().mockImplementation((key) => {
               return testRedis.get(key);
             }),
           },
@@ -45,7 +45,7 @@ describe('GetLiveIndicatorQueryHandler', () => {
           provide: 'LoadLiveIndicatorPort',
           useValue: {
             loadLiveIndicator: jest.fn().mockImplementation(() => {
-              return FluctuatingIndicatorDto.create(testData);
+              return LiveIndicatorDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
             }),
           },
         },
@@ -58,9 +58,9 @@ describe('GetLiveIndicatorQueryHandler', () => {
           },
         },
         {
-          provide: 'CachingFluctuatingIndicatorPort',
+          provide: 'CachingLiveIndicatorPort',
           useValue: {
-            cachingFluctuatingIndicator: jest.fn().mockImplementation((key, value) => {
+            cachingLiveIndicator: jest.fn().mockImplementation((key, value) => {
               testRedis.set(key, value);
             }),
           },
@@ -69,10 +69,10 @@ describe('GetLiveIndicatorQueryHandler', () => {
     }).compile();
 
     getLiveIndicatorQueryHandler = module.get(GetLiveIndicatorQueryHandler);
-    loadCachedFluctuatingIndicatorPort = module.get('LoadCachedFluctuatingIndicatorPort');
+    loadCachedLiveIndicatorPort = module.get('LoadCachedLiveIndicatorPort');
     loadIndicatorPort = module.get('LoadIndicatorPort');
     loadLiveIndicatorPort = module.get('LoadLiveIndicatorPort');
-    cachingFluctuatingIndicatorPort = module.get('CachingFluctuatingIndicatorPort');
+    cachingLiveIndicatorPort = module.get('CachingLiveIndicatorPort');
   }, 10000);
 
   it('변동지표를 불러온다.', async () => {
@@ -88,7 +88,7 @@ describe('GetLiveIndicatorQueryHandler', () => {
     //then
     expect(loadLiveIndicatorPort.loadLiveIndicator).toHaveBeenCalledTimes(1);
     expect(loadIndicatorPort.loadIndicator).toHaveBeenCalledTimes(1);
-    expect(cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator).toHaveBeenCalledTimes(1);
+    expect(cachingLiveIndicatorPort.cachingLiveIndicator).toHaveBeenCalledTimes(1);
   });
 
   it('변동지표가 redis에서 불러와진다.', async () => {
@@ -103,8 +103,8 @@ describe('GetLiveIndicatorQueryHandler', () => {
     await getLiveIndicatorQueryHandler.execute(getLiveIndicatorQuery);
 
     //then
-    expect(loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator).toHaveBeenCalledTimes(2);
-    expect(cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator).toHaveBeenCalledTimes(1);
+    expect(loadCachedLiveIndicatorPort.loadCachedLiveIndicator).toHaveBeenCalledTimes(2);
+    expect(cachingLiveIndicatorPort.cachingLiveIndicator).toHaveBeenCalledTimes(1);
     expect(loadIndicatorPort.loadIndicator).toHaveBeenCalledTimes(2);
     expect(loadLiveIndicatorPort.loadLiveIndicator).toHaveBeenCalledTimes(1);
   });

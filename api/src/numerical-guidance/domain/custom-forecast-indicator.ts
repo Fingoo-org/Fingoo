@@ -1,5 +1,5 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
-import { IndicatorType } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { IndicatorType } from '../application/query/get-live-indicator/live-indicator.dto';
 import { CustomForecastIndicatorNameShouldNotEmpty } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 import { SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
 

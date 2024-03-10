@@ -8,10 +8,9 @@ import {
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import {
-  FluctuatingIndicatorDto,
+  LiveIndicatorDto,
   IndicatorValue,
-} from 'src/numerical-guidance/application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
-import { LoadFluctuatingIndicatorPort } from 'src/numerical-guidance/application/port/external/load-fluctuatingIndicator.port';
+} from 'src/numerical-guidance/application/query/get-live-indicator/live-indicator.dto';
 import { Interval, Market } from 'src/utils/type/type-definition';
 import { LoadLiveIndicatorPort } from '../../../application/port/external/load-live-indicator.port';
 import { IndicatorValueManager } from '../../../util/indicator-value-manager';
@@ -22,47 +21,66 @@ export const MONTH_NUMBER_OF_DAYS = 1000;
 export const YEAR_NUMBER_OF_DAYS = 10000;
 
 @Injectable()
-export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorPort, LoadLiveIndicatorPort {
+export class LiveIndicatorKrxAdapter implements LoadLiveIndicatorPort {
   constructor(
     private readonly api: HttpService,
     @Inject('IndicatorValueManager')
     private readonly indicatorValueManager: IndicatorValueManager<IndicatorValue>,
   ) {}
 
-  async loadFluctuatingIndicator(
-    dataCount: number,
+  async loadLiveIndicator(
+    indicatorId: string,
     ticker: string,
     interval: Interval,
     market: Market,
-    endDate: string,
-  ): Promise<FluctuatingIndicatorDto> {
-    const startDate = this.getStartDate(endDate, dataCount);
-    const responseData = await this.createKRXResponseData(dataCount, ticker, market, startDate, endDate);
-
-    responseData.values = await this.indicatorValueManager.adjustValuesByInterval(responseData.values, interval);
-    return responseData;
-  }
-
-  async loadLiveIndicator(ticker: string, interval: Interval, market: Market): Promise<FluctuatingIndicatorDto> {
+  ): Promise<LiveIndicatorDto> {
     const endDate = this.indicatorValueManager.formatDateToString(new Date());
     let startDate: string;
-    let responseData: FluctuatingIndicatorDto;
+    let responseData: LiveIndicatorDto;
     switch (interval) {
       case 'day':
         startDate = this.getStartDate(endDate, DAY_NUMBER_OF_DAYS);
-        responseData = await this.createKRXResponseData(DAY_NUMBER_OF_DAYS, ticker, market, startDate, endDate);
+        responseData = await this.createKRXResponseData(
+          DAY_NUMBER_OF_DAYS,
+          indicatorId,
+          ticker,
+          market,
+          startDate,
+          endDate,
+        );
         break;
       case 'week':
         startDate = this.getStartDate(endDate, WEEK_NUMBER_OF_DAYS);
-        responseData = await this.createKRXResponseData(WEEK_NUMBER_OF_DAYS, ticker, market, startDate, endDate);
+        responseData = await this.createKRXResponseData(
+          WEEK_NUMBER_OF_DAYS,
+          indicatorId,
+          ticker,
+          market,
+          startDate,
+          endDate,
+        );
         break;
       case 'month':
         startDate = this.getStartDate(endDate, MONTH_NUMBER_OF_DAYS);
-        responseData = await this.createKRXResponseData(MONTH_NUMBER_OF_DAYS, ticker, market, startDate, endDate);
+        responseData = await this.createKRXResponseData(
+          MONTH_NUMBER_OF_DAYS,
+          indicatorId,
+          ticker,
+          market,
+          startDate,
+          endDate,
+        );
         break;
       case 'year':
         startDate = this.getStartDate(endDate, YEAR_NUMBER_OF_DAYS);
-        responseData = await this.createKRXResponseData(YEAR_NUMBER_OF_DAYS, ticker, market, startDate, endDate);
+        responseData = await this.createKRXResponseData(
+          YEAR_NUMBER_OF_DAYS,
+          indicatorId,
+          ticker,
+          market,
+          startDate,
+          endDate,
+        );
         break;
     }
 
@@ -72,11 +90,12 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
 
   async createKRXResponseData(
     dataCount: number,
+    indicatorId: string,
     ticker: string,
     market: Market,
     startDate: string,
     endDate: string,
-  ): Promise<FluctuatingIndicatorDto> {
+  ): Promise<LiveIndicatorDto> {
     try {
       const serviceKey: string = process.env.SERVICE_KEY;
       const request_url: string = `http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=${startDate}&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
@@ -96,10 +115,11 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
       }
 
       const type = 'k-stock';
-      const responseData = FluctuatingIndicatorDto.create({
+      const responseData = LiveIndicatorDto.create({
+        indicatorId: indicatorId,
         type,
         ticker,
-        name: rawValues.itmsNm,
+        name: rawValues[0].itmsNm,
         market,
         totalCount,
         values,
@@ -134,7 +154,7 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     }
   }
 
-  private checkResponseData(responseData: FluctuatingIndicatorDto) {
+  private checkResponseData(responseData: LiveIndicatorDto) {
     if (!responseData) {
       throw new Error();
     }

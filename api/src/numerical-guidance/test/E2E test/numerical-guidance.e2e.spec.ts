@@ -21,8 +21,8 @@ import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../applicatio
 import { AuthGuard } from '../../../auth/auth.guard';
 import { of } from 'rxjs';
 import { GetLiveIndicatorQueryHandler } from '../../application/query/get-live-indicator/get-live-indicator.query.handler';
-import { FluctuatingIndicatorRedisAdapter } from '../../infrastructure/adapter/redis/fluctuatingIndicator.redis.adapter';
-import { FluctuatingIndicatorKrxAdapter } from '../../infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
+import { LiveIndicatorRedisAdapter } from '../../infrastructure/adapter/redis/live-indicator.redis.adapter';
+import { LiveIndicatorKrxAdapter } from '../../infrastructure/adapter/krx/live-indicator.krx.adapter';
 import { HttpModule } from '@nestjs/axios';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { RedisContainer } from '@testcontainers/redis';
@@ -48,7 +48,7 @@ describe('NumericalGuidance E2E Test', () => {
   let dataSource: DataSource;
   let DBenvironment;
   let redisEnvironment;
-  let fluctuatingIndicatorRedisAdapter: FluctuatingIndicatorRedisAdapter;
+  let liveIndicatorRedisAdapter: LiveIndicatorRedisAdapter;
 
   const seeding = async () => {
     const indicatorEntity = dataSource.getRepository(IndicatorEntity);
@@ -219,24 +219,24 @@ describe('NumericalGuidance E2E Test', () => {
           DeleteIndicatorIdCommandHandler,
           DeleteIndicatorBoardMetadataCommandHandler,
           UpdateIndicatorBoardMetadataNameCommandHandler,
-          FluctuatingIndicatorRedisAdapter,
+          LiveIndicatorRedisAdapter,
           CreateCustomForecastIndicatorCommandHandler,
           GetCustomForecastIndicatorQueryHandler,
           {
-            provide: 'LoadCachedFluctuatingIndicatorPort',
-            useClass: FluctuatingIndicatorRedisAdapter,
+            provide: 'LoadCachedLiveIndicatorPort',
+            useClass: LiveIndicatorRedisAdapter,
           },
           {
             provide: 'LoadLiveIndicatorPort',
-            useClass: FluctuatingIndicatorKrxAdapter,
+            useClass: LiveIndicatorKrxAdapter,
           },
           {
             provide: 'LoadHistoryIndicatorPort',
             useClass: HistoryIndicatorPersistentAdapter,
           },
           {
-            provide: 'CachingFluctuatingIndicatorPort',
-            useClass: FluctuatingIndicatorRedisAdapter,
+            provide: 'CachingLiveIndicatorPort',
+            useClass: LiveIndicatorRedisAdapter,
           },
           {
             provide: 'CreateIndicatorBoardMetadataPort',
@@ -300,7 +300,7 @@ describe('NumericalGuidance E2E Test', () => {
         ],
       }).compile(),
     ]);
-    fluctuatingIndicatorRedisAdapter = module.get(FluctuatingIndicatorRedisAdapter);
+    liveIndicatorRedisAdapter = module.get(LiveIndicatorRedisAdapter);
     dataSource = module.get<DataSource>(DataSource);
     await seeding();
     app = module.createNestApplication();
@@ -320,7 +320,7 @@ describe('NumericalGuidance E2E Test', () => {
   afterAll(async () => {
     await DBenvironment.stop();
     await redisEnvironment.stop();
-    await fluctuatingIndicatorRedisAdapter.disconnectRedis();
+    await liveIndicatorRedisAdapter.disconnectRedis();
     await app.close();
   });
 
