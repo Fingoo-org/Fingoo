@@ -377,7 +377,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await expect(async () => {
       await indicatorBoardMetadataPersistentAdapter.deleteIndicatorBoardMetadata(invalidId);
     }).rejects.toThrow(
-      new NotFoundException({
+      new BadRequestException({
         HttpStatus: HttpStatus.BAD_REQUEST,
         message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
         error: `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
@@ -437,7 +437,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await expect(async () => {
       await indicatorBoardMetadataPersistentAdapter.updateIndicatorBoardMetadataName(invalidIndicatorBoardMetadata);
     }).rejects.toThrow(
-      new NotFoundException({
+      new BadRequestException({
         HttpStatus: HttpStatus.BAD_REQUEST,
         message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
         error: `[ERROR] 지표보드 메타데이터의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
