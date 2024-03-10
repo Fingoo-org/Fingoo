@@ -1,4 +1,11 @@
-import { HttpStatus, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import {
   FluctuatingIndicatorDto,
@@ -104,15 +111,24 @@ export class FluctuatingIndicatorKrxAdapter implements LoadFluctuatingIndicatorP
     } catch (error) {
       if (error instanceof Error) {
         throw new NotFoundException({
-          message: '[ERROR] API response body 값을 찾을 수 없습니다.',
-          error: error,
           HttpStatus: HttpStatus.NOT_FOUND,
+          error: '[ERROR] API response body 값을 찾을 수 없습니다.',
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else if (error instanceof BadRequestException) {
+        throw new BadRequestException({
+          HttpStatus: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] 잘못된 요청값입니다. indicatorId, interval이 올바른지 확인해주세요.`,
+          message: '입력값이 올바른지 확인해주세요. 지표는 day, week, month, year 별로 확인 가능합니다.',
+          cause: error,
         });
       } else {
         throw new InternalServerErrorException({
-          message: `[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.`,
-          error: error,
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: `[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.`,
+          message: '서버에 오류가 발생했습니다.',
+          cause: error,
         });
       }
     }

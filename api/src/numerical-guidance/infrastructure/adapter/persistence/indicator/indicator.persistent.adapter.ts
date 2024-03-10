@@ -30,22 +30,25 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
-          message: `[ERROR] id: ${id} 지표를 찾을 수 없습니다.`,
-          error: error,
           HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] id: ${id} 지표를 찾을 수 없습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
         });
       } else if (error instanceof TypeORMError) {
         throw new BadRequestException({
-          message: `[ERROR] 지표를 불러오는 도중에 오류가 발생했습니다.
-          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
-          error: error,
           HttpStatus: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] 지표를 불러오는 도중에 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
         });
       } else {
         throw new InternalServerErrorException({
-          message: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
-          error: error,
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요. 잠시후 다시 시도해주세요.',
+          cause: error,
         });
       }
     }
@@ -59,21 +62,24 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
-          message: `[ERROR] 지표들를 찾을 수 없습니다.`,
-          error: error,
           HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] 지표들를 찾을 수 없습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
         });
       } else if (error instanceof TypeORMError) {
         throw new BadRequestException({
-          message: `[ERROR] 지표를 불러오는 도중에 entity 오류가 발생했습니다.`,
-          error: error,
           HttpStatus: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] 지표를 불러오는 도중에 entity 오류가 발생했습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
         });
       } else {
         throw new InternalServerErrorException({
-          message: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
-          error: error,
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
         });
       }
     }
