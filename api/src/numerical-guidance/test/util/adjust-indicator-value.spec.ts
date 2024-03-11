@@ -1,6 +1,6 @@
 import { AdjustIndicatorValue } from '../../util/adjust-indicator-value';
 import * as fs from 'fs';
-import { IndicatorValue } from '../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { IndicatorValue } from '../../application/query/get-live-indicator/live-indicator.dto';
 import { Interval } from '../../../utils/type/type-definition';
 
 const filePath = './src/numerical-guidance/test/data/history-indicator.json';

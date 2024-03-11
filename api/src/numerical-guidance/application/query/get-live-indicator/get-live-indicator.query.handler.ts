@@ -2,10 +2,10 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { GetLiveIndicatorQuery } from './get-live-indicator.query';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { LoadLiveIndicatorPort } from '../../port/external/load-live-indicator.port';
-import { FluctuatingIndicatorDto } from '../get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { LiveIndicatorDto } from './live-indicator.dto';
 import { Interval } from '../../../../utils/type/type-definition';
-import { CachingFluctuatingIndicatorPort } from '../../port/cache/caching-fluctuatingIndicator.port';
-import { LoadCachedFluctuatingIndicatorPort } from '../../port/cache/load-cached-fluctuatingIndicator.port';
+import { CachingLiveIndicatorPort } from '../../port/cache/caching-live-indicator.port';
+import { LoadCachedLiveIndicatorPort } from '../../port/cache/load-cached-live-indicator.port';
 import { LoadIndicatorPort } from '../../port/persistence/indicator/load-indicator.port';
 
 @Injectable()
@@ -15,15 +15,15 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
   constructor(
     @Inject('LoadLiveIndicatorPort')
     private readonly loadLiveIndicatorPort: LoadLiveIndicatorPort,
-    @Inject('LoadCachedFluctuatingIndicatorPort')
-    private readonly loadCachedFluctuatingIndicatorPort: LoadCachedFluctuatingIndicatorPort,
-    @Inject('CachingFluctuatingIndicatorPort')
-    private readonly cachingFluctuatingIndicatorPort: CachingFluctuatingIndicatorPort,
+    @Inject('LoadCachedLiveIndicatorPort')
+    private readonly loadCachedLiveIndicatorPort: LoadCachedLiveIndicatorPort,
+    @Inject('CachingLiveIndicatorPort')
+    private readonly cachingLiveIndicatorPort: CachingLiveIndicatorPort,
     @Inject('LoadIndicatorPort')
     private readonly loadIndicatorPort: LoadIndicatorPort,
   ) {}
 
-  async execute(query: GetLiveIndicatorQuery): Promise<FluctuatingIndicatorDto> {
+  async execute(query: GetLiveIndicatorQuery): Promise<LiveIndicatorDto> {
     const { indicatorId, interval } = query;
 
     const indicatorDto = await this.loadIndicatorPort.loadIndicator(indicatorId);
@@ -31,18 +31,22 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
 
     const key = this.createLiveIndicatorKey(indicatorId, interval);
 
-    let fluctuatingIndicatorDto: FluctuatingIndicatorDto =
-      await this.loadCachedFluctuatingIndicatorPort.loadCachedFluctuatingIndicator(key);
+    let fluctuatingIndicatorDto: LiveIndicatorDto = await this.loadCachedLiveIndicatorPort.loadCachedLiveIndicator(key);
 
     if (this.isNotCached(fluctuatingIndicatorDto)) {
-      fluctuatingIndicatorDto = await this.loadLiveIndicatorPort.loadLiveIndicator(ticker, interval, market);
-      await this.cachingFluctuatingIndicatorPort.cachingFluctuatingIndicator(key, fluctuatingIndicatorDto);
+      fluctuatingIndicatorDto = await this.loadLiveIndicatorPort.loadLiveIndicator(
+        indicatorId,
+        ticker,
+        interval,
+        market,
+      );
+      await this.cachingLiveIndicatorPort.cachingLiveIndicator(key, fluctuatingIndicatorDto);
       this.logger.log('KRX 호출');
     }
     return fluctuatingIndicatorDto;
   }
 
-  private isNotCached(fluctuatingIndicatorDto: FluctuatingIndicatorDto): boolean {
+  private isNotCached(fluctuatingIndicatorDto: LiveIndicatorDto): boolean {
     return fluctuatingIndicatorDto == null;
   }
 

@@ -1,18 +1,14 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { GetFluctuatingIndicatorQuery } from '../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query';
 import {
-  FluctuatingIndicatorDto,
+  LiveIndicatorDto,
   IndicatorValueSwaggerSchema,
-} from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
-import { GetFluctuatingIndicatorDto } from './dto/get-fluctuatingIndicator.dto';
-import { GetFluctuatingIndicatorWithoutCacheDto } from './dto/get-fluctuatingIndicator-without-cache.dto';
+} from '../application/query/get-live-indicator/live-indicator.dto';
 import {
   Indicator,
   IndicatorSwaggerSchema,
 } from 'src/numerical-guidance/application/query/get-indicator/indicator.dto';
 import { GetIndicatorsQuery } from 'src/numerical-guidance/application/query/get-indicator/get-indicators.query';
-import { GetFluctuatingIndicatorWithoutCacheQuery } from 'src/numerical-guidance/application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query';
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-metadata.dto';
 import { CreateIndicatorBoardMetadataCommand } from '../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command';
@@ -51,7 +47,7 @@ export class NumericalGuidanceController {
   ) {}
 
   @ApiOperation({ summary: 'Live 지표를 불러옵니다.' })
-  @ApiOkResponse({ type: FluctuatingIndicatorDto })
+  @ApiOkResponse({ type: LiveIndicatorDto })
   @ApiExceptionResponse(
     400,
     '입력값이 올바른지 확인해주세요. 지표는 day, week, month, year 별로 확인 가능합니다.',
@@ -68,70 +64,8 @@ export class NumericalGuidanceController {
     '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.',
   )
   @Get('/indicators/live')
-  async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<FluctuatingIndicatorDto> {
+  async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<LiveIndicatorDto> {
     const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
-    return this.queryBus.execute(query);
-  }
-
-  @ApiOperation({ summary: '변동지표를 불러옵니다.' })
-  @ApiOkResponse({ type: FluctuatingIndicatorDto })
-  @ApiExceptionResponse(
-    400,
-    '입력값이 올바른지 확인해주세요. 지표는 day, week, month, year 별로 확인 가능합니다.',
-    '[ERROR] 잘못된 요청값입니다. indicatorId, interval이 올바른지 확인해주세요.',
-  )
-  @ApiExceptionResponse(
-    404,
-    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
-    '[ERROR] API response body 값을 찾을 수 없습니다.',
-  )
-  @ApiExceptionResponse(
-    500,
-    '서버에 오류가 발생했습니다.',
-    '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.',
-  )
-  @Get('/indicators/k-stock')
-  async getFluctuatingIndicator(
-    @Query() getFluctuatingIndicatorDto: GetFluctuatingIndicatorDto,
-  ): Promise<FluctuatingIndicatorDto> {
-    const query = new GetFluctuatingIndicatorQuery(
-      getFluctuatingIndicatorDto.dataCount,
-      getFluctuatingIndicatorDto.ticker,
-      getFluctuatingIndicatorDto.market,
-      getFluctuatingIndicatorDto.interval,
-      getFluctuatingIndicatorDto.endDate,
-    );
-    return this.queryBus.execute(query);
-  }
-
-  @ApiOperation({ summary: '캐시와 상관없이 변동지표를 불러옵니다.' })
-  @ApiOkResponse({ type: FluctuatingIndicatorDto })
-  @ApiExceptionResponse(
-    400,
-    '입력값이 올바른지 확인해주세요. 지표는 day, week, month, year 별로 확인 가능합니다.',
-    '[ERROR] 잘못된 요청값입니다. indicatorId, interval이 올바른지 확인해주세요.',
-  )
-  @ApiExceptionResponse(
-    404,
-    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
-    '[ERROR] API response body 값을 찾을 수 없습니다.',
-  )
-  @ApiExceptionResponse(
-    500,
-    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
-    '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.',
-  )
-  @Get('/without-cache')
-  async getFluctuatingIndicatorWithoutCache(
-    @Query() getFluctuatingIndicatorWithoutCacheDto: GetFluctuatingIndicatorWithoutCacheDto,
-  ): Promise<FluctuatingIndicatorDto> {
-    const query = new GetFluctuatingIndicatorWithoutCacheQuery(
-      getFluctuatingIndicatorWithoutCacheDto.dataCount,
-      getFluctuatingIndicatorWithoutCacheDto.ticker,
-      getFluctuatingIndicatorWithoutCacheDto.interval,
-      getFluctuatingIndicatorWithoutCacheDto.market,
-      getFluctuatingIndicatorWithoutCacheDto.endDate,
-    );
     return this.queryBus.execute(query);
   }
 

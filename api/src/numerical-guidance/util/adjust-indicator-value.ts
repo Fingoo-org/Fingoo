@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IndicatorValueManager } from './indicator-value-manager';
-import { IndicatorValue } from '../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { IndicatorValue } from '../application/query/get-live-indicator/live-indicator.dto';
 
 @Injectable()
 export class AdjustIndicatorValue extends IndicatorValueManager<IndicatorValue> {

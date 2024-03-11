@@ -1,4 +1,4 @@
-export const fluctuatingIndicatorTestData = {
+export const liveIndicatorTestData = {
   type: 'k-stock',
   ticker: '005930',
   name: '삼성전자',

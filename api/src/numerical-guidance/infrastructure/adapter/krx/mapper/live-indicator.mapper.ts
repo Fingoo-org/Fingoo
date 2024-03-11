@@ -1,11 +1,9 @@
-import {
-  FluctuatingIndicatorDto,
-  IndicatorValue,
-} from '../../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { LiveIndicatorDto, IndicatorValue } from '../../../../application/query/get-live-indicator/live-indicator.dto';
 
-export class FluctuatingIndicatorMapper {
+export class LiveIndicatorMapper {
   static mapToDto(stringData: string) {
     const data: {
+      indicatorId: string;
       type: string;
       ticker: number;
       name: number;
@@ -14,7 +12,8 @@ export class FluctuatingIndicatorMapper {
       values: IndicatorValue[];
     } = JSON.parse(stringData);
 
-    return FluctuatingIndicatorDto.create({
+    return LiveIndicatorDto.create({
+      indicatorId: data.indicatorId,
       type: data.type,
       ticker: data.ticker,
       name: data.name,

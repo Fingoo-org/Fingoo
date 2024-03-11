@@ -1,5 +1,5 @@
 import { Indicator } from '../get-indicator/indicator.dto';
-import { IndicatorValue } from '../get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { IndicatorValue } from '../get-live-indicator/live-indicator.dto';
 
 export type HistoryIndicatorValue = {
   date: Date;

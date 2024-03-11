@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
 import { NumericalGuidanceController } from './api/numerical-guidance.controller';
-import { GetFluctuatingIndicatorQueryHandler } from './application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query.handler';
-import { FluctuatingIndicatorRedisAdapter } from './infrastructure/adapter/redis/fluctuatingIndicator.redis.adapter';
-import { FluctuatingIndicatorKrxAdapter } from './infrastructure/adapter/krx/fluctuatingIndicator.krx.adapter';
+import { LiveIndicatorRedisAdapter } from './infrastructure/adapter/redis/live-indicator.redis.adapter';
+import { LiveIndicatorKrxAdapter } from './infrastructure/adapter/krx/live-indicator.krx.adapter';
 import { CqrsModule } from '@nestjs/cqrs';
 import { HttpModule } from '@nestjs/axios';
 import { GetIndicatorsQueryHandler } from './application/query/get-indicator/get-indicators.query.handler';
 import { IndicatorPersistentAdapter } from './infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
-import { GetFluctuatingIndicatorWithoutCacheQueryHandler } from './application/query/get-fluctuatingIndicator-without-cache/get-fluctuatingIndicator-without-cache.query.handler';
 import { CreateIndicatorBoardMetadataCommandHandler } from './application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -54,10 +52,8 @@ import { GetCustomForecastIndicatorQueryHandler } from './application/query/get-
   providers: [
     AdjustIndicatorValue,
     AuthService,
-    GetFluctuatingIndicatorQueryHandler,
     GetLiveIndicatorQueryHandler,
     GetHistoryIndicatorQueryHandler,
-    GetFluctuatingIndicatorWithoutCacheQueryHandler,
     GetIndicatorsQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,
     GetIndicatorBoardMetadataQueryHandler,
@@ -69,24 +65,20 @@ import { GetCustomForecastIndicatorQueryHandler } from './application/query/get-
     CreateCustomForecastIndicatorCommandHandler,
     GetCustomForecastIndicatorQueryHandler,
     {
-      provide: 'LoadCachedFluctuatingIndicatorPort',
-      useClass: FluctuatingIndicatorRedisAdapter,
-    },
-    {
-      provide: 'LoadFluctuatingIndicatorPort',
-      useClass: FluctuatingIndicatorKrxAdapter,
+      provide: 'LoadCachedLiveIndicatorPort',
+      useClass: LiveIndicatorRedisAdapter,
     },
     {
       provide: 'LoadLiveIndicatorPort',
-      useClass: FluctuatingIndicatorKrxAdapter,
+      useClass: LiveIndicatorKrxAdapter,
     },
     {
       provide: 'LoadHistoryIndicatorPort',
       useClass: HistoryIndicatorPersistentAdapter,
     },
     {
-      provide: 'CachingFluctuatingIndicatorPort',
-      useClass: FluctuatingIndicatorRedisAdapter,
+      provide: 'CachingLiveIndicatorPort',
+      useClass: LiveIndicatorRedisAdapter,
     },
     {
       provide: 'LoadIndicatorsPort',

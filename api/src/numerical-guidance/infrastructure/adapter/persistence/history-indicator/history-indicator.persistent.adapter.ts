@@ -9,7 +9,7 @@ import { HistoryIndicatorDto } from '../../../../application/query/get-history-i
 import { CursorPageMetaDto } from '../../../../../utils/pagination/cursor-page.meta.dto';
 import { Interval } from '../../../../../utils/type/type-definition';
 import { HistoryIndicatorMapper } from './mapper/history-indicator.mapper';
-import { IndicatorValue } from '../../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { IndicatorValue } from '../../../../application/query/get-live-indicator/live-indicator.dto';
 import { IndicatorValueManager } from '../../../../util/indicator-value-manager';
 
 const ORDER_TYPE: string = 'DESC';

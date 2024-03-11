@@ -2,7 +2,7 @@ import { HistoryIndicatorValueEntity } from '../../history-indicator-value/entit
 import { HistoryIndicatorDto } from '../../../../../application/query/get-history-indicator/history-indicator.dto';
 import { Indicator } from '../../../../../application/query/get-indicator/indicator.dto';
 import { HistoryIndicatorEntity } from '../entity/history-indicator.entity';
-import { IndicatorValue } from '../../../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
+import { IndicatorValue } from '../../../../../application/query/get-live-indicator/live-indicator.dto';
 
 export class HistoryIndicatorMapper {
   static mapEntitiesToDto(historyIndicatorEntity: HistoryIndicatorEntity, values: IndicatorValue[]) {

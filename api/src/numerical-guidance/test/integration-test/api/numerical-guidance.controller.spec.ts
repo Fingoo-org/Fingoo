@@ -3,15 +3,14 @@ import { CqrsModule } from '@nestjs/cqrs';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { NumericalGuidanceController } from '../../../api/numerical-guidance.controller';
-import { GetFluctuatingIndicatorQueryHandler } from '../../../application/query/get-fluctuatingIndicator/get-fluctuatingIndicator.query.handler';
-import { FluctuatingIndicatorDto } from '../../../application/query/get-fluctuatingIndicator/fluctuatingIndicator.dto';
-import { fluctuatingIndicatorTestData } from '../../data/fluctuatingIndicator.test.data';
+import { LiveIndicatorDto } from '../../../application/query/get-live-indicator/live-indicator.dto';
+import { liveIndicatorTestData } from '../../data/liveIndicator.test.data';
 import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
 import { InsertIndicatorIdCommandHandler } from '../../../application/command/insert-indicator-id/insert-indicator-id.command.handler';
 import { GetCustomForecastIndicatorQueryHandler } from 'src/numerical-guidance/application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
 import { CreateCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
 
-const testData = fluctuatingIndicatorTestData;
+const testData = liveIndicatorTestData;
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -26,29 +25,20 @@ describe('NumericalGuidanceController', () => {
         imports: [CqrsModule],
         controllers: [NumericalGuidanceController],
         providers: [
-          GetFluctuatingIndicatorQueryHandler,
           CreateIndicatorBoardMetadataCommandHandler,
           InsertIndicatorIdCommandHandler,
           CreateCustomForecastIndicatorCommandHandler,
           GetCustomForecastIndicatorQueryHandler,
           {
-            provide: 'LoadCachedFluctuatingIndicatorPort',
+            provide: 'LoadCachedLiveIndicatorPort',
             useValue: {
-              loadCachedFluctuatingIndicator: jest.fn().mockImplementation(() => {
-                return FluctuatingIndicatorDto.create(testData);
+              loadCachedLiveIndicator: jest.fn().mockImplementation(() => {
+                return LiveIndicatorDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
               }),
             },
           },
           {
-            provide: 'LoadFluctuatingIndicatorPort',
-            useValue: {
-              loadFluctuatingIndicator: jest.fn().mockImplementation(() => {
-                return FluctuatingIndicatorDto.create(testData);
-              }),
-            },
-          },
-          {
-            provide: 'CachingFluctuatingIndicatorPort',
+            provide: 'CachingLiveIndicatorPort',
             useValue: {
               cachingFluctuatingIndicator: jest.fn(),
             },
@@ -93,33 +83,6 @@ describe('NumericalGuidanceController', () => {
 
   afterAll(async () => {
     await app.close();
-  });
-
-  it('/get 변동 지표를 불러온다.', () => {
-    return request(app.getHttpServer())
-      .get('/api/numerical-guidance/indicators/k-stock')
-      .query({
-        dataCount: 2,
-        ticker: '005930',
-        interval: 'day',
-        market: 'KOSPI',
-        endDate: '20240125',
-      })
-      .set('Content-Type', 'application/json')
-      .expect(HttpStatus.OK);
-  });
-
-  it('/get 사용자가 유효하지 않는 값 전송한다.', () => {
-    return request(app.getHttpServer())
-      .get('/api/numerical-guidance/indicators/k-stock')
-      .query({
-        dataCount: 2,
-        ticker: '005930',
-        market: 2,
-        endDate: '20240125',
-      })
-      .set('Content-Type', 'application/json')
-      .expect(HttpStatus.BAD_REQUEST);
   });
 
   it('/post 지표보드 메타데이터를 생성한다.', () => {
