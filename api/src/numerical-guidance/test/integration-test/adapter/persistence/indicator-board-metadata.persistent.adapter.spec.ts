@@ -163,7 +163,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // then
     const expectedName = '메타 데이터';
-    const expectedIndicatorId = [''];
+    const expectedIndicatorId = [];
 
     expect(result.indicatorBoardMetadataName).toEqual(expectedName);
     expect(result.indicatorIds).toEqual(expectedIndicatorId);
