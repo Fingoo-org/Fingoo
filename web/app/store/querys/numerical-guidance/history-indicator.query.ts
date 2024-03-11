@@ -3,6 +3,7 @@ import useSWRInfinite from 'swr/infinite';
 import { API_PATH } from '../api-path';
 import { fetchIndicatorsValue } from '../fetcher';
 import { utcFormat, utcParse } from 'd3-time-format';
+import type { Interval } from '../../stores/numerical-guidance.store';
 
 export const parseTime = utcParse('%Y%m%d');
 export const formatTime = utcFormat('%Y%m%d');
@@ -40,24 +41,28 @@ export type HistoryIndicatorValueItemResponse = {
   value: number;
 };
 
-const getFetchHistoryIndicatorValueKey = (
-  pageIndex: number,
-  previousPageData: HistoryIndicatorsValueResponse | null,
+export const useFetchHistoryIndicatorValue = (
+  indicatorIds: string[] | undefined,
+  rowsToDownload = 10,
+  interval: Interval = 'day',
 ) => {
-  const maxCursorDate = previousPageData
-    ? previousPageData.indicatorsValue
-        .map((indicator) => indicator.meta.cursor)
-        .sort()
-        .pop()
-    : '20240101';
-
-  if (!maxCursorDate) return null;
-
-  return [API_PATH.historyIndicatorsValue, 'day', maxCursorDate];
-};
-
-export const useFetchHistoryIndicatorValue = (indicatorIds: string[] | undefined, rowsToDownload = 10) => {
   // logic: interval 로직 추가 필요
+
+  const getFetchHistoryIndicatorValueKey = (
+    pageIndex: number,
+    previousPageData: HistoryIndicatorsValueResponse | null,
+  ) => {
+    const maxCursorDate = previousPageData
+      ? previousPageData.indicatorsValue
+          .map((indicator) => indicator.meta.cursor)
+          .sort()
+          .pop()
+      : '20240101';
+
+    if (!maxCursorDate) return null;
+
+    return [API_PATH.historyIndicatorsValue, interval, maxCursorDate];
+  };
 
   return useSWRInfinite<HistoryIndicatorsValueResponse>(
     getFetchHistoryIndicatorValueKey,

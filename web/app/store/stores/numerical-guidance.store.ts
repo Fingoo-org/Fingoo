@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { storeResetFns } from './reset-store';
 
-type Interval = 'day' | 'week' | 'month' | 'year';
+export type Interval = 'day' | 'week' | 'month' | 'year';
 
 type NumericalGuidanceState = {
   boardId: string;
