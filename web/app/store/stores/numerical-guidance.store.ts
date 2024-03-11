@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { storeResetFns } from './reset-store';
 
-export type Interval = 'day' | 'week' | 'month' | 'year';
+export const intervals = ['day', 'week', 'month', 'year'] as const;
+export type Interval = (typeof intervals)[number];
 
 type NumericalGuidanceState = {
   boardId: string;
@@ -17,6 +18,7 @@ type NumericalGuidanceAction = {
   setIsAdvancedChart: (isAdvancedChart: boolean) => void;
   setTabIndex: (tabIndex: number) => void;
   selectCustomForecastIndicator: (customForecastIndicatorId: string | undefined) => void;
+  setInterval: (interval: Interval) => void;
 };
 
 type NumericalGuidanceStore = NumericalGuidanceState & {
@@ -42,6 +44,7 @@ export const useNumericalGuidanceStore = create<NumericalGuidanceStore>()((set) 
       setTabIndex: (tabIndex) => set({ tabIndex }),
       selectCustomForecastIndicator: (customForecastIndicatorId) =>
         set({ selectedCustomForecastIndicatorId: customForecastIndicatorId }),
+      setInterval: (interval) => set({ interval }),
     },
   };
 });

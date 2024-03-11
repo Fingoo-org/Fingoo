@@ -43,7 +43,8 @@ class IndicatorValue {
       return {
         ...acc,
         [item.date]: {
-          [this.ticker]: typeof item.value === 'number' ? item.value : parseInt(item.value),
+          // temp: history 단위가 이상해서 일단 처리
+          [this.ticker]: typeof item.value === 'number' ? item.value : parseInt(item.value.slice(0, 2)),
         },
       };
     }, {});
