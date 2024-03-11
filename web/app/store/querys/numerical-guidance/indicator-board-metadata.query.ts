@@ -37,11 +37,18 @@ export const useAddIndicatorToMetadata = (metadataId: string | undefined) =>
     },
   );
 
+type DeleteIndicatorFromMetadataRequestArg = {
+  indicatorId: string;
+};
+
 export const useDeleteIndicatorFromMetadata = (metadataId: string | undefined) =>
-  useSWRMutation(API_PATH.indicatorBoardMetadata, async (url, { arg }: { arg: string }) => {
-    if (!metadataId) return;
-    await deleteFetcher([url, metadataId, arg]);
-  });
+  useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (url, { arg }: { arg: DeleteIndicatorFromMetadataRequestArg }) => {
+      if (!metadataId) return;
+      await deleteFetcher([url, metadataId, 'indicator', arg.indicatorId]);
+    },
+  );
 
 export type UpdateIndicatorBoardMetadataRequestBody = {
   name: string;

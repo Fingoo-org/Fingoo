@@ -18,7 +18,9 @@ export class IndicatorBoardMetadata {
   }: IndicatorBoardMetadataResponse) {
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
-    this.indicatorIds = indicatorIds;
+
+    // temp: api 문제로 임시 처리
+    this.indicatorIds = indicatorIds.filter((id) => id !== '');
     this.customForecastIndicatorIds = customForecastIndicatorIds;
   }
 

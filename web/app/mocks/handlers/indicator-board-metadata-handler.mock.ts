@@ -41,7 +41,7 @@ export const indicatorBoardMetadataHandlers = [
     },
   ),
   http.delete<metadataParam & indicatorParam>(
-    `${API_PATH.indicatorBoardMetadata}/:metadataId/:indicatorId`,
+    `${API_PATH.indicatorBoardMetadata}/:metadataId/indicator/:indicatorId`,
     async ({ params }) => {
       const { metadataId, indicatorId } = params;
       mockDB.deleteIndicatorFromMetadata(metadataId, indicatorId);

@@ -55,13 +55,18 @@ export const useSelectedIndicatorBoardMetadata = () => {
     }
 
     try {
-      deleteIndicatorTrigger(indicatorId, {
-        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorId);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+      deleteIndicatorTrigger(
+        {
+          indicatorId,
         },
-        revalidate: false,
-      });
+        {
+          optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+            convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorId);
+            return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          },
+          revalidate: false,
+        },
+      );
     } catch (e) {
       // error 처리 필요 or 전역 에러 처리
     }
