@@ -72,7 +72,13 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     return indicatorIds;
   }
 
-  constructor(id: string, indicatorBoardMetadataName: string, indicatorIds: string[]) {
+  constructor(
+    id: string,
+    indicatorBoardMetadataName: string,
+    indicatorIds: string[],
+    createdAt: Date,
+    updatedAt: Date,
+  ) {
     super();
     this.checkRule(new IndicatorBoardMetadataNameShouldNotEmptyRule(indicatorBoardMetadataName));
     this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(indicatorIds));
@@ -80,7 +86,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
     this.indicatorIds = indicatorIds;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }
