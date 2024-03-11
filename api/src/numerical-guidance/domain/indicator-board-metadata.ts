@@ -3,42 +3,18 @@ import { IndicatorBoardMetadataCountShouldNotExceedLimitRule } from './rule/Indi
 import { IndicatorBoardMetadataNameShouldNotEmptyRule } from './rule/IndicatorBoardMetadataNameShouldNotEmpty.rule';
 import { IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule } from './rule/IndicatorInIndicatorBoardMetadataShouldNotDuplicate.rule';
 import { OnlyRegisteredIdCanBeRemovedRule } from './rule/OnlyRegisteredIdCanBeRemoved.rule';
-import { ApiProperty } from '@nestjs/swagger';
 
 export class IndicatorBoardMetadata extends AggregateRoot {
-  @ApiProperty({
-    example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
-    description: '지표 보드 메티데이터 id',
-  })
   readonly id: string;
-
-  @ApiProperty({
-    example: 'name',
-    description: '지표 보드 메티데이터 name',
-  })
   indicatorBoardMetadataName: string;
-
-  @ApiProperty({
-    example: ['c6a99067-27d0-4358-b3d5-e63a64b604c0', 'c6a99067-27d0-4358-b3d5-e63a64b604c3'],
-    description: '지표 id 모음',
-  })
   indicatorIds: string[];
-
-  @ApiProperty({
-    example: '2024-03-04T05:17:33.756Z',
-    description: '지표 보드 메티데이터 생성일',
-  })
   createdAt: Date;
-
-  @ApiProperty({
-    example: '2024-03-04T05:17:33.756Z',
-    description: '지표 보드 메티데이터 수정일',
-  })
   updatedAt: Date;
 
   static createNew(indicatorBoardMetadataName: string): IndicatorBoardMetadata {
     const initIndicatorIds: string[] = [];
-    return new IndicatorBoardMetadata(null, indicatorBoardMetadataName, initIndicatorIds);
+    const currentDate = new Date();
+    return new IndicatorBoardMetadata(null, indicatorBoardMetadataName, initIndicatorIds, currentDate, currentDate);
   }
 
   public insertIndicatorId(id: string): void {
