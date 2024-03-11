@@ -21,6 +21,7 @@ import { DeleteIndicatorIdPort } from '../../../../application/port/persistence/
 import { DeleteIndicatorBoardMetadataPort } from '../../../../application/port/persistence/indicator-board-metadata/delete-indicator-board-metadata.port';
 
 import { UpdateIndicatorBoardMetadataNamePort } from '../../../../application/port/persistence/indicator-board-metadata/update-indicator-board-metadata-name.port';
+import { IndicatorBoardMetadataDto } from '../../../../application/query/get-indicator-board-metadata/indicator-board-metadata.dto';
 
 @Injectable()
 export class IndicatorBoardMetadataPersistentAdapter
@@ -73,11 +74,13 @@ export class IndicatorBoardMetadataPersistentAdapter
     }
   }
 
-  async loadIndicatorBoardMetadata(id: string): Promise<IndicatorBoardMetadata> {
+  async loadIndicatorBoardMetadata(id: string): Promise<IndicatorBoardMetadataDto> {
     try {
       const indicatorBoardMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id: id });
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
-      return IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
+      const indicatorBoardMetaData: IndicatorBoardMetadata =
+        IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
+      return IndicatorBoardMetadataMapper.mapDomainToDto(indicatorBoardMetaData);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
@@ -105,7 +108,7 @@ export class IndicatorBoardMetadataPersistentAdapter
     }
   }
 
-  async loadIndicatorBoardMetadataList(memberId): Promise<IndicatorBoardMetadata[]> {
+  async loadIndicatorBoardMetadataList(memberId): Promise<IndicatorBoardMetadataDto[]> {
     try {
       const memberEntity = await this.authService.findById(memberId);
       this.nullCheckForEntity(memberEntity);
@@ -114,8 +117,11 @@ export class IndicatorBoardMetadataPersistentAdapter
         await this.indicatorBoardMetadataRepository.findBy({
           member: memberEntity,
         });
-      return indicatorBoardMetadataEntities.map((entity) => {
+      const indicatorBoardMetadataList: IndicatorBoardMetadata[] = indicatorBoardMetadataEntities.map((entity) => {
         return IndicatorBoardMetadataMapper.mapEntityToDomain(entity);
+      });
+      return indicatorBoardMetadataList.map((domain) => {
+        return IndicatorBoardMetadataMapper.mapDomainToDto(domain);
       });
     } catch (error) {
       if (error instanceof NotFoundException) {

@@ -4,7 +4,8 @@ import { UpdateIndicatorBoardMetadataNameCommand } from './update-indicator-boar
 import { LoadIndicatorBoardMetadataPort } from '../../port/persistence/indicator-board-metadata/load-indiactor-board-metadata.port';
 import { Transactional } from 'typeorm-transactional';
 import { UpdateIndicatorBoardMetadataNamePort } from '../../port/persistence/indicator-board-metadata/update-indicator-board-metadata-name.port';
-import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
+import { IndicatorBoardMetadataDto } from '../../query/get-indicator-board-metadata/indicator-board-metadata.dto';
+import { IndicatorBoardMetadataMapper } from '../../../infrastructure/adapter/persistence/indicator-board-metadata/mapper/indicator-board-metadata.mapper';
 
 @Injectable()
 @CommandHandler(UpdateIndicatorBoardMetadataNameCommand)
@@ -19,8 +20,9 @@ export class UpdateIndicatorBoardMetadataNameCommandHandler implements ICommandH
   @Transactional()
   async execute(command: UpdateIndicatorBoardMetadataNameCommand) {
     const { id, name } = command;
-    const indicatorBoardMetaData: IndicatorBoardMetadata =
+    const indicatorBoardMetadataDto: IndicatorBoardMetadataDto =
       await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetadata(id);
+    const indicatorBoardMetaData = IndicatorBoardMetadataMapper.mapDtoToDomain(indicatorBoardMetadataDto);
 
     indicatorBoardMetaData.updateIndicatorBoardMetadataName(name);
 

@@ -1,5 +1,5 @@
-import { IndicatorBoardMetadata } from 'src/numerical-guidance/domain/indicator-board-metadata';
+import { IndicatorBoardMetadataDto } from '../../../query/get-indicator-board-metadata/indicator-board-metadata.dto';
 
 export interface LoadIndicatorBoardMetadataListPort {
-  loadIndicatorBoardMetadataList(memberId: number): Promise<IndicatorBoardMetadata[]>;
+  loadIndicatorBoardMetadataList(memberId: number): Promise<IndicatorBoardMetadataDto[]>;
 }
