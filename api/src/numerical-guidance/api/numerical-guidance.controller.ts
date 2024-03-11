@@ -14,7 +14,6 @@ import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-me
 import { CreateIndicatorBoardMetadataCommand } from '../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command';
 import { Response } from 'express';
 import { GetIndicatorBoardMetadataQuery } from '../application/query/get-indicator-board-metadata/get-indicator-board-metadata.query';
-import { IndicatorBoardMetadata } from '../domain/indicator-board-metadata';
 import { InsertIndicatorIdCommand } from '../application/command/insert-indicator-id/insert-indicator-id.command';
 import { InsertIndicatorDto } from './dto/insert-indicator.dto';
 import { GetIndicatorBoardMetadataListQuery } from '../application/query/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query';
@@ -37,6 +36,7 @@ import { CustomForecastIndicator } from '../domain/custom-forecast-indicator';
 import { GetCustomForecastIndicatorQuery } from '../application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query';
 import { ApiPaginatedResponseDecorator } from '../../utils/pagination/api-paginated-response.decorator';
 import { ApiExceptionResponse } from '../../utils/exception-filter/api-exception-response.decorator';
+import { IndicatorBoardMetadataDto } from '../application/query/get-indicator-board-metadata/indicator-board-metadata.dto';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/api/numerical-guidance')
@@ -147,7 +147,7 @@ export class NumericalGuidanceController {
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터 id로 메타데이터를 가져옵니다.' })
-  @ApiOkResponse({ type: IndicatorBoardMetadata })
+  @ApiOkResponse({ type: IndicatorBoardMetadataDto })
   @ApiExceptionResponse(
     400,
     '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
@@ -170,13 +170,13 @@ export class NumericalGuidanceController {
     required: true,
   })
   @Get('/indicator-board-metadata/:id')
-  async getIndicatorBoardMetadataById(@Param('id') id): Promise<IndicatorBoardMetadata> {
+  async getIndicatorBoardMetadataById(@Param('id') id): Promise<IndicatorBoardMetadataDto> {
     const query = new GetIndicatorBoardMetadataQuery(id);
     return await this.queryBus.execute(query);
   }
 
   @ApiOperation({ summary: '특정 사용자의 member id로 메타데이터 리스트를 가져옵니다.' })
-  @ApiOkResponse({ type: [IndicatorBoardMetadata] })
+  @ApiOkResponse({ type: [IndicatorBoardMetadataDto] })
   @ApiExceptionResponse(
     400,
     '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
@@ -193,7 +193,7 @@ export class NumericalGuidanceController {
     '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
   )
   @Get('/indicator-board-metadata')
-  async getIndicatorBoardMetadataListByMember(@Member() member: MemberEntity): Promise<IndicatorBoardMetadata[]> {
+  async getIndicatorBoardMetadataListByMember(@Member() member: MemberEntity): Promise<IndicatorBoardMetadataDto[]> {
     const query = new GetIndicatorBoardMetadataListQuery(member.id);
     return await this.queryBus.execute(query);
   }
