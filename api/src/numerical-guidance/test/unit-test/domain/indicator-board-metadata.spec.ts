@@ -8,12 +8,13 @@ import { OnlyRegisteredIdCanBeRemovedRule } from '../../../domain/rule/OnlyRegis
 describe('지표보드 메타데이터', () => {
   it('지표보드 메타데이터 도메인 생성', () => {
     // given
+    const currentDate = new Date();
 
     // when
     const indicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // then
-    const expected = new IndicatorBoardMetadata(null, '메타 데이터', []);
+    const expected = new IndicatorBoardMetadata(null, '메타 데이터', [], currentDate, currentDate);
     expect(expected).toEqual(indicatorBoardMetadata);
   });
 
@@ -32,13 +33,14 @@ describe('지표보드 메타데이터', () => {
 
   it('지표보드 메타데이터의 id 개수는 최대 5개를 넘을 수 없다.', () => {
     //given
-    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
-      'indicatorId1',
-      'indicatorId2',
-      'indicatorId3',
-      'indicatorId4',
-      'indicatorId5',
-    ]);
+    const currentDate = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id1',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      currentDate,
+      currentDate,
+    );
     const indicatorId = 'indicatorId6';
 
     //when
@@ -54,13 +56,14 @@ describe('지표보드 메타데이터', () => {
 
   it('지표보드 메타데이터의 지표 id는 중복될 수 없다.', () => {
     //given
-    const indicatorBoardMetadata = new IndicatorBoardMetadata('id2', 'name', [
-      'indicatorId1',
-      'indicatorId2',
-      'indicatorId3',
-      'indicatorId4',
-      'indicatorId5',
-    ]);
+    const currentDate = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id2',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      currentDate,
+      currentDate,
+    );
     const indicatorId = 'indicatorId1';
 
     //when
@@ -106,13 +109,14 @@ describe('지표보드 메타데이터', () => {
 
   it('지표보드 메타데이터에서 지표 id 삭제', () => {
     // given
-    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
-      'indicatorId1',
-      'indicatorId2',
-      'indicatorId3',
-      'indicatorId4',
-      'indicatorId5',
-    ]);
+    const currentDate = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id1',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      currentDate,
+      currentDate,
+    );
     const indicatorId = 'indicatorId1';
 
     // when
@@ -125,13 +129,14 @@ describe('지표보드 메타데이터', () => {
 
   it('지표보드 메타데이터에서 지표 id 삭제 - 등록되지 않은 지표 요청', () => {
     // given
-    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
-      'indicatorId1',
-      'indicatorId2',
-      'indicatorId3',
-      'indicatorId4',
-      'indicatorId5',
-    ]);
+    const currentDate = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id1',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      currentDate,
+      currentDate,
+    );
     const invalidIndicatorId = 'invalidId';
 
     // when
@@ -147,13 +152,14 @@ describe('지표보드 메타데이터', () => {
 
   it('지표보드 메타데이터의 이름을 수정한다. ', () => {
     // given
-    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
-      'indicatorId1',
-      'indicatorId2',
-      'indicatorId3',
-      'indicatorId4',
-      'indicatorId5',
-    ]);
+    const currentDate = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id1',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      currentDate,
+      currentDate,
+    );
 
     // when
     indicatorBoardMetadata.updateIndicatorBoardMetadataName('updateName');
@@ -165,13 +171,14 @@ describe('지표보드 메타데이터', () => {
 
   it('지표보드 메타데이터의 이름을 수정한다. - 이름이 비어있을 때 ', () => {
     // given
-    const indicatorBoardMetadata = new IndicatorBoardMetadata('id1', 'name', [
-      'indicatorId1',
-      'indicatorId2',
-      'indicatorId3',
-      'indicatorId4',
-      'indicatorId5',
-    ]);
+    const currentDate = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id1',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      currentDate,
+      currentDate,
+    );
     const invalidName = '';
 
     // when

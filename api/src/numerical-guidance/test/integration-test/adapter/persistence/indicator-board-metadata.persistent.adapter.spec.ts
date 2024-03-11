@@ -9,6 +9,7 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { AuthService } from '../../../../../auth/auth.service';
 import { DataSource } from 'typeorm';
 import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { IndicatorBoardMetadataDto } from '../../../../application/query/get-indicator-board-metadata/indicator-board-metadata.dto';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -123,7 +124,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetaData,
       memberId,
     );
-    const resultIndicatorBoardMetaData: IndicatorBoardMetadata =
+    const resultIndicatorBoardMetaData: IndicatorBoardMetadataDto =
       await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(resultId);
 
     // then
@@ -163,7 +164,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // then
     const expectedName = '메타 데이터';
-    const expectedIndicatorId = [''];
+    const expectedIndicatorId = [];
 
     expect(result.indicatorBoardMetadataName).toEqual(expectedName);
     expect(result.indicatorIds).toEqual(expectedIndicatorId);
@@ -208,10 +209,13 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
   it('지표보드 메타데이터에 새로운 지표 id 추가하기.', async () => {
     // given
+    const currentDate = new Date();
     const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
       ['indicator1', 'indicator2'],
+      currentDate,
+      currentDate,
     );
 
     // when
@@ -273,10 +277,13 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
   it('지표보드 메타데이터에 새로운 지표 id 추가하기. - DB에 존재하지 않는 경우', async () => {
     // given
+    const currentDate = new Date();
     const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'f2be45ee-d73b-43b6-9344-a8f2264bee41',
       'name',
       ['indicator1', 'indicator2'],
+      currentDate,
+      currentDate,
     );
 
     // when // then
@@ -294,10 +301,13 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
   it('지표보드 메타데이터에서 지표 삭제하기.', async () => {
     // given
+    const currentDate = new Date();
     const deleteIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
       ['indicator1', 'indicator2'],
+      currentDate,
+      currentDate,
     );
 
     // when
@@ -313,10 +323,13 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
   it('지표보드 메타데이터에서 지표 id 삭제하기. - DB에 존재하지 않는 경우', async () => {
     // given
+    const currentDate = new Date();
     const deleteIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'name',
       ['indicator1', 'indicator2'],
+      currentDate,
+      currentDate,
     );
 
     // when // then
@@ -389,10 +402,13 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
   it('지표보드 메타데이터 이름 수정하기.', async () => {
     // given
+    const currentDate = new Date();
     const updateIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       'updateName',
       ['indicator1', 'indicator2'],
+      currentDate,
+      currentDate,
     );
     // when
     await indicatorBoardMetadataPersistentAdapter.updateIndicatorBoardMetadataName(updateIndicatorBoardMetadata);
@@ -406,10 +422,13 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
   it('지표보드 메타데이터 이름 수정하기. - DB에 존재하지 않는 경우', async () => {
     // given
+    const currentDate = new Date();
     const invalidIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'updateName',
       ['indicator1', 'indicator2'],
+      currentDate,
+      currentDate,
     );
 
     // when // then
@@ -427,10 +446,13 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
   it('지표보드 메타데이터 이름 수정하기. - id 형식이 올바르지 않은 경우', async () => {
     // given
+    const currentDate = new Date();
     const invalidIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'invalidId',
       'updateName',
       ['indicator1', 'indicator2'],
+      currentDate,
+      currentDate,
     );
 
     // when // then
