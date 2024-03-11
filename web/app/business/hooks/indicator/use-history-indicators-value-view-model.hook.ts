@@ -5,14 +5,17 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicators-value-view-model.service';
 import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 
 export const useHistoryIndicatorsValueViewModel = () => {
   const [paginationData, setPaginationData] = useState<{ rowsToDownload: number } | undefined>(undefined);
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
+  const interval = useNumericalGuidanceStore((state) => state.interval);
 
   const { data: historyIndicatorsValuePages, setSize: setPageSize } = useFetchHistoryIndicatorValue(
     selectedMetadata?.indicatorIds,
     paginationData?.rowsToDownload,
+    interval,
   );
 
   useEffect(() => {

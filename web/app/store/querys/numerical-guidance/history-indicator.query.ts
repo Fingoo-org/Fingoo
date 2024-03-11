@@ -1,4 +1,3 @@
-import { calculateDate } from '@/app/ui/components/view/molocule/advanced-multi-line-chart/advanced-multi-line-chart';
 import useSWRInfinite from 'swr/infinite';
 import { API_PATH } from '../api-path';
 import { fetchIndicatorsValue } from '../fetcher';
