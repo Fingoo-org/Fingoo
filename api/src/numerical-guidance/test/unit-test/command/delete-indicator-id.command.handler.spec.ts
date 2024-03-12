@@ -31,7 +31,14 @@ describe('DeleteIndicatorIdCommandHandler', () => {
           provide: 'LoadIndicatorBoardMetadataPort',
           useValue: {
             loadIndicatorBoardMetadata: jest.fn().mockImplementation(() => {
-              return new IndicatorBoardMetadata('id', 'name', ['160e5499-4925-4e38-bb00-8ea6d8056484']);
+              const currentDate: Date = new Date();
+              return new IndicatorBoardMetadata(
+                'id',
+                'name',
+                ['160e5499-4925-4e38-bb00-8ea6d8056484'],
+                currentDate,
+                currentDate,
+              );
             }),
           },
         },
