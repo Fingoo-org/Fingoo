@@ -159,7 +159,12 @@ export class CustomForecastIndicatorPersistentAdapter
 
       await this.customForecastIndicatorRepository.save(customForecastIndicatorEntity);
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException({
+        HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+        error: '[ERROR] 얘측지표를 업데이트 하는 도중에 예상치 못한 문제가 발생했습니다.',
+        message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+        cause: error,
+      });
     }
   }
   private nullCheckForEntity(entity) {
