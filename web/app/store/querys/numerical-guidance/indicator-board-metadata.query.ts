@@ -1,23 +1,19 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
-import { defaultFetcher, deleteFetcher, patchFetcher, updateFetcher } from '../fetcher';
+import { defaultFetcher, deleteFetcher, patchFetcher, postFetcher } from '../fetcher';
 import useSWRMutation from 'swr/mutation';
 
 // Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까? (2/2) 분리 했음
 export type IndicatorBoardMetadataResponse = {
   id: string;
-  name: string;
+  indicatorBoardMetadataName: string;
   indicatorIds: string[];
   customForecastIndicatorIds: string[];
 };
 
-export type IndicatorBoardMetadataListResponse = {
-  metadataList: IndicatorBoardMetadataResponse[];
-};
-
 export type CreateIndicatorMetadataRequestBody = {
   id: string;
-  name: string;
+  indicatorBoardMetadataName: string;
 };
 
 export type AddIndicatorToMetadataRequestBody = {
@@ -25,27 +21,34 @@ export type AddIndicatorToMetadataRequestBody = {
 };
 
 export const useFetchIndicatorBoardMetadataList = () =>
-  useSWR<IndicatorBoardMetadataListResponse>(API_PATH.indicatorBoardMetadata, defaultFetcher);
+  useSWR<IndicatorBoardMetadataResponse[]>(API_PATH.indicatorBoardMetadata, defaultFetcher);
 
 export const useCreateIndicatorMetadata = () =>
-  useSWRMutation(API_PATH.indicatorBoardMetadata, updateFetcher<CreateIndicatorMetadataRequestBody>);
+  useSWRMutation(API_PATH.indicatorBoardMetadata, postFetcher<CreateIndicatorMetadataRequestBody>);
 
 export const useAddIndicatorToMetadata = (metadataId: string | undefined) =>
   useSWRMutation(
     API_PATH.indicatorBoardMetadata,
     async (url: string, { arg }: { arg: AddIndicatorToMetadataRequestBody }) => {
       if (!metadataId) return;
-      await updateFetcher<AddIndicatorToMetadataRequestBody>([url, metadataId], {
+      await postFetcher<AddIndicatorToMetadataRequestBody>([url, metadataId], {
         arg,
       });
     },
   );
 
+type DeleteIndicatorFromMetadataRequestArg = {
+  indicatorId: string;
+};
+
 export const useDeleteIndicatorFromMetadata = (metadataId: string | undefined) =>
-  useSWRMutation(API_PATH.indicatorBoardMetadata, async (url, { arg }: { arg: string }) => {
-    if (!metadataId) return;
-    await deleteFetcher([url, metadataId, arg]);
-  });
+  useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (url, { arg }: { arg: DeleteIndicatorFromMetadataRequestArg }) => {
+      if (!metadataId) return;
+      await deleteFetcher([url, metadataId, 'indicator', arg.indicatorId]);
+    },
+  );
 
 export type UpdateIndicatorBoardMetadataRequestBody = {
   name: string;

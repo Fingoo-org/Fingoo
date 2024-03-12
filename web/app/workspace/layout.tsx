@@ -1,5 +1,5 @@
 import SideNav from '../ui/pages/workspace/sidenav';
-import DialogContainer from '../ui/pages/workspace/dialog-container';
+import FloatingComponentContainer from '../ui/pages/workspace/floating-component-container';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SideNav />
       </div>
       <div className="w-full">{children}</div>
-      <DialogContainer />
+      <FloatingComponentContainer />
     </div>
   );
 }

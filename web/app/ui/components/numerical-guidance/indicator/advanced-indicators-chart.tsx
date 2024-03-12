@@ -1,19 +1,38 @@
 import { useHistoryIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-history-indicators-value-view-model.hook';
 import AdvancedMultiLineChart from '../../view/molocule/advanced-multi-line-chart/advanced-multi-line-chart';
-import { useIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-indicators-value-view-model.hook';
+import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
+import { useEffect } from 'react';
 
 export default function AdvancedIndicatorsChart() {
-  const { formattedHistoryIndicatorsRows, setRowsToDownload } = useHistoryIndicatorsValueViewModel();
-  const { formattedIndicatorsRows } = useIndicatorsValueViewModel();
+  const { formattedHistoryIndicatorsRows, setPaginationData, setInitialCursorDate } =
+    useHistoryIndicatorsValueViewModel();
+  const { formattedIndicatorsRows: formattedLiveIndicatorsRows, startDate } = useLiveIndicatorsValueViewModel();
 
   const formattedAdvencedIndicatorsRows = [
     ...(formattedHistoryIndicatorsRows || []),
-    ...(formattedIndicatorsRows || []),
+    ...(formattedLiveIndicatorsRows || []),
   ];
 
+  const initialLength = formattedLiveIndicatorsRows?.length || 0;
+  const initialIndex = initialLength - (formattedAdvencedIndicatorsRows?.length || 0);
+
+  useEffect(() => {
+    if (startDate) {
+      setInitialCursorDate(new Date(startDate));
+    }
+  }, [startDate]);
+
   const handleLoadData = (rowsToDownload: number, initialIndex: number) => {
-    setRowsToDownload(rowsToDownload);
+    setPaginationData({
+      rowsToDownload,
+    });
   };
 
-  return <AdvancedMultiLineChart onLoadData={handleLoadData} data={formattedAdvencedIndicatorsRows || []} />;
+  return (
+    <AdvancedMultiLineChart
+      initialIndex={initialIndex}
+      onLoadData={handleLoadData}
+      data={formattedAdvencedIndicatorsRows || []}
+    />
+  );
 }

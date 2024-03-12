@@ -1,9 +1,11 @@
 import { useFetchIndicatorList } from '../../../store/querys/numerical-guidance/indicator.query';
 
 export const useIndicatorList = () => {
-  const { data } = useFetchIndicatorList();
+  const { data: indicatorList } = useFetchIndicatorList();
+
+  // console.log(data);
 
   return {
-    indicatorList: data?.indicatorList,
+    indicatorList,
   };
 };

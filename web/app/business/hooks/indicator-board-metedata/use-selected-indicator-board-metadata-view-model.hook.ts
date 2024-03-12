@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import {
   AddIndicatorToMetadataRequestBody,
+  IndicatorBoardMetadataResponse,
   useAddIndicatorToMetadata,
   useDeleteIndicatorFromMetadata,
   useFetchIndicatorBoardMetadataList,
@@ -37,11 +38,9 @@ export const useSelectedIndicatorBoardMetadata = () => {
 
     try {
       addIndicatorTrigger(data, {
-        optimisticData: () => {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
           convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, data.indicatorId);
-          return {
-            metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
-          };
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       });
@@ -50,21 +49,24 @@ export const useSelectedIndicatorBoardMetadata = () => {
     }
   };
 
-  const deleteIndicatorFromMetadata = (indicatorKey: string) => {
+  const deleteIndicatorFromMetadata = (indicatorId: string) => {
     if (!selectedMetadata) {
       return;
     }
 
     try {
-      deleteIndicatorTrigger(indicatorKey, {
-        optimisticData: () => {
-          convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorKey);
-          return {
-            metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
-          };
+      deleteIndicatorTrigger(
+        {
+          indicatorId,
         },
-        revalidate: false,
-      });
+        {
+          optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+            convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorId);
+            return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          },
+          revalidate: false,
+        },
+      );
     } catch (e) {
       // error 처리 필요 or 전역 에러 처리
     }
@@ -75,11 +77,9 @@ export const useSelectedIndicatorBoardMetadata = () => {
       return;
     }
     updateTrigger(data, {
-      optimisticData: () => {
+      optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
         convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(selectedMetadataId, data.name);
-        return {
-          metadataList: convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList,
-        };
+        return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
       },
       revalidate: false,
     });

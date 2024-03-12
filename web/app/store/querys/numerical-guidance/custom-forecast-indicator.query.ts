@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
-import { defaultFetcher, updateFetcher } from '../fetcher';
+import { defaultFetcher, postFetcher } from '../fetcher';
 
 export type sourceIndicator = {
   id: string;
@@ -29,7 +29,7 @@ export const useFetchCustomForecastIndicatorList = () => {
 };
 
 export const useCreateCustomForecastIndicator = () => {
-  return useSWRMutation(API_PATH.customForecastIndicator, updateFetcher<CreateCustomForecastIndicatorRequestBody>);
+  return useSWRMutation(API_PATH.customForecastIndicator, postFetcher<CreateCustomForecastIndicatorRequestBody>);
 };
 
 export type AddSourceIndicatorToCustomForecastIndicatorRequestBody = {
@@ -41,7 +41,7 @@ export const useAddSourceIndicatorToCustomForecastIndicator = (customForecastInd
     API_PATH.customForecastIndicator,
     async (url: string, { arg }: { arg: AddSourceIndicatorToCustomForecastIndicatorRequestBody }) => {
       if (!customForecastIndicatorId) return;
-      await updateFetcher<AddSourceIndicatorToCustomForecastIndicatorRequestBody>([url, customForecastIndicatorId], {
+      await postFetcher<AddSourceIndicatorToCustomForecastIndicatorRequestBody>([url, customForecastIndicatorId], {
         arg,
       });
     },

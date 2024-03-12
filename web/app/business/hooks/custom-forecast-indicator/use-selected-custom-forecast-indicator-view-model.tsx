@@ -27,7 +27,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   const sourceIndicatorList = useMemo(() => {
     if (!sourceIndicatorIds) return [];
 
-    return indicatorList?.indicatorList.filter((indicator) => sourceIndicatorIds.includes(indicator.id));
+    return indicatorList?.filter((indicator) => sourceIndicatorIds.includes(indicator.id));
   }, [indicatorList, sourceIndicatorIds]);
 
   return {

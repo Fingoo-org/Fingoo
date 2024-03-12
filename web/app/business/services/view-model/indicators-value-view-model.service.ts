@@ -27,10 +27,14 @@ class IndicatorValueItem {
 class IndicatorValue {
   readonly id: string;
   readonly ticker: string;
+  readonly market: string;
+  readonly type: string;
   readonly values: IndicatorValueItem[];
-  constructor({ id, ticker, values }: IndicatorValueResponse) {
+  constructor({ id, ticker, market, type, values }: IndicatorValueResponse) {
     this.id = id;
     this.ticker = ticker;
+    this.market = market;
+    this.type = type;
     this.values = values.map((item) => new IndicatorValueItem(item));
   }
 
@@ -39,7 +43,8 @@ class IndicatorValue {
       return {
         ...acc,
         [item.date]: {
-          [this.ticker]: typeof item.value === 'number' ? item.value : parseInt(item.value),
+          // temp: history 단위가 이상해서 일단 처리
+          [this.ticker]: typeof item.value === 'number' ? item.value : parseInt(item.value.slice(0, 2)),
         },
       };
     }, {});
@@ -87,15 +92,14 @@ export class IndicatorsValue {
   }
 }
 
-export const convertIndicatorsValueViewModel = (indicators: IndicatorsValueResponse) => {
+export const convertLiveIndicatorsValueViewModel = (indicators: IndicatorsValueResponse) => {
   return new IndicatorsValue(indicators);
 };
 
 export const convertHistoryIndicatorsValueViewModel = (indicators: HistoryIndicatorValueResponse[]) => {
   const formmatedIndicators = indicators.map((indicator) => {
     return {
-      id: indicator.indicator.id,
-      ticker: indicator.indicator.ticker,
+      ...indicator.indicator,
       values: indicator.values,
     };
   });

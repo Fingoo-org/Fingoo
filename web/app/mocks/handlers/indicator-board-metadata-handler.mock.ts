@@ -13,7 +13,7 @@ export type metadataParam = {
 };
 
 export type indicatorParam = {
-  indicatorKey: string;
+  indicatorId: string;
 };
 
 export const indicatorBoardMetadataHandlers = [
@@ -21,6 +21,7 @@ export const indicatorBoardMetadataHandlers = [
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getMetadataList());
   }),
+  // Fix: 애만 이슈로 아직 안되어있음
   http.post<never, CreateIndicatorMetadataRequestBody, never>(API_PATH.indicatorBoardMetadata, async ({ request }) => {
     const newMetadata = await request.json();
     mockDB.postMetadataList(newMetadata);
@@ -41,10 +42,10 @@ export const indicatorBoardMetadataHandlers = [
     },
   ),
   http.delete<metadataParam & indicatorParam>(
-    `${API_PATH.indicatorBoardMetadata}/:metadataId/:indicatorKey`,
+    `${API_PATH.indicatorBoardMetadata}/:metadataId/indicator/:indicatorId`,
     async ({ params }) => {
-      const { metadataId, indicatorKey } = params;
-      mockDB.deleteIndicatorFromMetadata(metadataId, indicatorKey);
+      const { metadataId, indicatorId } = params;
+      mockDB.deleteIndicatorFromMetadata(metadataId, indicatorId);
       await delayForDevelopment();
 
       return HttpResponse.json({ status: 200 });

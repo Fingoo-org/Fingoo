@@ -5,10 +5,15 @@ import { useDialog } from '../ui/components/view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '../utils/keys/dialog-key';
 import { useEffect } from 'react';
 import { useSelectedCustomForecastIndicatorViewModel } from '../business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import useSWR from 'swr';
+import { API_PATH } from '../store/querys/api-path';
+import { defaultFetcher } from '../store/querys/fetcher';
+import Toaster from '../ui/components/view/molocule/toast/toaster';
 
 export default function Page() {
   const { selectCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
   const { openDialogWithPayload } = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU);
+  const { data } = useSWR(`${API_PATH.indicatorBoardMetadata}/998e64d9-472b-44c3-b0c5-66ac04dfa593`, defaultFetcher);
 
   useEffect(() => {
     selectCustomForecastIndicator('1');
@@ -22,6 +27,7 @@ export default function Page() {
       <Card className="h-28 w-72 p-1.5">
         <CustomForecastIndicatorDialogMenu />
       </Card>
+      <Toaster />
     </div>
   );
 }

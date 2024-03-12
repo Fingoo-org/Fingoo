@@ -5,21 +5,28 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicators-value-view-model.service';
 import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 
 export const useHistoryIndicatorsValueViewModel = () => {
-  const [rowsToDownload, setRowsToDownload] = useState<number | undefined>(undefined);
+  const [paginationData, setPaginationData] = useState<{ rowsToDownload: number }>({ rowsToDownload: 100 });
+  const [initialCursorDate, setInitialCursorDate] = useState<Date>(new Date());
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
+  const interval = useNumericalGuidanceStore((state) => state.interval);
 
   const { data: historyIndicatorsValuePages, setSize: setPageSize } = useFetchHistoryIndicatorValue(
     selectedMetadata?.indicatorIds,
-    rowsToDownload,
+    {
+      rowsToDownload: paginationData?.rowsToDownload,
+      initialCursorDate,
+    },
+    interval,
   );
 
   useEffect(() => {
-    if (rowsToDownload === undefined) return;
+    if (paginationData === undefined) return;
 
     setPageSize((prev) => prev + 1);
-  }, [rowsToDownload]);
+  }, [paginationData]);
 
   const mergePaginationData = useCallback(() => {
     return historyIndicatorsValuePages?.reduce((acc: HistoryIndicatorValueResponse[], page, index) => {
@@ -55,6 +62,8 @@ export const useHistoryIndicatorsValueViewModel = () => {
   return {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
     formattedHistoryIndicatorsRows,
-    setRowsToDownload,
+    interval,
+    setPaginationData,
+    setInitialCursorDate,
   };
 };

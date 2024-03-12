@@ -36,7 +36,7 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createIndicatorBoardMetadata({ id: '4', name: 'metadata4' });
+      result.current.createIndicatorBoardMetadata({ id: '4', indicatorBoardMetadataName: 'metadata4' });
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
@@ -59,7 +59,7 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createIndicatorBoardMetadata({ id: '4', name: 'metadata4' });
+      result.current.createIndicatorBoardMetadata({ id: '4', indicatorBoardMetadataName: 'metadata4' });
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 

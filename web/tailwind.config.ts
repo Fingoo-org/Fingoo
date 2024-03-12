@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 import headlessui from '@headlessui/tailwindcss';
 import forms from '@tailwindcss/forms';
 import colors from 'tailwindcss/colors';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 
 const config: Config = {
   content: [
@@ -97,6 +98,9 @@ const config: Config = {
         'tremor-default': ['0.875rem', { lineHeight: '1.25rem' }],
         'tremor-title': ['1.125rem', { lineHeight: '1.75rem' }],
         'tremor-metric': ['1.875rem', { lineHeight: '2.25rem' }],
+      },
+      fontFamily: {
+        sans: ['var(--font-sans)', ...fontFamily.sans],
       },
     },
   },

@@ -4,6 +4,8 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
     id: '1',
     ticker: 'AAPL',
+    market: 'US',
+    type: 'stock',
     values: [
       {
         date: '2024-01-01',
@@ -230,6 +232,8 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
     id: '2',
     ticker: 'MSFT',
+    market: 'US',
+    type: 'stock',
     values: [
       {
         date: '2024-01-01',
@@ -380,6 +384,8 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
     id: '3',
     ticker: 'GOOG',
+    market: 'US',
+    type: 'stock',
     values: [
       {
         date: '2024-01-01',
@@ -490,6 +496,8 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
     id: '9785ba85-c924-4269-8238-e1f10b404177',
     ticker: '005930',
+    type: 'k-stock',
+    market: 'KOSPI',
     values: [
       {
         date: '2024-01-01',

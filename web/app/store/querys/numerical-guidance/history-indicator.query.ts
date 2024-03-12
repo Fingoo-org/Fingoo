@@ -1,8 +1,8 @@
-import { calculateDate } from '@/app/ui/components/view/molocule/advanced-multi-line-chart/advanced-multi-line-chart';
 import useSWRInfinite from 'swr/infinite';
 import { API_PATH } from '../api-path';
 import { fetchIndicatorsValue } from '../fetcher';
 import { utcFormat, utcParse } from 'd3-time-format';
+import type { Interval } from '../../stores/numerical-guidance.store';
 
 export const parseTime = utcParse('%Y%m%d');
 export const formatTime = utcFormat('%Y%m%d');
@@ -23,7 +23,7 @@ export type HistoryIndicatorValueResponse = {
 
 export type HistoryIndicatorCursorPaginationMetadataResponse = {
   total: number;
-  hasNextData: true;
+  hasNextData: boolean;
   cursor: string;
 };
 
@@ -31,6 +31,8 @@ export type HistoryIndicatorInfo = {
   id: string;
   ticker: string;
   name: string;
+  market: string;
+  type: string;
 };
 
 export type HistoryIndicatorValueItemResponse = {
@@ -38,36 +40,45 @@ export type HistoryIndicatorValueItemResponse = {
   value: number;
 };
 
-const getFetchHistoryIndicatorValueKey = (
-  pageIndex: number,
-  previousPageData: HistoryIndicatorsValueResponse | null,
-) => {
-  const maxCursorDate = previousPageData
-    ? previousPageData.indicatorsValue
-        .map((indicator) => indicator.meta.cursor)
-        .sort()
-        .pop()
-    : '20240101';
-
-  if (!maxCursorDate) return null;
-
-  return [API_PATH.historyIndicatorsValue, maxCursorDate, 'day'];
+export type PaginationData = {
+  initialCursorDate: Date;
+  rowsToDownload: number;
 };
 
-export const useFetchHistoryIndicatorValue = (indicatorIds: string[] | undefined, rowsToDownload = 10) => {
+export const useFetchHistoryIndicatorValue = (
+  indicatorIds: string[] | undefined,
+  paginationData: PaginationData,
+  interval: Interval = 'day',
+) => {
   // logic: interval 로직 추가 필요
+
+  const getFetchHistoryIndicatorValueKey = (
+    pageIndex: number,
+    previousPageData: HistoryIndicatorsValueResponse | null,
+  ) => {
+    const maxCursorDate = previousPageData
+      ? previousPageData.indicatorsValue
+          .map((indicator) => indicator.meta.cursor)
+          .sort()
+          .pop()
+      : formatTime(paginationData.initialCursorDate);
+
+    if (!maxCursorDate) return null;
+
+    return [API_PATH.historyIndicatorsValue, maxCursorDate];
+  };
 
   return useSWRInfinite<HistoryIndicatorsValueResponse>(
     getFetchHistoryIndicatorValueKey,
-    ([url, maxCursorDate, interval]) => {
-      const newStartDate = formatTime(calculateDate(parseTime(maxCursorDate) ?? maxCursorDate, rowsToDownload + 5));
-      const formattedUrl = `${url}?startDate=${newStartDate}&endDate=${maxCursorDate}&interval=${interval}`;
+    ([url, maxCursorDate]) => {
+      const formattedUrl = `${url}?dataCount=${paginationData.rowsToDownload}&endDate=${maxCursorDate}`;
 
       // not null-assertion: indicatorIds가 null 인 상황에서는 호출되지 않음
-      return fetchIndicatorsValue([formattedUrl, ...indicatorIds!]);
+      return fetchIndicatorsValue([formattedUrl, interval, ...indicatorIds!]);
     },
     {
       initialSize: 0,
+      revalidateFirstPage: false,
     },
   );
 };

@@ -11,7 +11,6 @@ import SourceIndicatorSliderGroup from '../source-indicator-slider-group';
 export default function CustomForecastIndicatorDialogMenu() {
   const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
 
-  console.log(selectedCustomForecastIndicator);
   const handleCustomForecastIndicatorNameChange = (name: string) => {
     // logic: 예측 지표 이름 변경
     console.log(name);

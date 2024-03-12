@@ -1,28 +1,37 @@
-import {
-  IndicatorBoardMetadataListResponse,
-  IndicatorBoardMetadataResponse,
-} from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
+import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
 export class IndicatorBoardMetadata {
   // 여기는 response와 같아야함
   // 변경된 부분은 private으로 client에서 못사용하게
   // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
   readonly id: string;
-  readonly name: string;
+  readonly indicatorBoardMetadataName: string;
+  // private name: string;
   readonly customForecastIndicatorIds: string[];
   public indicatorIds: string[];
 
-  constructor({ id, name, indicatorIds, customForecastIndicatorIds }: IndicatorBoardMetadataResponse) {
+  constructor({
+    id,
+    indicatorBoardMetadataName,
+    indicatorIds,
+    customForecastIndicatorIds,
+  }: IndicatorBoardMetadataResponse) {
     this.id = id;
-    this.name = name;
-    this.indicatorIds = indicatorIds;
+    this.indicatorBoardMetadataName = indicatorBoardMetadataName;
+
+    // temp: api 문제로 임시 처리
+    this.indicatorIds = indicatorIds.filter((id) => id !== '');
     this.customForecastIndicatorIds = customForecastIndicatorIds;
+  }
+
+  get name() {
+    return this.indicatorBoardMetadataName;
   }
 
   get formattedIndicatorBoardMetadata() {
     return {
       id: this.id,
-      name: this.name,
+      indicatorBoardMetadataName: this.name,
       indicatorIds: this.indicatorIds,
       customForecastIndicatorIds: this.customForecastIndicatorIds,
     };
@@ -32,13 +41,13 @@ export class IndicatorBoardMetadata {
     this.indicatorIds = [...this.indicatorIds, indicatorId];
   }
 
-  deleteIndicator(indicatorKey: string) {
-    this.indicatorIds = this.indicatorIds.filter((indicatorId) => indicatorId !== indicatorKey);
+  deleteIndicator(indicatorId: string) {
+    this.indicatorIds = this.indicatorIds.filter((id) => id !== indicatorId);
   }
 }
 
 export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
-  constructor({ metadataList }: IndicatorBoardMetadataListResponse) {
+  constructor(metadataList: IndicatorBoardMetadataResponse[]) {
     super();
     metadataList.forEach((metadata) => {
       this.push(new IndicatorBoardMetadata(metadata));
@@ -67,20 +76,23 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     metadata.addIndicator(indicatorId);
   }
 
-  updateIndicatorBoardMetadataNameById(metadataId: string | undefined, name: string) {
+  updateIndicatorBoardMetadataNameById(metadataId: string | undefined, indicatorBoardMetadataName: string) {
     const index = this.findIndex((metadata) => metadata.id === metadataId);
     if (index === -1) return;
 
     const metadata = this[index];
 
-    this[index] = new IndicatorBoardMetadata({ ...metadata.formattedIndicatorBoardMetadata, name });
+    this[index] = new IndicatorBoardMetadata({
+      ...metadata.formattedIndicatorBoardMetadata,
+      indicatorBoardMetadataName,
+    });
   }
 
-  deleteIndicatorFromMetadataById(metadataId: string | undefined, indicatorKey: string) {
+  deleteIndicatorFromMetadataById(metadataId: string | undefined, indicatorId: string) {
     const metadata = this.find((metadata) => metadata.id === metadataId);
     if (!metadata) return;
 
-    metadata.deleteIndicator(indicatorKey);
+    metadata.deleteIndicator(indicatorId);
   }
 
   get formattedIndicatorBoardMetadataList() {
@@ -88,6 +100,6 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
   }
 }
 
-export const convertIndcatorBoardMetadataList = (response: IndicatorBoardMetadataListResponse) => {
+export const convertIndcatorBoardMetadataList = (response: IndicatorBoardMetadataResponse[]) => {
   return new IndicatorBoardMetadataList(response);
 };

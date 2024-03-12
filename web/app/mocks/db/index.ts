@@ -1,6 +1,5 @@
-import { IndicatorsValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
-import { IndicatorBoardMetadataListResponse } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { IndicatorListResponse } from '../../store/querys/numerical-guidance/indicator.query';
+import { IndicatorInfoResponse, IndicatorsValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
+import { IndicatorBoardMetadataResponse } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from '../mock-data/indicators-value.mock';
 import { CustomForecastIndicatorListResponse } from '../../store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { historyIndicatorsValueMockData } from '../mock-data/history-indicators-value.mock';
@@ -14,11 +13,13 @@ import {
   mockCustomForecastIndicatorAction,
 } from './custom-forecast-indicator-action.mock';
 
-type MockDatabase = IndicatorBoardMetadataListResponse &
-  IndicatorListResponse &
-  IndicatorsValueResponse &
+type MockDatabase = IndicatorsValueResponse &
   CustomForecastIndicatorListResponse & {
     historyIndicatorsValue: historyIndicatorsValueMockData;
+  } & {
+    indicatorList: IndicatorInfoResponse[];
+  } & {
+    metadataList: IndicatorBoardMetadataResponse[];
   };
 
 type MockDatabaseAction = MockCustomForecastIndicatorAction & MockIndicatorBoardMetadataAction & MockIndicatorAction;
@@ -33,19 +34,19 @@ const initialState: MockDatabase = {
   metadataList: [
     {
       id: '1',
-      name: 'metadata1',
+      indicatorBoardMetadataName: 'metadata1',
       indicatorIds: [],
       customForecastIndicatorIds: [],
     },
     {
       id: '2',
-      name: 'metadata2',
+      indicatorBoardMetadataName: 'metadata2',
       indicatorIds: [],
       customForecastIndicatorIds: [],
     },
     {
       id: '3',
-      name: 'metadata3',
+      indicatorBoardMetadataName: 'metadata3',
       indicatorIds: [],
       customForecastIndicatorIds: [],
     },

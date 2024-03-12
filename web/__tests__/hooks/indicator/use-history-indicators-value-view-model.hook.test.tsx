@@ -9,7 +9,7 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicato
 const wrapper = SWRProviderWithoutCache;
 
 const findIndicatorByName = (indicatorName: string) => {
-  return mockDB.getIndicatorList().indicatorList.find((indicator) => indicator.name === indicatorName);
+  return mockDB.getIndicatorList().find((indicator) => indicator.name === indicatorName);
 };
 
 describe('useHistoryIndicatorsValueViewModel', () => {
@@ -22,7 +22,7 @@ describe('useHistoryIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { historyIndicatorsValue, formattedHistoryIndicatorsRows, setRowsToDownload } =
+        const { historyIndicatorsValue, formattedHistoryIndicatorsRows, setPaginationData } =
           useHistoryIndicatorsValueViewModel();
         const { addIndicatorToMetadata, selectedMetadata } = useSelectedIndicatorBoardMetadata();
         const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
@@ -31,7 +31,7 @@ describe('useHistoryIndicatorsValueViewModel', () => {
           formattedHistoryIndicatorsRows,
           selectedMetadata,
           addIndicatorToMetadata,
-          setRowsToDownload,
+          setPaginationData,
           selectMetadata,
         };
       },
@@ -50,7 +50,9 @@ describe('useHistoryIndicatorsValueViewModel', () => {
       });
     });
     act(() => {
-      result.current.setRowsToDownload(10);
+      result.current.setPaginationData({
+        rowsToDownload: 10,
+      });
     });
 
     await waitFor(() => expect(result.current.formattedHistoryIndicatorsRows).not.toHaveLength(0));
