@@ -1,7 +1,9 @@
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorNameShouldNotEmpty } from 'src/numerical-guidance/domain/rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
+import { SourceIndicatorCountShouldNotExceedLimitRule } from 'src/numerical-guidance/domain/rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';
+import { SourceIndicatorsShouldNotDuplicateRule } from 'src/numerical-guidance/domain/rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { BusinessRuleValidationException } from 'src/utils/domain/business-rule-validation.exception';
-import { IndicatorType } from 'src/utils/type/type-definition';
+import { IndicatorType, SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
 
 describe('예측지표', () => {
   it('예측 지표 생성', () => {
@@ -54,5 +56,125 @@ describe('예측지표', () => {
     // then
     expect(createNewCustomForecastIndicator).toThrow(BusinessRuleValidationException);
     expect(createNewCustomForecastIndicator).toThrow(rule.Message);
+  });
+
+  it('예측지표 업데이트', () => {
+    // given
+    const customForecastIndicator = CustomForecastIndicator.createNew(
+      '예측지표 이름',
+      'f5206520-da94-11ee-b91b-3551e6db3bbd',
+    );
+
+    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        weight: 'none',
+      },
+    ];
+
+    // when
+    customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+
+    // then
+    const expected = sourceIndicatorIdsAndWeights;
+    expect(customForecastIndicator.sourceIndicatorIdsAndWeights).toEqual(expected);
+  });
+
+  it('예측지표 업데이트 - 재료 지표가 중복될 때', () => {
+    // given
+    const customForecastIndicator = CustomForecastIndicator.createNew(
+      '예측지표 이름',
+      'f5206520-da94-11ee-b91b-3551e6db3bbd',
+    );
+
+    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        weight: 'none',
+      },
+    ];
+
+    // when
+    function updateSourceIndicatorsAndWeights() {
+      customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+    }
+    const rule = new SourceIndicatorsShouldNotDuplicateRule(sourceIndicatorIdsAndWeights);
+
+    // then
+    expect(updateSourceIndicatorsAndWeights).toThrow(BusinessRuleValidationException);
+    expect(updateSourceIndicatorsAndWeights).toThrow(rule.Message);
+  });
+
+  it('예측지표 업데이트 - 재료 지표가 10개가 넘어갈 경우', () => {
+    // given
+    const customForecastIndicator = CustomForecastIndicator.createNew(
+      '예측지표 이름',
+      'f5206520-da94-11ee-b91b-3551e6db3bbd',
+    );
+
+    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120031',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120041',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120051',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120061',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120071',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120081',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120091',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
+        weight: 'none',
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120022',
+        weight: 'none',
+      },
+    ];
+
+    // when
+    function updateSourceIndicatorsAndWeights() {
+      customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+    }
+    const rule = new SourceIndicatorCountShouldNotExceedLimitRule(sourceIndicatorIdsAndWeights);
+
+    // then
+    expect(updateSourceIndicatorsAndWeights).toThrow(BusinessRuleValidationException);
+    expect(updateSourceIndicatorsAndWeights).toThrow(rule.Message);
   });
 });
