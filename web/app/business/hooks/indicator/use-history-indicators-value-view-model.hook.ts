@@ -62,6 +62,7 @@ export const useHistoryIndicatorsValueViewModel = () => {
   return {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
     formattedHistoryIndicatorsRows,
+    interval,
     setPaginationData,
     setInitialCursorDate,
   };

@@ -51,16 +51,17 @@ function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx:
 
 type AdvancedMultiLineChartProps<T> = {
   data: T[];
+  initialIndex: number;
   onLoadData?: (rowsToDownload: number, initialIndex: number) => void;
 };
 
 export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   data,
+  initialIndex,
   onLoadData,
 }: AdvancedMultiLineChartProps<T>) {
   const { containerRef, sizes } = useResponsive();
-  const [initialLength] = useState(data.length);
-  const initialIndex = initialLength - data.length;
+  // fix: 애 위로 올려야함
 
   const indexCalculator = discontinuousTimeScaleProviderBuilder()
     .inputDateAccessor((d: T) => new Date(d.date))

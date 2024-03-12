@@ -6,12 +6,15 @@ import { useEffect } from 'react';
 export default function AdvancedIndicatorsChart() {
   const { formattedHistoryIndicatorsRows, setPaginationData, setInitialCursorDate } =
     useHistoryIndicatorsValueViewModel();
-  const { formattedIndicatorsRows, startDate } = useLiveIndicatorsValueViewModel();
+  const { formattedIndicatorsRows: formattedLiveIndicatorsRows, startDate } = useLiveIndicatorsValueViewModel();
 
   const formattedAdvencedIndicatorsRows = [
     ...(formattedHistoryIndicatorsRows || []),
-    ...(formattedIndicatorsRows || []),
+    ...(formattedLiveIndicatorsRows || []),
   ];
+
+  const initialLength = formattedLiveIndicatorsRows?.length || 0;
+  const initialIndex = initialLength - (formattedAdvencedIndicatorsRows?.length || 0);
 
   useEffect(() => {
     if (startDate) {
@@ -25,5 +28,11 @@ export default function AdvancedIndicatorsChart() {
     });
   };
 
-  return <AdvancedMultiLineChart onLoadData={handleLoadData} data={formattedAdvencedIndicatorsRows || []} />;
+  return (
+    <AdvancedMultiLineChart
+      initialIndex={initialIndex}
+      onLoadData={handleLoadData}
+      data={formattedAdvencedIndicatorsRows || []}
+    />
+  );
 }
