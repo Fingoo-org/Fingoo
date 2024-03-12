@@ -13,11 +13,10 @@ export default function IntervalToggleGroup() {
     if (isInterval(value)) {
       setInterval(value);
     }
-    console.log(value);
   };
 
   return (
-    <ToggleGroup defaultValue={interval} onValueChange={handleIntervalChange} type="single">
+    <ToggleGroup value={interval} onValueChange={handleIntervalChange} type="single">
       <ToggleGroup.Item value="day">
         <div className="w-20">Day</div>
       </ToggleGroup.Item>
