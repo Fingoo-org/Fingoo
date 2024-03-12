@@ -38,7 +38,8 @@ export class IndicatorBoardMetadata extends AggregateRoot {
 
   static createNew(indicatorBoardMetadataName: string): IndicatorBoardMetadata {
     const initIndicatorIds: string[] = [];
-    return new IndicatorBoardMetadata(null, indicatorBoardMetadataName, initIndicatorIds);
+    const currentDate: Date = new Date();
+    return new IndicatorBoardMetadata(null, indicatorBoardMetadataName, initIndicatorIds, currentDate, currentDate);
   }
 
   public insertIndicatorId(id: string): void {
@@ -72,7 +73,13 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     return indicatorIds;
   }
 
-  constructor(id: string, indicatorBoardMetadataName: string, indicatorIds: string[]) {
+  constructor(
+    id: string,
+    indicatorBoardMetadataName: string,
+    indicatorIds: string[],
+    createdAt: Date,
+    updatedAt: Date,
+  ) {
     super();
     this.checkRule(new IndicatorBoardMetadataNameShouldNotEmptyRule(indicatorBoardMetadataName));
     this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(indicatorIds));
@@ -80,7 +87,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
     this.indicatorIds = indicatorIds;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

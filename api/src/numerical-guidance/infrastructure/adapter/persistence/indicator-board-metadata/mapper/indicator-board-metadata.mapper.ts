@@ -18,6 +18,8 @@ export class IndicatorBoardMetadataMapper {
       entity.id,
       entity.indicatorBoardMetadataName,
       this.createArray(entity.indicatorIds['indicatorIds'].toString()),
+      entity.createdAt,
+      entity.updatedAt,
     );
   }
 
