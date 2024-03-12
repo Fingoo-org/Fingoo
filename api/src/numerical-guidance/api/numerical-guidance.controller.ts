@@ -42,6 +42,8 @@ import { GetCustomForecastIndicatorQuery } from '../application/query/get-custom
 import { ApiPaginatedResponseDecorator } from '../../utils/pagination/api-paginated-response.decorator';
 import { ApiExceptionResponse } from '../../utils/exception-filter/api-exception-response.decorator';
 import { GetCustomForecastIndicatorsByMemberIdQuery } from '../application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query';
+import { UpdateSourceIndicatorsAndWeightsDto } from './dto/update-source-indicators-and-weights.dto';
+import { UpdateSourceIndicatorsAndWeightsCommand } from '../application/command/update-source-indicators-and-weights/update-source-indicators-and-weights.command';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/api/numerical-guidance')
@@ -328,5 +330,17 @@ export class NumericalGuidanceController {
   async loadCustomForecastIndicatorsByMemberId(@Member() member: MemberEntity): Promise<CustomForecastIndicator[]> {
     const query = new GetCustomForecastIndicatorsByMemberIdQuery(member.id);
     return await this.queryBus.execute(query);
+  }
+
+  @Patch('/custom-forecast-indicator/:customForecastIndicatorId')
+  async updateSourceIndicatorsAndWeights(
+    @Param('customForecastIndicatorId') customForecastIndicatorId,
+    @Body() updateSourceIndicatorsAndWeightsDto: UpdateSourceIndicatorsAndWeightsDto,
+  ) {
+    const command = new UpdateSourceIndicatorsAndWeightsCommand(
+      customForecastIndicatorId,
+      updateSourceIndicatorsAndWeightsDto.sourceIndicatorIdsAndWeights,
+    );
+    await this.commandBus.execute(command);
   }
 }

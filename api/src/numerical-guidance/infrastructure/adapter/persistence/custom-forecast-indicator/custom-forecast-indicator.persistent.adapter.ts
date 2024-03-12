@@ -14,18 +14,22 @@ import { CustomForecastIndicatorMapper } from './mapper/custom-forecast-indicato
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { AuthService } from 'src/auth/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
+import { UpdateSourceIndicatorsAndWeightsPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-and-weights.port';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class CustomForecastIndicatorPersistentAdapter
   implements
     CreateCustomForecastIndicatorPort,
     LoadCustomForecastIndicatorPort,
-    LoadCustomForecastIndicatorsByMemberIdPort
+    LoadCustomForecastIndicatorsByMemberIdPort,
+    UpdateSourceIndicatorsAndWeightsPort
 {
   constructor(
     @InjectRepository(CustomForecastIndicatorEntity)
     private readonly customForecastIndicatorRepository: Repository<CustomForecastIndicatorEntity>,
     private readonly authService: AuthService,
+    private readonly api: HttpService,
   ) {}
 
   async loadCustomForecastIndicator(customForecastIndicatorId: string): Promise<CustomForecastIndicator> {
@@ -127,6 +131,33 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
+  async updateSourceIndicatorsAndWeights(customForecastIndicator: CustomForecastIndicator): Promise<void> {
+    try {
+      const id = customForecastIndicator.id;
+
+      const requestUrl =
+        'http://127.0.0.1:8000/api/var-api/source-indicators-verification?targetIndicatorId=26929514-237c-11ed-861d-0242ac120031&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120011&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120021&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120031&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120041&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120051&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120061&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120071&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120081&weight=0.004/5&weight=0.002/3&weight=none&weight=0.005/2&weight=none&weight=0.003/1&weight=0.004/5&weight=0.007/4';
+      const res = await this.api.axiosRef.get(requestUrl);
+
+      console.log(res.data.grangerGroup);
+      console.log(res.data.cointJohansenVerification);
+
+      const grangerGroup = res.data.grangerGroup;
+      const cointJohansenVerification = res.data.cointJohansenVerification;
+
+      const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
+        await this.customForecastIndicatorRepository.findOneBy({ id });
+      this.nullCheckForEntity(customForecastIndicatorEntity);
+
+      customForecastIndicatorEntity.sourceIndicatorIdsAndWeights = customForecastIndicator.sourceIndicatorIdsAndWeights;
+      customForecastIndicatorEntity.grangerVerification = grangerGroup;
+      customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
+
+      await this.customForecastIndicatorRepository.save(customForecastIndicatorEntity);
+    } catch (error) {
+      throw error;
+    }
+  }
   private nullCheckForEntity(entity) {
     if (entity == null) throw new NotFoundException();
   }

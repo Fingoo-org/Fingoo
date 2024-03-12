@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { HttpStatus, NotFoundException } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
@@ -31,6 +32,12 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
+        }),
+        HttpModule.registerAsync({
+          useFactory: () => ({
+            timeout: 10000,
+            maxRedirects: 5,
+          }),
         }),
         TypeOrmModule.forFeature([CustomForecastIndicatorEntity, MemberEntity]),
         TypeOrmModule.forRootAsync({
