@@ -8,13 +8,17 @@ import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/u
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 
 export const useHistoryIndicatorsValueViewModel = () => {
-  const [paginationData, setPaginationData] = useState<{ rowsToDownload: number } | undefined>(undefined);
+  const [paginationData, setPaginationData] = useState<{ rowsToDownload: number }>({ rowsToDownload: 100 });
+  const [initialCursorDate, setInitialCursorDate] = useState<Date>(new Date());
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const interval = useNumericalGuidanceStore((state) => state.interval);
 
   const { data: historyIndicatorsValuePages, setSize: setPageSize } = useFetchHistoryIndicatorValue(
     selectedMetadata?.indicatorIds,
-    paginationData?.rowsToDownload,
+    {
+      rowsToDownload: paginationData?.rowsToDownload,
+      initialCursorDate,
+    },
     interval,
   );
 
@@ -59,5 +63,6 @@ export const useHistoryIndicatorsValueViewModel = () => {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
     formattedHistoryIndicatorsRows,
     setPaginationData,
+    setInitialCursorDate,
   };
 };

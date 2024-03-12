@@ -23,9 +23,12 @@ export const useLiveIndicatorsValueViewModel = () => {
     [convertedIndciatorsValue],
   );
 
+  const startDate = formattedIndicatorsRows?.[0]?.date;
+
   return {
     indicatorsValue: convertedIndciatorsValue,
     isPending: isLoading,
     formattedIndicatorsRows,
+    startDate,
   };
 };

@@ -40,9 +40,14 @@ export type HistoryIndicatorValueItemResponse = {
   value: number;
 };
 
+export type PaginationData = {
+  initialCursorDate: Date;
+  rowsToDownload: number;
+};
+
 export const useFetchHistoryIndicatorValue = (
   indicatorIds: string[] | undefined,
-  rowsToDownload = 10,
+  paginationData: PaginationData,
   interval: Interval = 'day',
 ) => {
   // logic: interval 로직 추가 필요
@@ -56,17 +61,17 @@ export const useFetchHistoryIndicatorValue = (
           .map((indicator) => indicator.meta.cursor)
           .sort()
           .pop()
-      : '20240101';
+      : formatTime(paginationData.initialCursorDate);
 
     if (!maxCursorDate) return null;
 
-    return [API_PATH.historyIndicatorsValue, interval, maxCursorDate];
+    return [API_PATH.historyIndicatorsValue, maxCursorDate];
   };
 
   return useSWRInfinite<HistoryIndicatorsValueResponse>(
     getFetchHistoryIndicatorValueKey,
-    ([url, interval, maxCursorDate]) => {
-      const formattedUrl = `${url}?dataCount=${rowsToDownload}&endDate=${maxCursorDate}`;
+    ([url, maxCursorDate]) => {
+      const formattedUrl = `${url}?dataCount=${paginationData.rowsToDownload}&endDate=${maxCursorDate}`;
 
       // not null-assertion: indicatorIds가 null 인 상황에서는 호출되지 않음
       return fetchIndicatorsValue([formattedUrl, interval, ...indicatorIds!]);

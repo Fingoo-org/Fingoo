@@ -74,9 +74,9 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
 
   const { data: scaledData, xScale, xAccessor, displayXAccessor } = ScaleProvider(data);
 
-  const endData = scaledData[scaledData.length - 1];
-  const startData = scaledData[0];
-  const xExtents = [xAccessor(startData), xAccessor(endData)];
+  // const endData = scaledData[scaledData.length - 1];
+  // const startData = scaledData[0];
+  // const xExtents = [xAccessor(startData), xAccessor(endData)];
 
   const handleLoadBefore = (start: number, end: number) => {
     const rowsToDownload = end - Math.ceil(start);
