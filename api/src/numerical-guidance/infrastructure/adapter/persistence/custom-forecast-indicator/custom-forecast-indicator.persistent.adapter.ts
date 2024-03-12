@@ -106,7 +106,6 @@ export class CustomForecastIndicatorPersistentAdapter
     try {
       const member = await this.authService.findById(memberId);
       this.nullCheckForEntity(member);
-
       const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
         CustomForecastIndicatorMapper.mapDomainToEntity(customForecastIndicator, member);
 
@@ -134,22 +133,27 @@ export class CustomForecastIndicatorPersistentAdapter
   async updateSourceIndicatorsAndWeights(customForecastIndicator: CustomForecastIndicator): Promise<void> {
     try {
       const id = customForecastIndicator.id;
-
-      const requestUrl =
-        'http://127.0.0.1:8000/api/var-api/source-indicators-verification?targetIndicatorId=26929514-237c-11ed-861d-0242ac120031&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120011&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120021&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120031&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120041&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120051&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120061&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120071&sourceIndicatorId=26929514-237c-11ed-861d-0242ac120081&weight=0.004/5&weight=0.002/3&weight=none&weight=0.005/2&weight=none&weight=0.003/1&weight=0.004/5&weight=0.007/4';
-      const res = await this.api.axiosRef.get(requestUrl);
-
-      console.log(res.data.grangerGroup);
-      console.log(res.data.cointJohansenVerification);
-
-      const grangerGroup = res.data.grangerGroup;
-      const cointJohansenVerification = res.data.cointJohansenVerification;
-
       const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
         await this.customForecastIndicatorRepository.findOneBy({ id });
       this.nullCheckForEntity(customForecastIndicatorEntity);
 
       customForecastIndicatorEntity.sourceIndicatorIdsAndWeights = customForecastIndicator.sourceIndicatorIdsAndWeights;
+
+      const url = `http://127.0.0.1:8000/api/var-api/source-indicators-verification?targetIndicatorId=${customForecastIndicator.targetIndicatorId}&`;
+      let indicatorsUrl: string = '';
+      let weightsUrl: string = '';
+      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
+        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].sourceIndicatorId}&`;
+      }
+      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
+        weightsUrl += `weight=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].weight}&`;
+      }
+      const requestUrl = url + indicatorsUrl + weightsUrl;
+
+      const res = await this.api.axiosRef.get(requestUrl);
+      const grangerGroup = res.data.grangerGroup;
+      const cointJohansenVerification = res.data.cointJohansenVerification;
+
       customForecastIndicatorEntity.grangerVerification = grangerGroup;
       customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
 

@@ -3,6 +3,8 @@ import { IndicatorType } from '../application/query/get-fluctuatingIndicator/flu
 import { CustomForecastIndicatorNameShouldNotEmpty } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 import { SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
+import { SourceIndicatorsShouldNotDuplicateRule } from './rule/SourceIndicatorsShouldNotDuplicate.rule';
+import { SourceIndicatorCountShouldNotExceedLimitRule } from './rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';
 
 export class CustomForecastIndicator extends AggregateRoot {
   @ApiProperty({
@@ -98,12 +100,13 @@ export class CustomForecastIndicator extends AggregateRoot {
   }
 
   public updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[]) {
-    const newSourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [...this.sourceIndicatorIdsAndWeights];
-
+    this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(sourceIndicatorIdsAndWeights));
+    this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(sourceIndicatorIdsAndWeights));
+    const newSourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
     for (let i = 0; i < sourceIndicatorIdsAndWeights.length; i++) {
       newSourceIndicatorIdsAndWeights.push(sourceIndicatorIdsAndWeights[i]);
     }
-
     this.sourceIndicatorIdsAndWeights = newSourceIndicatorIdsAndWeights;
+    this.updatedAt = new Date();
   }
 }
