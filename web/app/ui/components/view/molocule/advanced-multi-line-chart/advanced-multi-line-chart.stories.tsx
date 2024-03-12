@@ -29,5 +29,6 @@ const convertedData = convertLiveIndicatorsValueViewModel(data);
 export const Default: Story = {
   args: {
     data: convertedData.formattedIndicatorsInRow,
+    initialIndex: 0,
   },
 };
