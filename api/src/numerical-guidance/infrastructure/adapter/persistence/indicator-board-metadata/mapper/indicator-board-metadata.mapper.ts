@@ -14,11 +14,19 @@ export class IndicatorBoardMetadataMapper {
   }
 
   static mapEntityToDomain(entity: IndicatorBoardMetadataEntity) {
-    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+    return new IndicatorBoardMetadata(
       entity.id,
       entity.indicatorBoardMetadataName,
-      entity.indicatorIds['indicatorIds'].toString().split(','),
+      this.createArray(entity.indicatorIds['indicatorIds'].toString()),
+      entity.createdAt,
+      entity.updatedAt,
     );
-    return indicatorBoardMetadata;
+  }
+
+  private static createArray(stringArray: string) {
+    if (stringArray.length == 0 || stringArray == '') {
+      return [];
+    }
+    return stringArray.split(',');
   }
 }
