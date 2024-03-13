@@ -10,7 +10,7 @@ export default function IndicatorListContainer() {
         <Accordion.Item value="indicator">
           <Accordion.Trigger>
             <div className="text-md flex items-center py-1">
-              <Icon size={'sm'} icon={ChartSquareBarIcon} color={'gray'} />
+              <Icon size={'md'} icon={ChartSquareBarIcon} color={'gray'} />
               <div className="pl-3">지표</div>
             </div>
           </Accordion.Trigger>

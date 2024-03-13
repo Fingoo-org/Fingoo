@@ -35,10 +35,19 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
     );
   };
   return (
-    <ListItem style={style} hoverRender={hoverRender}>
-      <SelectableItem onSelect={handleItemSelect} onDeSelect={handleItemDeSelect} key={item.id} selected={isSelected}>
-        {item.name}
-      </SelectableItem>
-    </ListItem>
+    <div style={style}>
+      <div className="flex h-full items-center justify-center">
+        <ListItem hoverRender={hoverRender}>
+          <SelectableItem
+            onSelect={handleItemSelect}
+            onDeSelect={handleItemDeSelect}
+            key={item.id}
+            selected={isSelected}
+          >
+            {item.name}
+          </SelectableItem>
+        </ListItem>
+      </div>
+    </div>
   );
 }
