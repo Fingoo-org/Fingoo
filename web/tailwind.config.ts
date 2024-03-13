@@ -115,6 +115,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        pretendard: ['var(--font-pretendard)'],
       },
     },
   },
