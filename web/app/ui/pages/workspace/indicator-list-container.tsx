@@ -1,12 +1,19 @@
 import IndicatorList from '../../components/numerical-guidance/indicator/indicator-list';
+import Icon from '../../components/view/atom/icons/variant-icon';
 import Accordion from '../../components/view/molocule/accordion';
+import { ChartSquareBarIcon } from '@heroicons/react/solid';
 
 export default function IndicatorListContainer() {
   return (
     <div>
       <Accordion type="single" collapsible>
         <Accordion.Item value="indicator">
-          <Accordion.Trigger>지표</Accordion.Trigger>
+          <Accordion.Trigger>
+            <div className="text-md flex items-center py-1">
+              <Icon size={'sm'} icon={ChartSquareBarIcon} color={'gray'} />
+              <div className="pl-3">지표</div>
+            </div>
+          </Accordion.Trigger>
           <Accordion.Content>
             <IndicatorList />
           </Accordion.Content>
