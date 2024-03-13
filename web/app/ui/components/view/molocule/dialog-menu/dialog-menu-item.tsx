@@ -13,8 +13,8 @@ type DialogMenuItemProps = {
 export function DialogMenuItem({ children, icon, onClick, ...props }: React.PropsWithChildren<DialogMenuItemProps>) {
   const dialogKey = useContext(DialogMenuContext);
   const { payload, closeDialog } = useDialog(dialogKey as DialogKey);
-  const Icon = icon;
 
+  const Icon = icon;
   const handleClick = () => {
     // write logic
     if (onClick) {
@@ -29,9 +29,9 @@ export function DialogMenuItem({ children, icon, onClick, ...props }: React.Prop
       {...props}
       onClick={handleClick}
       role="menuitem"
-      className="group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-900 hover:bg-violet-500 hover:text-white"
+      className="group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-900 hover:bg-gray-400 hover:text-white"
     >
-      <Icon className="mr-2 h-4 w-4 text-violet-400 hover:text-violet-300" aria-hidden="true" />
+      <Icon className="mr-2 h-4 w-4 text-gray-500" aria-hidden="true" />
       {children}
     </button>
   );
