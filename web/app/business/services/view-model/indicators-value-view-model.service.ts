@@ -9,8 +9,8 @@ const parseTime = utcParse('%Y%m%d');
 const formatTime = utcFormat('%Y-%m-%d');
 
 type formattedItem = {
-  [key: string]: {
-    [key: string]: number;
+  [date: string]: {
+    [ticker: string]: number;
   };
 };
 
@@ -38,13 +38,14 @@ class IndicatorValue {
     this.values = values.map((item) => new IndicatorValueItem(item));
   }
 
-  get formattedItemsByDate(): Record<string, formattedItem> {
+  get formattedItemsByDate(): formattedItem {
     return this.values.reduce((acc, item) => {
       return {
         ...acc,
         [item.date]: {
           // temp: history 단위가 이상해서 일단 처리
           [this.ticker]: typeof item.value === 'number' ? item.value : parseInt(item.value.slice(0, 2)),
+          // 여기에 display value 추가하는게 맞을 듯
         },
       };
     }, {});
@@ -62,7 +63,7 @@ export class IndicatorsValue {
   }
 
   get formattedIndicatorsByDate() {
-    return this.indicatorsValue.reduce((acc: Record<string, formattedItem>, indicator) => {
+    return this.indicatorsValue.reduce((acc: formattedItem, indicator) => {
       const formattedItems = indicator.formattedItemsByDate;
       Object.keys(formattedItems).forEach((date) => {
         let formattedDate: string | Date = new Date(date);
@@ -71,7 +72,7 @@ export class IndicatorsValue {
         }
         formattedDate = formatTime(formattedDate);
 
-        acc[formattedDate] = { ...acc[date], ...formattedItems[date] };
+        acc[formattedDate] = { ...acc[formattedDate], ...formattedItems[date] };
       });
       return acc;
     }, {});
