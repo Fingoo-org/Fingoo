@@ -15,7 +15,7 @@ export default function IndicatorBoardToolbar() {
   const { tabIndex, setTabIndex } = useIndicatorBoard();
 
   return (
-    <div className=" bg-red-800">
+    <div>
       <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
         <Tab.List className="flex space-x-1   p-1">
           <ToolbarTab disable={selectedMetadataId ? false : true} tabName="지표 추가" />
