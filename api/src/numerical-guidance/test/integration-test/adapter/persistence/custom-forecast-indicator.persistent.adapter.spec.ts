@@ -132,4 +132,24 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       }),
     );
   });
+
+  // it('예측지표 수정하기', async ()=>{
+  //   // given
+  //   // const customFroecastIndicator = CustomForecastIndicator.createNew('name', '7f57095c-b60d-4ccb-be69-93e210daesda')
+  //   const sourceCustomFroecastIndicator = new CustomForecastIndicator(
+  //     '7f57095c-b60d-4ccb-be69-93e210daea0e',
+  //     'name',
+  //     'customForecastIndicator',
+  //     '7f57095c-b60d-4ccb-be69-93e210daesda',
+  //     [],
+  //     [],
+  //     []);
+
+  //   // when
+  //   await customForecastIndicatorPersistentAdapter.updateSourceIndicatorsAndWeights(sourceCustomFroecastIndicator);
+  //   const result = await customForecastIndicatorPersistentAdapter.loadCustomForecastIndicator('7f57095c-b60d-4ccb-be69-93e210daea0e');
+
+  //   // then
+  //   expect(result.grangerVerification).toEqual([])
+  // });
 });
