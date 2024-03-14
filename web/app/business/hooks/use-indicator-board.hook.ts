@@ -7,7 +7,7 @@ export const useIndicatorBoard = () => {
   const { setTabIndex } = useNumericalGuidanceStore((state) => state.actions);
 
   const transitionToCustomForecastTab = () => {
-    setTabIndex(1);
+    setTabIndex('1');
   };
 
   return {
