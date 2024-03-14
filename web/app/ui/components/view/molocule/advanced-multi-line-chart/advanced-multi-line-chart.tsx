@@ -16,7 +16,10 @@ import {
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { useResponsive } from '../../hooks/use-responsive';
-import { FormattedRowType } from '@/app/business/services/view-model/indicators-value-view-model.service';
+import {
+  FormattedIndicatorValue,
+  FormattedRowType,
+} from '@/app/business/services/view-model/indicators-value-view-model.service';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 
@@ -33,12 +36,27 @@ function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx:
       <CurrentCoordinate
         fillStyle={INDICATOR_COLORS[idx]}
         strokeStyle={INDICATOR_COLORS[idx]}
-        yAccessor={(d) => d[indicatorKey]}
+        yAccessor={(d) => {
+          if (d[indicatorKey] === undefined) return;
+
+          return d[indicatorKey].value;
+        }}
       />
-      <LineSeries strokeStyle={INDICATOR_COLORS[idx]} yAccessor={(d) => d[indicatorKey]} />
-      ;
+      <LineSeries
+        strokeStyle={INDICATOR_COLORS[idx]}
+        yAccessor={(d) => {
+          if (d[indicatorKey] === undefined) return;
+
+          return d[indicatorKey].value;
+        }}
+      />
+
       <SingleValueTooltip
-        yAccessor={(d) => d[indicatorKey]}
+        yAccessor={(d) => {
+          if (d[indicatorKey] === undefined) return;
+
+          return d[indicatorKey].displayValue;
+        }}
         yLabel={indicatorKey}
         yDisplayFormat={format('.2f')}
         valueFill={INDICATOR_COLORS[idx]}
@@ -87,11 +105,11 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
     onLoadData?.(rowsToDownload, -Math.ceil(start));
   };
 
-  const yExtents = (d: T) => {
+  const yExtents = (d: FormattedRowType) => {
     return Object.keys(d).reduce(
       (acc, key) => {
-        if (typeof d[key] !== 'number') return acc;
-        return [...acc, d[key]];
+        if (key === 'date' || key === 'idx') return acc;
+        return [...acc, (d[key] as FormattedIndicatorValue).value];
       },
       [0],
     );
@@ -99,7 +117,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
 
   const renderLienSeries = () => {
     return Object.keys(scaledData[0]).map((key, idx) => {
-      if (typeof scaledData[0][key] === 'number') {
+      if (key !== 'date' && key !== 'idx') {
         return <IndicatorLineSeries key={key} indicatorKey={key} idx={idx} />;
       }
     });

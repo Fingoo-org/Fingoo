@@ -8,21 +8,18 @@ import { utcFormat, utcParse } from 'd3-time-format';
 const parseTime = utcParse('%Y%m%d');
 const formatTime = utcFormat('%Y-%m-%d');
 
+export type FormattedIndicatorValue = {
+  value: number;
+  displayValue: number;
+};
+
 export type FormattedRowType = {
-  [ticker: string]:
-    | {
-        value: number;
-        displayValue: number;
-      }
-    | string;
+  [ticker: string]: FormattedIndicatorValue | string;
 };
 
 type FormattedItem = {
   [date: string]: {
-    [ticker: string]: {
-      value: number;
-      displayValue: number;
-    };
+    [ticker: string]: FormattedIndicatorValue;
   };
 };
 

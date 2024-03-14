@@ -25,8 +25,6 @@ export const useLiveIndicatorsValueViewModel = () => {
 
   const startDate = formattedIndicatorsRows?.[0]?.date as string;
 
-  console.log('view test', formattedIndicatorsRows);
-
   return {
     indicatorsValue: convertedIndciatorsValue,
     isPending: isLoading,
