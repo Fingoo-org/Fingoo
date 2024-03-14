@@ -2,7 +2,7 @@ import { LoadHistoryIndicatorPort } from '../../../../application/port/persisten
 import { BadRequestException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HistoryIndicatorEntity } from './entity/history-indicator.entity';
-import { LessThan, LessThanOrEqual, Repository } from 'typeorm';
+import { Between, LessThan, LessThanOrEqual, Repository } from 'typeorm';
 import { HistoryIndicatorValueEntity } from '../history-indicator-value/entity/history-indicator-value.entity';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { HistoryIndicatorDto } from '../../../../application/query/get-history-indicator/history-indicator.dto';
@@ -39,7 +39,16 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
     });
 
     const endDateToken = this.indicatorValueManager.formatStringToDate(endDate);
-    const [historyIndicatorValueEntities, total] = await this.findEntitiesByCursorToken(dataCount, endDateToken);
+    let [historyIndicatorValueEntities, total] = [null, null];
+    if (interval == 'day') {
+      [historyIndicatorValueEntities, total] = await this.findEntitiesByCursorToken(dataCount, endDateToken);
+    } else {
+      [historyIndicatorValueEntities, total] = await this.findEntitiesByCursorTokenByInterval(
+        interval,
+        dataCount,
+        endDateToken,
+      );
+    }
 
     const historyIndicatorValues = HistoryIndicatorMapper.mapEntitiesToVO(historyIndicatorValueEntities);
     let indicatorValues: IndicatorValue[] = historyIndicatorValues.map((historyIndicatorValue) => {
@@ -48,6 +57,7 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
         value: historyIndicatorValue.close,
       };
     });
+
     indicatorValues = await this.indicatorValueManager.adjustValuesByInterval(indicatorValues, interval);
 
     const historyIndicatorDto = HistoryIndicatorMapper.mapEntitiesToDto(historyIndicatorEntity, indicatorValues);
@@ -82,6 +92,34 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
         error: `[ERROR] 지표를 cursor pagination 하는 중에 dataCount, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
         message: '입력값이 올바른지 확인해주세요.',
         cause: error,
+      });
+    }
+  }
+
+  async findEntitiesByCursorTokenByInterval(interval: Interval, dataCount: number, endDateToken: Date) {
+    try {
+      const beforeIntervalCount = dataCount - 1;
+      let startDateToken;
+      if (interval == 'week') {
+        startDateToken = this.indicatorValueManager.getDateXWeeksAgo(endDateToken, beforeIntervalCount);
+      } else if (interval == 'month') {
+        startDateToken = this.indicatorValueManager.getDateXMonthsAgo(endDateToken, beforeIntervalCount);
+      } else if (interval == 'year') {
+        startDateToken = this.indicatorValueManager.getDateXYearsAgo(endDateToken, beforeIntervalCount);
+      }
+      return await this.historyIndicatorValueRepository.findAndCount({
+        where: {
+          date: Between(startDateToken, endDateToken),
+        },
+        order: {
+          date: ORDER_TYPE as any,
+        },
+      });
+    } catch (error) {
+      throw new BadRequestException({
+        message: `[ERROR] 지표를 cursor pagination 하는 중에 startDate, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
+        error: error,
+        HttpStatus: HttpStatus.BAD_REQUEST,
       });
     }
   }
