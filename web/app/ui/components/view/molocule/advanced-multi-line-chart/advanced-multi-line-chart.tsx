@@ -16,7 +16,6 @@ import {
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { useResponsive } from '../../hooks/use-responsive';
-import { useState } from 'react';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 
@@ -52,12 +51,14 @@ function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx:
 type AdvancedMultiLineChartProps<T> = {
   data: T[];
   initialIndex: number;
+  displayRowsSize?: number;
   onLoadData?: (rowsToDownload: number, initialIndex: number) => void;
 };
 
 export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   data,
   initialIndex,
+  displayRowsSize = 10,
   onLoadData,
 }: AdvancedMultiLineChartProps<T>) {
   const { containerRef, sizes } = useResponsive();
@@ -75,9 +76,9 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
 
   const { data: scaledData, xScale, xAccessor, displayXAccessor } = ScaleProvider(data);
 
-  // const endData = scaledData[scaledData.length - 1];
-  // const startData = scaledData[0];
-  // const xExtents = [xAccessor(startData), xAccessor(endData)];
+  const endData = scaledData[scaledData.length - 1];
+  const startData = scaledData[scaledData.length - displayRowsSize];
+  const xExtents = [xAccessor(startData), xAccessor(endData)];
 
   const handleLoadBefore = (start: number, end: number) => {
     const rowsToDownload = end - Math.ceil(start);
@@ -108,7 +109,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   return (
     <div data-testid="advanced-multi-line-chart" ref={containerRef} className="h-full w-full">
       <ChartCanvas
-        // xExtents={xExtents}
+        xExtents={xExtents}
         xScale={xScale}
         data={scaledData}
         displayXAccessor={displayXAccessor}
