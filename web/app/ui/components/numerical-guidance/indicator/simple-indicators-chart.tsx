@@ -1,5 +1,5 @@
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
-import MultiLineChart from '../../view/molocule/multi-line-chart';
+import MultiLineChart from '../../view/molocule/multi-line-chart/multi-line-chart';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 
 export default function SimpleIndicatorsChart() {

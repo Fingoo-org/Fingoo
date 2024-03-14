@@ -8,6 +8,15 @@ import { utcFormat, utcParse } from 'd3-time-format';
 const parseTime = utcParse('%Y%m%d');
 const formatTime = utcFormat('%Y-%m-%d');
 
+export type formattedRowType = {
+  [ticker: string]:
+    | {
+        value: number;
+        displayValue: number;
+      }
+    | string;
+};
+
 type formattedItem = {
   [date: string]: {
     [ticker: string]: {
