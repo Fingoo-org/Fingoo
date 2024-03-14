@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
-import { Inter as FontSans } from 'next/font/google';
 import './globals.css';
 import MSWComponent from './mocks/msw-component.mock';
 import { SWRProvider } from './store/querys/swr-provider';
 import { cn } from './utils/style';
+import localFont from 'next/font/local';
 
-const fontSans = FontSans({ subsets: ['latin'], variable: '--font-sans' });
+const myFont = localFont({
+  src: './PretendardVariable.woff2',
+  display: 'swap',
+  variable: '--font-pretendard',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -14,8 +18,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={cn(fontSans.variable)}>
+    <html lang="kr">
+      <body className={cn(myFont.variable, 'font-pretendard')}>
         <MSWComponent>
           <SWRProvider>{children}</SWRProvider>
         </MSWComponent>

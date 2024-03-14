@@ -23,7 +23,7 @@ export const useLiveIndicatorsValueViewModel = () => {
     [convertedIndciatorsValue],
   );
 
-  const startDate = formattedIndicatorsRows?.[0]?.date;
+  const startDate = formattedIndicatorsRows?.[0]?.date as string;
 
   return {
     indicatorsValue: convertedIndciatorsValue,

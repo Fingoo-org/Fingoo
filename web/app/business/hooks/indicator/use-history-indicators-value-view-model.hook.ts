@@ -8,7 +8,7 @@ import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/u
 import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
 
 export const useHistoryIndicatorsValueViewModel = () => {
-  const [paginationData, setPaginationData] = useState<{ rowsToDownload: number }>({ rowsToDownload: 100 });
+  const [paginationData, setPaginationData] = useState<{ rowsToDownload: number } | undefined>(undefined);
   const [initialCursorDate, setInitialCursorDate] = useState<Date>(new Date());
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const interval = useNumericalGuidanceStore((state) => state.interval);
@@ -16,7 +16,7 @@ export const useHistoryIndicatorsValueViewModel = () => {
   const { data: historyIndicatorsValuePages, setSize: setPageSize } = useFetchHistoryIndicatorValue(
     selectedMetadata?.indicatorIds,
     {
-      rowsToDownload: paginationData?.rowsToDownload,
+      rowsToDownload: paginationData?.rowsToDownload ?? 10,
       initialCursorDate,
     },
     interval,

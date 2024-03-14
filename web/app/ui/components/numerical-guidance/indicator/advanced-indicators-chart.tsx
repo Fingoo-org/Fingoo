@@ -30,6 +30,7 @@ export default function AdvancedIndicatorsChart() {
 
   return (
     <AdvancedMultiLineChart
+      displayRowsSize={initialLength}
       initialIndex={initialIndex}
       onLoadData={handleLoadData}
       data={formattedAdvencedIndicatorsRows || []}

@@ -9,14 +9,14 @@ type NumericalGuidanceState = {
   selectedMetadataId: string | undefined;
   interval: Interval;
   isAdvancedChart: boolean;
-  tabIndex: number;
+  tabIndex: string;
   selectedCustomForecastIndicatorId: string | undefined;
 };
 
 type NumericalGuidanceAction = {
   selectMetadata: (MetadataId: string | undefined) => void;
   setIsAdvancedChart: (isAdvancedChart: boolean) => void;
-  setTabIndex: (tabIndex: number) => void;
+  setTabIndex: (tabIndex: string) => void;
   selectCustomForecastIndicator: (customForecastIndicatorId: string | undefined) => void;
   setInterval: (interval: Interval) => void;
 };
@@ -30,7 +30,7 @@ const initialNumericalGuidanceState: NumericalGuidanceState = {
   selectedMetadataId: undefined,
   interval: 'day',
   isAdvancedChart: false,
-  tabIndex: 2,
+  tabIndex: '2',
   selectedCustomForecastIndicatorId: undefined,
 };
 

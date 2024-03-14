@@ -22,7 +22,7 @@ export default function IndicatorDialogMenu() {
   };
 
   return (
-    <DialogMenu size={'md'} dialogKey={DIALOG_KEY.INDICATOR_EDIT_MENU}>
+    <DialogMenu color={'gray'} size={'md'} dialogKey={DIALOG_KEY.INDICATOR_EDIT_MENU}>
       <DialogMenu.Item
         aria-label="create-custom-forecast-indicator"
         onClick={handleCustomForecastIndicatorCreate}

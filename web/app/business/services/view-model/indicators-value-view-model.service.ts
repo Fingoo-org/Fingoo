@@ -8,9 +8,18 @@ import { utcFormat, utcParse } from 'd3-time-format';
 const parseTime = utcParse('%Y%m%d');
 const formatTime = utcFormat('%Y-%m-%d');
 
-type formattedItem = {
-  [key: string]: {
-    [key: string]: number;
+export type FormattedIndicatorValue = {
+  value: number;
+  displayValue: number;
+};
+
+export type FormattedRowType = {
+  [ticker: string]: FormattedIndicatorValue | string;
+};
+
+type FormattedItem = {
+  [date: string]: {
+    [ticker: string]: FormattedIndicatorValue;
   };
 };
 
@@ -22,7 +31,25 @@ class IndicatorValueItem {
     this.date = date;
     this.value = value;
   }
+
+  calcuateIndexValue(maxValue: number, minValue: number) {
+    if (typeof this.value === 'number') {
+      return ((this.value - minValue) / (maxValue - minValue)) * 100;
+    } else {
+      return ((parseInt(this.value) - minValue) / (maxValue - minValue)) * 100;
+    }
+  }
+
+  get parseValueToInt() {
+    return typeof this.value === 'number' ? this.value : parseInt(this.value);
+  }
 }
+
+type UnitType = 'index' | 'default';
+
+type IndicatorValueViewModelType = {
+  unitType: UnitType;
+};
 
 class IndicatorValue {
   readonly id: string;
@@ -30,31 +57,44 @@ class IndicatorValue {
   readonly market: string;
   readonly type: string;
   readonly values: IndicatorValueItem[];
-  constructor({ id, ticker, market, type, values }: IndicatorValueResponse) {
+  private maxValue: number;
+  private minValue: number;
+  private unitType: UnitType;
+  constructor({ id, ticker, market, type, values, unitType }: IndicatorValueResponse & IndicatorValueViewModelType) {
     this.id = id;
     this.ticker = ticker;
     this.market = market;
     this.type = type;
     this.values = values.map((item) => new IndicatorValueItem(item));
+    this.maxValue = Math.max(...this.values.map((item) => item.parseValueToInt));
+    this.minValue = Math.min(...this.values.map((item) => item.parseValueToInt));
+    this.unitType = unitType;
   }
 
-  get formattedItemsByDate(): Record<string, formattedItem> {
-    return this.values.reduce((acc, item) => {
+  get formattedItemsByDate(): FormattedItem {
+    return this.values.reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {
-          // temp: history 단위가 이상해서 일단 처리
-          [this.ticker]: typeof item.value === 'number' ? item.value : parseInt(item.value.slice(0, 2)),
+          [this.ticker]: {
+            value: this.caculateValue(item),
+            displayValue: item.parseValueToInt,
+          },
         },
       };
     }, {});
+  }
+
+  caculateValue(item: IndicatorValueItem) {
+    return this.unitType === 'index' ? item.calcuateIndexValue(this.maxValue, this.minValue) : item.parseValueToInt;
   }
 }
 
 export class IndicatorsValue {
   readonly indicatorsValue: IndicatorValue[];
   constructor({ indicatorsValue }: IndicatorsValueResponse) {
-    this.indicatorsValue = indicatorsValue.map((indicatorValue) => new IndicatorValue(indicatorValue));
+    const unitType = indicatorsValue.length > 1 ? 'index' : 'default';
+    this.indicatorsValue = indicatorsValue.map((indicatorValue) => new IndicatorValue({ ...indicatorValue, unitType }));
   }
 
   get length() {
@@ -62,7 +102,7 @@ export class IndicatorsValue {
   }
 
   get formattedIndicatorsByDate() {
-    return this.indicatorsValue.reduce((acc: Record<string, formattedItem>, indicator) => {
+    return this.indicatorsValue.reduce<FormattedItem>((acc, indicator) => {
       const formattedItems = indicator.formattedItemsByDate;
       Object.keys(formattedItems).forEach((date) => {
         let formattedDate: string | Date = new Date(date);
@@ -71,7 +111,7 @@ export class IndicatorsValue {
         }
         formattedDate = formatTime(formattedDate);
 
-        acc[formattedDate] = { ...acc[date], ...formattedItems[date] };
+        acc[formattedDate] = { ...acc[formattedDate], ...formattedItems[date] };
       });
       return acc;
     }, {});
@@ -79,7 +119,14 @@ export class IndicatorsValue {
 
   get formattedIndicatorsInRow() {
     const formattedIndicatorsByDate = this.formattedIndicatorsByDate;
-    return Object.keys(formattedIndicatorsByDate).map((date) => {
+    return Object.keys(formattedIndicatorsByDate).map<{
+      [ticker: string]:
+        | {
+            value: number;
+            displayValue: number;
+          }
+        | string;
+    }>((date) => {
       return {
         date,
         ...formattedIndicatorsByDate[date],

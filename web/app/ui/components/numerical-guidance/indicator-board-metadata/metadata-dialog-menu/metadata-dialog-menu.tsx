@@ -18,12 +18,13 @@ export default function MetadataDialogMenu() {
   };
 
   return (
-    <DialogMenu size={'md'} dialogKey={DIALOG_KEY.METADATA_EDIT_MENU}>
+    <DialogMenu color={'gray'} size={'md'} dialogKey={DIALOG_KEY.METADATA_EDIT_MENU}>
       <DialogMenu.Header>
         <TinyInput
           defaultValue={indicatorBoardMetadata !== undefined ? indicatorBoardMetadata.name : ''}
           withResetButton={true}
           withDebounce={500}
+          color={'white'}
           onValueChange={handleMetadataUpdate}
         />
       </DialogMenu.Header>

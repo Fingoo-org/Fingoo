@@ -1,20 +1,19 @@
 'use client';
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import MultiLineChart from '../../view/molocule/multi-line-chart';
-import Pending from '../../view/molocule/pending';
 import SelectedMetadataTittle from '../indicator-board-metadata/selected-metadata-title';
 import ToggleButton from '../../view/atom/toggle-button/toggle-button';
 import { CheckCircleIcon } from '@heroicons/react/outline';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
 import AdvancedIndicatorsChart from './advanced-indicators-chart';
+import SimpleIndicatorsChart from './simple-indicators-chart';
+import Pending from '../../view/molocule/pending';
 
 export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
+  // refactor: 애 둘을 선언형으로 감추고 싶다. rule을 만들어서 해결하자. 이컴포넌트가 주요한 예시가 될 듯
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { indicatorsValue, formattedIndicatorsRows, isPending } = useLiveIndicatorsValueViewModel();
-
-  const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
+  const { formattedIndicatorsRows, isPending } = useLiveIndicatorsValueViewModel();
 
   const handleToggle = (active: boolean) => {
     setIsAdvancedChart(active);
@@ -35,17 +34,7 @@ export default function IndicatorsChart() {
           />
         </div>
         <div className="mt-4 h-72 w-full">
-          {isAdvancedChart ? (
-            <AdvancedIndicatorsChart />
-          ) : (
-            <MultiLineChart
-              data={formattedIndicatorsRows || []}
-              categories={category}
-              noDataText={
-                selectedMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'
-              }
-            />
-          )}
+          {isAdvancedChart ? <AdvancedIndicatorsChart /> : <SimpleIndicatorsChart />}
         </div>
       </Pending>
     </>
