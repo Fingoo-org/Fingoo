@@ -1,11 +1,11 @@
 'use client';
 import { EventProps, LineChart } from '@tremor/react';
 import { useState } from 'react';
-import { formattedRowType } from '@/app/business/services/view-model/indicators-value-view-model.service';
+import { FormattedRowType } from '@/app/business/services/view-model/indicators-value-view-model.service';
 import { ChartTooltip } from './chart-tooltip';
 
 type MultiLineChartProps = {
-  data: formattedRowType[];
+  data: FormattedRowType[];
   categories: string[];
   noDataText?: string;
 };
@@ -34,7 +34,7 @@ export default function MultiLineChart({ data, categories, noDataText }: MultiLi
   );
 }
 
-function formmatData(data: formattedRowType[]) {
+function formmatData(data: FormattedRowType[]) {
   return data.map((d) => {
     return {
       ...Object.keys(d).reduce((acc, key) => {

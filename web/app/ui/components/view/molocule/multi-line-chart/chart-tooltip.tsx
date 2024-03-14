@@ -71,11 +71,8 @@ export const ChartTooltipRow = ({ value, name, color }: ChartTooltipRowProps) =>
 );
 
 export const ChartTooltip = ({ active, payload, label }: CustomTooltipProps) => {
-  console.log(active, payload, label);
-
   if (active && payload) {
     const filteredPayload = payload.filter((item: any) => item.type !== 'none');
-    console.log('fitler', filteredPayload);
     return (
       <ChartTooltipFrame>
         <div

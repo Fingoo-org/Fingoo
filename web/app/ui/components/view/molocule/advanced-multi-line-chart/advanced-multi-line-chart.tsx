@@ -16,6 +16,7 @@ import {
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { useResponsive } from '../../hooks/use-responsive';
+import { FormattedRowType } from '@/app/business/services/view-model/indicators-value-view-model.service';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 
@@ -49,7 +50,7 @@ function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx:
 }
 
 type AdvancedMultiLineChartProps<T> = {
-  data: T[];
+  data: FormattedRowType[];
   initialIndex: number;
   displayRowsSize?: number;
   onLoadData?: (rowsToDownload: number, initialIndex: number) => void;

@@ -8,7 +8,7 @@ import { utcFormat, utcParse } from 'd3-time-format';
 const parseTime = utcParse('%Y%m%d');
 const formatTime = utcFormat('%Y-%m-%d');
 
-export type formattedRowType = {
+export type FormattedRowType = {
   [ticker: string]:
     | {
         value: number;
@@ -17,7 +17,7 @@ export type formattedRowType = {
     | string;
 };
 
-type formattedItem = {
+type FormattedItem = {
   [date: string]: {
     [ticker: string]: {
       value: number;
@@ -74,8 +74,8 @@ class IndicatorValue {
     this.unitType = unitType;
   }
 
-  get formattedItemsByDate(): formattedItem {
-    return this.values.reduce<formattedItem>((acc, item) => {
+  get formattedItemsByDate(): FormattedItem {
+    return this.values.reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {
@@ -105,7 +105,7 @@ export class IndicatorsValue {
   }
 
   get formattedIndicatorsByDate() {
-    return this.indicatorsValue.reduce<formattedItem>((acc, indicator) => {
+    return this.indicatorsValue.reduce<FormattedItem>((acc, indicator) => {
       const formattedItems = indicator.formattedItemsByDate;
       Object.keys(formattedItems).forEach((date) => {
         let formattedDate: string | Date = new Date(date);
