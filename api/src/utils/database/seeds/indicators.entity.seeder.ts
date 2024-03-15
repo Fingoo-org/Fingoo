@@ -6,8 +6,59 @@ import * as fs from 'fs';
 import { HistoryIndicatorValueEntity } from '../../../numerical-guidance/infrastructure/adapter/persistence/history-indicator-value/entity/history-indicator-value.entity';
 
 export default class IndicatorEntitySeeder implements Seeder {
-  public async run(dataSource: DataSource): Promise<void> {
+  async run(dataSource: DataSource): Promise<void> {
     await dataSource.getRepository(IndicatorEntity).clear();
+    const companies = [
+      {
+        name: '삼성전자',
+        ticker: '005930',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: 'SK하이닉스',
+        ticker: '000660',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: '네이버',
+        ticker: '035420',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: 'LG에너지솔루션',
+        ticker: '373220',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: '기아',
+        ticker: '000270',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: '현대차',
+        ticker: '005380',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: '카카오',
+        ticker: '035720',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: 'LG',
+        ticker: '003550',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+    ];
+
     await dataSource.getRepository(IndicatorEntity).insert([
       {
         name: '삼성전자',
@@ -16,54 +67,90 @@ export default class IndicatorEntitySeeder implements Seeder {
         market: 'KOSPI',
       },
       {
-        name: '이스트아시아',
-        ticker: '900110',
+        name: 'SK하이닉스',
+        ticker: '000660',
         type: 'k-stock',
-        market: 'KOSDAQ',
+        market: 'KOSPI',
+      },
+      {
+        name: '네이버',
+        ticker: '035420',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: 'LG에너지솔루션',
+        ticker: '373220',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: '기아',
+        ticker: '000270',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: '현대차',
+        ticker: '005380',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: '카카오',
+        ticker: '035720',
+        type: 'k-stock',
+        market: 'KOSPI',
+      },
+      {
+        name: 'LG',
+        ticker: '003550',
+        type: 'k-stock',
+        market: 'KOSPI',
       },
     ]);
 
-    const indicatorEntity = await dataSource.getRepository(IndicatorEntity).findOneBy({ ticker: '005930' });
+    let historyIndicatorEntity: HistoryIndicatorEntity;
+    let historyDataPath: string;
+    let historyData: string;
+    let mockHistoryIndicatorValues;
+    for (const company of companies) {
+      const indicatorEntity = await dataSource.getRepository(IndicatorEntity).findOneBy({ ticker: company.ticker });
+      console.log(indicatorEntity.name, '저장 중...');
+      await dataSource.getRepository(HistoryIndicatorEntity).insert({
+        id: indicatorEntity.id,
+        name: indicatorEntity.name,
+        type: indicatorEntity.type,
+        ticker: indicatorEntity.ticker,
+        market: indicatorEntity.market,
+        values: [],
+      });
 
-    await dataSource.getRepository(HistoryIndicatorEntity).insert({
-      id: indicatorEntity.id,
-      name: indicatorEntity.name,
-      type: indicatorEntity.type,
-      ticker: indicatorEntity.ticker,
-      market: indicatorEntity.market,
-      values: [],
-    });
+      historyDataPath = `./src/utils/database/mock-history-indicator/mock-indicator-${company.name}.json`;
+      historyData = fs.readFileSync(historyDataPath, 'utf8');
+      mockHistoryIndicatorValues = JSON.parse(historyData);
 
-    const historyIndicatorEntity: HistoryIndicatorEntity = await dataSource
-      .getRepository(HistoryIndicatorEntity)
-      .findOneBy({ id: indicatorEntity.id });
+      historyIndicatorEntity = await dataSource
+        .getRepository(HistoryIndicatorEntity)
+        .findOneBy({ id: indicatorEntity.id });
 
-    const filePath = './src/utils/database/mock-history-indicator.json';
-
-    const data = fs.readFileSync(filePath, 'utf8');
-
-    const mockHistoryIndicatorValues = JSON.parse(data);
-
-    const historyIndicatorValues = mockHistoryIndicatorValues.map((value) => {
-      return {
-        date: new Date(value.date),
-        close: value.close,
-        compare: value.compare,
-        fluctuation: value.fluctuation,
-        open: value.open,
-        high: value.high,
-        low: value.low,
-        volume: value.volume,
-        tradingValue: value.tradingValue,
-        marketCapitalization: value.marketCapitalization,
-        outstandingShares: value.outstandingShares,
-      };
-    });
-    await dataSource.getRepository(HistoryIndicatorValueEntity).insert(historyIndicatorValues);
-    const historyIndicatorValueEntities = await dataSource.getRepository(HistoryIndicatorValueEntity).find();
-    historyIndicatorValueEntities.forEach((entity) => {
-      entity.historyIndicator = historyIndicatorEntity;
-    });
-    await dataSource.getRepository(HistoryIndicatorValueEntity).save(historyIndicatorValueEntities);
+      await mockHistoryIndicatorValues.map((value) => {
+        const entity = new HistoryIndicatorValueEntity();
+        entity.date = new Date(value.date);
+        entity.close = value.close;
+        entity.compare = value.compare;
+        entity.fluctuation = value.fluctuation;
+        entity.open = value.open;
+        entity.high = value.high;
+        entity.low = value.low;
+        entity.volume = value.volume;
+        entity.tradingValue = value.tradingValue;
+        entity.marketCapitalization = value.marketCapitalization;
+        entity.outstandingShares = value.outstandingShares;
+        entity.historyIndicator = historyIndicatorEntity;
+        dataSource.getRepository(HistoryIndicatorValueEntity).save(entity);
+      });
+      console.log(indicatorEntity.name, '저장 완료!');
+    }
   }
 }

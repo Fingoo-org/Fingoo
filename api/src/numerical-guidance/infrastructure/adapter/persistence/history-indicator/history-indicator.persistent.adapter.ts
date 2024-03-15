@@ -2,7 +2,7 @@ import { LoadHistoryIndicatorPort } from '../../../../application/port/persisten
 import { BadRequestException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HistoryIndicatorEntity } from './entity/history-indicator.entity';
-import { LessThan, LessThanOrEqual, Repository } from 'typeorm';
+import { Between, LessThan, LessThanOrEqual, Repository } from 'typeorm';
 import { HistoryIndicatorValueEntity } from '../history-indicator-value/entity/history-indicator-value.entity';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { HistoryIndicatorDto } from '../../../../application/query/get-history-indicator/history-indicator.dto';
@@ -16,6 +16,7 @@ const ORDER_TYPE: string = 'DESC';
 const INDEXING_COUNT: number = 1;
 const DECREASE_NUMBER_OF_DAYS: number = 1;
 const EMPTY_VALUE_SIZE: number = 0;
+let startDateToken;
 
 @Injectable()
 export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPort {
@@ -39,22 +40,39 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
     });
 
     const endDateToken = this.indicatorValueManager.formatStringToDate(endDate);
-    const [historyIndicatorValueEntities, total] = await this.findEntitiesByCursorToken(dataCount, endDateToken);
-
+    let [historyIndicatorValueEntities, total] = [null, null];
+    if (interval == 'day') {
+      [historyIndicatorValueEntities, total] = await this.findEntitiesByCursorToken(
+        historyIndicatorEntity,
+        dataCount,
+        endDateToken,
+      );
+    } else {
+      [historyIndicatorValueEntities, total] = await this.findEntitiesByCursorTokenByInterval(
+        historyIndicatorEntity,
+        interval,
+        dataCount,
+        endDateToken,
+      );
+    }
     const historyIndicatorValues = HistoryIndicatorMapper.mapEntitiesToVO(historyIndicatorValueEntities);
     let indicatorValues: IndicatorValue[] = historyIndicatorValues.map((historyIndicatorValue) => {
       return {
         date: this.indicatorValueManager.formatDateToString(historyIndicatorValue.date),
-        value: historyIndicatorValue.close,
+        value: historyIndicatorValue.close.toString(),
       };
     });
+
     indicatorValues = await this.indicatorValueManager.adjustValuesByInterval(indicatorValues, interval);
 
     const historyIndicatorDto = HistoryIndicatorMapper.mapEntitiesToDto(historyIndicatorEntity, indicatorValues);
 
-    const startDateIndex = historyIndicatorValueEntities.length - INDEXING_COUNT;
-    const startDate = historyIndicatorValueEntities[startDateIndex].date;
-    const cursorToken = await this.getCursorToken(startDate);
+    if (interval == 'day') {
+      const startDateIndex = historyIndicatorValueEntities.length - INDEXING_COUNT;
+      startDateToken = historyIndicatorValueEntities[startDateIndex].date;
+    }
+    const cursorToken = await this.getCursorToken(historyIndicatorEntity, interval, startDateToken);
+
     const { hasNextData, cursor } = this.cursorController(cursorToken, historyIndicatorValueEntities.length);
     const cursorPageMetaDto = new CursorPageMetaDto({
       total: this.getTotalCount(total, indicatorValues),
@@ -65,12 +83,17 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
     return new CursorPageDto<HistoryIndicatorDto>(historyIndicatorDto, cursorPageMetaDto);
   }
 
-  async findEntitiesByCursorToken(dataCount: number, endDateToken: Date) {
+  async findEntitiesByCursorToken(
+    historyIndicatorEntity: HistoryIndicatorEntity,
+    dataCount: number,
+    endDateToken: Date,
+  ) {
     try {
       return await this.historyIndicatorValueRepository.findAndCount({
         take: dataCount,
         where: {
           date: LessThan(endDateToken),
+          historyIndicator: historyIndicatorEntity,
         },
         order: {
           date: ORDER_TYPE as any,
@@ -86,13 +109,50 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
     }
   }
 
-  async getCursorToken(startDateToken: Date) {
+  async findEntitiesByCursorTokenByInterval(
+    historyIndicatorEntity: HistoryIndicatorEntity,
+    interval: Interval,
+    dataCount: number,
+    endDateToken: Date,
+  ) {
+    try {
+      const beforeIntervalCount = dataCount - 1;
+      if (interval == 'week') {
+        startDateToken = this.indicatorValueManager.getDateXWeeksAgo(endDateToken, beforeIntervalCount);
+      } else if (interval == 'month') {
+        startDateToken = this.indicatorValueManager.getDateXMonthsAgo(endDateToken, beforeIntervalCount);
+      } else if (interval == 'year') {
+        startDateToken = this.indicatorValueManager.getDateXYearsAgo(endDateToken, beforeIntervalCount);
+      }
+      return await this.historyIndicatorValueRepository.findAndCount({
+        where: {
+          date: Between(startDateToken, endDateToken),
+          historyIndicator: historyIndicatorEntity,
+        },
+        order: {
+          date: ORDER_TYPE as any,
+        },
+      });
+    } catch (error) {
+      throw new BadRequestException({
+        message: `[ERROR] 지표를 cursor pagination 하는 중에 startDate, endDate에 대한 entity를 찾지 못 했습니다. 올바른 날짜를 입력했는지 확인해주세요.`,
+        error: error,
+        HttpStatus: HttpStatus.BAD_REQUEST,
+      });
+    }
+  }
+
+  async getCursorToken(historyIndicatorEntity: HistoryIndicatorEntity, interval: Interval, startDateToken: Date) {
     const tokenOption = new Date(startDateToken);
     tokenOption.setDate(startDateToken.getDate() - DECREASE_NUMBER_OF_DAYS);
 
     return await this.historyIndicatorValueRepository.findOne({
       where: {
         date: LessThanOrEqual(tokenOption),
+        historyIndicator: historyIndicatorEntity,
+      },
+      order: {
+        date: ORDER_TYPE as any,
       },
     });
   }

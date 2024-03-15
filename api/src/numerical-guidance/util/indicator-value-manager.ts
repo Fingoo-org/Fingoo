@@ -17,7 +17,6 @@ export abstract class IndicatorValueManager<T> {
       const currentDate = this.formatStringToDate(this.getCurrentDateString(value));
       const identifier = this.createIdentifier(interval, currentDate);
       const boundValues = this.bindValues(values, interval, currentDate);
-
       const calculatedValues = this.calculateValues(boundValues, identifier);
       resultValues.push(...calculatedValues);
     });
@@ -39,6 +38,30 @@ export abstract class IndicatorValueManager<T> {
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}${month}${day}`;
+  }
+
+  public getDateXWeeksAgo(date: Date, weeksAgo: number): Date {
+    const targetWeekNumber = this.getISOWeekNumber(date) - weeksAgo;
+    const yearStart = this.getYearStart(date);
+    const targetDate = new Date(yearStart.getTime() + (targetWeekNumber - 1) * 7 * 24 * 60 * 60 * 1000);
+
+    targetDate.setDate(targetDate.getDate() - 1);
+    return targetDate;
+  }
+
+  public getDateXMonthsAgo(date: Date, monthsAgo: number): Date {
+    const targetDate = new Date(date);
+    targetDate.setMonth(targetDate.getMonth() - monthsAgo);
+    targetDate.setDate(1);
+    return targetDate;
+  }
+
+  public getDateXYearsAgo(date: Date, yearsAgo: number): Date {
+    const targetDate = new Date(date);
+    targetDate.setFullYear(targetDate.getFullYear() - yearsAgo);
+    targetDate.setMonth(0);
+    targetDate.setDate(1);
+    return targetDate;
   }
 
   private bindValues(values: T[], interval: Interval, currentDate: Date): T[] {
@@ -80,16 +103,20 @@ export abstract class IndicatorValueManager<T> {
       case 'week':
         return `${currentDate.getFullYear()}-${this.getISOWeekNumber(currentDate)}`;
       case 'month':
-        return currentDate.getMonth().toString();
+        return currentDate.getFullYear().toString() + currentDate.getMonth().toString();
       case 'year':
-        return currentDate.getFullYear().toString();
+        return currentDate.getFullYear().toString() + currentDate.getFullYear().toString();
     }
   }
 
   private getISOWeekNumber(date: Date): number {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const yearStart = this.getYearStart(d);
     return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  }
+
+  private getYearStart(date: Date) {
+    return new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
   }
 }

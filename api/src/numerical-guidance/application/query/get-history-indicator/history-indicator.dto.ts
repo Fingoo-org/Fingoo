@@ -3,16 +3,16 @@ import { IndicatorValue } from '../get-live-indicator/live-indicator.dto';
 
 export type HistoryIndicatorValue = {
   date: Date;
-  close: string;
-  compare: string;
-  fluctuation: string;
-  open: string;
-  high: string;
-  low: string;
-  volume: string;
-  tradingValue: string;
-  marketCapitalization: string;
-  outstandingShares: string;
+  close: number;
+  compare: number;
+  fluctuation: number;
+  open: number;
+  high: number;
+  low: number;
+  volume: number;
+  tradingValue: number;
+  marketCapitalization: number;
+  outstandingShares: number;
 };
 
 export class HistoryIndicatorDto {
