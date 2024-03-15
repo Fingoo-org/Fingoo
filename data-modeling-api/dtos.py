@@ -1,6 +1,4 @@
 from pydantic import BaseModel
-import requests
-import pandas as pd
 
 class IndicatorDto(BaseModel):
     id: str

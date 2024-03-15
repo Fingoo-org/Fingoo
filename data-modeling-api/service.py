@@ -6,8 +6,9 @@ from verificationModule import verification
 from forecastModule import forecast
 import datetime
 import requests
+from urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
 
-# postgresql에 붙이려면 endDate와 totalCount가 추가 되어야 함
 def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[str], db: Session) -> ForecastIndicatorDto:
   # 데이터베이스로부터 Indicator 정보 가져오기
   sourceIndicators: list[IndicatorDto] = []
@@ -24,17 +25,23 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   nameList = []
   for sourceIndicator in sourceIndicators:
     nameList.append(sourceIndicator.name)
-
+  print(nameList)
   for sourceIndicator in sourceIndicators:
     if sourceIndicator.id == targetIndicatorId:
       targetIndicatorName = sourceIndicator.name
 
   #데이터 받아오기 -> nest: request(interval(day), indicatorId)
   APIList = []
+  session = requests.Session()
+  retry = Retry(connect=10, backoff_factor=1)
+  adapter = HTTPAdapter(max_retries=retry)
+  session.mount('http://', adapter)
   for sourceIndicator in sourceIndicatorIds:
-    req = requests.get(f'http://localhost:8000/api/numerical-guidance/indicators/k-stock/live?interval=day&indicatorId={sourceIndicator}')
+    req = requests.get(f'http://host.docker.internal:8000/api/numerical-guidance/indicators/k-stock/live?interval=day&indicatorId={sourceIndicator}')
     data = req.json()
-    df = pd.DataFrame(data['values'])
+    print(data['values'])
+    values = data['values']
+    df = pd.DataFrame(values)
 
     df['date'] = pd.to_datetime(df['date'])
     df['value'] = df['value'].astype(float)
@@ -47,7 +54,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   df_var = pd.DataFrame(sourceDataFrames)
 
   df_var.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
-  print(df_var.columns)
   df_var = df_var.dropna()
 
   for indicator, weight in zip(df_var, weights):
@@ -108,10 +114,16 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
 
   #데이터 받아오기 -> nest: request(interval(day), indicatorId)
   APIList = []
+  session = requests.Session()
+  retry = Retry(connect=10, backoff_factor=1)
+  adapter = HTTPAdapter(max_retries=retry)
+  session.mount('http://', adapter)
   for sourceIndicator in sourceIndicatorIds:
-    req = requests.get(f'http://localhost:8000/api/numerical-guidance/indicators/k-stock/live?interval=day&indicatorId={sourceIndicator}')
+    req = requests.get(f'http://host.docker.internal:8000/api/numerical-guidance/indicators/k-stock/live?interval=day&indicatorId={sourceIndicator}')
     data = req.json()
-    df = pd.DataFrame(data['values'])
+    print(data['values'])
+    values = data['values']
+    df = pd.DataFrame(values)
 
     df['date'] = pd.to_datetime(df['date'])
     df['value'] = df['value'].astype(float)

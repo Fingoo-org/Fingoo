@@ -1,0 +1,11 @@
+fastapi>=0.68.0,<0.69.0
+pydantic>=1.8.0,<2.0.0
+uvicorn>=0.15.0,<0.16.0
+numpy==1.26.4
+pandas==2.2.1
+psycopg2-binary==2.9.9
+requests==2.31.0
+SQLAlchemy==2.0.28
+statsmodels==0.14.1
+python-dotenv==1.0.0
+urllib3==2.2.1
