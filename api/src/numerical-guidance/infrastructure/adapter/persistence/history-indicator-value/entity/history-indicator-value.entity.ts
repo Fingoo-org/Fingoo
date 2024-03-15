@@ -9,35 +9,35 @@ export class HistoryIndicatorValueEntity {
   @Column()
   date: Date;
 
-  @Column()
-  close: string;
+  @Column({ type: 'float' })
+  close: number;
 
-  @Column()
-  compare: string;
+  @Column({ type: 'float' })
+  compare: number;
 
-  @Column()
-  fluctuation: string;
+  @Column({ type: 'float' })
+  fluctuation: number;
 
-  @Column()
-  open: string;
+  @Column({ type: 'float' })
+  open: number;
 
-  @Column()
-  high: string;
+  @Column({ type: 'float' })
+  high: number;
 
-  @Column()
-  low: string;
+  @Column({ type: 'float' })
+  low: number;
 
-  @Column()
-  volume: string;
+  @Column({ type: 'float' })
+  volume: number;
 
-  @Column()
-  tradingValue: string;
+  @Column({ type: 'float' })
+  tradingValue: number;
 
-  @Column()
-  marketCapitalization: string;
+  @Column({ type: 'float' })
+  marketCapitalization: number;
 
-  @Column()
-  outstandingShares: string;
+  @Column({ type: 'float' })
+  outstandingShares: number;
 
   @ManyToOne(() => HistoryIndicatorEntity, (historyIndicator) => historyIndicator.values, { eager: false })
   historyIndicator: HistoryIndicatorEntity;

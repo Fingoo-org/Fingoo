@@ -137,79 +137,79 @@ describe('HistoryIndicatorPersistentAdapter', () => {
     const expectedValues = [
       {
         date: '20240226',
-        value: '72.8',
+        value: '72800',
       },
       {
         date: '20240223',
-        value: '72.9',
+        value: '72900',
       },
       {
         date: '20240222',
-        value: '73.1',
+        value: '73100',
       },
       {
         date: '20240221',
-        value: '73',
+        value: '73000',
       },
       {
         date: '20240220',
-        value: '73.3',
+        value: '73300',
       },
       {
         date: '20240219',
-        value: '73.8',
+        value: '73800',
       },
       {
         date: '20240216',
-        value: '72.8',
+        value: '72800',
       },
       {
         date: '20240215',
-        value: '73',
+        value: '73000',
       },
       {
         date: '20240214',
-        value: '74',
+        value: '74000',
       },
       {
         date: '20240213',
-        value: '75.2',
+        value: '75200',
       },
       {
         date: '20240208',
-        value: '74.1',
+        value: '74100',
       },
       {
         date: '20240207',
-        value: '75',
+        value: '75000',
       },
       {
         date: '20240206',
-        value: '74.4',
+        value: '74400',
       },
       {
         date: '20240205',
-        value: '74.3',
+        value: '74300',
       },
       {
         date: '20240202',
-        value: '75.2',
+        value: '75200',
       },
       {
         date: '20240201',
-        value: '73.6',
+        value: '73600',
       },
       {
         date: '20240131',
-        value: '72.7',
+        value: '72700',
       },
       {
         date: '20240130',
-        value: '74.3',
+        value: '74300',
       },
       {
         date: '20240129',
-        value: '74.4',
+        value: '74400',
       },
     ];
     const expectedIndicator = {

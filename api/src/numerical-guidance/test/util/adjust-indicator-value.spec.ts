@@ -54,47 +54,43 @@ describe('AdjustIndicatorValue(extends IndicatorValueManager)', () => {
     const expectedIndicatorValues = [
       {
         date: '20240226',
-        value: '72.00',
+        value: '72800.00',
       },
       {
         date: '20240223',
-        value: '72.80',
+        value: '73220.00',
       },
       {
         date: '20240216',
-        value: '73.50',
+        value: '73750.00',
       },
       {
         date: '20240208',
-        value: '74.25',
+        value: '74450.00',
       },
       {
         date: '20240202',
-        value: '73.60',
+        value: '74040.00',
       },
       {
         date: '20240126',
-        value: '74.20',
+        value: '74360.00',
       },
       {
         date: '20240119',
-        value: '72.20',
+        value: '72780.00',
       },
       {
         date: '20240112',
-        value: '73.80',
+        value: '74220.00',
       },
       {
         date: '20240105',
-        value: '77.00',
+        value: '77450.00',
       },
       {
         date: '20231228',
-        value: '77.33',
-      },
-      {
-        date: '20231222',
-        value: '75.00',
+        value: '77700.00',
       },
     ];
     expect(resultIndicatorValues).toEqual(expectedIndicatorValues);
@@ -123,15 +119,15 @@ describe('AdjustIndicatorValue(extends IndicatorValueManager)', () => {
     const expectedIndicatorValues = [
       {
         date: '20240226',
-        value: '73.44',
+        value: '73781.25',
       },
       {
         date: '20240131',
-        value: '74.05',
+        value: '74454.55',
       },
       {
         date: '20231228',
-        value: '76.40',
+        value: '77700.00',
       },
     ];
     expect(resultIndicatorValues).toEqual(expectedIndicatorValues);
@@ -160,11 +156,11 @@ describe('AdjustIndicatorValue(extends IndicatorValueManager)', () => {
     const expectedIndicatorValues = [
       {
         date: '20240226',
-        value: '73.79',
+        value: '74171.05',
       },
       {
         date: '20231228',
-        value: '76.40',
+        value: '77700.00',
       },
     ];
     expect(resultIndicatorValues).toEqual(expectedIndicatorValues);
