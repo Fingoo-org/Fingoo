@@ -10,6 +10,7 @@ import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-fo
 import { CustomForecastIndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
 import { CustomForecastIndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
 import { DataSource } from 'typeorm';
+import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indicator.entity';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -23,6 +24,35 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
     await memberRepository.insert({ id: 10 });
     memberRepository.save;
+
+    const customForecastIndicatorRepository = dataSource.getRepository(CustomForecastIndicatorEntity);
+    await customForecastIndicatorRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
+      customForecastIndicatorName: '예측지표',
+      type: 'customForecastIndicator',
+      targetIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
+      grangerVerification: [],
+      cointJohansenVerification: [],
+      sourceIndicatorIdsAndWeights: [],
+    });
+    customForecastIndicatorRepository.save;
+
+    const indicatorRepository = dataSource.getRepository(IndicatorEntity);
+    await indicatorRepository.insert({
+      id: '26929514-237c-11ed-861d-0242ac120011',
+      name: 'LG전자',
+      ticker: '066570',
+      type: 'k-stock',
+      market: 'KOSPI',
+    });
+    await indicatorRepository.insert({
+      id: '26929514-237c-11ed-861d-0242ac120012',
+      name: '삼성SDI',
+      ticker: '006400',
+      type: 'k-stock',
+      market: 'KOSPI',
+    });
+    indicatorRepository.save;
   };
 
   beforeEach(async () => {
@@ -39,7 +69,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
             maxRedirects: 5,
           }),
         }),
-        TypeOrmModule.forFeature([CustomForecastIndicatorEntity, MemberEntity]),
+        TypeOrmModule.forFeature([CustomForecastIndicatorEntity, MemberEntity, IndicatorEntity]),
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           inject: [ConfigService],
@@ -52,7 +82,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
             username: environment.getUsername(),
             password: environment.getPassword(),
             database: environment.getDatabase(),
-            entities: [CustomForecastIndicatorEntity, MemberEntity],
+            entities: [CustomForecastIndicatorEntity, MemberEntity, IndicatorEntity],
             synchronize: true,
           }),
         }),
@@ -62,7 +92,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
     customForecastIndicatorPersistentAdapter = module.get(CustomForecastIndicatorPersistentAdapter);
     dataSource = module.get<DataSource>(DataSource);
     await seeding();
-  }, 20000);
+  }, 100000);
 
   afterAll(async () => {
     await environment.stop();
@@ -132,24 +162,4 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       }),
     );
   });
-
-  // it('예측지표 수정하기', async ()=>{
-  //   // given
-  //   // const customFroecastIndicator = CustomForecastIndicator.createNew('name', '7f57095c-b60d-4ccb-be69-93e210daesda')
-  //   const sourceCustomFroecastIndicator = new CustomForecastIndicator(
-  //     '7f57095c-b60d-4ccb-be69-93e210daea0e',
-  //     'name',
-  //     'customForecastIndicator',
-  //     '7f57095c-b60d-4ccb-be69-93e210daesda',
-  //     [],
-  //     [],
-  //     []);
-
-  //   // when
-  //   await customForecastIndicatorPersistentAdapter.updateSourceIndicatorsAndWeights(sourceCustomFroecastIndicator);
-  //   const result = await customForecastIndicatorPersistentAdapter.loadCustomForecastIndicator('7f57095c-b60d-4ccb-be69-93e210daea0e');
-
-  //   // then
-  //   expect(result.grangerVerification).toEqual([])
-  // });
 });

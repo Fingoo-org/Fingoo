@@ -475,6 +475,20 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.OK);
   });
 
+  it('/get 예측 지표 id로 예측지표를 불러올 때 예측지표 id가 db에없는 경우', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/custom-forecast-indicator/f5206520-da94-11ee-b91b-3551e6db3bbc')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.NOT_FOUND);
+  });
+
+  it('/get 예측 지표 id로 예측지표를 불러올 때 예측지표 id가 잘못된 형식일 경우', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/custom-forecast-indicator/invaliduuid')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
   it('/get 사용자 id로 예측지표를 불러온다.', async () => {
     return request(app.getHttpServer())
       .get('/api/numerical-guidance/custom-forecast-indicator')
