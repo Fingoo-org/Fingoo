@@ -9,7 +9,7 @@ export type SourceIndicatorIdAndWeightType = {
   weight: float;
 };
 
-export type CustomerFroecastIndicatorValues = {
+export type CustomForecastIndicatorValues = {
   name: string;
   values: Values[];
 };

@@ -44,6 +44,8 @@ import { ApiExceptionResponse } from '../../utils/exception-filter/api-exception
 import { GetCustomForecastIndicatorsByMemberIdQuery } from '../application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query';
 import { UpdateSourceIndicatorsAndWeightsDto } from './dto/update-source-indicators-and-weights.dto';
 import { UpdateSourceIndicatorsAndWeightsCommand } from '../application/command/update-source-indicators-and-weights/update-source-indicators-and-weights.command';
+import { CustomForecastIndicatorValues } from 'src/utils/type/type-definition';
+import { GetCustomForecastIndicatorValuesQuery } from '../application/query/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/api/numerical-guidance')
@@ -331,7 +333,9 @@ export class NumericalGuidanceController {
     const query = new GetCustomForecastIndicatorsByMemberIdQuery(member.id);
     return await this.queryBus.execute(query);
   }
-
+  @ApiOperation({ summary: '재료지표를 업데이트합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(500, `[ERROR] 재료지표를 업데이트하는 도중에 예상치 못한 문제가 발생했습니다.`)
   @Patch('/custom-forecast-indicator/:customForecastIndicatorId')
   async updateSourceIndicatorsAndWeights(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
@@ -342,5 +346,18 @@ export class NumericalGuidanceController {
       updateSourceIndicatorsAndWeightsDto.sourceIndicatorIdsAndWeights,
     );
     await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '예측지표 id로 예측값을 불러옵니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(400, '[ERROR] 예측값을 찾을 수 없습니다.')
+  @ApiExceptionResponse(404, '[ERROR] 예측값을 찾을 수 없습니다.')
+  @ApiExceptionResponse(500, `[ERROR] 예측값을 불러오는 중 예상치 못한 문제가 발생했습니다.`)
+  @Get('/custom-forecast-indicator-view/:customForecastIndicatorId')
+  async loadCustomForecastIndicatorValues(
+    @Param('customForecastIndicatorId') customForecastIndicatorId,
+  ): Promise<CustomForecastIndicatorValues> {
+    const query = new GetCustomForecastIndicatorValuesQuery(customForecastIndicatorId);
+    return await this.queryBus.execute(query);
   }
 }

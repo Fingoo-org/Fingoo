@@ -33,6 +33,7 @@ import { CustomForecastIndicatorEntity } from './infrastructure/adapter/persiste
 import { GetCustomForecastIndicatorQueryHandler } from './application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
 import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from './application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query.handler';
 import { UpdateSourceIndicatorsAndWeightsCommandHandler } from './application/command/update-source-indicators-and-weights/update-source-indicators-and-weights.command.handler';
+import { GetCustomForecastIndicatorValuesQueryHandler } from './application/query/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query.handler';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { UpdateSourceIndicatorsAndWeightsCommandHandler } from './application/co
     GetCustomForecastIndicatorQueryHandler,
     GetCustomForecastIndicatorsByMemberIdQueryHandler,
     UpdateSourceIndicatorsAndWeightsCommandHandler,
+    GetCustomForecastIndicatorValuesQueryHandler,
     {
       provide: 'LoadCachedFluctuatingIndicatorPort',
       useClass: FluctuatingIndicatorRedisAdapter,
@@ -146,6 +148,10 @@ import { UpdateSourceIndicatorsAndWeightsCommandHandler } from './application/co
     },
     {
       provide: 'UpdateSourceIndicatorsAndWeightsPort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
+    },
+    {
+      provide: 'LoadCustomForecastIndicatorValuesPort',
       useClass: CustomForecastIndicatorPersistentAdapter,
     },
   ],

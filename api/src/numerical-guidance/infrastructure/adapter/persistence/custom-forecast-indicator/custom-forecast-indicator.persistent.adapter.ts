@@ -16,6 +16,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
 import { UpdateSourceIndicatorsAndWeightsPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-and-weights.port';
 import { HttpService } from '@nestjs/axios';
+import { CustomForecastIndicatorValues } from 'src/utils/type/type-definition';
 
 @Injectable()
 export class CustomForecastIndicatorPersistentAdapter
@@ -60,6 +61,57 @@ export class CustomForecastIndicatorPersistentAdapter
         throw new InternalServerErrorException({
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
           error: '[ERROR] 얘측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      }
+    }
+  }
+
+  async loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<CustomForecastIndicatorValues> {
+    try {
+      const customForecastIndicatorEntity = await this.customForecastIndicatorRepository.findOneBy({
+        id: customForecastIndicatorId,
+      });
+      this.nullCheckForEntity(customForecastIndicatorEntity);
+
+      const customForecastIndicator = CustomForecastIndicatorMapper.mapEntityToDomain(customForecastIndicatorEntity);
+
+      const url = `http://127.0.0.1:8001/api/var-api/custom-forecast-indicator?targetIndicatorId=${customForecastIndicator.targetIndicatorId}&`;
+      let indicatorsUrl: string = '';
+      let weightsUrl: string = '';
+      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
+        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].sourceIndicatorId}&`;
+      }
+      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
+        weightsUrl += `weight=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].weight}&`;
+      }
+      const requestUrl = url + indicatorsUrl + weightsUrl;
+
+      const res = await this.api.axiosRef.get(requestUrl);
+      const result = res.data;
+
+      return result;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] 해당 예측지표를 찾을 수 없습니다.`,
+          message: '예측 값을 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      }
+      if (error instanceof QueryFailedError) {
+        throw new BadRequestException({
+          HttpStatus: HttpStatus.BAD_REQUEST,
+          error: '[ERROR] 예측 값을 불러오는 중 오류가 발생했습니다. id 형식이 uuid인지 확인해주세요.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 예측 값을 불러오는 중에 예상치 못한 문제가 발생했습니다.',
           message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
           cause: error,
         });
@@ -139,7 +191,7 @@ export class CustomForecastIndicatorPersistentAdapter
 
       customForecastIndicatorEntity.sourceIndicatorIdsAndWeights = customForecastIndicator.sourceIndicatorIdsAndWeights;
 
-      const url = `http://127.0.0.1:8000/api/var-api/source-indicators-verification?targetIndicatorId=${customForecastIndicator.targetIndicatorId}&`;
+      const url = `http://127.0.0.1:8001/api/var-api/source-indicators-verification?targetIndicatorId=${customForecastIndicator.targetIndicatorId}&`;
       let indicatorsUrl: string = '';
       let weightsUrl: string = '';
       for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
@@ -161,8 +213,9 @@ export class CustomForecastIndicatorPersistentAdapter
     } catch (error) {
       throw new InternalServerErrorException({
         HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
-        error: '[ERROR] 얘측지표를 업데이트 하는 도중에 예상치 못한 문제가 발생했습니다.',
-        message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+        error: '[ERROR] 예측지표를 업데이트 하는 도중에 예상치 못한 문제가 발생했습니다.',
+        message:
+          '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요. - 1. 재료지표 id가 올바른지 확인해주세요. 2. 가중치가 올바른 형식을 띄고있는지 확인해주세요.',
         cause: error,
       });
     }
