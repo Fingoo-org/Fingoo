@@ -59,6 +59,7 @@ export abstract class IndicatorValueManager<T> {
   public getDateXYearsAgo(date: Date, yearsAgo: number): Date {
     const targetDate = new Date(date);
     targetDate.setFullYear(targetDate.getFullYear() - yearsAgo);
+    targetDate.setMonth(0);
     targetDate.setDate(1);
     return targetDate;
   }
