@@ -76,7 +76,11 @@ export class CustomForecastIndicatorPersistentAdapter
       this.nullCheckForEntity(customForecastIndicatorEntity);
 
       const customForecastIndicator = CustomForecastIndicatorMapper.mapEntityToDomain(customForecastIndicatorEntity);
-      const url: string = process.env.FASTAPI_URL + customForecastIndicator.targetIndicatorId + '&';
+      const url: string =
+        process.env.FASTAPI_URL +
+        '/api/var-api/custom-forecast-indicator?targetIndicatorId=' +
+        customForecastIndicator.targetIndicatorId +
+        '&';
       let indicatorsUrl: string = '';
       let weightsUrl: string = '';
       for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
@@ -190,7 +194,11 @@ export class CustomForecastIndicatorPersistentAdapter
 
       customForecastIndicatorEntity.sourceIndicatorIdsAndWeights = customForecastIndicator.sourceIndicatorIdsAndWeights;
 
-      const url: string = process.env.FASTAPI_URL + customForecastIndicator.targetIndicatorId + '&';
+      const url: string =
+        process.env.FASTAPI_URL +
+        '/api/var-api/source-indicators-verification?targetIndicatorId=' +
+        customForecastIndicator.targetIndicatorId +
+        '&';
       let indicatorsUrl: string = '';
       let weightsUrl: string = '';
       for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
