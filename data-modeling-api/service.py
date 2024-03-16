@@ -37,7 +37,7 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   adapter = HTTPAdapter(max_retries=retry)
   session.mount('http://', adapter)
   for sourceIndicator in sourceIndicatorIds:
-    req = requests.get(f'http://host.docker.internal:8000/api/numerical-guidance/indicators/k-stock/live?interval=day&indicatorId={sourceIndicator}')
+    req = requests.get(f'http://host.docker.internal:8000/api/numerical-guidance/indicators/live?interval=day&indicatorId={sourceIndicator}')
     data = req.json()
     print(data['values'])
     values = data['values']
@@ -119,7 +119,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
   adapter = HTTPAdapter(max_retries=retry)
   session.mount('http://', adapter)
   for sourceIndicator in sourceIndicatorIds:
-    req = requests.get(f'http://host.docker.internal:8000/api/numerical-guidance/indicators/k-stock/live?interval=day&indicatorId={sourceIndicator}')
+    req = requests.get(f'http://host.docker.internal:8000/api/numerical-guidance/indicators/live?interval=day&indicatorId={sourceIndicator}')
     data = req.json()
     print(data['values'])
     values = data['values']
