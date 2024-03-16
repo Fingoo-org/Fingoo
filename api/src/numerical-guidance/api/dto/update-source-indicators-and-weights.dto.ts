@@ -7,11 +7,11 @@ export class UpdateSourceIndicatorsAndWeightsDto {
     example: [
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120020',
-        weight: '0.07',
+        weight: 70,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120032',
-        weight: 'none',
+        weight: 0,
       },
     ],
   })
