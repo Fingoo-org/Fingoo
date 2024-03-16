@@ -29,6 +29,9 @@ import { CreateCustomForecastIndicatorCommandHandler } from './application/comma
 import { CustomForecastIndicatorPersistentAdapter } from './infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
 import { CustomForecastIndicatorEntity } from './infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
 import { GetCustomForecastIndicatorQueryHandler } from './application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
+import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from './application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query.handler';
+import { UpdateSourceIndicatorsAndWeightsCommandHandler } from './application/command/update-source-indicators-and-weights/update-source-indicators-and-weights.command.handler';
+import { GetCustomForecastIndicatorValuesQueryHandler } from './application/query/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query.handler';
 
 @Module({
   imports: [
@@ -64,6 +67,9 @@ import { GetCustomForecastIndicatorQueryHandler } from './application/query/get-
     UpdateIndicatorBoardMetadataNameCommandHandler,
     CreateCustomForecastIndicatorCommandHandler,
     GetCustomForecastIndicatorQueryHandler,
+    GetCustomForecastIndicatorsByMemberIdQueryHandler,
+    UpdateSourceIndicatorsAndWeightsCommandHandler,
+    GetCustomForecastIndicatorValuesQueryHandler,
     {
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
@@ -126,6 +132,18 @@ import { GetCustomForecastIndicatorQueryHandler } from './application/query/get-
     },
     {
       provide: 'LoadCustomForecastIndicatorPort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
+    },
+    {
+      provide: 'LoadCustomForecastIndicatorsByMemberIdPort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
+    },
+    {
+      provide: 'UpdateSourceIndicatorsAndWeightsPort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
+    },
+    {
+      provide: 'LoadCustomForecastIndicatorValuesPort',
       useClass: CustomForecastIndicatorPersistentAdapter,
     },
   ],

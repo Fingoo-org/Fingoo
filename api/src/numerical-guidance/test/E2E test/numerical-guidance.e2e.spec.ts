@@ -38,6 +38,7 @@ import { CreateCustomForecastIndicatorCommandHandler } from 'src/numerical-guida
 import { GetCustomForecastIndicatorQueryHandler } from 'src/numerical-guidance/application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
 import { CustomForecastIndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
 import { CustomForecastIndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
+import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from 'src/numerical-guidance/application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -146,6 +147,7 @@ describe('NumericalGuidance E2E Test', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorIdsAndWeights: [],
+      member: { id: 1 },
       createdAt: new Date('2024-02-23 10:00:02.292086'),
       updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
@@ -222,6 +224,7 @@ describe('NumericalGuidance E2E Test', () => {
           LiveIndicatorRedisAdapter,
           CreateCustomForecastIndicatorCommandHandler,
           GetCustomForecastIndicatorQueryHandler,
+          GetCustomForecastIndicatorsByMemberIdQueryHandler,
           {
             provide: 'LoadCachedLiveIndicatorPort',
             useClass: LiveIndicatorRedisAdapter,
@@ -285,6 +288,12 @@ describe('NumericalGuidance E2E Test', () => {
           {
             provide: 'LoadCustomForecastIndicatorPort',
             useClass: CustomForecastIndicatorPersistentAdapter,
+          },
+          {
+            provide: 'LoadCustomForecastIndicatorsByMemberIdPort',
+            useValue: {
+              loadCustomForecastIndicatorsByMemberId: jest.fn(),
+            },
           },
           {
             provide: AuthGuard,
@@ -448,7 +457,7 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.BAD_REQUEST);
   });
 
-  it('예측 지표를 생성한다.', async () => {
+  it('/post 예측 지표를 생성한다.', async () => {
     return request(app.getHttpServer())
       .post('/api/numerical-guidance/custom-forecast-indicator')
       .send({
@@ -459,9 +468,30 @@ describe('NumericalGuidance E2E Test', () => {
       .expect(HttpStatus.CREATED);
   });
 
-  it('예측 지표 id로 예측지표를 불러온다.', async () => {
+  it('/get 예측 지표 id로 예측지표를 불러온다.', async () => {
     return request(app.getHttpServer())
       .get('/api/numerical-guidance/custom-forecast-indicator/f5206520-da94-11ee-b91b-3551e6db3bbd')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/get 예측 지표 id로 예측지표를 불러올 때 예측지표 id가 db에없는 경우', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/custom-forecast-indicator/f5206520-da94-11ee-b91b-3551e6db3bbc')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.NOT_FOUND);
+  });
+
+  it('/get 예측 지표 id로 예측지표를 불러올 때 예측지표 id가 잘못된 형식일 경우', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/custom-forecast-indicator/invaliduuid')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/get 사용자 id로 예측지표를 불러온다.', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/custom-forecast-indicator')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });

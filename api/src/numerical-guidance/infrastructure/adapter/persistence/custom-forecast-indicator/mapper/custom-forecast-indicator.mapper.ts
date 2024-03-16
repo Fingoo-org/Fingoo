@@ -1,8 +1,12 @@
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorEntity } from '../entity/custom-forecast-indicator.entity';
+import { MemberEntity } from 'src/auth/member.entity';
 
 export class CustomForecastIndicatorMapper {
-  static mapDomainToEntity(customForecastIndicator: CustomForecastIndicator): CustomForecastIndicatorEntity {
+  static mapDomainToEntity(
+    customForecastIndicator: CustomForecastIndicator,
+    member: MemberEntity,
+  ): CustomForecastIndicatorEntity {
     const customForecastIndicatorEntity: CustomForecastIndicatorEntity = CustomForecastIndicatorEntity.createNew(
       customForecastIndicator.customForecastIndicatorName,
       customForecastIndicator.type,
@@ -10,6 +14,7 @@ export class CustomForecastIndicatorMapper {
       customForecastIndicator.grangerVerification,
       customForecastIndicator.cointJohansenVerification,
       customForecastIndicator.sourceIndicatorIdsAndWeights,
+      member,
       customForecastIndicator.createdAt,
       customForecastIndicator.updatedAt,
     );

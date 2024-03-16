@@ -8,7 +8,27 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - api-net
+    
   redis:
     image: redis:latest
     ports:
       - '6379:6379'
+    networks:
+      - api-net
+
+  fastapi:
+    image: yoonyounghun/fastapi
+    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+    ports:
+      - 8001:8001
+    depends_on:
+      - db
+      - redis
+    networks:
+      - api-net
+
+networks:
+  api-net:
+    name: fingoo-api

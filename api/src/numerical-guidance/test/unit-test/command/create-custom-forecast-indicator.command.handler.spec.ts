@@ -34,7 +34,11 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
 
   it('예측 지표를 생성한다', async () => {
     // given
-    const command: CreateCustomForecastIndicatorCommand = new CreateCustomForecastIndicatorCommand('예측지표', 'uuid');
+    const command: CreateCustomForecastIndicatorCommand = new CreateCustomForecastIndicatorCommand(
+      '예측지표',
+      'uuid',
+      1,
+    );
 
     // when
     const customForecastIndicator: CustomForecastIndicator =

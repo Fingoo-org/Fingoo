@@ -1,0 +1,7 @@
+FROM python:3.9
+
+WORKDIR /code/data-modeling-api/
+
+COPY ./ /code/data-modeling-api
+
+RUN pip install --no-cache-dir --upgrade -r /code/data-modeling-api/requirements.txt
