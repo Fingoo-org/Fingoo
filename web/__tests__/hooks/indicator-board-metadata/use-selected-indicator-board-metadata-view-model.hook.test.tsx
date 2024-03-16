@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
-import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
+import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useIndicatorBoardMetadataList } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
@@ -20,7 +20,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
     // given
     const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
     const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
-    const { result: store } = renderHook(() => useNumericalGuidanceStore());
+    const { result: store } = renderHook(() => useWorkspaceStore());
     await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
 
     // when
@@ -39,7 +39,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
     // given
     const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
     const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
-    const { result: store } = renderHook(() => useNumericalGuidanceStore());
+    const { result: store } = renderHook(() => useWorkspaceStore());
     await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
 
     // when
@@ -55,7 +55,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
     // given
     const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
     const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
-    const { result: store } = renderHook(() => useNumericalGuidanceStore());
+    const { result: store } = renderHook(() => useWorkspaceStore());
     await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
 
     // when
@@ -78,7 +78,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
     // given
     const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
     const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
-    const { result: store } = renderHook(() => useNumericalGuidanceStore());
+    const { result: store } = renderHook(() => useWorkspaceStore());
     await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
 
     // when
@@ -105,7 +105,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
       const { result: indicatorList } = renderHook(() => useIndicatorList(), { wrapper });
       const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
-      const { result: store } = renderHook(() => useNumericalGuidanceStore());
+      const { result: store } = renderHook(() => useWorkspaceStore());
       await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
       await waitFor(() => expect(indicatorList.current.indicatorList).not.toBeUndefined());
       act(() => {
@@ -136,7 +136,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
       const { result: indicatorList } = renderHook(() => useIndicatorList(), { wrapper });
       const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
-      const { result: store } = renderHook(() => useNumericalGuidanceStore());
+      const { result: store } = renderHook(() => useWorkspaceStore());
       await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
       await waitFor(() => expect(indicatorList.current.indicatorList).not.toBeUndefined());
       act(() => {
@@ -171,7 +171,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
         // given
         const { result } = renderHook(() => useSelectedIndicatorBoardMetadata(), { wrapper });
         const { result: metadataList } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
-        const { result: store } = renderHook(() => useNumericalGuidanceStore());
+        const { result: store } = renderHook(() => useWorkspaceStore());
         await waitFor(() => expect(metadataList.current.metadataList).not.toBeUndefined());
         act(() => {
           if (metadataList.current.metadataList?.[0]) {

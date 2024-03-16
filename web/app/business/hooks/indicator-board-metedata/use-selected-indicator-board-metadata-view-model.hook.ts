@@ -7,12 +7,12 @@ import {
   useFetchIndicatorBoardMetadataList,
   useUpdateIndicatorBoardMetadata,
 } from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { useNumericalGuidanceStore } from '../../../store/stores/numerical-guidance.store';
+import { useWorkspaceStore } from '../../../store/stores/numerical-guidance/workspace.store';
 import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
 
 export const useSelectedIndicatorBoardMetadata = () => {
-  const selectedMetadataId = useNumericalGuidanceStore((state) => state.selectedMetadataId);
-  const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
+  const selectedMetadataId = useWorkspaceStore((state) => state.selectedMetadataId);
+  const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
   const { data: indicatorBoardMetadataList } = useFetchIndicatorBoardMetadataList();
 
   const { trigger: addIndicatorTrigger } = useAddIndicatorToMetadata(selectedMetadataId);

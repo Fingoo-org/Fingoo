@@ -2,7 +2,7 @@ import useSWRInfinite from 'swr/infinite';
 import { API_PATH } from '../api-path';
 import { fetchIndicatorsValue } from '../fetcher';
 import { utcFormat, utcParse } from 'd3-time-format';
-import type { Interval } from '../../stores/numerical-guidance.store';
+import type { Interval } from '../../stores/numerical-guidance/workspace.store';
 
 export const parseTime = utcParse('%Y%m%d');
 export const formatTime = utcFormat('%Y%m%d');

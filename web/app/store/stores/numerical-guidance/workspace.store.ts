@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import { storeResetFns } from './reset-store';
+import { storeResetFns } from '../reset-store';
 
 export const intervals = ['day', 'week', 'month', 'year'] as const;
 export type Interval = (typeof intervals)[number];
 
-type NumericalGuidanceState = {
+type WorkspaceState = {
   boardId: string;
   selectedMetadataId: string | undefined;
   interval: Interval;
@@ -13,7 +13,7 @@ type NumericalGuidanceState = {
   selectedCustomForecastIndicatorId: string | undefined;
 };
 
-type NumericalGuidanceAction = {
+type WorkspaceAction = {
   selectMetadata: (MetadataId: string | undefined) => void;
   setIsAdvancedChart: (isAdvancedChart: boolean) => void;
   setTabIndex: (tabIndex: string) => void;
@@ -21,11 +21,11 @@ type NumericalGuidanceAction = {
   setInterval: (interval: Interval) => void;
 };
 
-type NumericalGuidanceStore = NumericalGuidanceState & {
-  actions: NumericalGuidanceAction;
+type WorkspaceStore = WorkspaceState & {
+  actions: WorkspaceAction;
 };
 
-const initialNumericalGuidanceState: NumericalGuidanceState = {
+const initialWorkspaceState: WorkspaceState = {
   boardId: 'test',
   selectedMetadataId: undefined,
   interval: 'day',
@@ -34,10 +34,10 @@ const initialNumericalGuidanceState: NumericalGuidanceState = {
   selectedCustomForecastIndicatorId: undefined,
 };
 
-export const useNumericalGuidanceStore = create<NumericalGuidanceStore>()((set) => {
-  storeResetFns.add(() => set(initialNumericalGuidanceState));
+export const useWorkspaceStore = create<WorkspaceStore>()((set) => {
+  storeResetFns.add(() => set(initialWorkspaceState));
   return {
-    ...initialNumericalGuidanceState,
+    ...initialWorkspaceState,
     actions: {
       selectMetadata: (metadataId) => set({ selectedMetadataId: metadataId }),
       setIsAdvancedChart: (isAdvancedChart) => set({ isAdvancedChart }),

@@ -3,7 +3,7 @@ import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list';
-import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
+import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import userEvent from '@testing-library/user-event';
 import IndicatorDialogMenu from '@/app/ui/components/numerical-guidance/indicator/indicator-dialog-menu';
 import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list';
@@ -13,7 +13,7 @@ describe('IndicatorDialogMenu', () => {
     resetMockDB();
     resetAllStore();
     // 메타데이터가 선택 되었음을 가정
-    const { result: store } = renderHook(() => useNumericalGuidanceStore());
+    const { result: store } = renderHook(() => useWorkspaceStore());
     act(() => {
       store.current.actions.selectMetadata('1');
     });

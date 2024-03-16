@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
 import { defaultFetcher, fetchIndicatorsValue } from '../fetcher';
-import { Interval } from '../../stores/numerical-guidance.store';
+import { Interval } from '../../stores/numerical-guidance/workspace.store';
 
 export type IndicatorInfoResponse = {
   id: string;
