@@ -5,7 +5,8 @@ from statsmodels.tsa.vector_ar.vecm import coint_johansen
 from statsmodels.tsa.stattools import grangercausalitytests
 
 def applyWeight(df: pd.DataFrame, applyData, weight):
-    totalCount = len(df[applyData]) -1
+    totalCount = 10
+    theta = weight/1000
     base = df[applyData].iloc[-(totalCount)]
     test = df[applyData].iloc[-(totalCount):-1]
 
@@ -14,9 +15,9 @@ def applyWeight(df: pd.DataFrame, applyData, weight):
 
     for j in range(len(test)):
         data = df.loc[df.index[-(totalCount) + j - 1], applyData]
-        df.loc[df.index[-(totalCount) + j], applyData] = data * (1 + weight)
+        df.loc[df.index[-(totalCount) + j], applyData] = data * (1 + theta)
 
-    df.loc[df.index[-1], applyData] = df.loc[df.index[-2], applyData] * (1 + weight)
+    df.loc[df.index[-1], applyData] = df.loc[df.index[-2], applyData] * (1 + theta)
 
     return df
 

@@ -9,7 +9,7 @@ import requests
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 
-def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[str], db: Session) -> ForecastIndicatorDto:
+def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[int], db: Session) -> ForecastIndicatorDto:
   # 데이터베이스로부터 Indicator 정보 가져오기
   sourceIndicators: list[IndicatorDto] = []
   for sourceIndicatorId in sourceIndicatorIds:
@@ -57,42 +57,45 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   df_var = df_var.dropna()
 
   for indicator, weight in zip(df_var, weights):
-    if weight != 'none':
-      # parts = weight.split('/')
-      # theta = float(parts[0])
-      # totalCount = int(parts[1])
-      theta = float(weight)
-      df_var = verification.applyWeight(df_var, indicator, theta)
+    if weight != 0:
+      df_var = verification.applyWeight(df_var, indicator, weight)
+    elif weight == 0:
+      pass
             
   # granger
-  grangerDf = verification.grangerVerification(df_var)
-  checkDf = verification.findSignificantValues(grangerDf)
-  grangerGroup = verification.findInfluentialGroups(checkDf)
+  try: 
+    grangerDf = verification.grangerVerification(df_var)
+    checkDf = verification.findSignificantValues(grangerDf)
+    grangerGroup = verification.findInfluentialGroups(checkDf)
+  except Exception:
+      grangerGroup = ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.']
 
   # var
-  customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
+  try:
+    customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
     
-  for name in grangerGroup:
-    if name == targetIndicatorName:
-      forecastdata = customForecastIndicator[name].to_dict()
-      forecastValuesWithoutDates = list(forecastdata.values())
-      values = []
-      currentDate = datetime.datetime.now()
-      for i in range(len(forecastValuesWithoutDates)):
-        forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
-        forecastValue = ForecastValue(
-          value = forecastValuesWithoutDates[i],
-          date = forecastDate
-        )
-        values.append(forecastValue)
-      result: ForecastIndicatorDto = {
-        "name": name,
-        "values": values
-        }
-  return result
+    for name in grangerGroup:
+      if name == targetIndicatorName:
+        forecastdata = customForecastIndicator[name].to_dict()
+        forecastValuesWithoutDates = list(forecastdata.values())
+        values = []
+        currentDate = datetime.datetime.now()
+        for i in range(len(forecastValuesWithoutDates)):
+          forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
+          forecastValue = ForecastValue(
+            value = forecastValuesWithoutDates[i],
+            date = forecastDate
+          )
+          values.append(forecastValue)
+        result: ForecastIndicatorDto = {
+          "name": name,
+          "values": values
+          }
+    return result
+  except Exception:
+    return {"name": "해당 지표를 예측할 수 없습니다.", values: []}
 
-
-def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[str], db: Session) ->  SourceIndicatorsVerificationResponse:
+def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
   # 데이터베이스로부터 Indicator 정보 가져오기
   sourceIndicators: list[IndicatorDto] = []
   for sourceIndicatorId in sourceIndicatorIds:
@@ -140,12 +143,10 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
   df_var = df_var.dropna()
 
   for indicator, weight in zip(df_var, weights):
-    if weight != 'none':
-      # parts = weight.split('/')
-      # theta = float(parts[0])
-      # totalCount = int(parts[1])
-      theta = float(weight)
-      df_var = verification.applyWeight(df_var, indicator, theta)
+    if weight != 0:
+      df_var = verification.applyWeight(df_var, indicator, weight)
+    elif weight == 0:
+      pass
             
   # granger
   try: 
