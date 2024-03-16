@@ -383,6 +383,11 @@ export class NumericalGuidanceController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 예측지표를 불러오는 중 예상치 못한 문제가 발생했습니다.`,
   )
+  @ApiParam({
+    name: 'customForecastIndicatorId',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Get('/custom-forecast-indicator/:customForecastIndicatorId')
   async loadCustomForecastIndicator(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
@@ -409,13 +414,24 @@ export class NumericalGuidanceController {
     const query = new GetCustomForecastIndicatorsByMemberIdQuery(member.id);
     return await this.queryBus.execute(query);
   }
+
   @ApiOperation({ summary: '재료지표를 업데이트합니다.' })
   @ApiOkResponse()
+  @ApiExceptionResponse(
+    404,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 예측값을 찾을 수 없습니다.',
+  )
   @ApiExceptionResponse(
     500,
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 재료지표를 업데이트하는 도중에 예상치 못한 문제가 발생했습니다.`,
   )
+  @ApiParam({
+    name: 'customForecastIndicatorId',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Patch('/custom-forecast-indicator/:customForecastIndicatorId')
   async updateSourceIndicatorsAndWeights(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
@@ -445,6 +461,11 @@ export class NumericalGuidanceController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 예측값을 불러오는 중 예상치 못한 문제가 발생했습니다.`,
   )
+  @ApiParam({
+    name: 'customForecastIndicatorId',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Get('/custom-forecast-indicator-view/:customForecastIndicatorId')
   async loadCustomForecastIndicatorValues(
     @Param('customForecastIndicatorId') customForecastIndicatorId,

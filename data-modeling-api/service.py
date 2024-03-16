@@ -58,10 +58,11 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
 
   for indicator, weight in zip(df_var, weights):
     if weight != 'none':
-      parts = weight.split('/')
-      theta = float(parts[0])
-      totalCount = int(parts[1])
-      df_var = verification.applyWeight(df_var, indicator, totalCount, theta)
+      # parts = weight.split('/')
+      # theta = float(parts[0])
+      # totalCount = int(parts[1])
+      theta = float(weight)
+      df_var = verification.applyWeight(df_var, indicator, theta)
             
   # granger
   grangerDf = verification.grangerVerification(df_var)
@@ -140,10 +141,11 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
 
   for indicator, weight in zip(df_var, weights):
     if weight != 'none':
-      parts = weight.split('/')
-      theta = float(parts[0])
-      totalCount = int(parts[1])
-      df_var = verification.applyWeight(df_var, indicator, totalCount, theta)
+      # parts = weight.split('/')
+      # theta = float(parts[0])
+      # totalCount = int(parts[1])
+      theta = float(weight)
+      df_var = verification.applyWeight(df_var, indicator, theta)
             
   # granger
   try: 

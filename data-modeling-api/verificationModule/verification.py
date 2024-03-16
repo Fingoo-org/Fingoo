@@ -4,7 +4,8 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.vector_ar.vecm import coint_johansen
 from statsmodels.tsa.stattools import grangercausalitytests
 
-def applyWeight(df: pd.DataFrame, applyData, totalCount, weight):
+def applyWeight(df: pd.DataFrame, applyData, weight):
+    totalCount = len(df[applyData]) -1
     base = df[applyData].iloc[-(totalCount)]
     test = df[applyData].iloc[-(totalCount):-1]
 
