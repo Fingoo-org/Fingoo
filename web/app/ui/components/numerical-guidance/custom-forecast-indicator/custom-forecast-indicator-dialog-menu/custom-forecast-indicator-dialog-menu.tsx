@@ -1,5 +1,5 @@
+'use client';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import DialogMenu from '../../../view/molocule/dialog-menu';
 import TinyInput from '../../../view/atom/tiny-input/tiny-input';
 import SourceIndicatorSearchList from '../source-indicator-search-list';
