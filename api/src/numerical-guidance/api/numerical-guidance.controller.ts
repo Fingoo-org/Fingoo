@@ -420,7 +420,7 @@ export class NumericalGuidanceController {
   @ApiExceptionResponse(
     404,
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
-    '[ERROR] 예측값을 찾을 수 없습니다.',
+    '[ERROR] 예측지표를 찾을 수 없습니다.',
   )
   @ApiExceptionResponse(
     500,
