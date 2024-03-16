@@ -207,7 +207,9 @@ const config: Config = {
 const overrideNextJestOptions = async () => {
   return {
     ...(await createJestConfig(config)()),
-    transformIgnorePatterns: ['/node_modules/(?!react-financial-charts|@react-financial-charts|d3|internmap)'],
+    transformIgnorePatterns: [
+      '/node_modules/(?!react-financial-charts|@react-financial-charts|d3|internmap|@tremor/react)',
+    ],
   };
 };
 
