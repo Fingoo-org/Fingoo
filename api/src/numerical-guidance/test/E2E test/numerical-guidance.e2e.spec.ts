@@ -39,6 +39,7 @@ import { GetCustomForecastIndicatorQueryHandler } from 'src/numerical-guidance/a
 import { CustomForecastIndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
 import { CustomForecastIndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
 import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from 'src/numerical-guidance/application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query.handler';
+import { InsertCustomForecastIndicatorIdCommandHandler } from 'src/numerical-guidance/application/command/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -69,6 +70,9 @@ describe('NumericalGuidance E2E Test', () => {
     await memberEntity.insert({ id: 1 });
     memberEntity.save;
 
+    await memberEntity.insert({ id: 999 });
+    memberEntity.save;
+
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
@@ -86,6 +90,7 @@ describe('NumericalGuidance E2E Test', () => {
       customForecastIndicatorIds: { customForecastIndicatorEntity: ['customForecastIndicatorId1'] },
       createdAt: new Date('2024-02-23 10:00:02.292086'),
       updatedAt: new Date('2024-02-23 10:00:02.292086'),
+      member: { id: 999 },
     });
     indicatorBoardMetadataRepository.save;
 
@@ -96,6 +101,18 @@ describe('NumericalGuidance E2E Test', () => {
       customForecastIndicatorIds: { customForecastIndicatorEntity: ['customForecastIndicatorId1'] },
       createdAt: new Date('2024-02-23 10:00:02.292086'),
       updatedAt: new Date('2024-02-23 10:00:02.292086'),
+      member: { id: 999 },
+    });
+    indicatorBoardMetadataRepository.save;
+
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba99',
+      indicatorBoardMetadataName: '예측지표추가 테스트용 메타데이터',
+      indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorEntity: [] },
+      createdAt: new Date('2024-02-23 10:00:02.292086'),
+      updatedAt: new Date('2024-02-23 10:00:02.292086'),
+      member: { id: 999 },
     });
     indicatorBoardMetadataRepository.save;
 
@@ -220,6 +237,7 @@ describe('NumericalGuidance E2E Test', () => {
           GetHistoryIndicatorQueryHandler,
           GetIndicatorBoardMetadataQueryHandler,
           InsertIndicatorIdCommandHandler,
+          InsertCustomForecastIndicatorIdCommandHandler,
           GetIndicatorBoardMetadataListQueryHandler,
           DeleteIndicatorIdCommandHandler,
           DeleteIndicatorBoardMetadataCommandHandler,
@@ -254,6 +272,10 @@ describe('NumericalGuidance E2E Test', () => {
           },
           {
             provide: 'InsertIndicatorIdPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
+          },
+          {
+            provide: 'InsertCustomForecastIndicatorIdPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
@@ -294,9 +316,7 @@ describe('NumericalGuidance E2E Test', () => {
           },
           {
             provide: 'LoadCustomForecastIndicatorsByMemberIdPort',
-            useValue: {
-              loadCustomForecastIndicatorsByMemberId: jest.fn(),
-            },
+            useClass: CustomForecastIndicatorPersistentAdapter,
           },
           {
             provide: AuthGuard,
@@ -367,7 +387,7 @@ describe('NumericalGuidance E2E Test', () => {
   //     .expect(HttpStatus.OK);
   // });
 
-  it('/get db에 존재하지않는 메타데이터 id를 전송한다.', () => {
+  it('/get db에 존재하지않는 메타데이터 id를 전송한다.', async () => {
     return request(app.getHttpServer())
       .get('/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba22')
       .set('Content-Type', 'application/json')
@@ -459,6 +479,40 @@ describe('NumericalGuidance E2E Test', () => {
   //     .set('Content-Type', 'application/json')
   //     .expect(HttpStatus.BAD_REQUEST);
   // });
+
+  // it('/post 지표보드 메타데이터에 새로운 예측지표를 추가한다.', async()=>{
+  //   return request(app.getHttpServer())
+  //     .post('/api/numerical-guidance/indicator-board-metadata-add-custom-forecast-indicator/0d73cea1-35a5-432f-bcd1-27ae3541ba99')
+  //     .send({
+  //       customForecastIndicatorId: "a1e019be-19f4-473b-9a02-d86d65eebab0"
+  //     })
+  //     .set('Content-Type', 'application/json')
+  //     .expect(HttpStatus.CREATED);
+  // });
+
+  it('/post 지표보드 메타데이터에 새로운 예측지표를 추가한다. - db에 메타데이터id가 존재하지 않을 경우', async () => {
+    return request(app.getHttpServer())
+      .post(
+        '/api/numerical-guidance/indicator-board-metadata-add-custom-forecast-indicator/0d73cea1-35a5-432f-bcd1-27ae3541ba00',
+      )
+      .send({
+        customForecastIndicatorId: 'a1e019be-19f4-473b-9a02-d86d65eebab0',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.NOT_FOUND);
+  });
+
+  it('/post 지표보드 메타데이터에 새로운 예측지표를 추가한다. - 중복 데이터를 집어놓을 경우', async () => {
+    return request(app.getHttpServer())
+      .post(
+        '/api/numerical-guidance/indicator-board-metadata-add-custom-forecast-indicator/0d73cea1-35a5-432f-bcd1-27ae3541ba99',
+      )
+      .send({
+        customForecastIndicatorId: "'customForecastIndicatorId1'",
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
 
   it('/post 예측 지표를 생성한다.', async () => {
     return request(app.getHttpServer())
