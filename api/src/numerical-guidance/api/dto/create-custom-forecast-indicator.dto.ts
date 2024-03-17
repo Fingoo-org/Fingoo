@@ -2,7 +2,7 @@ import { IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCustomForecatIndicatorDto {
-  @ApiProperty({ example: '예측지표, ', description: '예측지표 이름' })
+  @ApiProperty({ example: '예측지표', description: '예측지표 이름' })
   @IsString()
   customForecastIndicatorName: string;
 

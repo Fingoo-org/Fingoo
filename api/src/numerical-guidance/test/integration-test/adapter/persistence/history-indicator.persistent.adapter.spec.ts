@@ -246,4 +246,71 @@ describe('HistoryIndicatorPersistentAdapter', () => {
       }),
     );
   });
+
+  const testDataCounts = [
+    { dataCount: 1 },
+    { dataCount: 2 },
+    { dataCount: 3 },
+    { dataCount: 4 },
+    { dataCount: 5 },
+    { dataCount: 6 },
+    { dataCount: 7 },
+    { dataCount: 8 },
+    { dataCount: 9 },
+    { dataCount: 10 },
+  ];
+
+  it.each(testDataCounts)('history 지표 불러오기 - week 개수 test', async ({ dataCount }) => {
+    // given
+    const { indicatorId, interval, endDate }: GetHistoryIndicatorQuery = {
+      indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
+      interval: 'week',
+      dataCount: dataCount,
+      endDate: '20240227',
+    };
+
+    // when
+    const cursorPageDto: CursorPageDto<HistoryIndicatorDto> =
+      await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, dataCount, endDate);
+
+    // then
+    const expectedTotalCount = dataCount;
+    expect(expectedTotalCount).toEqual(cursorPageDto.meta.total);
+  });
+
+  it.each(testDataCounts.slice(0, 3))('history 지표 불러오기 - month 개수 test', async ({ dataCount }) => {
+    // given
+    const { indicatorId, interval, endDate }: GetHistoryIndicatorQuery = {
+      indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
+      interval: 'month',
+      dataCount: dataCount,
+      endDate: '20240227',
+    };
+
+    // when
+    const cursorPageDto: CursorPageDto<HistoryIndicatorDto> =
+      await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, dataCount, endDate);
+
+    // then
+    const expectedTotalCount = dataCount;
+    expect(expectedTotalCount).toEqual(cursorPageDto.meta.total);
+  });
+
+  it.each(testDataCounts.slice(0, 2))('history 지표 불러오기 - year 개수 test', async ({ dataCount }) => {
+    // given
+    const { indicatorId, interval, endDate }: GetHistoryIndicatorQuery = {
+      indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
+      interval: 'year',
+      dataCount: dataCount,
+      endDate: '20240227',
+    };
+
+    // when
+    const cursorPageDto: CursorPageDto<HistoryIndicatorDto> =
+      await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, dataCount, endDate);
+
+    // then
+    const expectedTotalCount = dataCount;
+    expect(expectedTotalCount).toEqual(cursorPageDto.meta.total);
+  });
 });
