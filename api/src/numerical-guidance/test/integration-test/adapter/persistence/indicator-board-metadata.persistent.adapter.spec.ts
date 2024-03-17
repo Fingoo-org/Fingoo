@@ -30,6 +30,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 10 },
     });
 
@@ -37,6 +38,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba72',
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 5 },
     });
 
@@ -44,6 +46,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: 'f2be45ee-d73b-43b6-9344-a8f2264bee40',
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 5 },
     });
 
@@ -51,6 +54,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 5 },
     });
 
@@ -58,6 +62,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba10',
       indicatorBoardMetadataName: 'memberTest',
       indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      customForecastIndicatorIds: {
+        customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
+      },
       member: { id: 999 },
     });
 
@@ -65,6 +72,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba11',
       indicatorBoardMetadataName: 'memberTest',
       indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      customForecastIndicatorIds: {
+        customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
+      },
       member: { id: 999 },
     });
 
@@ -72,6 +82,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba12',
       indicatorBoardMetadataName: 'memberTest',
       indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      customForecastIndicatorIds: {
+        customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
+      },
       member: { id: 999 },
     });
   };
@@ -213,6 +226,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -281,6 +295,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'f2be45ee-d73b-43b6-9344-a8f2264bee41',
       'name',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -305,6 +320,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -327,6 +343,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'name',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -406,6 +423,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       'updateName',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -426,6 +444,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'updateName',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -450,6 +469,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'invalidId',
       'updateName',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );

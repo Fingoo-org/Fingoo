@@ -57,10 +57,9 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   df_var = df_var.dropna()
 
   for indicator, weight in zip(df_var, weights):
+    weight = int(weight)
     if weight != 0:
       df_var = verification.applyWeight(df_var, indicator, weight)
-    elif weight == 0:
-      pass
             
   # granger
   try: 
@@ -143,10 +142,9 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
   df_var = df_var.dropna()
 
   for indicator, weight in zip(df_var, weights):
+    weight = int(weight)
     if weight != 0:
       df_var = verification.applyWeight(df_var, indicator, weight)
-    elif weight == 0:
-      pass
             
   # granger
   try: 

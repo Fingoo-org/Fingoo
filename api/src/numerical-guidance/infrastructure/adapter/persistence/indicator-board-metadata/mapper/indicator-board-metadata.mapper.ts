@@ -7,6 +7,9 @@ export class IndicatorBoardMetadataMapper {
     const indicatorBoardMetadataEntity: IndicatorBoardMetadataEntity = new IndicatorBoardMetadataEntity();
     indicatorBoardMetadataEntity.indicatorBoardMetadataName = indicatorBoardMetaData.indicatorBoardMetadataName;
     indicatorBoardMetadataEntity.indicatorIds = { indicatorIds: indicatorBoardMetaData.indicatorIds };
+    indicatorBoardMetadataEntity.customForecastIndicatorIds = {
+      customForecastIndicatorIds: indicatorBoardMetaData.customForecastIndicatorIds,
+    };
     indicatorBoardMetadataEntity.member = member;
     indicatorBoardMetadataEntity.createdAt = indicatorBoardMetaData.createdAt;
     indicatorBoardMetadataEntity.updatedAt = indicatorBoardMetaData.updatedAt;
@@ -18,6 +21,7 @@ export class IndicatorBoardMetadataMapper {
       entity.id,
       entity.indicatorBoardMetadataName,
       this.createArray(entity.indicatorIds['indicatorIds'].toString()),
+      this.createArray(entity.customForecastIndicatorIds['customForecastIndicatorIds'].toString()),
       entity.createdAt,
       entity.updatedAt,
     );
