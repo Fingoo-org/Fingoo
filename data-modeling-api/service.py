@@ -58,19 +58,20 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
 
   for indicator, weight in zip(df_var, weights):
     weight = int(weight)
-    if weight != 0:
-      df_var = verification.applyWeight(df_var, indicator, weight)
+    df_var = verification.applyWeight(df_var, indicator, weight)
             
   # granger
   try: 
     grangerDf = verification.grangerVerification(df_var)
     checkDf = verification.findSignificantValues(grangerDf)
     grangerGroup = verification.findInfluentialGroups(checkDf)
+    if grangerGroup == []:
+      grangerGroup = ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.']
   except Exception:
       grangerGroup = ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.']
 
   # var
-  try:
+  if len(grangerGroup) >= 2:
     customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
     
     for name in grangerGroup:
@@ -91,7 +92,7 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
           "values": values
           }
     return result
-  except Exception:
+  else:
     return {"name": "해당 지표를 예측할 수 없습니다.", values: []}
 
 def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
@@ -143,14 +144,15 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
 
   for indicator, weight in zip(df_var, weights):
     weight = int(weight)
-    if weight != 0:
-      df_var = verification.applyWeight(df_var, indicator, weight)
-            
+    df_var = verification.applyWeight(df_var, indicator, weight)
+
+  print(df_var)
   # granger
   try: 
     grangerDf = verification.grangerVerification(df_var)
     checkDf = verification.findSignificantValues(grangerDf)
     grangerGroup = verification.findInfluentialGroups(checkDf)
+    print(grangerGroup)
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
       "grangerGroup": ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.'],
