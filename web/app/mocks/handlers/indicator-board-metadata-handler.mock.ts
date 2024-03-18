@@ -5,6 +5,7 @@ import { mockDB } from '../db';
 import {
   CreateIndicatorMetadataRequestBody,
   AddIndicatorToMetadataRequestBody,
+  AddCustomForecastIndicatorToMetadataRequestBody,
   UpdateIndicatorBoardMetadataRequestBody,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
@@ -34,8 +35,19 @@ export const indicatorBoardMetadataHandlers = [
     `${API_PATH.indicatorBoardMetadata}/:metadataId`,
     async ({ params, request }) => {
       const { metadataId } = params;
-      const indicator = await request.json();
-      mockDB.postIndicatorToMetadata(metadataId, indicator);
+      const body = await request.json();
+      mockDB.postIndicatorToMetadata(metadataId, body);
+      await delayForDevelopment();
+
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
+  http.post<metadataParam, AddCustomForecastIndicatorToMetadataRequestBody>(
+    `${API_PATH.indicatorBoardMetadata}/custom-forecast-indicator/:metadataId`,
+    async ({ params, request }) => {
+      const { metadataId } = params;
+      const body = await request.json();
+      mockDB.postCustomForecastIndicatorToMetadata(metadataId, body);
       await delayForDevelopment();
 
       return HttpResponse.json({ status: 200 });

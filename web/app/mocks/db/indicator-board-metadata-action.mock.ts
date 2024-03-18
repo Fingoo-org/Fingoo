@@ -3,6 +3,7 @@ import {
   CreateIndicatorMetadataRequestBody,
   AddIndicatorToMetadataRequestBody,
   UpdateIndicatorBoardMetadataRequestBody,
+  AddCustomForecastIndicatorToMetadataRequestBody,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { mockDatabaseStore } from '.';
 
@@ -14,6 +15,7 @@ export type MockIndicatorBoardMetadataAction = {
   deleteIndicatorFromMetadata: (id: string, indicatorId: string) => void;
   patchMetadata: (id: string, data: UpdateIndicatorBoardMetadataRequestBody) => void;
   deleteIndicatorBoardMetadata: (id: string) => void;
+  postCustomForecastIndicatorToMetadata: (id: string, data: AddCustomForecastIndicatorToMetadataRequestBody) => void;
 };
 
 export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction = {
@@ -60,5 +62,17 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
   },
   deleteIndicatorBoardMetadata: (id) => {
     mockDatabaseStore.metadataList = mockDatabaseStore.metadataList.filter((metadata) => metadata.id !== id);
+  },
+  postCustomForecastIndicatorToMetadata: (id, data) => {
+    const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
+    const newMetadata = {
+      ...mockDatabaseStore.metadataList[index],
+      customForecastIndicatorIds: [
+        ...mockDatabaseStore.metadataList[index].customForecastIndicatorIds,
+        data.customForecastIndicatorId,
+      ],
+    };
+
+    mockDatabaseStore.metadataList[index] = newMetadata;
   },
 };
