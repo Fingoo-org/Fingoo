@@ -37,6 +37,23 @@ export const useAddIndicatorToMetadata = (metadataId: string | undefined) =>
     },
   );
 
+export type AddCustomForecastIndicatorToMetadataRequestBody = {
+  customForecastIndicatorId: string;
+};
+
+export const useAddCustomForecastIndicatorToMetadata = (metadataId: string | undefined) =>
+  useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (key: string, { arg }: { arg: AddCustomForecastIndicatorToMetadataRequestBody }) => {
+      if (!metadataId) return;
+
+      const url = `${key}/custom-forecast-indicator`;
+      await postFetcher<AddCustomForecastIndicatorToMetadataRequestBody>([url, metadataId], {
+        arg,
+      });
+    },
+  );
+
 type DeleteIndicatorFromMetadataRequestArg = {
   indicatorId: string;
 };
