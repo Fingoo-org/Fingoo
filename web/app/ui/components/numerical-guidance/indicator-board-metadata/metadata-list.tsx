@@ -14,12 +14,12 @@ const MetadataList = React.memo(function MetadataList() {
 
   const handleMetadataCreateAndSelect = async () => {
     const metadata = {
-      id: Math.random().toString(36),
       indicatorBoardMetadataName: 'metadata1',
     };
     try {
       await createIndicatorBoardMetadata(metadata);
-      selectMetadataById(metadata.id);
+      // refactor: 추후 be 작업이 완료 되면 설정
+      // selectMetadataById(metadata.id);
     } catch (e) {
       // error: 위에서 처리, 넘겨줄 필요 있나?
       throw e;

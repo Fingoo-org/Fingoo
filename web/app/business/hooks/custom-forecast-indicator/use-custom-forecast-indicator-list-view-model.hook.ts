@@ -17,8 +17,6 @@ export const useCustomForecastIndicatorListViewModel = () => {
   const convertedCustomForecastIndicatorList = useMemo(() => {
     if (!customForecastIndicatorList) return undefined;
 
-    console.log('customForecastIndicatorList', customForecastIndicatorList);
-
     return convertCustomForecastIndicatorsViewModel(customForecastIndicatorList);
   }, [customForecastIndicatorList]);
 

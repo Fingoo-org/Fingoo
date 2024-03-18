@@ -12,7 +12,6 @@ export type IndicatorBoardMetadataResponse = {
 };
 
 export type CreateIndicatorMetadataRequestBody = {
-  id: string;
   indicatorBoardMetadataName: string;
 };
 

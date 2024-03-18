@@ -25,6 +25,7 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
   postMetadataList: (data) => {
     const newMetadata = {
       ...data,
+      id: Math.random().toString(36),
       indicatorIds: [],
       customForecastIndicatorIds: [],
     };
