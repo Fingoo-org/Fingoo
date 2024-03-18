@@ -42,6 +42,8 @@ import { UpdateSourceIndicatorsAndWeightsDto } from './dto/update-source-indicat
 import { UpdateSourceIndicatorsAndWeightsCommand } from '../application/command/update-source-indicators-and-weights/update-source-indicators-and-weights.command';
 import { CustomForecastIndicatorValues } from 'src/utils/type/type-definition';
 import { GetCustomForecastIndicatorValuesQuery } from '../application/query/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query';
+import { InsertCustomForecastIndicatorDto } from './dto/insert-custom-forecast-indicator.dto';
+import { InsertCustomForecastIndicatorIdCommand } from '../application/command/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command';
 
 @ApiTags('NumericalGuidanceController')
 @Controller('/api/numerical-guidance')
@@ -232,6 +234,41 @@ export class NumericalGuidanceController {
     await this.commandBus.execute(command);
   }
 
+  @ApiOperation({ summary: '지표보드 메타데이터에 예측지표 id를 추가합니다.' })
+  @ApiCreatedResponse()
+  @ApiExceptionResponse(
+    400,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 지표보드 메타데이터를 업데이트하는 도중에 entity 오류가 발생했습니다.',
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] indicatorBoardMetadataId: ${indicatorBoardMetaData.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 새로운 예측지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.',
+  )
+  @ApiParam({
+    name: 'id',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa874',
+    required: true,
+  })
+  @Post('/indicator-board-metadata-add-custom-forecast-indicator/:id')
+  async insertNewCustomForecastIndicatorId(
+    @Param('id') indicatorBoardMetadataId,
+    @Body() insertCustomForecastIndicatorDto: InsertCustomForecastIndicatorDto,
+  ) {
+    const command = new InsertCustomForecastIndicatorIdCommand(
+      indicatorBoardMetadataId,
+      insertCustomForecastIndicatorDto.customForecastIndicatorId,
+    );
+
+    await this.commandBus.execute(command);
+  }
+
   @ApiOperation({ summary: '지표보드 메타데이터에 지표 id를 삭제합니다.' })
   @ApiOkResponse()
   @ApiExceptionResponse(
@@ -383,6 +420,11 @@ export class NumericalGuidanceController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 예측지표를 불러오는 중 예상치 못한 문제가 발생했습니다.`,
   )
+  @ApiParam({
+    name: 'customForecastIndicatorId',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Get('/custom-forecast-indicator/:customForecastIndicatorId')
   async loadCustomForecastIndicator(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
@@ -409,13 +451,24 @@ export class NumericalGuidanceController {
     const query = new GetCustomForecastIndicatorsByMemberIdQuery(member.id);
     return await this.queryBus.execute(query);
   }
+
   @ApiOperation({ summary: '재료지표를 업데이트합니다.' })
   @ApiOkResponse()
+  @ApiExceptionResponse(
+    404,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 예측지표를 찾을 수 없습니다.',
+  )
   @ApiExceptionResponse(
     500,
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 재료지표를 업데이트하는 도중에 예상치 못한 문제가 발생했습니다.`,
   )
+  @ApiParam({
+    name: 'customForecastIndicatorId',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Patch('/custom-forecast-indicator/:customForecastIndicatorId')
   async updateSourceIndicatorsAndWeights(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
@@ -445,6 +498,11 @@ export class NumericalGuidanceController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 예측값을 불러오는 중 예상치 못한 문제가 발생했습니다.`,
   )
+  @ApiParam({
+    name: 'customForecastIndicatorId',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
   @Get('/custom-forecast-indicator-view/:customForecastIndicatorId')
   async loadCustomForecastIndicatorValues(
     @Param('customForecastIndicatorId') customForecastIndicatorId,

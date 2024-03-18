@@ -25,6 +25,12 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   indicatorIds: string[];
 
   @ApiProperty({
+    example: ['c6a99067-27d0-4358-b3d5-e63a64b604c1', 'c6a99067-27d0-4358-b3d5-e63a64b604c7'],
+    description: '예측지표 id 모음',
+  })
+  customForecastIndicatorIds: string[];
+
+  @ApiProperty({
     example: '2024-03-04T05:17:33.756Z',
     description: '지표 보드 메티데이터 생성일',
   })
@@ -38,8 +44,16 @@ export class IndicatorBoardMetadata extends AggregateRoot {
 
   static createNew(indicatorBoardMetadataName: string): IndicatorBoardMetadata {
     const initIndicatorIds: string[] = [];
+    const initCustomForecastIndicatorIds: string[] = [];
     const currentDate: Date = new Date();
-    return new IndicatorBoardMetadata(null, indicatorBoardMetadataName, initIndicatorIds, currentDate, currentDate);
+    return new IndicatorBoardMetadata(
+      null,
+      indicatorBoardMetadataName,
+      initIndicatorIds,
+      initCustomForecastIndicatorIds,
+      currentDate,
+      currentDate,
+    );
   }
 
   public insertIndicatorId(id: string): void {
@@ -50,6 +64,16 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(newIndicatorIds));
     this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(newIndicatorIds));
     this.indicatorIds = newIndicatorIds;
+  }
+
+  public insertCustomForecastIndicatorId(id: string): void {
+    let newCustomForecastIndicatorIds: string[] = [...this.customForecastIndicatorIds];
+    const currentCustomForecastIndicatorIds = this.convertToArray(newCustomForecastIndicatorIds);
+    currentCustomForecastIndicatorIds.push(id);
+    newCustomForecastIndicatorIds = currentCustomForecastIndicatorIds;
+    this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(newCustomForecastIndicatorIds));
+    this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(newCustomForecastIndicatorIds));
+    this.customForecastIndicatorIds = newCustomForecastIndicatorIds;
   }
 
   public deleteIndicatorId(id: string): void {
@@ -77,6 +101,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     id: string,
     indicatorBoardMetadataName: string,
     indicatorIds: string[],
+    customForecastIndicatorIds: string[],
     createdAt: Date,
     updatedAt: Date,
   ) {
@@ -84,9 +109,12 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.checkRule(new IndicatorBoardMetadataNameShouldNotEmptyRule(indicatorBoardMetadataName));
     this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(indicatorIds));
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(indicatorIds));
+    this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(customForecastIndicatorIds));
+    this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(customForecastIndicatorIds));
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
     this.indicatorIds = indicatorIds;
+    this.customForecastIndicatorIds = customForecastIndicatorIds;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

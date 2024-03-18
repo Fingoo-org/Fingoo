@@ -4,20 +4,26 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.vector_ar.vecm import coint_johansen
 from statsmodels.tsa.stattools import grangercausalitytests
 
-def applyWeight(df: pd.DataFrame, applyData, totalCount, weight):
-    base = df[applyData].iloc[-(totalCount)]
-    test = df[applyData].iloc[-(totalCount):-1]
+def applyWeight(df: pd.DataFrame, applyData, weight):
+    if weight == 0:
+      print('가중치가 적용되지 않았습니다.')
+      return df
+    else:
+        totalCount = 10
+        theta = weight/1000
+        base = df[applyData].iloc[-(totalCount)]
+        test = df[applyData].iloc[-(totalCount):-1]
 
-    for i in range(len(test)):
-        df.loc[df.index[-(totalCount) + i], applyData] = base
+        for i in range(len(test)):
+            df.loc[df.index[-(totalCount) + i], applyData] = base
 
-    for j in range(len(test)):
-        data = df.loc[df.index[-(totalCount) + j - 1], applyData]
-        df.loc[df.index[-(totalCount) + j], applyData] = data * (1 + weight)
+        for j in range(len(test)):
+            data = df.loc[df.index[-(totalCount) + j - 1], applyData]
+            df.loc[df.index[-(totalCount) + j], applyData] = data * (1 + theta)
 
-    df.loc[df.index[-1], applyData] = df.loc[df.index[-2], applyData] * (1 + weight)
+        df.loc[df.index[-1], applyData] = df.loc[df.index[-2], applyData] * (1 + theta)
 
-    return df
+        return df
 
 def getADFDataFrame(data): # data: traning data
     adfSample = adfuller(data, autolag='AIC')

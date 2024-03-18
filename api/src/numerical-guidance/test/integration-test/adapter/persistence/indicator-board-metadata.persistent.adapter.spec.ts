@@ -23,6 +23,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await memberRepository.insert({ id: 10 });
     await memberRepository.insert({ id: 5 });
     await memberRepository.insert({ id: 999 });
+    await memberRepository.insert({ id: 9999 });
     memberRepository.save;
 
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
@@ -30,6 +31,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 10 },
     });
 
@@ -37,6 +39,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba72',
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 5 },
     });
 
@@ -44,6 +47,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: 'f2be45ee-d73b-43b6-9344-a8f2264bee40',
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 5 },
     });
 
@@ -51,6 +55,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 5 },
     });
 
@@ -58,6 +63,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba10',
       indicatorBoardMetadataName: 'memberTest',
       indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      customForecastIndicatorIds: {
+        customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
+      },
       member: { id: 999 },
     });
 
@@ -65,6 +73,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba11',
       indicatorBoardMetadataName: 'memberTest',
       indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      customForecastIndicatorIds: {
+        customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
+      },
       member: { id: 999 },
     });
 
@@ -72,7 +83,18 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba12',
       indicatorBoardMetadataName: 'memberTest',
       indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      customForecastIndicatorIds: {
+        customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
+      },
       member: { id: 999 },
+    });
+
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+      indicatorBoardMetadataName: 'name',
+      indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      member: { id: 9999 },
     });
   };
 
@@ -213,6 +235,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -281,6 +304,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'f2be45ee-d73b-43b6-9344-a8f2264bee41',
       'name',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -305,6 +329,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -327,6 +352,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'name',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -406,6 +432,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       'updateName',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -426,6 +453,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'updateName',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -450,6 +478,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'invalidId',
       'updateName',
       ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
       currentDate,
       currentDate,
     );
@@ -463,6 +492,54 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
         message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
         error: `[ERROR] 지표보드 메타데이터의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
           1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+        cause: Error,
+      }),
+    );
+  });
+
+  it('지표보드에 메타데이터에 새로운 예측지표 id 추가하기.', async () => {
+    // given
+    const currentDate: Date = new Date();
+    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+      'name',
+      [],
+      ['customForecastIndicator1'],
+      currentDate,
+      currentDate,
+    );
+
+    // when
+    await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetaData);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+    );
+
+    // then
+    expect(result.indicatorBoardMetadataName).toEqual('name');
+    expect(result.customForecastIndicatorIds).toEqual(['customForecastIndicator1']);
+  });
+
+  it('지표보드 메타데이터에 새로운 예측지표 id를 추가하기. - 메타데이터가 DB에 존재하지 않는 경우', async () => {
+    // given
+    const currentDate: Date = new Date();
+    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      'f2be45ee-d73b-43b6-9344-a8f2264bee41',
+      'name',
+      [],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
+      currentDate,
+      currentDate,
+    );
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetaData);
+    }).rejects.toThrow(
+      new NotFoundException({
+        HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${newIndicatorBoardMetaData.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
         cause: Error,
       }),
     );

@@ -31,12 +31,14 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetadataName: '메타데이터',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 10 },
     });
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
       indicatorBoardMetadataName: '메타데이터',
       indicatorIds: { indicatorIds: [] },
+      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 10 },
     });
   };

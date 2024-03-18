@@ -14,7 +14,7 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // then
-    const expected = new IndicatorBoardMetadata(null, '메타 데이터', [], currentDate, currentDate);
+    const expected = new IndicatorBoardMetadata(null, '메타 데이터', [], [], currentDate, currentDate);
     expect(expected).toEqual(indicatorBoardMetadata);
   });
 
@@ -38,6 +38,13 @@ describe('지표보드 메타데이터', () => {
       'id1',
       'name',
       ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+        'customForecastIndicatorId5',
+      ],
       currentDate,
       currentDate,
     );
@@ -61,6 +68,13 @@ describe('지표보드 메타데이터', () => {
       'id2',
       'name',
       ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+        'customForecastIndicatorId5',
+      ],
       currentDate,
       currentDate,
     );
@@ -75,6 +89,95 @@ describe('지표보드 메타데이터', () => {
     //then
     expect(insertIndicatorId).toThrow(BusinessRuleValidationException);
     expect(insertIndicatorId).toThrow(rule.Message);
+  });
+
+  it('지표보드 메타데이터에 예측지표 id추가', () => {
+    // given
+    const currentDate: Date = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id2',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+      ],
+      currentDate,
+      currentDate,
+    );
+    const customForecastIndicatorId = 'customForecastIndicatorId5';
+
+    // when
+    indicatorBoardMetadata.insertCustomForecastIndicatorId(customForecastIndicatorId);
+
+    // then
+    const expectedListLength = 5;
+    expect(indicatorBoardMetadata.customForecastIndicatorIds.length).toEqual(expectedListLength);
+  });
+
+  it('메타데이터에 예측지표를 추가할 경우 이미 존재하는 예측지표는 추가할 수 없다.', () => {
+    // given
+    const currentDate: Date = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id2',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+      ],
+      currentDate,
+      currentDate,
+    );
+    const customForecastIndicatorId = 'customForecastIndicatorId4';
+
+    // when
+    function insertCustomForecastIndicatorId() {
+      indicatorBoardMetadata.insertCustomForecastIndicatorId(customForecastIndicatorId);
+    }
+    const rule = new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(
+      indicatorBoardMetadata.customForecastIndicatorIds,
+    );
+
+    // then
+    expect(insertCustomForecastIndicatorId).toThrow(BusinessRuleValidationException);
+    expect(insertCustomForecastIndicatorId).toThrow(rule.Message);
+  });
+
+  it('메타데이터에내 예측지표 개수는 5개를 초과할 수 없다.', () => {
+    // given
+    const currentDate: Date = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id2',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+        'customForecastIndicatorId5',
+      ],
+      currentDate,
+      currentDate,
+    );
+    const customForecastIndicatorId = 'customForecastIndicatorId6';
+
+    // when
+    function insertCustomForecastIndicatorId() {
+      indicatorBoardMetadata.insertCustomForecastIndicatorId(customForecastIndicatorId);
+    }
+    const rule = new IndicatorBoardMetadataCountShouldNotExceedLimitRule(
+      indicatorBoardMetadata.customForecastIndicatorIds,
+    );
+
+    // then
+    expect(insertCustomForecastIndicatorId).toThrow(BusinessRuleValidationException);
+    expect(insertCustomForecastIndicatorId).toThrow(rule.Message);
   });
 
   it('지표보드 메타데이터의 이름은 비워질 수 없다. (빈 문자열인 경우)', () => {
@@ -114,6 +217,13 @@ describe('지표보드 메타데이터', () => {
       'id1',
       'name',
       ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+        'customForecastIndicatorId5',
+      ],
       currentDate,
       currentDate,
     );
@@ -134,6 +244,13 @@ describe('지표보드 메타데이터', () => {
       'id1',
       'name',
       ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+        'customForecastIndicatorId5',
+      ],
       currentDate,
       currentDate,
     );
@@ -157,6 +274,13 @@ describe('지표보드 메타데이터', () => {
       'id1',
       'name',
       ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+        'customForecastIndicatorId5',
+      ],
       currentDate,
       currentDate,
     );
@@ -176,6 +300,13 @@ describe('지표보드 메타데이터', () => {
       'id1',
       'name',
       ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+        'customForecastIndicatorId5',
+      ],
       currentDate,
       currentDate,
     );

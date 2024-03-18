@@ -21,6 +21,7 @@ import { DeleteIndicatorIdPort } from '../../../../application/port/persistence/
 import { DeleteIndicatorBoardMetadataPort } from '../../../../application/port/persistence/indicator-board-metadata/delete-indicator-board-metadata.port';
 
 import { UpdateIndicatorBoardMetadataNamePort } from '../../../../application/port/persistence/indicator-board-metadata/update-indicator-board-metadata-name.port';
+import { InsertCustomForecastIndicatorIdPort } from 'src/numerical-guidance/application/port/persistence/indicator-board-metadata/insert-custom-forecast-indicator-id.port';
 
 @Injectable()
 export class IndicatorBoardMetadataPersistentAdapter
@@ -31,7 +32,8 @@ export class IndicatorBoardMetadataPersistentAdapter
     LoadIndicatorBoardMetadataListPort,
     DeleteIndicatorIdPort,
     DeleteIndicatorBoardMetadataPort,
-    UpdateIndicatorBoardMetadataNamePort
+    UpdateIndicatorBoardMetadataNamePort,
+    InsertCustomForecastIndicatorIdPort
 {
   constructor(
     @InjectRepository(IndicatorBoardMetadataEntity)
@@ -174,6 +176,45 @@ export class IndicatorBoardMetadataPersistentAdapter
         throw new InternalServerErrorException({
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
           error: '[ERROR] 새로운 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      }
+    }
+  }
+
+  async addCustomForecastIndicatorId(indicatorBoardMetadata: IndicatorBoardMetadata): Promise<void> {
+    try {
+      const id = indicatorBoardMetadata.id;
+
+      const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
+        await this.indicatorBoardMetadataRepository.findOneBy({ id });
+      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
+
+      indicatorBoardMetaDataEntity.customForecastIndicatorIds = {
+        customForecastIndicatorIds: indicatorBoardMetadata.customForecastIndicatorIds,
+      };
+
+      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] indicatorBoardMetadataId: ${indicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else if (error instanceof TypeORMError) {
+        throw new BadRequestException({
+          HttpStatus: HttpStatus.BAD_REQUEST,
+          error: '[ERROR] 지표보드 메타데이터를 업데이트하는 도중에 entity 오류가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 새로운 예측 지표를 추가하는 중에 예상치 못한 문제가 발생했습니다.',
           message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
           cause: error,
         });

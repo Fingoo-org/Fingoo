@@ -14,7 +14,7 @@ def hello() :
 def loadPredictedIndicator(
     targetIndicatorId: str = Query(...),
     sourceIndicatorId: list[str] = Query(...),
-    weight: list[str] = Query(...),
+    weight: list[int] = Query(...),
     ):
 	
     prediction = predict(targetIndicatorId, sourceIndicatorId, weight, get_db())
@@ -26,7 +26,7 @@ def loadPredictedIndicator(
 def loadSourceIndicatorsVerification(
     targetIndicatorId: str = Query(...),
     sourceIndicatorId: list[str] = Query(...),
-    weight: list[str] = Query(...),
+    weight: list[int] = Query(...),
     ):
 	verificaion = sourceIndicatorsVerification(targetIndicatorId, sourceIndicatorId, weight, get_db())
 	return verificaion
