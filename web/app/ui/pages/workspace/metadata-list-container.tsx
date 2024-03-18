@@ -10,7 +10,7 @@ export default function MetadataListContainer() {
           suspense: true,
         }}
       >
-        <MetadataList />;
+        <MetadataList />
       </SWRConfig>
     </ClientDataSuspense>
   );
