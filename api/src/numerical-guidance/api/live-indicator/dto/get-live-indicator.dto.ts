@@ -1,5 +1,5 @@
 import { IsString, IsUUID } from 'class-validator';
-import { IsInterval } from '../../../utils/validation/is.interval.validation';
+import { IsInterval } from '../../../../utils/validation/is.interval.validation';
 import { ApiProperty } from '@nestjs/swagger';
 import { Interval } from 'src/utils/type/type-definition';
 

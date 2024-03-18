@@ -1,8 +1,8 @@
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInterval } from '../../../utils/validation/is.interval.validation';
-import { Interval } from '../../../utils/type/type-definition';
+import { IsInterval } from '../../../../utils/validation/is.interval.validation';
+import { Interval } from '../../../../utils/type/type-definition';
 
 export class GetHistoryIndicatorDto {
   @ApiProperty({
