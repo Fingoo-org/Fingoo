@@ -10,7 +10,7 @@ export default function CustomForecastIndicatorListContainer() {
           suspense: true,
         }}
       >
-        <CustomForecastIndicatorList />;
+        <CustomForecastIndicatorList />
       </SWRConfig>
     </ClientDataSuspense>
   );
