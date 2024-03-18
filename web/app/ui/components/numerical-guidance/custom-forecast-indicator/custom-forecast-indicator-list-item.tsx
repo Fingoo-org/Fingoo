@@ -18,14 +18,14 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
   );
   const { selectCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
 
-  const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const isSelected = selectedMetadata?.customForecastIndicatorIds?.some((id) => id === item.targetIndicatorId) || false;
+  const { selectedMetadata, addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
+  const isSelected = selectedMetadata?.customForecastIndicatorIds?.some((id) => id === item.id) || false;
 
-  const handleSelect = () => {
-    console.log('select');
+  const handleCustomForecastIndicatorAddToMetadata = () => {
+    addCustomForecastIndicatorToMetadata(item.id);
   };
 
-  const handleIconButton = () => {
+  const handleCustomForecastIndicatorSelect = () => {
     selectCustomForecastIndicator(item.id);
     openDialogWithPayload(item);
   };
@@ -35,7 +35,7 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
       <IconButton
         aria-label="edit"
         ref={iconButtonRef}
-        onClick={handleIconButton}
+        onClick={handleCustomForecastIndicatorSelect}
         icon={DotsHorizontalIcon}
         color={'violet'}
       />
@@ -44,7 +44,7 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
 
   return (
     <ListItem hoverRender={hoverRender}>
-      <SelectableItem key={item.id} selected={isSelected} onSelect={handleSelect}>
+      <SelectableItem key={item.id} selected={isSelected} onSelect={handleCustomForecastIndicatorAddToMetadata}>
         {item.name}
       </SelectableItem>
     </ListItem>

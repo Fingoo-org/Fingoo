@@ -256,7 +256,7 @@ export class NumericalGuidanceController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa874',
     required: true,
   })
-  @Post('/indicator-board-metadata-add-custom-forecast-indicator/:id')
+  @Post('/indicator-board-metadata/custom-forecast-indicator/:id')
   async insertNewCustomForecastIndicatorId(
     @Param('id') indicatorBoardMetadataId,
     @Body() insertCustomForecastIndicatorDto: InsertCustomForecastIndicatorDto,

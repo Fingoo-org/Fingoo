@@ -16,9 +16,7 @@ export type MockCustomForecastIndicatorAction = {
 
 export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorAction = {
   getCustomForecastIndicatorList: () => {
-    return {
-      customForecastIndicatorList: mockDatabaseStore.customForecastIndicatorList,
-    };
+    return mockDatabaseStore.customForecastIndicatorList;
   },
   postCustomForecastIndicator: (data) => {
     const newCustomForecastIndicator = {

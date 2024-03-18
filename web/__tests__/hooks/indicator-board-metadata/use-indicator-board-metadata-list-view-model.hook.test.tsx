@@ -36,13 +36,13 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createIndicatorBoardMetadata({ id: '4', indicatorBoardMetadataName: 'metadata4' });
+      result.current.createIndicatorBoardMetadata({ indicatorBoardMetadataName: 'metadata4' });
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
     // then
     expect(result.current.metadataList).toHaveLength(4);
-    expect(result.current.metadataList?.[3].id).toBe('4');
+    expect(result.current.metadataList?.[3].indicatorBoardMetadataName).toBe('metadata4');
   });
 
   // Risk: https://mswjs.io/docs/limitations#parallel-runs
@@ -59,13 +59,13 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createIndicatorBoardMetadata({ id: '4', indicatorBoardMetadataName: 'metadata4' });
+      result.current.createIndicatorBoardMetadata({ indicatorBoardMetadataName: 'metadata4' });
     });
     await waitFor(() => expect(result.current.isPending).toBe(false));
 
     // then
     expect(result.current.metadataList).toHaveLength(3);
-    expect(result.current.metadataList?.[3]).not.toEqual({ id: '4', name: 'metadata4', indicators: [] });
+    expect(result.current.metadataList?.[3]).toBeUndefined();
     expect(store.current.selectedMetadataId).toBeUndefined();
   });
 
