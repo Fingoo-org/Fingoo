@@ -10,7 +10,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   const { data: customForecastIndicatorList } = useFetchCustomForecastIndicatorList();
   const { data: indicatorList } = useFetchIndicatorList();
 
-  const selectedCustomForecastIndicator = customForecastIndicatorList?.customForecastIndicatorList.find(
+  const selectedCustomForecastIndicator = customForecastIndicatorList?.find(
     (customForecastIndicator) => customForecastIndicator.id === selectedCustomForecastIndicatorId,
   );
 

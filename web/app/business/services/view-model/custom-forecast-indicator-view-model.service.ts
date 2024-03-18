@@ -32,7 +32,7 @@ export class CustomForecastIndicator {
 
 export class CustomForecastIndicators {
   readonly customForecastIndicatorList: CustomForecastIndicator[];
-  constructor({ customForecastIndicatorList }: CustomForecastIndicatorListResponse) {
+  constructor(customForecastIndicatorList: CustomForecastIndicatorListResponse) {
     this.customForecastIndicatorList = customForecastIndicatorList.map(
       (customForecastIndicator) => new CustomForecastIndicator(customForecastIndicator),
     );

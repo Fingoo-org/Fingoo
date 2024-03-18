@@ -15,9 +15,7 @@ export type CustomForecastIndicatorResponse = {
   sourceIndicatorIdsAndweights: sourceIndicator[];
 };
 
-export type CustomForecastIndicatorListResponse = {
-  customForecastIndicatorList: CustomForecastIndicatorResponse[];
-};
+export type CustomForecastIndicatorListResponse = CustomForecastIndicatorResponse[];
 
 export type CreateCustomForecastIndicatorRequestBody = {
   customForecastIndicatorName: string;
