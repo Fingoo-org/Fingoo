@@ -483,7 +483,7 @@ describe('NumericalGuidance E2E Test', () => {
   it('/post 지표보드 메타데이터에 새로운 예측지표를 추가한다.', async () => {
     return request(app.getHttpServer())
       .post(
-        '/api/numerical-guidance/indicator-board-metadata-add-custom-forecast-indicator/0d73cea1-35a5-432f-bcd1-27ae3541ba99',
+        '/api/numerical-guidance/indicator-board-metadata/custom-forecast-indicator/0d73cea1-35a5-432f-bcd1-27ae3541ba99',
       )
       .send({
         customForecastIndicatorId: 'a1e019be-19f4-473b-9a02-d86d65eebab0',
@@ -495,7 +495,7 @@ describe('NumericalGuidance E2E Test', () => {
   it('/post 지표보드 메타데이터에 새로운 예측지표를 추가한다. - db에 메타데이터id가 존재하지 않을 경우', async () => {
     return request(app.getHttpServer())
       .post(
-        '/api/numerical-guidance/indicator-board-metadata-add-custom-forecast-indicator/0d73cea1-35a5-432f-bcd1-27ae3541ba00',
+        '/api/numerical-guidance/indicator-board-metadata/custom-forecast-indicator/0d73cea1-35a5-432f-bcd1-27ae3541ba00',
       )
       .send({
         customForecastIndicatorId: 'a1e019be-19f4-473b-9a02-d86d65eebab0',
@@ -507,7 +507,7 @@ describe('NumericalGuidance E2E Test', () => {
   it('/post 지표보드 메타데이터에 새로운 예측지표를 추가한다. - 중복 데이터를 집어놓을 경우', async () => {
     return request(app.getHttpServer())
       .post(
-        '/api/numerical-guidance/indicator-board-metadata-add-custom-forecast-indicator/0d73cea1-35a5-432f-bcd1-27ae3541ba99',
+        '/api/numerical-guidance/indicator-board-metadata/custom-forecast-indicator/0d73cea1-35a5-432f-bcd1-27ae3541ba99',
       )
       .send({
         customForecastIndicatorId: "'customForecastIndicatorId1'",
