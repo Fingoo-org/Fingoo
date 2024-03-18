@@ -2,13 +2,17 @@ import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import { NumericalGuidanceController } from '../../../api/numerical-guidance.controller';
 import { LiveIndicatorDto } from '../../../application/query/get-live-indicator/live-indicator.dto';
 import { liveIndicatorTestData } from '../../data/liveIndicator.test.data';
 import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
 import { InsertIndicatorIdCommandHandler } from '../../../application/command/insert-indicator-id/insert-indicator-id.command.handler';
 import { GetCustomForecastIndicatorQueryHandler } from 'src/numerical-guidance/application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
 import { CreateCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
+import { CustomForecastIndicatorController } from '../../../api/custom-forecast-indicator/custom-forecast-indicator.controller';
+import { HistoryIndicatorController } from '../../../api/history-indicator/history-indicator.controller';
+import { IndicatorController } from '../../../api/indicator/indicator.controller';
+import { IndicatorBoardMetadataController } from '../../../api/indicator-board-metadata/indicator-board-metadata.controller';
+import { LiveIndicatorController } from '../../../api/live-indicator/live-indicator.controller';
 
 const testData = liveIndicatorTestData;
 
@@ -16,14 +20,20 @@ jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
 }));
 
-describe('NumericalGuidanceController', () => {
+describe('NumericalGuidanceControllers', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     const [module] = await Promise.all([
       Test.createTestingModule({
         imports: [CqrsModule],
-        controllers: [NumericalGuidanceController],
+        controllers: [
+          CustomForecastIndicatorController,
+          HistoryIndicatorController,
+          IndicatorController,
+          IndicatorBoardMetadataController,
+          LiveIndicatorController,
+        ],
         providers: [
           CreateIndicatorBoardMetadataCommandHandler,
           InsertIndicatorIdCommandHandler,
