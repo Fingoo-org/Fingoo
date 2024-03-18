@@ -22,7 +22,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     const newCustomForecastIndicator = {
       ...data,
       id: Math.random().toString(36),
-      sourceIndicatorIdsAndweights: [],
+      sourceIndicatorIdsAndWeights: [],
     };
     mockDatabaseStore.customForecastIndicatorList = [
       ...mockDatabaseStore.customForecastIndicatorList,
@@ -36,7 +36,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     const newCustomForecastIndicator = {
       ...mockDatabaseStore.customForecastIndicatorList[index],
       sourceIndicatorIdsAndweights: [
-        ...mockDatabaseStore.customForecastIndicatorList[index].sourceIndicatorIdsAndweights,
+        ...mockDatabaseStore.customForecastIndicatorList[index].sourceIndicatorIdsAndWeights,
         ...data.sourceIndicatorsAndweights,
       ],
     };

@@ -12,7 +12,7 @@ export type CustomForecastIndicatorResponse = {
   id: string;
   customForecastIndicatorName: string;
   targetIndicatorId: string;
-  sourceIndicatorIdsAndweights: sourceIndicator[];
+  sourceIndicatorIdsAndWeights: sourceIndicator[];
 };
 
 export type CustomForecastIndicatorListResponse = CustomForecastIndicatorResponse[];

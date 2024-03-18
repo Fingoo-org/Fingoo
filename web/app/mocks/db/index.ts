@@ -79,7 +79,7 @@ const initialState: MockDatabase = {
       id: '1',
       customForecastIndicatorName: 'customForecastIndicator1',
       targetIndicatorId: '1',
-      sourceIndicatorIdsAndweights: [
+      sourceIndicatorIdsAndWeights: [
         {
           id: '2',
           weight: 0.5,
@@ -94,7 +94,7 @@ const initialState: MockDatabase = {
       id: '2',
       customForecastIndicatorName: 'customForecastIndicator2',
       targetIndicatorId: '2',
-      sourceIndicatorIdsAndweights: [
+      sourceIndicatorIdsAndWeights: [
         {
           id: '1',
           weight: 0.5,
@@ -109,7 +109,7 @@ const initialState: MockDatabase = {
       id: '3',
       customForecastIndicatorName: 'customForecastIndicator3',
       targetIndicatorId: '3',
-      sourceIndicatorIdsAndweights: [
+      sourceIndicatorIdsAndWeights: [
         {
           id: '1',
           weight: 0.5,
