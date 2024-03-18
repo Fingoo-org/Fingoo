@@ -1,13 +1,13 @@
 import ToggleGroup from '../../view/molocule/toggle-group';
-import { intervals, useNumericalGuidanceStore, type Interval } from '@/app/store/stores/numerical-guidance.store';
+import { intervals, useWorkspaceStore, type Interval } from '@/app/store/stores/numerical-guidance/workspace.store';
 
 function isInterval(value: string): value is Interval {
   return intervals.includes(value as Interval);
 }
 
 export default function IntervalToggleGroup() {
-  const interval = useNumericalGuidanceStore((state) => state.interval);
-  const { setInterval } = useNumericalGuidanceStore((state) => state.actions);
+  const interval = useWorkspaceStore((state) => state.interval);
+  const { setInterval } = useWorkspaceStore((state) => state.actions);
 
   const handleIntervalChange = (value: string) => {
     if (isInterval(value)) {

@@ -3,7 +3,7 @@ import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB, mockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useHistoryIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-history-indicators-value-view-model.hook';
-import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
+import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 
 const wrapper = SWRProviderWithoutCache;
@@ -25,7 +25,7 @@ describe('useHistoryIndicatorsValueViewModel', () => {
         const { historyIndicatorsValue, formattedHistoryIndicatorsRows, setPaginationData } =
           useHistoryIndicatorsValueViewModel();
         const { addIndicatorToMetadata, selectedMetadata } = useSelectedIndicatorBoardMetadata();
-        const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
+        const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
         return {
           historyIndicatorsValue,
           formattedHistoryIndicatorsRows,

@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
 import { resetMockDB, mockDB } from '@/app/mocks/db';
-import { useNumericalGuidanceStore } from '@/app/store/stores/numerical-guidance.store';
+import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
@@ -21,7 +21,7 @@ describe('useLiveIndicatorsValueViewModel', () => {
       () => {
         const { indicatorsValue } = useLiveIndicatorsValueViewModel();
         const { selectedMetadata, addIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
-        const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
+        const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
         return { indicatorsValue, selectedMetadata, addIndicatorToMetadata, selectMetadata };
       },
       { wrapper },
@@ -50,7 +50,7 @@ describe('useLiveIndicatorsValueViewModel', () => {
       () => {
         const { indicatorsValue } = useLiveIndicatorsValueViewModel();
         const { selectedMetadata, addIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
-        const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
+        const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
         return { indicatorsValue, selectedMetadata, addIndicatorToMetadata, selectMetadata };
       },
       { wrapper },
@@ -85,7 +85,7 @@ describe('useLiveIndicatorsValueViewModel', () => {
         const { indicatorsValue } = useLiveIndicatorsValueViewModel();
         const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } =
           useSelectedIndicatorBoardMetadata();
-        const selectMetadata = useNumericalGuidanceStore((state) => state.actions.selectMetadata);
+        const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
         return {
           indicatorsValue,
           selectedMetadata,
