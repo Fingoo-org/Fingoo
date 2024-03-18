@@ -10,7 +10,7 @@ export type sourceIndicator = {
 
 export type CustomForecastIndicatorResponse = {
   id: string;
-  name: string;
+  customForecastIndicatorName: string;
   targetIndicatorId: string;
   sourceIndicatorIdsAndweights: sourceIndicator[];
 };
@@ -20,7 +20,7 @@ export type CustomForecastIndicatorListResponse = {
 };
 
 export type CreateCustomForecastIndicatorRequestBody = {
-  name: string;
+  customForecastIndicatorName: string;
   targetIndicatorId: string;
 };
 
