@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import {
   AddIndicatorToMetadataRequestBody,
   IndicatorBoardMetadataResponse,
+  useAddCustomForecastIndicatorToMetadata,
   useAddIndicatorToMetadata,
   useDeleteIndicatorFromMetadata,
   useFetchIndicatorBoardMetadataList,
@@ -18,6 +19,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
   const { trigger: addIndicatorTrigger } = useAddIndicatorToMetadata(selectedMetadataId);
   const { trigger: deleteIndicatorTrigger } = useDeleteIndicatorFromMetadata(selectedMetadataId);
   const { trigger: updateTrigger } = useUpdateIndicatorBoardMetadata(selectedMetadataId);
+  const { trigger: addCustomForecastIndicatorTrigger } = useAddCustomForecastIndicatorToMetadata(selectedMetadataId);
 
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
@@ -36,17 +38,35 @@ export const useSelectedIndicatorBoardMetadata = () => {
       return;
     }
 
-    try {
-      addIndicatorTrigger(data, {
+    addIndicatorTrigger(data, {
+      optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+        convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, data.indicatorId);
+        return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+      },
+      revalidate: false,
+    });
+  };
+
+  const addCustomForecastIndicatorToMetadata = (customForecastIndicatorId: string) => {
+    if (!selectedMetadata) {
+      return;
+    }
+
+    addCustomForecastIndicatorTrigger(
+      {
+        customForecastIndicatorId,
+      },
+      {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, data.indicatorId);
+          convertedIndicatorBoardMetadataList?.addCustomForecastIndicatorToMetadataById(
+            selectedMetadataId,
+            customForecastIndicatorId,
+          );
           return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
-      });
-    } catch (e) {
-      // error 처리 필요 or 전역 에러 처리
-    }
+      },
+    );
   };
 
   const deleteIndicatorFromMetadata = (indicatorId: string) => {
@@ -54,22 +74,18 @@ export const useSelectedIndicatorBoardMetadata = () => {
       return;
     }
 
-    try {
-      deleteIndicatorTrigger(
-        {
-          indicatorId,
+    deleteIndicatorTrigger(
+      {
+        indicatorId,
+      },
+      {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+          convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorId);
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        {
-          optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-            convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorId);
-            return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
-          },
-          revalidate: false,
-        },
-      );
-    } catch (e) {
-      // error 처리 필요 or 전역 에러 처리
-    }
+        revalidate: false,
+      },
+    );
   };
 
   const updateMetadata = (data: { name: string }) => {
@@ -91,6 +107,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
     addIndicatorToMetadata,
     deleteIndicatorFromMetadata,
     updateMetadata,
+    addCustomForecastIndicatorToMetadata,
     selectMetadataById: selectMetadata,
   };
 };
