@@ -6,7 +6,7 @@ import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indi
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import userEvent from '@testing-library/user-event';
 import IndicatorDialogMenu from '@/app/ui/components/numerical-guidance/indicator/indicator-dialog-menu';
-import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list';
+import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
 
 describe('IndicatorDialogMenu', () => {
   beforeEach(() => {
