@@ -15,8 +15,8 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Econo AI API Documentation')
-    .setDescription('Econo AI의 API 문서입니다.')
+    .setTitle('FINGOO Documentation')
+    .setDescription('FINGOO의 API 문서입니다.')
     .setVersion('0.0.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
