@@ -7,7 +7,7 @@ export class IndicatorBoardMetadata {
   readonly id: string;
   readonly indicatorBoardMetadataName: string;
   // private name: string;
-  readonly customForecastIndicatorIds: string[];
+  public customForecastIndicatorIds: string[];
   public indicatorIds: string[];
 
   constructor({
@@ -39,6 +39,10 @@ export class IndicatorBoardMetadata {
 
   addIndicator(indicatorId: string) {
     this.indicatorIds = [...this.indicatorIds, indicatorId];
+  }
+
+  addCustomForecastIndicator(customForecastIndicatorId: string) {
+    this.customForecastIndicatorIds = [...this.customForecastIndicatorIds, customForecastIndicatorId];
   }
 
   deleteIndicator(indicatorId: string) {
@@ -74,6 +78,13 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     if (!metadata) return;
 
     metadata.addIndicator(indicatorId);
+  }
+
+  addCustomForecastIndicatorToMetadataById(metadataId: string | undefined, customForecastIndicatorId: string) {
+    const metadata = this.find((metadata) => metadata.id === metadataId);
+    if (!metadata) return;
+
+    metadata.addCustomForecastIndicator(customForecastIndicatorId);
   }
 
   updateIndicatorBoardMetadataNameById(metadataId: string | undefined, indicatorBoardMetadataName: string) {

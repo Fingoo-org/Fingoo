@@ -6,12 +6,17 @@ import {
 
 export class CustomForecastIndicator {
   readonly id: string;
-  readonly name: string;
+  readonly customForecastIndicatorName: string;
   readonly targetIndicatorId: string;
   private sourceIndicatorIdsAndweights: sourceIndicator[];
-  constructor({ id, name, targetIndicatorId, sourceIndicatorIdsAndweights }: CustomForecastIndicatorResponse) {
+  constructor({
+    id,
+    customForecastIndicatorName,
+    targetIndicatorId,
+    sourceIndicatorIdsAndweights,
+  }: CustomForecastIndicatorResponse) {
     this.id = id;
-    this.name = name;
+    this.customForecastIndicatorName = customForecastIndicatorName;
     this.targetIndicatorId = targetIndicatorId;
     this.sourceIndicatorIdsAndweights = sourceIndicatorIdsAndweights;
   }
@@ -19,11 +24,15 @@ export class CustomForecastIndicator {
   get sourceIndicatorIds() {
     return this.sourceIndicatorIdsAndweights.map((sourceIndicator) => sourceIndicator.id);
   }
+
+  get name() {
+    return this.customForecastIndicatorName;
+  }
 }
 
 export class CustomForecastIndicators {
   readonly customForecastIndicatorList: CustomForecastIndicator[];
-  constructor({ customForecastIndicatorList }: CustomForecastIndicatorListResponse) {
+  constructor(customForecastIndicatorList: CustomForecastIndicatorListResponse) {
     this.customForecastIndicatorList = customForecastIndicatorList.map(
       (customForecastIndicator) => new CustomForecastIndicator(customForecastIndicator),
     );

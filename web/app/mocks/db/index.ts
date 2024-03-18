@@ -1,4 +1,4 @@
-import { IndicatorInfoResponse, IndicatorsValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
+import { IndicatorInfoResponse, IndicatorValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
 import { IndicatorBoardMetadataResponse } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from '../mock-data/indicators-value.mock';
 import { CustomForecastIndicatorListResponse } from '../../store/querys/numerical-guidance/custom-forecast-indicator.query';
@@ -13,14 +13,13 @@ import {
   mockCustomForecastIndicatorAction,
 } from './custom-forecast-indicator-action.mock';
 
-type MockDatabase = IndicatorsValueResponse &
-  CustomForecastIndicatorListResponse & {
-    historyIndicatorsValue: historyIndicatorsValueMockData;
-  } & {
-    indicatorList: IndicatorInfoResponse[];
-  } & {
-    metadataList: IndicatorBoardMetadataResponse[];
-  };
+type MockDatabase = {
+  metadataList: IndicatorBoardMetadataResponse[];
+  indicatorList: IndicatorInfoResponse[];
+  indicatorsValue: IndicatorValueResponse[];
+  historyIndicatorsValue: historyIndicatorsValueMockData;
+  customForecastIndicatorList: CustomForecastIndicatorListResponse;
+};
 
 type MockDatabaseAction = MockCustomForecastIndicatorAction & MockIndicatorBoardMetadataAction & MockIndicatorAction;
 
@@ -78,7 +77,7 @@ const initialState: MockDatabase = {
   customForecastIndicatorList: [
     {
       id: '1',
-      name: 'customForecastIndicator1',
+      customForecastIndicatorName: 'customForecastIndicator1',
       targetIndicatorId: '1',
       sourceIndicatorIdsAndweights: [
         {
@@ -93,7 +92,7 @@ const initialState: MockDatabase = {
     },
     {
       id: '2',
-      name: 'customForecastIndicator2',
+      customForecastIndicatorName: 'customForecastIndicator2',
       targetIndicatorId: '2',
       sourceIndicatorIdsAndweights: [
         {
@@ -108,7 +107,7 @@ const initialState: MockDatabase = {
     },
     {
       id: '3',
-      name: 'customForecastIndicator3',
+      customForecastIndicatorName: 'customForecastIndicator3',
       targetIndicatorId: '3',
       sourceIndicatorIdsAndweights: [
         {

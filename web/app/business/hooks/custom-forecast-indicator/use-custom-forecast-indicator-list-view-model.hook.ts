@@ -22,7 +22,7 @@ export const useCustomForecastIndicatorListViewModel = () => {
 
   const createCustomForecastIndicator = async ({ targetIndicatorId }: { targetIndicatorId: string }) => {
     const body = {
-      name: '새로운 예측 지표',
+      customForecastIndicatorName: '새로운 예측 지표',
       targetIndicatorId,
     };
 
