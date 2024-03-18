@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { NumericalGuidanceController } from './api/numerical-guidance.controller';
 import { LiveIndicatorRedisAdapter } from './infrastructure/adapter/redis/live-indicator.redis.adapter';
 import { LiveIndicatorKrxAdapter } from './infrastructure/adapter/krx/live-indicator.krx.adapter';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -33,6 +32,11 @@ import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from './application
 import { UpdateSourceIndicatorsAndWeightsCommandHandler } from './application/command/update-source-indicators-and-weights/update-source-indicators-and-weights.command.handler';
 import { GetCustomForecastIndicatorValuesQueryHandler } from './application/query/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query.handler';
 import { InsertCustomForecastIndicatorIdCommandHandler } from './application/command/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command.handler';
+import { CustomForecastIndicatorController } from './api/custom-forecast-indicator/custom-forecast-indicator.controller';
+import { HistoryIndicatorController } from './api/history-indicator/history-indicator.controller';
+import { IndicatorController } from './api/indicator/indicator.controller';
+import { IndicatorBoardMetadataController } from './api/indicator-board-metadata/indicator-board-metadata.controller';
+import { LiveIndicatorController } from './api/live-indicator/live-indicator.controller';
 
 @Module({
   imports: [
@@ -52,7 +56,13 @@ import { InsertCustomForecastIndicatorIdCommandHandler } from './application/com
       CustomForecastIndicatorEntity,
     ]),
   ],
-  controllers: [NumericalGuidanceController],
+  controllers: [
+    CustomForecastIndicatorController,
+    HistoryIndicatorController,
+    IndicatorController,
+    IndicatorBoardMetadataController,
+    LiveIndicatorController,
+  ],
   providers: [
     AdjustIndicatorValue,
     AuthService,
