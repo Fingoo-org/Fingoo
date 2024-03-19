@@ -92,4 +92,46 @@ describe('SourceIndicatorSearchList', () => {
 
     await waitFor(() => expect(screen.queryAllByRole('tab', { selected: true })).toHaveLength(3));
   });
+
+  it('지표를 선택한 후 다시 클릭하면, 선택된 지표가 재료 지표에서 제거된다', async () => {
+    //given
+    render(
+      <SWRProviderWithoutCache>
+        <SourceIndicatorSearchList />
+      </SWRProviderWithoutCache>,
+    );
+    const { result } = renderHook(() => useWorkspaceStore());
+    act(() => {
+      result.current.actions.selectCustomForecastIndicatorById('1');
+    });
+    expect(await screen.findAllByRole('tab', { selected: true })).toHaveLength(2);
+
+    //when
+    const indicator = await screen.findByText('MSFT(Microsoft Corporation)');
+    userEvent.click(indicator);
+    await waitFor(() => expect(screen.queryAllByRole('tab', { selected: true })).toHaveLength(3));
+    userEvent.click(indicator);
+
+    await waitFor(() => expect(screen.queryAllByRole('tab', { selected: true })).toHaveLength(2));
+  });
+
+  it('target 지표를 선택하면, 선택된 지표가 제거되지 않는다.', async () => {
+    //given
+    render(
+      <SWRProviderWithoutCache>
+        <SourceIndicatorSearchList />
+      </SWRProviderWithoutCache>,
+    );
+    const { result } = renderHook(() => useWorkspaceStore());
+    act(() => {
+      result.current.actions.selectCustomForecastIndicatorById('1');
+    });
+    expect(await screen.findAllByRole('tab', { selected: true })).toHaveLength(2);
+
+    //when
+    const targetIndicator = await screen.findByText('AAPL(Apple Inc.)');
+    userEvent.click(targetIndicator);
+
+    expect(await screen.findAllByRole('tab', { selected: true })).toHaveLength(2);
+  });
 });
