@@ -4,7 +4,6 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 import { ConfigModule } from '@nestjs/config';
 import { CreateIndicatorBoardMetadataCommand } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command';
-import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -22,7 +21,10 @@ describe('CreateIndicatorBoardMetadataCommandHandler', () => {
         {
           provide: 'CreateIndicatorBoardMetadataPort',
           useValue: {
-            createIndicatorBoardMetadata: jest.fn(),
+            createIndicatorBoardMetadata: jest.fn().mockImplementation(() => {
+              const testId = '008628f5-4dbd-4c3b-b793-ca0fa22b3cfa';
+              return testId;
+            }),
           },
         },
       ],
@@ -37,11 +39,10 @@ describe('CreateIndicatorBoardMetadataCommandHandler', () => {
     const command: CreateIndicatorBoardMetadataCommand = new CreateIndicatorBoardMetadataCommand('메타데이터', 1);
 
     //when
-    const indicatorBoardMetaData: IndicatorBoardMetadata =
-      await createIndicatorBoardMetadataCommandHandler.execute(command);
+    const indicatorBoardMetaDataId: string = await createIndicatorBoardMetadataCommandHandler.execute(command);
 
     //then
-    expect(indicatorBoardMetaData.indicatorBoardMetadataName).toEqual('메타데이터');
+    expect(indicatorBoardMetaDataId).toEqual('008628f5-4dbd-4c3b-b793-ca0fa22b3cfa');
     expect(createIndicatorBoardMetadataPort.createIndicatorBoardMetadata).toHaveBeenCalledTimes(1);
   });
 });

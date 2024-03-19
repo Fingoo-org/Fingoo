@@ -48,7 +48,7 @@ export class CustomForecastIndicatorController {
   async createCustomForecastIndicator(
     @Body() createCustomForecastIndicatorDto: CreateCustomForecatIndicatorDto,
     @Member() member: MemberEntity,
-  ): Promise<CustomForecastIndicator> {
+  ): Promise<string> {
     const command = new CreateCustomForecastIndicatorCommand(
       createCustomForecastIndicatorDto.customForecastIndicatorName,
       createCustomForecastIndicatorDto.targetIndicatorId,

@@ -14,12 +14,15 @@ export class CreateIndicatorBoardMetadataCommandHandler implements ICommandHandl
   ) {}
 
   @Transactional()
-  async execute(command: CreateIndicatorBoardMetadataCommand): Promise<IndicatorBoardMetadata> {
+  async execute(command: CreateIndicatorBoardMetadataCommand): Promise<string> {
     const { indicatorBoardMetadataName, memberId } = command;
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew(indicatorBoardMetadataName);
 
-    await this.createIndicatorBoardMetadataPort.createIndicatorBoardMetadata(indicatorBoardMetaData, memberId);
+    const responseIndicator = await this.createIndicatorBoardMetadataPort.createIndicatorBoardMetadata(
+      indicatorBoardMetaData,
+      memberId,
+    );
 
-    return indicatorBoardMetaData;
+    return responseIndicator;
   }
 }

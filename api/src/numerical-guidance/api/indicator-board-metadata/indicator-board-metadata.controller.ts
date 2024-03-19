@@ -1,10 +1,9 @@
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { AuthGuard } from '../../../auth/auth.guard';
 import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-metadata.dto';
-import { Response } from 'express';
 import { Member } from '../../../auth/get-member.decorator';
 import { MemberEntity } from '../../../auth/member.entity';
 import { CreateIndicatorBoardMetadataCommand } from '../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command';
@@ -50,15 +49,13 @@ export class IndicatorBoardMetadataController {
   @Post('/indicator-board-metadata')
   async createIndicatorBoardMetadata(
     @Body() createIndicatorBoardMetadataDto: CreateIndicatorBoardMetadataDto,
-    @Res() res: Response,
     @Member() member: MemberEntity,
-  ) {
+  ): Promise<string> {
     const command = new CreateIndicatorBoardMetadataCommand(
       createIndicatorBoardMetadataDto.indicatorBoardMetadataName,
       member.id,
     );
-    await this.commandBus.execute(command);
-    res.status(HttpStatus.CREATED).send();
+    return await this.commandBus.execute(command);
   }
 
   @ApiOperation({ summary: '지표보드 메타데이터 id로 메타데이터를 가져옵니다.' })
