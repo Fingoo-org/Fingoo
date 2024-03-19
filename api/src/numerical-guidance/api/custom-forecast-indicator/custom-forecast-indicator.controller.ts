@@ -1,10 +1,9 @@
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Get, HttpStatus, Param, Patch, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { AuthGuard } from '../../../auth/auth.guard';
 import { CreateCustomForecatIndicatorDto } from './dto/create-custom-forecast-indicator.dto';
-import { Response } from 'express';
 import { Member } from '../../../auth/get-member.decorator';
 import { MemberEntity } from '../../../auth/member.entity';
 import { CreateCustomForecastIndicatorCommand } from '../../application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command';
@@ -25,7 +24,10 @@ export class CustomForecastIndicatorController {
   ) {}
 
   @ApiOperation({ summary: '예측지표를 생성합니다.' })
-  @ApiCreatedResponse()
+  @ApiCreatedResponse({
+    description: '예측지표 생성 성공 및 예측지표 id 리턴',
+    type: '008628f5-4dbd-4c3b-b793-ca0fa22b3cfa',
+  })
   @ApiExceptionResponse(
     400,
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
@@ -45,16 +47,14 @@ export class CustomForecastIndicatorController {
   @Post('/custom-forecast-indicator')
   async createCustomForecastIndicator(
     @Body() createCustomForecastIndicatorDto: CreateCustomForecatIndicatorDto,
-    @Res() res: Response,
     @Member() member: MemberEntity,
-  ) {
+  ): Promise<CustomForecastIndicator> {
     const command = new CreateCustomForecastIndicatorCommand(
       createCustomForecastIndicatorDto.customForecastIndicatorName,
       createCustomForecastIndicatorDto.targetIndicatorId,
       member.id,
     );
-    await this.commandBus.execute(command);
-    res.status(HttpStatus.CREATED).send();
+    return await this.commandBus.execute(command);
   }
 
   @ApiOperation({ summary: '예측지표 id로 예측지표를 불러옵니다.' })

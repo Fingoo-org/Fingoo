@@ -22,7 +22,19 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
         {
           provide: 'CreateCustomForecastIndicatorPort',
           useValue: {
-            createCustomForecastIndicator: jest.fn(),
+            createCustomForecastIndicator: jest.fn().mockImplementation(() => {
+              const testData = new CustomForecastIndicator(
+                '008628f5-4dbd-4c3b-b793-ca0fa22b3cfa',
+                'name',
+                'customForecastIndicator',
+                '008628f5-4dbd-4c3b-b793-ca0fa22b3cfb',
+                [],
+                [],
+                [],
+              );
+              const testDataId = testData.id;
+              return testDataId;
+            }),
           },
         },
       ],
@@ -41,12 +53,10 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
     );
 
     // when
-    const customForecastIndicator: CustomForecastIndicator =
-      await createCustomForecastIndicatorCommandHandler.execute(command);
+    const customForecastIndicatorId: string = await createCustomForecastIndicatorCommandHandler.execute(command);
 
     // then
-    expect(customForecastIndicator.customForecastIndicatorName).toEqual('예측지표');
-    expect(customForecastIndicator.grangerVerification.length).toBe(0);
+    expect(customForecastIndicatorId).toEqual('008628f5-4dbd-4c3b-b793-ca0fa22b3cfa');
     expect(createCustomForecastIndicatorPort.createCustomForecastIndicator).toHaveBeenCalledTimes(1);
   });
 });

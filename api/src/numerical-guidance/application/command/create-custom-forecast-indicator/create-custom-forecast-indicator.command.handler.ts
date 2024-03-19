@@ -14,15 +14,16 @@ export class CreateCustomForecastIndicatorCommandHandler implements ICommandHand
   ) {}
 
   @Transactional()
-  async execute(command: CreateCustomForecastIndicatorCommand): Promise<CustomForecastIndicator> {
+  async execute(command: CreateCustomForecastIndicatorCommand): Promise<string> {
     const { customForecastIndicatorName, targetIndicatorId, memberId } = command;
     const customForecastIndicator: CustomForecastIndicator = CustomForecastIndicator.createNew(
       customForecastIndicatorName,
       targetIndicatorId,
     );
-
-    await this.createCustomForecastIndicatorPort.createCustomForecastIndicator(customForecastIndicator, memberId);
-
-    return customForecastIndicator;
+    const responseIndicator = await this.createCustomForecastIndicatorPort.createCustomForecastIndicator(
+      customForecastIndicator,
+      memberId,
+    );
+    return responseIndicator;
   }
 }
