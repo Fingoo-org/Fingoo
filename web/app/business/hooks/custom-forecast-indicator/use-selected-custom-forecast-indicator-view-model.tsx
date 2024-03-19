@@ -9,7 +9,8 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
   const { selectCustomForecastIndicator } = useWorkspaceStore((state) => state.actions);
   const { selectedCustomForecastIndicator } = useCustomForecastIndicatorStore((state) => state);
-  const { enrollCustomForecastIndicator } = useCustomForecastIndicatorStore((state) => state.actions);
+  const { enrollCustomForecastIndicator, addSourceIndicatorToSelectedCustomForecastIndicator } =
+    useCustomForecastIndicatorStore((state) => state.actions);
   const { data: customForecastIndicatorList } = useFetchCustomForecastIndicatorList();
   const { data: indicatorList } = useFetchIndicatorList();
 
@@ -37,9 +38,14 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     return indicatorList?.filter((indicator) => sourceIndicatorIds.includes(indicator.id));
   }, [indicatorList, sourceIndicatorIds]);
 
+  const addSourceIndicator = (indicatorId: string) => {
+    addSourceIndicatorToSelectedCustomForecastIndicator(indicatorId);
+  };
+
   return {
     selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,
     sourceIndicatorList,
     selectCustomForecastIndicator,
+    addSourceIndicator,
   };
 };

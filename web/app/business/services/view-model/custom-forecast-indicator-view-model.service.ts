@@ -22,7 +22,7 @@ export class CustomForecastIndicator {
   }
 
   get sourceIndicatorIds() {
-    return this.sourceIndicatorIdsAndWeights.map((sourceIndicator) => sourceIndicator.id);
+    return this.sourceIndicatorIdsAndWeights.map((sourceIndicator) => sourceIndicator.sourceIndicatorId);
   }
 
   get name() {

@@ -11,16 +11,15 @@ type SourceIndicatorSearchListItemProps = {
 };
 
 export default function SourceIndicatorSearchListItem({ item, style }: SourceIndicatorSearchListItemProps) {
-  const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
+  const { selectedCustomForecastIndicator, addSourceIndicator } = useSelectedCustomForecastIndicatorViewModel();
 
   const indicator = item;
 
-  const handleSelect = () => {
-    // logic: 재료 지표 선택
-    console.log('handleSelect');
+  const handleSourceIndicatorAdd = () => {
+    addSourceIndicator(indicator.id);
   };
 
-  const handleDeSelect = () => {
+  const handleSourceIndicatorDelete = () => {
     // logic: 재료 지표 선택 해제
     console.log('handleDeSelect');
   };
