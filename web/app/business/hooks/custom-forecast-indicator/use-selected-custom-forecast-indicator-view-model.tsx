@@ -1,24 +1,33 @@
 import { useFetchCustomForecastIndicatorList } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastIndicatorViewModel } from '../../services/view-model/custom-forecast-indicator-view-model.service';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { useFetchIndicatorList } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { useCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
 
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
   const { selectCustomForecastIndicator } = useWorkspaceStore((state) => state.actions);
+  const { selectedCustomForecastIndicator } = useCustomForecastIndicatorStore((state) => state);
+  const { enrollCustomForecastIndicator } = useCustomForecastIndicatorStore((state) => state.actions);
   const { data: customForecastIndicatorList } = useFetchCustomForecastIndicatorList();
   const { data: indicatorList } = useFetchIndicatorList();
 
-  const selectedCustomForecastIndicator = customForecastIndicatorList?.find(
+  const foundCustomForecastIndicator = customForecastIndicatorList?.find(
     (customForecastIndicator) => customForecastIndicator.id === selectedCustomForecastIndicatorId,
   );
 
-  const convertedSelectedCustomForecastIndicator = useMemo(() => {
-    if (!selectedCustomForecastIndicator) return undefined;
+  useEffect(() => {
+    if (!foundCustomForecastIndicator) return;
+    if (selectedCustomForecastIndicator.id === foundCustomForecastIndicator.id) return;
 
-    return convertCustomForecastIndicatorViewModel(selectedCustomForecastIndicator);
-  }, [selectedCustomForecastIndicator]);
+    enrollCustomForecastIndicator(foundCustomForecastIndicator);
+  }, [foundCustomForecastIndicator]);
+
+  const convertedSelectedCustomForecastIndicator = useMemo(
+    () => convertCustomForecastIndicatorViewModel(selectedCustomForecastIndicator),
+    [selectedCustomForecastIndicator],
+  );
 
   const sourceIndicatorIds = convertedSelectedCustomForecastIndicator?.sourceIndicatorIds;
 

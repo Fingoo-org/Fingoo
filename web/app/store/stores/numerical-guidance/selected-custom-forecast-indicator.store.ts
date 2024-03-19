@@ -2,29 +2,36 @@ import { create } from 'zustand';
 import { storeResetFns } from '../reset-store';
 import { CustomForecastIndicatorResponse } from '../../querys/numerical-guidance/custom-forecast-indicator.query';
 
-type SelectedCustomForecastIndicatorState = CustomForecastIndicatorResponse;
-
-type SelectedCustomForecastIndicatorAction = {
-  enroll: (customForecastIndicator: CustomForecastIndicatorResponse) => void;
+type CustomForecastIndicatorState = {
+  selectedCustomForecastIndicator: CustomForecastIndicatorResponse;
 };
 
-type SelectedCustomForecastIndicatorStore = SelectedCustomForecastIndicatorState & {
-  actions: SelectedCustomForecastIndicatorAction;
+type CustomForecastIndicatorAction = {
+  enrollCustomForecastIndicator: (customForecastIndicator: CustomForecastIndicatorResponse) => void;
 };
 
-const initialSelectedCustomForecastIndicatorState: SelectedCustomForecastIndicatorState = {
-  id: '',
-  customForecastIndicatorName: '',
-  targetIndicatorId: '',
-  sourceIndicatorIdsAndWeights: [],
+type CustomForecastIndicatorStore = CustomForecastIndicatorState & {
+  actions: CustomForecastIndicatorAction;
 };
 
-export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomForecastIndicatorStore>((set) => {
-  storeResetFns.add(() => set(initialSelectedCustomForecastIndicatorState));
+const initialCustomForecastIndicatorState: CustomForecastIndicatorState = {
+  selectedCustomForecastIndicator: {
+    id: '',
+    customForecastIndicatorName: '',
+    targetIndicatorId: '',
+    sourceIndicatorIdsAndWeights: [],
+  },
+};
+
+export const useCustomForecastIndicatorStore = create<CustomForecastIndicatorStore>((set) => {
+  storeResetFns.add(() => set(initialCustomForecastIndicatorState));
   return {
-    ...initialSelectedCustomForecastIndicatorState,
+    ...initialCustomForecastIndicatorState,
     actions: {
-      enroll: (customForecastIndicator) => set(customForecastIndicator),
+      enrollCustomForecastIndicator: (customForecastIndicator) =>
+        set({
+          selectedCustomForecastIndicator: { ...customForecastIndicator },
+        }),
     },
   };
 });
