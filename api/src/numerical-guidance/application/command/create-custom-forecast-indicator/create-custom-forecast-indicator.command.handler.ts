@@ -20,10 +20,10 @@ export class CreateCustomForecastIndicatorCommandHandler implements ICommandHand
       customForecastIndicatorName,
       targetIndicatorId,
     );
-    const responseIndicator = await this.createCustomForecastIndicatorPort.createCustomForecastIndicator(
+
+    return await this.createCustomForecastIndicatorPort.createCustomForecastIndicator(
       customForecastIndicator,
       memberId,
     );
-    return responseIndicator;
   }
 }

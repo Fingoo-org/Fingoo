@@ -18,11 +18,6 @@ export class CreateIndicatorBoardMetadataCommandHandler implements ICommandHandl
     const { indicatorBoardMetadataName, memberId } = command;
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew(indicatorBoardMetadataName);
 
-    const responseIndicator = await this.createIndicatorBoardMetadataPort.createIndicatorBoardMetadata(
-      indicatorBoardMetaData,
-      memberId,
-    );
-
-    return responseIndicator;
+    return await this.createIndicatorBoardMetadataPort.createIndicatorBoardMetadata(indicatorBoardMetaData, memberId);
   }
 }
