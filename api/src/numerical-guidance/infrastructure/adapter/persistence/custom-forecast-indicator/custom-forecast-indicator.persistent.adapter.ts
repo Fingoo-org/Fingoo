@@ -165,8 +165,7 @@ export class CustomForecastIndicatorPersistentAdapter
         CustomForecastIndicatorMapper.mapDomainToEntity(customForecastIndicator, member);
 
       await this.customForecastIndicatorRepository.save(customForecastIndicatorEntity);
-      const responseIndicator = CustomForecastIndicatorMapper.mapEntityToDomain(customForecastIndicatorEntity);
-      return responseIndicator.id;
+      return customForecastIndicatorEntity.id;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({

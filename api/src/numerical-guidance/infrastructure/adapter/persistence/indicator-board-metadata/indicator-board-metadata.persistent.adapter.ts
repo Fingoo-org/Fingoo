@@ -54,8 +54,7 @@ export class IndicatorBoardMetadataPersistentAdapter
         member,
       );
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
-      const responseIndicator = IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
-      return responseIndicator.id;
+      return indicatorBoardMetaDataEntity.id;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
