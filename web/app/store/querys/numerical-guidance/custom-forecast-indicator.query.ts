@@ -4,7 +4,7 @@ import { API_PATH } from '../api-path';
 import { defaultFetcher, postFetcher } from '../fetcher';
 
 export type sourceIndicator = {
-  id: string;
+  sourceIndicatorId: string;
   weight: number;
 };
 
