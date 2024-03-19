@@ -11,12 +11,12 @@ import { defaultFetcher } from '../store/querys/fetcher';
 import Toaster from '../ui/components/view/molocule/toast/toaster';
 
 export default function Page() {
-  const { selectCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
+  const { selectCustomForecastIndicatorById } = useSelectedCustomForecastIndicatorViewModel();
   const { openDialogWithPayload } = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU);
   const { data } = useSWR(`${API_PATH.indicatorBoardMetadata}/998e64d9-472b-44c3-b0c5-66ac04dfa593`, defaultFetcher);
 
   useEffect(() => {
-    selectCustomForecastIndicator('1');
+    selectCustomForecastIndicatorById('1');
     openDialogWithPayload({
       id: '1',
     });

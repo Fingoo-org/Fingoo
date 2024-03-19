@@ -7,7 +7,7 @@ import { useCustomForecastIndicatorStore } from '@/app/store/stores/numerical-gu
 
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
-  const { selectCustomForecastIndicator } = useWorkspaceStore((state) => state.actions);
+  const { selectCustomForecastIndicatorById } = useWorkspaceStore((state) => state.actions);
   const { selectedCustomForecastIndicator } = useCustomForecastIndicatorStore((state) => state);
   const { enrollCustomForecastIndicator, addSourceIndicatorToSelectedCustomForecastIndicator } =
     useCustomForecastIndicatorStore((state) => state.actions);
@@ -45,7 +45,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   return {
     selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,
     sourceIndicatorList,
-    selectCustomForecastIndicator,
+    selectCustomForecastIndicatorById,
     addSourceIndicator,
   };
 };

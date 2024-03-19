@@ -16,7 +16,7 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(
     DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU,
   );
-  const { selectCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
+  const { selectCustomForecastIndicatorById } = useSelectedCustomForecastIndicatorViewModel();
 
   const { selectedMetadata, addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
   const isSelected = selectedMetadata?.customForecastIndicatorIds?.some((id) => id === item.id) || false;
@@ -26,7 +26,7 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
   };
 
   const handleCustomForecastIndicatorSelect = () => {
-    selectCustomForecastIndicator(item.id);
+    selectCustomForecastIndicatorById(item.id);
     openDialogWithPayload(item);
   };
 

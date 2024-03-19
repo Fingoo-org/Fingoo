@@ -28,7 +28,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
 
     // when
     act(() => {
-      result.current.selectCustomForecastIndicator('2');
+      result.current.selectCustomForecastIndicatorById('2');
     });
     await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
 
@@ -42,7 +42,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
 
     // when
     act(() => {
-      result.current.selectCustomForecastIndicator('2');
+      result.current.selectCustomForecastIndicatorById('2');
     });
     await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
 
