@@ -16,8 +16,8 @@ export class CreateIndicatorBoardMetadataCommandHandler implements ICommandHandl
   @Transactional()
   async execute(command: CreateIndicatorBoardMetadataCommand): Promise<string> {
     const { indicatorBoardMetadataName, memberId } = command;
-    const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew(indicatorBoardMetadataName);
+    const indicatorBoardMetadata: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew(indicatorBoardMetadataName);
 
-    return await this.createIndicatorBoardMetadataPort.createIndicatorBoardMetadata(indicatorBoardMetaData, memberId);
+    return await this.createIndicatorBoardMetadataPort.createIndicatorBoardMetadata(indicatorBoardMetadata, memberId);
   }
 }
