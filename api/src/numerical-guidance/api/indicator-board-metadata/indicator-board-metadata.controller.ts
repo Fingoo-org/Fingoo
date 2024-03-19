@@ -28,7 +28,10 @@ export class IndicatorBoardMetadataController {
   ) {}
 
   @ApiOperation({ summary: '지표보드 메타데이터를 생성합니다.' })
-  @ApiCreatedResponse()
+  @ApiCreatedResponse({
+    description: '지표보드메타데이터 생성 성공 및 메타데이터 id 리턴',
+    type: '008628f5-4dbd-4c3b-b793-ca0fa22b3cfa',
+  })
   @ApiExceptionResponse(
     400,
     '지표보드 메타데이터의 이름은 비워둘 수 없습니다.',
