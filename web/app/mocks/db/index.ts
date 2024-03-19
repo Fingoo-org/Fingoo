@@ -81,10 +81,6 @@ const initialState: MockDatabase = {
       targetIndicatorId: '1',
       sourceIndicatorIdsAndWeights: [
         {
-          sourceIndicatorId: '2',
-          weight: 0.5,
-        },
-        {
           sourceIndicatorId: '3',
           weight: 0.5,
         },
