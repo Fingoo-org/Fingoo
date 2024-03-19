@@ -30,7 +30,12 @@ export default function SourceIndicatorSearchListItem({ item, style }: SourceInd
   const isSelected = selectedCustomForecastIndicator?.sourceIndicatorIds?.includes(indicator.id) || isTargetIndicator;
 
   return (
-    <SelectableItem selected={isSelected} onSelect={handleSelect} onDeSelect={handleDeSelect} style={style}>
+    <SelectableItem
+      selected={isSelected}
+      onSelect={handleSourceIndicatorAdd}
+      onDeSelect={handleSourceIndicatorDelete}
+      style={style}
+    >
       <div className="flex w-full items-center justify-between">
         <span className="text-xs">{indicatorDisplayName}</span>
         {isTargetIndicator ? (
