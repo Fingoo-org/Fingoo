@@ -11,23 +11,24 @@ type SourceIndicatorSearchListItemProps = {
 };
 
 export default function SourceIndicatorSearchListItem({ item, style }: SourceIndicatorSearchListItemProps) {
-  const { selectedCustomForecastIndicator, addSourceIndicator } = useSelectedCustomForecastIndicatorViewModel();
+  const { selectedCustomForecastIndicator, addSourceIndicator, deleteSourceIndicator } =
+    useSelectedCustomForecastIndicatorViewModel();
 
   const indicator = item;
+
+  const indicatorDisplayName = `${indicator.ticker}(${indicator.name})`;
+
+  const isTargetIndicator = selectedCustomForecastIndicator?.targetIndicatorId === indicator.id;
+  const isSelected = selectedCustomForecastIndicator?.sourceIndicatorIds?.includes(indicator.id) || isTargetIndicator;
 
   const handleSourceIndicatorAdd = () => {
     addSourceIndicator(indicator.id);
   };
 
   const handleSourceIndicatorDelete = () => {
-    // logic: 재료 지표 선택 해제
-    console.log('handleDeSelect');
+    if (isTargetIndicator) return;
+    deleteSourceIndicator(indicator.id);
   };
-
-  const indicatorDisplayName = `${indicator.ticker}(${indicator.name})`;
-
-  const isTargetIndicator = selectedCustomForecastIndicator?.targetIndicatorId === indicator.id;
-  const isSelected = selectedCustomForecastIndicator?.sourceIndicatorIds?.includes(indicator.id) || isTargetIndicator;
 
   return (
     <SelectableItem

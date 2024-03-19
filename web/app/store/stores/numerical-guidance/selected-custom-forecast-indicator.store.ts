@@ -9,6 +9,7 @@ type CustomForecastIndicatorState = {
 type CustomForecastIndicatorAction = {
   enrollCustomForecastIndicator: (customForecastIndicator: CustomForecastIndicatorResponse) => void;
   addSourceIndicatorToSelectedCustomForecastIndicator: (indicatorId: string) => void;
+  deleteSourceIndicatorFromSelectedCustomForecastIndicator: (indicatorId: string) => void;
 };
 
 type CustomForecastIndicatorStore = CustomForecastIndicatorState & {
@@ -42,6 +43,17 @@ export const useCustomForecastIndicatorStore = create<CustomForecastIndicatorSto
               ...state.selectedCustomForecastIndicator.sourceIndicatorIdsAndWeights,
               { sourceIndicatorId: indicatorId, weight: 0 },
             ],
+          },
+        }));
+      },
+      deleteSourceIndicatorFromSelectedCustomForecastIndicator: (indicatorId) => {
+        set((state) => ({
+          ...state,
+          selectedCustomForecastIndicator: {
+            ...state.selectedCustomForecastIndicator,
+            sourceIndicatorIdsAndWeights: state.selectedCustomForecastIndicator.sourceIndicatorIdsAndWeights.filter(
+              (sourceIndicator) => sourceIndicator.sourceIndicatorId !== indicatorId,
+            ),
           },
         }));
       },
