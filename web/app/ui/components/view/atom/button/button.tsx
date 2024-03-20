@@ -29,9 +29,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
 
   return (
     <button
+      disabled={disabled}
       {...props}
       ref={ref}
       className={cn(
+        'inline-flex items-center justify-center',
         disabled && 'cursor-not-allowed opacity-50',
         buttonShapeStyles,
         buttonProportionsStyle[size].paddingX,
