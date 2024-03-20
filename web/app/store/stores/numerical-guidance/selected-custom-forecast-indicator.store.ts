@@ -2,21 +2,21 @@ import { create } from 'zustand';
 import { storeResetFns } from '../reset-store';
 import { CustomForecastIndicatorResponse } from '../../querys/numerical-guidance/custom-forecast-indicator.query';
 
-type CustomForecastIndicatorState = {
+type SelectedCustomForecastIndicatorState = {
   selectedCustomForecastIndicator: CustomForecastIndicatorResponse;
 };
 
-type CustomForecastIndicatorAction = {
-  enrollCustomForecastIndicator: (customForecastIndicator: CustomForecastIndicatorResponse) => void;
-  addSourceIndicatorToSelectedCustomForecastIndicator: (indicatorId: string) => void;
-  deleteSourceIndicatorFromSelectedCustomForecastIndicator: (indicatorId: string) => void;
+type SelectedCustomForecastIndicatorAction = {
+  enroll: (customForecastIndicator: CustomForecastIndicatorResponse) => void;
+  addSourceIndicator: (indicatorId: string) => void;
+  deleteSourceIndicator: (indicatorId: string) => void;
 };
 
-type CustomForecastIndicatorStore = CustomForecastIndicatorState & {
-  actions: CustomForecastIndicatorAction;
+type SelectedCustomForecastIndicatorStore = SelectedCustomForecastIndicatorState & {
+  actions: SelectedCustomForecastIndicatorAction;
 };
 
-const initialCustomForecastIndicatorState: CustomForecastIndicatorState = {
+const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState = {
   selectedCustomForecastIndicator: {
     id: '',
     customForecastIndicatorName: '',
@@ -25,16 +25,16 @@ const initialCustomForecastIndicatorState: CustomForecastIndicatorState = {
   },
 };
 
-export const useCustomForecastIndicatorStore = create<CustomForecastIndicatorStore>((set) => {
+export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomForecastIndicatorStore>((set) => {
   storeResetFns.add(() => set(initialCustomForecastIndicatorState));
   return {
     ...initialCustomForecastIndicatorState,
     actions: {
-      enrollCustomForecastIndicator: (customForecastIndicator) =>
+      enroll: (customForecastIndicator) =>
         set({
           selectedCustomForecastIndicator: { ...customForecastIndicator },
         }),
-      addSourceIndicatorToSelectedCustomForecastIndicator: (indicatorId) => {
+      addSourceIndicator: (indicatorId) => {
         set((state) => ({
           ...state,
           selectedCustomForecastIndicator: {
@@ -46,7 +46,7 @@ export const useCustomForecastIndicatorStore = create<CustomForecastIndicatorSto
           },
         }));
       },
-      deleteSourceIndicatorFromSelectedCustomForecastIndicator: (indicatorId) => {
+      deleteSourceIndicator: (indicatorId) => {
         set((state) => ({
           ...state,
           selectedCustomForecastIndicator: {

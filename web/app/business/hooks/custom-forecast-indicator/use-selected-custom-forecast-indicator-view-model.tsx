@@ -3,17 +3,13 @@ import { convertCustomForecastIndicatorViewModel } from '../../services/view-mod
 import { useEffect, useMemo } from 'react';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { useFetchIndicatorList } from '@/app/store/querys/numerical-guidance/indicator.query';
-import { useCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
+import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
 
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
   const { selectCustomForecastIndicatorById } = useWorkspaceStore((state) => state.actions);
-  const { selectedCustomForecastIndicator } = useCustomForecastIndicatorStore((state) => state);
-  const {
-    enrollCustomForecastIndicator,
-    addSourceIndicatorToSelectedCustomForecastIndicator,
-    deleteSourceIndicatorFromSelectedCustomForecastIndicator,
-  } = useCustomForecastIndicatorStore((state) => state.actions);
+  const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorStore((state) => state);
+  const selectedCustomerForecastIndicatorActions = useSelectedCustomForecastIndicatorStore((state) => state.actions);
   const { data: customForecastIndicatorList } = useFetchCustomForecastIndicatorList();
   const { data: indicatorList } = useFetchIndicatorList();
 
@@ -25,7 +21,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     if (!foundCustomForecastIndicator) return;
     if (selectedCustomForecastIndicator.id === foundCustomForecastIndicator.id) return;
 
-    enrollCustomForecastIndicator(foundCustomForecastIndicator);
+    selectedCustomerForecastIndicatorActions.enroll(foundCustomForecastIndicator);
   }, [foundCustomForecastIndicator]);
 
   const convertedSelectedCustomForecastIndicator = useMemo(
@@ -42,11 +38,11 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   }, [indicatorList, sourceIndicatorIds]);
 
   const addSourceIndicator = (indicatorId: string) => {
-    addSourceIndicatorToSelectedCustomForecastIndicator(indicatorId);
+    selectedCustomerForecastIndicatorActions.addSourceIndicator(indicatorId);
   };
 
   const deleteSourceIndicator = (indicatorId: string) => {
-    deleteSourceIndicatorFromSelectedCustomForecastIndicator(indicatorId);
+    selectedCustomerForecastIndicatorActions.deleteSourceIndicator(indicatorId);
   };
 
   return {
