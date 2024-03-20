@@ -18,6 +18,7 @@ import { DeleteIndicatorIdCommand } from '../../application/command/delete-indic
 import { DeleteIndicatorBoardMetadataCommand } from '../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command';
 import { UpdateIndicatorBoardMetadataNameDto } from './dto/update-indicator-board-metadata-name.dto';
 import { UpdateIndicatorBoardMetadataNameCommand } from '../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command';
+import { DeleteCustomForecastIndicatorIdCommand } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command';
 
 @ApiTags('IndicatorBoardMetadataController')
 @Controller('/api/numerical-guidance')
@@ -211,6 +212,44 @@ export class IndicatorBoardMetadataController {
     @Param('indicatorId') indicatorId,
   ): Promise<void> {
     const command = new DeleteIndicatorIdCommand(indicatorBoardMetadataId, indicatorId);
+
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '지표보드 메타데이터에 예측지표 id를 삭제합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(
+    400,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    `[ERROR] 지표보드 메타데이터 예측지표 id를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] indicatorBoardMetadataId: ${indicatorBoardMetaData.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 예측지표 id를 삭제하는 중에 예상치 못한 문제가 발생했습니다.',
+  )
+  @ApiParam({
+    name: 'indicatorBoardMetadataId',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
+  @ApiParam({
+    name: 'customForecastIndicatorId',
+    example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
+    required: true,
+  })
+  @Delete('/indicator-board-metadata/:indicatorBoardMetadataId/customForecastIndicator/:customForecastIndicatorId')
+  async deleteCustomForecastIndicatorId(
+    @Param('indicatorBoardMetadataId') indicatorBoardMetadataId,
+    @Param('customForecastIndicatorId') customForecastIndicatorId,
+  ): Promise<void> {
+    const command = new DeleteCustomForecastIndicatorIdCommand(indicatorBoardMetadataId, customForecastIndicatorId);
 
     await this.commandBus.execute(command);
   }
