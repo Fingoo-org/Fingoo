@@ -34,7 +34,14 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   const sourceIndicatorList = useMemo(() => {
     if (!sourceIndicatorIds) return [];
 
-    return indicatorList?.filter((indicator) => sourceIndicatorIds.includes(indicator.id));
+    return indicatorList
+      ?.filter((indicator) => sourceIndicatorIds.includes(indicator.id))
+      .map((indicator) => {
+        return {
+          ...indicator,
+          weight: convertedSelectedCustomForecastIndicator.getSourceIndicatorWeight(indicator.id)!,
+        };
+      });
   }, [indicatorList, sourceIndicatorIds]);
 
   const addSourceIndicator = (indicatorId: string) => {

@@ -82,7 +82,7 @@ const initialState: MockDatabase = {
       sourceIndicatorIdsAndWeights: [
         {
           sourceIndicatorId: '3',
-          weight: 0.5,
+          weight: 10,
         },
       ],
     },
@@ -93,11 +93,11 @@ const initialState: MockDatabase = {
       sourceIndicatorIdsAndWeights: [
         {
           sourceIndicatorId: '1',
-          weight: 0.5,
+          weight: 20,
         },
         {
           sourceIndicatorId: '3',
-          weight: 0.5,
+          weight: 30,
         },
       ],
     },
@@ -108,11 +108,11 @@ const initialState: MockDatabase = {
       sourceIndicatorIdsAndWeights: [
         {
           sourceIndicatorId: '1',
-          weight: 0.5,
+          weight: 10,
         },
         {
           sourceIndicatorId: '2',
-          weight: 0.5,
+          weight: 20,
         },
       ],
     },

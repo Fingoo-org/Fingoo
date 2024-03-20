@@ -28,6 +28,13 @@ export class CustomForecastIndicator {
   get name() {
     return this.customForecastIndicatorName;
   }
+
+  getSourceIndicatorWeight(sourceIndicatorId: string) {
+    const sourceIndicator = this.sourceIndicatorIdsAndWeights.find(
+      (sourceIndicator) => sourceIndicator.sourceIndicatorId === sourceIndicatorId,
+    );
+    return sourceIndicator?.weight;
+  }
 }
 
 export class CustomForecastIndicators {
