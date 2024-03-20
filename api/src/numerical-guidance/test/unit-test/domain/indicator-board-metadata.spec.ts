@@ -322,4 +322,68 @@ describe('지표보드 메타데이터', () => {
     expect(updateIndicatorBoardMetadataName).toThrow(BusinessRuleValidationException);
     expect(updateIndicatorBoardMetadataName).toThrow(rule.Message);
   });
+
+  it('지표보드 메타데이터에서 예측 지표 id 삭제', () => {
+    // given
+    const currentDate: Date = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id1',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+        'customForecastIndicatorId5',
+      ],
+      currentDate,
+      currentDate,
+    );
+    const customForecastIndicatorId = 'customForecastIndicatorId5';
+
+    // when
+    indicatorBoardMetadata.deleteCustomForecastIndicatorId(customForecastIndicatorId);
+    const expected = [
+      'customForecastIndicatorId1',
+      'customForecastIndicatorId2',
+      'customForecastIndicatorId3',
+      'customForecastIndicatorId4',
+    ];
+
+    expect(expected).toEqual(indicatorBoardMetadata.customForecastIndicatorIds);
+  });
+
+  it('지표보드 메타데이터에서 예측 지표 id 삭제 - 등록되지 않은 지표 요청', () => {
+    // given
+    const currentDate: Date = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id1',
+      'name',
+      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
+      [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+        'customForecastIndicatorId4',
+        'customForecastIndicatorId5',
+      ],
+      currentDate,
+      currentDate,
+    );
+    const invalidCustomForecastIndicatorId = 'invalidCustomForecastIndicatorId';
+
+    // when
+    function deleteIndicatorId() {
+      indicatorBoardMetadata.deleteIndicatorId(invalidCustomForecastIndicatorId);
+    }
+    const rule = new OnlyRegisteredIdCanBeRemovedRule(
+      indicatorBoardMetadata.customForecastIndicatorIds,
+      invalidCustomForecastIndicatorId,
+    );
+
+    //then
+    expect(deleteIndicatorId).toThrow(BusinessRuleValidationException);
+    expect(deleteIndicatorId).toThrow(rule.Message);
+  });
 });
