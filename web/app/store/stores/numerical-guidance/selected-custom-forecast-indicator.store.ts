@@ -10,13 +10,14 @@ type SelectedCustomForecastIndicatorState = {
 
 type SelectedCustomForecastIndicatorAction = {
   enroll: (customForecastIndicator: CustomForecastIndicatorResponse) => void;
-  addSourceIndicator: (indicatorId: string) => void;
-  deleteSourceIndicator: (indicatorId: string) => void;
   update: (
     fn: (
       state: SelectedCustomForecastIndicatorStore,
     ) => SelectedCustomForecastIndicatorStore | Partial<SelectedCustomForecastIndicatorStore>,
   ) => void;
+  addSourceIndicator: (indicatorId: string) => void;
+  deleteSourceIndicator: (indicatorId: string) => void;
+  updateSourceIndicatorWeight: (indicatorId: string, weight: number) => void;
 };
 
 type SelectedCustomForecastIndicatorStore = SelectedCustomForecastIndicatorState & {
@@ -79,6 +80,25 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
             ),
           },
         }));
+      },
+      updateSourceIndicatorWeight(indicatorId, weight) {
+        get().actions.update((state) => {
+          const sourceIndicatorIdsAndWeights = state.selectedCustomForecastIndicator.sourceIndicatorIdsAndWeights.map(
+            (sourceIndicator) => {
+              if (sourceIndicator.sourceIndicatorId === indicatorId) {
+                return { ...sourceIndicator, weight };
+              }
+              return sourceIndicator;
+            },
+          );
+          return {
+            ...state,
+            selectedCustomForecastIndicator: {
+              ...state.selectedCustomForecastIndicator,
+              sourceIndicatorIdsAndWeights,
+            },
+          };
+        });
       },
     },
   };

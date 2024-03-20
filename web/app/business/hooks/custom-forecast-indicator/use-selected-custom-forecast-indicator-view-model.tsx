@@ -52,6 +52,10 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     selectedCustomerForecastIndicatorActions.deleteSourceIndicator(indicatorId);
   };
 
+  const updateSourceIndicatorWeight = (indicatorId: string, weight: number) => {
+    selectedCustomerForecastIndicatorActions.updateSourceIndicatorWeight(indicatorId, weight);
+  };
+
   return {
     selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,
     sourceIndicatorList,
@@ -59,5 +63,6 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     selectCustomForecastIndicatorById,
     addSourceIndicator,
     deleteSourceIndicator,
+    updateSourceIndicatorWeight,
   };
 };
