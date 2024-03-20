@@ -5,10 +5,10 @@ import TinyInput from '../../../view/atom/tiny-input/tiny-input';
 import SourceIndicatorSearchList from '../source-indicator-search-list';
 import { Card } from '@tremor/react';
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
-import SourceIndicatorBadgeGroup from '../source-indicator-badge-group';
 import SourceIndicatorSliderGroup from '../source-indicator-slider-group';
 import Button from '../../../view/atom/button/button';
 import Pending from '../../../view/molocule/pending';
+import { ReloadIcon } from '@radix-ui/react-icons';
 
 export default function CustomForecastIndicatorDialogMenu() {
   const { selectedCustomForecastIndicator, isUpdated, isPending, applyUpdatedSourceIndicator } =
@@ -47,10 +47,11 @@ export default function CustomForecastIndicatorDialogMenu() {
         <div className="flex flex-row-reverse gap-1">
           <Button
             onClick={handleCustomForecastIndicatorApply}
-            disabled={!isUpdated}
+            disabled={!isUpdated || isPending}
             color={isUpdated ? 'black' : 'gray'}
             size={'xs'}
           >
+            {isPending ? <ReloadIcon className="mr-1 h-3 w-3 animate-spin" /> : null}
             적용
           </Button>
         </div>
