@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
-import { defaultFetcher, postFetcher } from '../fetcher';
+import { defaultFetcher, patchFetcher, postFetcher } from '../fetcher';
 
 export type sourceIndicator = {
   sourceIndicatorId: string;
@@ -30,16 +30,16 @@ export const useCreateCustomForecastIndicator = () => {
   return useSWRMutation(API_PATH.customForecastIndicator, postFetcher<CreateCustomForecastIndicatorRequestBody>);
 };
 
-export type AddSourceIndicatorToCustomForecastIndicatorRequestBody = {
+export type updateSourceIndicatorRequestBody = {
   sourceIndicatorsAndweights: sourceIndicator[];
 };
 
-export const useAddSourceIndicatorToCustomForecastIndicator = (customForecastIndicatorId: string | undefined) => {
+export const useUpdateSourceIndicator = (customForecastIndicatorId: string | undefined) => {
   return useSWRMutation(
     API_PATH.customForecastIndicator,
-    async (url: string, { arg }: { arg: AddSourceIndicatorToCustomForecastIndicatorRequestBody }) => {
+    async (url: string, { arg }: { arg: updateSourceIndicatorRequestBody }) => {
       if (!customForecastIndicatorId) return;
-      await postFetcher<AddSourceIndicatorToCustomForecastIndicatorRequestBody>([url, customForecastIndicatorId], {
+      await patchFetcher<updateSourceIndicatorRequestBody>([url, customForecastIndicatorId], {
         arg,
       });
     },
