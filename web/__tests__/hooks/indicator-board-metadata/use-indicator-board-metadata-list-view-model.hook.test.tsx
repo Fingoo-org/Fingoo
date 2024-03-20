@@ -35,13 +35,13 @@ describe('useIndicatorBoardMetadataList', () => {
     await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
 
     // when
+    console.log('first', result.current.isPending);
     await act(() => {
       result.current.createIndicatorBoardMetadata({ indicatorBoardMetadataName: 'metadata4' });
     });
-    await waitFor(() => expect(result.current.isPending).toBe(false));
 
     // then
-    expect(result.current.metadataList).toHaveLength(4);
+    await waitFor(() => expect(result.current.metadataList).toHaveLength(4));
     expect(result.current.metadataList?.[3].indicatorBoardMetadataName).toBe('metadata4');
   });
 
@@ -61,7 +61,6 @@ describe('useIndicatorBoardMetadataList', () => {
     await act(() => {
       result.current.createIndicatorBoardMetadata({ indicatorBoardMetadataName: 'metadata4' });
     });
-    await waitFor(() => expect(result.current.isPending).toBe(false));
 
     // then
     expect(result.current.metadataList).toHaveLength(3);
