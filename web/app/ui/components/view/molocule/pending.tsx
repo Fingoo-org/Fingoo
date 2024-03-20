@@ -6,5 +6,9 @@ type PendingProps = React.PropsWithChildren<{
 }>;
 
 export default function Pending({ children, isPending }: PendingProps) {
-  return <div className={clsx('w-full', { 'opacity-50': isPending, 'opacity-100': !isPending })}>{children}</div>;
+  return (
+    <div className={clsx('w-full', { 'pointer-events-none opacity-50 ': isPending, 'opacity-100': !isPending })}>
+      {children}
+    </div>
+  );
 }
