@@ -4,12 +4,18 @@ import { CustomForecastIndicatorResponse } from '../../querys/numerical-guidance
 
 type SelectedCustomForecastIndicatorState = {
   selectedCustomForecastIndicator: CustomForecastIndicatorResponse;
+  isUpdated: boolean;
 };
 
 type SelectedCustomForecastIndicatorAction = {
   enroll: (customForecastIndicator: CustomForecastIndicatorResponse) => void;
   addSourceIndicator: (indicatorId: string) => void;
   deleteSourceIndicator: (indicatorId: string) => void;
+  update: (
+    fn: (
+      state: SelectedCustomForecastIndicatorStore,
+    ) => SelectedCustomForecastIndicatorStore | Partial<SelectedCustomForecastIndicatorStore>,
+  ) => void;
 };
 
 type SelectedCustomForecastIndicatorStore = SelectedCustomForecastIndicatorState & {
@@ -23,9 +29,10 @@ const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState 
     targetIndicatorId: '',
     sourceIndicatorIdsAndWeights: [],
   },
+  isUpdated: false,
 };
 
-export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomForecastIndicatorStore>((set) => {
+export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomForecastIndicatorStore>((set, get) => {
   storeResetFns.add(() => set(initialCustomForecastIndicatorState));
   return {
     ...initialCustomForecastIndicatorState,
@@ -34,8 +41,17 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
         set({
           selectedCustomForecastIndicator: { ...customForecastIndicator },
         }),
+      update: (fn) => {
+        set((state) => {
+          const newState = fn(state);
+          return {
+            ...newState,
+            isUpdated: true,
+          };
+        });
+      },
       addSourceIndicator: (indicatorId) => {
-        set((state) => ({
+        get().actions.update((state) => ({
           ...state,
           selectedCustomForecastIndicator: {
             ...state.selectedCustomForecastIndicator,
@@ -47,7 +63,7 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
         }));
       },
       deleteSourceIndicator: (indicatorId) => {
-        set((state) => ({
+        get().actions.update((state) => ({
           ...state,
           selectedCustomForecastIndicator: {
             ...state.selectedCustomForecastIndicator,
