@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { storeResetFns } from '../reset-store';
 import { CustomForecastIndicatorResponse } from '../../querys/numerical-guidance/custom-forecast-indicator.query';
+import { deepEqual } from '@/app/utils/helper';
 
 type SelectedCustomForecastIndicatorState = {
   selectedCustomForecastIndicator: CustomForecastIndicatorResponse;
@@ -33,20 +34,26 @@ const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState 
 };
 
 export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomForecastIndicatorStore>((set, get) => {
+  let MemorizedCustomForecastIndicator: CustomForecastIndicatorResponse;
   storeResetFns.add(() => set(initialCustomForecastIndicatorState));
   return {
     ...initialCustomForecastIndicatorState,
     actions: {
-      enroll: (customForecastIndicator) =>
+      enroll: (customForecastIndicator) => {
+        MemorizedCustomForecastIndicator = structuredClone(customForecastIndicator);
         set({
           selectedCustomForecastIndicator: { ...customForecastIndicator },
-        }),
+        });
+      },
       update: (fn) => {
         set((state) => {
           const newState = fn(state);
+          const isUpdated = deepEqual(MemorizedCustomForecastIndicator, newState.selectedCustomForecastIndicator)
+            ? false
+            : true;
           return {
             ...newState,
-            isUpdated: true,
+            isUpdated,
           };
         });
       },

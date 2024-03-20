@@ -14,3 +14,5 @@ jest.mock('recharts', () => ({
   ...jest.requireActual('recharts'),
   ResponsiveContainer: (props: never) => createElement('div', props),
 }));
+
+global.structuredClone = jest.fn((x) => JSON.parse(JSON.stringify(x)));
