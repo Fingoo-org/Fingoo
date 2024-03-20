@@ -8,7 +8,7 @@ import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/nume
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
   const { selectCustomForecastIndicatorById } = useWorkspaceStore((state) => state.actions);
-  const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorStore((state) => state);
+  const { selectedCustomForecastIndicator, isUpdated } = useSelectedCustomForecastIndicatorStore((state) => state);
   const selectedCustomerForecastIndicatorActions = useSelectedCustomForecastIndicatorStore((state) => state.actions);
   const { data: customForecastIndicatorList } = useFetchCustomForecastIndicatorList();
   const { data: indicatorList } = useFetchIndicatorList();
@@ -48,6 +48,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   return {
     selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,
     sourceIndicatorList,
+    isUpdated,
     selectCustomForecastIndicatorById,
     addSourceIndicator,
     deleteSourceIndicator,
