@@ -18,6 +18,7 @@ type SelectedCustomForecastIndicatorAction = {
   addSourceIndicator: (indicatorId: string) => void;
   deleteSourceIndicator: (indicatorId: string) => void;
   updateSourceIndicatorWeight: (indicatorId: string, weight: number) => void;
+  initialize: () => void;
 };
 
 type SelectedCustomForecastIndicatorStore = SelectedCustomForecastIndicatorState & {
@@ -44,6 +45,15 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
         MemorizedCustomForecastIndicator = structuredClone(customForecastIndicator);
         set({
           selectedCustomForecastIndicator: { ...customForecastIndicator },
+        });
+      },
+      initialize: () => {
+        set((state) => {
+          MemorizedCustomForecastIndicator = structuredClone(state.selectedCustomForecastIndicator);
+          return {
+            ...state,
+            isUpdated: false,
+          };
         });
       },
       update: (fn) => {

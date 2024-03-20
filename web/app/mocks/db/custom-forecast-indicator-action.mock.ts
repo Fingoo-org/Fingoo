@@ -32,7 +32,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     );
     const newCustomForecastIndicator = {
       ...mockDatabaseStore.customForecastIndicatorList[index],
-      sourceIndicatorIdsAndweights: [...data.sourceIndicatorsAndweights],
+      sourceIndicatorIdsAndweights: [...data.sourceIndicatorIdsAndWeights],
     };
     mockDatabaseStore.customForecastIndicatorList[index] = newCustomForecastIndicator;
   },
