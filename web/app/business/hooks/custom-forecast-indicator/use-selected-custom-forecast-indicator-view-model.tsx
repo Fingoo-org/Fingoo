@@ -7,15 +7,18 @@ import { useEffect, useMemo } from 'react';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { useFetchIndicatorList } from '@/app/store/querys/numerical-guidance/indicator.query';
 import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
+import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
 
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
   const { selectCustomForecastIndicatorById } = useWorkspaceStore((state) => state.actions);
   const { selectedCustomForecastIndicator, isUpdated } = useSelectedCustomForecastIndicatorStore((state) => state);
   const selectedCustomerForecastIndicatorActions = useSelectedCustomForecastIndicatorStore((state) => state.actions);
-  const { data: customForecastIndicatorList } = useFetchCustomForecastIndicatorList();
+  const { data: customForecastIndicatorList, isValidating } = useFetchCustomForecastIndicatorList();
   const { data: indicatorList } = useFetchIndicatorList();
-  const { trigger: updateSourceIndicatorTrigger } = useUpdateSourceIndicator(selectedCustomForecastIndicatorId);
+  const { trigger: updateSourceIndicatorTrigger, isMutating: isUpdateSourceIndicatorMutating } =
+    useUpdateSourceIndicator(selectedCustomForecastIndicatorId);
+  const { isPending } = usePending(isValidating, isUpdateSourceIndicatorMutating);
 
   const foundCustomForecastIndicator = customForecastIndicatorList?.find(
     (customForecastIndicator) => customForecastIndicator.id === selectedCustomForecastIndicatorId,
@@ -71,6 +74,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,
     sourceIndicatorList,
     isUpdated,
+    isPending,
     selectCustomForecastIndicatorById,
     addSourceIndicator,
     deleteSourceIndicator,
