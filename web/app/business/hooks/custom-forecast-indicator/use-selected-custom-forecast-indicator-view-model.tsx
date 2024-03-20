@@ -64,10 +64,16 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   };
 
   const applyUpdatedSourceIndicator = () => {
-    console.log(convertedSelectedCustomForecastIndicator.sourceIndicatorIdsAndWeights);
-    updateSourceIndicatorTrigger({
-      sourceIndicatorsAndweights: convertedSelectedCustomForecastIndicator.sourceIndicatorIdsAndWeights,
-    });
+    updateSourceIndicatorTrigger(
+      {
+        sourceIndicatorIdsAndWeights: convertedSelectedCustomForecastIndicator.sourceIndicatorIdsAndWeights,
+      },
+      {
+        onSuccess: () => {
+          selectedCustomerForecastIndicatorActions.initialize();
+        },
+      },
+    );
   };
 
   return {

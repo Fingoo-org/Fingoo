@@ -31,9 +31,8 @@ export const useCreateCustomForecastIndicator = () => {
 };
 
 export type updateSourceIndicatorRequestBody = {
-  sourceIndicatorsAndweights: sourceIndicator[];
+  sourceIndicatorIdsAndWeights: sourceIndicator[];
 };
-
 export const useUpdateSourceIndicator = (customForecastIndicatorId: string | undefined) => {
   return useSWRMutation(
     API_PATH.customForecastIndicator,
