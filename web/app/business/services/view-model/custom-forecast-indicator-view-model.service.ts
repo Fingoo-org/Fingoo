@@ -8,7 +8,7 @@ export class CustomForecastIndicator {
   readonly id: string;
   readonly customForecastIndicatorName: string;
   readonly targetIndicatorId: string;
-  private sourceIndicatorIdsAndWeights: sourceIndicator[];
+  readonly sourceIndicatorIdsAndWeights: sourceIndicator[];
   constructor({
     id,
     customForecastIndicatorName,

@@ -1,4 +1,7 @@
-import { useFetchCustomForecastIndicatorList } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
+import {
+  useFetchCustomForecastIndicatorList,
+  useUpdateSourceIndicator,
+} from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastIndicatorViewModel } from '../../services/view-model/custom-forecast-indicator-view-model.service';
 import { useEffect, useMemo } from 'react';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
@@ -12,6 +15,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomerForecastIndicatorActions = useSelectedCustomForecastIndicatorStore((state) => state.actions);
   const { data: customForecastIndicatorList } = useFetchCustomForecastIndicatorList();
   const { data: indicatorList } = useFetchIndicatorList();
+  const { trigger: updateSourceIndicatorTrigger } = useUpdateSourceIndicator(selectedCustomForecastIndicatorId);
 
   const foundCustomForecastIndicator = customForecastIndicatorList?.find(
     (customForecastIndicator) => customForecastIndicator.id === selectedCustomForecastIndicatorId,
@@ -56,6 +60,13 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     selectedCustomerForecastIndicatorActions.updateSourceIndicatorWeight(indicatorId, weight);
   };
 
+  const applyUpdatedSourceIndicator = () => {
+    console.log(convertedSelectedCustomForecastIndicator.sourceIndicatorIdsAndWeights);
+    updateSourceIndicatorTrigger({
+      sourceIndicatorsAndweights: convertedSelectedCustomForecastIndicator.sourceIndicatorIdsAndWeights,
+    });
+  };
+
   return {
     selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,
     sourceIndicatorList,
@@ -64,5 +75,6 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     addSourceIndicator,
     deleteSourceIndicator,
     updateSourceIndicatorWeight,
+    applyUpdatedSourceIndicator,
   };
 };

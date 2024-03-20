@@ -10,7 +10,8 @@ import SourceIndicatorSliderGroup from '../source-indicator-slider-group';
 import Button from '../../../view/atom/button/button';
 
 export default function CustomForecastIndicatorDialogMenu() {
-  const { selectedCustomForecastIndicator, isUpdated } = useSelectedCustomForecastIndicatorViewModel();
+  const { selectedCustomForecastIndicator, isUpdated, applyUpdatedSourceIndicator } =
+    useSelectedCustomForecastIndicatorViewModel();
 
   const handleCustomForecastIndicatorNameChange = (name: string) => {
     // logic: 예측 지표 이름 변경
@@ -18,7 +19,7 @@ export default function CustomForecastIndicatorDialogMenu() {
   };
 
   const handleCustomForecastIndicatorApply = () => {
-    console.log('클릭');
+    applyUpdatedSourceIndicator();
   };
 
   return (
