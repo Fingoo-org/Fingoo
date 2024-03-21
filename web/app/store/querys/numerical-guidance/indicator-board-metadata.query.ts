@@ -67,7 +67,7 @@ export const useDeleteIndicatorFromMetadata = (metadataId: string | undefined) =
   );
 
 export type UpdateIndicatorBoardMetadataRequestBody = {
-  name: string;
+  indicatorBoardMetadataName: string;
 };
 
 export const useUpdateIndicatorBoardMetadata = (metadataId: string | undefined) => {
