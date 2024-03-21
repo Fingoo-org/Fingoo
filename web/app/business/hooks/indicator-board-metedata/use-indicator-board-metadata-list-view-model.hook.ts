@@ -5,18 +5,16 @@ import {
   useDeleteIndicatorBoardMetadata,
 } from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useFetchIndicatorBoardMetadataList } from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
-import { calculateIsPending } from '@/app/utils/helper';
+import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
 
 export const useIndicatorBoardMetadataList = () => {
   const { data: indicatorBoardMetadataList, isValidating } = useFetchIndicatorBoardMetadataList();
   const { trigger: deleteIndicatorBoardMetadataTrigger } = useDeleteIndicatorBoardMetadata();
   const { trigger: createIndicatorBoardMetadataTrigger, isMutating: isCreateIndicatorMetadataMutationg } =
     useCreateIndicatorMetadata();
-  const isPending = useRef(false);
-
-  isPending.current = calculateIsPending(isValidating, isCreateIndicatorMetadataMutationg);
+  const { isPending } = usePending(isValidating, isCreateIndicatorMetadataMutationg);
 
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
@@ -44,7 +42,7 @@ export const useIndicatorBoardMetadataList = () => {
 
   return {
     metadataList: convertedIndicatorBoardMetadataList,
-    isPending: isPending.current,
+    isPending,
     createIndicatorBoardMetadata,
     deleteIndicatorBoardMetadata,
   };

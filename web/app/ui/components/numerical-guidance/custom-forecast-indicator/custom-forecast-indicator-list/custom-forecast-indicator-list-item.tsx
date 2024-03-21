@@ -1,10 +1,10 @@
 import { CustomForecastIndicator } from '@/app/business/services/view-model/custom-forecast-indicator-view-model.service';
-import ListItem from '../../view/atom/list-item';
-import IconButton from '../../view/atom/icons/icon-button';
-import SelectableItem from '../../view/atom/selectable-item';
+import ListItem from '../../../view/atom/list-item';
+import IconButton from '../../../view/atom/icons/icon-button';
+import SelectableItem from '../../../view/atom/selectable-item';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { useDialog } from '../../view/hooks/use-dialog.hook';
+import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 
@@ -16,7 +16,7 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(
     DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU,
   );
-  const { selectCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
+  const { selectCustomForecastIndicatorById } = useSelectedCustomForecastIndicatorViewModel();
 
   const { selectedMetadata, addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
   const isSelected = selectedMetadata?.customForecastIndicatorIds?.some((id) => id === item.id) || false;
@@ -26,7 +26,7 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
   };
 
   const handleCustomForecastIndicatorSelect = () => {
-    selectCustomForecastIndicator(item.id);
+    selectCustomForecastIndicatorById(item.id);
     openDialogWithPayload(item);
   };
 

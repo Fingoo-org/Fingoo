@@ -2,7 +2,7 @@ import { HttpResponse, http } from 'msw';
 import { delayForDevelopment } from '.';
 import { API_PATH } from '../../store/querys/api-path';
 import {
-  AddSourceIndicatorToCustomForecastIndicatorRequestBody,
+  updateSourceIndicatorRequestBody,
   CreateCustomForecastIndicatorRequestBody,
 } from '../../store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { mockDB } from '../db';
@@ -27,12 +27,12 @@ export const customForecastIndicatorHandlers = [
       });
     },
   ),
-  http.post<customForecastIndicatorParam, AddSourceIndicatorToCustomForecastIndicatorRequestBody>(
+  http.patch<customForecastIndicatorParam, updateSourceIndicatorRequestBody>(
     `${API_PATH.customForecastIndicator}/:customForecastIndicatorId`,
     async ({ params, request }) => {
       const { customForecastIndicatorId } = params;
       const data = await request.json();
-      mockDB.postSourceIndicatorToCustomForecastIndicator(customForecastIndicatorId, data);
+      mockDB.patchSourceIndicator(customForecastIndicatorId, data);
       await delayForDevelopment();
       return HttpResponse.json({ status: 200 });
     },

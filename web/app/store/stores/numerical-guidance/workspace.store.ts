@@ -17,7 +17,7 @@ type WorkspaceAction = {
   selectMetadata: (MetadataId: string | undefined) => void;
   setIsAdvancedChart: (isAdvancedChart: boolean) => void;
   setTabIndex: (tabIndex: string) => void;
-  selectCustomForecastIndicator: (customForecastIndicatorId: string | undefined) => void;
+  selectCustomForecastIndicatorById: (customForecastIndicatorId: string | undefined) => void;
   setInterval: (interval: Interval) => void;
 };
 
@@ -42,7 +42,7 @@ export const useWorkspaceStore = create<WorkspaceStore>()((set) => {
       selectMetadata: (metadataId) => set({ selectedMetadataId: metadataId }),
       setIsAdvancedChart: (isAdvancedChart) => set({ isAdvancedChart }),
       setTabIndex: (tabIndex) => set({ tabIndex }),
-      selectCustomForecastIndicator: (customForecastIndicatorId) =>
+      selectCustomForecastIndicatorById: (customForecastIndicatorId) =>
         set({ selectedCustomForecastIndicatorId: customForecastIndicatorId }),
       setInterval: (interval) => set({ interval }),
     },

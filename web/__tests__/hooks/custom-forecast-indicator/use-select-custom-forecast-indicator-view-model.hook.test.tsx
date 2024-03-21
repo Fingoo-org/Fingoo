@@ -12,43 +12,116 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
     resetMockDB();
   });
 
+  it('예측 지표를 선택하지 않을 때, 선택한 예측 지표를 가져오지 않는다', async () => {
+    // given
+    const { result } = renderHook(() => useSelectedCustomForecastIndicatorViewModel(), { wrapper });
+
+    // when
+    // then
+    expect(result.current.selectedCustomForecastIndicator.id).toBe('');
+    expect(result.current.selectedCustomForecastIndicator.targetIndicatorId).toBe('');
+  });
+
   it('예측 지표를 선택하면, 선택한 예측 지표를 가져온다', async () => {
     // given
     const { result } = renderHook(() => useSelectedCustomForecastIndicatorViewModel(), { wrapper });
 
     // when
     act(() => {
-      result.current.selectCustomForecastIndicator('2');
+      result.current.selectCustomForecastIndicatorById('2');
     });
-    await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
+    await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
 
     // then
     expect(result.current.selectedCustomForecastIndicator?.id).toBe('2');
   });
 
-  it('예측 지표를 선택하지 않으면, 선택한 예측 지표를 가져오지 않는다', async () => {
-    // given
-    const { result } = renderHook(() => useSelectedCustomForecastIndicatorViewModel(), { wrapper });
-
-    // when
-    await waitFor(() => expect(result.current.selectedCustomForecastIndicator).toBeUndefined());
-
-    // then
-    expect(result.current.selectedCustomForecastIndicator).toBeUndefined();
-  });
-
-  it('예측 지표를 선택하면 선택한 예측 지표의 소스 지표 리스트를 가져온다', async () => {
+  it('예측 지표를 선택하면 선택한 예측 지표의 재료 지표 리스트를 가져온다', async () => {
     // given
     const { result } = renderHook(() => useSelectedCustomForecastIndicatorViewModel(), { wrapper });
 
     // when
     act(() => {
-      result.current.selectCustomForecastIndicator('2');
+      result.current.selectCustomForecastIndicatorById('2');
     });
-    await waitFor(() => expect(result.current.sourceIndicatorList).not.toBeUndefined());
+    await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
 
     // then
     expect(result.current.sourceIndicatorList).toHaveLength(2);
     expect(result.current.sourceIndicatorList?.[0].ticker).toBe('AAPL');
+  });
+
+  describe('sourceIndicator', () => {
+    it('재료 지표를 추가하면, 재료 지표 리스트에 추가된다', async () => {
+      // given
+      const { result } = renderHook(() => useSelectedCustomForecastIndicatorViewModel(), { wrapper });
+
+      // when
+      act(() => {
+        result.current.selectCustomForecastIndicatorById('1');
+      });
+      await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+      act(() => {
+        result.current.addSourceIndicator('2');
+      });
+
+      // then
+      expect(result.current.sourceIndicatorList).toHaveLength(2);
+    });
+
+    it('재료 지표를 삭제하면, 재료 지표 리스트에서 삭제된다', async () => {
+      // given
+      const { result } = renderHook(() => useSelectedCustomForecastIndicatorViewModel(), { wrapper });
+
+      // when
+      act(() => {
+        result.current.selectCustomForecastIndicatorById('2');
+      });
+      await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+      act(() => {
+        result.current.deleteSourceIndicator('1');
+      });
+
+      // then
+      expect(result.current.sourceIndicatorList).toHaveLength(1);
+    });
+
+    it('재료 지표의 가중치를 변경하면, 재료 지표 리스트의 가중치가 변경된다', async () => {
+      // given
+      const { result } = renderHook(() => useSelectedCustomForecastIndicatorViewModel(), { wrapper });
+
+      // when
+      act(() => {
+        result.current.selectCustomForecastIndicatorById('2');
+      });
+      await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+      act(() => {
+        result.current.updateSourceIndicatorWeight('1', 50);
+      });
+
+      // then
+      expect(result.current.sourceIndicatorList?.[0].weight).toBe(50);
+    });
+
+    it('재료 지표 변경내용을 적용하면, 변경된 내용이 적용된다', async () => {
+      // given
+      const { result } = renderHook(() => useSelectedCustomForecastIndicatorViewModel(), { wrapper });
+
+      // when
+      act(() => {
+        result.current.selectCustomForecastIndicatorById('2');
+      });
+      await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+      act(() => {
+        result.current.updateSourceIndicatorWeight('1', 50);
+      });
+      expect(result.current.isUpdated).toBe(true);
+      act(() => {
+        result.current.applyUpdatedSourceIndicator();
+      });
+
+      // then
+      await waitFor(() => expect(result.current.isUpdated).toBe(false));
+    });
   });
 });

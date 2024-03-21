@@ -11,27 +11,32 @@ type SourceIndicatorSearchListItemProps = {
 };
 
 export default function SourceIndicatorSearchListItem({ item, style }: SourceIndicatorSearchListItemProps) {
-  const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();
+  const { selectedCustomForecastIndicator, addSourceIndicator, deleteSourceIndicator } =
+    useSelectedCustomForecastIndicatorViewModel();
 
   const indicator = item;
-
-  const handleSelect = () => {
-    // logic: 재료 지표 선택
-    console.log('handleSelect');
-  };
-
-  const handleDeSelect = () => {
-    // logic: 재료 지표 선택 해제
-    console.log('handleDeSelect');
-  };
 
   const indicatorDisplayName = `${indicator.ticker}(${indicator.name})`;
 
   const isTargetIndicator = selectedCustomForecastIndicator?.targetIndicatorId === indicator.id;
   const isSelected = selectedCustomForecastIndicator?.sourceIndicatorIds?.includes(indicator.id) || isTargetIndicator;
 
+  const handleSourceIndicatorAdd = () => {
+    addSourceIndicator(indicator.id);
+  };
+
+  const handleSourceIndicatorDelete = () => {
+    if (isTargetIndicator) return;
+    deleteSourceIndicator(indicator.id);
+  };
+
   return (
-    <SelectableItem selected={isSelected} onSelect={handleSelect} onDeSelect={handleDeSelect} style={style}>
+    <SelectableItem
+      selected={isSelected}
+      onSelect={handleSourceIndicatorAdd}
+      onDeSelect={handleSourceIndicatorDelete}
+      style={style}
+    >
       <div className="flex w-full items-center justify-between">
         <span className="text-xs">{indicatorDisplayName}</span>
         {isTargetIndicator ? (
