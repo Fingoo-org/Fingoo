@@ -25,7 +25,7 @@ export default function IndicatorsChart() {
         <div className="flex items-center justify-center">
           <SelectedMetadataTittle />
         </div>
-        <div>
+        <div className="px-14">
           <ToggleButton
             className="font-medium"
             size={'lg'}
@@ -35,7 +35,7 @@ export default function IndicatorsChart() {
             text={'자세한 차트'}
           />
         </div>
-        <div className="mt-4 h-72 w-full">
+        <div className="h-80 w-full px-8">
           {isAdvancedChart ? <AdvancedIndicatorsChart /> : <SimpleIndicatorsChart />}
         </div>
       </Pending>
