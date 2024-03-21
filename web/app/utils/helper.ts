@@ -1,12 +1,11 @@
+import { utcFormat } from 'd3-time-format';
 import React from 'react';
+
+const formatTime = utcFormat('%Y-%m-%d');
 
 export const filterChildrenByType = (children: React.ReactNode, elementType: React.ElementType) => {
   const childArray = React.Children.toArray(children);
   return childArray.filter((child) => React.isValidElement(child) && child.type === elementType);
-};
-
-export const calculateIsPending = (isValidating: boolean, isMutating: boolean) => {
-  return isMutating || (isValidating && !isMutating);
 };
 
 export function deepEqual(obj1: any, obj2: any) {
@@ -24,4 +23,9 @@ export function deepEqual(obj1: any, obj2: any) {
   }
 
   return true;
+}
+
+export function caculateNowDate() {
+  const now = new Date();
+  return formatTime(now);
 }
