@@ -46,6 +46,7 @@ export default function CustomForecastIndicatorDialogMenu() {
       <DialogMenu.Content>
         <div className="flex flex-row-reverse gap-1">
           <Button
+            aria-label="apply"
             onClick={handleCustomForecastIndicatorApply}
             disabled={!isUpdated || isPending}
             color={isUpdated ? 'black' : 'gray'}
