@@ -12,7 +12,7 @@ type ToggleButtonProps = {
   size?: Size;
   icon?: React.ElementType;
   disabled?: boolean;
-  className: string;
+  className?: string;
   onToggle?: (active: boolean) => void;
 };
 
