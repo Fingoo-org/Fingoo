@@ -12,7 +12,7 @@ import {
   IndicatorValue,
 } from 'src/numerical-guidance/application/query/get-live-indicator/live-indicator.dto';
 import { Interval, Market } from 'src/utils/type/type-definition';
-import { LoadLiveIndicatorPort } from '../../../application/port/external/load-live-indicator.port';
+import { LoadLiveIndicatorPort } from '../../../application/port/external/krx/load-live-indicator.port';
 import { IndicatorValueManager } from '../../../util/indicator-value-manager';
 
 export const DAY_NUMBER_OF_DAYS = 35;

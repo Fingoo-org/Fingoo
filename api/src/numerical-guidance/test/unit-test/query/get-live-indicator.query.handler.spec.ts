@@ -6,7 +6,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { LiveIndicatorDto } from '../../../application/query/get-live-indicator/live-indicator.dto';
 import { GetLiveIndicatorQueryHandler } from '../../../application/query/get-live-indicator/get-live-indicator.query.handler';
-import { LoadLiveIndicatorPort } from '../../../application/port/external/load-live-indicator.port';
+import { LoadLiveIndicatorPort } from '../../../application/port/external/krx/load-live-indicator.port';
 import { GetLiveIndicatorQuery } from '../../../application/query/get-live-indicator/get-live-indicator.query';
 import { Indicator, IndicatorDto } from '../../../application/query/get-indicator/indicator.dto';
 import { LoadIndicatorPort } from '../../../application/port/persistence/indicator/load-indicator.port';
