@@ -1,5 +1,5 @@
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
-import { CustomForecastIndicatorNameShouldNotEmpty } from 'src/numerical-guidance/domain/rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
+import { CustomForecastIndicatorNameShouldNotEmptyRule } from 'src/numerical-guidance/domain/rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 import { SourceIndicatorCountShouldNotExceedLimitRule } from 'src/numerical-guidance/domain/rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';
 import { SourceIndicatorsShouldNotDuplicateRule } from 'src/numerical-guidance/domain/rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { BusinessRuleValidationException } from 'src/utils/domain/business-rule-validation.exception';
@@ -37,7 +37,7 @@ describe('예측지표', () => {
     function createNewCustomForecastIndicator() {
       CustomForecastIndicator.createNew(content, 'f5206520-da94-11ee-b91b-3551e6db3bbd');
     }
-    const rule = new CustomForecastIndicatorNameShouldNotEmpty(content);
+    const rule = new CustomForecastIndicatorNameShouldNotEmptyRule(content);
 
     // then
     expect(createNewCustomForecastIndicator).toThrow(BusinessRuleValidationException);
@@ -51,7 +51,7 @@ describe('예측지표', () => {
     function createNewCustomForecastIndicator() {
       CustomForecastIndicator.createNew(content, 'f5206520-da94-11ee-b91b-3551e6db3bbd');
     }
-    const rule = new CustomForecastIndicatorNameShouldNotEmpty(content);
+    const rule = new CustomForecastIndicatorNameShouldNotEmptyRule(content);
 
     // then
     expect(createNewCustomForecastIndicator).toThrow(BusinessRuleValidationException);
