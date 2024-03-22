@@ -39,6 +39,7 @@ import { IndicatorBoardMetadataController } from './api/indicator-board-metadata
 import { LiveIndicatorController } from './api/live-indicator/live-indicator.controller';
 import { DeleteCustomForecastIndicatorIdCommandHandler } from './application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
 import { DeleteCustomForecastIndicatorCommandHandler } from './application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
+import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/command/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
 
 @Module({
   imports: [
@@ -86,6 +87,7 @@ import { DeleteCustomForecastIndicatorCommandHandler } from './application/comma
     InsertCustomForecastIndicatorIdCommandHandler,
     DeleteCustomForecastIndicatorIdCommandHandler,
     DeleteCustomForecastIndicatorCommandHandler,
+    UpdateCustomForecastIndicatorNameCommandHandler,
     {
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
@@ -172,6 +174,10 @@ import { DeleteCustomForecastIndicatorCommandHandler } from './application/comma
     },
     {
       provide: 'DeleteCustomForecastIndicatorPort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
+    },
+    {
+      provide: 'UpdateCustomForecastIndicatorNamePort',
       useClass: CustomForecastIndicatorPersistentAdapter,
     },
   ],
