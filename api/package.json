@@ -42,18 +42,21 @@
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.19",
     "typeorm-extension": "^3.4.0",
-    "typeorm-transactional": "^0.5.0"
+    "typeorm-transactional": "^0.5.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
+    "@supabase/supabase-js": "^2.39.8",
     "@testcontainers/postgresql": "^10.6.0",
     "@testcontainers/redis": "^10.6.0",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.11.5",
     "@types/supertest": "^2.0.12",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.42.0",
@@ -86,7 +89,12 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "src/**/*.ts", "!src/main.ts", "!src/**/*.module.ts", "!src/**/*.entity.ts", "!src/**/*.seed.ts", "!src/utils/config/**"
+      "src/**/*.ts",
+      "!src/main.ts",
+      "!src/**/*.module.ts",
+      "!src/**/*.entity.ts",
+      "!src/**/*.seed.ts",
+      "!src/utils/config/**"
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node"

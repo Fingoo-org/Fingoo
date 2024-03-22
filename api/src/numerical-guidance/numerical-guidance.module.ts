@@ -37,6 +37,8 @@ import { HistoryIndicatorController } from './api/history-indicator/history-indi
 import { IndicatorController } from './api/indicator/indicator.controller';
 import { IndicatorBoardMetadataController } from './api/indicator-board-metadata/indicator-board-metadata.controller';
 import { LiveIndicatorController } from './api/live-indicator/live-indicator.controller';
+import { FileSupabaseAdapter } from './infrastructure/adapter/storage/file.supabase.adapter';
+import { UploadFileCommandHandler } from './application/command/upload-file/upload-file.command.handler';
 
 @Module({
   imports: [
@@ -82,6 +84,7 @@ import { LiveIndicatorController } from './api/live-indicator/live-indicator.con
     UpdateSourceIndicatorsAndWeightsCommandHandler,
     GetCustomForecastIndicatorValuesQueryHandler,
     InsertCustomForecastIndicatorIdCommandHandler,
+    UploadFileCommandHandler,
     {
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
@@ -161,6 +164,10 @@ import { LiveIndicatorController } from './api/live-indicator/live-indicator.con
     {
       provide: 'InsertCustomForecastIndicatorIdPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'UploadFilePort',
+      useClass: FileSupabaseAdapter,
     },
   ],
 })
