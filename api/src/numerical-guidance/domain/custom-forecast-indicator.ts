@@ -15,7 +15,7 @@ export class CustomForecastIndicator extends AggregateRoot {
 
   @ApiProperty({
     example: 'my first custom forecast indicator',
-    description: '예측지표 id',
+    description: '예측지표 이름',
   })
   customForecastIndicatorName: string;
 
