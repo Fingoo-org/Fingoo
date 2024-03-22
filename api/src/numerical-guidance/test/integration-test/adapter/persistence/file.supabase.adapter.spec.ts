@@ -3,6 +3,7 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { FileSupabaseAdapter } from '../../../../infrastructure/adapter/storage/file.supabase.adapter';
 import * as fs from 'fs';
 import { ConfigModule } from '@nestjs/config';
+import { HttpStatus, NotFoundException } from '@nestjs/common';
 
 describe('FileSupabaseAdapter', () => {
   let environment;
@@ -26,7 +27,7 @@ describe('FileSupabaseAdapter', () => {
     await environment.stop();
   });
 
-  it('supabase에 파일이 정상적으로 올라가는지 확인', async () => {
+  it('supabase 파일 업로드', async () => {
     // given
     const imagePath = './src/numerical-guidance/test/data/test-file.png';
     const fileBuffer: Buffer = fs.readFileSync(imagePath);
@@ -51,5 +52,23 @@ describe('FileSupabaseAdapter', () => {
     // then
     const expectName = 'test-file.png';
     expect(expectName).toEqual(result);
+  });
+
+  it('supabase 파일 업로드 - 빈 파일을 보내는 경우', async () => {
+    // given
+
+    const emptyFile: Express.Multer.File = null;
+
+    // when // then
+    await expect(async () => {
+      await fileSupabaseAdapter.uploadFile(emptyFile);
+    }).rejects.toThrow(
+      new NotFoundException({
+        HttpStatus: HttpStatus.BAD_REQUEST,
+        error: `[ERROR] 빈 파일이 요청되었습니다. 파일이 정상적으로 요청되었는지 확인해주세요.`,
+        message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+        cause: Error,
+      }),
+    );
   });
 });
