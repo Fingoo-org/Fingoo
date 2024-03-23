@@ -312,7 +312,7 @@ describe('Indicator Board Metadata E2E Test', () => {
   it('/delete 지표보드 메타데이터에 예측지표 id를 삭제한다.', async () => {
     return request(app.getHttpServer())
       .delete(
-        '/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/customForecastIndicator/a1e019be-19f4-473b-9a02-d86d65eebab0',
+        '/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/custom-forecast-indicator/a1e019be-19f4-473b-9a02-d86d65eebab0',
       )
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
@@ -321,7 +321,7 @@ describe('Indicator Board Metadata E2E Test', () => {
   it('/delete 지표보드 메타데이터에 예측지표 id를 삭제한다. - 메타데이터가 가지고있지 않은 예측지표id를 삭제한다.', async () => {
     return request(app.getHttpServer())
       .delete(
-        '/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/customForecastIndicator/a1e019be-19f4-473b-9a02-d86d65eeba99',
+        '/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/custom-forecast-indicator/a1e019be-19f4-473b-9a02-d86d65eeba99',
       )
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
@@ -330,7 +330,7 @@ describe('Indicator Board Metadata E2E Test', () => {
   it('/delete 지표보드 메타데이터에 예측지표 id를 삭제한다. - DB에 존재하지 않는 메타데이터를 요청한다.', async () => {
     return request(app.getHttpServer())
       .delete(
-        '/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba77/customForecastIndicator/a1e019be-19f4-473b-9a02-d86d65eebab0',
+        '/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba77/custom-forecast-indicator/a1e019be-19f4-473b-9a02-d86d65eebab0',
       )
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);

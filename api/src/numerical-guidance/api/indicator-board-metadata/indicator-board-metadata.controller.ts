@@ -244,7 +244,7 @@ export class IndicatorBoardMetadataController {
     example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
     required: true,
   })
-  @Delete('/indicator-board-metadata/:indicatorBoardMetadataId/customForecastIndicator/:customForecastIndicatorId')
+  @Delete('/indicator-board-metadata/:indicatorBoardMetadataId/custom-forecast-indicator/:customForecastIndicatorId')
   async deleteCustomForecastIndicatorId(
     @Param('indicatorBoardMetadataId') indicatorBoardMetadataId,
     @Param('customForecastIndicatorId') customForecastIndicatorId,

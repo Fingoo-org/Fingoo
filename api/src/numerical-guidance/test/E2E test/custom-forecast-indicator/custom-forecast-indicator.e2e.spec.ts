@@ -256,7 +256,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
 
   it('/patch 예측지표 이름을 수정한다.', async () => {
     return request(app.getHttpServer())
-      .patch('/api/numerical-guidance/custom-forecast-indicator-update-name/f5206520-da94-11ee-b91b-3551e6db3101')
+      .patch('/api/numerical-guidance/custom-forecast-indicator/name/f5206520-da94-11ee-b91b-3551e6db3101')
       .send({
         name: '수정후이름',
       })
@@ -266,7 +266,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
 
   it('/patch 예측지표 이름을 수정한다. - DB에 예측지표가 존재하지 않을경우', async () => {
     return request(app.getHttpServer())
-      .patch('/api/numerical-guidance/custom-forecast-indicator-update-name/f5206520-da94-11ee-b91b-3551e6db3105')
+      .patch('/api/numerical-guidance/custom-forecast-indicator/name/f5206520-da94-11ee-b91b-3551e6db3105')
       .send({
         name: '수정후이름',
       })
@@ -276,7 +276,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
 
   it('/patch 예측지표 이름을 수정한다. - 아이디 형식이 uuid가 아닌 경우', async () => {
     return request(app.getHttpServer())
-      .patch('/api/numerical-guidance/custom-forecast-indicator-update-name/not-uuid')
+      .patch('/api/numerical-guidance/custom-forecast-indicator/name/not-uuid')
       .send({
         name: '수정후이름',
       })
@@ -286,7 +286,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
 
   it('/patch 예측지표 이름을 수정한다. - 이름이 공백일 경우', async () => {
     return request(app.getHttpServer())
-      .patch('/api/numerical-guidance/custom-forecast-indicator-update-name/f5206520-da94-11ee-b91b-3551e6db3101')
+      .patch('/api/numerical-guidance/custom-forecast-indicator/name/f5206520-da94-11ee-b91b-3551e6db3101')
       .send({
         name: '   ',
       })

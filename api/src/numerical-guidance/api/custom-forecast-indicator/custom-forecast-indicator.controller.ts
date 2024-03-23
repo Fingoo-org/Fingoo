@@ -160,7 +160,7 @@ export class CustomForecastIndicatorController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
-  @Get('/custom-forecast-indicator-view/:customForecastIndicatorId')
+  @Get('/custom-forecast-indicator/value/:customForecastIndicatorId')
   async loadCustomForecastIndicatorValues(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
   ): Promise<CustomForecastIndicatorValuesResponse> {
@@ -220,7 +220,7 @@ export class CustomForecastIndicatorController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
-  @Patch('/custom-forecast-indicator-update-name/:customForecastIndicatorId')
+  @Patch('/custom-forecast-indicator/name/:customForecastIndicatorId')
   async updateCustomForecastIndicatorName(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
     @Body() updateCustomForecastIndicatorNameDto: UpdateCustomForecastIndicatorNameDto,
