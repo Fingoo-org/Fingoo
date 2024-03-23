@@ -17,6 +17,10 @@ export type indicatorParam = {
   indicatorId: string;
 };
 
+export type customForecastIndicatorParam = {
+  customForecastIndicatorId: string;
+};
+
 export const indicatorBoardMetadataHandlers = [
   http.get(API_PATH.indicatorBoardMetadata, async () => {
     await delayForDevelopment();
@@ -54,6 +58,16 @@ export const indicatorBoardMetadataHandlers = [
     async ({ params }) => {
       const { metadataId, indicatorId } = params;
       mockDB.deleteIndicatorFromMetadata(metadataId, indicatorId);
+      await delayForDevelopment();
+
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
+  http.delete<metadataParam & customForecastIndicatorParam>(
+    `${API_PATH.indicatorBoardMetadata}/:metadataId/custom-forecast-indicator/:customForecastIndicatorId`,
+    async ({ params }) => {
+      const { metadataId, customForecastIndicatorId } = params;
+      mockDB.deleteCustomForecastIndicatorFromMetadata(metadataId, customForecastIndicatorId);
       await delayForDevelopment();
 
       return HttpResponse.json({ status: 200 });

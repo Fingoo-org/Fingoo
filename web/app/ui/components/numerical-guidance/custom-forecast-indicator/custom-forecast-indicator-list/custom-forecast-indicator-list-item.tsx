@@ -18,11 +18,16 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
   );
   const { selectCustomForecastIndicatorById } = useSelectedCustomForecastIndicatorViewModel();
 
-  const { selectedMetadata, addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
+  const { selectedMetadata, addCustomForecastIndicatorToMetadata, deleteCustomForecastIndicatorFromMetadata } =
+    useSelectedIndicatorBoardMetadata();
   const isSelected = selectedMetadata?.customForecastIndicatorIds?.some((id) => id === item.id) || false;
 
   const handleCustomForecastIndicatorAddToMetadata = () => {
     addCustomForecastIndicatorToMetadata(item.id);
+  };
+
+  const handleCustomForecastIndicatorDeleteFromMetadata = () => {
+    deleteCustomForecastIndicatorFromMetadata(item.id);
   };
 
   const handleCustomForecastIndicatorSelect = () => {
@@ -44,7 +49,12 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
 
   return (
     <ListItem hoverRender={hoverRender}>
-      <SelectableItem key={item.id} selected={isSelected} onSelect={handleCustomForecastIndicatorAddToMetadata}>
+      <SelectableItem
+        key={item.id}
+        selected={isSelected}
+        onDeSelect={handleCustomForecastIndicatorDeleteFromMetadata}
+        onSelect={handleCustomForecastIndicatorAddToMetadata}
+      >
         {item.name}
       </SelectableItem>
     </ListItem>

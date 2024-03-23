@@ -28,7 +28,7 @@ export class IndicatorBoardMetadata {
     return this.indicatorBoardMetadataName;
   }
 
-  get formattedIndicatorBoardMetadata() {
+  get formattedIndicatorBoardMetadata(): IndicatorBoardMetadataResponse {
     return {
       id: this.id,
       indicatorBoardMetadataName: this.name,
@@ -43,6 +43,10 @@ export class IndicatorBoardMetadata {
 
   addCustomForecastIndicator(customForecastIndicatorId: string) {
     this.customForecastIndicatorIds = [...this.customForecastIndicatorIds, customForecastIndicatorId];
+  }
+
+  deleteCustomForecastIndicator(customForecastIndicatorId: string) {
+    this.customForecastIndicatorIds = this.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId);
   }
 
   deleteIndicator(indicatorId: string) {
@@ -85,6 +89,13 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     if (!metadata) return;
 
     metadata.addCustomForecastIndicator(customForecastIndicatorId);
+  }
+
+  deleteCustomForecastIndicatorFromMetadataById(metadataId: string | undefined, customForecastIndicatorId: string) {
+    const metadata = this.find((metadata) => metadata.id === metadataId);
+    if (!metadata) return;
+
+    metadata.deleteCustomForecastIndicator(customForecastIndicatorId);
   }
 
   updateIndicatorBoardMetadataNameById(metadataId: string | undefined, indicatorBoardMetadataName: string) {
