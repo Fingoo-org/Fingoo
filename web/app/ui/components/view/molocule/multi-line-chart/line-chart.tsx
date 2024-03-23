@@ -88,7 +88,6 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
 
   const nowDate = autoNowDateReferenceLine ? caculateNowDate() : undefined;
 
-  console.log(nowDate);
   function onDotClick(itemData: any, event: React.MouseEvent) {
     event.stopPropagation();
 

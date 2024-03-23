@@ -23,7 +23,7 @@ export default function MultiLineChart({ data, categories, noDataText }: MultiLi
         data={formatteedData}
         index={index}
         categories={categories}
-        colors={['indigo-300', 'rose-200', 'neutral', 'indigo', 'blue']}
+        colors={['indigo-300', 'rose-200', 'fuchsia-300', 'indigo-300', 'blue-300']}
         yAxisWidth={60}
         onValueChange={(v) => setValue(v)}
         showAnimation={true}
