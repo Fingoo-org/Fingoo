@@ -63,7 +63,7 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   grangerDf = verification.grangerVerification(df_var)
   checkDf = verification.findSignificantValues(grangerDf)
   grangerGroup = verification.findInfluentialGroups(checkDf)
-  
+
   # var
   if len(grangerGroup) >= 2:
     customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
@@ -86,8 +86,24 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
           }
     return result
   else:
-    return {"name": "해당 지표를 예측할 수 없습니다.",
-            "values": []}
+    # arima
+    customForecastIndicator = forecast.runArima(df_var, targetIndicatorName, int(len(df_var)/2))
+    forecastdata = customForecastIndicator[targetIndicatorName].to_dict()
+    forecastValuesWithoutDates = list(forecastdata.values())
+    values = []
+    currentDate = datetime.datetime.now()
+    for i in range(len(forecastValuesWithoutDates)):
+      forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
+      forecastValue = ForecastValue(
+        value = forecastValuesWithoutDates[i],
+        date = forecastDate
+      )
+      values.append(forecastValue)
+    result: ForecastIndicatorDto = {
+      "name": name,
+      "values": values
+    }
+    return result
 
 def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
   # 데이터베이스로부터 Indicator 정보 가져오기
