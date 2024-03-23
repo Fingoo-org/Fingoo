@@ -71,6 +71,19 @@ export const useDeleteIndicatorFromMetadata = (metadataId: string | undefined) =
     },
   );
 
+type DeleteCustomForecastIndicatorFromMetadataRequestArg = {
+  indicatorId: string;
+};
+
+export const useDeleteCustomForecastIndicatorFromMetadata = (metadataId: string | undefined) =>
+  useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (url, { arg }: { arg: DeleteCustomForecastIndicatorFromMetadataRequestArg }) => {
+      if (!metadataId) return;
+      await deleteFetcher([url, metadataId, 'custom-forecast-indicator', arg.indicatorId]);
+    },
+  );
+
 export type UpdateIndicatorBoardMetadataRequestBody = {
   indicatorBoardMetadataName: string;
 };

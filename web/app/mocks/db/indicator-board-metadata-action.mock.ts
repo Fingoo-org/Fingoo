@@ -17,6 +17,7 @@ export type MockIndicatorBoardMetadataAction = {
   patchMetadata: (id: string, data: UpdateIndicatorBoardMetadataRequestBody) => void;
   deleteIndicatorBoardMetadata: (id: string) => void;
   postCustomForecastIndicatorToMetadata: (id: string, data: AddCustomForecastIndicatorToMetadataRequestBody) => void;
+  deleteCustomForecastIndicatorFromMetadata: (id: string, customForecastIndicatorId: string) => void;
 };
 
 export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction = {
@@ -75,6 +76,17 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
         ...mockDatabaseStore.metadataList[index].customForecastIndicatorIds,
         data.customForecastIndicatorId,
       ],
+    };
+
+    mockDatabaseStore.metadataList[index] = newMetadata;
+  },
+  deleteCustomForecastIndicatorFromMetadata: (id, customForecastIndicatorId) => {
+    const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
+    const newMetadata = {
+      ...mockDatabaseStore.metadataList[index],
+      customForecastIndicatorIds: mockDatabaseStore.metadataList[index].customForecastIndicatorIds.filter(
+        (id) => id !== customForecastIndicatorId,
+      ),
     };
 
     mockDatabaseStore.metadataList[index] = newMetadata;
