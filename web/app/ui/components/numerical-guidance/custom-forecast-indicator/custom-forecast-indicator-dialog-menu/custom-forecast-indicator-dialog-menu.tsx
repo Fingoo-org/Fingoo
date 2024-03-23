@@ -9,10 +9,15 @@ import SourceIndicatorSliderGroup from '../source-indicator-slider-group';
 import Button from '../../../view/atom/button/button';
 import Pending from '../../../view/molocule/pending';
 import { ReloadIcon } from '@radix-ui/react-icons';
+import { useDialog } from '../../../view/hooks/use-dialog.hook';
+import { use } from 'react';
+import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 
 export default function CustomForecastIndicatorDialogMenu() {
   const { selectedCustomForecastIndicator, isUpdated, isPending, applyUpdatedSourceIndicator } =
     useSelectedCustomForecastIndicatorViewModel();
+  const { deleteIndicatorBoardMetadata } = useCustomForecastIndicatorListViewModel();
+  const { closeDialog } = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU);
 
   const handleCustomForecastIndicatorNameChange = (name: string) => {
     // logic: 예측 지표 이름 변경
@@ -21,6 +26,11 @@ export default function CustomForecastIndicatorDialogMenu() {
 
   const handleCustomForecastIndicatorApply = () => {
     applyUpdatedSourceIndicator();
+  };
+
+  const handleCustomForecastIndicatorDelete = () => {
+    closeDialog();
+    deleteIndicatorBoardMetadata(selectedCustomForecastIndicator.id);
   };
 
   return (
@@ -54,6 +64,9 @@ export default function CustomForecastIndicatorDialogMenu() {
           >
             {isPending ? <ReloadIcon className="mr-1 h-3 w-3 animate-spin" /> : null}
             적용
+          </Button>
+          <Button aria-label="delete" color={'red'} onClick={handleCustomForecastIndicatorDelete} size={'xs'}>
+            삭제
           </Button>
         </div>
       </DialogMenu.Content>

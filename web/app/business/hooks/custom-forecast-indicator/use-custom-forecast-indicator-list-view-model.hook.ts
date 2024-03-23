@@ -1,5 +1,7 @@
 import {
+  CustomForecastIndicatorResponse,
   useCreateCustomForecastIndicator,
+  useDeleteCustomForecastIndicator,
   useFetchCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastIndicatorsViewModel } from '../../services/view-model/custom-forecast-indicator-view-model.service';
@@ -10,6 +12,7 @@ export const useCustomForecastIndicatorListViewModel = () => {
   const { data: customForecastIndicatorList, isValidating } = useFetchCustomForecastIndicatorList();
   const { trigger: createCustomForecastIndicatorTrigger, isMutating: isCreateCustomForecastIndicatorMutating } =
     useCreateCustomForecastIndicator();
+  const { trigger: deleteCustomForecastIndicatorTrigger } = useDeleteCustomForecastIndicator();
 
   const { isPending } = usePending(isValidating, isCreateCustomForecastIndicatorMutating);
 
@@ -29,9 +32,20 @@ export const useCustomForecastIndicatorListViewModel = () => {
     return customForecastIndicatorId;
   };
 
+  const deleteIndicatorBoardMetadata = async (customForecastIndicatorId: string) => {
+    deleteCustomForecastIndicatorTrigger(customForecastIndicatorId, {
+      optimisticData: (): CustomForecastIndicatorResponse[] | undefined => {
+        convertedCustomForecastIndicatorList?.deleteCustomForecastIndicatorById(customForecastIndicatorId);
+        return convertedCustomForecastIndicatorList?.formattedCustomForecastIndicatorList;
+      },
+      revalidate: false,
+    });
+  };
+
   return {
     customForecastIndicatorList: convertedCustomForecastIndicatorList,
-    createCustomForecastIndicator,
     isPending,
+    createCustomForecastIndicator,
+    deleteIndicatorBoardMetadata,
   };
 };

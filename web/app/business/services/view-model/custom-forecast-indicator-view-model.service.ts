@@ -35,6 +35,15 @@ export class CustomForecastIndicator {
     );
     return sourceIndicator?.weight;
   }
+
+  get formattedCustomForecastIndicator(): CustomForecastIndicatorResponse {
+    return {
+      id: this.id,
+      customForecastIndicatorName: this.customForecastIndicatorName,
+      targetIndicatorId: this.targetIndicatorId,
+      sourceIndicatorIdsAndWeights: this.sourceIndicatorIdsAndWeights,
+    };
+  }
 }
 
 export class CustomForecastIndicators {
@@ -55,6 +64,20 @@ export class CustomForecastIndicators {
 
   findCustomForecastIndicatorByIndex(index: number) {
     return this.customForecastIndicatorList[index];
+  }
+  deleteCustomForecastIndicatorById(id: string) {
+    const index = this.customForecastIndicatorList.findIndex(
+      (customForecastIndicator) => customForecastIndicator.id === id,
+    );
+    if (index === -1) return;
+
+    this.customForecastIndicatorList.splice(index, 1);
+  }
+
+  get formattedCustomForecastIndicatorList() {
+    return this.customForecastIndicatorList.map(
+      (customForecastIndicator) => customForecastIndicator.formattedCustomForecastIndicator,
+    );
   }
 }
 

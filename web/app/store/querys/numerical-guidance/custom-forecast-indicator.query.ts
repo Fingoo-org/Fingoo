@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
-import { defaultFetcher, patchFetcher, postFetcher } from '../fetcher';
+import { defaultFetcher, deleteFetcher, patchFetcher, postFetcher } from '../fetcher';
 
 export type sourceIndicator = {
   sourceIndicatorId: string;
@@ -48,4 +48,10 @@ export const useUpdateSourceIndicator = (customForecastIndicatorId: string | und
       });
     },
   );
+};
+
+export const useDeleteCustomForecastIndicator = () => {
+  return useSWRMutation(API_PATH.customForecastIndicator, async (url, { arg: metadataId }: { arg: string }) => {
+    await deleteFetcher([url, metadataId]);
+  });
 };

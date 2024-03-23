@@ -36,4 +36,14 @@ export const customForecastIndicatorHandlers = [
       return HttpResponse.json({ status: 200 });
     },
   ),
+  http.delete<customForecastIndicatorParam>(
+    `${API_PATH.customForecastIndicator}/:customForecastIndicatorId`,
+    async ({ params }) => {
+      const { customForecastIndicatorId } = params;
+      mockDB.deleteCustomForecastIndicator(customForecastIndicatorId);
+      await delayForDevelopment();
+
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
 ];
