@@ -62,7 +62,7 @@ export type UpdatecustomForecastIndicatorNameRequestBody = {
 
 export const useUpdateCustomForecastIndicatorName = (customForecastIndicatorId: string | undefined) => {
   return useSWRMutation(
-    API_PATH.indicatorBoardMetadata,
+    API_PATH.customForecastIndicator,
     async (url: string, { arg }: { arg: UpdatecustomForecastIndicatorNameRequestBody }) => {
       if (!customForecastIndicatorId) return;
       await patchFetcher<UpdatecustomForecastIndicatorNameRequestBody>([url, 'name', customForecastIndicatorId], {

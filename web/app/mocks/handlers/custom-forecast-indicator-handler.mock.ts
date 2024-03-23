@@ -38,7 +38,7 @@ export const customForecastIndicatorHandlers = [
     },
   ),
   http.patch<customForecastIndicatorParam, UpdatecustomForecastIndicatorNameRequestBody>(
-    `${API_PATH.customForecastIndicator}/:customForecastIndicatorId/name`,
+    `${API_PATH.customForecastIndicator}/name/:customForecastIndicatorId`,
     async ({ params, request }) => {
       const { customForecastIndicatorId } = params;
       const { name } = await request.json();

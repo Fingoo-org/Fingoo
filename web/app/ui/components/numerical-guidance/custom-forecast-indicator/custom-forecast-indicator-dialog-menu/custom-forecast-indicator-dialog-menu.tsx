@@ -14,14 +14,19 @@ import { use } from 'react';
 import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 
 export default function CustomForecastIndicatorDialogMenu() {
-  const { selectedCustomForecastIndicator, isUpdated, isPending, applyUpdatedSourceIndicator } =
-    useSelectedCustomForecastIndicatorViewModel();
+  const {
+    selectedCustomForecastIndicator,
+    isUpdated,
+    isPending,
+    applyUpdatedSourceIndicator,
+    updateCustomForecastIndicatorName,
+  } = useSelectedCustomForecastIndicatorViewModel();
   const { deleteIndicatorBoardMetadata } = useCustomForecastIndicatorListViewModel();
   const { closeDialog } = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU);
 
   const handleCustomForecastIndicatorNameChange = (name: string) => {
     // logic: 예측 지표 이름 변경
-    console.log(name);
+    updateCustomForecastIndicatorName(name);
   };
 
   const handleCustomForecastIndicatorApply = () => {

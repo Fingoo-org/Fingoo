@@ -1,5 +1,7 @@
 import {
+  CustomForecastIndicatorResponse,
   useFetchCustomForecastIndicatorList,
+  useUpdateCustomForecastIndicatorName,
   useUpdateSourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastIndicatorViewModel } from '../../services/view-model/custom-forecast-indicator-view-model.service';
@@ -12,12 +14,19 @@ import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
   const { selectCustomForecastIndicatorById } = useWorkspaceStore((state) => state.actions);
+
   const { selectedCustomForecastIndicator, isUpdated } = useSelectedCustomForecastIndicatorStore((state) => state);
   const selectedCustomerForecastIndicatorActions = useSelectedCustomForecastIndicatorStore((state) => state.actions);
+
   const { data: customForecastIndicatorList, isValidating } = useFetchCustomForecastIndicatorList();
   const { data: indicatorList } = useFetchIndicatorList();
+
   const { trigger: updateSourceIndicatorTrigger, isMutating: isUpdateSourceIndicatorMutating } =
     useUpdateSourceIndicator(selectedCustomForecastIndicatorId);
+  const { trigger: updateCustomForecastIndicatorNameTrigger } = useUpdateCustomForecastIndicatorName(
+    selectedCustomForecastIndicatorId,
+  );
+
   const { isPending } = usePending(isValidating, isUpdateSourceIndicatorMutating);
 
   const foundCustomForecastIndicator = customForecastIndicatorList?.find(
@@ -76,6 +85,28 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     );
   };
 
+  const updateCustomForecastIndicatorName = (name: string) => {
+    updateCustomForecastIndicatorNameTrigger(
+      {
+        name,
+      },
+      {
+        optimisticData: (data) => {
+          const currentData = data as unknown as CustomForecastIndicatorResponse[];
+          return currentData.map((customForecastIndicator) => {
+            if (customForecastIndicator.id === selectedCustomForecastIndicatorId) {
+              return {
+                ...customForecastIndicator,
+                customForecastIndicatorName: name,
+              };
+            }
+            return customForecastIndicator;
+          });
+        },
+      },
+    );
+  };
+
   return {
     selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,
     sourceIndicatorList,
@@ -86,5 +117,6 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     deleteSourceIndicator,
     updateSourceIndicatorWeight,
     applyUpdatedSourceIndicator,
+    updateCustomForecastIndicatorName,
   };
 };
