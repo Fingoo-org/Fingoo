@@ -91,7 +91,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
     );
   };
 
-  const deleteCustomForecastIndicator = (customForecastIndicatorId: string) => {
+  const deleteCustomForecastIndicatorFromMetadata = (customForecastIndicatorId: string) => {
     if (!selectedMetadata) {
       return;
     }
@@ -139,6 +139,6 @@ export const useSelectedIndicatorBoardMetadata = () => {
     updateMetadata,
     addCustomForecastIndicatorToMetadata,
     selectMetadataById: selectMetadata,
-    deleteCustomForecastIndicator,
+    deleteCustomForecastIndicatorFromMetadata,
   };
 };
