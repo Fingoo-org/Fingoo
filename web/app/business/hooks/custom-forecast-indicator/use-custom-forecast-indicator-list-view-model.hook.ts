@@ -13,6 +13,8 @@ export const useCustomForecastIndicatorListViewModel = () => {
 
   const { isPending } = usePending(isValidating, isCreateCustomForecastIndicatorMutating);
 
+  console.log(isValidating, isCreateCustomForecastIndicatorMutating, isPending);
+
   const convertedCustomForecastIndicatorList = useMemo(() => {
     if (!customForecastIndicatorList) return undefined;
 
@@ -25,7 +27,8 @@ export const useCustomForecastIndicatorListViewModel = () => {
       targetIndicatorId,
     };
 
-    await createCustomForecastIndicatorTrigger(body);
+    const customForecastIndicatorId = await createCustomForecastIndicatorTrigger(body);
+    return customForecastIndicatorId;
   };
 
   return {

@@ -22,12 +22,17 @@ export type CreateCustomForecastIndicatorRequestBody = {
   targetIndicatorId: string;
 };
 
+export type CreateCustomForecastIndicatorResponse = string;
+
 export const useFetchCustomForecastIndicatorList = () => {
   return useSWR<CustomForecastIndicatorListResponse>(API_PATH.customForecastIndicator, defaultFetcher);
 };
 
 export const useCreateCustomForecastIndicator = () => {
-  return useSWRMutation(API_PATH.customForecastIndicator, postFetcher<CreateCustomForecastIndicatorRequestBody>);
+  return useSWRMutation(
+    API_PATH.customForecastIndicator,
+    postFetcher<CreateCustomForecastIndicatorRequestBody, CreateCustomForecastIndicatorResponse>,
+  );
 };
 
 export type updateSourceIndicatorRequestBody = {

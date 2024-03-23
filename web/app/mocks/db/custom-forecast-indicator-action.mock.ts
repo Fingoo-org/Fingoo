@@ -2,12 +2,15 @@ import {
   CustomForecastIndicatorListResponse,
   CreateCustomForecastIndicatorRequestBody,
   updateSourceIndicatorRequestBody,
+  CreateCustomForecastIndicatorResponse,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { mockDatabaseStore } from '.';
 
 export type MockCustomForecastIndicatorAction = {
   getCustomForecastIndicatorList: () => CustomForecastIndicatorListResponse;
-  postCustomForecastIndicator: (data: CreateCustomForecastIndicatorRequestBody) => void;
+  postCustomForecastIndicator: (
+    data: CreateCustomForecastIndicatorRequestBody,
+  ) => CreateCustomForecastIndicatorResponse;
   patchSourceIndicator: (id: string, data: updateSourceIndicatorRequestBody) => void;
 };
 
@@ -16,15 +19,18 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     return mockDatabaseStore.customForecastIndicatorList;
   },
   postCustomForecastIndicator: (data) => {
+    const id = Math.random().toString(36);
     const newCustomForecastIndicator = {
       ...data,
-      id: Math.random().toString(36),
+      id,
       sourceIndicatorIdsAndWeights: [],
     };
     mockDatabaseStore.customForecastIndicatorList = [
       ...mockDatabaseStore.customForecastIndicatorList,
       newCustomForecastIndicator,
     ];
+
+    return id;
   },
   patchSourceIndicator: (id, data) => {
     const index = mockDatabaseStore.customForecastIndicatorList.findIndex(

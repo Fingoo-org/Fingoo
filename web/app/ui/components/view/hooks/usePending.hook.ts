@@ -7,6 +7,7 @@ export function usePending(isValidating: boolean, isMutating: boolean) {
   if (isMutating) {
     isTriggeredMutation.current = true;
   }
+  console.log('cached', isTriggeredMutation.current);
 
   if (isMutating) {
     isPending.current = true;

@@ -20,11 +20,10 @@ export const customForecastIndicatorHandlers = [
     API_PATH.customForecastIndicator,
     async ({ request }) => {
       const newdata = await request.json();
-      mockDB.postCustomForecastIndicator(newdata);
       await delayForDevelopment();
-      return HttpResponse.json({
-        status: 200,
-      });
+
+      const response = mockDB.postCustomForecastIndicator(newdata);
+      return HttpResponse.text(response);
     },
   ),
   http.patch<customForecastIndicatorParam, updateSourceIndicatorRequestBody>(
