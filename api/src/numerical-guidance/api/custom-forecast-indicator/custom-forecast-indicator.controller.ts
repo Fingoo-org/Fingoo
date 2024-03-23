@@ -12,7 +12,7 @@ import { GetCustomForecastIndicatorQuery } from '../../application/query/get-cus
 import { GetCustomForecastIndicatorsByMemberIdQuery } from '../../application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query';
 import { UpdateSourceIndicatorsAndWeightsDto } from './dto/update-source-indicators-and-weights.dto';
 import { UpdateSourceIndicatorsAndWeightsCommand } from '../../application/command/update-source-indicators-and-weights/update-source-indicators-and-weights.command';
-import { CustomForecastIndicatorValues } from '../../../utils/type/type-definition';
+import { CustomForecastIndicatorValuesResponse } from '../../../utils/type/type-definition';
 import { GetCustomForecastIndicatorValuesQuery } from '../../application/query/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query';
 import { DeleteCustomForecastIndicatorCommand } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command';
 import { UpdateCustomForecastIndicatorNameDto } from './dto/update-custom-forecast-indicator-name.dto';
@@ -163,7 +163,7 @@ export class CustomForecastIndicatorController {
   @Get('/custom-forecast-indicator-view/:customForecastIndicatorId')
   async loadCustomForecastIndicatorValues(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
-  ): Promise<CustomForecastIndicatorValues> {
+  ): Promise<CustomForecastIndicatorValuesResponse> {
     const query = new GetCustomForecastIndicatorValuesQuery(customForecastIndicatorId);
     return await this.queryBus.execute(query);
   }
