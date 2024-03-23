@@ -36,4 +36,4 @@ services:
 
 networks:
   app-net:
-    name: econo
+    name: fingoo

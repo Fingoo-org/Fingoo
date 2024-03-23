@@ -8,9 +8,11 @@ services:
     environment:
     - DB_HOST=${DB_HOST}
     - DB_PORT=${DB_PORT}
-    - MYSQL_USER=${MYSQL_USER}
-    - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    - MYSQL_DATABASE=${MYSQL_DATABASE}
+    - POSTGRES_USER=${POSTGRES_USER}
+    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    - REDIS_URL=${REDIS_URL}
+    - SERVICE_KEY=${SERVICE_KEY}
+    - FASTAPI_URL=${FASTAPI_URL}
   db:
     image: postgres:16
     environment:
@@ -18,5 +20,5 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   redis: 
     image: redis:latest
-  data-modeling-api:
-    image: yoonyounghun/fastapi
+  # data-modeling-api:
+  #   image: yoonyounghun/fastapi
