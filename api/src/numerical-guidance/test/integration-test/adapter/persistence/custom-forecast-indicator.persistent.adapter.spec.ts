@@ -1,5 +1,5 @@
 import { HttpModule } from '@nestjs/axios';
-import { HttpStatus, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -23,7 +23,6 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
     await memberRepository.insert({ id: 10 });
-    memberRepository.save;
 
     const customForecastIndicatorRepository = dataSource.getRepository(CustomForecastIndicatorEntity);
     await customForecastIndicatorRepository.insert({
@@ -35,7 +34,26 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       cointJohansenVerification: [],
       sourceIndicatorIdsAndWeights: [],
     });
-    customForecastIndicatorRepository.save;
+
+    await customForecastIndicatorRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+      customForecastIndicatorName: '삭제용예측지표',
+      type: 'customForecastIndicator',
+      targetIndicatorId: '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+      grangerVerification: [],
+      cointJohansenVerification: [],
+      sourceIndicatorIdsAndWeights: [],
+    });
+
+    await customForecastIndicatorRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      customForecastIndicatorName: '수정전예측지표이름',
+      type: 'customForecastIndicator',
+      targetIndicatorId: '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      grangerVerification: [],
+      cointJohansenVerification: [],
+      sourceIndicatorIdsAndWeights: [],
+    });
 
     const indicatorRepository = dataSource.getRepository(IndicatorEntity);
     await indicatorRepository.insert({
@@ -52,7 +70,6 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       type: 'k-stock',
       market: 'KOSPI',
     });
-    indicatorRepository.save;
   };
 
   beforeEach(async () => {
@@ -158,6 +175,135 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
         HttpStatus: HttpStatus.NOT_FOUND,
         error: `[ERROR] 해당 예측지표를 찾을 수 없습니다.`,
         message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        cause: Error,
+      }),
+    );
+  });
+
+  it('예측지표 삭제하기', async () => {
+    // given
+    const customForecastIndicatorId: string = '0d73cea1-35a5-432f-bcd1-27ae3541ba74';
+
+    // when
+    await customForecastIndicatorPersistentAdapter.deleteCustomForecastIndicator(customForecastIndicatorId);
+
+    // then
+    await expect(async () => {
+      await customForecastIndicatorPersistentAdapter.loadCustomForecastIndicator(customForecastIndicatorId);
+    }).rejects.toThrow(
+      new NotFoundException({
+        HttpStatus: HttpStatus.NOT_FOUND,
+        error: `[ERROR] customForecastIndicatorId: ${customForecastIndicatorId} 해당 예측지표를 찾을 수 없습니다.`,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        cause: Error,
+      }),
+    );
+  });
+
+  it('예측지표 삭제하기 - DB에 삭제할 데이터가 없는 경우', async () => {
+    // given
+    const invalidId: string = '0d73cea1-35a5-432f-bcd1-27ae3541b100';
+
+    // when // then
+    await expect(async () => {
+      await customForecastIndicatorPersistentAdapter.deleteCustomForecastIndicator(invalidId);
+    }).rejects.toThrow(
+      new NotFoundException({
+        HttpStatus: HttpStatus.NOT_FOUND,
+        error: `[ERROR] customForecastIndicatorId: ${invalidId} 해당 예측지표를 찾을 수 없습니다.`,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        cause: Error,
+      }),
+    );
+  });
+
+  it('예측지표 삭제하기 - id 형식이 올바르지 않은 경우', async () => {
+    // given
+    const invalidId: string = 'notUUID';
+
+    // when // then
+    await expect(async () => {
+      await customForecastIndicatorPersistentAdapter.deleteCustomForecastIndicator(invalidId);
+    }).rejects.toThrow(
+      new BadRequestException({
+        HttpStatus: HttpStatus.BAD_REQUEST,
+        error: `[ERROR] 예측지표를 삭제하는 도중에 entity 오류가 발생했습니다.
+        1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        cause: Error,
+      }),
+    );
+  });
+
+  it('예측지표 이름 수정하기', async () => {
+    // given
+    const customForecastIndicator = new CustomForecastIndicator(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      '수정한예측지표이름',
+      'customForecastIndicator',
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      [],
+      [],
+      [],
+    );
+
+    // when
+    await customForecastIndicatorPersistentAdapter.updateCustomForecastIndicatorName(customForecastIndicator);
+    const updatedCustomForecastIndicator = await customForecastIndicatorPersistentAdapter.loadCustomForecastIndicator(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+    );
+
+    // then
+    const expected = '수정한예측지표이름';
+    expect(expected).toEqual(updatedCustomForecastIndicator.customForecastIndicatorName);
+  });
+
+  it('예측지표 이름 수정하기 - DB에 예측지표가 존재하지 않을 경우', async () => {
+    // given
+    const customForecastIndicator = new CustomForecastIndicator(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba57',
+      '수정한예측지표이름',
+      'customForecastIndicator',
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      [],
+      [],
+      [],
+    );
+
+    // when // then
+    await expect(async () => {
+      await customForecastIndicatorPersistentAdapter.updateCustomForecastIndicatorName(customForecastIndicator);
+    }).rejects.toThrow(
+      new NotFoundException({
+        HttpStatus: HttpStatus.NOT_FOUND,
+        error: `[ERROR] customForecastIndicatorId: ${customForecastIndicator.id} 해당 예측지표를 찾을 수 없습니다.`,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        cause: Error,
+      }),
+    );
+  });
+
+  it('예측지표 이름 수정하기 - id 형식이 올바르지 않은 경우', async () => {
+    // given
+    const customForecastIndicator = new CustomForecastIndicator(
+      'invail-id',
+      '수정한예측지표이름',
+      'customForecastIndicator',
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      [],
+      [],
+      [],
+    );
+
+    // when // then
+    await expect(async () => {
+      await customForecastIndicatorPersistentAdapter.updateCustomForecastIndicatorName(customForecastIndicator);
+    }).rejects.toThrow(
+      new BadRequestException({
+        HttpStatus: HttpStatus.BAD_REQUEST,
+        error: `[ERROR] 예측지표의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
+      1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+        message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
         cause: Error,
       }),
     );

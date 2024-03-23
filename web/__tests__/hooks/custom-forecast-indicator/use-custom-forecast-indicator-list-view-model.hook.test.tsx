@@ -32,10 +32,9 @@ describe('useCustomForecastIndicatorListViewModel', () => {
     act(() => {
       result.current.createCustomForecastIndicator({ targetIndicatorId: '1' });
     });
-    await waitFor(() => expect(result.current.isPending).toBeFalsy());
 
     // then
-    expect(result.current.customForecastIndicatorList).toHaveLength(4);
+    await waitFor(() => expect(result.current.customForecastIndicatorList).toHaveLength(4));
     expect(result.current.customForecastIndicatorList?.findCustomForecastIndicatorByIndex(3).targetIndicatorId).toBe(
       '1',
     );

@@ -8,7 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/create-custom-forecast-indicator.port';
 import { CustomForecastIndicatorEntity } from './entity/custom-forecast-indicator.entity';
-import { QueryFailedError, Repository } from 'typeorm';
+import { QueryFailedError, Repository, TypeORMError } from 'typeorm';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorMapper } from './mapper/custom-forecast-indicator.mapper';
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
@@ -17,6 +17,8 @@ import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidan
 import { UpdateSourceIndicatorsAndWeightsPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-and-weights.port';
 import { HttpService } from '@nestjs/axios';
 import { CustomForecastIndicatorValues } from 'src/utils/type/type-definition';
+import { UpdateCustomForecastIndicatorNamePort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-custom-forecast-indicator-name.port';
+import { DeleteCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/delete-custom-forecast-indicator.port';
 
 @Injectable()
 export class CustomForecastIndicatorPersistentAdapter
@@ -24,7 +26,9 @@ export class CustomForecastIndicatorPersistentAdapter
     CreateCustomForecastIndicatorPort,
     LoadCustomForecastIndicatorPort,
     LoadCustomForecastIndicatorsByMemberIdPort,
-    UpdateSourceIndicatorsAndWeightsPort
+    UpdateSourceIndicatorsAndWeightsPort,
+    DeleteCustomForecastIndicatorPort,
+    UpdateCustomForecastIndicatorNamePort
 {
   constructor(
     @InjectRepository(CustomForecastIndicatorEntity)
@@ -146,7 +150,7 @@ export class CustomForecastIndicatorPersistentAdapter
       } else {
         throw new InternalServerErrorException({
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: '[ERROR] 얘측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          error: '[ERROR] 예측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
           message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
           cause: error,
         });
@@ -177,7 +181,7 @@ export class CustomForecastIndicatorPersistentAdapter
       } else {
         throw new InternalServerErrorException({
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: '[ERROR] 얘측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          error: '[ERROR] 예측지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
           message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
           cause: error,
         });
@@ -225,6 +229,78 @@ export class CustomForecastIndicatorPersistentAdapter
           '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요. - 1. 재료지표 id가 올바른지 확인해주세요. 2. 가중치가 올바른 형식을 띄고있는지 확인해주세요.',
         cause: error,
       });
+    }
+  }
+
+  async updateCustomForecastIndicatorName(customForecastIndicator: CustomForecastIndicator) {
+    try {
+      const id = customForecastIndicator.id;
+
+      const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
+        await this.customForecastIndicatorRepository.findOneBy({ id });
+      this.nullCheckForEntity(customForecastIndicatorEntity);
+
+      customForecastIndicatorEntity.customForecastIndicatorName = customForecastIndicator.customForecastIndicatorName;
+
+      await this.customForecastIndicatorRepository.save(customForecastIndicatorEntity);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] customForecastIndicatorId: ${customForecastIndicator.id} 해당 예측지표를 찾을 수 없습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else if (error instanceof TypeORMError) {
+        throw new BadRequestException({
+          HttpStatus: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] 예측지표의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          message: '[ERROR] 예측지표의 이름을 수정하는 중에 예상치 못한 문제가 발생했습니다.',
+          cause: error,
+        });
+      }
+    }
+  }
+
+  async deleteCustomForecastIndicator(id: string) {
+    try {
+      const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
+        await this.customForecastIndicatorRepository.findOneBy({ id });
+      this.nullCheckForEntity(customForecastIndicatorEntity);
+
+      await this.customForecastIndicatorRepository.remove(customForecastIndicatorEntity);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] customForecastIndicatorId: ${id} 해당 예측지표를 찾을 수 없습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else if (error instanceof TypeORMError) {
+        throw new BadRequestException({
+          HttpStatus: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] 예측지표를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 예측지표를 삭제하는 도중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      }
     }
   }
   private nullCheckForEntity(entity) {

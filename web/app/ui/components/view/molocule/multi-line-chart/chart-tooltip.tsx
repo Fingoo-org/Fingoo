@@ -98,14 +98,17 @@ export const ChartTooltip = ({ active, payload, label }: CustomTooltipProps) => 
         </div>
 
         <div className={twMerge('space-y-1 px-4 py-2')}>
-          {filteredPayload.map(({ payload, name, color }, idx: number) => (
-            <ChartTooltipRow
-              key={`id-${idx}`}
-              value={payload.displayValue[name!]}
-              name={name}
-              color={`bg-${color}` ?? 'bg-black'}
-            />
-          ))}
+          {filteredPayload.map(({ payload, name, color }, idx: number) => {
+            console.log(color);
+            return (
+              <ChartTooltipRow
+                key={`id-${idx}`}
+                value={payload.displayValue[name!]}
+                name={name}
+                color={`bg-${color}` ?? 'bg-black'}
+              />
+            );
+          })}
         </div>
       </ChartTooltipFrame>
     );

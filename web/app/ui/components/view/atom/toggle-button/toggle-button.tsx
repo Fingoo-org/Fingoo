@@ -12,6 +12,7 @@ type ToggleButtonProps = {
   size?: Size;
   icon?: React.ElementType;
   disabled?: boolean;
+  className?: string;
   onToggle?: (active: boolean) => void;
 };
 
@@ -22,6 +23,7 @@ export default function ToggleButton({
   size = 'md',
   variant = 'light',
   disabled = false,
+  className,
   onToggle,
 }: ToggleButtonProps): JSX.Element {
   const [active, setActive] = useState(false);
@@ -36,6 +38,7 @@ export default function ToggleButton({
 
   return (
     <Button
+      className={className}
       disabled={disabled}
       size={size}
       variant={variant}

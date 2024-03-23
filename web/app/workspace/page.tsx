@@ -1,9 +1,9 @@
-import ChartContainer from '../ui/pages/workspace/chart-container';
+import IndicatorBoard from '../ui/pages/workspace/indicator-board';
 
 export default function Page() {
   return (
     <div className="flex h-full items-center justify-center">
-      <ChartContainer />
+      <IndicatorBoard />
     </div>
   );
 }

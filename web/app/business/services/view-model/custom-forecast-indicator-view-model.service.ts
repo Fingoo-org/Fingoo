@@ -8,25 +8,41 @@ export class CustomForecastIndicator {
   readonly id: string;
   readonly customForecastIndicatorName: string;
   readonly targetIndicatorId: string;
-  private sourceIndicatorIdsAndweights: sourceIndicator[];
+  readonly sourceIndicatorIdsAndWeights: sourceIndicator[];
   constructor({
     id,
     customForecastIndicatorName,
     targetIndicatorId,
-    sourceIndicatorIdsAndweights,
+    sourceIndicatorIdsAndWeights,
   }: CustomForecastIndicatorResponse) {
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.targetIndicatorId = targetIndicatorId;
-    this.sourceIndicatorIdsAndweights = sourceIndicatorIdsAndweights;
+    this.sourceIndicatorIdsAndWeights = sourceIndicatorIdsAndWeights;
   }
 
   get sourceIndicatorIds() {
-    return this.sourceIndicatorIdsAndweights.map((sourceIndicator) => sourceIndicator.id);
+    return this.sourceIndicatorIdsAndWeights.map((sourceIndicator) => sourceIndicator.sourceIndicatorId);
   }
 
   get name() {
     return this.customForecastIndicatorName;
+  }
+
+  getSourceIndicatorWeight(sourceIndicatorId: string) {
+    const sourceIndicator = this.sourceIndicatorIdsAndWeights.find(
+      (sourceIndicator) => sourceIndicator.sourceIndicatorId === sourceIndicatorId,
+    );
+    return sourceIndicator?.weight;
+  }
+
+  get formattedCustomForecastIndicator(): CustomForecastIndicatorResponse {
+    return {
+      id: this.id,
+      customForecastIndicatorName: this.customForecastIndicatorName,
+      targetIndicatorId: this.targetIndicatorId,
+      sourceIndicatorIdsAndWeights: this.sourceIndicatorIdsAndWeights,
+    };
   }
 }
 
@@ -48,6 +64,20 @@ export class CustomForecastIndicators {
 
   findCustomForecastIndicatorByIndex(index: number) {
     return this.customForecastIndicatorList[index];
+  }
+  deleteCustomForecastIndicatorById(id: string) {
+    const index = this.customForecastIndicatorList.findIndex(
+      (customForecastIndicator) => customForecastIndicator.id === id,
+    );
+    if (index === -1) return;
+
+    this.customForecastIndicatorList.splice(index, 1);
+  }
+
+  get formattedCustomForecastIndicatorList() {
+    return this.customForecastIndicatorList.map(
+      (customForecastIndicator) => customForecastIndicator.formattedCustomForecastIndicator,
+    );
   }
 }
 

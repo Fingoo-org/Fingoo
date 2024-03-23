@@ -1,7 +1,9 @@
 const API_URL =
-  process.env.NEXT_PUBLIC_CODESPACES === 'true'
-    ? 'https://' + process.env.NEXT_PUBLIC_CODESPACE_NAME + '-8000.app.github.dev/api'
-    : 'http://localhost:8000/api';
+  process.env.NODE_ENV === 'production'
+    ? 'http://api:8000/api'
+    : process.env.NEXT_PUBLIC_CODESPACES === 'true'
+      ? 'https://' + process.env.NEXT_PUBLIC_CODESPACE_NAME + '-8000.app.github.dev/api'
+      : 'http://localhost:8000/api';
 
 export const API_PATH = {
   indicatorList: `${API_URL}/numerical-guidance/indicator`,

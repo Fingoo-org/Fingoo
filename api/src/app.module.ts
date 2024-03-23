@@ -7,7 +7,7 @@ import { DataSource } from 'typeorm';
 import { TypeOrmConfigService } from './utils/config/typeorm.config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from '@nestjs-modules/ioredis';
-import { MyRedisModule } from './redis/redis.module';
+// import { MyRedisModule } from './redis/redis.module';
 import { NumericalGuidanceModule } from './numerical-guidance/numerical-guidance.module';
 import { RedisConfigService } from './utils/config/redis.config.service';
 import { AuthModule } from './auth/auth.module';
@@ -35,7 +35,7 @@ import { AuthGuard } from './auth/auth.guard';
       useClass: RedisConfigService,
     }),
     CommunityModule,
-    MyRedisModule,
+    // MyRedisModule, https://github.com/nest-modules/ioredis/issues/280
     NumericalGuidanceModule,
     AuthModule,
   ],

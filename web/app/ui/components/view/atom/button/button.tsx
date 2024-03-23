@@ -1,4 +1,4 @@
-import { ButtonVariant, Size, Color } from '@/app/utils/style';
+import { ButtonVariant, Size, Color, cn } from '@/app/utils/style';
 import React from 'react';
 import { getButtonColors, getButtonProportions, Sizes, ButtonVariants } from './button.style';
 import { twMerge } from 'tailwind-merge';
@@ -12,7 +12,15 @@ type ButtonProps = {
 } & NativeButtonType;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { children, size = Sizes.SM, color = 'blue', variant = ButtonVariants.Primary, className, ...props }: ButtonProps,
+  {
+    children,
+    size = Sizes.SM,
+    color = 'blue',
+    variant = ButtonVariants.Primary,
+    className,
+    disabled,
+    ...props
+  }: ButtonProps,
   ref,
 ) {
   const buttonShapeStyles = variant !== ButtonVariants.Light ? 'rounded-lg border' : '';
@@ -21,9 +29,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
 
   return (
     <button
+      disabled={disabled}
       {...props}
       ref={ref}
-      className={twMerge(
+      className={cn(
+        'inline-flex items-center justify-center',
+        disabled && 'cursor-not-allowed opacity-50',
         buttonShapeStyles,
         buttonProportionsStyle[size].paddingX,
         buttonProportionsStyle[size].paddingY,

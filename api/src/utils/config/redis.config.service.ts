@@ -10,6 +10,11 @@ export class RedisConfigService implements RedisModuleOptionsFactory {
     return {
       type: 'single',
       url: this.configService.get<string>('REDIS_URL'),
+      options: {
+        retryStrategy() {
+          return 5000;
+        },
+      },
     };
   }
 }

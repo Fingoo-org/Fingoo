@@ -15,10 +15,14 @@ class ForecastValue(BaseModel):
 class ForecastIndicatorDto(BaseModel):
     name: str
     values: list[ForecastValue]
+
+class Verification(BaseModel):
+    indicatorId: str
+    verification: str
     
 class SourceIndicatorsVerificationResponse(BaseModel):
-    grangerVerification: list[str]
-    cointJohansenVerification: list[str]
+    grangerVerification: list[Verification]
+    cointJohansenVerification: list[Verification]
 
 class SourceIndicatorIdAndWeight(BaseModel):
     sourceIndicatorId: str

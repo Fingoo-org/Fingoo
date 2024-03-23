@@ -9,6 +9,7 @@ import {
   Line,
   LineChart as ReChartsLineChart,
   ResponsiveContainer,
+  ReferenceLine,
   Tooltip,
   XAxis,
   YAxis,
@@ -31,13 +32,18 @@ import { defaultValueFormatter, getColorClassNames } from '@tremor/react/dist/li
 import { tremorTwMerge } from '@tremor/react/dist/lib/tremorTwMerge';
 
 import { CurveType } from '@tremor/react/dist/lib/inputTypes';
+import { caculateNowDate } from '@/app/utils/helper';
 
 interface ActiveDot {
   index?: number;
   dataKey?: string;
 }
 
-const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>((props, ref) => {
+type ExtendedLineChartProps = LineChartProps & {
+  autoNowDateReferenceLine?: boolean;
+};
+
+const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((props, ref) => {
   const {
     data = [],
     categories = [],
@@ -67,6 +73,7 @@ const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>((props, ref) 
     customTooltip,
     rotateLabelX,
     tickGap = 5,
+    autoNowDateReferenceLine = true,
     ...other
   } = props;
   const CustomTooltip = customTooltip;
@@ -78,6 +85,8 @@ const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>((props, ref) 
 
   const yAxisDomain = getYAxisDomain(autoMinValue, minValue, maxValue);
   const hasOnValueChange = !!onValueChange;
+
+  const nowDate = autoNowDateReferenceLine ? caculateNowDate() : undefined;
 
   function onDotClick(itemData: any, event: React.MouseEvent) {
     event.stopPropagation();
@@ -138,6 +147,7 @@ const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>((props, ref) 
                 : undefined
             }
           >
+            {nowDate ? <ReferenceLine strokeWidth={2} label="예측 지표" x={nowDate} /> : null}
             {showGridLines ? (
               <CartesianGrid
                 className={tremorTwMerge(

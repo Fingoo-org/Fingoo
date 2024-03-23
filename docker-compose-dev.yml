@@ -1,0 +1,34 @@
+services:
+  web:
+    ports: 
+      - 3000:3000
+    depends_on:
+      - api
+    networks:
+      - app-net
+  api:
+    ports:
+      - 8000:8000
+    networks:
+      - app-net
+    depends_on:
+      - redis
+      - db
+
+  db:
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgresql/mount:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+  redis:
+    ports:
+      - 6379:6379
+    networks:
+      - app-net
+  
+networks:
+  app-net:
+    name: fingoo

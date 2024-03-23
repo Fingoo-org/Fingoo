@@ -23,13 +23,6 @@ import {
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 
-// Refactor: 여기 위치하면 안될 듯
-export const calculateDate = (date: Date | string, rowsToDownload: number) => {
-  const newDate = new Date(date);
-  newDate.setDate(newDate.getDate() - rowsToDownload);
-  return newDate;
-};
-
 function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx: number }) {
   return (
     <>
@@ -116,9 +109,11 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   };
 
   const renderLienSeries = () => {
-    return Object.keys(scaledData[0]).map((key, idx) => {
+    let index = -1;
+    return Object.keys(scaledData[0]).map((key) => {
       if (key !== 'date' && key !== 'idx') {
-        return <IndicatorLineSeries key={key} indicatorKey={key} idx={idx} />;
+        index += 1;
+        return <IndicatorLineSeries key={key} indicatorKey={key} idx={index} />;
       }
     });
   };

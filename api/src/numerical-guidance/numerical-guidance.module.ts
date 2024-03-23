@@ -39,6 +39,9 @@ import { IndicatorBoardMetadataController } from './api/indicator-board-metadata
 import { LiveIndicatorController } from './api/live-indicator/live-indicator.controller';
 import { FileSupabaseAdapter } from './infrastructure/adapter/storage/file.supabase.adapter';
 import { UploadFileCommandHandler } from './application/command/upload-file/upload-file.command.handler';
+import { DeleteCustomForecastIndicatorIdCommandHandler } from './application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
+import { DeleteCustomForecastIndicatorCommandHandler } from './application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
+import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/command/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
 
 @Module({
   imports: [
@@ -85,6 +88,9 @@ import { UploadFileCommandHandler } from './application/command/upload-file/uplo
     GetCustomForecastIndicatorValuesQueryHandler,
     InsertCustomForecastIndicatorIdCommandHandler,
     UploadFileCommandHandler,
+    DeleteCustomForecastIndicatorIdCommandHandler,
+    DeleteCustomForecastIndicatorCommandHandler,
+    UpdateCustomForecastIndicatorNameCommandHandler,
     {
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
@@ -168,6 +174,16 @@ import { UploadFileCommandHandler } from './application/command/upload-file/uplo
     {
       provide: 'UploadFilePort',
       useClass: FileSupabaseAdapter,
+      provide: 'DeleteCustomForecastIndicatorIdPort',
+      useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'DeleteCustomForecastIndicatorPort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
+    },
+    {
+      provide: 'UpdateCustomForecastIndicatorNamePort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
     },
   ],
 })

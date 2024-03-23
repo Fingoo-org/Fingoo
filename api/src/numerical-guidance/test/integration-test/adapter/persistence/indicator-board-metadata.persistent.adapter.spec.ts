@@ -96,6 +96,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
       member: { id: 9999 },
     });
+
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541b010',
+      indicatorBoardMetadataName: '예측지표 삭제 테스트',
+      indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      customForecastIndicatorIds: {
+        customForecastIndicatorIds: [
+          'customForecastIndicator1',
+          'customForecastIndicator2',
+          'customForecastIndicator3',
+        ],
+      },
+      member: { id: 9999 },
+    });
   };
 
   beforeAll(async () => {
@@ -365,6 +379,54 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
         HttpStatus: HttpStatus.NOT_FOUND,
         message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
         error: `[ERROR] indicatorBoardMetadataId: ${deleteIndicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        cause: Error,
+      }),
+    );
+  });
+
+  it('지표보드 메타데이터에서 예측지표 id 삭제하기', async () => {
+    // given
+    const currentDate: Date = new Date();
+    const indicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541b010',
+      '예측지표 삭제 테스트',
+      ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
+      currentDate,
+      currentDate,
+    );
+
+    // when
+    await indicatorBoardMetadataPersistentAdapter.deleteCustomForecastIndicatorId(indicatorBoardMetadata);
+
+    // then
+    expect(indicatorBoardMetadata.indicatorBoardMetadataName).toEqual('예측지표 삭제 테스트');
+    expect(indicatorBoardMetadata.customForecastIndicatorIds).toEqual([
+      'customForecastIndicator1',
+      'customForecastIndicator2',
+    ]);
+  });
+
+  it('지표보드 메타데이터에서 예측 지표 id 삭제하기 - DB에 존재하지 않을 경우', async () => {
+    // given
+    const currentDate: Date = new Date();
+    const indicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae35419999',
+      '예측지표 삭제 테스트',
+      ['indicator1', 'indicator2'],
+      ['customForecastIndicator1', 'customForecastIndicator2'],
+      currentDate,
+      currentDate,
+    );
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetadataPersistentAdapter.deleteCustomForecastIndicatorId(indicatorBoardMetadata);
+    }).rejects.toThrow(
+      new NotFoundException({
+        HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${indicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
         cause: Error,
       }),
     );

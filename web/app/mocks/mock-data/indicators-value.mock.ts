@@ -9,223 +9,223 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
     values: [
       {
         date: '2024-01-01',
-        value: 100,
+        value: 10000,
       },
       {
         date: '2024-01-02',
-        value: 200,
+        value: 20000,
       },
       {
         date: '2024-01-03',
-        value: 300,
+        value: 30000,
       },
       {
         date: '2024-01-04',
-        value: 200,
+        value: 20000,
       },
       {
         date: '2024-01-05',
-        value: 100,
+        value: 10000,
       },
       {
         date: '2024-01-06',
-        value: 150,
+        value: 15000,
       },
       {
         date: '2024-01-07',
-        value: 210,
+        value: 21000,
       },
       {
         date: '2024-01-08',
-        value: 410,
+        value: 41000,
       },
       {
         date: '2024-01-09',
-        value: 220,
+        value: 22000,
       },
       {
         date: '2024-01-10',
-        value: 110,
+        value: 11000,
       },
       {
         date: '2024-01-11',
-        value: 120,
+        value: 12000,
       },
       {
         date: '2024-01-12',
-        value: 130,
+        value: 13000,
       },
       {
         date: '2024-01-13',
-        value: 140,
+        value: 14000,
       },
       {
         date: '2024-01-14',
-        value: 150,
+        value: 15000,
       },
       {
         date: '2024-01-15',
-        value: 160,
+        value: 16000,
       },
       {
         date: '2024-01-16',
-        value: 170,
+        value: 17000,
       },
       {
         date: '2024-01-17',
-        value: 180,
+        value: 18000,
       },
       {
         date: '2024-01-18',
-        value: 190,
+        value: 19000,
       },
       {
         date: '2024-01-19',
-        value: 200,
+        value: 20000,
       },
       {
         date: '2024-01-20',
-        value: 210,
+        value: 21000,
       },
       {
         date: '2024-01-21',
-        value: 220,
+        value: 22000,
       },
       {
         date: '2024-01-22',
-        value: 230,
+        value: 23000,
       },
       {
         date: '2024-01-23',
-        value: 240,
+        value: 24000,
       },
       {
         date: '2024-01-24',
-        value: 250,
+        value: 25000,
       },
       {
         date: '2024-01-25',
-        value: 260,
+        value: 26000,
       },
       {
         date: '2024-01-26',
-        value: 270,
+        value: 27000,
       },
       {
         date: '2024-01-27',
-        value: 280,
+        value: 28000,
       },
       {
         date: '2024-01-28',
-        value: 290,
+        value: 29000,
       },
       {
         date: '2024-01-29',
-        value: 300,
+        value: 30000,
       },
       {
         date: '2024-01-30',
-        value: 310,
+        value: 31000,
       },
       {
         date: '2024-01-31',
-        value: 320,
+        value: 32000,
       },
       {
         date: '2024-02-01',
-        value: 330,
+        value: 33000,
       },
       {
         date: '2024-02-02',
-        value: 340,
+        value: 34000,
       },
       {
         date: '2024-02-03',
-        value: 350,
+        value: 35000,
       },
       {
         date: '2024-02-04',
-        value: 360,
+        value: 36000,
       },
       {
         date: '2024-02-05',
-        value: 370,
+        value: 37000,
       },
       {
         date: '2024-02-06',
-        value: 380,
+        value: 38000,
       },
       {
         date: '2024-02-07',
-        value: 390,
+        value: 39000,
       },
       {
         date: '2024-02-08',
-        value: 400,
+        value: 40000,
       },
       {
         date: '2024-02-09',
-        value: 410,
+        value: 41000,
       },
       {
         date: '2024-02-10',
-        value: 420,
+        value: 42000,
       },
       {
         date: '2024-02-11',
-        value: 430,
+        value: 43000,
       },
       {
         date: '2024-02-12',
-        value: 440,
+        value: 44000,
       },
       {
         date: '2024-02-13',
-        value: 450,
+        value: 45000,
       },
       {
         date: '2024-02-14',
-        value: 460,
+        value: 46000,
       },
       {
         date: '2024-02-15',
-        value: 470,
+        value: 47000,
       },
       {
         date: '2024-02-16',
-        value: 480,
+        value: 48000,
       },
       {
         date: '2024-02-17',
-        value: 490,
+        value: 49000,
       },
       {
         date: '2024-02-18',
-        value: 500,
+        value: 50000,
       },
       {
         date: '2024-02-19',
-        value: 510,
+        value: 51000,
       },
       {
         date: '2024-02-20',
-        value: 520,
+        value: 52000,
       },
       {
         date: '2024-02-21',
-        value: 530,
+        value: 53000,
       },
       {
         date: '2024-02-22',
-        value: 540,
+        value: 54000,
       },
       {
         date: '2024-02-23',
-        value: 550,
+        value: 55000,
       },
       {
         date: '2024-02-24',
-        value: 500,
+        value: 50000,
       },
     ],
   },

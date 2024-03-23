@@ -1,18 +1,20 @@
 import {
+  CustomForecastIndicatorResponse,
   useCreateCustomForecastIndicator,
+  useDeleteCustomForecastIndicator,
   useFetchCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastIndicatorsViewModel } from '../../services/view-model/custom-forecast-indicator-view-model.service';
-import { useMemo, useRef } from 'react';
-import { calculateIsPending } from '@/app/utils/helper';
+import { useMemo } from 'react';
+import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
 
 export const useCustomForecastIndicatorListViewModel = () => {
   const { data: customForecastIndicatorList, isValidating } = useFetchCustomForecastIndicatorList();
   const { trigger: createCustomForecastIndicatorTrigger, isMutating: isCreateCustomForecastIndicatorMutating } =
     useCreateCustomForecastIndicator();
-  const isPending = useRef(false);
+  const { trigger: deleteCustomForecastIndicatorTrigger } = useDeleteCustomForecastIndicator();
 
-  isPending.current = calculateIsPending(isValidating, isCreateCustomForecastIndicatorMutating);
+  const { isPending } = usePending(isValidating, isCreateCustomForecastIndicatorMutating);
 
   const convertedCustomForecastIndicatorList = useMemo(() => {
     if (!customForecastIndicatorList) return undefined;
@@ -26,12 +28,24 @@ export const useCustomForecastIndicatorListViewModel = () => {
       targetIndicatorId,
     };
 
-    await createCustomForecastIndicatorTrigger(body);
+    const customForecastIndicatorId = await createCustomForecastIndicatorTrigger(body);
+    return customForecastIndicatorId;
+  };
+
+  const deleteIndicatorBoardMetadata = async (customForecastIndicatorId: string) => {
+    deleteCustomForecastIndicatorTrigger(customForecastIndicatorId, {
+      optimisticData: (): CustomForecastIndicatorResponse[] | undefined => {
+        convertedCustomForecastIndicatorList?.deleteCustomForecastIndicatorById(customForecastIndicatorId);
+        return convertedCustomForecastIndicatorList?.formattedCustomForecastIndicatorList;
+      },
+      revalidate: false,
+    });
   };
 
   return {
     customForecastIndicatorList: convertedCustomForecastIndicatorList,
+    isPending,
     createCustomForecastIndicator,
-    isPending: isPending.current,
+    deleteIndicatorBoardMetadata,
   };
 };

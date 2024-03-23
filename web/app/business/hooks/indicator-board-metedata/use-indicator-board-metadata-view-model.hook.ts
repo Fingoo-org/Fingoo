@@ -21,13 +21,18 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     : undefined;
 
   const updateIndicatorBoardMetadata = (newData: { name: string }) => {
-    updateIndicatorBoardMetadataTrigger(newData, {
-      optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-        convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(metadataId, newData.name);
-        return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+    updateIndicatorBoardMetadataTrigger(
+      {
+        indicatorBoardMetadataName: newData.name,
       },
-      revalidate: false,
-    });
+      {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+          convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(metadataId, newData.name);
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+        },
+        revalidate: false,
+      },
+    );
   };
 
   return {

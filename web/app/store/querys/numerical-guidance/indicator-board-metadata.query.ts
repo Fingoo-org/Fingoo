@@ -15,6 +15,8 @@ export type CreateIndicatorMetadataRequestBody = {
   indicatorBoardMetadataName: string;
 };
 
+export type CreateIndicatorMetadataResponse = string;
+
 export type AddIndicatorToMetadataRequestBody = {
   indicatorId: string;
 };
@@ -23,7 +25,10 @@ export const useFetchIndicatorBoardMetadataList = () =>
   useSWR<IndicatorBoardMetadataResponse[]>(API_PATH.indicatorBoardMetadata, defaultFetcher);
 
 export const useCreateIndicatorMetadata = () =>
-  useSWRMutation(API_PATH.indicatorBoardMetadata, postFetcher<CreateIndicatorMetadataRequestBody>);
+  useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    postFetcher<CreateIndicatorMetadataRequestBody, CreateIndicatorMetadataResponse>,
+  );
 
 export const useAddIndicatorToMetadata = (metadataId: string | undefined) =>
   useSWRMutation(
@@ -66,8 +71,21 @@ export const useDeleteIndicatorFromMetadata = (metadataId: string | undefined) =
     },
   );
 
+type DeleteCustomForecastIndicatorFromMetadataRequestArg = {
+  customForecastIndicatorId: string;
+};
+
+export const useDeleteCustomForecastIndicatorFromMetadata = (metadataId: string | undefined) =>
+  useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (url, { arg }: { arg: DeleteCustomForecastIndicatorFromMetadataRequestArg }) => {
+      if (!metadataId) return;
+      await deleteFetcher([url, metadataId, 'custom-forecast-indicator', arg.customForecastIndicatorId]);
+    },
+  );
+
 export type UpdateIndicatorBoardMetadataRequestBody = {
-  name: string;
+  indicatorBoardMetadataName: string;
 };
 
 export const useUpdateIndicatorBoardMetadata = (metadataId: string | undefined) => {
