@@ -8,18 +8,20 @@ import {
 import { UploadFilePort } from '../../../application/port/external/file/upload-file.port';
 import { createClient } from '@supabase/supabase-js';
 import * as process from 'process';
+import { uuid } from '@supabase/supabase-js/dist/main/lib/helpers';
 
 @Injectable()
 export class FileSupabaseAdapter implements UploadFilePort {
   async uploadFile(file: Express.Multer.File): Promise<string> {
     try {
       const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-      const { mimetype, buffer, originalname } = file;
+      const { mimetype, buffer } = file;
+      const newRandomName: string = uuid();
 
       await supabase.storage
         .from(process.env.SUPABASE_BUCKET_NAME)
-        .upload(`indicatorBoardMetadata/${originalname}`, buffer, { contentType: mimetype });
-      return originalname;
+        .upload(`indicatorBoardMetadata/${newRandomName}`, buffer, { contentType: mimetype });
+      return newRandomName;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
