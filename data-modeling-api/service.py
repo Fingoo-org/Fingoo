@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from dtos import IndicatorDto, ForecastIndicatorDto, SourceIndicatorsVerificationResponse, ForecastValue
+from dtos import IndicatorDto, ForecastIndicatorDto, SourceIndicatorsVerificationResponse, ForecastValue, Verification
 import pandas as pd
 from verificationModule import verification
 from forecastModule import forecast
@@ -30,7 +30,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
     if sourceIndicator.id == targetIndicatorId:
       targetIndicatorName = sourceIndicator.name
 
-  #데이터 받아오기 -> nest: request(interval(day), indicatorId)
   APIList = []
   session = requests.Session()
   retry = Retry(connect=10, backoff_factor=1)
@@ -61,19 +60,13 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
     df_var = verification.applyWeight(df_var, indicator, weight)
             
   # granger
-  try: 
-    grangerDf = verification.grangerVerification(df_var)
-    checkDf = verification.findSignificantValues(grangerDf)
-    grangerGroup = verification.findInfluentialGroups(checkDf)
-    if grangerGroup == []:
-      grangerGroup = ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.']
-  except Exception:
-      grangerGroup = ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.']
-
+  grangerDf = verification.grangerVerification(df_var)
+  checkDf = verification.findSignificantValues(grangerDf)
+  grangerGroup = verification.findInfluentialGroups(checkDf)
+  
   # var
   if len(grangerGroup) >= 2:
     customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
-    
     for name in grangerGroup:
       if name == targetIndicatorName:
         forecastdata = customForecastIndicator[name].to_dict()
@@ -93,7 +86,8 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
           }
     return result
   else:
-    return {"name": "해당 지표를 예측할 수 없습니다.", values: []}
+    return {"name": "해당 지표를 예측할 수 없습니다.",
+            "values": []}
 
 def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
   # 데이터베이스로부터 Indicator 정보 가져오기
@@ -116,7 +110,6 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
     if sourceIndicator.id == targetIndicatorId:
       targetIndicatorName = sourceIndicator.name
 
-  #데이터 받아오기 -> nest: request(interval(day), indicatorId)
   APIList = []
   session = requests.Session()
   retry = Retry(connect=10, backoff_factor=1)
@@ -153,27 +146,40 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
     checkDf = verification.findSignificantValues(grangerDf)
     grangerGroup = verification.findInfluentialGroups(checkDf)
     print(grangerGroup)
+    grangerVerificationResult:list[Verification] = []
+    for sourceIndicator in sourceIndicators:
+      if sourceIndicator.name in grangerGroup:
+        ver: Verification = {"indicatorId": sourceIndicator.id, "verification": "True"}
+      else:
+        ver: Verification = {"indicatorId": sourceIndicator.id, "verification": "False"}
+      grangerVerificationResult.append(ver)
+    print(grangerVerificationResult)
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
       "grangerGroup": ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.'],
       "cointJohansenVerification": ['공적분 결과 데이터간 연관성을 확인할 수 없습니다.']
     }
-    return sourceIndicatorsVerification
 
   # coint jojansen
   try:
+    cointJohansenVerificationResult: list[Verification] = []
     cointJohansenVerification = verification.cointJohansenVerification(df_var, grangerGroup)
     cointJohansenVerificationList = [str(item) for item in cointJohansenVerification]
+    for sourceIndicator in sourceIndicators:
+      if sourceIndicator.name in cointJohansenVerificationList:
+        ver: Verification = {'indicatorId': sourceIndicator.id, 'verification': 'True'}
+      else:
+        ver: Verification = {'indicatorId': sourceIndicator.id, 'verification': 'False'}
+      cointJohansenVerificationResult.append(ver)
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
-      "grangerGroup": grangerGroup,
+      "grangerGroup": grangerVerificationResult,
       "cointJohansenVerification": ['공적분 결과 데이터간 연관성을 확인할 수 없습니다.']
     }
-    return sourceIndicatorsVerification
   
   # Source Indicators Verification Response 객체 생성
   sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
-    "grangerGroup": grangerGroup,
-    "cointJohansenVerification": cointJohansenVerificationList
+    "grangerGroup": grangerVerificationResult,
+    "cointJohansenVerification": cointJohansenVerificationResult
   }
   return sourceIndicatorsVerification

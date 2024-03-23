@@ -5,6 +5,8 @@ import numpy as np
 
 def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
   
+  df = df.fillna(method='ffill')
+
   dfVar = df[group]
   for i in group:
     if verification.getADFDataFrame(dfVar[i])['Data']['p_value'] >= 0.05:
@@ -12,7 +14,7 @@ def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
   
   dfNorm = (dfVar/dfVar.iloc[0]) - 1
   
-  model = VAR(dfNorm).fit(14)
+  model = VAR(dfNorm).fit(10)
   ins = dfNorm.values[-model.k_ar:]
   forecast = model.forecast(y=ins, steps=period)
   dfForecast = pd.DataFrame(forecast, columns=dfNorm.columns)
