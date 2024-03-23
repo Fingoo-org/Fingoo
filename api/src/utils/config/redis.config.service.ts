@@ -9,7 +9,7 @@ export class RedisConfigService implements RedisModuleOptionsFactory {
   createRedisModuleOptions(): RedisSingleOptions {
     return {
       type: 'single',
-      url: 'redis://redis:6379',
+      url: this.configService.get<string>('REDIS_URL'),
       options: {
         retryStrategy() {
           return 5000;
