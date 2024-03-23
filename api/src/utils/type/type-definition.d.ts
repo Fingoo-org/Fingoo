@@ -11,10 +11,20 @@ export type SourceIndicatorIdAndWeightType = {
 
 export type CustomForecastIndicatorValues = {
   name: string;
-  values: Values[];
+  values: IndicatorValue[];
 };
 
-export type Values = {
-  value: float;
+export type IndicatorValue = {
   date: string;
+  value: string;
+};
+
+export type TargetIndicatorsValues = {
+  name: string;
+  values: IndicatorValue[];
+};
+
+export type CustomForecastIndicatorValuesResponse = {
+  customForecastIndicatorValues: CustomForecastIndicatorValues;
+  targetIndicatorValues: TargetIndicatorsValues;
 };

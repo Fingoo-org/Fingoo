@@ -21,6 +21,8 @@ import { AuthGuard } from '../../../../auth/auth.guard';
 import { of } from 'rxjs';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
+import { DeleteCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
+import { UpdateCustomForecastIndicatorNameCommandHandler } from 'src/numerical-guidance/application/command/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -50,6 +52,32 @@ describe('Customer Forecast Indicator E2E Test', () => {
     await customForecastIndicatorEntity.insert({
       id: 'f5206520-da94-11ee-b91b-3551e6db3bbd',
       customForecastIndicatorName: 'my second custom forecast indicators',
+      type: 'customForecastIndicator',
+      targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
+      grangerVerification: [],
+      cointJohansenVerification: [],
+      sourceIndicatorIdsAndWeights: [],
+      member: { id: 1 },
+      createdAt: new Date('2024-02-23 10:00:02.292086'),
+      updatedAt: new Date('2024-02-23 10:00:02.292086'),
+    });
+
+    await customForecastIndicatorEntity.insert({
+      id: 'f5206520-da94-11ee-b91b-3551e6db3100',
+      customForecastIndicatorName: '삭제용 예측지표',
+      type: 'customForecastIndicator',
+      targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
+      grangerVerification: [],
+      cointJohansenVerification: [],
+      sourceIndicatorIdsAndWeights: [],
+      member: { id: 1 },
+      createdAt: new Date('2024-02-23 10:00:02.292086'),
+      updatedAt: new Date('2024-02-23 10:00:02.292086'),
+    });
+
+    await customForecastIndicatorEntity.insert({
+      id: 'f5206520-da94-11ee-b91b-3551e6db3101',
+      customForecastIndicatorName: '수정용 예측지표',
       type: 'customForecastIndicator',
       targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
       grangerVerification: [],
@@ -101,6 +129,8 @@ describe('Customer Forecast Indicator E2E Test', () => {
           CreateCustomForecastIndicatorCommandHandler,
           GetCustomForecastIndicatorQueryHandler,
           GetCustomForecastIndicatorsByMemberIdQueryHandler,
+          DeleteCustomForecastIndicatorCommandHandler,
+          UpdateCustomForecastIndicatorNameCommandHandler,
           {
             provide: 'LoadIndicatorBoardMetadataPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
@@ -119,6 +149,14 @@ describe('Customer Forecast Indicator E2E Test', () => {
           },
           {
             provide: 'LoadCustomForecastIndicatorsByMemberIdPort',
+            useClass: CustomForecastIndicatorPersistentAdapter,
+          },
+          {
+            provide: 'DeleteCustomForecastIndicatorPort',
+            useClass: CustomForecastIndicatorPersistentAdapter,
+          },
+          {
+            provide: 'UpdateCustomForecastIndicatorNamePort',
             useClass: CustomForecastIndicatorPersistentAdapter,
           },
           {
@@ -193,5 +231,66 @@ describe('Customer Forecast Indicator E2E Test', () => {
       .get('/api/numerical-guidance/custom-forecast-indicator')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
+  });
+
+  it('/delete 예측지표를 삭제한다', async () => {
+    return request(app.getHttpServer())
+      .delete('/api/numerical-guidance/custom-forecast-indicators/f5206520-da94-11ee-b91b-3551e6db3100')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/delete 예측지표를 삭제한다. - DB에 id가 존재하지 않는다.', async () => {
+    return request(app.getHttpServer())
+      .delete('/api/numerical-guidance/custom-forecast-indicators/f5206520-da94-11ee-b91b-3551e6db3999')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.NOT_FOUND);
+  });
+
+  it('/delete 예측지표를 삭제한다. - 유효하지않은 id를 요청한다.', async () => {
+    return request(app.getHttpServer())
+      .delete('/api/numerical-guidance/custom-forecast-indicators/invalid-id')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/patch 예측지표 이름을 수정한다.', async () => {
+    return request(app.getHttpServer())
+      .patch('/api/numerical-guidance/custom-forecast-indicator/name/f5206520-da94-11ee-b91b-3551e6db3101')
+      .send({
+        name: '수정후이름',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/patch 예측지표 이름을 수정한다. - DB에 예측지표가 존재하지 않을경우', async () => {
+    return request(app.getHttpServer())
+      .patch('/api/numerical-guidance/custom-forecast-indicator/name/f5206520-da94-11ee-b91b-3551e6db3105')
+      .send({
+        name: '수정후이름',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.NOT_FOUND);
+  });
+
+  it('/patch 예측지표 이름을 수정한다. - 아이디 형식이 uuid가 아닌 경우', async () => {
+    return request(app.getHttpServer())
+      .patch('/api/numerical-guidance/custom-forecast-indicator/name/not-uuid')
+      .send({
+        name: '수정후이름',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/patch 예측지표 이름을 수정한다. - 이름이 공백일 경우', async () => {
+    return request(app.getHttpServer())
+      .patch('/api/numerical-guidance/custom-forecast-indicator/name/f5206520-da94-11ee-b91b-3551e6db3101')
+      .send({
+        name: '   ',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
   });
 });

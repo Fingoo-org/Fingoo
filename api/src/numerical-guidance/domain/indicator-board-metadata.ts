@@ -84,6 +84,14 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.indicatorIds = updateIds;
   }
 
+  public deleteCustomForecastIndicatorId(id: string): void {
+    let updateIds: string[] = [...this.customForecastIndicatorIds];
+    this.checkRule(new OnlyRegisteredIdCanBeRemovedRule(updateIds, id));
+
+    updateIds = updateIds.filter((value) => value !== id);
+    this.customForecastIndicatorIds = updateIds;
+  }
+
   public updateIndicatorBoardMetadataName(name: string) {
     this.checkRule(new IndicatorBoardMetadataNameShouldNotEmptyRule(name));
     this.indicatorBoardMetadataName = name;

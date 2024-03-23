@@ -1,5 +1,5 @@
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { AuthGuard } from '../../../auth/auth.guard';
@@ -12,8 +12,11 @@ import { GetCustomForecastIndicatorQuery } from '../../application/query/get-cus
 import { GetCustomForecastIndicatorsByMemberIdQuery } from '../../application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query';
 import { UpdateSourceIndicatorsAndWeightsDto } from './dto/update-source-indicators-and-weights.dto';
 import { UpdateSourceIndicatorsAndWeightsCommand } from '../../application/command/update-source-indicators-and-weights/update-source-indicators-and-weights.command';
-import { CustomForecastIndicatorValues } from '../../../utils/type/type-definition';
+import { CustomForecastIndicatorValuesResponse } from '../../../utils/type/type-definition';
 import { GetCustomForecastIndicatorValuesQuery } from '../../application/query/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query';
+import { DeleteCustomForecastIndicatorCommand } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command';
+import { UpdateCustomForecastIndicatorNameDto } from './dto/update-custom-forecast-indicator-name.dto';
+import { UpdateCustomForecastIndicatorNameCommand } from 'src/numerical-guidance/application/command/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command';
 
 @ApiTags('CustomForecastIndicatorController')
 @Controller('/api/numerical-guidance')
@@ -157,11 +160,76 @@ export class CustomForecastIndicatorController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
-  @Get('/custom-forecast-indicator-view/:customForecastIndicatorId')
+  @Get('/custom-forecast-indicator/value/:customForecastIndicatorId')
   async loadCustomForecastIndicatorValues(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
-  ): Promise<CustomForecastIndicatorValues> {
+  ): Promise<CustomForecastIndicatorValuesResponse> {
     const query = new GetCustomForecastIndicatorValuesQuery(customForecastIndicatorId);
     return await this.queryBus.execute(query);
+  }
+
+  @ApiOperation({ summary: '예측지표를 삭제합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(
+    400,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    `[ERROR] 예측지표를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] customForecastIndicatorId: ${id} 해당 예측지표를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 예측지표를 삭제하는 도중에 예상치 못한 문제가 발생했습니다.',
+  )
+  @ApiParam({
+    name: 'customForecastIndicatorId',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
+  @Delete('/custom-forecast-indicators/:customForecastIndicatorId')
+  async deleteCustomForecastIndicator(@Param('customForecastIndicatorId') customForecastIndicatorId): Promise<void> {
+    const command = new DeleteCustomForecastIndicatorCommand(customForecastIndicatorId);
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '예측지표의 이름을 수정합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(
+    400,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    `[ERROR] 예측지표의 이름을 수정하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] customForecastIndicatorId: ${id} 해당 예측지표를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 예측지표의 이름을 수정하는 중에 예상치 못한 문제가 발생했습니다.',
+  )
+  @ApiParam({
+    name: 'customForecastIndicatorId',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
+  @Patch('/custom-forecast-indicator/name/:customForecastIndicatorId')
+  async updateCustomForecastIndicatorName(
+    @Param('customForecastIndicatorId') customForecastIndicatorId,
+    @Body() updateCustomForecastIndicatorNameDto: UpdateCustomForecastIndicatorNameDto,
+  ) {
+    const command = new UpdateCustomForecastIndicatorNameCommand(
+      customForecastIndicatorId,
+      updateCustomForecastIndicatorNameDto.name,
+    );
+
+    await this.commandBus.execute(command);
   }
 }

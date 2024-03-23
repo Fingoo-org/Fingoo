@@ -37,6 +37,9 @@ import { HistoryIndicatorController } from './api/history-indicator/history-indi
 import { IndicatorController } from './api/indicator/indicator.controller';
 import { IndicatorBoardMetadataController } from './api/indicator-board-metadata/indicator-board-metadata.controller';
 import { LiveIndicatorController } from './api/live-indicator/live-indicator.controller';
+import { DeleteCustomForecastIndicatorIdCommandHandler } from './application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
+import { DeleteCustomForecastIndicatorCommandHandler } from './application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
+import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/command/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
 
 @Module({
   imports: [
@@ -82,6 +85,9 @@ import { LiveIndicatorController } from './api/live-indicator/live-indicator.con
     UpdateSourceIndicatorsAndWeightsCommandHandler,
     GetCustomForecastIndicatorValuesQueryHandler,
     InsertCustomForecastIndicatorIdCommandHandler,
+    DeleteCustomForecastIndicatorIdCommandHandler,
+    DeleteCustomForecastIndicatorCommandHandler,
+    UpdateCustomForecastIndicatorNameCommandHandler,
     {
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
@@ -161,6 +167,18 @@ import { LiveIndicatorController } from './api/live-indicator/live-indicator.con
     {
       provide: 'InsertCustomForecastIndicatorIdPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'DeleteCustomForecastIndicatorIdPort',
+      useClass: IndicatorBoardMetadataPersistentAdapter,
+    },
+    {
+      provide: 'DeleteCustomForecastIndicatorPort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
+    },
+    {
+      provide: 'UpdateCustomForecastIndicatorNamePort',
+      useClass: CustomForecastIndicatorPersistentAdapter,
     },
   ],
 })

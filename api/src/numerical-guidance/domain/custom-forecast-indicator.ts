@@ -1,6 +1,6 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { IndicatorType } from '../application/query/get-live-indicator/live-indicator.dto';
-import { CustomForecastIndicatorNameShouldNotEmpty } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
+import { CustomForecastIndicatorNameShouldNotEmptyRule } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 import { SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 import { SourceIndicatorsShouldNotDuplicateRule } from './rule/SourceIndicatorsShouldNotDuplicate.rule';
@@ -15,7 +15,7 @@ export class CustomForecastIndicator extends AggregateRoot {
 
   @ApiProperty({
     example: 'my first custom forecast indicator',
-    description: '예측지표 id',
+    description: '예측지표 이름',
   })
   customForecastIndicatorName: string;
 
@@ -71,7 +71,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[],
   ) {
     super();
-    this.checkRule(new CustomForecastIndicatorNameShouldNotEmpty(customForecastIndicatorName));
+    this.checkRule(new CustomForecastIndicatorNameShouldNotEmptyRule(customForecastIndicatorName));
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.type = type;
@@ -107,6 +107,12 @@ export class CustomForecastIndicator extends AggregateRoot {
       newSourceIndicatorIdsAndWeights.push(sourceIndicatorIdsAndWeights[i]);
     }
     this.sourceIndicatorIdsAndWeights = newSourceIndicatorIdsAndWeights;
+    this.updatedAt = new Date();
+  }
+
+  public updateCustomForecastIndicatorName(name: string) {
+    this.checkRule(new CustomForecastIndicatorNameShouldNotEmptyRule(name));
+    this.customForecastIndicatorName = name;
     this.updatedAt = new Date();
   }
 }

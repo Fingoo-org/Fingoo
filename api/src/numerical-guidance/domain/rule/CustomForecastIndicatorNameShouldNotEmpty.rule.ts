@@ -1,6 +1,6 @@
 import { BusinessRule } from 'src/utils/domain/business.rule';
 
-export class CustomForecastIndicatorNameShouldNotEmpty implements BusinessRule {
+export class CustomForecastIndicatorNameShouldNotEmptyRule implements BusinessRule {
   constructor(private readonly customForecastIndicatorName: string) {}
 
   isBroken = () =>

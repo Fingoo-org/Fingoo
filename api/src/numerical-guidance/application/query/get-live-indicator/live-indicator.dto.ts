@@ -1,10 +1,5 @@
-import { IndicatorType, Market } from 'src/utils/type/type-definition';
+import { IndicatorType, IndicatorValue, Market } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
-
-export type IndicatorValue = {
-  date: string;
-  value: string;
-};
 
 export class LiveIndicatorDto {
   @ApiProperty({
@@ -80,7 +75,7 @@ export class LiveIndicatorDto {
     return new LiveIndicatorDto(indicatorId, type, ticker, name, market, totalCount, values);
   }
 }
-export { IndicatorType };
+export { IndicatorType, IndicatorValue };
 
 export class IndicatorValueSwaggerSchema {
   @ApiProperty({
