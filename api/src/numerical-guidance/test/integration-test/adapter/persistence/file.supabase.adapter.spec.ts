@@ -5,6 +5,8 @@ import * as fs from 'fs';
 import { ConfigModule } from '@nestjs/config';
 import { HttpStatus, NotFoundException } from '@nestjs/common';
 
+const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 describe('FileSupabaseAdapter', () => {
   let environment;
   let fileSupabaseAdapter: FileSupabaseAdapter;
@@ -50,8 +52,9 @@ describe('FileSupabaseAdapter', () => {
     await fileSupabaseAdapter.deleteFile(file.originalname);
 
     // then
-    const expectName = 'test-file.png';
-    expect(expectName).toEqual(result);
+    const expectInvalidName = null;
+    expect(expectInvalidName).not.toEqual(result);
+    expect(result).toMatch(uuidPattern);
   });
 
   it('supabase 파일 업로드 - 빈 파일을 보내는 경우', async () => {
