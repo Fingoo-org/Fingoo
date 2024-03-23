@@ -7,9 +7,9 @@ import { liveIndicatorTestData } from '../../data/liveIndicator.test.data';
 import { Indicator, IndicatorDto } from 'src/numerical-guidance/application/query/get-indicator/indicator.dto';
 import { LiveIndicatorDto } from 'src/numerical-guidance/application/query/get-live-indicator/live-indicator.dto';
 import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
-import { LoadLiveIndicatorPort } from 'src/numerical-guidance/application/port/external/load-live-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
+import { LoadLiveIndicatorPort } from '../../../application/port/external/krx/load-live-indicator.port';
 
 const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
   customForecastIndicatorValues: {

@@ -9,9 +9,9 @@ import {
 } from 'src/utils/type/type-definition';
 import { LoadCustomForecastIndicatorPort } from '../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
-import { LoadLiveIndicatorPort } from '../../port/external/load-live-indicator.port';
 import { LoadIndicatorPort } from '../../port/persistence/indicator/load-indicator.port';
 import { LiveIndicatorDto } from '../get-live-indicator/live-indicator.dto';
+import { LoadLiveIndicatorPort } from '../../port/external/krx/load-live-indicator.port';
 
 @Injectable()
 @QueryHandler(GetCustomForecastIndicatorValuesQuery)
