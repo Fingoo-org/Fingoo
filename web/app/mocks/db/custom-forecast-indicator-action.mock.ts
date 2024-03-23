@@ -13,6 +13,7 @@ export type MockCustomForecastIndicatorAction = {
   ) => CreateCustomForecastIndicatorResponse;
   patchSourceIndicator: (id: string, data: updateSourceIndicatorRequestBody) => void;
   deleteCustomForecastIndicator: (id: string) => void;
+  updateCustomForecastIndicatorName: (id: string, name: string) => void;
 };
 
 export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorAction = {
@@ -47,5 +48,15 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     mockDatabaseStore.customForecastIndicatorList = mockDatabaseStore.customForecastIndicatorList.filter(
       (customForecastIndicator) => customForecastIndicator.id !== id,
     );
+  },
+  updateCustomForecastIndicatorName: (id, name) => {
+    const index = mockDatabaseStore.customForecastIndicatorList.findIndex(
+      (customForecastIndicator) => customForecastIndicator.id === id,
+    );
+    const newCustomForecastIndicator = {
+      ...mockDatabaseStore.customForecastIndicatorList[index],
+      customForecastIndicatorName: name,
+    };
+    mockDatabaseStore.customForecastIndicatorList[index] = newCustomForecastIndicator;
   },
 };

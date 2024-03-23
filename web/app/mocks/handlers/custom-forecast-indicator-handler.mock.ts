@@ -4,6 +4,7 @@ import { API_PATH } from '../../store/querys/api-path';
 import {
   updateSourceIndicatorRequestBody,
   CreateCustomForecastIndicatorRequestBody,
+  UpdatecustomForecastIndicatorNameRequestBody,
 } from '../../store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { mockDB } from '../db';
 
@@ -32,6 +33,16 @@ export const customForecastIndicatorHandlers = [
       const { customForecastIndicatorId } = params;
       const data = await request.json();
       mockDB.patchSourceIndicator(customForecastIndicatorId, data);
+      await delayForDevelopment();
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
+  http.patch<customForecastIndicatorParam, UpdatecustomForecastIndicatorNameRequestBody>(
+    `${API_PATH.customForecastIndicator}/:customForecastIndicatorId/name`,
+    async ({ params, request }) => {
+      const { customForecastIndicatorId } = params;
+      const { name } = await request.json();
+      mockDB.updateCustomForecastIndicatorName(customForecastIndicatorId, name);
       await delayForDevelopment();
       return HttpResponse.json({ status: 200 });
     },

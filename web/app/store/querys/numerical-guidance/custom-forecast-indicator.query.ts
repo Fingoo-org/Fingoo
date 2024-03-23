@@ -55,3 +55,19 @@ export const useDeleteCustomForecastIndicator = () => {
     await deleteFetcher([url, metadataId]);
   });
 };
+
+export type UpdatecustomForecastIndicatorNameRequestBody = {
+  name: string;
+};
+
+export const useUpdateCustomForecastIndicatorName = (customForecastIndicatorId: string | undefined) => {
+  return useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (url: string, { arg }: { arg: UpdatecustomForecastIndicatorNameRequestBody }) => {
+      if (!customForecastIndicatorId) return;
+      await patchFetcher<UpdatecustomForecastIndicatorNameRequestBody>([url, 'name', customForecastIndicatorId], {
+        arg,
+      });
+    },
+  );
+};
