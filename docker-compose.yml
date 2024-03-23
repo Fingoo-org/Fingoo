@@ -2,9 +2,9 @@ version: '3.7'
 
 services:
   web:
-    image: hunnnys/web
+    image: hunnnys/web:latest
   api:
-    image: hunnnys/api
+    image: hunnnys/api:latest
     environment:
     - DB_HOST=${DB_HOST}
     - DB_PORT=${DB_PORT}
@@ -20,5 +20,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   redis: 
     image: redis:latest
-  # data-modeling-api:
-  #   image: yoonyounghun/fastapi
+  data-modeling-api:
+    image: yoonyounghun/fastapi:latest
+    environment:
+      - BASE_URL=${BASE_URL}

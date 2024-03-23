@@ -28,6 +28,8 @@ services:
       - 6379:6379
     networks:
       - app-net
+
+  
   
 networks:
   app-net:
