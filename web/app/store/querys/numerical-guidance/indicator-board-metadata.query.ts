@@ -72,7 +72,7 @@ export const useDeleteIndicatorFromMetadata = (metadataId: string | undefined) =
   );
 
 type DeleteCustomForecastIndicatorFromMetadataRequestArg = {
-  indicatorId: string;
+  customForecastIndicatorId: string;
 };
 
 export const useDeleteCustomForecastIndicatorFromMetadata = (metadataId: string | undefined) =>
@@ -80,7 +80,7 @@ export const useDeleteCustomForecastIndicatorFromMetadata = (metadataId: string 
     API_PATH.indicatorBoardMetadata,
     async (url, { arg }: { arg: DeleteCustomForecastIndicatorFromMetadataRequestArg }) => {
       if (!metadataId) return;
-      await deleteFetcher([url, metadataId, 'custom-forecast-indicator', arg.indicatorId]);
+      await deleteFetcher([url, metadataId, 'custom-forecast-indicator', arg.customForecastIndicatorId]);
     },
   );
 
