@@ -16,14 +16,10 @@ const MetadataList = React.memo(function MetadataList() {
     const metadata = {
       indicatorBoardMetadataName: 'metadata1',
     };
-    try {
-      await createIndicatorBoardMetadata(metadata);
-      // refactor: 추후 be 작업이 완료 되면 설정
-      // selectMetadataById(metadata.id);
-    } catch (e) {
-      // error: 위에서 처리, 넘겨줄 필요 있나?
-      throw e;
-    }
+
+    const indicatorBoardMetadataId = await createIndicatorBoardMetadata(metadata);
+
+    // selectMetadataById(indicatorBoardMetadataId);
   };
 
   const renderItem = (item: IndicatorBoardMetadata) => <MetadataListItem key={item.id} item={item} />;

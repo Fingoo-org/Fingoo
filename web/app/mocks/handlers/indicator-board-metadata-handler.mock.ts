@@ -22,14 +22,10 @@ export const indicatorBoardMetadataHandlers = [
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getMetadataList());
   }),
-  // Fix: 애만 이슈로 아직 안되어있음
   http.post<never, CreateIndicatorMetadataRequestBody, never>(API_PATH.indicatorBoardMetadata, async ({ request }) => {
     const newMetadata = await request.json();
-    mockDB.postMetadataList(newMetadata);
     await delayForDevelopment();
-    return HttpResponse.json({
-      status: 200,
-    });
+    return HttpResponse.text(mockDB.postMetadataList(newMetadata));
   }),
   http.post<metadataParam, AddIndicatorToMetadataRequestBody>(
     `${API_PATH.indicatorBoardMetadata}/:metadataId`,

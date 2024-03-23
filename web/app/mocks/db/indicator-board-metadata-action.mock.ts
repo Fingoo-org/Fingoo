@@ -4,12 +4,13 @@ import {
   AddIndicatorToMetadataRequestBody,
   UpdateIndicatorBoardMetadataRequestBody,
   AddCustomForecastIndicatorToMetadataRequestBody,
+  CreateIndicatorMetadataResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { mockDatabaseStore } from '.';
 
 export type MockIndicatorBoardMetadataAction = {
   getMetadataList: () => IndicatorBoardMetadataResponse[];
-  postMetadataList: (newMetadata: CreateIndicatorMetadataRequestBody) => void;
+  postMetadataList: (newMetadata: CreateIndicatorMetadataRequestBody) => CreateIndicatorMetadataResponse;
   getMetadata: (id: string) => IndicatorBoardMetadataResponse | undefined;
   postIndicatorToMetadata: (id: string, data: AddIndicatorToMetadataRequestBody) => void;
   deleteIndicatorFromMetadata: (id: string, indicatorId: string) => void;
@@ -23,13 +24,15 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
     return mockDatabaseStore.metadataList;
   },
   postMetadataList: (data) => {
+    const id = Math.random().toString(36);
     const newMetadata = {
       ...data,
-      id: Math.random().toString(36),
+      id,
       indicatorIds: [],
       customForecastIndicatorIds: [],
     };
     mockDatabaseStore.metadataList = [...mockDatabaseStore.metadataList, newMetadata];
+    return id;
   },
   getMetadata: (id) => {
     return mockDatabaseStore.metadataList.find((metadata) => metadata.id === id);
