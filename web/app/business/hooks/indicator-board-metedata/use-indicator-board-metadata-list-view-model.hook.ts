@@ -23,11 +23,8 @@ export const useIndicatorBoardMetadataList = () => {
   }, [indicatorBoardMetadataList]);
 
   const createIndicatorBoardMetadata = async (data: CreateIndicatorMetadataRequestBody) => {
-    try {
-      await createIndicatorBoardMetadataTrigger(data);
-    } catch {
-      // error: 전역 에러 처리 or 에러 바운더리에서 처리
-    }
+    const indicatorBoardMetadataId = await createIndicatorBoardMetadataTrigger(data);
+    return indicatorBoardMetadataId;
   };
 
   const deleteIndicatorBoardMetadata = async (metadataId: string) => {

@@ -25,7 +25,8 @@ export const useCustomForecastIndicatorListViewModel = () => {
       targetIndicatorId,
     };
 
-    await createCustomForecastIndicatorTrigger(body);
+    const customForecastIndicatorId = await createCustomForecastIndicatorTrigger(body);
+    return customForecastIndicatorId;
   };
 
   return {

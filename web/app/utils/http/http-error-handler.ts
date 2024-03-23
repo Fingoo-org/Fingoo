@@ -21,7 +21,7 @@ export interface ErrorResponseData {
 export const httpErrorHandler = (error: AxiosError<ErrorResponseData> | Error) => {
   let promiseError: Promise<Error>;
 
-  console.error(error);
+  console.log(error);
   if (axios.isAxiosError(error)) {
     if (Object.is(error.code, 'ECONNABORTED')) {
       promiseError = Promise.reject(new TimeoutError());

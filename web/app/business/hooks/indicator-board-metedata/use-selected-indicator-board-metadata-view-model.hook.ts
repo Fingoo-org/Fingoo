@@ -92,13 +92,18 @@ export const useSelectedIndicatorBoardMetadata = () => {
     if (!selectedMetadata) {
       return;
     }
-    updateTrigger(data, {
-      optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-        convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(selectedMetadataId, data.name);
-        return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+    updateTrigger(
+      {
+        indicatorBoardMetadataName: data.name,
       },
-      revalidate: false,
-    });
+      {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+          convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(selectedMetadataId, data.name);
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+        },
+        revalidate: false,
+      },
+    );
   };
 
   return {

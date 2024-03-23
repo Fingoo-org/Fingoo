@@ -1,0 +1,44 @@
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+import { cn } from '@/app/utils/style';
+
+const alertVariants = cva(
+  'flex items-center justify-center relative w-full rounded-lg bg-slate-200 px-4 py-3 text-sm  [&>svg]:text-slate-950 dark:bg-slate-800 dark:[&>svg]:text-slate-50',
+  {
+    variants: {
+      variant: {
+        default:
+          'bg-green-200/50 text-green-500 dark:bg-green-500 [&>svg]:text-green-500 dark:border-green-900/50 dark:text-green-900 dark:dark:border-green-900 dark:[&>svg]:text-green-900',
+        destructive:
+          'bg-red-200/50 text-red-500 dark:bg-red-500 [&>svg]:text-red-500 dark:border-red-900/50 dark:text-red-900 dark:dark:border-red-900 dark:[&>svg]:text-red-900',
+        warning:
+          'bg-orange-200/50 text-orange-500 dark:bg-orange-500 [&>svg]:text-orange-500 dark:border-orange-900/50 dark:text-orange-900 dark:dark:border-orange-900 dark:[&>svg]:text-orange-900',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  },
+);
+
+type CalloutProps = {
+  icon?: React.ElementType;
+  content: string;
+} & React.HTMLAttributes<HTMLDivElement> &
+  VariantProps<typeof alertVariants>;
+
+const Callout = React.forwardRef<HTMLDivElement, CalloutProps>(
+  ({ className, variant, icon, content, ...props }, ref) => {
+    const Icon = icon;
+    return (
+      <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props}>
+        {Icon ? <Icon className="className=h-4 mr-2 w-4" /> : null}
+        <div className='"text-sm [&_p]:leading-relaxed"'>{content}</div>
+      </div>
+    );
+  },
+);
+Callout.displayName = 'Alert';
+
+export default Callout;

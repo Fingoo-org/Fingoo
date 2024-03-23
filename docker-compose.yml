@@ -12,9 +12,11 @@ services:
     - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     - MYSQL_DATABASE=${MYSQL_DATABASE}
   db:
-    image: mysql:8
+    image: postgres:16
     environment:
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  redis: 
+    image: redis:latest
+  data-modeling-api:
+    image: yoonyounghun/fastapi

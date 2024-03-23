@@ -3,7 +3,7 @@ import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import SelectedMetadataTittle from '../indicator-board-metadata/selected-metadata-title';
 import ToggleButton from '../../view/atom/toggle-button/toggle-button';
-import { CheckCircleIcon } from '@heroicons/react/outline';
+import { CheckCircledIcon } from '@radix-ui/react-icons';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
 import AdvancedIndicatorsChart from './advanced-indicators-chart';
 import SimpleIndicatorsChart from './simple-indicators-chart';
@@ -25,15 +25,17 @@ export default function IndicatorsChart() {
         <div className="flex items-center justify-center">
           <SelectedMetadataTittle />
         </div>
-        <div>
+        <div className="px-14">
           <ToggleButton
+            className="font-medium"
+            size={'lg'}
             onToggle={handleToggle}
             disabled={selectedMetadata && formattedIndicatorsRows ? false : true}
-            icon={CheckCircleIcon}
+            icon={CheckCircledIcon}
             text={'자세한 차트'}
           />
         </div>
-        <div className="mt-4 h-72 w-full">
+        <div className="h-80 w-full px-8">
           {isAdvancedChart ? <AdvancedIndicatorsChart /> : <SimpleIndicatorsChart />}
         </div>
       </Pending>

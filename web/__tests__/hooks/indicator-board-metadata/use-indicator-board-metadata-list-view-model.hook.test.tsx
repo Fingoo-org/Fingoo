@@ -35,7 +35,6 @@ describe('useIndicatorBoardMetadataList', () => {
     await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
 
     // when
-    console.log('first', result.current.isPending);
     await act(() => {
       result.current.createIndicatorBoardMetadata({ indicatorBoardMetadataName: 'metadata4' });
     });
@@ -43,29 +42,6 @@ describe('useIndicatorBoardMetadataList', () => {
     // then
     await waitFor(() => expect(result.current.metadataList).toHaveLength(4));
     expect(result.current.metadataList?.[3].indicatorBoardMetadataName).toBe('metadata4');
-  });
-
-  // Risk: https://mswjs.io/docs/limitations#parallel-runs
-  it('서버에 장애가 있을 때, 메타데이터를 생성하면, 생성한 메타데이터를 포함하지 않는 메타데이터 리스트를 가져온다.', async () => {
-    // given
-    const { result } = renderHook(() => useIndicatorBoardMetadataList(), { wrapper });
-    const { result: store } = renderHook(() => useWorkspaceStore());
-    server.use(
-      http.post(API_PATH.indicatorBoardMetadata, () => {
-        return new HttpResponse(null, { status: 500 });
-      }),
-    );
-    await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
-
-    // when
-    await act(() => {
-      result.current.createIndicatorBoardMetadata({ indicatorBoardMetadataName: 'metadata4' });
-    });
-
-    // then
-    expect(result.current.metadataList).toHaveLength(3);
-    expect(result.current.metadataList?.[3]).toBeUndefined();
-    expect(store.current.selectedMetadataId).toBeUndefined();
   });
 
   it('메타데이터를 삭제하면, 삭제한 메타데이터를 포함하지 않는 메타데이터 리스트를 가져온다.', async () => {

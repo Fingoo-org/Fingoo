@@ -16,7 +16,11 @@ export const onActionHttpError = (toast: (props: Toast) => any, error: unknown) 
     return;
   }
   if (error instanceof HttpError && error.response?.config.method === 'get') {
-    // get error는 에러 바운더리에서 처리
+    // get error는 에러 바운더리에서 처리, 일단 임시로 처리
+    toast({
+      variant: 'destructive',
+      description: '네트워크 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.',
+    });
     return;
   }
 

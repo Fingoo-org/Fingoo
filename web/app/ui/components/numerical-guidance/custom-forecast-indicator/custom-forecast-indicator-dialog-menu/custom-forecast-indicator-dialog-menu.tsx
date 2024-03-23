@@ -39,7 +39,7 @@ export default function CustomForecastIndicatorDialogMenu() {
           <Card className="h-28 p-1.5">
             <SourceIndicatorSearchList />
           </Card>
-          <div className="text-xs font-bold	">가중치</div>
+          <div className="py-2 text-xs font-bold">가중치</div>
           <SourceIndicatorSliderGroup />
         </Pending>
       </DialogMenu.Content>
