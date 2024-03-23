@@ -37,6 +37,8 @@ import { HistoryIndicatorController } from './api/history-indicator/history-indi
 import { IndicatorController } from './api/indicator/indicator.controller';
 import { IndicatorBoardMetadataController } from './api/indicator-board-metadata/indicator-board-metadata.controller';
 import { LiveIndicatorController } from './api/live-indicator/live-indicator.controller';
+import { FileSupabaseAdapter } from './infrastructure/adapter/storage/file.supabase.adapter';
+import { UploadFileCommandHandler } from './application/command/upload-file/upload-file.command.handler';
 import { DeleteCustomForecastIndicatorIdCommandHandler } from './application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
 import { DeleteCustomForecastIndicatorCommandHandler } from './application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
 import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/command/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
@@ -85,6 +87,7 @@ import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/c
     UpdateSourceIndicatorsAndWeightsCommandHandler,
     GetCustomForecastIndicatorValuesQueryHandler,
     InsertCustomForecastIndicatorIdCommandHandler,
+    UploadFileCommandHandler,
     DeleteCustomForecastIndicatorIdCommandHandler,
     DeleteCustomForecastIndicatorCommandHandler,
     UpdateCustomForecastIndicatorNameCommandHandler,
@@ -169,6 +172,8 @@ import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/c
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },
     {
+      provide: 'UploadFilePort',
+      useClass: FileSupabaseAdapter,
       provide: 'DeleteCustomForecastIndicatorIdPort',
       useClass: IndicatorBoardMetadataPersistentAdapter,
     },

@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { GetLiveIndicatorQuery } from './get-live-indicator.query';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { LoadLiveIndicatorPort } from '../../port/external/load-live-indicator.port';
+import { LoadLiveIndicatorPort } from '../../port/external/krx/load-live-indicator.port';
 import { LiveIndicatorDto } from './live-indicator.dto';
 import { Interval } from '../../../../utils/type/type-definition';
 import { CachingLiveIndicatorPort } from '../../port/cache/caching-live-indicator.port';
