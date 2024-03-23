@@ -52,4 +52,26 @@ describe('CustomForecastIndicatorList', () => {
     // then
     expect(await screen.findByRole('tab', { selected: true })).toBeInTheDocument();
   });
+
+  it('사용자가 커스텀 예측 지표를 클릭 한 후 다시 클릭하면, 커스텀 예측 지표 선택이 해제된다', async () => {
+    // given
+    const user = userEvent.setup();
+    render(
+      <SWRProviderWithoutCache>
+        <CustomForecastIndicatorList />
+      </SWRProviderWithoutCache>,
+    );
+    const { result: store } = renderHook(() => useWorkspaceStore());
+    act(() => {
+      store.current.actions.selectMetadata('1');
+    });
+    await waitFor(() => expect(screen.getByRole('tablist')).toBeVisible());
+    await user.click(await screen.findByText(/customForecastIndicator1/i));
+
+    // when
+    await user.click(await screen.findByText(/customForecastIndicator1/i));
+
+    // then
+    expect(screen.queryByRole('tab', { selected: true })).not.toBeInTheDocument();
+  });
 });

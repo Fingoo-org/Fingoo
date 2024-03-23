@@ -167,4 +167,31 @@ describe('CustomForecastIndicatorDialogMenu', () => {
     // then
     expect(await screen.queryByText(/customForecastIndicator1/i)).toBeNull();
   });
+
+  it('사용자가 이름을 변경하면, 이름이 변경된다.', async () => {
+    // given
+    const user = userEvent.setup();
+    render(
+      <SWRProviderWithoutCache>
+        <CustomForecastIndicatorDialogMenu />
+        <CustomForecastIndicatorList />
+      </SWRProviderWithoutCache>,
+    );
+    await user.hover(await screen.findByText(/customForecastIndicator1/i));
+    await user.click(
+      (
+        await screen.findAllByRole('button', {
+          name: 'edit',
+        })
+      )[0],
+    );
+
+    // when
+    const input = await screen.findByDisplayValue('customForecastIndicator1');
+    await user.clear(input);
+    await user.type(input, 'newCustomForecastIndicator1');
+
+    // then
+    expect(input).toHaveValue('newCustomForecastIndicator1');
+  });
 });
