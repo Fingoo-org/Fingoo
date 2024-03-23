@@ -8,6 +8,12 @@ import datetime
 import requests
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BASE_URL = os.getenv("BASE_URL")
 
 def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[int], db: Session) -> ForecastIndicatorDto:
   # 데이터베이스로부터 Indicator 정보 가져오기
@@ -36,7 +42,7 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   adapter = HTTPAdapter(max_retries=retry)
   session.mount('http://', adapter)
   for sourceIndicator in sourceIndicatorIds:
-    req = requests.get(f'http://host.docker.internal:8000/api/numerical-guidance/indicators/live?interval=day&indicatorId={sourceIndicator}')
+    req = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={sourceIndicator}')
     data = req.json()
     print(data['values'])
     values = data['values']
@@ -65,28 +71,52 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   grangerGroup = verification.findInfluentialGroups(checkDf)
 
   # var
-  if len(grangerGroup) >= 2:
-    customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
-    for name in grangerGroup:
-      if name == targetIndicatorName:
-        forecastdata = customForecastIndicator[name].to_dict()
-        forecastValuesWithoutDates = list(forecastdata.values())
-        values = []
-        currentDate = datetime.datetime.now()
-        for i in range(len(forecastValuesWithoutDates)):
-          forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
-          forecastValue = ForecastValue(
-            value = forecastValuesWithoutDates[i],
-            date = forecastDate
-          )
-          values.append(forecastValue)
-        result: ForecastIndicatorDto = {
-          "name": name,
-          "values": values
-          }
-    return result
-  else:
+  try: 
+    if len(grangerGroup) >= 2:
+      print('Var')
+      customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
+      for name in grangerGroup:
+        if name == targetIndicatorName:
+          forecastdata = customForecastIndicator[name].to_dict()
+          forecastValuesWithoutDates = list(forecastdata.values())
+          values = []
+          currentDate = datetime.datetime.now()
+          for i in range(len(forecastValuesWithoutDates)):
+            forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
+            forecastValue = ForecastValue(
+              value = forecastValuesWithoutDates[i],
+              date = forecastDate
+            )
+            values.append(forecastValue)
+          result: ForecastIndicatorDto = {
+            "name": name,
+            "values": values
+            }
+      return result
+    else:
+      # arima
+      print('Arima')
+      customForecastIndicator = forecast.runArima(df_var, targetIndicatorName, int(len(df_var)/2))
+      forecastdata = customForecastIndicator[targetIndicatorName].to_dict()
+      forecastValuesWithoutDates = list(forecastdata.values())
+      values = []
+      currentDate = datetime.datetime.now()
+      for i in range(len(forecastValuesWithoutDates)):
+        forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
+        forecastValue = ForecastValue(
+          value = forecastValuesWithoutDates[i],
+          date = forecastDate
+        )
+        values.append(forecastValue)
+      result: ForecastIndicatorDto = {
+        "name": targetIndicatorName,
+        "values": values
+      }
+      return result
+  except Exception as error:
+    print(f'Error: {error}')
     # arima
+    print('Arima')
     customForecastIndicator = forecast.runArima(df_var, targetIndicatorName, int(len(df_var)/2))
     forecastdata = customForecastIndicator[targetIndicatorName].to_dict()
     forecastValuesWithoutDates = list(forecastdata.values())
@@ -100,10 +130,11 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
       )
       values.append(forecastValue)
     result: ForecastIndicatorDto = {
-      "name": name,
+      "name": targetIndicatorName,
       "values": values
     }
     return result
+
 
 def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
   # 데이터베이스로부터 Indicator 정보 가져오기
@@ -132,7 +163,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
   adapter = HTTPAdapter(max_retries=retry)
   session.mount('http://', adapter)
   for sourceIndicator in sourceIndicatorIds:
-    req = requests.get(f'http://host.docker.internal:8000/api/numerical-guidance/indicators/live?interval=day&indicatorId={sourceIndicator}')
+    req = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={sourceIndicator}')
     data = req.json()
     print(data['values'])
     values = data['values']
@@ -155,7 +186,6 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
     weight = int(weight)
     df_var = verification.applyWeight(df_var, indicator, weight)
 
-  print(df_var)
   # granger
   try: 
     grangerDf = verification.grangerVerification(df_var)
