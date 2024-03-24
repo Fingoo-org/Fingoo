@@ -44,13 +44,20 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   for sourceIndicator in sourceIndicatorIds:
     req = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={sourceIndicator}')
     data = req.json()
-    print(data['values'])
     values = data['values']
     df = pd.DataFrame(values)
 
     df['date'] = pd.to_datetime(df['date'])
     df['value'] = df['value'].astype(float)
     APIList.append(df)
+
+  targetIndicatorReq = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={targetIndicatorId}')
+  targetIndicatorData = targetIndicatorReq.json()
+  targetIndicatorValues = targetIndicatorData['values']
+  targetIndicatorDf = pd.DataFrame(targetIndicatorValues)
+  targetIndicatorDf['date'] = pd.to_datetime(df['date'])
+  targetIndicatorDf['value'] = targetIndicatorDf['value'].astype(float)
+  APIList.append(targetIndicatorDf)
 
   sourceDataFrames = {}
   for name, df in zip(nameList, APIList):
@@ -89,7 +96,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
             )
             values.append(forecastValue)
           result: ForecastIndicatorDto = {
-            "name": name,
             "values": values
             }
       return result
@@ -109,7 +115,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
         )
         values.append(forecastValue)
       result: ForecastIndicatorDto = {
-        "name": targetIndicatorName,
         "values": values
       }
       return result
@@ -130,7 +135,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
       )
       values.append(forecastValue)
     result: ForecastIndicatorDto = {
-      "name": targetIndicatorName,
       "values": values
     }
     return result
