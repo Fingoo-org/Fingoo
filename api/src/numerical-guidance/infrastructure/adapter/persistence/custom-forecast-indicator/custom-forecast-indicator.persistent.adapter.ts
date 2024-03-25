@@ -142,7 +142,6 @@ export class CustomForecastIndicatorPersistentAdapter
       return customForecastIndicators;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        console.log(memberId);
         throw new NotFoundException({
           HttpStatus: HttpStatus.NOT_FOUND,
           error: `[ERROR] memberId: ${memberId} 해당 회원을 찾을 수 없습니다.`,

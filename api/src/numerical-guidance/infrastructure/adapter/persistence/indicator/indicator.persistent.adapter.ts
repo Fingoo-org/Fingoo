@@ -57,7 +57,7 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
   async loadIndicators(): Promise<IndicatorsDto> {
     try {
       const indicatorEntities = await this.indicatorEntityRepository.find();
-      console.log(IndicatorMapper.mapEntitiesToDto(indicatorEntities));
+
       return IndicatorMapper.mapEntitiesToDto(indicatorEntities);
     } catch (error) {
       if (error instanceof NotFoundException) {
