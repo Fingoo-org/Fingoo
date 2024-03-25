@@ -17,6 +17,18 @@ export const customForecastIndicatorHandlers = [
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getCustomForecastIndicatorList());
   }),
+  http.get<customForecastIndicatorParam>(
+    `${API_PATH.customForecastIndicator}/:customForecastIndicatorId`,
+    async ({ params }) => {
+      const { customForecastIndicatorId } = params;
+      const response = mockDB.getCustomForecastIndicatorValue(customForecastIndicatorId);
+      await delayForDevelopment();
+      if (!response) {
+        return HttpResponse.json({ status: 404 });
+      }
+      return HttpResponse.json(response);
+    },
+  ),
   http.post<never, CreateCustomForecastIndicatorRequestBody, never>(
     API_PATH.customForecastIndicator,
     async ({ request }) => {

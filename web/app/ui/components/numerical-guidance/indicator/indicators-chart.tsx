@@ -8,12 +8,14 @@ import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook
 import AdvancedIndicatorsChart from './advanced-indicators-chart';
 import SimpleIndicatorsChart from './simple-indicators-chart';
 import Pending from '../../view/molocule/pending';
+import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 
 export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
   // refactor: 애 둘을 선언형으로 감추고 싶다. rule을 만들어서 해결하자. 이컴포넌트가 주요한 예시가 될 듯
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { formattedIndicatorsRows, isPending } = useLiveIndicatorsValueViewModel();
+  const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel();
+  const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel();
 
   const handleToggle = (active: boolean) => {
     setIsAdvancedChart(active);
@@ -21,7 +23,7 @@ export default function IndicatorsChart() {
 
   return (
     <>
-      <Pending isPending={isPending}>
+      <Pending isPending={isLiveIndicatorPending || isCustomForecastIndicatorPending}>
         <div className="flex items-center justify-center">
           <SelectedMetadataTittle />
         </div>
@@ -30,7 +32,7 @@ export default function IndicatorsChart() {
             className="font-medium"
             size={'lg'}
             onToggle={handleToggle}
-            disabled={selectedMetadata && formattedIndicatorsRows ? false : true}
+            disabled={selectedMetadata && indicatorsValue ? false : true}
             icon={CheckCircledIcon}
             text={'자세한 차트'}
           />

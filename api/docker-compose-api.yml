@@ -30,6 +30,8 @@ services:
       - api-net
     extra_hosts:
       - host.docker.internal:host-gateway
+    environment:
+      - BASE_URL=${BASE_URL}
 
 networks:
   api-net:

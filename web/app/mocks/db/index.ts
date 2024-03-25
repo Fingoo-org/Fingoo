@@ -116,6 +116,17 @@ const initialState: MockDatabase = {
         },
       ],
     },
+    {
+      id: '4',
+      customForecastIndicatorName: '삼성전자 예측 지표',
+      targetIndicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
+      sourceIndicatorIdsAndWeights: [
+        {
+          sourceIndicatorId: '1',
+          weight: 10,
+        },
+      ],
+    },
   ],
 };
 

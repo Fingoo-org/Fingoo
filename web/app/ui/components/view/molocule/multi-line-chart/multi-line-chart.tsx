@@ -2,7 +2,7 @@
 import { EventProps } from '@tremor/react';
 import LineChart from './line-chart';
 import { useState } from 'react';
-import { FormattedRowType } from '@/app/business/services/view-model/indicators-value-view-model.service';
+import { FormattedRowType } from '@/app/business/services/view-model/indicator-value/actual-indicators-value-view-model.service';
 import { ChartTooltip } from './chart-tooltip';
 
 type MultiLineChartProps = {

@@ -20,7 +20,7 @@ describe('useCustomForecastIndicatorListViewModel', () => {
     await waitFor(() => expect(result.current.customForecastIndicatorList).not.toBeUndefined());
 
     // then
-    expect(result.current.customForecastIndicatorList).toHaveLength(3);
+    expect(result.current.customForecastIndicatorList).toHaveLength(4);
   });
 
   it('예측 지표를 추가하면, 예측 지표 리스트에 추가된다', async () => {
@@ -34,8 +34,8 @@ describe('useCustomForecastIndicatorListViewModel', () => {
     });
 
     // then
-    await waitFor(() => expect(result.current.customForecastIndicatorList).toHaveLength(4));
-    expect(result.current.customForecastIndicatorList?.findCustomForecastIndicatorByIndex(3).targetIndicatorId).toBe(
+    await waitFor(() => expect(result.current.customForecastIndicatorList).toHaveLength(5));
+    expect(result.current.customForecastIndicatorList?.findCustomForecastIndicatorByIndex(4).targetIndicatorId).toBe(
       '1',
     );
   });

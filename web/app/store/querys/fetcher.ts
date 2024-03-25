@@ -44,6 +44,13 @@ export const fetchIndicatorsValue = async ([url, interval, ...ids]: string[]) =>
   return { indicatorsValue: indicatorsvalue };
 };
 
+export const fetchCustomForecastIndicatorsValue = async ([url, ...ids]: string[]) => {
+  const customForecastIndicatorsValue = await Promise.all(
+    ids.map((id) => instance.get(`${url}/${id}`).then((res) => res.data)),
+  );
+  return customForecastIndicatorsValue;
+};
+
 export const patchFetcher = async <T>(key: string[], { arg }: { arg: T }) => {
   const url = key.join('/');
   try {

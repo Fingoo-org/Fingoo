@@ -1,67 +1,111 @@
 import {
   HistoryIndicatorValueResponse,
+  HistoryIndicatorsValueResponse,
   useFetchHistoryIndicatorValue,
 } from '@/app/store/querys/numerical-guidance/history-indicator.query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicators-value-view-model.service';
+import { useEffect, useMemo, useState } from 'react';
+import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicator-value/actual-indicators-value-view-model.service';
 import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
+import { useCustomForecastIndicatorListViewModel } from '../custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
+import {
+  CustomForecastIndicatorResponse,
+  useFetchCustomForecastIndicatorList,
+} from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
+import { convertCustomForecastHistoryIndicatorsValueViewModel } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
+
+const mergePaginationData = (historyIndicatorsValuePages: HistoryIndicatorsValueResponse[] | undefined) => {
+  return historyIndicatorsValuePages?.reduce((acc: HistoryIndicatorValueResponse[], page, index) => {
+    if (index === 0) {
+      return page.indicatorsValue.map((indicator) => indicator.data);
+    }
+
+    return (acc as HistoryIndicatorValueResponse[]).map((indicator) => {
+      const targetIndicator = page.indicatorsValue.find(
+        (pageIndicator) => pageIndicator.data.indicator.id === indicator.indicator.id,
+      ) ?? { data: { values: [] } };
+
+      return {
+        ...indicator,
+        values: [...indicator.values, ...targetIndicator.data.values],
+      };
+    });
+  }, []);
+};
 
 export const useHistoryIndicatorsValueViewModel = () => {
   const [paginationData, setPaginationData] = useState<{ rowsToDownload: number } | undefined>(undefined);
   const [initialCursorDate, setInitialCursorDate] = useState<Date>(new Date());
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const interval = useWorkspaceStore((state) => state.interval);
+  const { data: customForecastIndicatorListData } = useFetchCustomForecastIndicatorList();
 
-  const { data: historyIndicatorsValuePages, setSize: setPageSize } = useFetchHistoryIndicatorValue(
+  const { data: actualHistoryIndicatorsValuePages, setSize: setActualPageSize } = useFetchHistoryIndicatorValue(
     selectedMetadata?.indicatorIds,
     {
       rowsToDownload: paginationData?.rowsToDownload ?? 10,
       initialCursorDate,
     },
     interval,
+    'actual-history-indicators-value',
   );
+
+  const selectedCustomForeacastIndicator = useMemo(() => {
+    if (selectedMetadata === undefined || customForecastIndicatorListData === undefined) return undefined;
+
+    return selectedMetadata.customForecastIndicatorIds
+      .map((customForecastIndicatorId) => {
+        return customForecastIndicatorListData.find(
+          (customForecastIndicator) => customForecastIndicator.id === customForecastIndicatorId,
+        );
+      })
+      .filter((indicator) => indicator !== undefined) as CustomForecastIndicatorResponse[];
+  }, [selectedMetadata, customForecastIndicatorListData]);
+
+  const { data: customForecastHistoryIndicatorsValuePages, setSize: setCustomForecastPageSize } =
+    useFetchHistoryIndicatorValue(
+      selectedCustomForeacastIndicator?.map((indicator) => indicator.targetIndicatorId),
+      {
+        rowsToDownload: paginationData?.rowsToDownload ?? 10,
+        initialCursorDate,
+      },
+      interval,
+      'custom-forecast-history-indicators-value',
+    );
 
   useEffect(() => {
     if (paginationData === undefined) return;
 
-    setPageSize((prev) => prev + 1);
+    setActualPageSize((prev) => prev + 1);
+    setCustomForecastPageSize((prev) => prev + 1);
   }, [paginationData]);
 
-  const mergePaginationData = useCallback(() => {
-    return historyIndicatorsValuePages?.reduce((acc: HistoryIndicatorValueResponse[], page, index) => {
-      if (index === 0) {
-        return page.indicatorsValue.map((indicator) => indicator.data);
-      }
+  const actualHistoryIndicatorsValue = useMemo(() => {
+    return mergePaginationData(actualHistoryIndicatorsValuePages);
+  }, [actualHistoryIndicatorsValuePages]);
 
-      return (acc as HistoryIndicatorValueResponse[]).map((indicator) => {
-        const targetIndicator = page.indicatorsValue.find(
-          (pageIndicator) => pageIndicator.data.indicator.id === indicator.indicator.id,
-        ) ?? { data: { values: [] } };
+  const customForecastHistoryIndicatorsValue = useMemo(() => {
+    return mergePaginationData(customForecastHistoryIndicatorsValuePages);
+  }, [customForecastHistoryIndicatorsValuePages]);
 
-        return {
-          ...indicator,
-          values: [...indicator.values, ...targetIndicator.data.values],
-        };
-      });
-    }, []);
-  }, [historyIndicatorsValuePages]);
+  const convertedActualHistoryIndicatorsValue = useMemo(() => {
+    if (!actualHistoryIndicatorsValue) return undefined;
 
-  const historyIndicatorsValue = useMemo(() => {
-    return mergePaginationData();
-  }, [mergePaginationData]);
+    return convertHistoryIndicatorsValueViewModel(actualHistoryIndicatorsValue);
+  }, [actualHistoryIndicatorsValue]);
 
-  const convertedHistoryIndicatorsValue = useMemo(() => {
-    if (!historyIndicatorsValue) return undefined;
+  const convertedCustomForecastHistoryIndicatorsValue = useMemo(() => {
+    if (!customForecastHistoryIndicatorsValue || !selectedCustomForeacastIndicator) return undefined;
 
-    return convertHistoryIndicatorsValueViewModel(historyIndicatorsValue);
-  }, [historyIndicatorsValue]);
-
-  const formattedHistoryIndicatorsRows = convertedHistoryIndicatorsValue?.formattedIndicatorsInRow;
+    return convertCustomForecastHistoryIndicatorsValueViewModel(
+      customForecastHistoryIndicatorsValue,
+      selectedCustomForeacastIndicator,
+    );
+  }, [customForecastHistoryIndicatorsValue, selectedCustomForeacastIndicator]);
 
   return {
-    historyIndicatorsValue: convertedHistoryIndicatorsValue,
-    formattedHistoryIndicatorsRows,
+    actualHistoryIndicatorsValue: convertedActualHistoryIndicatorsValue,
+    customForecastHistoryIndicatorsValue: convertedCustomForecastHistoryIndicatorsValue,
     interval,
     setPaginationData,
     setInitialCursorDate,

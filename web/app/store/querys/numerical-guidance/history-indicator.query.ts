@@ -49,6 +49,7 @@ export const useFetchHistoryIndicatorValue = (
   indicatorIds: string[] | undefined,
   paginationData: PaginationData,
   interval: Interval = 'day',
+  key: string,
 ) => {
   // logic: interval 로직 추가 필요
 
@@ -65,7 +66,7 @@ export const useFetchHistoryIndicatorValue = (
 
     if (!maxCursorDate) return null;
 
-    return [API_PATH.historyIndicatorsValue, maxCursorDate];
+    return [API_PATH.historyIndicatorsValue, maxCursorDate, key];
   };
 
   return useSWRInfinite<HistoryIndicatorsValueResponse>(
@@ -73,6 +74,7 @@ export const useFetchHistoryIndicatorValue = (
     ([url, maxCursorDate]) => {
       const formattedUrl = `${url}?dataCount=${paginationData.rowsToDownload}&endDate=${maxCursorDate}`;
 
+      console.log(formattedUrl, indicatorIds);
       // not null-assertion: indicatorIds가 null 인 상황에서는 호출되지 않음
       return fetchIndicatorsValue([formattedUrl, interval, ...indicatorIds!]);
     },

@@ -22,13 +22,11 @@ describe('useHistoryIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { historyIndicatorsValue, formattedHistoryIndicatorsRows, setPaginationData } =
-          useHistoryIndicatorsValueViewModel();
+        const { actualHistoryIndicatorsValue, setPaginationData } = useHistoryIndicatorsValueViewModel();
         const { addIndicatorToMetadata, selectedMetadata } = useSelectedIndicatorBoardMetadata();
         const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
         return {
-          historyIndicatorsValue,
-          formattedHistoryIndicatorsRows,
+          actualHistoryIndicatorsValue,
           selectedMetadata,
           addIndicatorToMetadata,
           setPaginationData,
@@ -55,10 +53,9 @@ describe('useHistoryIndicatorsValueViewModel', () => {
       });
     });
 
-    await waitFor(() => expect(result.current.formattedHistoryIndicatorsRows).not.toHaveLength(0));
+    await waitFor(() => expect(result.current.actualHistoryIndicatorsValue).not.toBeUndefined());
 
     // then
-    expect(result.current.formattedHistoryIndicatorsRows).not.toHaveLength(0);
-    expect(result.current.historyIndicatorsValue?.tickerList[0]).toBe('005930');
+    expect(result.current.actualHistoryIndicatorsValue?.tickerList[0]).toBe('005930');
   });
 });
