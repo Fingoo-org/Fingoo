@@ -35,7 +35,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
     const interval = 'day';
 
     const indicatorDto = await this.loadIndicatorPort.loadIndicator(targetIndicatorId);
-    const { ticker, market, name } = indicatorDto.indicator;
+    const { ticker, market, name, type } = indicatorDto.indicator;
 
     const targetIndicator: LiveIndicatorDto = await this.loadLiveIndicatorPort.loadLiveIndicator(
       targetIndicatorId,
@@ -49,7 +49,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
     const customForecastIndicatorValuesResponse: CustomForecastIndicatorValuesResponse = {
       customForecastIndicatorId: customForecastIndicatorId,
       targetIndicatorId: targetIndicatorId,
-      type: 'customForecastIndicator',
+      type: type,
       ticker: ticker,
       name: name,
       market: market,
