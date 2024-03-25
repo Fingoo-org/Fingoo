@@ -1,7 +1,13 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { API_PATH } from '../api-path';
-import { defaultFetcher, deleteFetcher, patchFetcher, postFetcher } from '../fetcher';
+import {
+  defaultFetcher,
+  deleteFetcher,
+  fetchCustomForecastIndicatorsValue,
+  patchFetcher,
+  postFetcher,
+} from '../fetcher';
 
 export type sourceIndicator = {
   sourceIndicatorId: string;
@@ -26,6 +32,28 @@ export type CreateCustomForecastIndicatorResponse = string;
 
 export const useFetchCustomForecastIndicatorList = () => {
   return useSWR<CustomForecastIndicatorListResponse>(API_PATH.customForecastIndicator, defaultFetcher);
+};
+
+type CustomForecastIndicatorValueItem = {
+  date: string;
+  value: number;
+};
+
+export type CustomForecastIndicatorValueResponse = {
+  customForecastIndicatorId: string;
+  customForecastIndicatorName: string;
+  name: string;
+  ticker: string;
+  market: string;
+  type: string;
+  customForecastIndicatorValues: CustomForecastIndicatorValueItem[];
+  targetIndicatorValues: CustomForecastIndicatorValueItem[];
+};
+
+export const useFetchCustomForecastIndicatorsValue = (customForecastIndicatorIds: string[] | undefined) => {
+  const key = customForecastIndicatorIds ? [API_PATH.customForecastIndicator, ...customForecastIndicatorIds] : null;
+
+  return useSWR<CustomForecastIndicatorValueResponse[], any, string[] | null>(key, fetchCustomForecastIndicatorsValue);
 };
 
 export const useCreateCustomForecastIndicator = () => {
