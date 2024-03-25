@@ -34,6 +34,8 @@
     "@nestjs/swagger": "^7.2.0",
     "@nestjs/terminus": "^10.2.0",
     "@nestjs/typeorm": "^10.0.1",
+    "@supabase/supabase-js": "^2.40.0",
+    "@types/multer": "^1.4.11",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "ioredis": "^5.3.2",
@@ -86,7 +88,12 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "src/**/*.ts", "!src/main.ts", "!src/**/*.module.ts", "!src/**/*.entity.ts", "!src/**/*.seed.ts", "!src/utils/config/**"
+      "src/**/*.ts",
+      "!src/main.ts",
+      "!src/**/*.module.ts",
+      "!src/**/*.entity.ts",
+      "!src/**/*.seed.ts",
+      "!src/utils/config/**"
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node"
