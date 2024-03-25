@@ -88,7 +88,6 @@ export const useHistoryIndicatorsValueViewModel = () => {
     return mergePaginationData(customForecastHistoryIndicatorsValuePages);
   }, [customForecastHistoryIndicatorsValuePages]);
 
-  console.log(actualHistoryIndicatorsValue);
   const convertedActualHistoryIndicatorsValue = useMemo(() => {
     if (!actualHistoryIndicatorsValue) return undefined;
 
@@ -104,7 +103,6 @@ export const useHistoryIndicatorsValueViewModel = () => {
     );
   }, [customForecastHistoryIndicatorsValue, selectedCustomForeacastIndicator]);
 
-  console.log(convertedActualHistoryIndicatorsValue);
   return {
     actualHistoryIndicatorsValue: convertedActualHistoryIndicatorsValue,
     customForecastHistoryIndicatorsValue: convertedCustomForecastHistoryIndicatorsValue,

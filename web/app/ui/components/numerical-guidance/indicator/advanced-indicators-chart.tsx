@@ -34,8 +34,6 @@ export default function AdvancedIndicatorsChart() {
     ...(formattedLiveIndicatorsRows || []),
   ];
 
-  console.log(formattedAdvencedIndicatorsRows);
-
   const initialLength = formattedLiveIndicatorsRows?.length || 0;
   const initialIndex = initialLength - (formattedAdvencedIndicatorsRows?.length || 0);
 
