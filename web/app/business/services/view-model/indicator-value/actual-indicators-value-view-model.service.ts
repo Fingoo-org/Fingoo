@@ -3,7 +3,6 @@ import {
   IndicatorValueResponse,
   IndicatorsValueResponse,
 } from '../../../../store/querys/numerical-guidance/indicator.query';
-import { CustomForecastIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { IndicatorValueItem, IndicatorValue, FormattedItem, UnitType } from './indicator-value-view-model.service';
 
 export class ActualIndicatorValue extends IndicatorValue {
