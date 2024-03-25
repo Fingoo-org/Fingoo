@@ -16,9 +16,10 @@ import { AuthService } from 'src/auth/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
 import { UpdateSourceIndicatorsAndWeightsPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-and-weights.port';
 import { HttpService } from '@nestjs/axios';
-import { CustomForecastIndicatorValues } from 'src/utils/type/type-definition';
+import { IndicatorValue } from 'src/utils/type/type-definition';
 import { UpdateCustomForecastIndicatorNamePort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-custom-forecast-indicator-name.port';
 import { DeleteCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/delete-custom-forecast-indicator.port';
+import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
 
 @Injectable()
 export class CustomForecastIndicatorPersistentAdapter
@@ -26,6 +27,7 @@ export class CustomForecastIndicatorPersistentAdapter
     CreateCustomForecastIndicatorPort,
     LoadCustomForecastIndicatorPort,
     LoadCustomForecastIndicatorsByMemberIdPort,
+    LoadCustomForecastIndicatorValuesPort,
     UpdateSourceIndicatorsAndWeightsPort,
     DeleteCustomForecastIndicatorPort,
     UpdateCustomForecastIndicatorNamePort
@@ -72,7 +74,7 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<CustomForecastIndicatorValues> {
+  async loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<IndicatorValue[]> {
     try {
       const customForecastIndicatorEntity = await this.customForecastIndicatorRepository.findOneBy({
         id: customForecastIndicatorId,
@@ -96,7 +98,7 @@ export class CustomForecastIndicatorPersistentAdapter
       const requestUrl = url + indicatorsUrl + weightsUrl;
 
       const res = await this.api.axiosRef.get(requestUrl);
-      const result = res.data;
+      const result = res.data.values;
 
       return result;
     } catch (error) {

@@ -1,5 +1,5 @@
-import { CustomForecastIndicatorValues } from 'src/utils/type/type-definition';
+import { IndicatorValue } from 'src/utils/type/type-definition';
 
 export interface LoadCustomForecastIndicatorValuesPort {
-  loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<CustomForecastIndicatorValues>;
+  loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<IndicatorValue[]>;
 }
