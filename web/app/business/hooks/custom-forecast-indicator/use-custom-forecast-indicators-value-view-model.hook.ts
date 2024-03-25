@@ -1,6 +1,6 @@
 import { useFetchCustomForecastIndicatorsValue } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { convertCustomForecastTargetIndicatorsValueViewModel } from '../../services/view-model/actual-indicators-value-view-model.service';
+import { convertCustomForecastTargetIndicatorsValueViewModel } from '../../services/view-model/indicator-value/actual-indicators-value-view-model.service';
 import { useMemo } from 'react';
 
 export const useCustomForecastIndicatorsValueViewModel = () => {

@@ -35,5 +35,17 @@ export class IndicatorValueItem {
 }
 
 export abstract class IndicatorValue {
+  protected maxValue: number;
+  protected minValue: number;
+
+  constructor(maxValue: number, minValue: number) {
+    this.maxValue = maxValue;
+    this.minValue = minValue;
+  }
+
   abstract formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem;
+
+  caculateValue(item: IndicatorValueItem, unitType: UnitType) {
+    return unitType === 'index' ? item.calcuateIndexValue(this.maxValue, this.minValue) : item.parseValueToInt;
+  }
 }

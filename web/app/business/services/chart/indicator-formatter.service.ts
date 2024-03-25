@@ -1,4 +1,8 @@
-import { UnitType, IndicatorValue, FormattedItem } from '../view-model/actual-indicators-value-view-model.service';
+import {
+  UnitType,
+  IndicatorValue,
+  FormattedItem,
+} from '../view-model/indicator-value/actual-indicators-value-view-model.service';
 import { utcFormat, utcParse } from 'd3-time-format';
 
 export const parseTime = utcParse('%Y%m%d');

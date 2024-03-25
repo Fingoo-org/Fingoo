@@ -2,9 +2,9 @@ import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guid
 import {
   IndicatorValueResponse,
   IndicatorsValueResponse,
-} from '../../../store/querys/numerical-guidance/indicator.query';
+} from '../../../../store/querys/numerical-guidance/indicator.query';
 import { CustomForecastIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { IndicatorValueItem } from './indicator-value-view-model.service';
+import { IndicatorValueItem, IndicatorValue } from './indicator-value-view-model.service';
 
 export type FormattedIndicatorValue = {
   value: number;
@@ -23,22 +23,23 @@ export type FormattedItem = {
 
 export type UnitType = 'index' | 'default';
 
-export class IndicatorValue {
+export class ActualIndicatorValue extends IndicatorValue {
   readonly id: string;
   readonly ticker: string;
   readonly market: string;
   readonly type: string;
   readonly values: IndicatorValueItem[];
-  private maxValue: number;
-  private minValue: number;
   constructor({ id, ticker, market, type, values }: IndicatorValueResponse) {
+    const valueItems = values.map((item) => new IndicatorValueItem(item));
+    super(
+      Math.max(...valueItems.map((item) => item.parseValueToInt)),
+      Math.min(...valueItems.map((item) => item.parseValueToInt)),
+    );
     this.id = id;
     this.ticker = ticker;
     this.market = market;
     this.type = type;
     this.values = values.map((item) => new IndicatorValueItem(item));
-    this.maxValue = Math.max(...this.values.map((item) => item.parseValueToInt));
-    this.minValue = Math.min(...this.values.map((item) => item.parseValueToInt));
   }
 
   formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
@@ -54,16 +55,12 @@ export class IndicatorValue {
       };
     }, {});
   }
-
-  caculateValue(item: IndicatorValueItem, unitType: UnitType) {
-    return unitType === 'index' ? item.calcuateIndexValue(this.maxValue, this.minValue) : item.parseValueToInt;
-  }
 }
 
-export class IndicatorsValue {
-  readonly indicatorsValue: IndicatorValue[];
+export class ActualIndicatorsValue {
+  readonly indicatorsValue: ActualIndicatorValue[];
   constructor({ indicatorsValue }: IndicatorsValueResponse) {
-    this.indicatorsValue = indicatorsValue.map((indicatorValue) => new IndicatorValue({ ...indicatorValue }));
+    this.indicatorsValue = indicatorsValue.map((indicatorValue) => new ActualIndicatorValue({ ...indicatorValue }));
   }
 
   get length() {
@@ -76,7 +73,7 @@ export class IndicatorsValue {
 }
 
 export const convertLiveIndicatorsValueViewModel = (indicators: IndicatorsValueResponse) => {
-  return new IndicatorsValue(indicators);
+  return new ActualIndicatorsValue(indicators);
 };
 
 export const convertHistoryIndicatorsValueViewModel = (indicators: HistoryIndicatorValueResponse[]) => {
@@ -87,7 +84,7 @@ export const convertHistoryIndicatorsValueViewModel = (indicators: HistoryIndica
     };
   });
 
-  return new IndicatorsValue({
+  return new ActualIndicatorsValue({
     indicatorsValue: formmatedIndicators,
   });
 };
@@ -105,7 +102,7 @@ export const convertCustomForecastTargetIndicatorsValueViewModel = (
     };
   });
 
-  return new IndicatorsValue({
+  return new ActualIndicatorsValue({
     indicatorsValue: formmatedIndicators,
   });
 };

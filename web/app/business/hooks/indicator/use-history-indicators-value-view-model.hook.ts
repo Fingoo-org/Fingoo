@@ -3,7 +3,7 @@ import {
   useFetchHistoryIndicatorValue,
 } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/actual-indicators-value-view-model.service';
+import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicator-value/actual-indicators-value-view-model.service';
 import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 
