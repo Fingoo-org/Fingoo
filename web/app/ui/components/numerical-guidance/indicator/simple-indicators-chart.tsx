@@ -1,12 +1,16 @@
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import MultiLineChart from '../../view/molocule/multi-line-chart/multi-line-chart';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 
 export default function SimpleIndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const { indicatorsValue, formattedIndicatorsRows } = useLiveIndicatorsValueViewModel();
-
+  const { customForecastTargetIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
   const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
+
+  console.log(formattedIndicatorsRows);
+  console.log(customForecastTargetIndicatorsValue?.formattedIndicatorsInRow);
 
   return (
     <MultiLineChart
