@@ -57,11 +57,8 @@ export const useHistoryIndicatorsValueViewModel = () => {
     return convertHistoryIndicatorsValueViewModel(historyIndicatorsValue);
   }, [historyIndicatorsValue]);
 
-  const formattedHistoryIndicatorsRows = convertedHistoryIndicatorsValue?.formattedIndicatorsInRow;
-
   return {
     historyIndicatorsValue: convertedHistoryIndicatorsValue,
-    formattedHistoryIndicatorsRows,
     interval,
     setPaginationData,
     setInitialCursorDate,

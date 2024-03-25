@@ -18,17 +18,8 @@ export const useLiveIndicatorsValueViewModel = () => {
     return convertLiveIndicatorsValueViewModel(indicatorsValueData);
   }, [indicatorsValueData]);
 
-  const formattedIndicatorsRows = useMemo(
-    () => convertedIndciatorsValue?.formattedIndicatorsInRow,
-    [convertedIndciatorsValue],
-  );
-
-  const startDate = formattedIndicatorsRows?.[0]?.date as string;
-
   return {
     indicatorsValue: convertedIndciatorsValue,
     isPending: isLoading,
-    formattedIndicatorsRows,
-    startDate,
   };
 };

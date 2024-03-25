@@ -4,10 +4,7 @@ import {
   IndicatorValueResponse,
   IndicatorsValueResponse,
 } from '../../../store/querys/numerical-guidance/indicator.query';
-import { utcFormat, utcParse } from 'd3-time-format';
 import { CustomForecastIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-const parseTime = utcParse('%Y%m%d');
-const formatTime = utcFormat('%Y-%m-%d');
 
 export type FormattedIndicatorValue = {
   value: number;
@@ -18,7 +15,7 @@ export type FormattedRowType = {
   [ticker: string]: FormattedIndicatorValue | string;
 };
 
-type FormattedItem = {
+export type FormattedItem = {
   [date: string]: {
     [ticker: string]: FormattedIndicatorValue;
   };
@@ -46,13 +43,9 @@ class IndicatorValueItem {
   }
 }
 
-type UnitType = 'index' | 'default';
+export type UnitType = 'index' | 'default';
 
-type IndicatorValueViewModelType = {
-  unitType: UnitType;
-};
-
-class IndicatorValue {
+export class IndicatorValue {
   readonly id: string;
   readonly ticker: string;
   readonly market: string;
@@ -60,8 +53,7 @@ class IndicatorValue {
   readonly values: IndicatorValueItem[];
   private maxValue: number;
   private minValue: number;
-  private unitType: UnitType;
-  constructor({ id, ticker, market, type, values, unitType }: IndicatorValueResponse & IndicatorValueViewModelType) {
+  constructor({ id, ticker, market, type, values }: IndicatorValueResponse) {
     this.id = id;
     this.ticker = ticker;
     this.market = market;
@@ -69,16 +61,15 @@ class IndicatorValue {
     this.values = values.map((item) => new IndicatorValueItem(item));
     this.maxValue = Math.max(...this.values.map((item) => item.parseValueToInt));
     this.minValue = Math.min(...this.values.map((item) => item.parseValueToInt));
-    this.unitType = unitType;
   }
 
-  get formattedItemsByDate(): FormattedItem {
+  formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
     return this.values.reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {
           [this.ticker]: {
-            value: this.caculateValue(item),
+            value: this.caculateValue(item, unitType),
             displayValue: item.parseValueToInt,
           },
         },
@@ -86,53 +77,19 @@ class IndicatorValue {
     }, {});
   }
 
-  caculateValue(item: IndicatorValueItem) {
-    return this.unitType === 'index' ? item.calcuateIndexValue(this.maxValue, this.minValue) : item.parseValueToInt;
+  caculateValue(item: IndicatorValueItem, unitType: UnitType) {
+    return unitType === 'index' ? item.calcuateIndexValue(this.maxValue, this.minValue) : item.parseValueToInt;
   }
 }
 
 export class IndicatorsValue {
   readonly indicatorsValue: IndicatorValue[];
   constructor({ indicatorsValue }: IndicatorsValueResponse) {
-    const unitType = indicatorsValue.length > 1 ? 'index' : 'default';
-    this.indicatorsValue = indicatorsValue.map((indicatorValue) => new IndicatorValue({ ...indicatorValue, unitType }));
+    this.indicatorsValue = indicatorsValue.map((indicatorValue) => new IndicatorValue({ ...indicatorValue }));
   }
 
   get length() {
     return this.indicatorsValue.length;
-  }
-
-  get formattedIndicatorsByDate() {
-    return this.indicatorsValue.reduce<FormattedItem>((acc, indicator) => {
-      const formattedItems = indicator.formattedItemsByDate;
-      Object.keys(formattedItems).forEach((date) => {
-        let formattedDate: string | Date = new Date(date);
-        if (formattedDate.toString().startsWith('Invalid')) {
-          formattedDate = parseTime(date) ?? new Date(date);
-        }
-        formattedDate = formatTime(formattedDate);
-
-        acc[formattedDate] = { ...acc[formattedDate], ...formattedItems[date] };
-      });
-      return acc;
-    }, {});
-  }
-
-  get formattedIndicatorsInRow() {
-    const formattedIndicatorsByDate = this.formattedIndicatorsByDate;
-    return Object.keys(formattedIndicatorsByDate).map<{
-      [ticker: string]:
-        | {
-            value: number;
-            displayValue: number;
-          }
-        | string;
-    }>((date) => {
-      return {
-        date,
-        ...formattedIndicatorsByDate[date],
-      };
-    });
   }
 
   get tickerList() {

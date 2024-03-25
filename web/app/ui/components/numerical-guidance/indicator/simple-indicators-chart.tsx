@@ -2,16 +2,17 @@ import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/
 import MultiLineChart from '../../view/molocule/multi-line-chart/multi-line-chart';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
+import { IndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
 
 export default function SimpleIndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { indicatorsValue, formattedIndicatorsRows } = useLiveIndicatorsValueViewModel();
-  const { customForecastTargetIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
+  const { indicatorsValue } = useLiveIndicatorsValueViewModel();
+  // const { customForecastTargetIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
   const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
 
-  console.log(formattedIndicatorsRows);
-  console.log(customForecastTargetIndicatorsValue?.formattedIndicatorsInRow);
+  const indicatorFormatter = new IndicatorFormatter(indicatorsValue?.indicatorsValue ?? []);
 
+  const formattedIndicatorsRows = indicatorFormatter.formattedIndicatorsInRow;
   return (
     <MultiLineChart
       data={formattedIndicatorsRows || []}
