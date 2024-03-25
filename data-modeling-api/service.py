@@ -22,16 +22,27 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
     # 직접 SQL 쿼리를 사용하여 Indicator 데이터를 가져옴
     query = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{sourceIndicatorId}'")
     result = db.execute(query).fetchone()
+    print(query)
 
     if result:
       # 쿼리 결과를 IndicatorDto로 변환하여 리스트에 추가
       indicatorDto = IndicatorDto(id=str(result[0]), name=result[1], ticker=result[2])
       sourceIndicators.append(indicatorDto)
 
+  findTargetIndicatorQuery = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{targetIndicatorId}'")
+
+  print(findTargetIndicatorQuery)
+
+  findTargetIndicatorResult = db.execute(findTargetIndicatorQuery).fetchone()
+  if findTargetIndicatorResult:
+    targetIndicatorDto = IndicatorDto(id=str(findTargetIndicatorResult[0]), name=findTargetIndicatorResult[1], ticker=findTargetIndicatorResult[2])
+    sourceIndicators.append(targetIndicatorDto)
+
   nameList = []
   for sourceIndicator in sourceIndicators:
     nameList.append(sourceIndicator.name)
   print(nameList)
+
   for sourceIndicator in sourceIndicators:
     if sourceIndicator.id == targetIndicatorId:
       targetIndicatorName = sourceIndicator.name
@@ -41,16 +52,24 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   retry = Retry(connect=10, backoff_factor=1)
   adapter = HTTPAdapter(max_retries=retry)
   session.mount('http://', adapter)
-  for sourceIndicator in sourceIndicatorIds:
-    req = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={sourceIndicator}')
+
+  for sourceIndicatorId in sourceIndicatorIds:
+    req = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={sourceIndicatorId}')
     data = req.json()
-    print(data['values'])
     values = data['values']
     df = pd.DataFrame(values)
 
     df['date'] = pd.to_datetime(df['date'])
     df['value'] = df['value'].astype(float)
     APIList.append(df)
+
+  targetIndicatorReq = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={targetIndicatorId}')
+  targetIndicatorData = targetIndicatorReq.json()
+  targetIndicatorValues = targetIndicatorData['values']
+  targetIndicatorDf = pd.DataFrame(targetIndicatorValues)
+  targetIndicatorDf['date'] = pd.to_datetime(df['date'])
+  targetIndicatorDf['value'] = targetIndicatorDf['value'].astype(float)
+  APIList.append(targetIndicatorDf)
 
   sourceDataFrames = {}
   for name, df in zip(nameList, APIList):
@@ -60,7 +79,9 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
 
   df_var.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
   df_var = df_var.dropna()
-
+  print(df_var.columns)
+  
+  weights.append(0)
   for indicator, weight in zip(df_var, weights):
     weight = int(weight)
     df_var = verification.applyWeight(df_var, indicator, weight)
@@ -89,7 +110,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
             )
             values.append(forecastValue)
           result: ForecastIndicatorDto = {
-            "name": name,
             "values": values
             }
       return result
@@ -109,7 +129,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
         )
         values.append(forecastValue)
       result: ForecastIndicatorDto = {
-        "name": targetIndicatorName,
         "values": values
       }
       return result
@@ -130,7 +149,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
       )
       values.append(forecastValue)
     result: ForecastIndicatorDto = {
-      "name": targetIndicatorName,
       "values": values
     }
     return result
@@ -149,10 +167,17 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
       indicatorDto = IndicatorDto(id=str(result[0]), name=result[1], ticker=result[2])
       sourceIndicators.append(indicatorDto)
 
+  # 데이터베이스로부터 TargetIndicator 정보 가져오기
+  findTargetIndicatorQuery = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{targetIndicatorId}'")
+  findTargetIndicatorResult = db.execute(findTargetIndicatorQuery).fetchone()
+  if findTargetIndicatorResult:
+    targetIndicatorDto = IndicatorDto(id=str(findTargetIndicatorResult[0]), name=findTargetIndicatorResult[1], ticker=findTargetIndicatorResult[2])
+    sourceIndicators.append(targetIndicatorDto)
+
   nameList = []
   for sourceIndicator in sourceIndicators:
     nameList.append(sourceIndicator.name)
-
+  print(nameList)
   for sourceIndicator in sourceIndicators:
     if sourceIndicator.id == targetIndicatorId:
       targetIndicatorName = sourceIndicator.name
@@ -162,16 +187,24 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
   retry = Retry(connect=10, backoff_factor=1)
   adapter = HTTPAdapter(max_retries=retry)
   session.mount('http://', adapter)
+
   for sourceIndicator in sourceIndicatorIds:
     req = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={sourceIndicator}')
     data = req.json()
-    print(data['values'])
     values = data['values']
     df = pd.DataFrame(values)
 
     df['date'] = pd.to_datetime(df['date'])
     df['value'] = df['value'].astype(float)
     APIList.append(df)
+
+  targetIndicatorReq = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={targetIndicatorId}')
+  targetIndicatorData = targetIndicatorReq.json()
+  targetIndicatorValues = targetIndicatorData['values']
+  targetIndicatorDf = pd.DataFrame(targetIndicatorValues)
+  targetIndicatorDf['date'] = pd.to_datetime(df['date'])
+  targetIndicatorDf['value'] = targetIndicatorDf['value'].astype(float)
+  APIList.append(targetIndicatorDf)
 
   sourceDataFrames = {}
   for name, df in zip(nameList, APIList):
@@ -181,10 +214,17 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
 
   df_var.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
   df_var = df_var.dropna()
-
+  print(df_var.columns)
+  
+  weights.append(0)
   for indicator, weight in zip(df_var, weights):
     weight = int(weight)
     df_var = verification.applyWeight(df_var, indicator, weight)
+            
+  # granger
+  grangerDf = verification.grangerVerification(df_var)
+  checkDf = verification.findSignificantValues(grangerDf)
+  grangerGroup = verification.findInfluentialGroups(checkDf)
 
   # granger
   try: 

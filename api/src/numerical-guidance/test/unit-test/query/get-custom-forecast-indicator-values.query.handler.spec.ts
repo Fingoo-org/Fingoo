@@ -12,24 +12,24 @@ import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/ap
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 
 const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
-  customForecastIndicatorValues: {
-    name: '삼성전자',
-    values: [
-      {
-        value: '50328.131',
-        date: '20230101',
-      },
-    ],
-  },
-  targetIndicatorValues: {
-    name: '삼성전자',
-    values: [
-      {
-        value: '50328.124',
-        date: '20230101',
-      },
-    ],
-  },
+  customForecastIndicatorId: '2c9846d1-d496-4d6d-96c5-d3b065708573',
+  targetIndicatorId: '2c9846d1-d496-4d6d-96c5-d3b065708573',
+  type: 'k-stock',
+  ticker: '373220',
+  name: 'LG에너지솔루션',
+  market: 'KOSPI',
+  customForecastIndicatorValues: [
+    {
+      value: '50328.131',
+      date: '20230101',
+    },
+  ],
+  targetIndicatorValues: [
+    {
+      value: '50328.124',
+      date: '20230101',
+    },
+  ],
 };
 
 const testData = liveIndicatorTestData;

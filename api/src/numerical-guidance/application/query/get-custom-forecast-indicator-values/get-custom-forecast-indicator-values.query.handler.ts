@@ -2,11 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCustomForecastIndicatorValuesQuery } from './get-custom-forecast-indicator-values.query';
 import { LoadCustomForecastIndicatorValuesPort } from '../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
-import {
-  CustomForecastIndicatorValues,
-  CustomForecastIndicatorValuesResponse,
-  TargetIndicatorsValues,
-} from 'src/utils/type/type-definition';
+import { CustomForecastIndicatorValuesResponse, IndicatorValue } from 'src/utils/type/type-definition';
 import { LoadCustomForecastIndicatorPort } from '../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { LoadLiveIndicatorPort } from '../../port/external/load-live-indicator.port';
@@ -29,7 +25,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
 
   async execute(query: GetCustomForecastIndicatorValuesQuery): Promise<CustomForecastIndicatorValuesResponse> {
     const customForecastIndicatorId = query.customForecastIndicatorId;
-    const customerFroecastIndicatorValues: CustomForecastIndicatorValues =
+    const customerFroecastIndicatorValues: IndicatorValue[] =
       await this.loadCustomForecastIndicatorValuesPort.loadCustomForecastIndicatorValues(customForecastIndicatorId);
 
     const customForecastIndicator: CustomForecastIndicator =
@@ -39,7 +35,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
     const interval = 'day';
 
     const indicatorDto = await this.loadIndicatorPort.loadIndicator(targetIndicatorId);
-    const { ticker, market, name } = indicatorDto.indicator;
+    const { ticker, market, name, type } = indicatorDto.indicator;
 
     const targetIndicator: LiveIndicatorDto = await this.loadLiveIndicatorPort.loadLiveIndicator(
       targetIndicatorId,
@@ -48,12 +44,15 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       market,
     );
 
-    const targetIndicatorValues: TargetIndicatorsValues = {
-      name: name,
-      values: targetIndicator.values,
-    };
+    const targetIndicatorValues: IndicatorValue[] = targetIndicator.values;
 
     const customForecastIndicatorValuesResponse: CustomForecastIndicatorValuesResponse = {
+      customForecastIndicatorId: customForecastIndicatorId,
+      targetIndicatorId: targetIndicatorId,
+      type: type,
+      ticker: ticker,
+      name: name,
+      market: market,
       customForecastIndicatorValues: customerFroecastIndicatorValues,
       targetIndicatorValues: targetIndicatorValues,
     };

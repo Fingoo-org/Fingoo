@@ -9,22 +9,18 @@ export type SourceIndicatorIdAndWeightType = {
   weight: float;
 };
 
-export type CustomForecastIndicatorValues = {
-  name: string;
-  values: IndicatorValue[];
-};
-
 export type IndicatorValue = {
   date: string;
   value: string;
 };
 
-export type TargetIndicatorsValues = {
-  name: string;
-  values: IndicatorValue[];
-};
-
 export type CustomForecastIndicatorValuesResponse = {
-  customForecastIndicatorValues: CustomForecastIndicatorValues;
-  targetIndicatorValues: TargetIndicatorsValues;
+  customForecastIndicatorId: string;
+  targetIndicatorId: string;
+  type: IndicatorType;
+  ticker: string;
+  name: string;
+  market: string;
+  customForecastIndicatorValues: IndicatorValue[];
+  targetIndicatorValues: IndicatorValue[];
 };
