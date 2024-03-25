@@ -26,7 +26,7 @@ export class GetIndicatorBoardMetadataQueryHandler implements IQueryHandler {
     try {
       const indicatorBoardMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id: query.id });
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
-      console.log(indicatorBoardMetaDataEntity.id);
+
       return IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
