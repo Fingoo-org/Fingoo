@@ -1,10 +1,10 @@
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import {
-  IndicatorValueItemResponse,
   IndicatorValueResponse,
   IndicatorsValueResponse,
 } from '../../../store/querys/numerical-guidance/indicator.query';
 import { CustomForecastIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
+import { IndicatorValueItem } from './indicator-value-view-model.service';
 
 export type FormattedIndicatorValue = {
   value: number;
@@ -20,28 +20,6 @@ export type FormattedItem = {
     [ticker: string]: FormattedIndicatorValue;
   };
 };
-
-// Risk: item이 길어지면 오버헤드
-class IndicatorValueItem {
-  readonly date: string;
-  readonly value: number | string;
-  constructor({ date, value }: IndicatorValueItemResponse) {
-    this.date = date;
-    this.value = value;
-  }
-
-  calcuateIndexValue(maxValue: number, minValue: number) {
-    if (typeof this.value === 'number') {
-      return ((this.value - minValue) / (maxValue - minValue)) * 100;
-    } else {
-      return ((parseInt(this.value) - minValue) / (maxValue - minValue)) * 100;
-    }
-  }
-
-  get parseValueToInt() {
-    return typeof this.value === 'number' ? this.value : parseInt(this.value);
-  }
-}
 
 export type UnitType = 'index' | 'default';
 

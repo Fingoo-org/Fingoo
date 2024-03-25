@@ -5,7 +5,7 @@ import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspa
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { IndicatorsValue } from '@/app/business/services/view-model/indicators-value-view-model.service';
+import { IndicatorsValue } from '@/app/business/services/view-model/actual-indicators-value-view-model.service';
 
 const wrapper = SWRProviderWithoutCache;
 

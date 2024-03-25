@@ -19,7 +19,7 @@ import { useResponsive } from '../../hooks/use-responsive';
 import {
   FormattedIndicatorValue,
   FormattedRowType,
-} from '@/app/business/services/view-model/indicators-value-view-model.service';
+} from '@/app/business/services/view-model/actual-indicators-value-view-model.service';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 
