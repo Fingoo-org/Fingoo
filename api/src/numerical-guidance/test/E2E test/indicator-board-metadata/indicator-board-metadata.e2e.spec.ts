@@ -25,6 +25,8 @@ import { of } from 'rxjs';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
 import { DeleteCustomForecastIndicatorIdCommandHandler } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
+import { FileSupabaseAdapter } from '../../../infrastructure/adapter/storage/file.supabase.adapter';
+import { UploadFileCommandHandler } from '../../../application/command/upload-file/upload-file.command.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -34,6 +36,7 @@ describe('Indicator Board Metadata E2E Test', () => {
   let app: INestApplication;
   let dataSource: DataSource;
   let DBenvironment;
+  let fileSupabaseAdapter: FileSupabaseAdapter;
 
   const seeding = async () => {
     const memberEntity = dataSource.getRepository(MemberEntity);
@@ -102,6 +105,8 @@ describe('Indicator Board Metadata E2E Test', () => {
           DeleteIndicatorBoardMetadataCommandHandler,
           UpdateIndicatorBoardMetadataNameCommandHandler,
           DeleteCustomForecastIndicatorIdCommandHandler,
+          UploadFileCommandHandler,
+          FileSupabaseAdapter,
           {
             provide: 'CreateIndicatorBoardMetadataPort',
             useClass: IndicatorBoardMetadataPersistentAdapter,
@@ -139,6 +144,10 @@ describe('Indicator Board Metadata E2E Test', () => {
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
+            provide: 'UploadFilePort',
+            useClass: FileSupabaseAdapter,
+          },
+          {
             provide: AuthGuard,
             useValue: {
               canActivate: jest.fn().mockImplementation((context) => {
@@ -152,6 +161,7 @@ describe('Indicator Board Metadata E2E Test', () => {
         ],
       }).compile(),
     ]);
+    fileSupabaseAdapter = module.get(FileSupabaseAdapter);
     dataSource = module.get<DataSource>(DataSource);
     await seeding();
     app = module.createNestApplication();
@@ -334,5 +344,25 @@ describe('Indicator Board Metadata E2E Test', () => {
       )
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);
+  });
+
+  it('/post 파일을 업로드한다.', async () => {
+    const imagePath = './src/numerical-guidance/test/data/test-file.png';
+
+    const response = request(app.getHttpServer())
+      .post('/api/numerical-guidance/indicator-board-metadata/file/upload')
+      .set('Content-Type', 'multipart/form-data')
+      .attach('fileName', imagePath);
+    response.expect(HttpStatus.CREATED);
+
+    await fileSupabaseAdapter.deleteFile('indicatorBoardMetadata/test-file.png');
+  });
+
+  it('/post 파일을 업로드한다. - 빈 파일을 보내는 경우', async () => {
+    return request(app.getHttpServer())
+      .post('/api/numerical-guidance/indicator-board-metadata/file/upload')
+      .set('Content-Type', 'multipart/form-data')
+      .attach('fileName', null)
+      .expect(HttpStatus.BAD_REQUEST);
   });
 });

@@ -40,6 +40,8 @@ import { LiveIndicatorController } from './api/live-indicator/live-indicator.con
 import { DeleteCustomForecastIndicatorIdCommandHandler } from './application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
 import { DeleteCustomForecastIndicatorCommandHandler } from './application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
 import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/command/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
+import { FileSupabaseAdapter } from './infrastructure/adapter/storage/file.supabase.adapter';
+import { UploadFileCommandHandler } from './application/command/upload-file/upload-file.command.handler';
 
 @Module({
   imports: [
@@ -88,6 +90,7 @@ import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/c
     DeleteCustomForecastIndicatorIdCommandHandler,
     DeleteCustomForecastIndicatorCommandHandler,
     UpdateCustomForecastIndicatorNameCommandHandler,
+    UploadFileCommandHandler,
     {
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
@@ -179,6 +182,10 @@ import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/c
     {
       provide: 'UpdateCustomForecastIndicatorNamePort',
       useClass: CustomForecastIndicatorPersistentAdapter,
+    },
+    {
+      provide: 'UploadFilePort',
+      useClass: FileSupabaseAdapter,
     },
   ],
 })
