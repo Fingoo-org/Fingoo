@@ -46,15 +46,7 @@ export const fetchIndicatorsValue = async ([url, interval, ...ids]: string[]) =>
 
 export const fetchCustomForecastIndicatorsValue = async ([url, ...ids]: string[]) => {
   const customForecastIndicatorsValue = await Promise.all(
-    ids.map((id) =>
-      instance
-        .get(url, {
-          params: {
-            customForecastIndicatorId: id,
-          },
-        })
-        .then((res) => res.data),
-    ),
+    ids.map((id) => instance.get(`${url}/${id}`).then((res) => res.data)),
   );
   return customForecastIndicatorsValue;
 };

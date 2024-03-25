@@ -84,7 +84,6 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
 
     return {
       customForecastIndicatorId: customForecastIndicator.id,
-      customForecastIndicatorName: customForecastIndicator.customForecastIndicatorName,
       targetIndicatorId: targetIndicator.id,
       name: targetIndicator.name,
       ticker: targetIndicator.ticker,
