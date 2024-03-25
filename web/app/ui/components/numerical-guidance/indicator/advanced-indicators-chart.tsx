@@ -6,7 +6,12 @@ import { createIndicatorFormatter } from '@/app/business/services/chart/indicato
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 
 export default function AdvancedIndicatorsChart() {
-  const { historyIndicatorsValue, setPaginationData, setInitialCursorDate } = useHistoryIndicatorsValueViewModel();
+  const {
+    actualHistoryIndicatorsValue,
+    customForecastHistoryIndicatorsValue,
+    setPaginationData,
+    setInitialCursorDate,
+  } = useHistoryIndicatorsValueViewModel();
   const { indicatorsValue } = useLiveIndicatorsValueViewModel();
   const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
 
@@ -14,7 +19,10 @@ export default function AdvancedIndicatorsChart() {
     indicatorsValue?.indicatorsValue ?? [],
     customForecastIndicatorsValue ?? [],
   );
-  const historyIndicatorFormatter = createIndicatorFormatter(historyIndicatorsValue?.indicatorsValue ?? []);
+  const historyIndicatorFormatter = createIndicatorFormatter(
+    actualHistoryIndicatorsValue?.indicatorsValue ?? [],
+    customForecastHistoryIndicatorsValue ?? [],
+  );
 
   const formattedLiveIndicatorsRows = indicatorFormatter.formattedIndicatorsInRow;
   const formattedHistoryIndicatorsRows = historyIndicatorFormatter.formattedIndicatorsInRow;
@@ -25,6 +33,8 @@ export default function AdvancedIndicatorsChart() {
     ...(formattedHistoryIndicatorsRows || []),
     ...(formattedLiveIndicatorsRows || []),
   ];
+
+  console.log(formattedAdvencedIndicatorsRows);
 
   const initialLength = formattedLiveIndicatorsRows?.length || 0;
   const initialIndex = initialLength - (formattedAdvencedIndicatorsRows?.length || 0);
