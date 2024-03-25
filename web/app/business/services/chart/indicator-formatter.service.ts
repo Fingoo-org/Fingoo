@@ -1,12 +1,19 @@
-import {
-  UnitType,
-  IndicatorValue,
-  FormattedItem,
-} from '../view-model/indicator-value/actual-indicators-value-view-model.service';
 import { utcFormat, utcParse } from 'd3-time-format';
+import { FormattedItem, IndicatorValue } from '../view-model/indicator-value/indicator-value-view-model.service';
 
 export const parseTime = utcParse('%Y%m%d');
 export const formatTime = utcFormat('%Y-%m-%d');
+
+export type FormattedIndicatorValue = {
+  value: number;
+  displayValue: number;
+};
+
+export type FormattedRowType = {
+  [ticker: string]: FormattedIndicatorValue | string;
+};
+
+export type UnitType = 'index' | 'default';
 
 export class IndicatorFormatter {
   private unitType: UnitType;
@@ -32,14 +39,7 @@ export class IndicatorFormatter {
 
   get formattedIndicatorsInRow() {
     const formattedIndicatorsByDate = this.formattedIndicatorsByDate;
-    return Object.keys(formattedIndicatorsByDate).map<{
-      [ticker: string]:
-        | {
-            value: number;
-            displayValue: number;
-          }
-        | string;
-    }>((date) => {
+    return Object.keys(formattedIndicatorsByDate).map<FormattedRowType>((date) => {
       return {
         date,
         ...formattedIndicatorsByDate[date],

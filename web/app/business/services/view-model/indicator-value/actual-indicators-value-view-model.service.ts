@@ -4,24 +4,7 @@ import {
   IndicatorsValueResponse,
 } from '../../../../store/querys/numerical-guidance/indicator.query';
 import { CustomForecastIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { IndicatorValueItem, IndicatorValue } from './indicator-value-view-model.service';
-
-export type FormattedIndicatorValue = {
-  value: number;
-  displayValue: number;
-};
-
-export type FormattedRowType = {
-  [ticker: string]: FormattedIndicatorValue | string;
-};
-
-export type FormattedItem = {
-  [date: string]: {
-    [ticker: string]: FormattedIndicatorValue;
-  };
-};
-
-export type UnitType = 'index' | 'default';
+import { IndicatorValueItem, IndicatorValue, FormattedItem, UnitType } from './indicator-value-view-model.service';
 
 export class ActualIndicatorValue extends IndicatorValue {
   readonly id: string;

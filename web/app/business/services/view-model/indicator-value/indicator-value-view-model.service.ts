@@ -2,7 +2,7 @@ import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidanc
 
 export type FormattedItem = {
   [date: string]: {
-    [ticker: string]: FormattedIndicatorValue;
+    [identiifer: string]: FormattedIndicatorValue;
   };
 };
 
