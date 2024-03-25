@@ -57,4 +57,14 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
       };
     }, {});
   }
+
+  get identifier() {
+    return this.customForecastIndicatorName;
+  }
 }
+
+export const convertCustomForecastIndicatorsValue = (
+  customForecastIndicatorsValue: (CustomForecastIndicatorValueResponse & { customForecastIndicatorName: string })[],
+) => {
+  return customForecastIndicatorsValue.map((item) => new CustomForecastIndicatorValue(item));
+};

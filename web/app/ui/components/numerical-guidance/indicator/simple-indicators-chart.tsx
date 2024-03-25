@@ -7,16 +7,20 @@ import { IndicatorFormatter } from '@/app/business/services/chart/indicator-form
 export default function SimpleIndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const { indicatorsValue } = useLiveIndicatorsValueViewModel();
-  // const { customForecastTargetIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
-  const category = indicatorsValue?.tickerList ? indicatorsValue.tickerList : [];
+  const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
 
-  const indicatorFormatter = new IndicatorFormatter(indicatorsValue?.indicatorsValue ?? []);
+  const indicatorFormatter = new IndicatorFormatter([
+    ...(indicatorsValue?.indicatorsValue ?? []),
+    ...(customForecastIndicatorsValue ?? []),
+  ]);
 
   const formattedIndicatorsRows = indicatorFormatter.formattedIndicatorsInRow;
+
+  const categories = indicatorFormatter.columns;
   return (
     <MultiLineChart
       data={formattedIndicatorsRows || []}
-      categories={category}
+      categories={categories}
       noDataText={selectedMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'}
     />
   );

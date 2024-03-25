@@ -45,6 +45,8 @@ export abstract class IndicatorValue {
 
   abstract formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem;
 
+  abstract get identifier(): string;
+
   caculateValue(item: IndicatorValueItem, unitType: UnitType) {
     return unitType === 'index' ? item.calcuateIndexValue(this.maxValue, this.minValue) : item.parseValueToInt;
   }

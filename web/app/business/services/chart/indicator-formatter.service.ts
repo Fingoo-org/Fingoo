@@ -46,4 +46,8 @@ export class IndicatorFormatter {
       };
     });
   }
+
+  get columns() {
+    return this.indicatorsValue.map((indicator) => indicator.identifier);
+  }
 }

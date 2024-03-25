@@ -38,6 +38,10 @@ export class ActualIndicatorValue extends IndicatorValue {
       };
     }, {});
   }
+
+  get identifier() {
+    return this.ticker;
+  }
 }
 
 export class ActualIndicatorsValue {
@@ -64,24 +68,6 @@ export const convertHistoryIndicatorsValueViewModel = (indicators: HistoryIndica
     return {
       ...indicator.indicator,
       values: indicator.values,
-    };
-  });
-
-  return new ActualIndicatorsValue({
-    indicatorsValue: formmatedIndicators,
-  });
-};
-
-export const convertCustomForecastTargetIndicatorsValueViewModel = (
-  indicators: CustomForecastIndicatorValueResponse[],
-) => {
-  const formmatedIndicators = indicators.map((indicator) => {
-    return {
-      id: indicator.targetIndicatorId,
-      ticker: indicator.ticker,
-      market: indicator.market,
-      type: indicator.type,
-      values: indicator.targetIndicatorValues,
     };
   });
 
