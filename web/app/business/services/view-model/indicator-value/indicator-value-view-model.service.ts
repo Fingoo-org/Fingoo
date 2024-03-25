@@ -1,14 +1,10 @@
 import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { FormattedIndicatorValue } from '../../chart/indicator-formatter.service';
 
 export type FormattedItem = {
   [date: string]: {
     [identiifer: string]: FormattedIndicatorValue;
   };
-};
-
-export type FormattedIndicatorValue = {
-  value: number;
-  displayValue: number;
 };
 
 export type UnitType = 'index' | 'default';
