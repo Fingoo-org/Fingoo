@@ -1,5 +1,5 @@
 import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { AuthGuard } from '../../../auth/auth.guard';
@@ -19,6 +19,8 @@ import { DeleteIndicatorBoardMetadataCommand } from '../../application/command/d
 import { UpdateIndicatorBoardMetadataNameDto } from './dto/update-indicator-board-metadata-name.dto';
 import { UpdateIndicatorBoardMetadataNameCommand } from '../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command';
 import { DeleteCustomForecastIndicatorIdCommand } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command';
+import { ApiFile } from '../../../utils/file/api-file.decorator';
+import { UploadFileCommand } from '../../application/command/upload-file/upload-file.command';
 
 @ApiTags('IndicatorBoardMetadataController')
 @Controller('/api/numerical-guidance')
@@ -315,5 +317,15 @@ export class IndicatorBoardMetadataController {
     const command = new UpdateIndicatorBoardMetadataNameCommand(id, updateIndicatorBoardMetadataNameDto.name);
 
     await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: 'supabase에 file을 upload 합니다.' })
+  @ApiFile('fileName')
+  @ApiCreatedResponse()
+  @Post('/indicator-board-metadata/file/upload')
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const command = new UploadFileCommand(file);
+
+    return await this.commandBus.execute(command);
   }
 }
