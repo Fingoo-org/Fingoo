@@ -2,14 +2,19 @@ import { useHistoryIndicatorsValueViewModel } from '@/app/business/hooks/indicat
 import AdvancedMultiLineChart from '../../view/molocule/advanced-multi-line-chart/advanced-multi-line-chart';
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import { useEffect } from 'react';
-import { IndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
+import { createIndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
+import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 
 export default function AdvancedIndicatorsChart() {
   const { historyIndicatorsValue, setPaginationData, setInitialCursorDate } = useHistoryIndicatorsValueViewModel();
   const { indicatorsValue } = useLiveIndicatorsValueViewModel();
+  const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
 
-  const indicatorFormatter = new IndicatorFormatter(indicatorsValue?.indicatorsValue ?? []);
-  const historyIndicatorFormatter = new IndicatorFormatter(historyIndicatorsValue?.indicatorsValue ?? []);
+  const indicatorFormatter = createIndicatorFormatter(
+    indicatorsValue?.indicatorsValue ?? [],
+    customForecastIndicatorsValue ?? [],
+  );
+  const historyIndicatorFormatter = createIndicatorFormatter(historyIndicatorsValue?.indicatorsValue ?? []);
 
   const formattedLiveIndicatorsRows = indicatorFormatter.formattedIndicatorsInRow;
   const formattedHistoryIndicatorsRows = historyIndicatorFormatter.formattedIndicatorsInRow;

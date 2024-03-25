@@ -6,7 +6,7 @@ import { convertCustomForecastIndicatorsValue } from '../../services/view-model/
 
 export const useCustomForecastIndicatorsValueViewModel = () => {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { data: customForecastIndicatorsValueData } = useFetchCustomForecastIndicatorsValue(
+  const { data: customForecastIndicatorsValueData, isLoading } = useFetchCustomForecastIndicatorsValue(
     selectedMetadata?.customForecastIndicatorIds,
   );
   const { data: customForecastIndicatorListData } = useFetchCustomForecastIndicatorList();
@@ -35,5 +35,6 @@ export const useCustomForecastIndicatorsValueViewModel = () => {
 
   return {
     customForecastIndicatorsValue: convertedCustomForecastIndicatorsValue,
+    isPending: isLoading,
   };
 };

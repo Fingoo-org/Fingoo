@@ -51,3 +51,7 @@ export class IndicatorFormatter {
     return this.indicatorsValue.map((indicator) => indicator.identifier);
   }
 }
+
+export const createIndicatorFormatter = (...indicatorsValue: IndicatorValue[][]) => {
+  return new IndicatorFormatter(indicatorsValue.flat());
+};
