@@ -31,11 +31,47 @@ def runArima(df: pd.DataFrame, target: str, period: int) -> pd.DataFrame:
   if verification.getADFDataFrame(df[target])['Data']['p_value'] >= 0.05:
     df[target] = df[target].diff().bfill()
 
-  model = ARIMA(df[target], order=(1, 0, 1))
+  order = optimizationArima(df, target)
+  p = int(order[0])
+  q = int(order[1])
+  d = int(order[2])
+
+  model = ARIMA(df[target], order=(p, q, d))
   fitted_model = model.fit()
 
   forecast = fitted_model.forecast(steps=period)
   forecast_df = pd.DataFrame({target: forecast})
 
   return forecast_df
-  
+
+def optimizationArima(df: pd.DataFrame, target: str) -> str:
+  df = df.fillna(method='ffill')
+  if verification.getADFDataFrame(df[target])['Data']['p_value'] >= 0.05:
+    df[target] = df[target].diff().bfill()
+
+  order = [3, 3, 3]
+  orderList = []
+  aicList = []
+  bicList = []
+
+  for p in range(order[0]):
+    for q in range(order[1]):
+      for d in range(order[2]):
+        model = ARIMA(df[target], order=(p, q, d))
+        try:
+          fitted_model = model.fit()
+          Corder = f'{p}{d}{q}'
+          aic = fitted_model.aic
+          bic = fitted_model.bic
+          orderList.append(Corder)
+          aicList.append(aic)
+          bicList.append(bic)
+        except:
+          pass
+  resultDf = pd.DataFrame(list(zip(orderList, aicList)), columns=['order','AIC'])
+  resultDf.sort_values('AIC', inplace= True)
+
+  minAicRow = resultDf.loc[resultDf['AIC'].idxmin()]
+  minOrder = minAicRow['order']
+
+  return minOrder
