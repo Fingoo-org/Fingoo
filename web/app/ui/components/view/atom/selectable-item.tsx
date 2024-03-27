@@ -27,7 +27,7 @@ export default function SelectableItem({
       onClick={handleClick}
       style={style}
     >
-      <div className="flex h-full items-center rounded font-medium hover:bg-blue-50 hover:text-blue-700 hover:opacity-20">
+      <div className=" h-full rounded font-medium hover:bg-blue-50 hover:text-blue-700 hover:opacity-20">
         {children}
       </div>
     </button>

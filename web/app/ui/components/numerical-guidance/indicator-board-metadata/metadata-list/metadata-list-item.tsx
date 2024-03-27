@@ -38,7 +38,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   return (
     <ListItem hoverRender={hoverRender}>
       <SelectableItem key={item.id} selected={selectedMetadata?.id === item.id} onSelect={handleSelect}>
-        {item.name}
+        <div className="flex items-center">{item.name}</div>
       </SelectableItem>
     </ListItem>
   );
