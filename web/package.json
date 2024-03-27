@@ -13,6 +13,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:hook": "jest hook --collectCoverageFrom=app/business/**/*.{ts,tsx}",
+    "test:integration": "jest /components",
     "test:e2e": "docker compose -f ../docker-compose.yml -f ../docker-compose-local.yml up --abort-on-container-exit",
     "prepare": "cd .. && [ -d '.husky' ] && husky install || true",
     "type": "tsc --noEmit",

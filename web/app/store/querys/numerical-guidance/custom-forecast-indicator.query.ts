@@ -51,7 +51,9 @@ export type CustomForecastIndicatorValueResponse = {
 };
 
 export const useFetchCustomForecastIndicatorsValue = (customForecastIndicatorIds: string[] | undefined) => {
-  const key = customForecastIndicatorIds ? [API_PATH.customForecastIndicator, ...customForecastIndicatorIds] : null;
+  const key = customForecastIndicatorIds
+    ? [`${API_PATH.customForecastIndicator}/value`, ...customForecastIndicatorIds]
+    : null;
 
   return useSWR<CustomForecastIndicatorValueResponse[], any, string[] | null>(key, fetchCustomForecastIndicatorsValue);
 };

@@ -136,6 +136,8 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
       <ResponsiveContainer className="h-full w-full">
         {data?.length ? (
           <ReChartsLineChart
+            width={300}
+            height={300}
             data={data}
             onClick={
               hasOnValueChange && (activeLegend || activeDot)

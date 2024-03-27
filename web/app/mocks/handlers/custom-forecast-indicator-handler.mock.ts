@@ -18,7 +18,7 @@ export const customForecastIndicatorHandlers = [
     return HttpResponse.json(mockDB.getCustomForecastIndicatorList());
   }),
   http.get<customForecastIndicatorParam>(
-    `${API_PATH.customForecastIndicator}/:customForecastIndicatorId`,
+    `${API_PATH.customForecastIndicator}/value/:customForecastIndicatorId`,
     async ({ params }) => {
       const { customForecastIndicatorId } = params;
       const response = mockDB.getCustomForecastIndicatorValue(customForecastIndicatorId);

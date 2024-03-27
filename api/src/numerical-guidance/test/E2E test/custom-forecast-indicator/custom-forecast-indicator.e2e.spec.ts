@@ -235,21 +235,21 @@ describe('Customer Forecast Indicator E2E Test', () => {
 
   it('/delete 예측지표를 삭제한다', async () => {
     return request(app.getHttpServer())
-      .delete('/api/numerical-guidance/custom-forecast-indicators/f5206520-da94-11ee-b91b-3551e6db3100')
+      .delete('/api/numerical-guidance/custom-forecast-indicator/f5206520-da94-11ee-b91b-3551e6db3100')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });
 
   it('/delete 예측지표를 삭제한다. - DB에 id가 존재하지 않는다.', async () => {
     return request(app.getHttpServer())
-      .delete('/api/numerical-guidance/custom-forecast-indicators/f5206520-da94-11ee-b91b-3551e6db3999')
+      .delete('/api/numerical-guidance/custom-forecast-indicator/f5206520-da94-11ee-b91b-3551e6db3999')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);
   });
 
   it('/delete 예측지표를 삭제한다. - 유효하지않은 id를 요청한다.', async () => {
     return request(app.getHttpServer())
-      .delete('/api/numerical-guidance/custom-forecast-indicators/invalid-id')
+      .delete('/api/numerical-guidance/custom-forecast-indicator/invalid-id')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
   });

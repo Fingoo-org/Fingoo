@@ -17,7 +17,11 @@ const CustomForecastIndicatorList = React.memo(function CustomForecastIndicatorL
 
   return (
     <Pending isPending={isPending}>
-      <div role="tablist" className={clsx({ hidden: selectedMetadata === undefined })}>
+      <div
+        data-testId="custom-forecast-indicator-list"
+        role="tablist"
+        className={clsx({ hidden: selectedMetadata === undefined })}
+      >
         {customForecastIndicatorList ? (
           <List list={customForecastIndicatorList.customForecastIndicatorList} render={renderItem} />
         ) : null}

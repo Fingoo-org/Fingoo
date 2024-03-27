@@ -191,7 +191,7 @@ export class CustomForecastIndicatorController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
-  @Delete('/custom-forecast-indicators/:customForecastIndicatorId')
+  @Delete('/custom-forecast-indicator/:customForecastIndicatorId')
   async deleteCustomForecastIndicator(@Param('customForecastIndicatorId') customForecastIndicatorId): Promise<void> {
     const command = new DeleteCustomForecastIndicatorCommand(customForecastIndicatorId);
     await this.commandBus.execute(command);

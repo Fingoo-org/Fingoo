@@ -107,6 +107,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
 
   const renderLienSeries = () => {
     let index = -1;
+    // bug: key값이 없어서 오류가 발생함 index가 0일 때 key를 보장할 수 없기 때문
     return Object.keys(scaledData[0]).map((key) => {
       if (key !== 'date' && key !== 'idx') {
         index += 1;

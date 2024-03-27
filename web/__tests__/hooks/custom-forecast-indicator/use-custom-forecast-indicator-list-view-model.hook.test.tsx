@@ -39,4 +39,19 @@ describe('useCustomForecastIndicatorListViewModel', () => {
       '1',
     );
   });
+
+  it('예측 지표를 삭제하면, 예측 지표 리스트에서 삭제된다', async () => {
+    // given
+    const { result } = renderHook(() => useCustomForecastIndicatorListViewModel(), { wrapper });
+    await waitFor(() => expect(result.current.customForecastIndicatorList).not.toBeUndefined());
+
+    // when
+    act(() => {
+      result.current.deleteIndicatorBoardMetadata('1');
+    });
+
+    // then
+    await waitFor(() => expect(result.current.customForecastIndicatorList).toHaveLength(3));
+    expect(result.current.customForecastIndicatorList?.findCustomForecastIndicatorByIndex(0).id).toBe('2');
+  });
 });

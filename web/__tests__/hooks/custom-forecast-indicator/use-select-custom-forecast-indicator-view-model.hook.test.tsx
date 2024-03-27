@@ -51,6 +51,23 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
     expect(result.current.sourceIndicatorList?.[0].ticker).toBe('AAPL');
   });
 
+  it('예측 지표 이름을 변경하면, 변경된 이름이 적용된다', async () => {
+    // given
+    const { result } = renderHook(() => useSelectedCustomForecastIndicatorViewModel(), { wrapper });
+
+    // when
+    act(() => {
+      result.current.selectCustomForecastIndicatorById('2');
+    });
+    await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+    act(() => {
+      result.current.updateCustomForecastIndicatorName('테스트');
+    });
+
+    // then
+    await waitFor(() => expect(result.current.selectedCustomForecastIndicator.name).toBe('테스트'));
+  });
+
   describe('sourceIndicator', () => {
     it('재료 지표를 추가하면, 재료 지표 리스트에 추가된다', async () => {
       // given
