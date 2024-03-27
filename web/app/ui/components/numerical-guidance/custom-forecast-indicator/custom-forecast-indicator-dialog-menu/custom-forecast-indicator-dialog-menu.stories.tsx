@@ -7,7 +7,7 @@ import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useEffect } from 'react';
 
 const meta = {
-  title: 'numberical-guidance/molecule/CustomForecastIndicatorDialogMenu',
+  title: 'numerical-guidance/molecule/CustomForecastIndicatorDialogMenu',
   component: CustomForecastIndicatorDialogMenu,
 } satisfies Meta<typeof CustomForecastIndicatorDialogMenu>;
 
