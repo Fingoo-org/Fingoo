@@ -41,8 +41,12 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   }, [foundCustomForecastIndicator]);
 
   const convertedSelectedCustomForecastIndicator = useMemo(
-    () => convertCustomForecastIndicatorViewModel(selectedCustomForecastIndicator),
-    [selectedCustomForecastIndicator],
+    () =>
+      convertCustomForecastIndicatorViewModel({
+        ...selectedCustomForecastIndicator,
+        customForecastIndicatorName: foundCustomForecastIndicator?.customForecastIndicatorName ?? '',
+      }),
+    [foundCustomForecastIndicator, selectedCustomForecastIndicator],
   );
 
   const sourceIndicatorIds = convertedSelectedCustomForecastIndicator?.sourceIndicatorIds;
