@@ -2,6 +2,8 @@ import ListItem from '../../atom/list-item';
 import Accordion from '../accordion';
 import { useState } from 'react';
 import { cn } from '@/app/utils/style';
+import DraggableContext from '../../../util/draggable-context';
+import DraggableItem from '../../atom/draggable-item';
 
 type ExpandableListItemProps = {
   selected: boolean;
@@ -12,6 +14,7 @@ type ExpandableListItemProps = {
 
 export default function ExpandableListItem({ selected, onSelect, onDeSelect, hoverRender }: ExpandableListItemProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [values, setValues] = useState<string[]>(['item1', 'item2', 'item3']);
 
   const handleValueChange = (value: string) => {
     if (value === 'item1') {
@@ -64,16 +67,18 @@ export default function ExpandableListItem({ selected, onSelect, onDeSelect, hov
           >
             <div className="flex items-center p-1 font-bold hover:text-blue-700 hover:opacity-20">선택해주세용</div>
             <Accordion.Content>
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
+              <DraggableContext
+                values={values}
+                onDragEnd={(newValues) => {
+                  setValues(newValues);
                 }}
-                className="divide-y bg-white hover:bg-white hover:text-black"
               >
-                <div>01</div>
-                <div>01</div>
-                <div>01</div>
-              </div>
+                {values.map((value) => (
+                  <DraggableItem key={value} id={value}>
+                    {value}
+                  </DraggableItem>
+                ))}
+              </DraggableContext>
             </Accordion.Content>
           </div>
         </ListItem>
