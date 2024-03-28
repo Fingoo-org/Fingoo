@@ -25,12 +25,16 @@ export default function SourceIndicatorSearchList() {
     if (!indicatorList) return undefined;
     if (searchTerm === '') return indicatorList;
 
-    return indicatorList.filter((indicator) => {
+    const upperSearchTerm = searchTerm.toLocaleUpperCase();
+
+    const filteredIndicatorList = indicatorList.filter((indicator) => {
       return (
-        indicator.name.toLocaleUpperCase().includes(searchTerm.toLocaleUpperCase()) ||
-        indicator.ticker.toLocaleUpperCase().includes(searchTerm.toLocaleUpperCase())
+        indicator.name.toLocaleUpperCase().includes(upperSearchTerm) ||
+        indicator.ticker.toLocaleUpperCase().includes(upperSearchTerm)
       );
     });
+
+    return filteredIndicatorList;
   }, [indicatorList, searchTerm]);
 
   return (
