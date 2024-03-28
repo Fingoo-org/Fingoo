@@ -1,14 +1,17 @@
 import ListItem from '../../atom/list-item';
 import Accordion from '../accordion';
-import { useRef, useState } from 'react';
-import IconButton from '../../atom/icons/icon-button';
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { useState } from 'react';
 import { cn } from '@/app/utils/style';
 
-export default function ExpandableListItem() {
+type ExpandableListItemProps = {
+  selected: boolean;
+  onSelect: () => void;
+  onDeSelect?: () => void;
+  hoverRender?: () => JSX.Element;
+};
+
+export default function ExpandableListItem({ selected, onSelect, onDeSelect, hoverRender }: ExpandableListItemProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
   const handleValueChange = (value: string) => {
     if (value === 'item1') {
@@ -21,24 +24,11 @@ export default function ExpandableListItem() {
   };
 
   const handleSelect = () => {
-    setSelected(true);
+    onSelect();
   };
 
   const handleDeSelect = () => {
-    setSelected(false);
-  };
-
-  const hoverRender = () => {
-    return (
-      <IconButton
-        aria-label="edit"
-        // ref={iconButtonRef}
-        // onClick={handleIconButton}
-        icon={DotsHorizontalIcon}
-        color={'violet'}
-        className="mr-5"
-      />
-    );
+    onDeSelect?.();
   };
 
   const handleClick = () => {
@@ -51,7 +41,7 @@ export default function ExpandableListItem() {
 
   return (
     <Accordion onValueChange={handleValueChange} type="single" collapsible>
-      <Accordion.Item ref={ref} className="relative w-full" value="item1">
+      <Accordion.Item className="relative w-full" value="item1">
         <ListItem
           hoverDecorator={
             isOpen
