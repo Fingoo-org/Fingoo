@@ -6,10 +6,10 @@ import TinyInput from '../../view/atom/tiny-input/tiny-input';
 import { SearchIcon } from '@heroicons/react/solid';
 import SourceIndicatorSearchListItem from './source-indicator-search-list-item';
 import { useMemo, useState } from 'react';
+import { useIndicatorSearchList } from '@/app/business/hooks/custom-forecast-indicator/use-indicator-search-list.hooks';
 
 export default function SourceIndicatorSearchList() {
   const [searchTerm, setSearchTerm] = useState('');
-  const { indicatorList } = useIndicatorList();
 
   const render = ({ index, style, data }: ListChildComponentProps<IndicatorInfoResponse[]>) => {
     const indicator = data[index];
@@ -21,21 +21,7 @@ export default function SourceIndicatorSearchList() {
     setSearchTerm(value);
   };
 
-  const searchedIndicatorList = useMemo(() => {
-    if (!indicatorList) return undefined;
-    if (searchTerm === '') return indicatorList;
-
-    const upperSearchTerm = searchTerm.toLocaleUpperCase();
-
-    const filteredIndicatorList = indicatorList.filter((indicator) => {
-      return (
-        indicator.name.toLocaleUpperCase().includes(upperSearchTerm) ||
-        indicator.ticker.toLocaleUpperCase().includes(upperSearchTerm)
-      );
-    });
-
-    return filteredIndicatorList;
-  }, [indicatorList, searchTerm]);
+  const searchedIndicatorList = useIndicatorSearchList(searchTerm);
 
   return (
     <div className="flex h-full flex-col">
