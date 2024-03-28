@@ -9,6 +9,7 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
+  DragOverEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -16,17 +17,19 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Item } from '../view/atom/draggable-item';
+import DraggableItem, { Item } from '../view/atom/draggable-item';
 
 type DraggableContextProps = {
-  values: string[];
-  onDragEnd: (newValue: string[]) => void;
+  values: {
+    [key: string]: string[];
+  };
+  onValueChange: (newValue: { [key: string]: string[] }) => void;
 };
 
 export default function DraggableContext({
   values,
   children,
-  onDragEnd,
+  onValueChange,
 }: React.PropsWithChildren<DraggableContextProps>) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -43,10 +46,17 @@ export default function DraggableContext({
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onDragOver={handleDragOVer}
     >
-      <SortableContext items={values} strategy={verticalListSortingStrategy}>
-        {children}
-      </SortableContext>
+      {Object.keys(values).map((key, index) => (
+        <SortableContext id={key} key={index} items={values[key]} strategy={verticalListSortingStrategy}>
+          {values[key].map((item) => (
+            <DraggableItem key={item} id={item}>
+              {item}
+            </DraggableItem>
+          ))}
+        </SortableContext>
+      ))}
       <DragOverlay>{activeId ? <Item>{activeId}</Item> : null}</DragOverlay>
     </DndContext>
   );
@@ -56,16 +66,47 @@ export default function DraggableContext({
     setActiveId(active.id as string);
   }
 
+  function handleDragOVer(event: DragOverEvent) {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    const activeContainerId = active.data.current?.sortable.containerId;
+    const ovetContainerId = over.data.current?.sortable.containerId;
+
+    if (!activeContainerId || !ovetContainerId) return;
+
+    if (activeContainerId !== ovetContainerId) {
+      const newValues = {
+        ...values,
+        [ovetContainerId as string]: [...values[ovetContainerId], active.id as string],
+        [activeContainerId as string]: values[activeContainerId].filter((id) => id !== active.id),
+      };
+
+      onValueChange(newValues);
+    }
+  }
+
+  // 같은 컨텍스트 간 이동
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
     if (!over) return;
 
-    if (active.id !== over.id) {
-      const oldIndex = values.indexOf(active.id as string);
-      const newIndex = values.indexOf(over.id as string);
+    const activeContainerId = active.data.current?.sortable.containerId;
+    const ovetContainerId = over.data.current?.sortable.containerId;
 
-      onDragEnd(arrayMove(values, oldIndex, newIndex));
+    if (!activeContainerId || !ovetContainerId) return;
+
+    if (activeContainerId === ovetContainerId) {
+      const value = values[activeContainerId as string];
+      const oldIndex = value.indexOf(active.id as string);
+      const newIndex = value.indexOf(over.id as string);
+
+      onValueChange({
+        ...values,
+        [activeContainerId]: arrayMove(value, oldIndex, newIndex),
+      });
     }
   }
 }

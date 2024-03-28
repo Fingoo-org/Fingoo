@@ -14,7 +14,12 @@ type ExpandableListItemProps = {
 
 export default function ExpandableListItem({ selected, onSelect, onDeSelect, hoverRender }: ExpandableListItemProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [values, setValues] = useState<string[]>(['item1', 'item2', 'item3']);
+  const [values, setValues] = useState<{
+    [key: string]: string[];
+  }>({
+    container1: ['item1', 'item2', 'item3'],
+    container2: ['item4', 'item5', 'item6'],
+  });
 
   const handleValueChange = (value: string) => {
     if (value === 'item1') {
@@ -69,15 +74,15 @@ export default function ExpandableListItem({ selected, onSelect, onDeSelect, hov
             <Accordion.Content>
               <DraggableContext
                 values={values}
-                onDragEnd={(newValues) => {
+                onValueChange={(newValues) => {
                   setValues(newValues);
                 }}
               >
-                {values.map((value) => (
+                {/* {values.map((value) => (
                   <DraggableItem key={value} id={value}>
                     {value}
-                  </DraggableItem>
-                ))}
+                  </DraggableItem> 내부로 놓으면 드레그 이벤트 잘 작동하는데, 이렇게 뺴도 과연?
+                ))} */}
               </DraggableContext>
             </Accordion.Content>
           </div>
