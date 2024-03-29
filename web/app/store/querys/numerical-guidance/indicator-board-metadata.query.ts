@@ -106,3 +106,26 @@ export const useDeleteIndicatorBoardMetadata = () => {
     await deleteFetcher([url, metadataId]);
   });
 };
+
+export type UpdateIndicatorIdsWithSessionIdsRequestBody = {
+  indicatorIdsWithSessionIds: {
+    [key: string]: string[];
+  };
+};
+
+export const useUpdateIndicatorIdsWithSessionIds = (metadataId: string | undefined) => {
+  return useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (
+      url,
+      {
+        arg,
+      }: {
+        arg: UpdateIndicatorIdsWithSessionIdsRequestBody;
+      },
+    ) => {
+      if (!metadataId) return;
+      await patchFetcher<UpdateIndicatorIdsWithSessionIdsRequestBody>([url, 'session', metadataId], { arg });
+    },
+  );
+};
