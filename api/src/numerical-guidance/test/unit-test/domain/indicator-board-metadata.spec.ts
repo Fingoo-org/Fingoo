@@ -14,7 +14,15 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // then
-    const expected = new IndicatorBoardMetadata(null, '메타 데이터', [], [], currentDate, currentDate);
+    const expected = new IndicatorBoardMetadata(
+      null,
+      '메타 데이터',
+      [],
+      [],
+      { section1: [] },
+      currentDate,
+      currentDate,
+    );
     expect(expected).toEqual(indicatorBoardMetadata);
   });
 
@@ -37,14 +45,17 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-        'customForecastIndicatorId5',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId4', 'customForecastIndicatorId5'],
+      {
+        section1: [
+          'indicatorId1',
+          'indicatorId2',
+          'customForecastIndicatorId3',
+          'customForecastIndicatorId4',
+          'customForecastIndicatorId5',
+        ],
+      },
       currentDate,
       currentDate,
     );
@@ -54,7 +65,7 @@ describe('지표보드 메타데이터', () => {
     function insertIndicatorId() {
       indicatorBoardMetadata.insertIndicatorId(indicatorId);
     }
-    const rule = new IndicatorBoardMetadataCountShouldNotExceedLimitRule(indicatorBoardMetadata.indicatorIds);
+    const rule = new IndicatorBoardMetadataCountShouldNotExceedLimitRule(indicatorBoardMetadata.sections);
 
     //then
     expect(insertIndicatorId).toThrow(BusinessRuleValidationException);
@@ -67,14 +78,11 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id2',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-        'customForecastIndicatorId5',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      },
       currentDate,
       currentDate,
     );
@@ -97,13 +105,11 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id2',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      },
       currentDate,
       currentDate,
     );
@@ -113,7 +119,7 @@ describe('지표보드 메타데이터', () => {
     indicatorBoardMetadata.insertCustomForecastIndicatorId(customForecastIndicatorId);
 
     // then
-    const expectedListLength = 5;
+    const expectedListLength = 3;
     expect(indicatorBoardMetadata.customForecastIndicatorIds.length).toEqual(expectedListLength);
   });
 
@@ -123,13 +129,11 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id2',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      },
       currentDate,
       currentDate,
     );
@@ -140,38 +144,6 @@ describe('지표보드 메타데이터', () => {
       indicatorBoardMetadata.insertCustomForecastIndicatorId(customForecastIndicatorId);
     }
     const rule = new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(
-      indicatorBoardMetadata.customForecastIndicatorIds,
-    );
-
-    // then
-    expect(insertCustomForecastIndicatorId).toThrow(BusinessRuleValidationException);
-    expect(insertCustomForecastIndicatorId).toThrow(rule.Message);
-  });
-
-  it('메타데이터에내 예측지표 개수는 5개를 초과할 수 없다.', () => {
-    // given
-    const currentDate: Date = new Date();
-    const indicatorBoardMetadata = new IndicatorBoardMetadata(
-      'id2',
-      'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-        'customForecastIndicatorId5',
-      ],
-      currentDate,
-      currentDate,
-    );
-    const customForecastIndicatorId = 'customForecastIndicatorId6';
-
-    // when
-    function insertCustomForecastIndicatorId() {
-      indicatorBoardMetadata.insertCustomForecastIndicatorId(customForecastIndicatorId);
-    }
-    const rule = new IndicatorBoardMetadataCountShouldNotExceedLimitRule(
       indicatorBoardMetadata.customForecastIndicatorIds,
     );
 
@@ -216,14 +188,11 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-        'customForecastIndicatorId5',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      },
       currentDate,
       currentDate,
     );
@@ -233,7 +202,7 @@ describe('지표보드 메타데이터', () => {
     indicatorBoardMetadata.deleteIndicatorId(indicatorId);
 
     // then
-    const expected = ['indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'];
+    const expected = ['indicatorId2'];
     expect(expected).toEqual(indicatorBoardMetadata.indicatorIds);
   });
 
@@ -243,14 +212,11 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-        'customForecastIndicatorId5',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      },
       currentDate,
       currentDate,
     );
@@ -273,14 +239,11 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-        'customForecastIndicatorId5',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      },
       currentDate,
       currentDate,
     );
@@ -299,14 +262,11 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-        'customForecastIndicatorId5',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      },
       currentDate,
       currentDate,
     );
@@ -329,14 +289,11 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-        'customForecastIndicatorId5',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId5'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId5'],
+      },
       currentDate,
       currentDate,
     );
@@ -344,12 +301,7 @@ describe('지표보드 메타데이터', () => {
 
     // when
     indicatorBoardMetadata.deleteCustomForecastIndicatorId(customForecastIndicatorId);
-    const expected = [
-      'customForecastIndicatorId1',
-      'customForecastIndicatorId2',
-      'customForecastIndicatorId3',
-      'customForecastIndicatorId4',
-    ];
+    const expected = ['customForecastIndicatorId3'];
 
     expect(expected).toEqual(indicatorBoardMetadata.customForecastIndicatorIds);
   });
@@ -358,16 +310,13 @@ describe('지표보드 메타데이터', () => {
     // given
     const currentDate: Date = new Date();
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
-      'id1',
+      'id2',
       'name',
-      ['indicatorId1', 'indicatorId2', 'indicatorId3', 'indicatorId4', 'indicatorId5'],
-      [
-        'customForecastIndicatorId1',
-        'customForecastIndicatorId2',
-        'customForecastIndicatorId3',
-        'customForecastIndicatorId4',
-        'customForecastIndicatorId5',
-      ],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
+      },
       currentDate,
       currentDate,
     );

@@ -189,15 +189,16 @@ export class IndicatorBoardMetadataPersistentAdapter
     try {
       const id = indicatorBoardMetadata.id;
 
-      const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
+      const indicatorBoardMetadataEntity: IndicatorBoardMetadataEntity =
         await this.indicatorBoardMetadataRepository.findOneBy({ id });
-      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
+      this.nullCheckForEntity(indicatorBoardMetadataEntity);
 
-      indicatorBoardMetaDataEntity.customForecastIndicatorIds = {
+      indicatorBoardMetadataEntity.customForecastIndicatorIds = {
         customForecastIndicatorIds: indicatorBoardMetadata.customForecastIndicatorIds,
       };
+      indicatorBoardMetadataEntity.sections = indicatorBoardMetadata.sections;
 
-      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
+      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
@@ -235,6 +236,7 @@ export class IndicatorBoardMetadataPersistentAdapter
       indicatorBoardMetadataEntity.customForecastIndicatorIds = {
         customForecastIndicatorIds: indicatorBoardMetadata.customForecastIndicatorIds,
       };
+      indicatorBoardMetadataEntity.sections = indicatorBoardMetadata.sections;
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntity);
     } catch (error) {

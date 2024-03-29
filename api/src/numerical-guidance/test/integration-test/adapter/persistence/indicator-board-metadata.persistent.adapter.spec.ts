@@ -32,6 +32,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 10 },
     });
 
@@ -40,6 +41,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 5 },
     });
 
@@ -48,6 +50,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 5 },
     });
 
@@ -56,6 +59,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 5 },
     });
 
@@ -66,6 +70,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       customForecastIndicatorIds: {
         customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
       },
+      sections: { section1: ['indicator1', 'indicator2', 'customForecastIndicator1', 'customForecastIndicator2'] },
       member: { id: 999 },
     });
 
@@ -76,6 +81,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       customForecastIndicatorIds: {
         customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
       },
+      sections: { section1: ['indicator1', 'indicator2', 'customForecastIndicator1', 'customForecastIndicator2'] },
       member: { id: 999 },
     });
 
@@ -86,6 +92,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       customForecastIndicatorIds: {
         customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
       },
+      sections: { section1: ['indicator1', 'indicator2', 'customForecastIndicator1', 'customForecastIndicator2'] },
       member: { id: 999 },
     });
 
@@ -94,6 +101,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 9999 },
     });
 
@@ -103,6 +111,15 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
       customForecastIndicatorIds: {
         customForecastIndicatorIds: [
+          'customForecastIndicator1',
+          'customForecastIndicator2',
+          'customForecastIndicator3',
+        ],
+      },
+      sections: {
+        section1: [
+          'indicator1',
+          'indicator2',
           'customForecastIndicator1',
           'customForecastIndicator2',
           'customForecastIndicator3',
@@ -250,6 +267,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -319,6 +339,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -344,6 +367,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -367,6 +393,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -392,6 +421,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '예측지표 삭제 테스트',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -415,6 +447,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '예측지표 삭제 테스트',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -495,6 +530,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'updateName',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
+
       currentDate,
       currentDate,
     );
@@ -516,6 +555,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'updateName',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -541,6 +583,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'updateName',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -567,6 +612,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       [],
       ['customForecastIndicator1'],
+      {
+        section1: ['customForecastIndicatorId1'],
+      },
       currentDate,
       currentDate,
     );
@@ -590,6 +638,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       [],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );

@@ -32,7 +32,7 @@ describe('InsertIndicatorIdCommandHandler', () => {
           useValue: {
             loadIndicatorBoardMetadata: jest.fn().mockImplementation(() => {
               const currentDate: Date = new Date();
-              return new IndicatorBoardMetadata('id', 'name', [], [], currentDate, currentDate);
+              return new IndicatorBoardMetadata('id', 'name', [], [], { section1: [] }, currentDate, currentDate);
             }),
           },
         },
