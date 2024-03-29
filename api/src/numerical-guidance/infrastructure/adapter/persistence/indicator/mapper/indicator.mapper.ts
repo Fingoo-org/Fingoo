@@ -1,6 +1,6 @@
 import { IndicatorEntity } from '../entity/indicator.entity';
-import { Indicator, IndicatorDto } from 'src/numerical-guidance/application/query/get-indicator/indicator.dto';
-import { IndicatorsDto } from '../../../../../application/query/get-indicator/indicators.dto';
+import { Indicator, IndicatorDto } from 'src/numerical-guidance/application/query/indicator/dto/indicator.dto';
+import { IndicatorsDto } from '../../../../../application/query/indicator/dto/indicators.dto';
 
 export class IndicatorMapper {
   static mapEntityToDto(indicatorEntity: IndicatorEntity): IndicatorDto {

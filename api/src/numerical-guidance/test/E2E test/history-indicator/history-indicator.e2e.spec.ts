@@ -15,7 +15,7 @@ import { HttpModule } from '@nestjs/axios';
 import { HistoryIndicatorController } from '../../../api/history-indicator/history-indicator.controller';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 import { AuthService } from '../../../../auth/auth.service';
-import { GetHistoryIndicatorQueryHandler } from '../../../application/query/get-history-indicator/get-history-indicator.query.handler';
+import { GetHistoryIndicatorQueryHandler } from '../../../application/query/history-indicator/get-history-indicator/get-history-indicator.query.handler';
 import { AuthGuard } from '../../../../auth/auth.guard';
 import { of } from 'rxjs';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';

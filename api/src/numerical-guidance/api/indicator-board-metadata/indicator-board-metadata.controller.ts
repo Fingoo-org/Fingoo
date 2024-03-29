@@ -6,21 +6,21 @@ import { AuthGuard } from '../../../auth/auth.guard';
 import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-metadata.dto';
 import { Member } from '../../../auth/get-member.decorator';
 import { MemberEntity } from '../../../auth/member.entity';
-import { CreateIndicatorBoardMetadataCommand } from '../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command';
+import { CreateIndicatorBoardMetadataCommand } from '../../application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command';
 import { IndicatorBoardMetadata } from '../../domain/indicator-board-metadata';
-import { GetIndicatorBoardMetadataQuery } from '../../application/query/get-indicator-board-metadata/get-indicator-board-metadata.query';
-import { GetIndicatorBoardMetadataListQuery } from '../../application/query/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query';
+import { GetIndicatorBoardMetadataQuery } from '../../application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query';
+import { GetIndicatorBoardMetadataListQuery } from '../../application/query/indicator-board-metadata/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query';
 import { InsertIndicatorDto } from './dto/insert-indicator.dto';
-import { InsertIndicatorIdCommand } from '../../application/command/insert-indicator-id/insert-indicator-id.command';
+import { InsertIndicatorIdCommand } from '../../application/command/indicator/insert-indicator-id/insert-indicator-id.command';
 import { InsertCustomForecastIndicatorDto } from '../custom-forecast-indicator/dto/insert-custom-forecast-indicator.dto';
-import { InsertCustomForecastIndicatorIdCommand } from '../../application/command/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command';
-import { DeleteIndicatorIdCommand } from '../../application/command/delete-indicator-id/delete-indicator-id.command';
-import { DeleteIndicatorBoardMetadataCommand } from '../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command';
+import { InsertCustomForecastIndicatorIdCommand } from '../../application/command/custom-forecast-indicator/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command';
+import { DeleteIndicatorIdCommand } from '../../application/command/indicator/delete-indicator-id/delete-indicator-id.command';
+import { DeleteIndicatorBoardMetadataCommand } from '../../application/command/indicator-board-metadata/delete-indicator-board-metadata/delete-indicator-board-metadata.command';
 import { UpdateIndicatorBoardMetadataNameDto } from './dto/update-indicator-board-metadata-name.dto';
-import { UpdateIndicatorBoardMetadataNameCommand } from '../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command';
-import { DeleteCustomForecastIndicatorIdCommand } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command';
+import { UpdateIndicatorBoardMetadataNameCommand } from '../../application/command/indicator-board-metadata/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command';
+import { DeleteCustomForecastIndicatorIdCommand } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command';
 import { ApiFile } from '../../../utils/file/api-file.decorator';
-import { UploadFileCommand } from '../../application/command/upload-file/upload-file.command';
+import { UploadFileCommand } from '../../application/command/indicator-board-metadata/upload-file/upload-file.command';
 
 @ApiTags('IndicatorBoardMetadataController')
 @Controller('/api/numerical-guidance')

@@ -8,9 +8,9 @@ import { IndicatorEntity } from '../../../../infrastructure/adapter/persistence/
 import { HistoryIndicatorEntity } from '../../../../infrastructure/adapter/persistence/history-indicator/entity/history-indicator.entity';
 import * as fs from 'fs';
 import { HistoryIndicatorValueEntity } from '../../../../infrastructure/adapter/persistence/history-indicator-value/entity/history-indicator-value.entity';
-import { GetHistoryIndicatorQuery } from '../../../../application/query/get-history-indicator/get-history-indicator.query';
+import { GetHistoryIndicatorQuery } from '../../../../application/query/history-indicator/get-history-indicator/get-history-indicator.query';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
-import { HistoryIndicatorDto } from '../../../../application/query/get-history-indicator/history-indicator.dto';
+import { HistoryIndicatorDto } from '../../../../application/query/history-indicator/dto/history-indicator.dto';
 import { AdjustIndicatorValue } from '../../../../util/adjust-indicator-value';
 import { HttpStatus, NotFoundException } from '@nestjs/common';
 

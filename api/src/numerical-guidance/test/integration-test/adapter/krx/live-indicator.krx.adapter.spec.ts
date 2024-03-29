@@ -1,7 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { LiveIndicatorDto } from 'src/numerical-guidance/application/query/get-live-indicator/live-indicator.dto';
+import { LiveKRXIndicatorDto } from 'src/numerical-guidance/application/query/live-indicator/dto/live-indicator.dto';
 import { LiveIndicatorKrxAdapter } from 'src/numerical-guidance/infrastructure/adapter/krx/live-indicator.krx.adapter';
 import { liveIndicatorTestData } from 'src/numerical-guidance/test/data/liveIndicator.test.data';
 import { AdjustIndicatorValue } from '../../../../util/adjust-indicator-value';
@@ -37,7 +37,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     const indicatorId: string = '160e5499-4925-4e38-bb00-8ea6d8056484';
 
     // when
-    const responseData: LiveIndicatorDto = await liveIndicatorKrxAdapter.loadLiveIndicator(
+    const responseData: LiveKRXIndicatorDto = await liveIndicatorKrxAdapter.loadLiveIndicator(
       indicatorId,
       '005930',
       'day',
@@ -45,7 +45,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     );
     const result: string = responseData['ticker'];
     // then
-    const expected: string = LiveIndicatorDto.create({ indicatorId, ...testData })['ticker'];
+    const expected: string = LiveKRXIndicatorDto.create({ indicatorId, ...testData })['ticker'];
     expect(result).toEqual(expected);
   }, 15000);
 
@@ -54,7 +54,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     const indicatorId: string = '160e5499-4925-4e38-bb00-8ea6d8056484';
 
     // when
-    const responseData: LiveIndicatorDto = await liveIndicatorKrxAdapter.loadLiveIndicator(
+    const responseData: LiveKRXIndicatorDto = await liveIndicatorKrxAdapter.loadLiveIndicator(
       indicatorId,
       '900110',
       'day',
@@ -71,7 +71,7 @@ describe('FluctuatingIndicatorKrxAdapter', () => {
     const indicatorId: string = '160e5499-4925-4e38-bb00-8ea6d8056484';
 
     // when
-    const responseData: LiveIndicatorDto = await liveIndicatorKrxAdapter.createKRXResponseData(
+    const responseData: LiveKRXIndicatorDto = await liveIndicatorKrxAdapter.createKRXResponseData(
       7,
       indicatorId,
       '900110',

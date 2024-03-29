@@ -6,13 +6,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { LoadIndicatorsPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicators.port';
-import { IndicatorDto } from 'src/numerical-guidance/application/query/get-indicator/indicator.dto';
+import { IndicatorDto } from 'src/numerical-guidance/application/query/indicator/dto/indicator.dto';
 import { Repository } from 'typeorm';
 import { IndicatorEntity } from './entity/indicator.entity';
 import { IndicatorMapper } from './mapper/indicator.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoadIndicatorPort } from '../../../../application/port/persistence/indicator/load-indicator.port';
-import { IndicatorsDto } from '../../../../application/query/get-indicator/indicators.dto';
+import { IndicatorsDto } from '../../../../application/query/indicator/dto/indicators.dto';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
 
 @Injectable()

@@ -6,17 +6,17 @@ import { AuthGuard } from '../../../auth/auth.guard';
 import { CreateCustomForecatIndicatorDto } from './dto/create-custom-forecast-indicator.dto';
 import { Member } from '../../../auth/get-member.decorator';
 import { MemberEntity } from '../../../auth/member.entity';
-import { CreateCustomForecastIndicatorCommand } from '../../application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command';
+import { CreateCustomForecastIndicatorCommand } from '../../application/command/custom-forecast-indicator/create-custom-forecast-indicator/create-custom-forecast-indicator.command';
 import { CustomForecastIndicator } from '../../domain/custom-forecast-indicator';
-import { GetCustomForecastIndicatorQuery } from '../../application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query';
-import { GetCustomForecastIndicatorsByMemberIdQuery } from '../../application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query';
+import { GetCustomForecastIndicatorQuery } from '../../application/query/custom-forecast-indicator/get-custom-forecast-indicator/get-custom-forecast-indicator.query';
+import { GetCustomForecastIndicatorsByMemberIdQuery } from '../../application/query/custom-forecast-indicator/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query';
 import { UpdateSourceIndicatorsAndWeightsDto } from './dto/update-source-indicators-and-weights.dto';
-import { UpdateSourceIndicatorsAndWeightsCommand } from '../../application/command/update-source-indicators-and-weights/update-source-indicators-and-weights.command';
+import { UpdateSourceIndicatorsAndWeightsCommand } from '../../application/command/custom-forecast-indicator/update-source-indicators-and-weights/update-source-indicators-and-weights.command';
 import { CustomForecastIndicatorValuesResponse } from '../../../utils/type/type-definition';
-import { GetCustomForecastIndicatorValuesQuery } from '../../application/query/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query';
-import { DeleteCustomForecastIndicatorCommand } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command';
+import { GetCustomForecastIndicatorValuesQuery } from '../../application/query/custom-forecast-indicator/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query';
+import { DeleteCustomForecastIndicatorCommand } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command';
 import { UpdateCustomForecastIndicatorNameDto } from './dto/update-custom-forecast-indicator-name.dto';
-import { UpdateCustomForecastIndicatorNameCommand } from 'src/numerical-guidance/application/command/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command';
+import { UpdateCustomForecastIndicatorNameCommand } from 'src/numerical-guidance/application/command/custom-forecast-indicator/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command';
 
 @ApiTags('CustomForecastIndicatorController')
 @Controller('/api/numerical-guidance')

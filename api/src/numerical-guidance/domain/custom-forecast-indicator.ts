@@ -1,5 +1,5 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
-import { IndicatorType } from '../application/query/get-live-indicator/live-indicator.dto';
+import { IndicatorType } from '../application/query/live-indicator/dto/live-indicator.dto';
 import { CustomForecastIndicatorNameShouldNotEmptyRule } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 import { SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';

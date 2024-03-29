@@ -2,12 +2,12 @@ import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import { LiveIndicatorDto } from '../../../application/query/get-live-indicator/live-indicator.dto';
+import { LiveKRXIndicatorDto } from '../../../application/query/live-indicator/dto/live-indicator.dto';
 import { liveIndicatorTestData } from '../../data/liveIndicator.test.data';
-import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
-import { InsertIndicatorIdCommandHandler } from '../../../application/command/insert-indicator-id/insert-indicator-id.command.handler';
-import { GetCustomForecastIndicatorQueryHandler } from 'src/numerical-guidance/application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
-import { CreateCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
+import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
+import { InsertIndicatorIdCommandHandler } from '../../../application/command/indicator/insert-indicator-id/insert-indicator-id.command.handler';
+import { GetCustomForecastIndicatorQueryHandler } from 'src/numerical-guidance/application/query/custom-forecast-indicator/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
+import { CreateCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
 import { CustomForecastIndicatorController } from '../../../api/custom-forecast-indicator/custom-forecast-indicator.controller';
 import { HistoryIndicatorController } from '../../../api/history-indicator/history-indicator.controller';
 import { IndicatorController } from '../../../api/indicator/indicator.controller';
@@ -43,7 +43,7 @@ describe('NumericalGuidanceControllers', () => {
             provide: 'LoadCachedLiveIndicatorPort',
             useValue: {
               loadCachedLiveIndicator: jest.fn().mockImplementation(() => {
-                return LiveIndicatorDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
+                return LiveKRXIndicatorDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
               }),
             },
           },

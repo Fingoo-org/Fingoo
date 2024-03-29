@@ -1,9 +1,9 @@
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Controller, Get } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { Indicator, IndicatorSwaggerSchema } from '../../application/query/get-indicator/indicator.dto';
+import { Indicator, IndicatorSwaggerSchema } from '../../application/query/indicator/dto/indicator.dto';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
-import { GetIndicatorsQuery } from '../../application/query/get-indicator/get-indicators.query';
+import { GetIndicatorsQuery } from '../../application/query/indicator/get-indicator/get-indicators.query';
 
 @ApiTags('IndicatorController')
 @Controller('/api/numerical-guidance')

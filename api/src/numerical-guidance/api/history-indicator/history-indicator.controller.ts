@@ -2,12 +2,12 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import { ApiPaginatedResponseDecorator } from '../../../utils/pagination/api-paginated-response.decorator';
-import { IndicatorValueSwaggerSchema } from '../../application/query/get-live-indicator/live-indicator.dto';
+import { IndicatorValueSwaggerSchema } from '../../application/query/live-indicator/dto/live-indicator.dto';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { GetHistoryIndicatorDto } from './dto/get-history-indicator.dto';
 import { CursorPageDto } from '../../../utils/pagination/cursor-page.dto';
-import { HistoryIndicatorDto } from '../../application/query/get-history-indicator/history-indicator.dto';
-import { GetHistoryIndicatorQuery } from '../../application/query/get-history-indicator/get-history-indicator.query';
+import { HistoryIndicatorDto } from '../../application/query/history-indicator/dto/history-indicator.dto';
+import { GetHistoryIndicatorQuery } from '../../application/query/history-indicator/get-history-indicator/get-history-indicator.query';
 
 @ApiTags('HistoryIndicatorController')
 @Controller('/api/numerical-guidance')

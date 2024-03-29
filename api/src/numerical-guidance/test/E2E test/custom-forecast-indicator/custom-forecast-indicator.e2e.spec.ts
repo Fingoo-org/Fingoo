@@ -11,18 +11,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 import { CustomForecastIndicatorController } from '../../../api/custom-forecast-indicator/custom-forecast-indicator.controller';
 import { AuthService } from '../../../../auth/auth.service';
-import { InsertCustomForecastIndicatorIdCommandHandler } from '../../../application/command/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command.handler';
-import { CreateCustomForecastIndicatorCommandHandler } from '../../../application/command/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
-import { GetCustomForecastIndicatorQueryHandler } from '../../../application/query/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
-import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from '../../../application/query/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query.handler';
+import { InsertCustomForecastIndicatorIdCommandHandler } from '../../../application/command/custom-forecast-indicator/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command.handler';
+import { CreateCustomForecastIndicatorCommandHandler } from '../../../application/command/custom-forecast-indicator/create-custom-forecast-indicator/create-custom-forecast-indicator.command.handler';
+import { GetCustomForecastIndicatorQueryHandler } from '../../../application/query/custom-forecast-indicator/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
+import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from '../../../application/query/custom-forecast-indicator/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { CustomForecastIndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
 import { AuthGuard } from '../../../../auth/auth.guard';
 import { of } from 'rxjs';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
-import { DeleteCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
-import { UpdateCustomForecastIndicatorNameCommandHandler } from 'src/numerical-guidance/application/command/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
+import { DeleteCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
+import { UpdateCustomForecastIndicatorNameCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),

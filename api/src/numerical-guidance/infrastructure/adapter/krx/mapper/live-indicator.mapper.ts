@@ -1,4 +1,7 @@
-import { LiveIndicatorDto, IndicatorValue } from '../../../../application/query/get-live-indicator/live-indicator.dto';
+import {
+  LiveKRXIndicatorDto,
+  IndicatorValue,
+} from '../../../../application/query/live-indicator/dto/live-indicator.dto';
 
 export class LiveIndicatorMapper {
   static mapToDto(stringData: string) {
@@ -12,7 +15,7 @@ export class LiveIndicatorMapper {
       values: IndicatorValue[];
     } = JSON.parse(stringData);
 
-    return LiveIndicatorDto.create({
+    return LiveKRXIndicatorDto.create({
       indicatorId: data.indicatorId,
       type: data.type,
       ticker: data.ticker,
