@@ -37,6 +37,10 @@ describe('지표보드 메타데이터', () => {
     // then
     const expected = ['160e5499-4925-4e38-bb00-8ea6d8056484'];
     expect(expected.toString()).toEqual(indicatorBoardMetadata.indicatorIds.toString());
+    const expectedSectionsLength = 1;
+    expect(Object.values(indicatorBoardMetadata.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('지표보드 메타데이터의 id 개수는 최대 5개를 넘을 수 없다.', () => {
@@ -121,6 +125,10 @@ describe('지표보드 메타데이터', () => {
     // then
     const expectedListLength = 3;
     expect(indicatorBoardMetadata.customForecastIndicatorIds.length).toEqual(expectedListLength);
+    const expectedSectionsLength = 5;
+    expect(Object.values(indicatorBoardMetadata.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('메타데이터에 예측지표를 추가할 경우 이미 존재하는 예측지표는 추가할 수 없다.', () => {
@@ -204,6 +212,10 @@ describe('지표보드 메타데이터', () => {
     // then
     const expected = ['indicatorId2'];
     expect(expected).toEqual(indicatorBoardMetadata.indicatorIds);
+    const expectedSectionsLength = 3;
+    expect(Object.values(indicatorBoardMetadata.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('지표보드 메타데이터에서 지표 id 삭제 - 등록되지 않은 지표 요청', () => {
@@ -304,6 +316,10 @@ describe('지표보드 메타데이터', () => {
     const expected = ['customForecastIndicatorId3'];
 
     expect(expected).toEqual(indicatorBoardMetadata.customForecastIndicatorIds);
+    const expectedSectionsLength = 3;
+    expect(Object.values(indicatorBoardMetadata.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('지표보드 메타데이터에서 예측 지표 id 삭제 - 등록되지 않은 지표 요청', () => {

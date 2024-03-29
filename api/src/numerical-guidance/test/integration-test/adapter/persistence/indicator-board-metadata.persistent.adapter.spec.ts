@@ -283,6 +283,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
     expect(result.indicatorIds).toEqual(['indicator1', 'indicator2']);
+    const expectedSectionsLength = 4;
+    expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('사용자 id로 메타데이터 리스트 가져오기.', async () => {
@@ -383,6 +387,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
     expect(result.indicatorIds).toEqual(['indicator1', 'indicator2']);
+    const expectedSectionsLength = 4;
+    expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('지표보드 메타데이터에서 지표 id 삭제하기. - DB에 존재하지 않는 경우', async () => {
@@ -437,6 +445,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'customForecastIndicator1',
       'customForecastIndicator2',
     ]);
+    const expectedSectionsLength = 4;
+    expect(Object.values(indicatorBoardMetadata.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('지표보드 메타데이터에서 예측 지표 id 삭제하기 - DB에 존재하지 않을 경우', async () => {
@@ -628,6 +640,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
     expect(result.customForecastIndicatorIds).toEqual(['customForecastIndicator1']);
+    const expectedSectionsLength = 1;
+    expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('지표보드 메타데이터에 새로운 예측지표 id를 추가하기. - 메타데이터가 DB에 존재하지 않는 경우', async () => {
