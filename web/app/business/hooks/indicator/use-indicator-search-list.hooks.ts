@@ -17,7 +17,7 @@ export const useIndicatorSearchList = (searchTerm: string) => {
 
   const filteredIndicatorList = useMemo(() => {
     if (!indicatorList) return undefined;
-    if (searchTerm === '') return [];
+    if (searchTerm === '') return indicatorList;
 
     return indicatorList.filter((indicator) => isIndicatorInclude(indicator));
   }, [indicatorList, searchTerm, isIndicatorInclude]);
