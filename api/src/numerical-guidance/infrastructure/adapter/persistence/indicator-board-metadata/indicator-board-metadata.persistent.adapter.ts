@@ -79,9 +79,9 @@ export class IndicatorBoardMetadataPersistentAdapter
 
   async loadIndicatorBoardMetadata(id: string): Promise<IndicatorBoardMetadata> {
     try {
-      const indicatorBoardMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id: id });
-      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
-      return IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
+      const indicatorBoardMetadataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id: id });
+      this.nullCheckForEntity(indicatorBoardMetadataEntity);
+      return IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetadataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
@@ -157,6 +157,7 @@ export class IndicatorBoardMetadataPersistentAdapter
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
 
       indicatorBoardMetaDataEntity.indicatorIds = { indicatorIds: indicatorBoardMetadata.indicatorIds };
+      indicatorBoardMetaDataEntity.sections = indicatorBoardMetadata.sections;
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
     } catch (error) {
@@ -270,13 +271,14 @@ export class IndicatorBoardMetadataPersistentAdapter
     try {
       const id = indicatorBoardMetadata.id;
 
-      const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
+      const indicatorBoardMetadataEntity: IndicatorBoardMetadataEntity =
         await this.indicatorBoardMetadataRepository.findOneBy({ id });
-      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
+      this.nullCheckForEntity(indicatorBoardMetadataEntity);
 
-      indicatorBoardMetaDataEntity.indicatorIds = { indicatorIds: indicatorBoardMetadata.indicatorIds };
+      indicatorBoardMetadataEntity.indicatorIds = { indicatorIds: indicatorBoardMetadata.indicatorIds };
+      indicatorBoardMetadataEntity.sections = indicatorBoardMetadata.sections;
 
-      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
+      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
