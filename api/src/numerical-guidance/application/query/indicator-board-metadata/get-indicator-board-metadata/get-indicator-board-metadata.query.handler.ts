@@ -24,10 +24,9 @@ export class GetIndicatorBoardMetadataQueryHandler implements IQueryHandler {
 
   async execute(query: GetIndicatorBoardMetadataQuery): Promise<IndicatorBoardMetadata> {
     try {
-      const indicatorBoardMetaDataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id: query.id });
-      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
-
-      return IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetaDataEntity);
+      const indicatorBoardMetadataEntity = await this.indicatorBoardMetadataRepository.findOneBy({ id: query.id });
+      this.nullCheckForEntity(indicatorBoardMetadataEntity);
+      return IndicatorBoardMetadataMapper.mapEntityToDomain(indicatorBoardMetadataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
