@@ -2,9 +2,9 @@ import ListItem from '../../atom/list-item';
 import Accordion from '../accordion';
 import { useState } from 'react';
 import { cn } from '@/app/utils/style';
-import DraggableContext from '../../../util/draggable-context';
-import DraggableItem from '../../atom/draggable-item';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { filterChildrenByType } from '@/app/utils/helper';
+import { ExpandableListItemExpandedContent } from './expandable-list-item-expanded-content';
+import { ExpandableListItemTitle } from './expandable-list-item-title';
 
 type ExpandableListItemProps = {
   selected: boolean;
@@ -13,14 +13,25 @@ type ExpandableListItemProps = {
   hoverRender?: () => JSX.Element;
 };
 
-export default function ExpandableListItem({ selected, onSelect, onDeSelect, hoverRender }: ExpandableListItemProps) {
+function getExpandedContent(children: React.ReactNode) {
+  return filterChildrenByType(children, ExpandableListItemExpandedContent);
+}
+
+function getTitle(children: React.ReactNode) {
+  return filterChildrenByType(children, ExpandableListItemTitle);
+}
+
+export function ExpandableListItemRoot({
+  selected,
+  onSelect,
+  onDeSelect,
+  hoverRender,
+  children,
+}: React.PropsWithChildren<ExpandableListItemProps>) {
   const [isOpen, setIsOpen] = useState(false);
-  const [values, setValues] = useState<{
-    [key: string]: string[];
-  }>({
-    container1: ['item1', 'item2', 'item3'],
-    container2: ['item4', 'item5', 'item6'],
-  });
+
+  const title = getTitle(children);
+  const ExpandedContent = getExpandedContent(children);
 
   const handleValueChange = (value: string) => {
     if (value === 'item1') {
@@ -67,32 +78,21 @@ export default function ExpandableListItem({ selected, onSelect, onDeSelect, hov
         >
           <div
             onClick={handleClick}
-            className={cn('h-full w-full rounded-2xl bg-white pl-4 ring-1 ring-blue-200', {
+            className={cn('h-full w-full rounded-2xl bg-white ring-1 ring-blue-200', {
               'bg-blue-200 text-blue-900 opacity-80': selected,
             })}
           >
-            <div className="flex items-center p-1 font-bold hover:text-blue-700 hover:opacity-20">선택해주세용</div>
+            {title}
             <Accordion.Content>
-              <DraggableContext
-                values={values}
-                onValueChange={(newValues) => {
-                  setValues(newValues);
-                }}
-              >
-                {Object.keys(values).map((key, index) => (
-                  <SortableContext id={key} key={index} items={values[key]} strategy={verticalListSortingStrategy}>
-                    {values[key].map((item) => (
-                      <DraggableItem key={item} id={item}>
-                        {item}
-                      </DraggableItem>
-                    ))}
-                  </SortableContext>
-                ))}
-              </DraggableContext>
+              <div className="p-4">{ExpandedContent}</div>
             </Accordion.Content>
           </div>
         </ListItem>
-        <div className={cn('absolute right-3 top-4 z-20 -translate-y-2/4')}>
+        <div
+          className={cn('absolute right-3 top-1/2 z-20 -translate-y-2/4', {
+            'top-3 -translate-y-0': isOpen,
+          })}
+        >
           <Accordion.Trigger />
         </div>
       </Accordion.Item>
