@@ -31,6 +31,7 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
       id,
       indicatorIds: [],
       customForecastIndicatorIds: [],
+      indicatorIdsWithSessionIds: {},
     };
     mockDatabaseStore.metadataList = [...mockDatabaseStore.metadataList, newMetadata];
     return id;

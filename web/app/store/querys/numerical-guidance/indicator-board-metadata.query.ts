@@ -9,6 +9,9 @@ export type IndicatorBoardMetadataResponse = {
   indicatorBoardMetadataName: string;
   indicatorIds: string[];
   customForecastIndicatorIds: string[];
+  indicatorIdsWithSessionIds: {
+    [sessionId: string]: string[];
+  };
 };
 
 export type CreateIndicatorMetadataRequestBody = {

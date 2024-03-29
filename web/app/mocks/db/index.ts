@@ -36,18 +36,21 @@ const initialState: MockDatabase = {
       indicatorBoardMetadataName: 'metadata1',
       indicatorIds: [],
       customForecastIndicatorIds: [],
+      indicatorIdsWithSessionIds: {},
     },
     {
       id: '2',
       indicatorBoardMetadataName: 'metadata2',
       indicatorIds: [],
       customForecastIndicatorIds: [],
+      indicatorIdsWithSessionIds: {},
     },
     {
       id: '3',
       indicatorBoardMetadataName: 'metadata3',
       indicatorIds: [],
       customForecastIndicatorIds: [],
+      indicatorIdsWithSessionIds: {},
     },
   ],
   indicatorList: [

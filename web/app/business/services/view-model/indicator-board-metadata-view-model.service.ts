@@ -6,6 +6,7 @@ export class IndicatorBoardMetadata {
   // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
   readonly id: string;
   readonly indicatorBoardMetadataName: string;
+  readonly indicatorIdsWithSessionIds: { [key: string]: string[] };
   // private name: string;
   public customForecastIndicatorIds: string[];
   public indicatorIds: string[];
@@ -15,10 +16,11 @@ export class IndicatorBoardMetadata {
     indicatorBoardMetadataName,
     indicatorIds,
     customForecastIndicatorIds,
+    indicatorIdsWithSessionIds,
   }: IndicatorBoardMetadataResponse) {
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
-
+    this.indicatorIdsWithSessionIds = indicatorIdsWithSessionIds;
     // temp: api 문제로 임시 처리
     this.indicatorIds = indicatorIds.filter((id) => id !== '');
     this.customForecastIndicatorIds = customForecastIndicatorIds;
@@ -34,6 +36,7 @@ export class IndicatorBoardMetadata {
       indicatorBoardMetadataName: this.name,
       indicatorIds: this.indicatorIds,
       customForecastIndicatorIds: this.customForecastIndicatorIds,
+      indicatorIdsWithSessionIds: this.indicatorIdsWithSessionIds,
     };
   }
 
