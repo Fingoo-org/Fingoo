@@ -24,7 +24,6 @@ export const useSelectedIndicatorBoardMetadata = () => {
   const { trigger: addCustomForecastIndicatorTrigger } = useAddCustomForecastIndicatorToMetadata(selectedMetadataId);
   const { trigger: deleteCustomForecastIndicatorTrigger } =
     useDeleteCustomForecastIndicatorFromMetadata(selectedMetadataId);
-  const { trigger: updateIndicatorIdsWithSessionIdsTrigger } = useUpdateIndicatorIdsWithSessionIds(selectedMetadataId);
 
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
@@ -133,21 +132,6 @@ export const useSelectedIndicatorBoardMetadata = () => {
     );
   };
 
-  const updateIndicatorIdsWithSessionIds = (data: { [sessionId: string]: string[] }) => {
-    updateIndicatorIdsWithSessionIdsTrigger(
-      {
-        indicatorIdsWithSessionIds: data,
-      },
-      {
-        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.updateIndicatorIdsWithSessionIds(selectedMetadataId, data);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
-        },
-        revalidate: false,
-      },
-    );
-  };
-
   return {
     selectedMetadataId,
     selectedMetadata,
@@ -157,6 +141,5 @@ export const useSelectedIndicatorBoardMetadata = () => {
     addCustomForecastIndicatorToMetadata,
     selectMetadataById: selectMetadata,
     deleteCustomForecastIndicatorFromMetadata,
-    updateIndicatorIdsWithSessionIds,
   };
 };

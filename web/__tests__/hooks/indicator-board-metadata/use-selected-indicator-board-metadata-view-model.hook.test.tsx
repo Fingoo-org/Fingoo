@@ -262,35 +262,4 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       );
     });
   });
-
-  describe('updateIndicatorIdsWithSessionIds', () => {
-    it('메타데이터를 선택했을 때, 선택한 메타데이터의 세션별 지표를 변경하면, 메타데이터 값에 변경된 세션별 지표가 반영된다.', async () => {
-      // given
-      const { result } = renderHook(() => {
-        return {
-          ...useSelectedIndicatorBoardMetadata(),
-          ...useIndicatorBoardMetadataList(),
-          ...useWorkspaceStore(),
-        };
-      });
-      await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
-      act(() => {
-        if (result.current.metadataList?.[0]) {
-          result.current.actions.selectMetadata(result.current.metadataList?.[0].id);
-        }
-      });
-      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
-
-      // when
-      act(() => {
-        result.current.updateIndicatorIdsWithSessionIds({
-          session1: ['1'],
-        });
-      });
-      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
-
-      // then
-      expect(result.current.selectedMetadata?.indicatorIdsWithSessionIds['session1'][0]).toBe('1');
-    });
-  });
 });

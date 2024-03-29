@@ -8,6 +8,7 @@ import ExpandableListItem from '../../../view/molocule/expandable-list-item';
 import DraggableContext from '../../../util/draggable-context';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import DraggableItem from '../../../view/atom/draggable-item';
+import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -15,10 +16,10 @@ type MetadataListItemProps = {
 
 export default function MetadataListItem({ item }: MetadataListItemProps) {
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
-  const { selectedMetadata, selectMetadataById, updateIndicatorIdsWithSessionIds } =
-    useSelectedIndicatorBoardMetadata();
+  const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
+  const { indicatorBoardMetadata, updateIndicatorIdsWithSessionIds } = useIndicatorBoardMetadataViewModel(item.id);
 
-  const indicatorIdsWithSessionIds = selectedMetadata?.indicatorIdsWithSessionIds;
+  const indicatorIdsWithSessionIds = indicatorBoardMetadata?.indicatorIdsWithSessionIds;
 
   const handleSelect = () => {
     selectMetadataById(item.id);

@@ -163,3 +163,7 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
 export const convertIndcatorBoardMetadataList = (response: IndicatorBoardMetadataResponse[]) => {
   return new IndicatorBoardMetadataList(response);
 };
+
+export const convertIndicatorBoardMetadata = (response: IndicatorBoardMetadataResponse) => {
+  return new IndicatorBoardMetadata(response);
+};
