@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { cn } from '@/app/utils/style';
 import DraggableContext from '../../../util/draggable-context';
 import DraggableItem from '../../atom/draggable-item';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 type ExpandableListItemProps = {
   selected: boolean;
@@ -78,11 +79,15 @@ export default function ExpandableListItem({ selected, onSelect, onDeSelect, hov
                   setValues(newValues);
                 }}
               >
-                {/* {values.map((value) => (
-                  <DraggableItem key={value} id={value}>
-                    {value}
-                  </DraggableItem> 내부로 놓으면 드레그 이벤트 잘 작동하는데, 이렇게 뺴도 과연?
-                ))} */}
+                {Object.keys(values).map((key, index) => (
+                  <SortableContext id={key} key={index} items={values[key]} strategy={verticalListSortingStrategy}>
+                    {values[key].map((item) => (
+                      <DraggableItem key={item} id={item}>
+                        {item}
+                      </DraggableItem>
+                    ))}
+                  </SortableContext>
+                ))}
               </DraggableContext>
             </Accordion.Content>
           </div>

@@ -11,12 +11,7 @@ import {
   DragStartEvent,
   DragOverEvent,
 } from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import DraggableItem, { Item } from '../view/atom/draggable-item';
 
 type DraggableContextProps = {
@@ -48,15 +43,7 @@ export default function DraggableContext({
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOVer}
     >
-      {Object.keys(values).map((key, index) => (
-        <SortableContext id={key} key={index} items={values[key]} strategy={verticalListSortingStrategy}>
-          {values[key].map((item) => (
-            <DraggableItem key={item} id={item}>
-              {item}
-            </DraggableItem>
-          ))}
-        </SortableContext>
-      ))}
+      {children}
       <DragOverlay>{activeId ? <Item>{activeId}</Item> : null}</DragOverlay>
     </DndContext>
   );
