@@ -145,6 +145,16 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     metadata.deleteIndicator(indicatorId);
   }
 
+  updateIndicatorIdsWithSessionIds(
+    metadataId: string | undefined,
+    indicatorIdsWithSessionIds: { [key: string]: string[] },
+  ) {
+    const metadata = this.find((metadata) => metadata.id === metadataId);
+    if (!metadata) return;
+
+    metadata.indicatorIdsWithSessionIds = indicatorIdsWithSessionIds;
+  }
+
   get formattedIndicatorBoardMetadataList() {
     return this.map((metadata) => metadata.formattedIndicatorBoardMetadata);
   }
