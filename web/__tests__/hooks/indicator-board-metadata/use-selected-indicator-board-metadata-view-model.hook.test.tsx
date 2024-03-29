@@ -248,7 +248,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       // when
       act(() => {
         if (result.current.customForecastIndicatorList?.customForecastIndicatorList[0]) {
-          result.current.addCustomForecastIndicatorToMetadata('1');
+          result.current.addCustomForecastIndicatorToMetadata('11');
         }
       });
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());

@@ -21,7 +21,7 @@ describe('SourceIndicatorSearchList', () => {
     );
     const { result } = renderHook(() => useWorkspaceStore());
     act(() => {
-      result.current.actions.selectCustomForecastIndicatorById('1');
+      result.current.actions.selectCustomForecastIndicatorById('11');
     });
 
     // when
@@ -40,7 +40,7 @@ describe('SourceIndicatorSearchList', () => {
     );
     const { result } = renderHook(() => useWorkspaceStore());
     act(() => {
-      result.current.actions.selectCustomForecastIndicatorById('1');
+      result.current.actions.selectCustomForecastIndicatorById('11');
     });
 
     // when
@@ -61,7 +61,7 @@ describe('SourceIndicatorSearchList', () => {
     );
     const { result } = renderHook(() => useWorkspaceStore());
     act(() => {
-      result.current.actions.selectCustomForecastIndicatorById('1');
+      result.current.actions.selectCustomForecastIndicatorById('11');
     });
 
     // when
@@ -82,7 +82,7 @@ describe('SourceIndicatorSearchList', () => {
     );
     const { result } = renderHook(() => useWorkspaceStore());
     act(() => {
-      result.current.actions.selectCustomForecastIndicatorById('1');
+      result.current.actions.selectCustomForecastIndicatorById('11');
     });
     expect(await screen.findAllByRole('tab', { selected: true })).toHaveLength(2);
 
@@ -102,7 +102,7 @@ describe('SourceIndicatorSearchList', () => {
     );
     const { result } = renderHook(() => useWorkspaceStore());
     act(() => {
-      result.current.actions.selectCustomForecastIndicatorById('1');
+      result.current.actions.selectCustomForecastIndicatorById('11');
     });
     expect(await screen.findAllByRole('tab', { selected: true })).toHaveLength(2);
 
@@ -124,7 +124,7 @@ describe('SourceIndicatorSearchList', () => {
     );
     const { result } = renderHook(() => useWorkspaceStore());
     act(() => {
-      result.current.actions.selectCustomForecastIndicatorById('1');
+      result.current.actions.selectCustomForecastIndicatorById('11');
     });
     expect(await screen.findAllByRole('tab', { selected: true })).toHaveLength(2);
 

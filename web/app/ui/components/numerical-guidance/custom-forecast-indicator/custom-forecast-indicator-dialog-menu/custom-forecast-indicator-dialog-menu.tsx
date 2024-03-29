@@ -21,7 +21,7 @@ export default function CustomForecastIndicatorDialogMenu() {
     applyUpdatedSourceIndicator,
     updateCustomForecastIndicatorName,
   } = useSelectedCustomForecastIndicatorViewModel();
-  const { deleteIndicatorBoardMetadata } = useCustomForecastIndicatorListViewModel();
+  const { deleteCustomForecastIndicator } = useCustomForecastIndicatorListViewModel();
   const { closeDialog } = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU);
 
   const handleCustomForecastIndicatorNameChange = (name: string) => {
@@ -35,7 +35,7 @@ export default function CustomForecastIndicatorDialogMenu() {
 
   const handleCustomForecastIndicatorDelete = () => {
     closeDialog();
-    deleteIndicatorBoardMetadata(selectedCustomForecastIndicator.id);
+    deleteCustomForecastIndicator(selectedCustomForecastIndicator.id);
   };
 
   return (

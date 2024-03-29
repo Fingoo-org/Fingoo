@@ -16,7 +16,7 @@ export default function Page() {
   const { data } = useSWR(`${API_PATH.indicatorBoardMetadata}/998e64d9-472b-44c3-b0c5-66ac04dfa593`, defaultFetcher);
 
   useEffect(() => {
-    selectCustomForecastIndicatorById('1');
+    selectCustomForecastIndicatorById('11');
     openDialogWithPayload({
       id: '1',
     });

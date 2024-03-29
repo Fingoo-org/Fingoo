@@ -32,7 +32,7 @@ export const useCustomForecastIndicatorListViewModel = () => {
     return customForecastIndicatorId;
   };
 
-  const deleteIndicatorBoardMetadata = async (customForecastIndicatorId: string) => {
+  const deleteCustomForecastIndicator = async (customForecastIndicatorId: string) => {
     deleteCustomForecastIndicatorTrigger(customForecastIndicatorId, {
       optimisticData: (): CustomForecastIndicatorResponse[] | undefined => {
         convertedCustomForecastIndicatorList?.deleteCustomForecastIndicatorById(customForecastIndicatorId);
@@ -46,6 +46,6 @@ export const useCustomForecastIndicatorListViewModel = () => {
     customForecastIndicatorList: convertedCustomForecastIndicatorList,
     isPending,
     createCustomForecastIndicator,
-    deleteIndicatorBoardMetadata,
+    deleteCustomForecastIndicator,
   };
 };
