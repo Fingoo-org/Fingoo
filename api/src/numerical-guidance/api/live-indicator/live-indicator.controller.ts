@@ -28,7 +28,7 @@ export class LiveIndicatorController {
     '서버에 오류가 발생했습니다.',
     '[ERROR] KRX API 요청 과정에서 예상치 못한 오류가 발생했습니다.',
   )
-  @Get('/indicators/live/krx')
+  @Get('/indicators/live/k-stock')
   async getKRXLiveIndicator(@Query() getLiveIndicatorDto: GetLiveKrxIndicatorDto): Promise<LiveKRXIndicatorDto> {
     const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
     return this.queryBus.execute(query);
