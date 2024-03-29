@@ -5,11 +5,12 @@ import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/ind
 import TinyInput from '../../view/atom/tiny-input/tiny-input';
 import { SearchIcon } from '@heroicons/react/solid';
 import SourceIndicatorSearchListItem from './source-indicator-search-list-item';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
+import { useIndicatorSearchList } from '@/app/business/hooks/indicator/use-indicator-search-list.hooks';
 
 export default function SourceIndicatorSearchList() {
   const [searchTerm, setSearchTerm] = useState('');
-  const { indicatorList } = useIndicatorList();
+  const searchedIndicatorList = useIndicatorSearchList(searchTerm);
 
   const render = ({ index, style, data }: ListChildComponentProps<IndicatorInfoResponse[]>) => {
     const indicator = data[index];
@@ -20,18 +21,6 @@ export default function SourceIndicatorSearchList() {
   const handleSearchTermChange = (value: string) => {
     setSearchTerm(value);
   };
-
-  const searchedIndicatorList = useMemo(() => {
-    if (!indicatorList) return undefined;
-    if (searchTerm === '') return indicatorList;
-
-    return indicatorList.filter((indicator) => {
-      return (
-        indicator.name.toLocaleUpperCase().includes(searchTerm.toLocaleUpperCase()) ||
-        indicator.ticker.toLocaleUpperCase().includes(searchTerm.toLocaleUpperCase())
-      );
-    });
-  }, [indicatorList, searchTerm]);
 
   return (
     <div className="flex h-full flex-col">
