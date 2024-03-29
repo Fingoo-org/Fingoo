@@ -6,7 +6,7 @@ export class IndicatorBoardMetadata {
   // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
   readonly id: string;
   readonly indicatorBoardMetadataName: string;
-  readonly indicatorIdsWithSessionIds: { [key: string]: string[] };
+  public indicatorIdsWithSessionIds: { [key: string]: string[] };
   // private name: string;
   public customForecastIndicatorIds: string[];
   public indicatorIds: string[];
@@ -30,6 +30,10 @@ export class IndicatorBoardMetadata {
     return this.indicatorBoardMetadataName;
   }
 
+  get lastSessionId() {
+    return `session${Object.keys(this.indicatorIdsWithSessionIds).length}`;
+  }
+
   get formattedIndicatorBoardMetadata(): IndicatorBoardMetadataResponse {
     return {
       id: this.id,
@@ -42,18 +46,39 @@ export class IndicatorBoardMetadata {
 
   addIndicator(indicatorId: string) {
     this.indicatorIds = [...this.indicatorIds, indicatorId];
+    this.indicatorIdsWithSessionIds = {
+      ...this.indicatorIdsWithSessionIds,
+      [this.lastSessionId]: [...this.indicatorIdsWithSessionIds[this.lastSessionId], indicatorId],
+    };
   }
 
   addCustomForecastIndicator(customForecastIndicatorId: string) {
     this.customForecastIndicatorIds = [...this.customForecastIndicatorIds, customForecastIndicatorId];
+
+    this.indicatorIdsWithSessionIds = {
+      ...this.indicatorIdsWithSessionIds,
+      [this.lastSessionId]: [...this.indicatorIdsWithSessionIds[this.lastSessionId], customForecastIndicatorId],
+    };
   }
 
   deleteCustomForecastIndicator(customForecastIndicatorId: string) {
     this.customForecastIndicatorIds = this.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId);
+    this.indicatorIdsWithSessionIds = Object.entries(this.indicatorIdsWithSessionIds).reduce<{
+      [key: string]: string[];
+    }>((acc, [key, value]) => {
+      acc[key] = value.filter((id) => id !== customForecastIndicatorId);
+      return acc;
+    }, {});
   }
 
   deleteIndicator(indicatorId: string) {
     this.indicatorIds = this.indicatorIds.filter((id) => id !== indicatorId);
+    this.indicatorIdsWithSessionIds = Object.entries(this.indicatorIdsWithSessionIds).reduce<{
+      [key: string]: string[];
+    }>((acc, [key, value]) => {
+      acc[key] = value.filter((id) => id !== indicatorId);
+      return acc;
+    }, {});
   }
 }
 
