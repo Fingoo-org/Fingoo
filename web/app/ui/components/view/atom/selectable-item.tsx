@@ -5,7 +5,7 @@ import { cn } from '@/app/utils/style';
 type SelectableListItemProps = {
   selected: boolean;
   style?: React.CSSProperties;
-  className: string;
+  className?: string;
   onSelect: () => void;
   onDeSelect?: () => void;
 };
