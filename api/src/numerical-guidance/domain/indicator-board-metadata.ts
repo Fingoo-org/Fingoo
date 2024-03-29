@@ -31,6 +31,12 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   customForecastIndicatorIds: string[];
 
   @ApiProperty({
+    example: { section1: ['c6a99067-27d0-4358-b3d5-e63a64b604c1'], section2: ['c6a99067-27d0-4358-b3d5-e63a64b604c7'] },
+    description: '지표 축 정보 (section)',
+  })
+  sections: Record<string, string[]>;
+
+  @ApiProperty({
     example: '2024-03-04T05:17:33.756Z',
     description: '지표 보드 메티데이터 생성일',
   })
@@ -45,57 +51,73 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   static createNew(indicatorBoardMetadataName: string): IndicatorBoardMetadata {
     const initIndicatorIds: string[] = [];
     const initCustomForecastIndicatorIds: string[] = [];
+    const initSections: Record<string, string[]> = { section1: [] };
     const currentDate: Date = new Date();
     return new IndicatorBoardMetadata(
       null,
       indicatorBoardMetadataName,
       initIndicatorIds,
       initCustomForecastIndicatorIds,
+      initSections,
       currentDate,
       currentDate,
     );
   }
 
   public insertIndicatorId(id: string): void {
-    let newIndicatorIds: string[] = [...this.indicatorIds];
-    const currentIndicatorIds = this.convertToArray(newIndicatorIds);
-    currentIndicatorIds.push(id);
-    newIndicatorIds = currentIndicatorIds;
-    this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(newIndicatorIds));
-    this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(newIndicatorIds));
-    this.indicatorIds = newIndicatorIds;
+    this.insertIdAndUpdateSections(id, this.indicatorIds);
   }
 
   public insertCustomForecastIndicatorId(id: string): void {
-    let newCustomForecastIndicatorIds: string[] = [...this.customForecastIndicatorIds];
-    const currentCustomForecastIndicatorIds = this.convertToArray(newCustomForecastIndicatorIds);
-    currentCustomForecastIndicatorIds.push(id);
-    newCustomForecastIndicatorIds = currentCustomForecastIndicatorIds;
-    this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(newCustomForecastIndicatorIds));
-    this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(newCustomForecastIndicatorIds));
-    this.customForecastIndicatorIds = newCustomForecastIndicatorIds;
+    this.insertIdAndUpdateSections(id, this.customForecastIndicatorIds);
   }
 
   public deleteIndicatorId(id: string): void {
-    let updateIds: string[] = [...this.indicatorIds];
-    this.checkRule(new OnlyRegisteredIdCanBeRemovedRule(updateIds, id));
-
-    updateIds = updateIds.filter((value) => value !== id);
-    this.indicatorIds = updateIds;
+    this.deleteIdAndUpdateSections(id, this.indicatorIds);
   }
 
   public deleteCustomForecastIndicatorId(id: string): void {
-    let updateIds: string[] = [...this.customForecastIndicatorIds];
-    this.checkRule(new OnlyRegisteredIdCanBeRemovedRule(updateIds, id));
+    this.deleteIdAndUpdateSections(id, this.customForecastIndicatorIds);
+  }
 
-    updateIds = updateIds.filter((value) => value !== id);
-    this.customForecastIndicatorIds = updateIds;
+  public updateSections(sections: Record<string, string[]>): void {
+    this.sections = sections;
   }
 
   public updateIndicatorBoardMetadataName(name: string) {
     this.checkRule(new IndicatorBoardMetadataNameShouldNotEmptyRule(name));
     this.indicatorBoardMetadataName = name;
     this.updatedAt = new Date();
+  }
+
+  private insertIdAndUpdateSections(id: string, ids: string[]): void {
+    let newIds: string[] = [...ids];
+    const currentIds = this.convertToArray(newIds);
+    currentIds.push(id);
+    newIds = currentIds;
+
+    const newSections: Record<string, string[]> = { ...this.sections };
+    const { currentSection, lastKey } = this.getCurrentSectionAndLastKey(newSections);
+    currentSection.push(id);
+
+    newSections[lastKey] = currentSection;
+    this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(newIds));
+    this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(newSections));
+
+    ids === this.indicatorIds ? (this.indicatorIds = newIds) : (this.customForecastIndicatorIds = newIds);
+    this.sections = newSections;
+  }
+
+  private deleteIdAndUpdateSections(id: string, ids: string[]): void {
+    let updateIds: string[] = [...ids];
+    this.checkRule(new OnlyRegisteredIdCanBeRemovedRule(updateIds, id));
+    updateIds = updateIds.filter((value) => value !== id);
+
+    const sections: Record<string, string[]> = { ...this.sections };
+    const updatedSections = this.removeIdFromSections(sections, id);
+
+    ids === this.indicatorIds ? (this.indicatorIds = updateIds) : (this.customForecastIndicatorIds = updateIds);
+    this.sections = updatedSections;
   }
 
   private convertToArray(indicatorIds: string[]): string[] {
@@ -105,24 +127,42 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     return indicatorIds;
   }
 
+  private getCurrentSectionAndLastKey(newSections: Record<string, string[]>) {
+    const keys = Object.keys(newSections);
+    const lastKey = keys[keys.length - 1];
+    const currentSection = newSections[lastKey] ?? [];
+    return { currentSection, lastKey };
+  }
+
+  private removeIdFromSections(data: Record<string, string[]>, targetId: string): Record<string, string[]> {
+    return Object.entries(data).reduce(
+      (resultSections, [key, values]) => {
+        resultSections[key] = values.filter((id) => id !== targetId);
+        return resultSections;
+      },
+      {} as Record<string, string[]>,
+    );
+  }
+
   constructor(
     id: string,
     indicatorBoardMetadataName: string,
     indicatorIds: string[],
     customForecastIndicatorIds: string[],
+    sections: Record<string, string[]>,
     createdAt: Date,
     updatedAt: Date,
   ) {
     super();
     this.checkRule(new IndicatorBoardMetadataNameShouldNotEmptyRule(indicatorBoardMetadataName));
-    this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(indicatorIds));
+    this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(sections));
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(indicatorIds));
-    this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(customForecastIndicatorIds));
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(customForecastIndicatorIds));
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
     this.indicatorIds = indicatorIds;
     this.customForecastIndicatorIds = customForecastIndicatorIds;
+    this.sections = sections;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
