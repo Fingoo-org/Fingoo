@@ -1,8 +1,8 @@
 import { HistoryIndicatorValueEntity } from '../../history-indicator-value/entity/history-indicator-value.entity';
-import { HistoryIndicatorDto } from '../../../../../application/query/get-history-indicator/history-indicator.dto';
-import { Indicator } from '../../../../../application/query/get-indicator/indicator.dto';
+import { HistoryIndicatorDto } from '../../../../../application/query/history-indicator/dto/history-indicator.dto';
+import { Indicator } from '../../../../../application/query/indicator/dto/indicator.dto';
 import { HistoryIndicatorEntity } from '../entity/history-indicator.entity';
-import { IndicatorValue } from '../../../../../application/query/get-live-indicator/live-indicator.dto';
+import { IndicatorValue } from '../../../../../application/query/live-indicator/dto/live-indicator.dto';
 
 export class HistoryIndicatorMapper {
   static mapEntitiesToDto(historyIndicatorEntity: HistoryIndicatorEntity, values: IndicatorValue[]) {

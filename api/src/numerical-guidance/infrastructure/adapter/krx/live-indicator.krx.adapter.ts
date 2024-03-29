@@ -8,11 +8,11 @@ import {
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import {
-  LiveIndicatorDto,
+  LiveKRXIndicatorDto,
   IndicatorValue,
-} from 'src/numerical-guidance/application/query/get-live-indicator/live-indicator.dto';
+} from 'src/numerical-guidance/application/query/live-indicator/dto/live-indicator.dto';
 import { Interval, Market } from 'src/utils/type/type-definition';
-import { LoadLiveIndicatorPort } from '../../../application/port/external/load-live-indicator.port';
+import { LoadLiveIndicatorPort } from '../../../application/port/external/krx/load-live-indicator.port';
 import { IndicatorValueManager } from '../../../util/indicator-value-manager';
 
 export const DAY_NUMBER_OF_DAYS = 35;
@@ -33,10 +33,10 @@ export class LiveIndicatorKrxAdapter implements LoadLiveIndicatorPort {
     ticker: string,
     interval: Interval,
     market: Market,
-  ): Promise<LiveIndicatorDto> {
+  ): Promise<LiveKRXIndicatorDto> {
     const endDate = this.indicatorValueManager.formatDateToString(new Date());
     let startDate: string;
-    let responseData: LiveIndicatorDto;
+    let responseData: LiveKRXIndicatorDto;
     switch (interval) {
       case 'day':
         startDate = this.getStartDate(endDate, DAY_NUMBER_OF_DAYS);
@@ -95,7 +95,7 @@ export class LiveIndicatorKrxAdapter implements LoadLiveIndicatorPort {
     market: Market,
     startDate: string,
     endDate: string,
-  ): Promise<LiveIndicatorDto> {
+  ): Promise<LiveKRXIndicatorDto> {
     try {
       const serviceKey: string = process.env.SERVICE_KEY;
       const request_url: string = `http://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=${serviceKey}&numOfRows=${dataCount}&pageNo=1&resultType=json&beginBasDt=${startDate}&endBasDt=${endDate}&likeSrtnCd=${ticker}&mrktCls=${market.toUpperCase()}`;
@@ -115,7 +115,7 @@ export class LiveIndicatorKrxAdapter implements LoadLiveIndicatorPort {
       }
 
       const type = 'k-stock';
-      const responseData = LiveIndicatorDto.create({
+      const responseData = LiveKRXIndicatorDto.create({
         indicatorId: indicatorId,
         type,
         ticker,
@@ -154,7 +154,7 @@ export class LiveIndicatorKrxAdapter implements LoadLiveIndicatorPort {
     }
   }
 
-  private checkResponseData(responseData: LiveIndicatorDto) {
+  private checkResponseData(responseData: LiveKRXIndicatorDto) {
     if (!responseData) {
       throw new Error();
     }

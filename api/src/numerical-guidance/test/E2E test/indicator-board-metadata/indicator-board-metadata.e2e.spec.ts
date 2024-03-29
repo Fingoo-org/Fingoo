@@ -12,21 +12,21 @@ import { HttpModule } from '@nestjs/axios';
 import { IndicatorBoardMetadataController } from '../../../api/indicator-board-metadata/indicator-board-metadata.controller';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 import { AuthService } from '../../../../auth/auth.service';
-import { GetIndicatorBoardMetadataQueryHandler } from '../../../application/query/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
-import { InsertIndicatorIdCommandHandler } from '../../../application/command/insert-indicator-id/insert-indicator-id.command.handler';
-import { InsertCustomForecastIndicatorIdCommandHandler } from '../../../application/command/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command.handler';
-import { GetIndicatorBoardMetadataListQueryHandler } from '../../../application/query/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query.handler';
-import { DeleteIndicatorIdCommandHandler } from '../../../application/command/delete-indicator-id/delete-indicator-id.command.handler';
-import { DeleteIndicatorBoardMetadataCommandHandler } from '../../../application/command/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
-import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../../application/command/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
+import { GetIndicatorBoardMetadataQueryHandler } from '../../../application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
+import { InsertIndicatorIdCommandHandler } from '../../../application/command/indicator/insert-indicator-id/insert-indicator-id.command.handler';
+import { InsertCustomForecastIndicatorIdCommandHandler } from '../../../application/command/custom-forecast-indicator/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command.handler';
+import { GetIndicatorBoardMetadataListQueryHandler } from '../../../application/query/indicator-board-metadata/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query.handler';
+import { DeleteIndicatorIdCommandHandler } from '../../../application/command/indicator/delete-indicator-id/delete-indicator-id.command.handler';
+import { DeleteIndicatorBoardMetadataCommandHandler } from '../../../application/command/indicator-board-metadata/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
+import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../../application/command/indicator-board-metadata/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { AuthGuard } from '../../../../auth/auth.guard';
 import { of } from 'rxjs';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
-import { DeleteCustomForecastIndicatorIdCommandHandler } from 'src/numerical-guidance/application/command/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
+import { DeleteCustomForecastIndicatorIdCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
 import { FileSupabaseAdapter } from '../../../infrastructure/adapter/storage/file.supabase.adapter';
-import { UploadFileCommandHandler } from '../../../application/command/upload-file/upload-file.command.handler';
+import { UploadFileCommandHandler } from '../../../application/command/indicator-board-metadata/upload-file/upload-file.command.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),

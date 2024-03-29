@@ -5,7 +5,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LiveIndicatorController } from '../../../api/live-indicator/live-indicator.controller';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
-import { GetLiveIndicatorQueryHandler } from '../../../application/query/get-live-indicator/get-live-indicator.query.handler';
+import { GetLiveIndicatorQueryHandler } from '../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query.handler';
 import { LiveIndicatorKrxAdapter } from '../../../infrastructure/adapter/krx/live-indicator.krx.adapter';
 import { AuthGuard } from '../../../../auth/auth.guard';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
