@@ -21,6 +21,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
     "@headlessui/react": "^1.7.18",
     "@headlessui/tailwindcss": "^0.2.0",
     "@heroicons/react": "^1.0.6",
@@ -82,6 +84,7 @@
     "jest-canvas-mock": "^2.5.2",
     "jest-environment-jsdom": "^29.7.0",
     "msw": "^2.1.4",
+    "msw-storybook-addon": "^2.0.0-beta.1",
     "postcss": "^8",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",

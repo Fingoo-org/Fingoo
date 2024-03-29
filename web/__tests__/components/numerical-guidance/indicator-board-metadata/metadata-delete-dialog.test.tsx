@@ -5,7 +5,7 @@ import { resetAllStore } from '@/app/store/stores/reset-store';
 import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
 import MetadataDeleteDialog from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-delete-dialog';
 import userEvent from '@testing-library/user-event';
-import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list';
+import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
