@@ -16,6 +16,9 @@ export class IndicatorBoardMetadataEntity extends BaseEntity {
   @Column({ type: 'hstore', nullable: true })
   customForecastIndicatorIds: Record<string, string[]>;
 
+  @Column({ type: 'hstore', nullable: true })
+  sections: Record<string, string[]>;
+
   @ManyToOne(() => MemberEntity, { eager: false })
   member: MemberEntity;
 }
