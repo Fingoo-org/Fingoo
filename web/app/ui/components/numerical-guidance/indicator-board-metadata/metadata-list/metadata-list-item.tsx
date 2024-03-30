@@ -9,12 +9,14 @@ import DraggableContext from '../../../util/draggable-context';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import DraggableItem from '../../../view/atom/draggable-item';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+import { useState } from 'react';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
 };
 
 export default function MetadataListItem({ item }: MetadataListItemProps) {
+  const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
   const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
   const { indicatorBoardMetadata, updateIndicatorIdsWithSessionIds } = useIndicatorBoardMetadataViewModel(item.id);
@@ -27,6 +29,10 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
 
   const handleIconButton = () => {
     openDialogWithPayload(item);
+  };
+
+  const handleActiveChange = (activeId: string | null) => {
+    setActiveDragItemId(activeId);
   };
 
   const hoverRender = () => {
@@ -48,23 +54,31 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
         <div className="py-1 pl-4">{item.name}</div>
       </ExpandableListItem.Title>
       <ExpandableListItem.ExpandedContent>
-        <DraggableContext onValueChange={updateIndicatorIdsWithSessionIds} values={indicatorIdsWithSessionIds ?? {}}>
-          {indicatorIdsWithSessionIds
-            ? Object.keys(indicatorIdsWithSessionIds).map((_, index) => (
-                <SortableContext
-                  key={index}
-                  id={`session${index + 1}`}
-                  items={indicatorIdsWithSessionIds[`session${index + 1}`]}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {indicatorIdsWithSessionIds[`session${index + 1}`].map((indicatorId) => (
-                    <DraggableItem key={indicatorId} id={indicatorId}>
-                      {indicatorId}
-                    </DraggableItem>
-                  ))}
-                </SortableContext>
-              ))
-            : null}
+        <DraggableContext
+          onActiveChange={handleActiveChange}
+          onValueChange={updateIndicatorIdsWithSessionIds}
+          values={indicatorIdsWithSessionIds ?? {}}
+        >
+          <div className="divide-y divide-gray-400">
+            {indicatorIdsWithSessionIds
+              ? Object.keys(indicatorIdsWithSessionIds).map((_, index) => (
+                  <SortableContext
+                    key={index}
+                    id={`session${index + 1}`}
+                    items={indicatorIdsWithSessionIds[`session${index + 1}`]}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <div>
+                      {indicatorIdsWithSessionIds[`session${index + 1}`].map((indicatorId) => (
+                        <DraggableItem active={activeDragItemId === indicatorId} key={indicatorId} id={indicatorId}>
+                          {indicatorId}
+                        </DraggableItem>
+                      ))}
+                    </div>
+                  </SortableContext>
+                ))
+              : null}
+          </div>
         </DraggableContext>
       </ExpandableListItem.ExpandedContent>
     </ExpandableListItem>

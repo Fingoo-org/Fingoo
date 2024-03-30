@@ -5,6 +5,7 @@ import { cn } from '@/app/utils/style';
 
 type DraggableItemProps = {
   id: string;
+  active: boolean;
 };
 
 type ItemProps = {
@@ -24,7 +25,7 @@ export const Item = forwardRef<HTMLDivElement, React.PropsWithChildren<ItemProps
 
 Item.displayName = 'draggableItem';
 
-export default function DraggableItem({ id, children }: React.PropsWithChildren<DraggableItemProps>) {
+export default function DraggableItem({ id, active, children }: React.PropsWithChildren<DraggableItemProps>) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const style = {
@@ -33,7 +34,15 @@ export default function DraggableItem({ id, children }: React.PropsWithChildren<
   };
 
   return (
-    <Item ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <Item
+      className={cn({
+        'opacity-20': active,
+      })}
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
       {children}
     </Item>
   );

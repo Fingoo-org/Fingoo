@@ -19,12 +19,14 @@ type DraggableContextProps = {
     [key: string]: string[];
   };
   onValueChange: (newValue: { [key: string]: string[] }) => void;
+  onActiveChange?: (activeId: string | null) => void;
 };
 
 export default function DraggableContext({
   values,
   children,
   onValueChange,
+  onActiveChange,
 }: React.PropsWithChildren<DraggableContextProps>) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -44,13 +46,14 @@ export default function DraggableContext({
       onDragOver={handleDragOVer}
     >
       {children}
-      <DragOverlay>{activeId ? <Item>{activeId}</Item> : null}</DragOverlay>
+      <DragOverlay>{activeId ? <Item className="shadow-lg">{activeId}</Item> : null}</DragOverlay>
     </DndContext>
   );
   function handleDragStart(event: DragStartEvent) {
     const { active } = event;
 
     setActiveId(active.id as string);
+    onActiveChange?.(active.id as string);
   }
 
   function handleDragOVer(event: DragOverEvent) {
