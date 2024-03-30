@@ -4,8 +4,10 @@ import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/
 import { useEffect } from 'react';
 import { createIndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 
 export default function AdvancedIndicatorsChart() {
+  const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const {
     actualHistoryIndicatorsValue,
     customForecastHistoryIndicatorsValue,
@@ -37,6 +39,17 @@ export default function AdvancedIndicatorsChart() {
   const initialLength = formattedLiveIndicatorsRows?.length || 0;
   const initialIndex = initialLength - (formattedAdvencedIndicatorsRows?.length || 0);
 
+  const categoriesList = selectedMetadata?.indicatorIdsWithSessionIds
+    ? Object.keys(selectedMetadata?.indicatorIdsWithSessionIds).map((sessionId, index) => {
+        const indicatorIds = selectedMetadata?.indicatorIdsWithSessionIds[`session${index + 1}`];
+
+        const categories = indicatorFormatter
+          .getIdentifiersByIds(indicatorIds)
+          .map((indicator) => indicator.identifier);
+        return categories;
+      })
+    : [[]];
+
   useEffect(() => {
     if (startDate) {
       setInitialCursorDate(new Date(startDate));
@@ -54,6 +67,7 @@ export default function AdvancedIndicatorsChart() {
       displayRowsSize={initialLength}
       initialIndex={initialIndex}
       onLoadData={handleLoadData}
+      categoriesList={categoriesList}
       data={formattedAdvencedIndicatorsRows || []}
     />
   );

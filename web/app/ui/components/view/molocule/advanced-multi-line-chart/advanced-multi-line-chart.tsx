@@ -61,6 +61,7 @@ type AdvancedMultiLineChartProps<T> = {
   data: FormattedRowType[];
   initialIndex: number;
   displayRowsSize?: number;
+  categoriesList?: string[][];
   onLoadData?: (rowsToDownload: number, initialIndex: number) => void;
 };
 
@@ -68,6 +69,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   data,
   initialIndex,
   displayRowsSize = 10,
+  categoriesList,
   onLoadData,
 }: AdvancedMultiLineChartProps<T>) {
   const { containerRef, sizes } = useResponsive();
@@ -105,19 +107,17 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
     );
   };
 
-  const renderLienSeries = () => {
+  const renderLienSeries = (categories: string[]) => {
     let index = -1;
-    // bug: key값이 없어서 오류가 발생함 index가 0일 때 key를 보장할 수 없기 때문
-    return Object.keys(scaledData[0]).map((key) => {
-      if (key !== 'date' && key !== 'idx') {
-        index += 1;
-        return <IndicatorLineSeries key={key} indicatorKey={key} idx={index} />;
-      }
+    return categories.map((key, index) => {
+      index += 1;
+      return <IndicatorLineSeries key={key} indicatorKey={key} idx={index} />;
     });
   };
 
   if (data.length === 0) return null;
 
+  console.log('categoriesList', categoriesList);
   return (
     <div data-testid="advanced-multi-line-chart" ref={containerRef} className="h-full w-full">
       <ChartCanvas
@@ -129,19 +129,23 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
         xAccessor={xAccessor}
         width={sizes.containerWidth}
         margin={{ left: 50, right: 50, top: 10, bottom: 30 }}
-        height={sizes.containerHeight}
+        height={categoriesList ? categoriesList.length * 350 : 350}
         seriesName="data"
         ratio={1}
         onLoadBefore={handleLoadBefore}
       >
-        <Chart id={1} height={sizes.containerHeight - 50} yExtents={yExtents}>
-          <XAxis showTicks={false} showGridLines axisAt="bottom" orient="bottom" />
-          <YAxis />
-          {renderLienSeries()}
-          <CrossHairCursor />
-          <MouseCoordinateY at="right" orient="right" displayFormat={format('.2f')} />
-          <MouseCoordinateX at="bottom" orient="bottom" displayFormat={timeFormat('%Y-%m-%d')} />
-        </Chart>
+        {categoriesList
+          ? categoriesList.map((categories, index) => (
+              <Chart origin={(w, h) => [0, 350 * index]} key={index} id={index} height={300} yExtents={yExtents}>
+                <XAxis showTicks={false} showGridLines axisAt="bottom" orient="bottom" />
+                <YAxis />
+                {renderLienSeries(categories)}
+                <CrossHairCursor />
+                <MouseCoordinateY at="right" orient="right" displayFormat={format('.2f')} />
+                <MouseCoordinateX at="bottom" orient="bottom" displayFormat={timeFormat('%Y-%m-%d')} />
+              </Chart>
+            ))
+          : null}
       </ChartCanvas>
     </div>
   );
