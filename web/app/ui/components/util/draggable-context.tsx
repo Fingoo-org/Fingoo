@@ -98,5 +98,7 @@ export default function DraggableContext({
         [activeContainerId]: arrayMove(value, oldIndex, newIndex),
       });
     }
+    setActiveId(null);
+    onActiveChange?.(null);
   }
 }

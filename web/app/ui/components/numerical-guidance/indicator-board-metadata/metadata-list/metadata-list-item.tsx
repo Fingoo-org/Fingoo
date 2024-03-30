@@ -69,11 +69,17 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
                     strategy={verticalListSortingStrategy}
                   >
                     <div>
-                      {indicatorIdsWithSessionIds[`session${index + 1}`].map((indicatorId) => (
-                        <DraggableItem active={activeDragItemId === indicatorId} key={indicatorId} id={indicatorId}>
-                          {indicatorId}
+                      {indicatorIdsWithSessionIds[`session${index + 1}`].length > 0 ? (
+                        indicatorIdsWithSessionIds[`session${index + 1}`].map((indicatorId) => (
+                          <DraggableItem active={activeDragItemId === indicatorId} key={indicatorId} id={indicatorId}>
+                            {indicatorId}
+                          </DraggableItem>
+                        ))
+                      ) : (
+                        <DraggableItem active={false} id={`sessionContext${index + 1}`}>
+                          드래그 해 주세요
                         </DraggableItem>
-                      ))}
+                      )}
                     </div>
                   </SortableContext>
                 ))
