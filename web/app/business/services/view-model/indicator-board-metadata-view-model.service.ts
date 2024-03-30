@@ -80,6 +80,25 @@ export class IndicatorBoardMetadata {
       return acc;
     }, {});
   }
+
+  updateIndicatorIdsWithSessionIds(indicatorIdsWithSessionIds: { [key: string]: string[] }) {
+    this.indicatorIdsWithSessionIds = indicatorIdsWithSessionIds;
+  }
+
+  addSession() {
+    const element = this.indicatorIdsWithSessionIds['session1'].shift();
+
+    const newData = Object.keys(this.indicatorIdsWithSessionIds).reduce<{
+      [key: string]: string[];
+    }>((acc, _, index) => {
+      acc[`session${index + 2}`] = this.indicatorIdsWithSessionIds[`session${index + 1}`];
+      return acc;
+    }, {});
+
+    newData['session1'] = element ? [element] : [];
+
+    this.indicatorIdsWithSessionIds = newData;
+  }
 }
 
 export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
@@ -152,7 +171,7 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     const metadata = this.find((metadata) => metadata.id === metadataId);
     if (!metadata) return;
 
-    metadata.indicatorIdsWithSessionIds = indicatorIdsWithSessionIds;
+    metadata.updateIndicatorIdsWithSessionIds(indicatorIdsWithSessionIds);
   }
 
   get formattedIndicatorBoardMetadataList() {

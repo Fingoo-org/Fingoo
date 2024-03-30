@@ -53,9 +53,27 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     );
   };
 
+  const addSessionToIndicatorBoardMetadata = () => {
+    if (!indicatorBoardMetadata) return;
+
+    indicatorBoardMetadata?.addSession();
+    updateIndicatorIdsWithSessionIdsTrigger(
+      {
+        indicatorIdsWithSessionIds: indicatorBoardMetadata?.indicatorIdsWithSessionIds,
+      },
+      {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+        },
+        revalidate: false,
+      },
+    );
+  };
+
   return {
     indicatorBoardMetadata,
     updateIndicatorBoardMetadata,
     updateIndicatorIdsWithSessionIds,
+    addSessionToIndicatorBoardMetadata,
   };
 };
