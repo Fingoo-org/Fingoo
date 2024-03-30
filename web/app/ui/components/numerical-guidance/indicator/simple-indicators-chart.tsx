@@ -34,7 +34,7 @@ export default function SimpleIndicatorsChart() {
                 selectedMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'
               }
               syncId={'simple-indicators-chart'}
-              className="h-72"
+              className="h-80"
             />
           );
         })
@@ -43,7 +43,7 @@ export default function SimpleIndicatorsChart() {
           data={formattedIndicatorsRows || []}
           categories={[]}
           noDataText={selectedMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'}
-          className="h-72"
+          className="h-80"
         />
       )}
     </>
