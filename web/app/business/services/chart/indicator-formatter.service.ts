@@ -51,8 +51,15 @@ export class IndicatorFormatter {
     return this.indicatorsValue.map((indicator) => indicator.identifier);
   }
 
-  getIdentifiersById(id: string) {
+  getIdentifierById(id: string) {
     return this.indicatorsValue.find((indicator) => indicator.id === id)?.identifier;
+  }
+
+  getIdentifiersByIds(ids: string[]) {
+    return ids.map((id) => ({
+      identifier: this.getIdentifierById(id) ?? '',
+      indicatorId: id,
+    }));
   }
 }
 

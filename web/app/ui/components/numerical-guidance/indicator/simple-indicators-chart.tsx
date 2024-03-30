@@ -16,12 +16,36 @@ export default function SimpleIndicatorsChart() {
 
   const formattedIndicatorsRows = indicatorFormatter.formattedIndicatorsInRow;
 
-  const categories = indicatorFormatter.columns;
   return (
-    <MultiLineChart
-      data={formattedIndicatorsRows || []}
-      categories={categories}
-      noDataText={selectedMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'}
-    />
+    <>
+      {selectedMetadata?.indicatorIdsWithSessionIds ? (
+        Object.keys(selectedMetadata?.indicatorIdsWithSessionIds).map((sessionId, index) => {
+          const indicatorIds = selectedMetadata?.indicatorIdsWithSessionIds[`session${index + 1}`];
+
+          const categories = indicatorFormatter
+            .getIdentifiersByIds(indicatorIds)
+            .map((indicator) => indicator.identifier);
+          return (
+            <MultiLineChart
+              key={sessionId}
+              data={formattedIndicatorsRows || []}
+              categories={categories}
+              noDataText={
+                selectedMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'
+              }
+              syncId={'simple-indicators-chart'}
+              className="h-72"
+            />
+          );
+        })
+      ) : (
+        <MultiLineChart
+          data={formattedIndicatorsRows || []}
+          categories={[]}
+          noDataText={selectedMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'}
+          className="h-72"
+        />
+      )}
+    </>
   );
 }

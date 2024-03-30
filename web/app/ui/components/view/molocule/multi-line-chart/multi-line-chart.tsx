@@ -4,14 +4,17 @@ import LineChart from './line-chart';
 import { useState } from 'react';
 import { ChartTooltip } from './chart-tooltip';
 import { FormattedRowType } from '@/app/business/services/chart/indicator-formatter.service';
+import { cn } from '@/app/utils/style';
 
 type MultiLineChartProps = {
   data: FormattedRowType[];
   categories: string[];
+  syncId?: string;
   noDataText?: string;
+  className?: string;
 };
 
-export default function MultiLineChart({ data, categories, noDataText }: MultiLineChartProps) {
+export default function MultiLineChart({ data, categories, noDataText, syncId, className }: MultiLineChartProps) {
   const [value, setValue] = useState<EventProps>(null);
   const index = 'date';
 
@@ -19,7 +22,8 @@ export default function MultiLineChart({ data, categories, noDataText }: MultiLi
   return (
     <>
       <LineChart
-        className="h-full"
+        syncId={syncId}
+        className={cn('h-full', className)}
         data={formatteedData}
         index={index}
         categories={categories}
