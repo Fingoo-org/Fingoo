@@ -10,6 +10,7 @@ export class IndicatorBoardMetadataMapper {
     indicatorBoardMetadataEntity.customForecastIndicatorIds = {
       customForecastIndicatorIds: indicatorBoardMetaData.customForecastIndicatorIds,
     };
+    indicatorBoardMetadataEntity.sections = indicatorBoardMetaData.sections;
     indicatorBoardMetadataEntity.member = member;
     indicatorBoardMetadataEntity.createdAt = indicatorBoardMetaData.createdAt;
     indicatorBoardMetadataEntity.updatedAt = indicatorBoardMetaData.updatedAt;
@@ -22,6 +23,7 @@ export class IndicatorBoardMetadataMapper {
       entity.indicatorBoardMetadataName,
       this.createArray(entity.indicatorIds['indicatorIds'].toString()),
       this.createArray(entity.customForecastIndicatorIds['customForecastIndicatorIds'].toString()),
+      this.createRecord(entity.sections),
       entity.createdAt,
       entity.updatedAt,
     );
@@ -32,5 +34,17 @@ export class IndicatorBoardMetadataMapper {
       return [];
     }
     return stringArray.split(',');
+  }
+
+  private static createRecord(data): Record<string, string[]> {
+    const transformedData: Record<string, string[]> = {};
+
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const values = data[key].split(',');
+        transformedData[key] = values.filter((value) => value.trim() !== '');
+      }
+    }
+    return transformedData;
   }
 }

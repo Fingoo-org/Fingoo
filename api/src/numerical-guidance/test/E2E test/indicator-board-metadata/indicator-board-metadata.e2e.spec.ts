@@ -27,6 +27,7 @@ import * as request from 'supertest';
 import { DeleteCustomForecastIndicatorIdCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
 import { FileSupabaseAdapter } from '../../../infrastructure/adapter/storage/file.supabase.adapter';
 import { UploadFileCommandHandler } from '../../../application/command/indicator-board-metadata/upload-file/upload-file.command.handler';
+import { UpdateSectionsCommandHandler } from '../../../application/command/indicator-board-metadata/update-sections/update-sections.command.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -48,6 +49,7 @@ describe('Indicator Board Metadata E2E Test', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: ['a79eface-1fd3-4b85-92ae-9628d37951fb'] },
       customForecastIndicatorIds: { customForecastIndicatorIds: ['customForecastIndicatorId1'] },
+      sections: { section1: ['a79eface-1fd3-4b85-92ae-9628d37951fb', 'customForecastIndicatorId1'] },
       member: { id: 1 },
     });
 
@@ -56,6 +58,7 @@ describe('Indicator Board Metadata E2E Test', () => {
       indicatorBoardMetadataName: '삭제용 indicatorBoardMetadata',
       indicatorIds: { indicatorIds: ['indicatorId1'] },
       customForecastIndicatorIds: { customForecastIndicatorIds: ['customForecastIndicatorId1'] },
+      sections: { section1: ['indicatorId1', 'customForecastIndicatorId1'] },
       member: { id: 1 },
     });
   };
@@ -106,6 +109,7 @@ describe('Indicator Board Metadata E2E Test', () => {
           UpdateIndicatorBoardMetadataNameCommandHandler,
           DeleteCustomForecastIndicatorIdCommandHandler,
           UploadFileCommandHandler,
+          UpdateSectionsCommandHandler,
           FileSupabaseAdapter,
           {
             provide: 'CreateIndicatorBoardMetadataPort',
@@ -146,6 +150,10 @@ describe('Indicator Board Metadata E2E Test', () => {
           {
             provide: 'UploadFilePort',
             useClass: FileSupabaseAdapter,
+          },
+          {
+            provide: 'UpdateSectionsPort',
+            useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
             provide: AuthGuard,
@@ -363,6 +371,27 @@ describe('Indicator Board Metadata E2E Test', () => {
       .post('/api/numerical-guidance/indicator-board-metadata/file/upload')
       .set('Content-Type', 'multipart/form-data')
       .attach('fileName', null)
+      .expect(HttpStatus.BAD_REQUEST);
+  });
+
+  it('/patch 축(section)을 변경한다.', async () => {
+    return request(app.getHttpServer())
+      .patch(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/sections`)
+      .send({
+        sections: {
+          section1: ['a79eface-1fd3-4b85-92ae-9628d37951fb'],
+          section2: ['customForecastIndicatorId1'],
+        },
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/patch 축(section)을 변경한다. - 빈 section을 보내는 경우', async () => {
+    return request(app.getHttpServer())
+      .patch(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/sections`)
+      .send({})
+      .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
   });
 });

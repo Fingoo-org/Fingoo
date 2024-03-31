@@ -32,6 +32,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 10 },
     });
 
@@ -40,6 +41,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 5 },
     });
 
@@ -48,6 +50,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 5 },
     });
 
@@ -56,6 +59,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 5 },
     });
 
@@ -66,6 +70,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       customForecastIndicatorIds: {
         customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
       },
+      sections: { section1: ['indicator1', 'indicator2', 'customForecastIndicator1', 'customForecastIndicator2'] },
       member: { id: 999 },
     });
 
@@ -76,6 +81,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       customForecastIndicatorIds: {
         customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
       },
+      sections: { section1: ['indicator1', 'indicator2', 'customForecastIndicator1', 'customForecastIndicator2'] },
       member: { id: 999 },
     });
 
@@ -86,6 +92,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       customForecastIndicatorIds: {
         customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
       },
+      sections: { section1: ['indicator1', 'indicator2', 'customForecastIndicator1', 'customForecastIndicator2'] },
       member: { id: 999 },
     });
 
@@ -94,6 +101,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorBoardMetadataName: 'name',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 9999 },
     });
 
@@ -103,6 +111,15 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
       customForecastIndicatorIds: {
         customForecastIndicatorIds: [
+          'customForecastIndicator1',
+          'customForecastIndicator2',
+          'customForecastIndicator3',
+        ],
+      },
+      sections: {
+        section1: [
+          'indicator1',
+          'indicator2',
           'customForecastIndicator1',
           'customForecastIndicator2',
           'customForecastIndicator3',
@@ -250,6 +267,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -263,6 +283,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
     expect(result.indicatorIds).toEqual(['indicator1', 'indicator2']);
+    const expectedSectionsLength = 4;
+    expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('사용자 id로 메타데이터 리스트 가져오기.', async () => {
@@ -319,6 +343,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -344,6 +371,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -357,6 +387,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
     expect(result.indicatorIds).toEqual(['indicator1', 'indicator2']);
+    const expectedSectionsLength = 4;
+    expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('지표보드 메타데이터에서 지표 id 삭제하기. - DB에 존재하지 않는 경우', async () => {
@@ -367,6 +401,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'name',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -392,6 +429,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '예측지표 삭제 테스트',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -405,6 +445,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'customForecastIndicator1',
       'customForecastIndicator2',
     ]);
+    const expectedSectionsLength = 4;
+    expect(Object.values(indicatorBoardMetadata.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('지표보드 메타데이터에서 예측 지표 id 삭제하기 - DB에 존재하지 않을 경우', async () => {
@@ -415,6 +459,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '예측지표 삭제 테스트',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -495,6 +542,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'updateName',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
+
       currentDate,
       currentDate,
     );
@@ -516,6 +567,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'updateName',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -541,6 +595,9 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'updateName',
       ['indicator1', 'indicator2'],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
@@ -562,17 +619,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
   it('지표보드에 메타데이터에 새로운 예측지표 id 추가하기.', async () => {
     // given
     const currentDate: Date = new Date();
-    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+    const newIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
       'name',
       [],
       ['customForecastIndicator1'],
+      {
+        section1: ['customForecastIndicatorId1'],
+      },
       currentDate,
       currentDate,
     );
 
     // when
-    await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetaData);
+    await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetadata);
     const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
     );
@@ -580,23 +640,86 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
     expect(result.customForecastIndicatorIds).toEqual(['customForecastIndicator1']);
+    const expectedSectionsLength = 1;
+    expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
+      expectedSectionsLength,
+    );
   });
 
   it('지표보드 메타데이터에 새로운 예측지표 id를 추가하기. - 메타데이터가 DB에 존재하지 않는 경우', async () => {
     // given
     const currentDate: Date = new Date();
-    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+    const newIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'f2be45ee-d73b-43b6-9344-a8f2264bee41',
       'name',
       [],
       ['customForecastIndicator1', 'customForecastIndicator2'],
+      {
+        section1: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       currentDate,
       currentDate,
     );
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetaData);
+      await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetadata);
+    }).rejects.toThrow(
+      new NotFoundException({
+        HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${newIndicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        cause: Error,
+      }),
+    );
+  });
+
+  it('축(section)을 변경한다.', async () => {
+    // given
+    const currentDate: Date = new Date();
+    const newIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+      'name',
+      [],
+      ['customForecastIndicator1'],
+      {
+        section1: ['customForecastIndicatorId1'],
+      },
+      currentDate,
+      currentDate,
+    );
+
+    // when
+    await indicatorBoardMetadataPersistentAdapter.updateSections(newIndicatorBoardMetadata);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+    );
+
+    // then
+    expect(result.indicatorBoardMetadataName).toEqual('name');
+    expect(result.sections).toEqual({
+      section1: ['customForecastIndicatorId1'],
+    });
+  });
+
+  it('축(section)을 변경한다. - DB에 없는 경우', async () => {
+    // given
+    const currentDate: Date = new Date();
+    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      'f2be45ee-d73b-43b6-9344-a8f2264bee41',
+      'name',
+      [],
+      ['customForecastIndicator1'],
+      {
+        section1: ['customForecastIndicatorId1'],
+      },
+      currentDate,
+      currentDate,
+    );
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetadataPersistentAdapter.updateSections(newIndicatorBoardMetaData);
     }).rejects.toThrow(
       new NotFoundException({
         HttpStatus: HttpStatus.NOT_FOUND,

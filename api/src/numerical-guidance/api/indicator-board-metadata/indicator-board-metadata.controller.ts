@@ -21,6 +21,8 @@ import { UpdateIndicatorBoardMetadataNameCommand } from '../../application/comma
 import { DeleteCustomForecastIndicatorIdCommand } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command';
 import { ApiFile } from '../../../utils/file/api-file.decorator';
 import { UploadFileCommand } from '../../application/command/indicator-board-metadata/upload-file/upload-file.command';
+import { UpdateSectionsDto } from './dto/update-sections.dto';
+import { UpdateSectionsCommand } from '../../application/command/indicator-board-metadata/update-sections/update-sections.command';
 
 @ApiTags('IndicatorBoardMetadataController')
 @Controller('/api/numerical-guidance')
@@ -282,6 +284,36 @@ export class IndicatorBoardMetadataController {
   @Delete('/indicator-board-metadata/:id')
   async deleteIndicatorBoardMetadata(@Param('id') id) {
     const command = new DeleteIndicatorBoardMetadataCommand(id);
+
+    await this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '축(section)을 변경합니다.' })
+  @ApiOkResponse()
+  @ApiExceptionResponse(
+    400,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] indicatorBoardMetadataId: ${id} 해당 지표보드 메타데이터를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 축(section)을 변경하는 도중에 예상치 못한 문제가 발생했습니다.',
+  )
+  @ApiParam({
+    name: 'id',
+    example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
+    required: true,
+  })
+  @Patch('/indicator-board-metadata/:id/sections')
+  async updateSections(@Param('id') id, @Body() updateSectionsDto: UpdateSectionsDto) {
+    const command = new UpdateSectionsCommand(id, updateSectionsDto.sections);
 
     await this.commandBus.execute(command);
   }

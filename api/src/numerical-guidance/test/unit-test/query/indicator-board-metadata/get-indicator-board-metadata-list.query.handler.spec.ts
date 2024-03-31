@@ -32,6 +32,7 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
       indicatorBoardMetadataName: '메타데이터',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 10 },
     });
     await indicatorBoardMetadataRepository.insert({
@@ -39,6 +40,7 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
       indicatorBoardMetadataName: '메타데이터',
       indicatorIds: { indicatorIds: [] },
       customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      sections: { section1: [] },
       member: { id: 10 },
     });
   };
