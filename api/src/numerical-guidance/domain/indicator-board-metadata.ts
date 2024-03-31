@@ -3,6 +3,7 @@ import { IndicatorBoardMetadataCountShouldNotExceedLimitRule } from './rule/Indi
 import { IndicatorBoardMetadataNameShouldNotEmptyRule } from './rule/IndicatorBoardMetadataNameShouldNotEmpty.rule';
 import { IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule } from './rule/IndicatorInIndicatorBoardMetadataShouldNotDuplicate.rule';
 import { OnlyRegisteredIdCanBeRemovedRule } from './rule/OnlyRegisteredIdCanBeRemoved.rule';
+// import { IndicatorIdInSectionsShouldBeInIndicatorRule } from './rule/IndicatorIdInSectionsShouldBeInIndicator.rule';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class IndicatorBoardMetadata extends AggregateRoot {
@@ -81,6 +82,13 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   }
 
   public updateSections(sections: Record<string, string[]>): void {
+    // this.checkRule(
+    //   new IndicatorIdInSectionsShouldBeInIndicatorRule(
+    //     this.indicatorIds,
+    //     this.customForecastIndicatorIds,
+    //     this.sections,
+    //   ),
+    // );
     this.sections = sections;
   }
 
@@ -158,6 +166,9 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(sections));
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(indicatorIds));
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(customForecastIndicatorIds));
+    // this.checkRule(
+    //   new IndicatorIdInSectionsShouldBeInIndicatorRule(indicatorIds, customForecastIndicatorIds, sections),
+    // );
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
     this.indicatorIds = indicatorIds;

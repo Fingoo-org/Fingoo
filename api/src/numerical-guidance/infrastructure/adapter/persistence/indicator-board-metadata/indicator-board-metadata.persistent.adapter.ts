@@ -23,6 +23,7 @@ import { DeleteIndicatorBoardMetadataPort } from '../../../../application/port/p
 import { UpdateIndicatorBoardMetadataNamePort } from '../../../../application/port/persistence/indicator-board-metadata/update-indicator-board-metadata-name.port';
 import { InsertCustomForecastIndicatorIdPort } from 'src/numerical-guidance/application/port/persistence/indicator-board-metadata/insert-custom-forecast-indicator-id.port';
 import { DeleteCustomForecastIndicatorIdPort } from 'src/numerical-guidance/application/port/persistence/indicator-board-metadata/delete-custom-forecast-indicator-id.port';
+import { UpdateSectionsPort } from '../../../../application/port/persistence/indicator-board-metadata/update-sections.port';
 
 @Injectable()
 export class IndicatorBoardMetadataPersistentAdapter
@@ -35,7 +36,8 @@ export class IndicatorBoardMetadataPersistentAdapter
     DeleteIndicatorBoardMetadataPort,
     UpdateIndicatorBoardMetadataNamePort,
     InsertCustomForecastIndicatorIdPort,
-    DeleteCustomForecastIndicatorIdPort
+    DeleteCustomForecastIndicatorIdPort,
+    UpdateSectionsPort
 {
   constructor(
     @InjectRepository(IndicatorBoardMetadataEntity)
@@ -306,13 +308,51 @@ export class IndicatorBoardMetadataPersistentAdapter
     }
   }
 
+  async updateSections(indicatorBoardMetadata: IndicatorBoardMetadata) {
+    try {
+      const id = indicatorBoardMetadata.id;
+
+      const indicatorBoardMetadataEntity: IndicatorBoardMetadataEntity =
+        await this.indicatorBoardMetadataRepository.findOneBy({ id });
+      this.nullCheckForEntity(indicatorBoardMetadataEntity);
+
+      indicatorBoardMetadataEntity.sections = indicatorBoardMetadata.sections;
+
+      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntity);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] indicatorBoardMetadataId: ${indicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else if (error instanceof TypeORMError) {
+        throw new BadRequestException({
+          HttpStatus: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
+          1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 축(section)을 변경하는 도중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      }
+    }
+  }
+
   async deleteIndicatorBoardMetadata(id: string) {
     try {
-      const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
+      const indicatorBoardMetadataEntity: IndicatorBoardMetadataEntity =
         await this.indicatorBoardMetadataRepository.findOneBy({ id: id });
-      this.nullCheckForEntity(indicatorBoardMetaDataEntity);
+      this.nullCheckForEntity(indicatorBoardMetadataEntity);
 
-      await this.indicatorBoardMetadataRepository.remove(indicatorBoardMetaDataEntity);
+      await this.indicatorBoardMetadataRepository.remove(indicatorBoardMetadataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
