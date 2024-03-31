@@ -12,24 +12,27 @@ import {
   DragOverEvent,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import DraggableItem, { Item } from '../view/atom/draggable-item';
+import { Item } from '../view/atom/draggable-item';
 
 type DraggableContextProps = {
   values: {
     [key: string]: string[];
   };
+  dragOverlayItem?: ({ children }: React.PropsWithChildren) => React.ReactElement;
   onValueChange: (newValue: { [key: string]: string[] }) => void;
   onActiveChange?: (activeId: string | null) => void;
 };
 
 export default function DraggableContext({
   values,
+  dragOverlayItem,
   children,
   onValueChange,
   onActiveChange,
 }: React.PropsWithChildren<DraggableContextProps>) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
+  const OverlayItem = dragOverlayItem;
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -46,7 +49,15 @@ export default function DraggableContext({
       onDragOver={handleDragOVer}
     >
       {children}
-      <DragOverlay>{activeId ? <Item className="shadow-lg">{activeId}</Item> : null}</DragOverlay>
+      <DragOverlay>
+        {activeId ? (
+          OverlayItem ? (
+            <OverlayItem>{activeId}</OverlayItem>
+          ) : (
+            <Item className=" shadow-lg">{activeId}</Item>
+          )
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
   function handleDragStart(event: DragStartEvent) {

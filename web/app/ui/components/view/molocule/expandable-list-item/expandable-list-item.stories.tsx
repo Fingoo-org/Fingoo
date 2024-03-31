@@ -66,7 +66,7 @@ export const Default = {
             {Object.keys(values).map((key, index) => (
               <SortableContext id={key} key={index} items={values[key]} strategy={verticalListSortingStrategy}>
                 {values[key].map((item) => (
-                  <DraggableItem className="bg-whtie" active={false} key={item} id={item}>
+                  <DraggableItem active={false} key={item} id={item}>
                     {item}
                   </DraggableItem>
                 ))}

@@ -44,6 +44,10 @@ export class IndicatorBoardMetadata {
     };
   }
 
+  get isEmpty() {
+    return this.indicatorIds.length === 0 && this.customForecastIndicatorIds.length === 0;
+  }
+
   addIndicator(indicatorId: string) {
     this.indicatorIds = [...this.indicatorIds, indicatorId];
     this.indicatorIdsWithSessionIds = {

@@ -7,7 +7,7 @@ import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import ExpandableListItem from '../../../view/molocule/expandable-list-item';
 import DraggableContext from '../../../util/draggable-context';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import DraggableItem from '../../../view/atom/draggable-item';
+import DraggableItem, { Item } from '../../../view/atom/draggable-item';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { useState } from 'react';
 import { cn } from '@/app/utils/style';
@@ -25,6 +25,8 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   const indicatorIdsWithSessionIds = indicatorBoardMetadata?.indicatorIdsWithSessionIds;
 
   const isSelected = selectedMetadata?.id === item.id;
+
+  const isIndicatorEmpty = indicatorBoardMetadata?.isEmpty;
 
   const handleSelect = () => {
     selectMetadataById(item.id);
@@ -61,6 +63,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           onActiveChange={handleActiveChange}
           onValueChange={updateIndicatorIdsWithSessionIds}
           values={indicatorIdsWithSessionIds ?? {}}
+          dragOverlayItem={({ children }) => <Item className="rounded-lg bg-white shadow-lg">{children}</Item>}
         >
           <div
             className={cn('divide-y-2', {
@@ -80,7 +83,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
                       {indicatorIdsWithSessionIds[`session${index + 1}`].length > 0 ? (
                         indicatorIdsWithSessionIds[`session${index + 1}`].map((indicatorId) => (
                           <DraggableItem
-                            className="my-2 rounded-lg bg-white ring-1 ring-blue-200 first:mt-2 last:mb-2"
+                            className="first:mt-2 last:mb-2"
                             active={activeDragItemId === indicatorId}
                             key={indicatorId}
                             id={indicatorId}
@@ -90,11 +93,12 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
                         ))
                       ) : (
                         <DraggableItem
-                          className="my-2 rounded-lg bg-white ring-1 ring-blue-200 first:mt-2 last:mb-2"
+                          className="border-dotted border-blue-500"
                           active={false}
+                          disabled={true}
                           id={`sessionContext${index + 1}`}
                         >
-                          드래그 해 주세요
+                          {isIndicatorEmpty ? '지표를 추가해 주세요' : '지표를 드래그 해 주세요'}
                         </DraggableItem>
                       )}
                     </div>

@@ -24,15 +24,17 @@ type DraggableItemProps = {
   id: string;
   active: boolean;
   className?: string;
+  disabled?: boolean;
 };
 
 export default function DraggableItem({
   id,
   active,
   className,
+  disabled = false,
   children,
 }: React.PropsWithChildren<DraggableItemProps>) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id, disabled });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -42,6 +44,7 @@ export default function DraggableItem({
   return (
     <Item
       className={cn(
+        'my-2 rounded-lg border  border-blue-200 bg-white',
         {
           'opacity-20': active,
         },
