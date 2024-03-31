@@ -9,7 +9,7 @@ import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indic
 
 export default function MetadataDialogMenu() {
   const { payload, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_DELETE);
-  const { indicatorBoardMetadata, updateIndicatorBoardMetadata, addSessionToIndicatorBoardMetadata } =
+  const { indicatorBoardMetadata, updateIndicatorBoardMetadata, addsectionToIndicatorBoardMetadata } =
     useIndicatorBoardMetadataViewModel(
       typeof payload !== 'undefined' ? (payload as IndicatorBoardMetadata).id : undefined,
     );
@@ -18,8 +18,8 @@ export default function MetadataDialogMenu() {
     updateIndicatorBoardMetadata({ name });
   };
 
-  const handleSessionAdd = () => {
-    addSessionToIndicatorBoardMetadata();
+  const handlesectionAdd = () => {
+    addsectionToIndicatorBoardMetadata();
   };
 
   return (
@@ -36,7 +36,7 @@ export default function MetadataDialogMenu() {
       <DialogMenu.Item aria-label="Delete" onClick={openDialogWithPayload} icon={TrashIcon}>
         Delete
       </DialogMenu.Item>
-      <DialogMenu.Item aria-label="Add session" onClick={handleSessionAdd} icon={PlusIcon}>
+      <DialogMenu.Item aria-label="Add section" onClick={handlesectionAdd} icon={PlusIcon}>
         축 추가
       </DialogMenu.Item>
     </DialogMenu>

@@ -5,7 +5,7 @@ import {
   UpdateIndicatorBoardMetadataRequestBody,
   AddCustomForecastIndicatorToMetadataRequestBody,
   CreateIndicatorMetadataResponse,
-  UpdateIndicatorIdsWithSessionIdsRequestBody,
+  UpdateIndicatorBoardMetadataSectionsRequestBody,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { mockDatabaseStore } from '.';
 
@@ -19,7 +19,7 @@ export type MockIndicatorBoardMetadataAction = {
   deleteIndicatorBoardMetadata: (id: string) => void;
   postCustomForecastIndicatorToMetadata: (id: string, data: AddCustomForecastIndicatorToMetadataRequestBody) => void;
   deleteCustomForecastIndicatorFromMetadata: (id: string, customForecastIndicatorId: string) => void;
-  patchIndicatorIdsWithSessionIds: (id: string, data: UpdateIndicatorIdsWithSessionIdsRequestBody) => void;
+  patchIndicatorIdsWithsectionIds: (id: string, data: UpdateIndicatorBoardMetadataSectionsRequestBody) => void;
 };
 
 export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction = {
@@ -33,8 +33,8 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
       id,
       indicatorIds: [],
       customForecastIndicatorIds: [],
-      indicatorIdsWithSessionIds: {
-        session1: [],
+      sections: {
+        section1: [],
       },
     };
     mockDatabaseStore.metadataList = [...mockDatabaseStore.metadataList, newMetadata];
@@ -45,14 +45,14 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
   },
   postIndicatorToMetadata: (id, data) => {
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
-    const lastSessionId = Object.keys(mockDatabaseStore.metadataList[index].indicatorIdsWithSessionIds).length;
+    const lastsectionId = Object.keys(mockDatabaseStore.metadataList[index].sections).length;
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
       indicatorIds: [...mockDatabaseStore.metadataList[index].indicatorIds, data.indicatorId],
-      indicatorIdsWithSessionIds: {
-        ...mockDatabaseStore.metadataList[index].indicatorIdsWithSessionIds,
-        [`session${lastSessionId}`]: [
-          ...mockDatabaseStore.metadataList[index].indicatorIdsWithSessionIds[`session${lastSessionId}`],
+      sections: {
+        ...mockDatabaseStore.metadataList[index].sections,
+        [`section${lastsectionId}`]: [
+          ...mockDatabaseStore.metadataList[index].sections[`section${lastsectionId}`],
           data.indicatorId,
         ],
       },
@@ -65,9 +65,7 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
       indicatorIds: mockDatabaseStore.metadataList[index].indicatorIds.filter((id) => id !== indicatorId),
-      indicatorIdsWithSessionIds: Object.entries(
-        mockDatabaseStore.metadataList[index].indicatorIdsWithSessionIds,
-      ).reduce<{
+      sections: Object.entries(mockDatabaseStore.metadataList[index].sections).reduce<{
         [key: string]: string[];
       }>((acc, [key, value]) => {
         acc[key] = value.filter((id) => id !== indicatorId);
@@ -91,17 +89,17 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
   },
   postCustomForecastIndicatorToMetadata: (id, data) => {
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
-    const lastSessionId = Object.keys(mockDatabaseStore.metadataList[index].indicatorIdsWithSessionIds).length;
+    const lastsectionId = Object.keys(mockDatabaseStore.metadataList[index].sections).length;
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
       customForecastIndicatorIds: [
         ...mockDatabaseStore.metadataList[index].customForecastIndicatorIds,
         data.customForecastIndicatorId,
       ],
-      indicatorIdsWithSessionIds: {
-        ...mockDatabaseStore.metadataList[index].indicatorIdsWithSessionIds,
-        [`session${lastSessionId}`]: [
-          ...mockDatabaseStore.metadataList[index].indicatorIdsWithSessionIds[`session${lastSessionId}`],
+      sections: {
+        ...mockDatabaseStore.metadataList[index].sections,
+        [`section${lastsectionId}`]: [
+          ...mockDatabaseStore.metadataList[index].sections[`section${lastsectionId}`],
           data.customForecastIndicatorId,
         ],
       },
@@ -116,9 +114,7 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
       customForecastIndicatorIds: mockDatabaseStore.metadataList[index].customForecastIndicatorIds.filter(
         (id) => id !== customForecastIndicatorId,
       ),
-      indicatorIdsWithSessionIds: Object.entries(
-        mockDatabaseStore.metadataList[index].indicatorIdsWithSessionIds,
-      ).reduce<{
+      sections: Object.entries(mockDatabaseStore.metadataList[index].sections).reduce<{
         [key: string]: string[];
       }>((acc, [key, value]) => {
         acc[key] = value.filter((id) => id !== customForecastIndicatorId);
@@ -128,12 +124,12 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
 
     mockDatabaseStore.metadataList[index] = newMetadata;
   },
-  patchIndicatorIdsWithSessionIds: (id, data) => {
+  patchIndicatorIdsWithsectionIds: (id, data) => {
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
-      indicatorIdsWithSessionIds: {
-        ...data.indicatorIdsWithSessionIds,
+      sections: {
+        ...data.sections,
       },
     };
 

@@ -148,7 +148,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
 
       // then
       expect(result.current.selectedMetadata?.indicatorIds[0]).toBe(result.current.indicatorList?.[0].id);
-      expect(result.current.selectedMetadata?.indicatorIdsWithSessionIds['session1'][0]).toBe(
+      expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1'][0]).toBe(
         result.current.indicatorList?.[0].id,
       );
     });
@@ -192,7 +192,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
 
       // then
       expect(result.current.selectedMetadata?.indicatorIds).toEqual([]);
-      expect(result.current.selectedMetadata?.indicatorIdsWithSessionIds['session1']).toEqual([]);
+      expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1']).toEqual([]);
     });
 
     describe('updateMetadata', () => {
@@ -257,7 +257,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       expect(result.current.selectedMetadata?.customForecastIndicatorIds[0]).toBe(
         result.current.customForecastIndicatorList?.customForecastIndicatorList[0].id,
       );
-      expect(result.current.selectedMetadata?.indicatorIdsWithSessionIds['session1'][0]).toBe(
+      expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1'][0]).toBe(
         result.current.customForecastIndicatorList?.customForecastIndicatorList[0].id,
       );
     });

@@ -8,7 +8,7 @@ import {
   useDeleteIndicatorFromMetadata,
   useFetchIndicatorBoardMetadataList,
   useUpdateIndicatorBoardMetadata,
-  useUpdateIndicatorIdsWithSessionIds,
+  useUpdateIndicatorIdsWithsectionIds,
 } from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useWorkspaceStore } from '../../../store/stores/numerical-guidance/workspace.store';
 import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';

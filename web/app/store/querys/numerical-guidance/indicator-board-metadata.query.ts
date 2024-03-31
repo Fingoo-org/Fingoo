@@ -3,14 +3,13 @@ import { API_PATH } from '../api-path';
 import { defaultFetcher, deleteFetcher, patchFetcher, postFetcher } from '../fetcher';
 import useSWRMutation from 'swr/mutation';
 
-// Risk: 중복된 응답 타입을 가져가는게 옳은 선택일까? (2/2) 분리 했음
 export type IndicatorBoardMetadataResponse = {
   id: string;
   indicatorBoardMetadataName: string;
   indicatorIds: string[];
   customForecastIndicatorIds: string[];
-  indicatorIdsWithSessionIds: {
-    [sessionId: string]: string[];
+  sections: {
+    [sectionId: string]: string[];
   };
 };
 
@@ -107,13 +106,13 @@ export const useDeleteIndicatorBoardMetadata = () => {
   });
 };
 
-export type UpdateIndicatorIdsWithSessionIdsRequestBody = {
-  indicatorIdsWithSessionIds: {
-    [key: string]: string[];
+export type UpdateIndicatorBoardMetadataSectionsRequestBody = {
+  sections: {
+    [sectionId: string]: string[];
   };
 };
 
-export const useUpdateIndicatorIdsWithSessionIds = (metadataId: string | undefined) => {
+export const useUpdateIndicatorIdsWithsectionIds = (metadataId: string | undefined) => {
   return useSWRMutation(
     API_PATH.indicatorBoardMetadata,
     async (
@@ -121,11 +120,11 @@ export const useUpdateIndicatorIdsWithSessionIds = (metadataId: string | undefin
       {
         arg,
       }: {
-        arg: UpdateIndicatorIdsWithSessionIdsRequestBody;
+        arg: UpdateIndicatorBoardMetadataSectionsRequestBody;
       },
     ) => {
       if (!metadataId) return;
-      await patchFetcher<UpdateIndicatorIdsWithSessionIdsRequestBody>([url, 'session', metadataId], { arg });
+      await patchFetcher<UpdateIndicatorBoardMetadataSectionsRequestBody>([url, metadataId, 'sections'], { arg });
     },
   );
 };

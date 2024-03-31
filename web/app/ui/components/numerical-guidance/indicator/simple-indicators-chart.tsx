@@ -14,20 +14,28 @@ export default function SimpleIndicatorsChart() {
     customForecastIndicatorsValue ?? [],
   );
 
+  console.log(indicatorsValue);
+
   const formattedIndicatorsRows = indicatorFormatter.formattedIndicatorsInRow;
+
+  console.log(formattedIndicatorsRows);
+  console.log(selectedMetadata?.indicatorIdsWithSectionIds);
 
   return (
     <>
-      {selectedMetadata?.indicatorIdsWithSessionIds ? (
-        Object.keys(selectedMetadata?.indicatorIdsWithSessionIds).map((sessionId, index) => {
-          const indicatorIds = selectedMetadata?.indicatorIdsWithSessionIds[`session${index + 1}`];
+      {selectedMetadata?.indicatorIdsWithSectionIds ? (
+        Object.keys(selectedMetadata?.indicatorIdsWithSectionIds).map((sectionId, index) => {
+          const indicatorIds = selectedMetadata?.indicatorIdsWithSectionIds[`section${index + 1}`];
+          console.log(indicatorIds);
 
           const categories = indicatorFormatter
             .getIdentifiersByIds(indicatorIds)
             .map((indicator) => indicator.identifier);
+
+          console.log(categories);
           return (
             <MultiLineChart
-              key={sessionId}
+              key={sectionId}
               data={formattedIndicatorsRows || []}
               categories={categories}
               noDataText={

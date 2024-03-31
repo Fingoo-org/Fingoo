@@ -7,7 +7,7 @@ import {
   AddIndicatorToMetadataRequestBody,
   AddCustomForecastIndicatorToMetadataRequestBody,
   UpdateIndicatorBoardMetadataRequestBody,
-  UpdateIndicatorIdsWithSessionIdsRequestBody,
+  UpdateIndicatorBoardMetadataSectionsRequestBody,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
 export type metadataParam = {
@@ -74,6 +74,16 @@ export const indicatorBoardMetadataHandlers = [
       return HttpResponse.json({ status: 200 });
     },
   ),
+  http.patch<metadataParam, UpdateIndicatorBoardMetadataSectionsRequestBody>(
+    `${API_PATH.indicatorBoardMetadata}/:metadataId/sections`,
+    async ({ request, params }) => {
+      const { metadataId } = params;
+      const data = await request.json();
+      await delayForDevelopment();
+      mockDB.patchIndicatorIdsWithsectionIds(metadataId, data);
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
   http.patch<metadataParam, UpdateIndicatorBoardMetadataRequestBody>(
     `${API_PATH.indicatorBoardMetadata}/:metadataId`,
     async ({ request, params }) => {
@@ -91,14 +101,4 @@ export const indicatorBoardMetadataHandlers = [
 
     return HttpResponse.json({ status: 200 });
   }),
-  http.patch<metadataParam, UpdateIndicatorIdsWithSessionIdsRequestBody>(
-    `${API_PATH.indicatorBoardMetadata}/session/:metadataId`,
-    async ({ request, params }) => {
-      const { metadataId } = params;
-      const data = await request.json();
-      await delayForDevelopment();
-      mockDB.patchIndicatorIdsWithSessionIds(metadataId, data);
-      return HttpResponse.json({ status: 200 });
-    },
-  ),
 ];
