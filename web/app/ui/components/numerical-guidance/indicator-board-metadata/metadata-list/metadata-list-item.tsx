@@ -53,6 +53,40 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     );
   };
 
+  const renderDraggableList = (indicatorIdsWithSessionIds: { [draggableContainerId: string]: string[] }) =>
+    Object.keys(indicatorIdsWithSessionIds).map((_, index) => (
+      <SortableContext
+        key={index}
+        id={`session${index + 1}`}
+        items={indicatorIdsWithSessionIds[`session${index + 1}`]}
+        strategy={verticalListSortingStrategy}
+      >
+        <div>
+          {indicatorIdsWithSessionIds[`session${index + 1}`].length > 0 ? (
+            indicatorIdsWithSessionIds[`session${index + 1}`].map((indicatorId) => (
+              <DraggableItem
+                className="flex items-center before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400 first:mt-2 last:mb-2"
+                active={activeDragItemId === indicatorId}
+                key={indicatorId}
+                id={indicatorId}
+              >
+                {indicatorId}
+              </DraggableItem>
+            ))
+          ) : (
+            <DraggableItem
+              className="border-dotted border-blue-500"
+              active={false}
+              disabled={true}
+              id={`sessionContext${index + 1}`}
+            >
+              {isIndicatorEmpty ? '지표를 추가해 주세요' : '지표를 드래그 해 주세요'}
+            </DraggableItem>
+          )}
+        </div>
+      </SortableContext>
+    ));
+
   return (
     <ExpandableListItem selected={isSelected} onSelect={handleSelect} hoverRender={hoverRender}>
       <ExpandableListItem.Title>
@@ -63,7 +97,11 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           onActiveChange={handleActiveChange}
           onValueChange={updateIndicatorIdsWithSessionIds}
           values={indicatorIdsWithSessionIds ?? {}}
-          dragOverlayItem={({ children }) => <Item className="rounded-lg bg-white shadow-lg">{children}</Item>}
+          dragOverlayItem={({ children }) => (
+            <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
+              {children}
+            </Item>
+          )}
         >
           <div
             className={cn('divide-y-2', {
@@ -71,40 +109,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
               'divide-blue-200': !isSelected,
             })}
           >
-            {indicatorIdsWithSessionIds
-              ? Object.keys(indicatorIdsWithSessionIds).map((_, index) => (
-                  <SortableContext
-                    key={index}
-                    id={`session${index + 1}`}
-                    items={indicatorIdsWithSessionIds[`session${index + 1}`]}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    <div>
-                      {indicatorIdsWithSessionIds[`session${index + 1}`].length > 0 ? (
-                        indicatorIdsWithSessionIds[`session${index + 1}`].map((indicatorId) => (
-                          <DraggableItem
-                            className="first:mt-2 last:mb-2"
-                            active={activeDragItemId === indicatorId}
-                            key={indicatorId}
-                            id={indicatorId}
-                          >
-                            {indicatorId}
-                          </DraggableItem>
-                        ))
-                      ) : (
-                        <DraggableItem
-                          className="border-dotted border-blue-500"
-                          active={false}
-                          disabled={true}
-                          id={`sessionContext${index + 1}`}
-                        >
-                          {isIndicatorEmpty ? '지표를 추가해 주세요' : '지표를 드래그 해 주세요'}
-                        </DraggableItem>
-                      )}
-                    </div>
-                  </SortableContext>
-                ))
-              : null}
+            {indicatorIdsWithSessionIds ? renderDraggableList(indicatorIdsWithSessionIds) : null}
           </div>
         </DraggableContext>
       </ExpandableListItem.ExpandedContent>
