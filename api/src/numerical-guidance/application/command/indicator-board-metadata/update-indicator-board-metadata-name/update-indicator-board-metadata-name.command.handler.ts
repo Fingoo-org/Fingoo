@@ -13,17 +13,17 @@ export class UpdateIndicatorBoardMetadataNameCommandHandler implements ICommandH
     @Inject('UpdateIndicatorBoardMetadataNamePort')
     private readonly updateIndicatorBoardMetadataNamePort: UpdateIndicatorBoardMetadataNamePort,
     @Inject('LoadIndicatorBoardMetadataPort')
-    private readonly loadIndicatorBoardMetaDataPort: LoadIndicatorBoardMetadataPort,
+    private readonly loadIndicatorBoardMetadataPort: LoadIndicatorBoardMetadataPort,
   ) {}
 
   @Transactional()
   async execute(command: UpdateIndicatorBoardMetadataNameCommand) {
     const { id, name } = command;
-    const indicatorBoardMetaData: IndicatorBoardMetadata =
-      await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetadata(id);
+    const indicatorBoardMetadata: IndicatorBoardMetadata =
+      await this.loadIndicatorBoardMetadataPort.loadIndicatorBoardMetadata(id);
 
-    indicatorBoardMetaData.updateIndicatorBoardMetadataName(name);
+    indicatorBoardMetadata.updateIndicatorBoardMetadataName(name);
 
-    await this.updateIndicatorBoardMetadataNamePort.updateIndicatorBoardMetadataName(indicatorBoardMetaData);
+    await this.updateIndicatorBoardMetadataNamePort.updateIndicatorBoardMetadataName(indicatorBoardMetadata);
   }
 }
