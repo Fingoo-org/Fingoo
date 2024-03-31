@@ -3,11 +3,6 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/app/utils/style';
 
-type DraggableItemProps = {
-  id: string;
-  active: boolean;
-};
-
 type ItemProps = {
   style?: React.CSSProperties;
   className?: string;
@@ -16,7 +11,7 @@ type ItemProps = {
 export const Item = forwardRef<HTMLDivElement, React.PropsWithChildren<ItemProps>>(
   ({ className, children, style, ...props }, ref) => {
     return (
-      <div {...props} style={style} ref={ref} className={cn('p-4', className)}>
+      <div {...props} style={style} ref={ref} className={cn('py-1 pl-2', className)}>
         {children}
       </div>
     );
@@ -25,7 +20,18 @@ export const Item = forwardRef<HTMLDivElement, React.PropsWithChildren<ItemProps
 
 Item.displayName = 'draggableItem';
 
-export default function DraggableItem({ id, active, children }: React.PropsWithChildren<DraggableItemProps>) {
+type DraggableItemProps = {
+  id: string;
+  active: boolean;
+  className?: string;
+};
+
+export default function DraggableItem({
+  id,
+  active,
+  className,
+  children,
+}: React.PropsWithChildren<DraggableItemProps>) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const style = {
@@ -35,9 +41,12 @@ export default function DraggableItem({ id, active, children }: React.PropsWithC
 
   return (
     <Item
-      className={cn({
-        'opacity-20': active,
-      })}
+      className={cn(
+        {
+          'opacity-20': active,
+        },
+        className,
+      )}
       ref={setNodeRef}
       style={style}
       {...attributes}

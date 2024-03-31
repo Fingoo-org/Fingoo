@@ -10,6 +10,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import DraggableItem from '../../../view/atom/draggable-item';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { useState } from 'react';
+import { cn } from '@/app/utils/style';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -22,6 +23,8 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   const { indicatorBoardMetadata, updateIndicatorIdsWithSessionIds } = useIndicatorBoardMetadataViewModel(item.id);
 
   const indicatorIdsWithSessionIds = indicatorBoardMetadata?.indicatorIdsWithSessionIds;
+
+  const isSelected = selectedMetadata?.id === item.id;
 
   const handleSelect = () => {
     selectMetadataById(item.id);
@@ -49,7 +52,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   return (
-    <ExpandableListItem selected={selectedMetadata?.id === item.id} onSelect={handleSelect} hoverRender={hoverRender}>
+    <ExpandableListItem selected={isSelected} onSelect={handleSelect} hoverRender={hoverRender}>
       <ExpandableListItem.Title>
         <div className="py-1 pl-4">{item.name}</div>
       </ExpandableListItem.Title>
@@ -59,7 +62,12 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           onValueChange={updateIndicatorIdsWithSessionIds}
           values={indicatorIdsWithSessionIds ?? {}}
         >
-          <div className="divide-y divide-gray-400">
+          <div
+            className={cn('divide-y-2', {
+              'divide-white': isSelected,
+              'divide-blue-200': !isSelected,
+            })}
+          >
             {indicatorIdsWithSessionIds
               ? Object.keys(indicatorIdsWithSessionIds).map((_, index) => (
                   <SortableContext
@@ -71,12 +79,21 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
                     <div>
                       {indicatorIdsWithSessionIds[`session${index + 1}`].length > 0 ? (
                         indicatorIdsWithSessionIds[`session${index + 1}`].map((indicatorId) => (
-                          <DraggableItem active={activeDragItemId === indicatorId} key={indicatorId} id={indicatorId}>
+                          <DraggableItem
+                            className="my-2 rounded-lg bg-white ring-1 ring-blue-200 first:mt-2 last:mb-2"
+                            active={activeDragItemId === indicatorId}
+                            key={indicatorId}
+                            id={indicatorId}
+                          >
                             {indicatorId}
                           </DraggableItem>
                         ))
                       ) : (
-                        <DraggableItem active={false} id={`sessionContext${index + 1}`}>
+                        <DraggableItem
+                          className="my-2 rounded-lg bg-white ring-1 ring-blue-200 first:mt-2 last:mb-2"
+                          active={false}
+                          id={`sessionContext${index + 1}`}
+                        >
                           드래그 해 주세요
                         </DraggableItem>
                       )}

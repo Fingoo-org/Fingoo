@@ -86,7 +86,7 @@ export function ExpandableListItemRoot({
           >
             {title}
             <Accordion.Content>
-              <div className="p-4">{ExpandedContent}</div>
+              <div className="px-4 py-1">{ExpandedContent}</div>
             </Accordion.Content>
           </div>
         </ListItem>
