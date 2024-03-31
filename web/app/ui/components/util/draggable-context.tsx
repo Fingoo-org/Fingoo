@@ -16,10 +16,11 @@ import { Item } from '../view/atom/draggable-item';
 
 type DraggableContextProps = {
   values: {
-    [key: string]: string[];
+    [containerId: string]: string[];
   };
+  onDragEnd: (newValue: { [key: string]: string[] }) => void;
   dragOverlayItem?: ({ children }: React.PropsWithChildren) => React.ReactElement;
-  onValueChange: (newValue: { [key: string]: string[] }) => void;
+  onDragOver?: (newValue: { [key: string]: string[] }) => void;
   onActiveChange?: (activeId: string | null) => void;
 };
 
@@ -27,7 +28,8 @@ export default function DraggableContext({
   values,
   dragOverlayItem,
   children,
-  onValueChange,
+  onDragOver,
+  onDragEnd,
   onActiveChange,
 }: React.PropsWithChildren<DraggableContextProps>) {
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -46,7 +48,7 @@ export default function DraggableContext({
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      onDragOver={handleDragOVer}
+      onDragOver={handleDragOver}
     >
       {children}
       <DragOverlay>
@@ -67,7 +69,7 @@ export default function DraggableContext({
     onActiveChange?.(active.id as string);
   }
 
-  function handleDragOVer(event: DragOverEvent) {
+  function handleDragOver(event: DragOverEvent) {
     const { active, over } = event;
 
     if (!over) return;
@@ -84,7 +86,7 @@ export default function DraggableContext({
         [activeContainerId as string]: values[activeContainerId].filter((id) => id !== active.id),
       };
 
-      onValueChange(newValues);
+      onDragOver?.(newValues);
     }
   }
 
@@ -104,7 +106,7 @@ export default function DraggableContext({
       const oldIndex = value.indexOf(active.id as string);
       const newIndex = value.indexOf(over.id as string);
 
-      onValueChange({
+      onDragEnd({
         ...values,
         [activeContainerId]: arrayMove(value, oldIndex, newIndex),
       });

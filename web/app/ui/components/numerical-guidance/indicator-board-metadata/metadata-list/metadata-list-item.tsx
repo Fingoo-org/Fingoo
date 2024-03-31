@@ -9,24 +9,35 @@ import DraggableContext from '../../../util/draggable-context';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import DraggableItem, { Item } from '../../../view/atom/draggable-item';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/app/utils/style';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
 };
 
+// refactoring의 교본으로 삼으면 좋지 않을까...?
 export default function MetadataListItem({ item }: MetadataListItemProps) {
   const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
   const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
   const { indicatorBoardMetadata, updateIndicatorIdsWithSessionIds } = useIndicatorBoardMetadataViewModel(item.id);
+  const [indicatorIdsWithSessionIds, setIndicatorIdsWithSessionIds] = useState<{ [key: string]: string[] } | undefined>(
+    indicatorBoardMetadata?.indicatorIdsWithSessionIds,
+  );
 
-  const indicatorIdsWithSessionIds = indicatorBoardMetadata?.indicatorIdsWithSessionIds;
+  useEffect(() => {
+    setIndicatorIdsWithSessionIds(indicatorBoardMetadata?.indicatorIdsWithSessionIds);
+  }, [indicatorBoardMetadata?.indicatorIdsWithSessionIds]);
 
   const isSelected = selectedMetadata?.id === item.id;
 
   const isIndicatorEmpty = indicatorBoardMetadata?.isEmpty;
+
+  const handleIndicatorSessionChange = (newValue: { [key: string]: string[] }) => {
+    setIndicatorIdsWithSessionIds(newValue);
+    updateIndicatorIdsWithSessionIds(newValue);
+  };
 
   const handleSelect = () => {
     selectMetadataById(item.id);
@@ -95,7 +106,8 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       <ExpandableListItem.ExpandedContent>
         <DraggableContext
           onActiveChange={handleActiveChange}
-          onValueChange={updateIndicatorIdsWithSessionIds}
+          onDragOver={setIndicatorIdsWithSessionIds}
+          onDragEnd={handleIndicatorSessionChange}
           values={indicatorIdsWithSessionIds ?? {}}
           dragOverlayItem={({ children }) => (
             <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
