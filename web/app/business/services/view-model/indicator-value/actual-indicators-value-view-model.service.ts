@@ -6,17 +6,19 @@ import {
 import { IndicatorValueItem, IndicatorValue, FormattedItem, UnitType } from './indicator-value-view-model.service';
 
 export class ActualIndicatorValue extends IndicatorValue {
+  readonly indicatorId: string;
   readonly ticker: string;
   readonly market: string;
   readonly type: string;
   readonly values: IndicatorValueItem[];
-  constructor({ id, ticker, market, type, values }: IndicatorValueResponse) {
+  constructor({ indicatorId, ticker, market, type, values }: IndicatorValueResponse) {
     const valueItems = values.map((item) => new IndicatorValueItem(item));
     super(
-      id,
+      indicatorId,
       Math.max(...valueItems.map((item) => item.parseValueToInt)),
       Math.min(...valueItems.map((item) => item.parseValueToInt)),
     );
+    this.indicatorId = indicatorId;
     this.ticker = ticker;
     this.market = market;
     this.type = type;
@@ -66,6 +68,7 @@ export const convertHistoryIndicatorsValueViewModel = (indicators: HistoryIndica
     return {
       ...indicator.indicator,
       values: indicator.values,
+      indicatorId: indicator.indicator.id,
     };
   });
 

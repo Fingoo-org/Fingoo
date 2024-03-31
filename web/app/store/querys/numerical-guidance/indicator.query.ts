@@ -14,7 +14,7 @@ export type IndicatorsValueResponse = {
 };
 
 export type IndicatorValueResponse = {
-  id: string;
+  indicatorId: string;
   ticker: string;
   market: string;
   type: string;
@@ -29,7 +29,8 @@ export type IndicatorValueItemResponse = {
 export const useFetchIndicatorList = () => useSWR<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);
 
 export const useFetchLiveIndicatorsValue = (indicatorIds: string[] | undefined, interval: Interval = 'day') => {
-  const key = indicatorIds ? [API_PATH.liveIndicatorValue, interval, ...indicatorIds] : null;
+  // fix: type에 따라 url 변경 필요
+  const key = indicatorIds ? [`${API_PATH.liveIndicatorValue}/k-stock`, interval, ...indicatorIds] : null;
 
   return useSWR<IndicatorsValueResponse, any, string[] | null>(key, fetchIndicatorsValue);
 };

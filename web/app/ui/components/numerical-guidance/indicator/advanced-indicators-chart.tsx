@@ -39,9 +39,9 @@ export default function AdvancedIndicatorsChart() {
   const initialLength = formattedLiveIndicatorsRows?.length || 0;
   const initialIndex = initialLength - (formattedAdvencedIndicatorsRows?.length || 0);
 
-  const categoriesList = selectedMetadata?.indicatorIdsWithSessionIds
-    ? Object.keys(selectedMetadata?.indicatorIdsWithSessionIds).map((sessionId, index) => {
-        const indicatorIds = selectedMetadata?.indicatorIdsWithSessionIds[`session${index + 1}`];
+  const categoriesList = selectedMetadata?.indicatorIdsWithSectionIds
+    ? Object.keys(selectedMetadata?.indicatorIdsWithSectionIds).map((sectionId, index) => {
+        const indicatorIds = selectedMetadata?.indicatorIdsWithSectionIds[`section${index + 1}`];
 
         const categories = indicatorFormatter
           .getIdentifiersByIds(indicatorIds)

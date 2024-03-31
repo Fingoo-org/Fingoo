@@ -60,7 +60,7 @@ describe('useIndicatorBoardMetadataViewModel', () => {
     expect(result.current.indicatorBoardMetadata).toBeUndefined();
   });
 
-  describe('updateIndicatorIdsWithSessionIds', () => {
+  describe('updateIndicatorIdsWithsectionIds', () => {
     it('메타데이터의 세션별 지표를 변경하면, 메타데이터 값에 변경된 세션별 지표가 반영된다.', async () => {
       // given
       const { result } = renderHook(() => {
@@ -72,18 +72,18 @@ describe('useIndicatorBoardMetadataViewModel', () => {
 
       // when
       act(() => {
-        result.current.updateIndicatorIdsWithSessionIds({
-          session1: ['1'],
+        result.current.updateIndicatorIdsWithsectionIds({
+          section1: ['1'],
         });
       });
       await waitFor(() => expect(result.current.indicatorBoardMetadata).not.toBeUndefined());
 
       // then
-      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSessionIds['session1'][0]).toBe('1');
+      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSectionIds['section1'][0]).toBe('1');
     });
   });
 
-  describe('addSessionToIndicatorBoardMetadata', () => {
+  describe('addsectionToIndicatorBoardMetadata', () => {
     it('메타데이터에 세션을 추가하면, 세션이 추가된다', () => {
       // given
       const { result } = renderHook(() => {
@@ -92,20 +92,20 @@ describe('useIndicatorBoardMetadataViewModel', () => {
         };
       });
       act(() => {
-        result.current.updateIndicatorIdsWithSessionIds({
-          session1: ['1', '2'],
+        result.current.updateIndicatorIdsWithsectionIds({
+          section1: ['1', '2'],
         });
       });
 
       // when
       act(() => {
-        result.current.addSessionToIndicatorBoardMetadata();
+        result.current.addsectionToIndicatorBoardMetadata();
       });
 
       // then
-      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSessionIds).toEqual({
-        session1: ['1'],
-        session2: ['2'],
+      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSectionIds).toEqual({
+        section1: ['1'],
+        section2: ['2'],
       });
     });
 
@@ -117,22 +117,22 @@ describe('useIndicatorBoardMetadataViewModel', () => {
         };
       });
       act(() => {
-        result.current.updateIndicatorIdsWithSessionIds({
-          session1: ['1', '2'],
+        result.current.updateIndicatorIdsWithsectionIds({
+          section1: ['1', '2'],
         });
       });
 
       act(() => {
-        result.current.addSessionToIndicatorBoardMetadata();
+        result.current.addsectionToIndicatorBoardMetadata();
       });
       act(() => {
-        result.current.addSessionToIndicatorBoardMetadata();
+        result.current.addsectionToIndicatorBoardMetadata();
       });
 
-      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSessionIds).toEqual({
-        session1: ['1'],
-        session2: [],
-        session3: ['2'],
+      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSectionIds).toEqual({
+        section1: ['1'],
+        section2: [],
+        section3: ['2'],
       });
     });
   });

@@ -2,7 +2,7 @@ import {
   IndicatorBoardMetadataResponse,
   useFetchIndicatorBoardMetadataList,
   useUpdateIndicatorBoardMetadata,
-  useUpdateIndicatorIdsWithSessionIds,
+  useUpdateIndicatorIdsWithsectionIds,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
 import { useMemo } from 'react';
@@ -11,7 +11,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   const { data: indicatorBoardMetadataList } = useFetchIndicatorBoardMetadataList();
 
   const { trigger: updateIndicatorBoardMetadataTrigger } = useUpdateIndicatorBoardMetadata(metadataId);
-  const { trigger: updateIndicatorIdsWithSessionIdsTrigger } = useUpdateIndicatorIdsWithSessionIds(metadataId);
+  const { trigger: updateIndicatorIdsWithsectionIdsTrigger } = useUpdateIndicatorIdsWithsectionIds(metadataId);
 
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
@@ -38,14 +38,14 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     );
   };
 
-  const updateIndicatorIdsWithSessionIds = (data: { [sessionId: string]: string[] }) => {
-    updateIndicatorIdsWithSessionIdsTrigger(
+  const updateIndicatorIdsWithsectionIds = (data: { [sectionId: string]: string[] }) => {
+    updateIndicatorIdsWithsectionIdsTrigger(
       {
-        indicatorIdsWithSessionIds: data,
+        sections: data,
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.updateIndicatorIdsWithSessionIds(metadataId, data);
+          convertedIndicatorBoardMetadataList?.updateIndicatorIdsWithsectionIds(metadataId, data);
           return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
@@ -53,13 +53,13 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     );
   };
 
-  const addSessionToIndicatorBoardMetadata = () => {
+  const addsectionToIndicatorBoardMetadata = () => {
     if (!indicatorBoardMetadata) return;
 
-    indicatorBoardMetadata?.addSession();
-    updateIndicatorIdsWithSessionIdsTrigger(
+    indicatorBoardMetadata?.addsection();
+    updateIndicatorIdsWithsectionIdsTrigger(
       {
-        indicatorIdsWithSessionIds: indicatorBoardMetadata?.indicatorIdsWithSessionIds,
+        sections: indicatorBoardMetadata?.indicatorIdsWithSectionIds,
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
@@ -73,7 +73,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   return {
     indicatorBoardMetadata,
     updateIndicatorBoardMetadata,
-    updateIndicatorIdsWithSessionIds,
-    addSessionToIndicatorBoardMetadata,
+    updateIndicatorIdsWithsectionIds,
+    addsectionToIndicatorBoardMetadata,
   };
 };

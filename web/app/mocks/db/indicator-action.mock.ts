@@ -17,7 +17,7 @@ export const mockIndicatorAction: MockIndicatorAction = {
     return mockDatabaseStore.indicatorList;
   },
   getIndicatorValue: (id) => {
-    return mockDatabaseStore.indicatorsValue.find((indicator) => indicator.id === id);
+    return mockDatabaseStore.indicatorsValue.find((indicator) => indicator.indicatorId === id);
   },
   getHistoryIndicatorValue: (id, dataCount, endDate) => {
     const historyIndicatorValue = mockDatabaseStore.historyIndicatorsValue.find((indicator) => indicator.id === id);

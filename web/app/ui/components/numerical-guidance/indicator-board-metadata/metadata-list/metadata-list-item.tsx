@@ -21,22 +21,22 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
   const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
-  const { indicatorBoardMetadata, updateIndicatorIdsWithSessionIds } = useIndicatorBoardMetadataViewModel(item.id);
-  const [indicatorIdsWithSessionIds, setIndicatorIdsWithSessionIds] = useState<{ [key: string]: string[] } | undefined>(
-    indicatorBoardMetadata?.indicatorIdsWithSessionIds,
+  const { indicatorBoardMetadata, updateIndicatorIdsWithsectionIds } = useIndicatorBoardMetadataViewModel(item.id);
+  const [indicatorIdsWithSectionIds, setIndicatorIdsWithsectionIds] = useState<{ [key: string]: string[] } | undefined>(
+    indicatorBoardMetadata?.indicatorIdsWithSectionIds,
   );
 
   useEffect(() => {
-    setIndicatorIdsWithSessionIds(indicatorBoardMetadata?.indicatorIdsWithSessionIds);
-  }, [indicatorBoardMetadata?.indicatorIdsWithSessionIds]);
+    setIndicatorIdsWithsectionIds(indicatorBoardMetadata?.indicatorIdsWithSectionIds);
+  }, [indicatorBoardMetadata?.indicatorIdsWithSectionIds]);
 
   const isSelected = selectedMetadata?.id === item.id;
 
   const isIndicatorEmpty = indicatorBoardMetadata?.isEmpty;
 
-  const handleIndicatorSessionChange = (newValue: { [key: string]: string[] }) => {
-    setIndicatorIdsWithSessionIds(newValue);
-    updateIndicatorIdsWithSessionIds(newValue);
+  const handleIndicatorsectionChange = (newValue: { [key: string]: string[] }) => {
+    setIndicatorIdsWithsectionIds(newValue);
+    updateIndicatorIdsWithsectionIds(newValue);
   };
 
   const handleSelect = () => {
@@ -64,17 +64,17 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     );
   };
 
-  const renderDraggableList = (indicatorIdsWithSessionIds: { [draggableContainerId: string]: string[] }) =>
-    Object.keys(indicatorIdsWithSessionIds).map((_, index) => (
+  const renderDraggableList = (indicatorIdsWithSectionIds: { [draggableContainerId: string]: string[] }) =>
+    Object.keys(indicatorIdsWithSectionIds).map((_, index) => (
       <SortableContext
         key={index}
-        id={`session${index + 1}`}
-        items={indicatorIdsWithSessionIds[`session${index + 1}`]}
+        id={`section${index + 1}`}
+        items={indicatorIdsWithSectionIds[`section${index + 1}`]}
         strategy={verticalListSortingStrategy}
       >
         <div>
-          {indicatorIdsWithSessionIds[`session${index + 1}`].length > 0 ? (
-            indicatorIdsWithSessionIds[`session${index + 1}`].map((indicatorId) => (
+          {indicatorIdsWithSectionIds[`section${index + 1}`].length > 0 ? (
+            indicatorIdsWithSectionIds[`section${index + 1}`].map((indicatorId) => (
               <DraggableItem
                 className="flex items-center before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400 first:mt-2 last:mb-2"
                 active={activeDragItemId === indicatorId}
@@ -89,7 +89,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
               className="border-dotted border-blue-500"
               active={false}
               disabled={true}
-              id={`sessionContext${index + 1}`}
+              id={`sectionContext${index + 1}`}
             >
               {isIndicatorEmpty ? '지표를 추가해 주세요' : '지표를 드래그 해 주세요'}
             </DraggableItem>
@@ -106,9 +106,9 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       <ExpandableListItem.ExpandedContent>
         <DraggableContext
           onActiveChange={handleActiveChange}
-          onDragOver={setIndicatorIdsWithSessionIds}
-          onDragEnd={handleIndicatorSessionChange}
-          values={indicatorIdsWithSessionIds ?? {}}
+          onDragOver={setIndicatorIdsWithsectionIds}
+          onDragEnd={handleIndicatorsectionChange}
+          values={indicatorIdsWithSectionIds ?? {}}
           dragOverlayItem={({ children }) => (
             <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
               {children}
@@ -121,7 +121,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
               'divide-blue-200': !isSelected,
             })}
           >
-            {indicatorIdsWithSessionIds ? renderDraggableList(indicatorIdsWithSessionIds) : null}
+            {indicatorIdsWithSectionIds ? renderDraggableList(indicatorIdsWithSectionIds) : null}
           </div>
         </DraggableContext>
       </ExpandableListItem.ExpandedContent>
