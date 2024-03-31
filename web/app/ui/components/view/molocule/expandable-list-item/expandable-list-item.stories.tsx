@@ -57,12 +57,7 @@ export const Default = {
           <div className="p-2">Expandable List Item</div>
         </ExpandableListItem.Title>
         <ExpandableListItem.ExpandedContent>
-          <DraggableContext
-            values={values}
-            onValueChange={(newValues) => {
-              setValues(newValues);
-            }}
-          >
+          <DraggableContext values={values} onDragEnd={setValues} onDragOver={setValues}>
             {Object.keys(values).map((key, index) => (
               <SortableContext id={key} key={index} items={values[key]} strategy={verticalListSortingStrategy}>
                 {values[key].map((item) => (
