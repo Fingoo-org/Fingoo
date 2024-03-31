@@ -50,6 +50,17 @@ export class IndicatorFormatter {
   get columns() {
     return this.indicatorsValue.map((indicator) => indicator.identifier);
   }
+
+  getIdentifierById(id: string) {
+    return this.indicatorsValue.find((indicator) => indicator.id === id)?.identifier;
+  }
+
+  getIdentifiersByIds(ids: string[]) {
+    return ids.map((id) => ({
+      identifier: this.getIdentifierById(id) ?? '',
+      indicatorId: id,
+    }));
+  }
 }
 
 export const createIndicatorFormatter = (...indicatorsValue: IndicatorValue[][]) => {

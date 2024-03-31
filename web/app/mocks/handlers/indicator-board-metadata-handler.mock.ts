@@ -7,6 +7,7 @@ import {
   AddIndicatorToMetadataRequestBody,
   AddCustomForecastIndicatorToMetadataRequestBody,
   UpdateIndicatorBoardMetadataRequestBody,
+  UpdateIndicatorIdsWithSessionIdsRequestBody,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
 export type metadataParam = {
@@ -90,4 +91,14 @@ export const indicatorBoardMetadataHandlers = [
 
     return HttpResponse.json({ status: 200 });
   }),
+  http.patch<metadataParam, UpdateIndicatorIdsWithSessionIdsRequestBody>(
+    `${API_PATH.indicatorBoardMetadata}/session/:metadataId`,
+    async ({ request, params }) => {
+      const { metadataId } = params;
+      const data = await request.json();
+      await delayForDevelopment();
+      mockDB.patchIndicatorIdsWithSessionIds(metadataId, data);
+      return HttpResponse.json({ status: 200 });
+    },
+  ),
 ];

@@ -37,7 +37,7 @@ export default function IndicatorsChart() {
             text={'자세한 차트'}
           />
         </div>
-        <div className="h-80 w-full px-8" data-testid="indicators-chart">
+        <div className="w-full px-8" data-testid="indicators-chart">
           {isAdvancedChart ? <AdvancedIndicatorsChart /> : <SimpleIndicatorsChart />}
         </div>
       </Pending>

@@ -36,18 +36,27 @@ const initialState: MockDatabase = {
       indicatorBoardMetadataName: 'metadata1',
       indicatorIds: [],
       customForecastIndicatorIds: [],
+      indicatorIdsWithSessionIds: {
+        session1: [],
+      },
     },
     {
       id: '2',
       indicatorBoardMetadataName: 'metadata2',
       indicatorIds: [],
       customForecastIndicatorIds: [],
+      indicatorIdsWithSessionIds: {
+        session1: [],
+      },
     },
     {
       id: '3',
       indicatorBoardMetadataName: 'metadata3',
       indicatorIds: [],
       customForecastIndicatorIds: [],
+      indicatorIdsWithSessionIds: {
+        session1: [],
+      },
     },
   ],
   indicatorList: [
@@ -76,7 +85,7 @@ const initialState: MockDatabase = {
   historyIndicatorsValue: historyIndicatorsValueMockData,
   customForecastIndicatorList: [
     {
-      id: '1',
+      id: '11',
       customForecastIndicatorName: 'customForecastIndicator1',
       targetIndicatorId: '1',
       sourceIndicatorIdsAndWeights: [
@@ -87,7 +96,7 @@ const initialState: MockDatabase = {
       ],
     },
     {
-      id: '2',
+      id: '12',
       customForecastIndicatorName: 'customForecastIndicator2',
       targetIndicatorId: '2',
       sourceIndicatorIdsAndWeights: [
@@ -102,7 +111,7 @@ const initialState: MockDatabase = {
       ],
     },
     {
-      id: '3',
+      id: '13',
       customForecastIndicatorName: 'customForecastIndicator3',
       targetIndicatorId: '3',
       sourceIndicatorIdsAndWeights: [
@@ -117,7 +126,7 @@ const initialState: MockDatabase = {
       ],
     },
     {
-      id: '4',
+      id: '14',
       customForecastIndicatorName: '삼성전자 예측 지표',
       targetIndicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
       sourceIndicatorIdsAndWeights: [

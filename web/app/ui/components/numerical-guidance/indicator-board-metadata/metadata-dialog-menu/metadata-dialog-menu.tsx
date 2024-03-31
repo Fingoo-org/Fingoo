@@ -1,6 +1,6 @@
 'use client';
 import DialogMenu from '../../../view/molocule/dialog-menu';
-import { TrashIcon } from '@heroicons/react/solid';
+import { TrashIcon, PlusIcon } from '@heroicons/react/solid';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import TinyInput from '../../../view/atom/tiny-input/tiny-input';
@@ -9,12 +9,17 @@ import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indic
 
 export default function MetadataDialogMenu() {
   const { payload, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_DELETE);
-  const { indicatorBoardMetadata, updateIndicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(
-    typeof payload !== 'undefined' ? (payload as IndicatorBoardMetadata).id : undefined,
-  );
+  const { indicatorBoardMetadata, updateIndicatorBoardMetadata, addSessionToIndicatorBoardMetadata } =
+    useIndicatorBoardMetadataViewModel(
+      typeof payload !== 'undefined' ? (payload as IndicatorBoardMetadata).id : undefined,
+    );
 
   const handleMetadataUpdate = (name: string) => {
     updateIndicatorBoardMetadata({ name });
+  };
+
+  const handleSessionAdd = () => {
+    addSessionToIndicatorBoardMetadata();
   };
 
   return (
@@ -30,6 +35,9 @@ export default function MetadataDialogMenu() {
       </DialogMenu.Header>
       <DialogMenu.Item aria-label="Delete" onClick={openDialogWithPayload} icon={TrashIcon}>
         Delete
+      </DialogMenu.Item>
+      <DialogMenu.Item aria-label="Add session" onClick={handleSessionAdd} icon={PlusIcon}>
+        축 추가
       </DialogMenu.Item>
     </DialogMenu>
   );

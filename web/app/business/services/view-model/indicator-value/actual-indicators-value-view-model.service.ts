@@ -6,7 +6,6 @@ import {
 import { IndicatorValueItem, IndicatorValue, FormattedItem, UnitType } from './indicator-value-view-model.service';
 
 export class ActualIndicatorValue extends IndicatorValue {
-  readonly id: string;
   readonly ticker: string;
   readonly market: string;
   readonly type: string;
@@ -14,10 +13,10 @@ export class ActualIndicatorValue extends IndicatorValue {
   constructor({ id, ticker, market, type, values }: IndicatorValueResponse) {
     const valueItems = values.map((item) => new IndicatorValueItem(item));
     super(
+      id,
       Math.max(...valueItems.map((item) => item.parseValueToInt)),
       Math.min(...valueItems.map((item) => item.parseValueToInt)),
     );
-    this.id = id;
     this.ticker = ticker;
     this.market = market;
     this.type = type;

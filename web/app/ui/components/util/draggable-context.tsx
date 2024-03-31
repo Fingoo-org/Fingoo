@@ -12,22 +12,29 @@ import {
   DragOverEvent,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import DraggableItem, { Item } from '../view/atom/draggable-item';
+import { Item } from '../view/atom/draggable-item';
 
 type DraggableContextProps = {
   values: {
-    [key: string]: string[];
+    [containerId: string]: string[];
   };
-  onValueChange: (newValue: { [key: string]: string[] }) => void;
+  onDragEnd: (newValue: { [key: string]: string[] }) => void;
+  dragOverlayItem?: ({ children }: React.PropsWithChildren) => React.ReactElement;
+  onDragOver?: (newValue: { [key: string]: string[] }) => void;
+  onActiveChange?: (activeId: string | null) => void;
 };
 
 export default function DraggableContext({
   values,
+  dragOverlayItem,
   children,
-  onValueChange,
+  onDragOver,
+  onDragEnd,
+  onActiveChange,
 }: React.PropsWithChildren<DraggableContextProps>) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
+  const OverlayItem = dragOverlayItem;
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -41,19 +48,28 @@ export default function DraggableContext({
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      onDragOver={handleDragOVer}
+      onDragOver={handleDragOver}
     >
       {children}
-      <DragOverlay>{activeId ? <Item>{activeId}</Item> : null}</DragOverlay>
+      <DragOverlay>
+        {activeId ? (
+          OverlayItem ? (
+            <OverlayItem>{activeId}</OverlayItem>
+          ) : (
+            <Item className=" shadow-lg">{activeId}</Item>
+          )
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
   function handleDragStart(event: DragStartEvent) {
     const { active } = event;
 
     setActiveId(active.id as string);
+    onActiveChange?.(active.id as string);
   }
 
-  function handleDragOVer(event: DragOverEvent) {
+  function handleDragOver(event: DragOverEvent) {
     const { active, over } = event;
 
     if (!over) return;
@@ -70,7 +86,7 @@ export default function DraggableContext({
         [activeContainerId as string]: values[activeContainerId].filter((id) => id !== active.id),
       };
 
-      onValueChange(newValues);
+      onDragOver?.(newValues);
     }
   }
 
@@ -90,10 +106,12 @@ export default function DraggableContext({
       const oldIndex = value.indexOf(active.id as string);
       const newIndex = value.indexOf(over.id as string);
 
-      onValueChange({
+      onDragEnd({
         ...values,
         [activeContainerId]: arrayMove(value, oldIndex, newIndex),
       });
     }
+    setActiveId(null);
+    onActiveChange?.(null);
   }
 }

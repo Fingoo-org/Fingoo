@@ -81,16 +81,18 @@ export function ExpandableListItemRoot({
             className={cn('h-full w-full rounded-2xl bg-white ring-1 ring-blue-200', {
               'bg-blue-200 text-blue-900 opacity-80': selected,
             })}
+            role="tab"
+            aria-selected={`${selected}`}
           >
             {title}
             <Accordion.Content>
-              <div className="p-4">{ExpandedContent}</div>
+              <div className="px-4 py-1">{ExpandedContent}</div>
             </Accordion.Content>
           </div>
         </ListItem>
         <div
           className={cn('absolute right-3 top-1/2 z-20 -translate-y-2/4', {
-            'top-3 -translate-y-0': isOpen,
+            'top-2.5 -translate-y-0': isOpen,
           })}
         >
           <Accordion.Trigger />

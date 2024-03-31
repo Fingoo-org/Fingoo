@@ -9,7 +9,7 @@ export function ExpandableListItemExpandedContent({
   ...props
 }: ExpandableListItemExpandedContentProps) {
   return (
-    <div className={cn('bg-white', className)} {...props}>
+    <div className={cn('', className)} {...props}>
       {children}
     </div>
   );

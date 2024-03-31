@@ -47,11 +47,11 @@ describe('useCustomForecastIndicatorListViewModel', () => {
 
     // when
     act(() => {
-      result.current.deleteIndicatorBoardMetadata('1');
+      result.current.deleteCustomForecastIndicator('11');
     });
 
     // then
     await waitFor(() => expect(result.current.customForecastIndicatorList).toHaveLength(3));
-    expect(result.current.customForecastIndicatorList?.findCustomForecastIndicatorByIndex(0).id).toBe('2');
+    expect(result.current.customForecastIndicatorList?.findCustomForecastIndicatorByIndex(0).id).toBe('12');
   });
 });

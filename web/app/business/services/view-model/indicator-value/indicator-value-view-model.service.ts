@@ -31,10 +31,12 @@ export class IndicatorValueItem {
 }
 
 export abstract class IndicatorValue {
+  public id: string;
   protected maxValue: number;
   protected minValue: number;
 
-  constructor(maxValue: number, minValue: number) {
+  constructor(id: string, maxValue: number, minValue: number) {
+    this.id = id;
     this.maxValue = maxValue;
     this.minValue = minValue;
   }

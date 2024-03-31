@@ -59,4 +59,81 @@ describe('useIndicatorBoardMetadataViewModel', () => {
     // then
     expect(result.current.indicatorBoardMetadata).toBeUndefined();
   });
+
+  describe('updateIndicatorIdsWithSessionIds', () => {
+    it('메타데이터의 세션별 지표를 변경하면, 메타데이터 값에 변경된 세션별 지표가 반영된다.', async () => {
+      // given
+      const { result } = renderHook(() => {
+        return {
+          ...useIndicatorBoardMetadataViewModel('1'),
+        };
+      });
+      await waitFor(() => expect(result.current.indicatorBoardMetadata).not.toBeUndefined());
+
+      // when
+      act(() => {
+        result.current.updateIndicatorIdsWithSessionIds({
+          session1: ['1'],
+        });
+      });
+      await waitFor(() => expect(result.current.indicatorBoardMetadata).not.toBeUndefined());
+
+      // then
+      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSessionIds['session1'][0]).toBe('1');
+    });
+  });
+
+  describe('addSessionToIndicatorBoardMetadata', () => {
+    it('메타데이터에 세션을 추가하면, 세션이 추가된다', () => {
+      // given
+      const { result } = renderHook(() => {
+        return {
+          ...useIndicatorBoardMetadataViewModel('1'),
+        };
+      });
+      act(() => {
+        result.current.updateIndicatorIdsWithSessionIds({
+          session1: ['1', '2'],
+        });
+      });
+
+      // when
+      act(() => {
+        result.current.addSessionToIndicatorBoardMetadata();
+      });
+
+      // then
+      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSessionIds).toEqual({
+        session1: ['1'],
+        session2: ['2'],
+      });
+    });
+
+    it('메타데이터에 세션을 여러번 추가혀면, 세션이 추가된다', () => {
+      // given
+      const { result } = renderHook(() => {
+        return {
+          ...useIndicatorBoardMetadataViewModel('1'),
+        };
+      });
+      act(() => {
+        result.current.updateIndicatorIdsWithSessionIds({
+          session1: ['1', '2'],
+        });
+      });
+
+      act(() => {
+        result.current.addSessionToIndicatorBoardMetadata();
+      });
+      act(() => {
+        result.current.addSessionToIndicatorBoardMetadata();
+      });
+
+      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSessionIds).toEqual({
+        session1: ['1'],
+        session2: [],
+        session3: ['2'],
+      });
+    });
+  });
 });

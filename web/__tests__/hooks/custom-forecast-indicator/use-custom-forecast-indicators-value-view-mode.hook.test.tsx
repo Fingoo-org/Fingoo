@@ -30,7 +30,7 @@ describe('useCustomForecastIndicatorsValueViewModel', () => {
 
     // when
     act(() => {
-      result.current.addCustomForecastIndicatorToMetadata('4');
+      result.current.addCustomForecastIndicatorToMetadata('14');
     });
 
     // then

@@ -9,6 +9,9 @@ export type IndicatorBoardMetadataResponse = {
   indicatorBoardMetadataName: string;
   indicatorIds: string[];
   customForecastIndicatorIds: string[];
+  indicatorIdsWithSessionIds: {
+    [sessionId: string]: string[];
+  };
 };
 
 export type CreateIndicatorMetadataRequestBody = {
@@ -102,4 +105,27 @@ export const useDeleteIndicatorBoardMetadata = () => {
   return useSWRMutation(API_PATH.indicatorBoardMetadata, async (url, { arg: metadataId }: { arg: string }) => {
     await deleteFetcher([url, metadataId]);
   });
+};
+
+export type UpdateIndicatorIdsWithSessionIdsRequestBody = {
+  indicatorIdsWithSessionIds: {
+    [key: string]: string[];
+  };
+};
+
+export const useUpdateIndicatorIdsWithSessionIds = (metadataId: string | undefined) => {
+  return useSWRMutation(
+    API_PATH.indicatorBoardMetadata,
+    async (
+      url,
+      {
+        arg,
+      }: {
+        arg: UpdateIndicatorIdsWithSessionIdsRequestBody;
+      },
+    ) => {
+      if (!metadataId) return;
+      await patchFetcher<UpdateIndicatorIdsWithSessionIdsRequestBody>([url, 'session', metadataId], { arg });
+    },
+  );
 };

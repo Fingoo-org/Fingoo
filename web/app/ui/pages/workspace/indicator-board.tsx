@@ -7,11 +7,13 @@ import ClientDataSuspense from '../../components/view/atom/client-data-suspense'
 
 export default function IndicatorBoard() {
   return (
-    <Card className="h-[32.5rem] w-[55rem] rounded-lg bg-white shadow-lg">
+    <Card className="min-h-[32.5rem] w-[55rem] rounded-lg bg-white shadow-lg">
       <ClientDataSuspense fallback={<div>loading...</div>}>
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
           <IndicatorsChart />
-          <IntervalToggleGroup />
+          <div className="pt-6">
+            <IntervalToggleGroup />
+          </div>
         </SWRConfig>
       </ClientDataSuspense>
     </Card>

@@ -41,6 +41,7 @@ interface ActiveDot {
 
 type ExtendedLineChartProps = LineChartProps & {
   autoNowDateReferenceLine?: boolean;
+  syncId?: string;
 };
 
 const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((props, ref) => {
@@ -74,6 +75,7 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
     rotateLabelX,
     tickGap = 5,
     autoNowDateReferenceLine = true,
+    syncId,
     ...other
   } = props;
   const CustomTooltip = customTooltip;
@@ -136,6 +138,7 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
       <ResponsiveContainer className="h-full w-full">
         {data?.length ? (
           <ReChartsLineChart
+            syncId={syncId}
             width={300}
             height={300}
             data={data}
