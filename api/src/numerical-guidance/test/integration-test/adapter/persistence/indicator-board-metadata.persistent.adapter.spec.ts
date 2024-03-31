@@ -619,7 +619,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
   it('지표보드에 메타데이터에 새로운 예측지표 id 추가하기.', async () => {
     // given
     const currentDate: Date = new Date();
-    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+    const newIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
       'name',
       [],
@@ -632,7 +632,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     );
 
     // when
-    await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetaData);
+    await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetadata);
     const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
     );
@@ -649,7 +649,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
   it('지표보드 메타데이터에 새로운 예측지표 id를 추가하기. - 메타데이터가 DB에 존재하지 않는 경우', async () => {
     // given
     const currentDate: Date = new Date();
-    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+    const newIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'f2be45ee-d73b-43b6-9344-a8f2264bee41',
       'name',
       [],
@@ -663,7 +663,63 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // when // then
     await expect(async () => {
-      await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetaData);
+      await indicatorBoardMetadataPersistentAdapter.addCustomForecastIndicatorId(newIndicatorBoardMetadata);
+    }).rejects.toThrow(
+      new NotFoundException({
+        HttpStatus: HttpStatus.NOT_FOUND,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+        error: `[ERROR] indicatorBoardMetadataId: ${newIndicatorBoardMetadata.id} 해당 지표보드 메타데이터를 찾을 수 없습니다.`,
+        cause: Error,
+      }),
+    );
+  });
+
+  it('축(section)을 변경한다.', async () => {
+    // given
+    const currentDate: Date = new Date();
+    const newIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+      'name',
+      [],
+      ['customForecastIndicator1'],
+      {
+        section1: ['customForecastIndicatorId1'],
+      },
+      currentDate,
+      currentDate,
+    );
+
+    // when
+    await indicatorBoardMetadataPersistentAdapter.updateSections(newIndicatorBoardMetadata);
+    const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+    );
+
+    // then
+    expect(result.indicatorBoardMetadataName).toEqual('name');
+    expect(result.sections).toEqual({
+      section1: ['customForecastIndicatorId1'],
+    });
+  });
+
+  it('축(section)을 변경한다. - DB에 없는 경우', async () => {
+    // given
+    const currentDate: Date = new Date();
+    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+      'f2be45ee-d73b-43b6-9344-a8f2264bee41',
+      'name',
+      [],
+      ['customForecastIndicator1'],
+      {
+        section1: ['customForecastIndicatorId1'],
+      },
+      currentDate,
+      currentDate,
+    );
+
+    // when // then
+    await expect(async () => {
+      await indicatorBoardMetadataPersistentAdapter.updateSections(newIndicatorBoardMetaData);
     }).rejects.toThrow(
       new NotFoundException({
         HttpStatus: HttpStatus.NOT_FOUND,
