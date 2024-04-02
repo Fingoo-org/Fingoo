@@ -379,7 +379,7 @@ describe('Indicator Board Metadata E2E Test', () => {
       .patch(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60/sections`)
       .send({
         sections: {
-          section1: ['a79eface-1fd3-4b85-92ae-9628d37951fb'],
+          section1: ['a79eface-1fd3-4b85-92ae-9628d37951fa'],
           section2: ['customForecastIndicatorId1'],
         },
       })

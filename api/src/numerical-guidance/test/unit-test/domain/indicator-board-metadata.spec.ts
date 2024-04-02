@@ -4,9 +4,7 @@ import { BusinessRuleValidationException } from '../../../../utils/domain/busine
 import { IndicatorBoardMetadataNameShouldNotEmptyRule } from '../../../domain/rule/IndicatorBoardMetadataNameShouldNotEmpty.rule';
 import { IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule } from '../../../domain/rule/IndicatorInIndicatorBoardMetadataShouldNotDuplicate.rule';
 import { OnlyRegisteredIdCanBeRemovedRule } from '../../../domain/rule/OnlyRegisteredIdCanBeRemoved.rule';
-// import {
-//   IndicatorIdInSectionsShouldBeInIndicatorRule
-// } from "../../../domain/rule/IndicatorIdInSectionsShouldBeInIndicator.rule";
+import { IndicatorIdInSectionsShouldBeInIndicatorRule } from '../../../domain/rule/IndicatorIdInSectionsShouldBeInIndicator.rule';
 
 describe('지표보드 메타데이터', () => {
   it('지표보드 메타데이터 도메인 생성', () => {
@@ -381,37 +379,37 @@ describe('지표보드 메타데이터', () => {
     expect(expected).toEqual(indicatorBoardMetadata.sections);
   });
 
-  // it('지표보드 메타데이터에서 축(section)을 변경 - 지표 값과 sections 값 불일치', () => {
-  //   // given
-  //   const currentDate: Date = new Date();
-  //   const indicatorBoardMetadata = new IndicatorBoardMetadata(
-  //     'id1',
-  //     'name',
-  //     ['indicatorId1', 'indicatorId2'],
-  //     ['customForecastIndicatorId3', 'customForecastIndicatorId5'],
-  //     {
-  //       section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId5'],
-  //     },
-  //     currentDate,
-  //     currentDate,
-  //   );
-  //   const invalidSections = {
-  //     section1: ['indicatorId2', 'invalid'],
-  //     section2: ['customForecastIndicatorId3', 'customForecastIndicatorId5'],
-  //   };
-  //
-  //   // when
-  //   function updateSections() {
-  //     indicatorBoardMetadata.updateSections(invalidSections);
-  //   }
-  //   const rule = new IndicatorIdInSectionsShouldBeInIndicatorRule(
-  //     indicatorBoardMetadata.indicatorIds,
-  //     indicatorBoardMetadata.customForecastIndicatorIds,
-  //     invalidSections,
-  //   );
-  //
-  //   //then
-  //   expect(updateSections).toThrow(BusinessRuleValidationException);
-  //   expect(updateSections).toThrow(rule.Message);
-  // });
+  it('지표보드 메타데이터에서 축(section)을 변경 - 지표 값과 sections 값 불일치', () => {
+    // given
+    const currentDate: Date = new Date();
+    const indicatorBoardMetadata = new IndicatorBoardMetadata(
+      'id1',
+      'name',
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId3', 'customForecastIndicatorId5'],
+      {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId5'],
+      },
+      currentDate,
+      currentDate,
+    );
+    const invalidSections = {
+      section1: ['indicatorId2', 'invalid'],
+      section2: ['customForecastIndicatorId3', 'customForecastIndicatorId5'],
+    };
+
+    // when
+    function updateSections() {
+      indicatorBoardMetadata.updateSections(invalidSections);
+    }
+    const rule = new IndicatorIdInSectionsShouldBeInIndicatorRule(
+      indicatorBoardMetadata.indicatorIds,
+      indicatorBoardMetadata.customForecastIndicatorIds,
+      invalidSections,
+    );
+
+    //then
+    expect(updateSections).toThrow(BusinessRuleValidationException);
+    expect(updateSections).toThrow(rule.Message);
+  });
 });
