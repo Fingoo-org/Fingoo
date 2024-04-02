@@ -3,7 +3,11 @@ import { EventProps } from '@tremor/react';
 import LineChart from './line-chart';
 import { useState } from 'react';
 import { ChartTooltip } from './chart-tooltip';
-import { FormattedRowType, FormattedIndicatorValue } from '@/app/business/services/chart/indicator-formatter.service';
+import {
+  FormattedRowType,
+  FormattedIndicatorValue,
+  chartValueFormatterFactory,
+} from '@/app/business/services/chart/indicator-formatter.service';
 import { cn } from '@/app/utils/style';
 
 type MultiLineChartProps = {
@@ -43,16 +47,8 @@ export default function MultiLineChart({ data, categories, noDataText, syncId, c
   );
 }
 
-function caculateChartValueFactory(categories: string[]) {
-  if (categories.length === 1) {
-    return (data: FormattedIndicatorValue) => data.displayValue;
-  }
-
-  return (data: FormattedIndicatorValue) => data.value;
-}
-
 function formmatData(data: FormattedRowType[], categories: string[]) {
-  const caculateChartValue = caculateChartValueFactory(categories);
+  const caculateChartValue = chartValueFormatterFactory(categories);
 
   return data.map((d) => {
     return {

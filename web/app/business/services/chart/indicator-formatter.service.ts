@@ -66,3 +66,11 @@ export class IndicatorFormatter {
 export const createIndicatorFormatter = (...indicatorsValue: IndicatorValue[][]) => {
   return new IndicatorFormatter(indicatorsValue.flat());
 };
+
+export function chartValueFormatterFactory(categories: string[]) {
+  if (categories.length === 1) {
+    return (data: FormattedIndicatorValue) => data.displayValue;
+  }
+
+  return (data: FormattedIndicatorValue) => data.value;
+}
