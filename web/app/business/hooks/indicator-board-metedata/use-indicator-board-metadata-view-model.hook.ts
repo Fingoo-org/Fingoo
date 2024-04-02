@@ -26,7 +26,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   const updateIndicatorBoardMetadata = (newData: { name: string }) => {
     updateIndicatorBoardMetadataTrigger(
       {
-        indicatorBoardMetadataName: newData.name,
+        name: newData.name,
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {

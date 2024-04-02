@@ -87,7 +87,7 @@ export const useDeleteCustomForecastIndicatorFromMetadata = (metadataId: string 
   );
 
 export type UpdateIndicatorBoardMetadataRequestBody = {
-  indicatorBoardMetadataName: string;
+  name: string;
 };
 
 export const useUpdateIndicatorBoardMetadata = (metadataId: string | undefined) => {

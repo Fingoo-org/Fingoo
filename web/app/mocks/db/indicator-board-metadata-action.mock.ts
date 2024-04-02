@@ -79,7 +79,7 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
-      ...data,
+      indicatorBoardMetadataName: data.name,
     };
 
     mockDatabaseStore.metadataList[index] = newMetadata;
