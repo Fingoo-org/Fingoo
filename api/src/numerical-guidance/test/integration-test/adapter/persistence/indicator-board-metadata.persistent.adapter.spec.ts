@@ -66,33 +66,39 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba10',
       indicatorBoardMetadataName: 'memberTest',
-      indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      indicatorIds: { indicatorIds: ['indicatorId1', 'indicatorId2'] },
       customForecastIndicatorIds: {
-        customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
+        customForecastIndicatorIds: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
-      sections: { section1: ['indicator1', 'indicator2', 'customForecastIndicator1', 'customForecastIndicator2'] },
+      sections: {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       member: { id: 999 },
     });
 
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba11',
       indicatorBoardMetadataName: 'memberTest',
-      indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      indicatorIds: { indicatorIds: ['indicatorId1', 'indicatorId2'] },
       customForecastIndicatorIds: {
-        customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
+        customForecastIndicatorIds: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
-      sections: { section1: ['indicator1', 'indicator2', 'customForecastIndicator1', 'customForecastIndicator2'] },
+      sections: {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       member: { id: 999 },
     });
 
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba12',
       indicatorBoardMetadataName: 'memberTest',
-      indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      indicatorIds: { indicatorIds: ['indicatorId1', 'indicatorId2'] },
       customForecastIndicatorIds: {
-        customForecastIndicatorIds: ['customForecastIndicator1', 'customForecastIndicator2'],
+        customForecastIndicatorIds: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
-      sections: { section1: ['indicator1', 'indicator2', 'customForecastIndicator1', 'customForecastIndicator2'] },
+      sections: {
+        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+      },
       member: { id: 999 },
     });
 
@@ -108,21 +114,21 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541b010',
       indicatorBoardMetadataName: '예측지표 삭제 테스트',
-      indicatorIds: { indicatorIds: ['indicator1', 'indicator2'] },
+      indicatorIds: { indicatorIds: ['indicatorId1', 'indicatorId2'] },
       customForecastIndicatorIds: {
         customForecastIndicatorIds: [
-          'customForecastIndicator1',
-          'customForecastIndicator2',
-          'customForecastIndicator3',
+          'customForecastIndicatorId1',
+          'customForecastIndicatorId2',
+          'customForecastIndicatorId3',
         ],
       },
       sections: {
         section1: [
-          'indicator1',
-          'indicator2',
-          'customForecastIndicator1',
-          'customForecastIndicator2',
-          'customForecastIndicator3',
+          'indicatorId1',
+          'indicatorId2',
+          'customForecastIndicatorId1',
+          'customForecastIndicatorId2',
+          'customForecastIndicatorId3',
         ],
       },
       member: { id: 9999 },
@@ -262,28 +268,30 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
   it('지표보드 메타데이터에 새로운 지표 id 추가하기.', async () => {
     // given
     const currentDate: Date = new Date();
-    const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
+    const newIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
-      ['indicator1', 'indicator2'],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['indicatorId1', 'indicatorId2'],
+      [],
       {
-        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+        section1: ['indicatorId1', 'indicatorId2'],
       },
       currentDate,
       currentDate,
     );
 
     // when
-    await indicatorBoardMetadataPersistentAdapter.addIndicatorId(newIndicatorBoardMetaData);
+    await indicatorBoardMetadataPersistentAdapter.addIndicatorId(newIndicatorBoardMetadata);
     const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
     );
 
+    console.log(result);
+
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
-    expect(result.indicatorIds).toEqual(['indicator1', 'indicator2']);
-    const expectedSectionsLength = 4;
+    expect(result.indicatorIds).toEqual(['indicatorId1', 'indicatorId2']);
+    const expectedSectionsLength = 2;
     expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
       expectedSectionsLength,
     );
@@ -341,8 +349,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'f2be45ee-d73b-43b6-9344-a8f2264bee41',
       'name',
-      ['indicator1', 'indicator2'],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -369,10 +377,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const deleteIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
-      ['indicator1', 'indicator2'],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['indicatorId1', 'indicatorId2'],
+      [],
       {
-        section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
+        section1: ['indicatorId1', 'indicatorId2'],
       },
       currentDate,
       currentDate,
@@ -386,8 +394,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
-    expect(result.indicatorIds).toEqual(['indicator1', 'indicator2']);
-    const expectedSectionsLength = 4;
+    expect(result.indicatorIds).toEqual(['indicatorId1', 'indicatorId2']);
+    const expectedSectionsLength = 2;
     expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
       expectedSectionsLength,
     );
@@ -399,8 +407,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const deleteIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'name',
-      ['indicator1', 'indicator2'],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -427,8 +435,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const indicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541b010',
       '예측지표 삭제 테스트',
-      ['indicator1', 'indicator2'],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -442,8 +450,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // then
     expect(indicatorBoardMetadata.indicatorBoardMetadataName).toEqual('예측지표 삭제 테스트');
     expect(indicatorBoardMetadata.customForecastIndicatorIds).toEqual([
-      'customForecastIndicator1',
-      'customForecastIndicator2',
+      'customForecastIndicatorId1',
+      'customForecastIndicatorId2',
     ]);
     const expectedSectionsLength = 4;
     expect(Object.values(indicatorBoardMetadata.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
@@ -457,8 +465,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const indicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae35419999',
       '예측지표 삭제 테스트',
-      ['indicator1', 'indicator2'],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -540,12 +548,11 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const updateIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       'updateName',
-      ['indicator1', 'indicator2'],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
-
       currentDate,
       currentDate,
     );
@@ -565,8 +572,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const invalidIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'updateName',
-      ['indicator1', 'indicator2'],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -593,8 +600,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const invalidIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'invalidId',
       'updateName',
-      ['indicator1', 'indicator2'],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['indicatorId1', 'indicatorId2'],
+      ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -623,7 +630,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
       'name',
       [],
-      ['customForecastIndicator1'],
+      ['customForecastIndicatorId1'],
       {
         section1: ['customForecastIndicatorId1'],
       },
@@ -639,7 +646,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
-    expect(result.customForecastIndicatorIds).toEqual(['customForecastIndicator1']);
+    expect(result.customForecastIndicatorIds).toEqual(['customForecastIndicatorId1']);
     const expectedSectionsLength = 1;
     expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
       expectedSectionsLength,
@@ -653,7 +660,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'f2be45ee-d73b-43b6-9344-a8f2264bee41',
       'name',
       [],
-      ['customForecastIndicator1', 'customForecastIndicator2'],
+      ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -681,7 +688,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
       'name',
       [],
-      ['customForecastIndicator1'],
+      ['customForecastIndicatorId1'],
       {
         section1: ['customForecastIndicatorId1'],
       },
@@ -709,7 +716,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       'f2be45ee-d73b-43b6-9344-a8f2264bee41',
       'name',
       [],
-      ['customForecastIndicator1'],
+      ['customForecastIndicatorId1'],
       {
         section1: ['customForecastIndicatorId1'],
       },

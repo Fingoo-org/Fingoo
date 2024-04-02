@@ -3,7 +3,7 @@ import { CustomForecastIndicatorEntity } from '../entity/custom-forecast-indicat
 import { MemberEntity } from 'src/auth/member.entity';
 
 export class CustomForecastIndicatorMapper {
-  static mapDomainToEntity(
+  static mapDomainToNewEntity(
     customForecastIndicator: CustomForecastIndicator,
     member: MemberEntity,
   ): CustomForecastIndicatorEntity {

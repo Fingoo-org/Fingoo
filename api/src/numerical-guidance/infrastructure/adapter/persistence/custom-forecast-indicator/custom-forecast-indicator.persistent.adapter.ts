@@ -167,7 +167,7 @@ export class CustomForecastIndicatorPersistentAdapter
       const member = await this.authService.findById(memberId);
       this.nullCheckForEntity(member);
       const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
-        CustomForecastIndicatorMapper.mapDomainToEntity(customForecastIndicator, member);
+        CustomForecastIndicatorMapper.mapDomainToNewEntity(customForecastIndicator, member);
 
       await this.customForecastIndicatorRepository.save(customForecastIndicatorEntity);
       return customForecastIndicatorEntity.id;
