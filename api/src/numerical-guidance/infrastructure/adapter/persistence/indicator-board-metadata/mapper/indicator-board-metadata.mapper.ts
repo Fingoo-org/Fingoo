@@ -3,7 +3,7 @@ import { IndicatorBoardMetadata } from '../../../../../domain/indicator-board-me
 import { MemberEntity } from '../../../../../../auth/member.entity';
 
 export class IndicatorBoardMetadataMapper {
-  static mapDomainToEntity(indicatorBoardMetaData: IndicatorBoardMetadata, member: MemberEntity) {
+  static mapDomainToNewEntity(indicatorBoardMetaData: IndicatorBoardMetadata, member: MemberEntity) {
     const indicatorBoardMetadataEntity: IndicatorBoardMetadataEntity = new IndicatorBoardMetadataEntity();
     indicatorBoardMetadataEntity.indicatorBoardMetadataName = indicatorBoardMetaData.indicatorBoardMetadataName;
     indicatorBoardMetadataEntity.indicatorIds = { indicatorIds: indicatorBoardMetaData.indicatorIds };

@@ -53,10 +53,8 @@ export class IndicatorBoardMetadataPersistentAdapter
       const member = await this.authService.findById(memberId);
       this.nullCheckForEntity(member);
 
-      const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity = IndicatorBoardMetadataMapper.mapDomainToEntity(
-        indicatorBoardMetadata,
-        member,
-      );
+      const indicatorBoardMetaDataEntity: IndicatorBoardMetadataEntity =
+        IndicatorBoardMetadataMapper.mapDomainToNewEntity(indicatorBoardMetadata, member);
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
       return indicatorBoardMetaDataEntity.id;
     } catch (error) {
@@ -279,7 +277,6 @@ export class IndicatorBoardMetadataPersistentAdapter
 
       indicatorBoardMetadataEntity.indicatorIds = { indicatorIds: indicatorBoardMetadata.indicatorIds };
       indicatorBoardMetadataEntity.sections = indicatorBoardMetadata.sections;
-
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
