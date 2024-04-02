@@ -50,9 +50,6 @@ export default function AdvancedIndicatorsChart() {
       })
     : [[]];
 
-  console.log(indicatorFormatter);
-  console.log('categoriesList', categoriesList);
-
   useEffect(() => {
     if (startDate) {
       setInitialCursorDate(new Date(startDate));

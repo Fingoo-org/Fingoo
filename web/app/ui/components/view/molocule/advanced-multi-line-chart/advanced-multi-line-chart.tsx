@@ -114,7 +114,6 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
       return Object.keys(d).reduce(
         (acc, key) => {
           if (categories.includes(key)) {
-            console.log('key', key);
             return [...acc, valueFormmater(d[key] as FormattedIndicatorValue)];
           }
           return acc;
