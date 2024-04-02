@@ -21,15 +21,14 @@ export default function SimpleIndicatorsChart() {
       {selectedMetadata?.indicatorIdsWithSectionIds ? (
         Object.keys(selectedMetadata?.indicatorIdsWithSectionIds).map((sectionId, index) => {
           const indicatorIds = selectedMetadata?.indicatorIdsWithSectionIds[`section${index + 1}`];
-          console.log(indicatorIds);
 
           const categories = indicatorFormatter
             .getIdentifiersByIds(indicatorIds)
             .map((indicator) => indicator.identifier);
 
-          console.log(categories);
           return (
             <MultiLineChart
+              data-testid={`simple-indicators-chart-section${index + 1}`}
               key={sectionId}
               data={formattedIndicatorsRows || []}
               categories={categories}

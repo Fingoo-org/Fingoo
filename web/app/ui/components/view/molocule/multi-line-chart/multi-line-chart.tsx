@@ -16,9 +16,16 @@ type MultiLineChartProps = {
   syncId?: string;
   noDataText?: string;
   className?: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-export default function MultiLineChart({ data, categories, noDataText, syncId, className }: MultiLineChartProps) {
+export default function MultiLineChart({
+  data,
+  categories,
+  noDataText,
+  syncId,
+  className,
+  ...props
+}: MultiLineChartProps) {
   const [value, setValue] = useState<EventProps>(null);
   const index = 'date';
 
@@ -26,6 +33,7 @@ export default function MultiLineChart({ data, categories, noDataText, syncId, c
   return (
     <>
       <LineChart
+        {...props}
         syncId={syncId}
         className={cn('h-full', className)}
         data={formatteedData}
