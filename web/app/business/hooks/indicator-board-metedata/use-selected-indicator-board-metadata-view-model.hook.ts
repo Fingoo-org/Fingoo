@@ -120,7 +120,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
     }
     updateTrigger(
       {
-        indicatorBoardMetadataName: data.name,
+        name: data.name,
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {

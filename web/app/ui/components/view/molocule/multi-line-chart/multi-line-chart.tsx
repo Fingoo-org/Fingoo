@@ -3,7 +3,11 @@ import { EventProps } from '@tremor/react';
 import LineChart from './line-chart';
 import { useState } from 'react';
 import { ChartTooltip } from './chart-tooltip';
-import { FormattedRowType } from '@/app/business/services/chart/indicator-formatter.service';
+import {
+  FormattedRowType,
+  FormattedIndicatorValue,
+  chartValueFormatterFactory,
+} from '@/app/business/services/chart/indicator-formatter.service';
 import { cn } from '@/app/utils/style';
 
 type MultiLineChartProps = {
@@ -12,16 +16,24 @@ type MultiLineChartProps = {
   syncId?: string;
   noDataText?: string;
   className?: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-export default function MultiLineChart({ data, categories, noDataText, syncId, className }: MultiLineChartProps) {
+export default function MultiLineChart({
+  data,
+  categories,
+  noDataText,
+  syncId,
+  className,
+  ...props
+}: MultiLineChartProps) {
   const [value, setValue] = useState<EventProps>(null);
   const index = 'date';
 
-  const formatteedData = formmatData(data);
+  const formatteedData = formmatData(data, categories);
   return (
     <>
       <LineChart
+        {...props}
         syncId={syncId}
         className={cn('h-full', className)}
         data={formatteedData}
@@ -43,7 +55,9 @@ export default function MultiLineChart({ data, categories, noDataText, syncId, c
   );
 }
 
-function formmatData(data: FormattedRowType[]) {
+function formmatData(data: FormattedRowType[], categories: string[]) {
+  const caculateChartValue = chartValueFormatterFactory(categories);
+
   return data.map((d) => {
     return {
       ...Object.keys(d).reduce((acc, key) => {
@@ -52,12 +66,12 @@ function formmatData(data: FormattedRowType[]) {
         }
         return {
           ...acc,
-          [key]: (
+          [key]: caculateChartValue(
             d[key] as {
               value: number;
               displayValue: number;
-            }
-          ).value,
+            },
+          ),
         };
       }, {}),
       displayValue: Object.keys(d).reduce((acc, key) => {

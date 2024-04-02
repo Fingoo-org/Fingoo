@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import MSWComponent from './mocks/msw-component.mock';
-import { SWRProvider } from './store/querys/swr-provider';
+import MSWComponent from './ui/components/util/msw-component';
+import { SWRProvider } from './ui/components/util/swr-provider';
 import { cn } from './utils/style';
 import localFont from 'next/font/local';
 

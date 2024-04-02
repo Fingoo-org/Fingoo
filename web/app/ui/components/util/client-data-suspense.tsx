@@ -14,7 +14,6 @@ type SuspenseProps = {
   fallback: React.ReactNode;
 };
 
-// Risk: 이게 atom에 있는게 맞는가? 디자인 시스템 컴포넌트가 아닌데? 이거랑 다른 유틸 컴포넌트 따로 모아야하지 않나?
 export default function ClientDataSuspense({ children, fallback }: PropsWithChildren<SuspenseProps>) {
   return isServer ? <>{fallback}</> : <ReactSuspense fallback={fallback}>{children}</ReactSuspense>;
 }

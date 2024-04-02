@@ -1,12 +1,14 @@
 import { act, findByText, getByText, render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
+import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import IndicatorsChart from '@/app/ui/components/numerical-guidance/indicator/indicators-chart';
 import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list';
 import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
+import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
+import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
 
 describe('IndicatorsChart', () => {
   beforeEach(() => {
@@ -171,6 +173,47 @@ describe('IndicatorsChart', () => {
       expect(await screen.findByTestId('advanced-multi-line-chart')).toBeInTheDocument();
       const indicatorsChart = await screen.findByTestId('indicators-chart');
       expect(await findByText(indicatorsChart, /삼성전자 예측 지표/i)).toBeInTheDocument();
+    });
+  });
+
+  describe('section', () => {
+    it('선택한 메타데이터가 있을 때, 지표를 2개 추가하고 축을 추가하면, 2개 섹션으로 분리된 차트를 보여준다', async () => {
+      // given
+      const user = userEvent.setup();
+      render(
+        <SWRProviderWithoutCache>
+          <MetadataList />
+          <MetadataDialogMenu />
+          <IndicatorList />
+          <IndicatorsChart />
+        </SWRProviderWithoutCache>,
+      );
+      await user.click(await screen.findByText(/metadata1/i));
+      await waitFor(() => expect(screen.getByRole('tablist')).toBeVisible());
+
+      // when
+      await userEvent.click(await screen.findByText(/Apple Inc./i));
+      await userEvent.click(await screen.findByText(/삼성전자/i));
+
+      await user.hover(await screen.findByText(/metadata1/i));
+      await user.click(
+        (
+          await screen.findAllByRole('button', {
+            name: 'edit',
+          })
+        )[0],
+      );
+      expect(await screen.findByRole('dialog')).toBeInTheDocument();
+
+      await user.click(
+        await screen.findByRole('menuitem', {
+          name: 'Add section',
+        }),
+      );
+
+      // then
+      expect(await screen.findByTestId('simple-indicators-chart-section1')).toBeInTheDocument();
+      expect(await screen.findByTestId('simple-indicators-chart-section2')).toBeInTheDocument();
     });
   });
 });

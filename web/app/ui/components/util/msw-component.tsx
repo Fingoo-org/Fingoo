@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, type PropsWithChildren, useState } from 'react';
-import { workspacePagePreFetching } from '../store/querys/prefetching';
+import { workspacePagePreFetching } from '../../../store/querys/prefetching';
 
 export default function MSWComponent({ children }: PropsWithChildren) {
   const [init, setInit] = useState(process.env.NODE_ENV !== 'development');
@@ -8,7 +8,7 @@ export default function MSWComponent({ children }: PropsWithChildren) {
   useEffect(() => {
     async function enableMocking() {
       if (typeof window !== 'undefined') {
-        const { worker } = await import('./browser.mock');
+        const { worker } = await import('../../../mocks/browser.mock');
 
         await worker.start();
         setInit(true);

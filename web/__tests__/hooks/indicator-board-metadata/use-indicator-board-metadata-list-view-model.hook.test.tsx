@@ -6,7 +6,7 @@ import { API_PATH } from '@/app/store/querys/api-path';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { act } from 'react-dom/test-utils';
-import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
+import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
 

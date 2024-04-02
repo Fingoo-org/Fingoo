@@ -106,6 +106,24 @@ export class IndicatorBoardMetadata {
 
     this.sections = newData;
   }
+
+  deletesection(sectionId: number) {
+    const newData = Object.keys(this.sections).reduce<{
+      [key: string]: string[];
+    }>((acc, key, index) => {
+      if (index === sectionId) {
+        acc[`section${index}`] = [...acc[`section${index}`], ...this.sections[`section${index + 1}`]];
+      } else if (index < sectionId) {
+        acc[`section${index + 1}`] = this.sections[`section${index + 1}`];
+      } else {
+        acc[`section${index}`] = this.sections[`section${index + 1}`];
+      }
+
+      return acc;
+    }, {});
+
+    this.sections = newData;
+  }
 }
 
 export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {

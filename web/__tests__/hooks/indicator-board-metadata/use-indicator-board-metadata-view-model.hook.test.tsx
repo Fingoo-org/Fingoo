@@ -1,5 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { SWRProviderWithoutCache } from '@/app/store/querys/swr-provider';
+import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
@@ -133,6 +133,91 @@ describe('useIndicatorBoardMetadataViewModel', () => {
         section1: ['1'],
         section2: [],
         section3: ['2'],
+      });
+    });
+  });
+
+  describe('deleteSectionFromIndicatorBoardMetadata', () => {
+    it('메타데이터에 세션을 삭제하면, 세션이 삭제된다', () => {
+      // given
+      const { result } = renderHook(() => {
+        return {
+          ...useIndicatorBoardMetadataViewModel('1'),
+        };
+      });
+      act(() => {
+        result.current.updateIndicatorIdsWithsectionIds({
+          section1: ['1'],
+          section2: ['2'],
+        });
+      });
+
+      // when
+      act(() => {
+        result.current.deleteSectionFromIndicatorBoardMetadata(1);
+      });
+
+      // then
+      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSectionIds).toEqual({
+        section1: ['1', '2'],
+      });
+    });
+
+    it('메타데이터에 세션을 여러번 삭제하면, 세션이 삭제된다', () => {
+      // given
+      const { result } = renderHook(() => {
+        return {
+          ...useIndicatorBoardMetadataViewModel('1'),
+        };
+      });
+      act(() => {
+        result.current.updateIndicatorIdsWithsectionIds({
+          section1: ['1'],
+          section2: ['2'],
+          section3: ['3'],
+        });
+      });
+
+      // when
+      act(() => {
+        result.current.deleteSectionFromIndicatorBoardMetadata(1);
+      });
+      act(() => {
+        result.current.deleteSectionFromIndicatorBoardMetadata(1);
+      });
+
+      // then
+      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSectionIds).toEqual({
+        section1: ['1', '2', '3'],
+      });
+    });
+
+    it('메타데이터의 섹션이 여러개 있을때, 중간에 있는 섹션을 삭제하면, 삭제한 섹션의 지표가 이전 섹션으로 이동한다.', () => {
+      // given
+      const { result } = renderHook(() => {
+        return {
+          ...useIndicatorBoardMetadataViewModel('1'),
+        };
+      });
+      act(() => {
+        result.current.updateIndicatorIdsWithsectionIds({
+          section1: ['1'],
+          section2: ['2'],
+          section3: ['3'],
+          section4: ['4'],
+        });
+      });
+
+      // when
+      act(() => {
+        result.current.deleteSectionFromIndicatorBoardMetadata(2);
+      });
+
+      // then
+      expect(result.current.indicatorBoardMetadata?.indicatorIdsWithSectionIds).toEqual({
+        section1: ['1'],
+        section2: ['2', '3'],
+        section3: ['4'],
       });
     });
   });

@@ -1,5 +1,5 @@
 import { SWRConfig } from 'swr';
-import ClientDataSuspense from '../../components/view/atom/client-data-suspense';
+import ClientDataSuspense from '../../components/util/client-data-suspense';
 import CustomForecastIndicatorList from '../../components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
 
 export default function CustomForecastIndicatorListContainer() {

@@ -16,34 +16,46 @@ import {
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import { useResponsive } from '../../hooks/use-responsive';
-import { FormattedIndicatorValue, FormattedRowType } from '@/app/business/services/chart/indicator-formatter.service';
+import {
+  FormattedIndicatorValue,
+  FormattedRowType,
+  chartValueFormatterFactory,
+} from '@/app/business/services/chart/indicator-formatter.service';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 
-function IndicatorLineSeries({ indicatorKey, idx }: { indicatorKey: string; idx: number }) {
+function IndicatorLineSeries({
+  indicatorKey,
+  idx,
+  valueFormmater,
+}: {
+  indicatorKey: string;
+  idx: number;
+  valueFormmater: (data: FormattedIndicatorValue) => number;
+}) {
   return (
     <>
       <CurrentCoordinate
         fillStyle={INDICATOR_COLORS[idx]}
         strokeStyle={INDICATOR_COLORS[idx]}
         yAccessor={(d) => {
-          if (d[indicatorKey] === undefined) return;
+          if (!d[indicatorKey]) return 0;
 
-          return d[indicatorKey].value;
+          return valueFormmater(d[indicatorKey]);
         }}
       />
       <LineSeries
         strokeStyle={INDICATOR_COLORS[idx]}
         yAccessor={(d) => {
-          if (d[indicatorKey] === undefined) return;
+          if (!d[indicatorKey]) return;
 
-          return d[indicatorKey].value;
+          return valueFormmater(d[indicatorKey]);
         }}
       />
 
       <SingleValueTooltip
         yAccessor={(d) => {
-          if (d[indicatorKey] === undefined) return;
+          if (!d[indicatorKey]) return 0;
 
           return d[indicatorKey].displayValue;
         }}
@@ -97,27 +109,29 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
     onLoadData?.(rowsToDownload, -Math.ceil(start));
   };
 
-  const yExtents = (d: FormattedRowType) => {
-    return Object.keys(d).reduce(
-      (acc, key) => {
-        if (key === 'date' || key === 'idx') return acc;
-        return [...acc, (d[key] as FormattedIndicatorValue).value];
-      },
-      [0],
-    );
-  };
+  const createYExtents =
+    (categories: string[], valueFormmater: (data: FormattedIndicatorValue) => number) => (d: FormattedRowType) => {
+      return Object.keys(d).reduce(
+        (acc, key) => {
+          if (categories.includes(key)) {
+            return [...acc, valueFormmater(d[key] as FormattedIndicatorValue)];
+          }
+          return acc;
+        },
+        [0],
+      );
+    };
 
-  const renderLienSeries = (categories: string[]) => {
+  const renderLienSeries = (categories: string[], valueFormmater: (data: FormattedIndicatorValue) => number) => {
     let index = -1;
-    return categories.map((key, index) => {
+    return categories.map((key, _) => {
       index += 1;
-      return <IndicatorLineSeries key={key} indicatorKey={key} idx={index} />;
+      return <IndicatorLineSeries valueFormmater={valueFormmater} key={key} indicatorKey={key} idx={index} />;
     });
   };
 
   if (data.length === 0) return null;
 
-  console.log('categoriesList', categoriesList);
   return (
     <div data-testid="advanced-multi-line-chart" ref={containerRef} className="h-full w-full">
       <ChartCanvas
@@ -135,16 +149,25 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
         onLoadBefore={handleLoadBefore}
       >
         {categoriesList
-          ? categoriesList.map((categories, index) => (
-              <Chart origin={(w, h) => [0, 350 * index]} key={index} id={index} height={300} yExtents={yExtents}>
-                <XAxis showTicks={false} showGridLines axisAt="bottom" orient="bottom" />
-                <YAxis />
-                {renderLienSeries(categories)}
-                <CrossHairCursor />
-                <MouseCoordinateY at="right" orient="right" displayFormat={format('.2f')} />
-                <MouseCoordinateX at="bottom" orient="bottom" displayFormat={timeFormat('%Y-%m-%d')} />
-              </Chart>
-            ))
+          ? categoriesList.map((categories, index) => {
+              const valueFormatter = chartValueFormatterFactory(categories);
+              return (
+                <Chart
+                  origin={(w, h) => [0, 350 * index]}
+                  key={index}
+                  id={index}
+                  height={300}
+                  yExtents={createYExtents(categories, valueFormatter)}
+                >
+                  <XAxis showTicks={false} showGridLines axisAt="bottom" orient="bottom" />
+                  <YAxis />
+                  {renderLienSeries(categories, valueFormatter)}
+                  <CrossHairCursor />
+                  <MouseCoordinateY at="right" orient="right" displayFormat={format('.2f')} />
+                  <MouseCoordinateX at="bottom" orient="bottom" displayFormat={timeFormat('%Y-%m-%d')} />
+                </Chart>
+              );
+            })
           : null}
       </ChartCanvas>
     </div>

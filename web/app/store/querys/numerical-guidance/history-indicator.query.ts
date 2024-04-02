@@ -74,7 +74,6 @@ export const useFetchHistoryIndicatorValue = (
     ([url, maxCursorDate]) => {
       const formattedUrl = `${url}?dataCount=${paginationData.rowsToDownload}&endDate=${maxCursorDate}`;
 
-      console.log(formattedUrl, indicatorIds);
       // not null-assertion: indicatorIds가 null 인 상황에서는 호출되지 않음
       return fetchIndicatorsValue([formattedUrl, interval, ...indicatorIds!]);
     },
