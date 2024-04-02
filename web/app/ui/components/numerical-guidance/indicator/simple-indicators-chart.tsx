@@ -14,12 +14,7 @@ export default function SimpleIndicatorsChart() {
     customForecastIndicatorsValue ?? [],
   );
 
-  console.log(indicatorsValue);
-
   const formattedIndicatorsRows = indicatorFormatter.formattedIndicatorsInRow;
-
-  console.log(formattedIndicatorsRows);
-  console.log(selectedMetadata?.indicatorIdsWithSectionIds);
 
   return (
     <>

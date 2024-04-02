@@ -3,7 +3,7 @@ import { EventProps } from '@tremor/react';
 import LineChart from './line-chart';
 import { useState } from 'react';
 import { ChartTooltip } from './chart-tooltip';
-import { FormattedRowType } from '@/app/business/services/chart/indicator-formatter.service';
+import { FormattedRowType, FormattedIndicatorValue } from '@/app/business/services/chart/indicator-formatter.service';
 import { cn } from '@/app/utils/style';
 
 type MultiLineChartProps = {
@@ -18,7 +18,7 @@ export default function MultiLineChart({ data, categories, noDataText, syncId, c
   const [value, setValue] = useState<EventProps>(null);
   const index = 'date';
 
-  const formatteedData = formmatData(data);
+  const formatteedData = formmatData(data, categories);
   return (
     <>
       <LineChart
@@ -43,7 +43,17 @@ export default function MultiLineChart({ data, categories, noDataText, syncId, c
   );
 }
 
-function formmatData(data: FormattedRowType[]) {
+function caculateChartValueFactory(categories: string[]) {
+  if (categories.length === 1) {
+    return (data: FormattedIndicatorValue) => data.displayValue;
+  }
+
+  return (data: FormattedIndicatorValue) => data.value;
+}
+
+function formmatData(data: FormattedRowType[], categories: string[]) {
+  const caculateChartValue = caculateChartValueFactory(categories);
+
   return data.map((d) => {
     return {
       ...Object.keys(d).reduce((acc, key) => {
@@ -52,12 +62,12 @@ function formmatData(data: FormattedRowType[]) {
         }
         return {
           ...acc,
-          [key]: (
+          [key]: caculateChartValue(
             d[key] as {
               value: number;
               displayValue: number;
-            }
-          ).value,
+            },
+          ),
         };
       }, {}),
       displayValue: Object.keys(d).reduce((acc, key) => {
