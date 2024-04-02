@@ -14,18 +14,16 @@ export class IndicatorIdInSectionsShouldBeInIndicatorRule implements BusinessRul
   }
 
   public hasInvalidDataInSections(): boolean {
-    const allSectionValues = Object.values(this.sections).flat();
-    const allValues = [...this.indicatorIds, ...this.customForecastIndicatorIds];
-    return !this.hasAllValuesInSection(allSectionValues, allValues) || this.hasInvalidValuesInSection(allValues);
+    const allSectionIds = Object.values(this.sections).flat();
+    const allIds = [...this.indicatorIds, ...this.customForecastIndicatorIds];
+    return !this.hasAllValuesInSection(allSectionIds, allIds) || this.hasInvalidValuesInSection(allIds);
   }
 
-  private hasAllValuesInSection(values: string[], allValues: string[]): boolean {
-    return allValues.every((value) => values.some((v) => v === value));
+  private hasAllValuesInSection(ids: string[], allValues: string[]): boolean {
+    return allValues.every((id) => ids.some((v) => v === id));
   }
 
-  private hasInvalidValuesInSection(allValues: string[]): boolean {
-    return Object.values(this.sections).some((sectionValues) =>
-      sectionValues.some((value) => !allValues.includes(value)),
-    );
+  private hasInvalidValuesInSection(allIds: string[]): boolean {
+    return Object.values(this.sections).some((sectionIds) => sectionIds.some((id) => !allIds.includes(id)));
   }
 }
