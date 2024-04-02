@@ -70,10 +70,28 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     );
   };
 
+  const deleteSectionFromIndicatorBoardMetadata = (sectionId: number) => {
+    if (!indicatorBoardMetadata) return;
+
+    indicatorBoardMetadata?.deletesection(sectionId);
+    updateIndicatorIdsWithsectionIdsTrigger(
+      {
+        sections: indicatorBoardMetadata?.indicatorIdsWithSectionIds,
+      },
+      {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+        },
+        revalidate: false,
+      },
+    );
+  };
+
   return {
     indicatorBoardMetadata,
     updateIndicatorBoardMetadata,
     updateIndicatorIdsWithsectionIds,
     addsectionToIndicatorBoardMetadata,
+    deleteSectionFromIndicatorBoardMetadata,
   };
 };
