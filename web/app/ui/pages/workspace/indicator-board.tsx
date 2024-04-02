@@ -3,7 +3,7 @@ import { Card } from '@tremor/react';
 import IndicatorsChart from '../../components/numerical-guidance/indicator/indicators-chart';
 import IntervalToggleGroup from '../../components/numerical-guidance/indicator/interval-toggle-group';
 import { SWRConfig } from 'swr';
-import ClientDataSuspense from '../../components/view/atom/client-data-suspense';
+import ClientDataSuspense from '../../components/util/client-data-suspense';
 
 export default function IndicatorBoard() {
   return (
