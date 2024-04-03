@@ -1,3 +1,4 @@
+import { CollapsibleContent } from '@radix-ui/react-collapsible';
 import React, { useState, useEffect } from 'react';
 
 interface ConverationCardProps {
@@ -12,11 +13,11 @@ const ConversationCardContent = ({ initContent = [] }: ConverationCardProps) => 
   }, [initContent]);
 
   return (
-    <div className="card-content">
+    <CollapsibleContent className=" h-96 rounded-b-xl border bg-white">
       {contents.map((content, index) => (
         <p key={index}>{content}</p>
       ))}
-    </div>
+    </CollapsibleContent>
   );
 };
 

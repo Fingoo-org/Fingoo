@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Card from '.';
+import ConversationCard from '.';
 import { InfoCircledIcon, ChevronDownIcon } from '@radix-ui/react-icons';
 import ConversationCardHeader from './conversation-card-header';
 import ConversationCardContent from './conversation-card-content';
 
-const meta: Meta<typeof Card> = {
-  title: 'view/molecule/Card',
-  component: Card,
+const meta: Meta<typeof ConversationCard> = {
+  title: 'view/molecule/ConversationCard',
+  component: ConversationCard,
 };
 
 export default meta;
@@ -29,7 +29,6 @@ export const Default: Story = {
     ),
   },
 };
-
 export const False: Story = {
   args: {
     defaultOpen: false,
