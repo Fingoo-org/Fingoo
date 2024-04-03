@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import { ReactNode } from 'react';
 
-type CardRootProps = {
+type ConversationCardRootProps = {
   children: ReactNode;
   defaultOpen: boolean;
 };
 
-export function CardRoot({ children, defaultOpen }: CardRootProps) {
+export function ConversationCardRoot({ children, defaultOpen }: ConversationCardRootProps) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (

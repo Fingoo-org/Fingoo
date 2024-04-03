@@ -2,13 +2,13 @@ import React from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import IconButton from '../../atom/icons/icon-button';
 
-type CardHeaderProps = {
+type ConversationCardHeaderProps = {
   title: string;
   firstIcon?: React.ElementType;
-  secondIcon?: React.ElementType;
+  collapsibleIcon?: React.ElementType;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const CardHeader = ({ title, firstIcon, secondIcon, ...props }: CardHeaderProps) => {
+const ConversationCardHeader = ({ title, firstIcon, collapsibleIcon, ...props }: ConversationCardHeaderProps) => {
   return (
     <div
       className="flex items-center justify-between rounded-t-xl bg-black px-5 text-xl font-semibold text-white"
@@ -17,10 +17,10 @@ const CardHeader = ({ title, firstIcon, secondIcon, ...props }: CardHeaderProps)
       {firstIcon ? <IconButton size="xl" icon={firstIcon} color="white" /> : null}
       <div className="flex-grow text-center">{title}</div>
       <Collapsible.Trigger asChild>
-        {secondIcon ? <IconButton size="xl" icon={secondIcon} color="white" /> : null}
+        {collapsibleIcon ? <IconButton size="xl" icon={collapsibleIcon} color="white" /> : null}
       </Collapsible.Trigger>
     </div>
   );
 };
 
-export default CardHeader;
+export default ConversationCardHeader;
