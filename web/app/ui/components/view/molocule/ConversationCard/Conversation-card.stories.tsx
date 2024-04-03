@@ -20,8 +20,8 @@ export const Default: Story = {
     children: (
       <div className="w-[1000px]">
         <ConversationCardHeader
-          title="Card Test: defaultOpen:true"
-          firstIcon={InfoCircledIcon}
+          title="Card Test: defaultOpen: true"
+          infoIcon={InfoCircledIcon}
           collapsibleIcon={ChevronDownIcon}
         />
         <ConversationCardContent initContent={['첫 번째', '두 번째']} />
@@ -36,8 +36,8 @@ export const False: Story = {
     children: (
       <div className="w-[1000px]">
         <ConversationCardHeader
-          title="Card Test: False"
-          firstIcon={InfoCircledIcon}
+          title="Card Test: defaultOpen: False"
+          infoIcon={InfoCircledIcon}
           collapsibleIcon={ChevronDownIcon}
         />
         <ConversationCardContent initContent={['첫 번째', '두 번째']} />

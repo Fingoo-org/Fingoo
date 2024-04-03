@@ -4,17 +4,17 @@ import IconButton from '../../atom/icons/icon-button';
 
 type ConversationCardHeaderProps = {
   title: string;
-  firstIcon?: React.ElementType;
+  infoIcon?: React.ElementType;
   collapsibleIcon?: React.ElementType;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const ConversationCardHeader = ({ title, firstIcon, collapsibleIcon, ...props }: ConversationCardHeaderProps) => {
+const ConversationCardHeader = ({ title, infoIcon, collapsibleIcon, ...props }: ConversationCardHeaderProps) => {
   return (
     <div
       className="flex items-center justify-between rounded-t-xl bg-black px-5 text-xl font-semibold text-white"
       {...props}
     >
-      {firstIcon ? <IconButton size="xl" icon={firstIcon} color="white" /> : null}
+      {infoIcon ? <IconButton size="xl" icon={infoIcon} color="white" /> : null}
       <div className="flex-grow text-center">{title}</div>
       <Collapsible.Trigger asChild>
         {collapsibleIcon ? <IconButton size="xl" icon={collapsibleIcon} color="white" /> : null}
