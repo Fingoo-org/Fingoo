@@ -10,7 +10,7 @@ export const historyIndicatorsValueMockData: historyIndicatorsValueMockData = JS
       "id": "9785ba85-c924-4269-8238-e1f10b404177",
       "name": "삼성전자",
       "ticker": "005930",
-      "type": "k-stock",
+      "type": "stocks",
       "market": "KOSPI"
     },
     "values": [
