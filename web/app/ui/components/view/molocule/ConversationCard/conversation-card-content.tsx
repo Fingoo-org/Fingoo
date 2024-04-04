@@ -1,9 +1,9 @@
 import { CollapsibleContent } from '@radix-ui/react-collapsible';
 import React, { useState, useEffect } from 'react';
 
-interface ConverationCardProps {
+type ConverationCardProps = {
   initContent?: string[];
-}
+};
 
 const ConversationCardContent = ({ initContent = [] }: ConverationCardProps) => {
   const [contents, setContents] = useState<string[]>(initContent);
