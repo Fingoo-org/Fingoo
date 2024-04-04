@@ -2,7 +2,17 @@ export type Market = 'KOSPI' | 'KOSDAQ' | 'NASDAQ' | 'NYSE';
 
 export type Interval = 'day' | 'week' | 'month' | 'year';
 
-export type IndicatorType = 'stocks' | 'forex' | 'crypto' | 'etfs' | 'indices' | 'customForecastIndicator';
+export type IndicatorType =
+  | 'stocks'
+  | 'forex_pairs'
+  | 'cryptocurrencies'
+  | 'etf'
+  | 'indices'
+  | 'customForecastIndicator'
+  | 'funds'
+  | 'bonds'
+  | 'exchanges'
+  | 'cryptocurrency_exchanges';
 
 export type SourceIndicatorIdAndWeightType = {
   sourceIndicatorId: string;
