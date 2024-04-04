@@ -9,7 +9,6 @@ import AdvancedIndicatorsChart from './advanced-indicators-chart';
 import SimpleIndicatorsChart from './simple-indicators-chart';
 import Pending from '../../view/molocule/pending';
 import { useCallback } from 'react';
-import FileSaver from 'file-saver';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { useGenerateImage } from '../../view/hooks/use-generate-image';
 import ImageSharePopover from '../../view/molocule/image-share-popover/image-share-popover';
@@ -21,16 +20,12 @@ export default function IndicatorsChart() {
   const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel();
   const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel();
 
-  const [getDivJpeg, { ref }] = useGenerateImage<HTMLDivElement>({
-    quality: 0.8,
-    type: 'image/jpeg',
+  const { ref, downloadImage } = useGenerateImage<HTMLDivElement>({
+    imageName: 'chart-image',
   });
 
   const handleImageDownload = useCallback(async () => {
-    const jpeg = await getDivJpeg();
-    if (jpeg) {
-      FileSaver.saveAs(jpeg, 'div-element.jpeg');
-    }
+    await downloadImage();
   }, []);
 
   const handleToggle = (active: boolean) => {

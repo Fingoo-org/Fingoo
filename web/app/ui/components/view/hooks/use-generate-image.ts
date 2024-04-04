@@ -1,23 +1,21 @@
-import html2canvas, { Options as HTML2CanvasOptions } from 'html2canvas';
 import { useCallback, useRef, useState } from 'react';
+import * as htmlToImage from 'html-to-image';
+import FileSaver from 'file-saver';
 
-export type UseGenerateImageArgs = {
-  options?: HTML2CanvasOptions;
-  quality?: number;
-  type?: string;
+type UseGenerateImage<T extends HTMLElement = HTMLDivElement> = {
+  generateImage: () => Promise<string | undefined>;
+  downloadImage: () => void;
+  isLoading: boolean;
+  ref: React.MutableRefObject<T | null>;
 };
 
-export type UseGenerateImage<T extends HTMLElement = HTMLDivElement> = [
-  () => Promise<string | undefined>,
-  {
-    isLoading: boolean;
-    ref: React.MutableRefObject<T | null>;
-  },
-];
+type UseGenerateImageArgs = {
+  imageName: string;
+};
 
-export function useGenerateImage<T extends HTMLElement = HTMLDivElement>(
-  args?: UseGenerateImageArgs,
-): UseGenerateImage<T> {
+export function useGenerateImage<T extends HTMLElement = HTMLDivElement>({
+  imageName,
+}: UseGenerateImageArgs): UseGenerateImage<T> {
   const ref = useRef<T>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,21 +23,29 @@ export function useGenerateImage<T extends HTMLElement = HTMLDivElement>(
     if (ref !== null && ref?.current) {
       setIsLoading(true);
 
-      return await html2canvas(ref.current as HTMLElement, {
-        logging: false,
-        ...args?.options,
-      }).then((canvas) => {
-        setIsLoading(false);
-        return canvas.toDataURL(args?.type, args?.quality);
-      });
+      return await htmlToImage
+        .toPng(ref.current as HTMLElement, {
+          quality: 0.8,
+          backgroundColor: 'white',
+        })
+        .then((dataUrl) => {
+          setIsLoading(false);
+          return dataUrl;
+        });
     }
-  }, [args]);
+  }, []);
 
-  return [
+  const downloadImage = async () => {
+    const png = await generateImage();
+    if (png) {
+      FileSaver.saveAs(png, `${imageName}.png`);
+    }
+  };
+
+  return {
+    ref,
+    isLoading,
     generateImage,
-    {
-      ref,
-      isLoading,
-    },
-  ];
+    downloadImage,
+  };
 }
