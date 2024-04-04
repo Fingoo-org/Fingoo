@@ -26,7 +26,7 @@ export default function IndicatorsChart() {
     type: 'image/jpeg',
   });
 
-  const handleDivDownload = useCallback(async () => {
+  const handleImageDownload = useCallback(async () => {
     const jpeg = await getDivJpeg();
     if (jpeg) {
       FileSaver.saveAs(jpeg, 'div-element.jpeg');
@@ -57,7 +57,7 @@ export default function IndicatorsChart() {
           {isAdvancedChart ? <AdvancedIndicatorsChart /> : <SimpleIndicatorsChart />}
         </div>
         <div className="absolute right-3 top-1">
-          <ImageSharePopover />
+          <ImageSharePopover onDownloadImage={handleImageDownload} />
         </div>
       </div>
     </Pending>

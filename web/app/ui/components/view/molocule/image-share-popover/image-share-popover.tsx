@@ -4,7 +4,11 @@ import IconButton from '../../atom/icons/icon-button';
 import ClipboardInput from '../clipboard-input/clipboard-input';
 import Button from '../../atom/button/button';
 
-export default function ImageSharePopover() {
+type ImageSharePopoverProps = {
+  onDownloadImage: () => void;
+};
+
+export default function ImageSharePopover({ onDownloadImage }: ImageSharePopoverProps) {
   return (
     <Popover>
       <Popover.Trigger>
@@ -13,7 +17,7 @@ export default function ImageSharePopover() {
       <Popover.Content side={'top'} className="w-80">
         <ClipboardInput copyUrl="test.com" />
         <div className="mt-4 flex justify-center">
-          <Button size={'lg'} variant={'light'} color={'gray'}>
+          <Button onClick={onDownloadImage} size={'lg'} variant={'light'} color={'gray'}>
             Download Image
           </Button>
         </div>
