@@ -15,19 +15,31 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     defaultOpen: true,
-    title: 'Card Test: defaultOpen: true',
-    infoIcon: InfoCircledIcon,
-    collapsibleIcon: ChevronDownIcon,
-    initContent: ['첫 번째', '두 번째'],
+    children: (
+      <div className=" w-96">
+        <ConversationCard.Header
+          title="defaultOpen: true"
+          infoIcon={InfoCircledIcon}
+          collapsibleIcon={ChevronDownIcon}
+        />
+        <ConversationCard.Content initContent={['item1', 'item2']} />
+      </div>
+    ),
   },
 };
 
-export const Closed: Story = {
+export const CollapsibleFalse: Story = {
   args: {
-    defaultOpen: false,
-    title: 'Card Test: defaultOpen: False',
-    infoIcon: InfoCircledIcon,
-    collapsibleIcon: ChevronDownIcon,
-    initContent: ['첫 번째', '두 번째'],
+    defaultOpen: true,
+    children: (
+      <div className=" w-96">
+        <ConversationCard.Header
+          title="defaultOpen: false"
+          infoIcon={InfoCircledIcon}
+          collapsibleIcon={ChevronDownIcon}
+        />
+        <ConversationCard.Content initContent={['item1', 'item2']} />
+      </div>
+    ),
   },
 };
