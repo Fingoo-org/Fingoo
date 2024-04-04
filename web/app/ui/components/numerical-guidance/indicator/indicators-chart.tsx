@@ -12,6 +12,7 @@ import { useCallback } from 'react';
 import FileSaver from 'file-saver';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { useGenerateImage } from '../../view/hooks/use-generate-image';
+import ImageSharePopover from '../../view/molocule/image-share-popover/image-share-popover';
 
 export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
@@ -37,8 +38,8 @@ export default function IndicatorsChart() {
   };
 
   return (
-    <>
-      <Pending isPending={isLiveIndicatorPending || isCustomForecastIndicatorPending}>
+    <Pending isPending={isLiveIndicatorPending || isCustomForecastIndicatorPending}>
+      <div className="relative">
         <div className="flex items-center justify-center">
           <SelectedMetadataTittle />
         </div>
@@ -52,11 +53,13 @@ export default function IndicatorsChart() {
             text={'자세한 차트'}
           />
         </div>
-        <button onClick={handleDivDownload}>다운</button>
         <div ref={ref} className="w-full px-8" data-testid="indicators-chart">
           {isAdvancedChart ? <AdvancedIndicatorsChart /> : <SimpleIndicatorsChart />}
         </div>
-      </Pending>
-    </>
+        <div className="absolute right-3 top-1">
+          <ImageSharePopover />
+        </div>
+      </div>
+    </Pending>
   );
 }
