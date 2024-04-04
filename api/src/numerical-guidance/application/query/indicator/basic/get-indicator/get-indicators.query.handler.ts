@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetIndicatorsQuery } from './get-indicators.query';
-import { LoadIndicatorsPort } from '../../../port/persistence/indicator/load-indicators.port';
+import { LoadIndicatorsPort } from '../../../../port/persistence/indicator/load-indicators.port';
 import { Indicator } from '../dto/indicator.dto';
 
 @Injectable()

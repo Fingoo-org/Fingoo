@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
-import { GetIndicatorsQueryHandler } from 'src/numerical-guidance/application/query/indicator/get-indicator/get-indicators.query.handler';
-import { IndicatorsDto } from '../../../../application/query/indicator/dto/indicators.dto';
-import { Indicator } from '../../../../application/query/indicator/dto/indicator.dto';
+import { GetIndicatorsQueryHandler } from 'src/numerical-guidance/application/query/indicator/basic/get-indicator/get-indicators.query.handler';
+import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
+import { Indicator } from '../../../../application/query/indicator/basic/dto/indicator.dto';
 
 interface TestData {
   indicators: Indicator[];

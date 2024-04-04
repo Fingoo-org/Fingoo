@@ -1,4 +1,4 @@
-import { IndicatorType, Market } from '../../../../../utils/type/type-definition';
+import { IndicatorType, Market } from '../../../../../../utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 
 export type Indicator = {

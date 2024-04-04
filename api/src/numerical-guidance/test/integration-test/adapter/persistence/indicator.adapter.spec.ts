@@ -5,7 +5,7 @@ import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/p
 import { IndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { DataSource } from 'typeorm';
-import { IndicatorsDto } from '../../../../application/query/indicator/dto/indicators.dto';
+import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
 
 const testData = {
   indicators: [

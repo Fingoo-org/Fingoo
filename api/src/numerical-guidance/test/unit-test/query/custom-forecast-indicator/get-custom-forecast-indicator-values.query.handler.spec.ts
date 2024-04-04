@@ -4,7 +4,7 @@ import { GetCustomForecastIndicatorValuesQueryHandler } from 'src/numerical-guid
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorValuesResponse } from 'src/utils/type/type-definition';
 import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
-import { Indicator, IndicatorDto } from 'src/numerical-guidance/application/query/indicator/dto/indicator.dto';
+import { Indicator, IndicatorDto } from 'src/numerical-guidance/application/query/indicator/basic/dto/indicator.dto';
 import { LiveKRXIndicatorDto } from 'src/numerical-guidance/application/query/live-indicator/dto/live-indicator.dto';
 import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
 import { LoadLiveIndicatorPort } from 'src/numerical-guidance/application/port/external/krx/load-live-indicator.port';

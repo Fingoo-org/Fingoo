@@ -1,4 +1,4 @@
-import { Indicator } from '../../indicator/dto/indicator.dto';
+import { Indicator } from '../../indicator/basic/dto/indicator.dto';
 import { IndicatorValue } from '../../live-indicator/dto/live-indicator.dto';
 
 export type HistoryIndicatorValue = {

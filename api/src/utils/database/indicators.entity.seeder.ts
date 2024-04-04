@@ -1,9 +1,9 @@
 import { Seeder } from 'typeorm-extension';
 import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indicator.entity';
 import { DataSource } from 'typeorm';
-import { HistoryIndicatorEntity } from '../../../numerical-guidance/infrastructure/adapter/persistence/history-indicator/entity/history-indicator.entity';
+import { HistoryIndicatorEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/history-indicator/entity/history-indicator.entity';
 import * as fs from 'fs';
-import { HistoryIndicatorValueEntity } from '../../../numerical-guidance/infrastructure/adapter/persistence/history-indicator-value/entity/history-indicator-value.entity';
+import { HistoryIndicatorValueEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/history-indicator-value/entity/history-indicator-value.entity';
 
 export default class IndicatorEntitySeeder implements Seeder {
   async run(dataSource: DataSource): Promise<void> {
