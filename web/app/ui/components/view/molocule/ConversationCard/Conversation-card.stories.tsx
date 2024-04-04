@@ -1,9 +1,7 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-
 import ConversationCard from '.';
 import { InfoCircledIcon, ChevronDownIcon } from '@radix-ui/react-icons';
-import ConversationCardHeader from './conversation-card-header';
-import ConversationCardContent from './conversation-card-content';
 
 const meta: Meta<typeof ConversationCard> = {
   title: 'view/molecule/ConversationCard',
@@ -17,30 +15,19 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     defaultOpen: true,
-    children: (
-      <div className="w-[1000px]">
-        <ConversationCardHeader
-          title="Card Test: defaultOpen: true"
-          infoIcon={InfoCircledIcon}
-          collapsibleIcon={ChevronDownIcon}
-        />
-        <ConversationCardContent initContent={['첫 번째', '두 번째']} />
-      </div>
-    ),
+    title: 'Card Test: defaultOpen: true',
+    infoIcon: InfoCircledIcon,
+    collapsibleIcon: ChevronDownIcon,
+    initContent: ['첫 번째', '두 번째'],
   },
 };
-export const False: Story = {
+
+export const Closed: Story = {
   args: {
     defaultOpen: false,
-    children: (
-      <div className="w-[1000px]">
-        <ConversationCardHeader
-          title="Card Test: defaultOpen: False"
-          infoIcon={InfoCircledIcon}
-          collapsibleIcon={ChevronDownIcon}
-        />
-        <ConversationCardContent initContent={['첫 번째', '두 번째']} />
-      </div>
-    ),
+    title: 'Card Test: defaultOpen: False',
+    infoIcon: InfoCircledIcon,
+    collapsibleIcon: ChevronDownIcon,
+    initContent: ['첫 번째', '두 번째'],
   },
 };

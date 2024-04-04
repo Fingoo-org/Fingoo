@@ -1,18 +1,27 @@
 import React, { useState } from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
-import { ReactNode } from 'react';
+import ConversationCardHeader from './conversation-card-header';
+import ConversationCardContent from './conversation-card-content';
 
-type ConversationCardRootProps = {
-  children: ReactNode;
+type ConversationCardProps = {
   defaultOpen: boolean;
+  title: string;
+  infoIcon?: React.ElementType;
+  collapsibleIcon?: React.ElementType;
+  initContent?: string[];
 };
 
-export function ConversationCardRoot({ children, defaultOpen }: ConversationCardRootProps) {
-  const [open, setOpen] = useState(defaultOpen);
-
+export const ConversationCardRoot = ({
+  defaultOpen,
+  title,
+  infoIcon,
+  collapsibleIcon,
+  initContent,
+}: ConversationCardProps) => {
   return (
-    <Collapsible.Root open={open} onOpenChange={setOpen}>
-      {children}
+    <Collapsible.Root defaultOpen={defaultOpen}>
+      <ConversationCardHeader title={title} infoIcon={infoIcon} collapsibleIcon={collapsibleIcon} />
+      <ConversationCardContent initContent={initContent} />
     </Collapsible.Root>
   );
-}
+};
