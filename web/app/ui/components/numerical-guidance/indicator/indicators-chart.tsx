@@ -8,10 +8,10 @@ import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook
 import AdvancedIndicatorsChart from './advanced-indicators-chart';
 import SimpleIndicatorsChart from './simple-indicators-chart';
 import Pending from '../../view/molocule/pending';
-import { useGenerateImage } from 'recharts-to-png';
 import { useCallback } from 'react';
 import FileSaver from 'file-saver';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
+import { useGenerateImage } from '../../view/hooks/use-generate-image';
 
 export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
@@ -31,6 +31,7 @@ export default function IndicatorsChart() {
       FileSaver.saveAs(jpeg, 'div-element.jpeg');
     }
   }, []);
+
   const handleToggle = (active: boolean) => {
     setIsAdvancedChart(active);
   };
