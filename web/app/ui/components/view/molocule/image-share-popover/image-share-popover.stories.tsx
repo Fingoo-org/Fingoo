@@ -7,7 +7,7 @@ const meta = {
   component: ImageSharePopover,
   decorators: [
     (Story) => (
-      <div className="h-80 w-80">
+      <div className="w-80">
         <Story />
       </div>
     ),
