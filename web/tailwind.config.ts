@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 import headlessui from '@headlessui/tailwindcss';
 import forms from '@tailwindcss/forms';
 import colors from 'tailwindcss/colors';
+import animate from 'tailwindcss-animate';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
 const config: Config = {
@@ -148,6 +149,6 @@ const config: Config = {
         /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
     },
   ],
-  plugins: [headlessui, forms],
+  plugins: [headlessui, forms, animate],
 };
 export default config;
