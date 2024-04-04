@@ -9,7 +9,7 @@ export class LiveKRXIndicatorDto {
   indicatorId: string;
 
   @ApiProperty({
-    example: 'k-stock',
+    example: 'stocks',
     description: '지표 종류',
   })
   type: IndicatorType;

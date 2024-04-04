@@ -14,7 +14,7 @@ import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/applicat
 const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
   customForecastIndicatorId: '2c9846d1-d496-4d6d-96c5-d3b065708573',
   targetIndicatorId: '2c9846d1-d496-4d6d-96c5-d3b065708573',
-  type: 'k-stock',
+  type: 'stocks',
   ticker: '373220',
   name: 'LG에너지솔루션',
   market: 'KOSPI',
@@ -38,7 +38,7 @@ const testIndicator: Indicator = {
   id: '160e5499-4925-4e38-bb00-8ea6d8056484',
   name: '삼성전자',
   ticker: '005931',
-  type: 'k-stock',
+  type: 'stocks',
   market: 'KOSPI',
 };
 

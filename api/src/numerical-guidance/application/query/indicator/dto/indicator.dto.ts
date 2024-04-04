@@ -16,7 +16,7 @@ export class IndicatorDto {
       market: 'KOSPI',
       name: '삼성전자',
       ticker: '005930',
-      type: 'k-stock',
+      type: 'stocks',
     },
     description: '지표 정보',
   })
@@ -51,7 +51,7 @@ export class IndicatorSwaggerSchema {
   ticker: string;
 
   @ApiProperty({
-    example: 'k-stock',
+    example: 'stocks',
     description: '지표 타입',
   })
   type: IndicatorType;

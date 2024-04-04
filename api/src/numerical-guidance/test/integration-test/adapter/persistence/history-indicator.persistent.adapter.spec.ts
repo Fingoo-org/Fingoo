@@ -28,7 +28,7 @@ describe('HistoryIndicatorPersistentAdapter', () => {
       id: '160e5499-4925-4e38-bb00-8ea6d8056484',
       name: '삼성전자',
       ticker: '005930',
-      type: 'k-stock',
+      type: 'stocks',
       market: 'KOSPI',
     });
     indicatorEntity.save;
@@ -216,7 +216,7 @@ describe('HistoryIndicatorPersistentAdapter', () => {
       id: '160e5499-4925-4e38-bb00-8ea6d8056484',
       name: '삼성전자',
       ticker: '005930',
-      type: 'k-stock',
+      type: 'stocks',
       market: 'KOSPI',
     };
     expect(expectedTotalCount).toEqual(cursorPageDto.meta.total);
