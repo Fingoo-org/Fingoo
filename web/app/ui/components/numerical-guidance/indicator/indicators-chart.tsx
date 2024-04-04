@@ -8,6 +8,9 @@ import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook
 import AdvancedIndicatorsChart from './advanced-indicators-chart';
 import SimpleIndicatorsChart from './simple-indicators-chart';
 import Pending from '../../view/molocule/pending';
+import { useGenerateImage } from 'recharts-to-png';
+import { useCallback } from 'react';
+import FileSaver from 'file-saver';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 
 export default function IndicatorsChart() {
@@ -17,6 +20,17 @@ export default function IndicatorsChart() {
   const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel();
   const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel();
 
+  const [getDivJpeg, { ref }] = useGenerateImage<HTMLDivElement>({
+    quality: 0.8,
+    type: 'image/jpeg',
+  });
+
+  const handleDivDownload = useCallback(async () => {
+    const jpeg = await getDivJpeg();
+    if (jpeg) {
+      FileSaver.saveAs(jpeg, 'div-element.jpeg');
+    }
+  }, []);
   const handleToggle = (active: boolean) => {
     setIsAdvancedChart(active);
   };
@@ -37,7 +51,8 @@ export default function IndicatorsChart() {
             text={'자세한 차트'}
           />
         </div>
-        <div className="w-full px-8" data-testid="indicators-chart">
+        <button onClick={handleDivDownload}>다운</button>
+        <div ref={ref} className="w-full px-8" data-testid="indicators-chart">
           {isAdvancedChart ? <AdvancedIndicatorsChart /> : <SimpleIndicatorsChart />}
         </div>
       </Pending>
