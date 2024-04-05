@@ -1,19 +1,7 @@
 import { IndicatorType } from '../../../../../utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 
-export type Bonds = {
-  id: string;
-  index: number;
-  indicatorType: IndicatorType;
-  symbol: string;
-  name: string;
-  country: string;
-  currency: string;
-  exchange: string;
-  type: string;
-};
-
-export class BondsSwaggerSchema {
+export class BondsDto {
   @ApiProperty({
     example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
     description: '지표 id',
@@ -67,4 +55,30 @@ export class BondsSwaggerSchema {
     description: '채권 타입',
   })
   type: string;
+
+  private constructor(
+    id: string,
+    index: number,
+    indicatorType: IndicatorType,
+    symbol: string,
+    name: string,
+    country: string,
+    currency: string,
+    exchange: string,
+    type: string,
+  ) {
+    this.id = id;
+    this.index = index;
+    this.indicatorType = indicatorType;
+    this.symbol = symbol;
+    this.name = name;
+    this.country = country;
+    this.currency = currency;
+    this.exchange = exchange;
+    this.type = type;
+  }
+
+  public static create({ id, index, indicatorType, symbol, name, country, currency, exchange, type }) {
+    return new BondsDto(id, index, indicatorType, symbol, name, country, currency, exchange, type);
+  }
 }

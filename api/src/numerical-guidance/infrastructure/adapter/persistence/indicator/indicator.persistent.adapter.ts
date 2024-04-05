@@ -14,13 +14,28 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LoadIndicatorPort } from '../../../../application/port/persistence/indicator/load-indicator.port';
 import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
+import { LoadIndicatorListPort } from '../../../../application/port/persistence/indicator/load-indicator-list.port';
+import { IndicatorType } from '../../../../../utils/type/type-definition';
+import { BondsMapper } from './mapper/bonds.mapper';
+import { BondsEntity } from './entity/bonds.entity';
 
 @Injectable()
-export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndicatorsPort {
+export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndicatorsPort, LoadIndicatorListPort {
   constructor(
     @InjectRepository(IndicatorEntity)
     private readonly indicatorEntityRepository: Repository<IndicatorEntity>,
+    @InjectRepository(BondsEntity)
+    private readonly bondsEntityRepository: Repository<BondsEntity>,
   ) {}
+
+  // TODO: seeding하고 페이지네이션 작업 추가
+  // TODO: 다하면 나머지 전체 다
+  async loadIndicatorList(type: IndicatorType) {
+    type;
+    const bondsEntities = await this.bondsEntityRepository.find();
+
+    return BondsMapper.mapEntitiesToDto(bondsEntities);
+  }
 
   async loadIndicator(id: string): Promise<IndicatorDto> {
     try {
