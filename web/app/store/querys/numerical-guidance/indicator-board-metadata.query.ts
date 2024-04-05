@@ -128,3 +128,17 @@ export const useUpdateIndicatorIdsWithsectionIds = (metadataId: string | undefin
     },
   );
 };
+
+export const useUploadIndicatorBoardMetadataImage = () => {
+  return useSWRMutation(API_PATH.indicatorBoardMetadata, async (url: string, { arg }: { arg: FormData }) => {
+    await postFetcher<FormData>(
+      [url, 'file', 'upload'],
+      { arg },
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+  });
+};
