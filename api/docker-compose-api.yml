@@ -31,7 +31,13 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     environment:
-      - BASE_URL=${BASE_URL}
+      - FAST_DB_HOST=${FAST_DB_HOST}
+      - FAST_DB_PORT=${FAST_DB_PORT}
+      - FAST_POSTGRES_USER=${FAST_POSTGRES_USER}
+      - FAST_POSTGRES_PASSWORD=${FAST_POSTGRES_PASSWORD}
+      - FAST_SERVICE_KEY=${FAST_SERVICE_KEY}
+      - FASTAPI_URL=${FASTAPI_URL}
+      - FAST_BASE_URL=${FAST_BASE_URL}
 
 networks:
   api-net:

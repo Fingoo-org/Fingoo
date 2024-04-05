@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_URL = os.getenv("BASE_URL")
+BASE_URL = os.getenv("FAST_BASE_URL")
 
 def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[int], db: Session) -> ForecastIndicatorDto:
   # 데이터베이스로부터 Indicator 정보 가져오기
