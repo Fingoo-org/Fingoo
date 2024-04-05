@@ -3,8 +3,9 @@ import * as htmlToImage from 'html-to-image';
 import FileSaver from 'file-saver';
 
 type UseGenerateImage<T extends HTMLElement = HTMLDivElement> = {
-  generateImage: () => Promise<string | undefined>;
+  generateImageBlob: () => Promise<Blob | null | undefined>;
   downloadImage: () => void;
+  generateImageFile: () => Promise<File | undefined>;
   isLoading: boolean;
   ref: React.MutableRefObject<T | null>;
 };
@@ -19,33 +20,43 @@ export function useGenerateImage<T extends HTMLElement = HTMLDivElement>({
   const ref = useRef<T>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const generateImage = useCallback(async () => {
+  const generateImageBlob = useCallback(async () => {
     if (ref !== null && ref?.current) {
       setIsLoading(true);
 
       return await htmlToImage
-        .toPng(ref.current as HTMLElement, {
+        .toBlob(ref.current as HTMLElement, {
           quality: 0.8,
           backgroundColor: 'white',
         })
-        .then((dataUrl) => {
+        .then((blob) => {
+          console.log(blob);
           setIsLoading(false);
-          return dataUrl;
+          return blob;
         });
     }
   }, []);
 
   const downloadImage = async () => {
-    const png = await generateImage();
-    if (png) {
-      FileSaver.saveAs(png, `${imageName}.png`);
+    const blob = await generateImageBlob();
+    if (blob) {
+      FileSaver.saveAs(blob, `${imageName}.png`);
+    }
+  };
+
+  const generateImageFile = async () => {
+    const blob = await generateImageBlob();
+    if (blob) {
+      console.log(new File([blob], `${imageName}.png`, { type: 'image/png' }));
+      return new File([blob], `${imageName}.png`, { type: 'image/png' });
     }
   };
 
   return {
     ref,
     isLoading,
-    generateImage,
+    generateImageBlob,
     downloadImage,
+    generateImageFile,
   };
 }

@@ -20,7 +20,7 @@ export default function IndicatorsChart() {
   const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel();
   const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel();
 
-  const { ref, downloadImage } = useGenerateImage<HTMLDivElement>({
+  const { ref, downloadImage, generateImageFile } = useGenerateImage<HTMLDivElement>({
     imageName: 'chart-image',
   });
 
