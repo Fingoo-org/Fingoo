@@ -12,6 +12,7 @@ import { useCallback } from 'react';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { useGenerateImage } from '../../view/hooks/use-generate-image';
 import ImageSharePopover from '../../view/molocule/image-share-popover/image-share-popover';
+import { useUploadIndicatorBoardMetadataImage } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
 export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
@@ -20,12 +21,21 @@ export default function IndicatorsChart() {
   const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel();
   const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel();
 
-  const { ref, downloadImage, generateImageFile } = useGenerateImage<HTMLDivElement>({
+  const { trigger: uploadIndicatorBoardMetadataImageTrigger } = useUploadIndicatorBoardMetadataImage();
+
+  const { ref, downloadImage, generateImageBlob } = useGenerateImage<HTMLDivElement>({
     imageName: 'chart-image',
   });
 
   const handleImageDownload = useCallback(async () => {
     await downloadImage();
+
+    const imageFile = await generateImageBlob();
+    if (imageFile) {
+      const formData = new FormData();
+      formData.append('fileName', imageFile);
+      await uploadIndicatorBoardMetadataImageTrigger(formData);
+    }
   }, []);
 
   const handleToggle = (active: boolean) => {
