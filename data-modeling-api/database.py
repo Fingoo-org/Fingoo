@@ -6,10 +6,10 @@ from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT")
-POSTGRES_USER = os.getenv("POSTGRES_USER")
-POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+DB_HOST = os.getenv("FAST_DB_HOST")
+DB_PORT = os.getenv("FAST_DB_PORT")
+POSTGRES_USER = os.getenv("FAST_POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("FAST_POSTGRES_PASSWORD")
 
 DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:{DB_PORT}/test"
 
