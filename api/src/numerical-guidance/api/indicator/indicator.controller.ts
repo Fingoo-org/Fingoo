@@ -1,16 +1,22 @@
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Controller, Get } from '@nestjs/common';
-import { QueryBus } from '@nestjs/cqrs';
-import { Indicator, IndicatorSwaggerSchema } from '../../application/query/indicator/dto/indicator.dto';
+import { Controller, Get, Post, Query } from '@nestjs/common';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Indicator, IndicatorSwaggerSchema } from '../../application/query/indicator/basic/dto/indicator.dto';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
-import { GetIndicatorsQuery } from '../../application/query/indicator/get-indicator/get-indicators.query';
+import { GetIndicatorsQuery } from '../../application/query/indicator/basic/get-indicator/get-indicators.query';
+import { GetIndicatorListQuery } from '../../application/query/indicator/get-indicator-list.query';
+import { IndicatorType } from '../../../utils/type/type-definition';
+import { SaveIndicatorListCommand } from '../../application/command/indicator/save-indicator-list/save-indicator-list.command';
 
 @ApiTags('IndicatorController')
 @Controller('/api/numerical-guidance')
 export class IndicatorController {
-  constructor(private queryBus: QueryBus) {}
+  constructor(
+    private queryBus: QueryBus,
+    private commandBus: CommandBus,
+  ) {}
 
-  @ApiOperation({ summary: '지표 리스트를 불러옵니다.' })
+  @ApiOperation({ summary: '지표 리스트를 불러옵니다.(삭제 예정)' })
   @ApiOkResponse({ type: [IndicatorSwaggerSchema] })
   @ApiExceptionResponse(
     400,
@@ -30,6 +36,20 @@ export class IndicatorController {
   @Get('/indicator')
   async getIndicators(): Promise<Indicator[]> {
     const query = new GetIndicatorsQuery();
+    return this.queryBus.execute(query);
+  }
+
+  @ApiOperation({ summary: '지표 리스트를 저장합니다.' })
+  @Post('/indicator-list')
+  async saveIndicatorList(): Promise<void> {
+    const command = new SaveIndicatorListCommand();
+    return this.commandBus.execute(command);
+  }
+
+  @ApiOperation({ summary: '지표 리스트를 불러옵니다.' })
+  @Get('/indicator-list')
+  async getIndicatorList(@Query('type') type: IndicatorType): Promise<void> {
+    const query = new GetIndicatorListQuery(type);
     return this.queryBus.execute(query);
   }
 }
