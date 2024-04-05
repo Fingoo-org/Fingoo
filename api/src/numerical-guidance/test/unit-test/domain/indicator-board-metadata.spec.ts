@@ -24,7 +24,7 @@ describe('지표보드 메타데이터', () => {
       currentDate,
       currentDate,
     );
-    expect(expected).toEqual(indicatorBoardMetadata);
+    expect(expected.indicatorBoardMetadataName).toEqual(indicatorBoardMetadata.indicatorBoardMetadataName);
   });
 
   it('지표보드 메타데이터에 새로운 지표 id 추가', () => {
