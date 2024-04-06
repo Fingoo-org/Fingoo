@@ -31,7 +31,7 @@ describe('LiveIndicatorKrxIntervalAdapter', () => {
 
     const testData = LiveKRXIndicatorDto.create({
       indicatorId,
-      type: 'k-stock',
+      type: 'stocks',
       ticker: rawItems[0].srtnCd,
       name: rawItems[0].itmsNm,
       market: rawItems[0].mrktCtg,
@@ -95,7 +95,7 @@ describe('LiveIndicatorKrxIntervalAdapter', () => {
 
     const testData = LiveKRXIndicatorDto.create({
       indicatorId,
-      type: 'k-stock',
+      type: 'stocks',
       ticker: rawItems[0].srtnCd,
       name: rawItems[0].itmsNm,
       market: rawItems[0].mrktCtg,
@@ -133,7 +133,7 @@ describe('LiveIndicatorKrxIntervalAdapter', () => {
 
     const testData = LiveKRXIndicatorDto.create({
       indicatorId,
-      type: 'k-stock',
+      type: 'stocks',
       ticker: rawItems[0].srtnCd,
       name: rawItems[0].itmsNm,
       market: rawItems[0].mrktCtg,

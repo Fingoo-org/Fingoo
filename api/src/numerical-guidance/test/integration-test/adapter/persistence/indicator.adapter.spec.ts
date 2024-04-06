@@ -5,7 +5,16 @@ import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/p
 import { IndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { DataSource } from 'typeorm';
-import { IndicatorsDto } from '../../../../application/query/indicator/dto/indicators.dto';
+import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
+import { BondsEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/bonds.entity';
+import { CryptoCurrenciesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
+import { CryptocurrencyExchangesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/cryptocurrency-exchanges.entity';
+import { ETFEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/etf.entity';
+import { ExchangeEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/exchange.entity';
+import { ForexPairEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
+import { FundEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
+import { IndicesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
+import { StockEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
 
 const testData = {
   indicators: [
@@ -13,14 +22,14 @@ const testData = {
       id: '160e5499-4925-4e38-bb00-8ea6d8056484',
       name: '삼성전자',
       ticker: '005930',
-      type: 'k-stock',
+      type: 'stocks',
       market: 'KOSPI',
     },
     {
       id: '1ebee29f-7208-4df6-b53d-521b2f81fdce',
       name: '이스트아시아',
       ticker: '900110',
-      type: 'k-stock',
+      type: 'stocks',
       market: 'KOSDAQ',
     },
   ],
@@ -38,14 +47,14 @@ describe('IndicatorPersistentAdapter', () => {
         id: '160e5499-4925-4e38-bb00-8ea6d8056484',
         name: '삼성전자',
         ticker: '005930',
-        type: 'k-stock',
+        type: 'stocks',
         market: 'KOSPI',
       },
       {
         id: '1ebee29f-7208-4df6-b53d-521b2f81fdce',
         name: '이스트아시아',
         ticker: '900110',
-        type: 'k-stock',
+        type: 'stocks',
         market: 'KOSDAQ',
       },
     ]);
@@ -56,7 +65,18 @@ describe('IndicatorPersistentAdapter', () => {
 
     const module = await Test.createTestingModule({
       imports: [
-        TypeOrmModule.forFeature([IndicatorEntity]),
+        TypeOrmModule.forFeature([
+          IndicatorEntity,
+          BondsEntity,
+          CryptoCurrenciesEntity,
+          CryptocurrencyExchangesEntity,
+          ETFEntity,
+          ExchangeEntity,
+          ForexPairEntity,
+          FundEntity,
+          IndicesEntity,
+          StockEntity,
+        ]),
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule.forRoot()],
           inject: [ConfigService],
@@ -69,7 +89,18 @@ describe('IndicatorPersistentAdapter', () => {
             username: environment.getUsername(),
             password: environment.getPassword(),
             database: environment.getDatabase(),
-            entities: [IndicatorEntity],
+            entities: [
+              IndicatorEntity,
+              BondsEntity,
+              CryptoCurrenciesEntity,
+              CryptocurrencyExchangesEntity,
+              ETFEntity,
+              ExchangeEntity,
+              ForexPairEntity,
+              FundEntity,
+              IndicesEntity,
+              StockEntity,
+            ],
             synchronize: true,
           }),
         }),

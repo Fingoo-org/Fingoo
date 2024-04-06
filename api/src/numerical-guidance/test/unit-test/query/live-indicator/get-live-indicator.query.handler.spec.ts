@@ -8,7 +8,7 @@ import { LiveKRXIndicatorDto } from '../../../../application/query/live-indicato
 import { GetLiveIndicatorQueryHandler } from '../../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query.handler';
 import { LoadLiveIndicatorPort } from '../../../../application/port/external/krx/load-live-indicator.port';
 import { GetLiveIndicatorQuery } from '../../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query';
-import { Indicator, IndicatorDto } from '../../../../application/query/indicator/dto/indicator.dto';
+import { Indicator, IndicatorDto } from '../../../../application/query/indicator/basic/dto/indicator.dto';
 import { LoadIndicatorPort } from '../../../../application/port/persistence/indicator/load-indicator.port';
 
 const testData = liveIndicatorTestData;
@@ -16,7 +16,7 @@ const testIndicator: Indicator = {
   id: '160e5499-4925-4e38-bb00-8ea6d8056484',
   name: '삼성전자',
   ticker: '005931',
-  type: 'k-stock',
+  type: 'stocks',
   market: 'KOSPI',
 };
 

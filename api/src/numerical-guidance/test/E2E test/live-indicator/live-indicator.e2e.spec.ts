@@ -18,6 +18,15 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { RedisContainer } from '@testcontainers/redis';
 import { DataSource } from 'typeorm';
+import { BondsEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/bonds.entity';
+import { CryptoCurrenciesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
+import { CryptocurrencyExchangesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/cryptocurrency-exchanges.entity';
+import { ETFEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/etf.entity';
+import { ExchangeEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/exchange.entity';
+import { ForexPairEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
+import { FundEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
+import { IndicesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
+import { StockEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -36,7 +45,7 @@ describe('Live Indicator E2E Test', () => {
       id: '160e5499-4925-4e38-bb00-8ea6d8056484',
       name: '삼성전자',
       ticker: '005930',
-      type: 'k-stock',
+      type: 'stocks',
       market: 'KOSPI',
     });
   };
@@ -51,7 +60,18 @@ describe('Live Indicator E2E Test', () => {
           ConfigModule.forRoot({
             isGlobal: true,
           }),
-          TypeOrmModule.forFeature([IndicatorEntity]),
+          TypeOrmModule.forFeature([
+            IndicatorEntity,
+            BondsEntity,
+            CryptoCurrenciesEntity,
+            CryptocurrencyExchangesEntity,
+            ETFEntity,
+            ExchangeEntity,
+            ForexPairEntity,
+            FundEntity,
+            IndicesEntity,
+            StockEntity,
+          ]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -64,7 +84,18 @@ describe('Live Indicator E2E Test', () => {
               username: DBenvironment.getUsername(),
               password: DBenvironment.getPassword(),
               database: DBenvironment.getDatabase(),
-              entities: [IndicatorEntity],
+              entities: [
+                IndicatorEntity,
+                BondsEntity,
+                CryptoCurrenciesEntity,
+                CryptocurrencyExchangesEntity,
+                ETFEntity,
+                ExchangeEntity,
+                ForexPairEntity,
+                FundEntity,
+                IndicesEntity,
+                StockEntity,
+              ],
               synchronize: true,
             }),
           }),
@@ -101,6 +132,10 @@ describe('Live Indicator E2E Test', () => {
           },
           {
             provide: 'LoadIndicatorPort',
+            useClass: IndicatorPersistentAdapter,
+          },
+          {
+            provide: 'LoadIndicatorListPort',
             useClass: IndicatorPersistentAdapter,
           },
           {

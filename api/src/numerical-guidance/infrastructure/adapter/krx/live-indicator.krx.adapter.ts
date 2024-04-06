@@ -114,7 +114,7 @@ export class LiveIndicatorKrxAdapter implements LoadLiveIndicatorPort {
         });
       }
 
-      const type = 'k-stock';
+      const type = 'stocks';
       const responseData = LiveKRXIndicatorDto.create({
         indicatorId: indicatorId,
         type,

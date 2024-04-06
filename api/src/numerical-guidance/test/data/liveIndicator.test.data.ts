@@ -1,5 +1,5 @@
 export const liveIndicatorTestData = {
-  type: 'k-stock',
+  type: 'stocks',
   ticker: '005930',
   name: '삼성전자',
   market: 'KOSPI',

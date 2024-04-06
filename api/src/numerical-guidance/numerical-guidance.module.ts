@@ -3,7 +3,7 @@ import { LiveIndicatorRedisAdapter } from './infrastructure/adapter/redis/live-i
 import { LiveIndicatorKrxAdapter } from './infrastructure/adapter/krx/live-indicator.krx.adapter';
 import { CqrsModule } from '@nestjs/cqrs';
 import { HttpModule } from '@nestjs/axios';
-import { GetIndicatorsQueryHandler } from './application/query/indicator/get-indicator/get-indicators.query.handler';
+import { GetIndicatorsQueryHandler } from './application/query/indicator/basic/get-indicator/get-indicators.query.handler';
 import { IndicatorPersistentAdapter } from './infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 import { CreateIndicatorBoardMetadataCommandHandler } from './application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
@@ -43,6 +43,19 @@ import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/c
 import { FileSupabaseAdapter } from './infrastructure/adapter/storage/file.supabase.adapter';
 import { UploadFileCommandHandler } from './application/command/indicator-board-metadata/upload-file/upload-file.command.handler';
 import { UpdateSectionsCommandHandler } from './application/command/indicator-board-metadata/update-sections/update-sections.command.handler';
+import { GetIndicatorListQueryHandler } from './application/query/indicator/get-indicator-list.query.handler';
+import { TwelveApiUtil } from './infrastructure/adapter/twelve/util/twelve-api.util';
+import { BondsEntity } from './infrastructure/adapter/persistence/indicator/entity/bonds.entity';
+import { IndicatorTwelveAdapter } from './infrastructure/adapter/twelve/indicator.twelve.adapter';
+import { SaveIndicatorListCommandHandler } from './application/command/indicator/save-indicator-list/save-indicator-list.command.handler';
+import { CryptoCurrenciesEntity } from './infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
+import { CryptocurrencyExchangesEntity } from './infrastructure/adapter/persistence/indicator/entity/cryptocurrency-exchanges.entity';
+import { ETFEntity } from './infrastructure/adapter/persistence/indicator/entity/etf.entity';
+import { ExchangeEntity } from './infrastructure/adapter/persistence/indicator/entity/exchange.entity';
+import { ForexPairEntity } from './infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
+import { FundEntity } from './infrastructure/adapter/persistence/indicator/entity/fund.entity';
+import { IndicesEntity } from './infrastructure/adapter/persistence/indicator/entity/indices.entity';
+import { StockEntity } from './infrastructure/adapter/persistence/indicator/entity/stock.entity';
 
 @Module({
   imports: [
@@ -60,6 +73,15 @@ import { UpdateSectionsCommandHandler } from './application/command/indicator-bo
       HistoryIndicatorEntity,
       HistoryIndicatorValueEntity,
       CustomForecastIndicatorEntity,
+      BondsEntity,
+      CryptoCurrenciesEntity,
+      CryptocurrencyExchangesEntity,
+      ETFEntity,
+      ExchangeEntity,
+      ForexPairEntity,
+      FundEntity,
+      IndicesEntity,
+      StockEntity,
     ]),
   ],
   controllers: [
@@ -93,6 +115,9 @@ import { UpdateSectionsCommandHandler } from './application/command/indicator-bo
     UpdateCustomForecastIndicatorNameCommandHandler,
     UploadFileCommandHandler,
     UpdateSectionsCommandHandler,
+    GetIndicatorListQueryHandler,
+    SaveIndicatorListCommandHandler,
+    IndicatorTwelveAdapter,
     {
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
@@ -115,6 +140,10 @@ import { UpdateSectionsCommandHandler } from './application/command/indicator-bo
     },
     {
       provide: 'LoadIndicatorPort',
+      useClass: IndicatorPersistentAdapter,
+    },
+    {
+      provide: 'LoadIndicatorListPort',
       useClass: IndicatorPersistentAdapter,
     },
     {
@@ -193,6 +222,11 @@ import { UpdateSectionsCommandHandler } from './application/command/indicator-bo
       provide: 'UploadFilePort',
       useClass: FileSupabaseAdapter,
     },
+    {
+      provide: 'SaveIndicatorListPort',
+      useClass: IndicatorTwelveAdapter,
+    },
+    TwelveApiUtil,
   ],
 })
 export class NumericalGuidanceModule {}

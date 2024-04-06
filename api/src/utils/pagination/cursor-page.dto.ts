@@ -9,7 +9,7 @@ export class CursorPageDto<T> {
         id: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
         name: '삼성전자',
         ticker: '005930',
-        type: 'k-stock',
+        type: 'stocks',
         market: 'KOSPI',
       },
       values: [

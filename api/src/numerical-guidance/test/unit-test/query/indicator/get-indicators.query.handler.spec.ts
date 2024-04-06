@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
-import { GetIndicatorsQueryHandler } from 'src/numerical-guidance/application/query/indicator/get-indicator/get-indicators.query.handler';
-import { IndicatorsDto } from '../../../../application/query/indicator/dto/indicators.dto';
-import { Indicator } from '../../../../application/query/indicator/dto/indicator.dto';
+import { GetIndicatorsQueryHandler } from 'src/numerical-guidance/application/query/indicator/basic/get-indicator/get-indicators.query.handler';
+import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
+import { Indicator } from '../../../../application/query/indicator/basic/dto/indicator.dto';
 
 interface TestData {
   indicators: Indicator[];
@@ -13,14 +13,14 @@ const testData: TestData = {
       id: '160e5499-4925-4e38-bb00-8ea6d8056484',
       name: '삼성전자',
       ticker: '005931',
-      type: 'k-stock',
+      type: 'stocks',
       market: 'KOSPI',
     },
     {
       id: '1ebee29f-7208-4df6-b53d-521b2f81fdce',
       name: '이스트아시아홀딩스',
       ticker: '900110',
-      type: 'k-stock',
+      type: 'stocks',
       market: 'KOSDAQ',
     },
   ],
