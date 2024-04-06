@@ -33,15 +33,4 @@ export class LiveIndicatorController {
     const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
     return this.queryBus.execute(query);
   }
-
-  @ApiOperation({ summary: 'Live Fred 지표를 불러옵니다.' })
-  @ApiOkResponse({ type: LiveKRXIndicatorDto })
-  @ApiExceptionResponse(400, '', '')
-  @ApiExceptionResponse(404, '', '')
-  @ApiExceptionResponse(500, '', '')
-  @Get('/indicators/live/fred')
-  async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveKrxIndicatorDto): Promise<LiveKRXIndicatorDto> {
-    const query = new GetLiveIndicatorQuery(getLiveIndicatorDto.indicatorId, getLiveIndicatorDto.interval);
-    return this.queryBus.execute(query);
-  }
 }
