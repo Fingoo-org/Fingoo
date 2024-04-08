@@ -131,6 +131,7 @@ describe('HistoryIndicatorPersistentAdapter', () => {
     // when
     const cursorPageDto: CursorPageDto<HistoryIndicatorDto> =
       await historyIndicatorPersistentAdapter.loadHistoryIndicator(indicatorId, interval, dataCount, endDate);
+    const resultIndicator: HistoryIndicatorDto = <HistoryIndicatorDto>cursorPageDto.data;
 
     // then
     const expectedTotalCount = 19;
@@ -220,8 +221,8 @@ describe('HistoryIndicatorPersistentAdapter', () => {
       market: 'KOSPI',
     };
     expect(expectedTotalCount).toEqual(cursorPageDto.meta.total);
-    expect(expectedIndicator).toEqual(cursorPageDto.data.indicator);
-    expect(expectedValues).toEqual(cursorPageDto.data.values);
+    expect(expectedIndicator).toEqual(resultIndicator.indicator);
+    expect(expectedValues).toEqual(resultIndicator.values);
   });
 
   it('history 지표 불러오기 - 날짜 형식이 잘못된 경우', async () => {
