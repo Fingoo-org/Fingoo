@@ -10,9 +10,7 @@ export type IndicatorType =
   | 'indices'
   | 'customForecastIndicator'
   | 'funds'
-  | 'bonds'
-  | 'exchanges'
-  | 'cryptocurrency_exchanges';
+  | 'bonds';
 
 export type SourceIndicatorIdAndWeightType = {
   sourceIndicatorId: string;

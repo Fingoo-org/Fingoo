@@ -49,9 +49,7 @@ import { BondsEntity } from './infrastructure/adapter/persistence/indicator/enti
 import { IndicatorTwelveAdapter } from './infrastructure/adapter/twelve/indicator.twelve.adapter';
 import { SaveIndicatorListCommandHandler } from './application/command/indicator/save-indicator-list/save-indicator-list.command.handler';
 import { CryptoCurrenciesEntity } from './infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
-import { CryptocurrencyExchangesEntity } from './infrastructure/adapter/persistence/indicator/entity/cryptocurrency-exchanges.entity';
 import { ETFEntity } from './infrastructure/adapter/persistence/indicator/entity/etf.entity';
-import { ExchangeEntity } from './infrastructure/adapter/persistence/indicator/entity/exchange.entity';
 import { ForexPairEntity } from './infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
 import { FundEntity } from './infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from './infrastructure/adapter/persistence/indicator/entity/indices.entity';
@@ -75,9 +73,7 @@ import { StockEntity } from './infrastructure/adapter/persistence/indicator/enti
       CustomForecastIndicatorEntity,
       BondsEntity,
       CryptoCurrenciesEntity,
-      CryptocurrencyExchangesEntity,
       ETFEntity,
-      ExchangeEntity,
       ForexPairEntity,
       FundEntity,
       IndicesEntity,

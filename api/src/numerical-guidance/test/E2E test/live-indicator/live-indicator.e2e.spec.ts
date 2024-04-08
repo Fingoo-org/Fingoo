@@ -19,9 +19,7 @@ import { RedisContainer } from '@testcontainers/redis';
 import { DataSource } from 'typeorm';
 import { BondsEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 import { CryptoCurrenciesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
-import { CryptocurrencyExchangesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/cryptocurrency-exchanges.entity';
 import { ETFEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/etf.entity';
-import { ExchangeEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/exchange.entity';
 import { ForexPairEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
 import { FundEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
@@ -63,9 +61,7 @@ describe('Live Indicator E2E Test', () => {
             IndicatorEntity,
             BondsEntity,
             CryptoCurrenciesEntity,
-            CryptocurrencyExchangesEntity,
             ETFEntity,
-            ExchangeEntity,
             ForexPairEntity,
             FundEntity,
             IndicesEntity,
@@ -87,9 +83,7 @@ describe('Live Indicator E2E Test', () => {
                 IndicatorEntity,
                 BondsEntity,
                 CryptoCurrenciesEntity,
-                CryptocurrencyExchangesEntity,
                 ETFEntity,
-                ExchangeEntity,
                 ForexPairEntity,
                 FundEntity,
                 IndicesEntity,
