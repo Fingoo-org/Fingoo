@@ -10,9 +10,9 @@ export class CryptoCurrenciesEntity extends BaseIndicatorEntity {
   @Column('jsonb', { nullable: true })
   available_exchanges: string[];
 
-  @Column()
+  @Column({ nullable: true })
   currency_base: string;
 
-  @Column()
+  @Column({ nullable: true })
   currency_quote: string;
 }
