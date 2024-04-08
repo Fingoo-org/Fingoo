@@ -2,21 +2,21 @@ import { BondsEntity } from '../entity/bonds.entity';
 import { BondsDto } from '../../../../../application/query/indicator/dto/bonds.dto';
 
 export class BondsMapper {
-  static mapEntityToDto(indicatorEntity: BondsEntity): BondsDto {
-    return {
-      id: indicatorEntity.id,
-      index: indicatorEntity.index,
-      indicatorType: indicatorEntity.indicatorType,
-      symbol: indicatorEntity.symbol,
-      name: indicatorEntity.name,
-      country: indicatorEntity.country,
-      currency: indicatorEntity.currency,
-      exchange: indicatorEntity.exchange,
-      type: indicatorEntity.type,
-    };
+  static mapEntityToDto(bondsEntity: BondsEntity): BondsDto {
+    return BondsDto.create({
+      id: bondsEntity.id,
+      index: bondsEntity.index,
+      indicatorType: bondsEntity.indicatorType,
+      symbol: bondsEntity.symbol,
+      name: bondsEntity.name,
+      country: bondsEntity.country,
+      currency: bondsEntity.currency,
+      exchange: bondsEntity.exchange,
+      type: bondsEntity.type,
+    });
   }
 
-  static mapEntitiesToDto(bondsEntities: BondsEntity[]): BondsDto[] {
+  static mapEntitiesToDtos(bondsEntities: BondsEntity[]): BondsDto[] {
     return bondsEntities.map((bondsEntity) => {
       return BondsMapper.mapEntityToDto(bondsEntity);
     });
