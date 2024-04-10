@@ -1,6 +1,6 @@
 from fastapi import HTTPException, Query
 from fastapi import FastAPI
-from service import predict, sourceIndicatorsVerification
+from service import predict, sourceIndicatorsVerification, predictWithoutTargetIndicator
 from database import engine, Base, get_db
 
 Base.metadata.create_all(bind=engine) 
@@ -13,20 +13,22 @@ def hello() :
 @app.get("/api/var-api/custom-forecast-indicator/")
 def loadPredictedIndicator(
     targetIndicatorId: str = Query(...),
-    sourceIndicatorId: list[str] = Query(...),
-    weight: list[int] = Query(...),
+    sourceIndicatorId: list[str] = Query(default = None),
+    weight: list[int] = Query(default = None),
     ):
 	
-    prediction = predict(targetIndicatorId, sourceIndicatorId, weight, get_db())
-    if not prediction:
-        raise HTTPException(status_code=404, detail="No indicators found")
+    if not sourceIndicatorId and not weight:
+        prediction = predictWithoutTargetIndicator(targetIndicatorId, get_db())
+    else:
+        prediction = predict(targetIndicatorId, sourceIndicatorId, weight, get_db())
+
     return prediction
 
 @app.get("/api/var-api/source-indicators-verification/")
 def loadSourceIndicatorsVerification(
     targetIndicatorId: str = Query(...),
-    sourceIndicatorId: list[str] = Query(...),
-    weight: list[int] = Query(...),
+    sourceIndicatorId: list[str] = Query(default = None),
+    weight: list[int] = Query(default = None),
     ):
 	verificaion = sourceIndicatorsVerification(targetIndicatorId, sourceIndicatorId, weight, get_db())
 	return verificaion

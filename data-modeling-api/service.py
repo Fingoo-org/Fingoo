@@ -31,8 +31,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
 
   findTargetIndicatorQuery = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{targetIndicatorId}'")
 
-  print(findTargetIndicatorQuery)
-
   findTargetIndicatorResult = db.execute(findTargetIndicatorQuery).fetchone()
   if findTargetIndicatorResult:
     targetIndicatorDto = IndicatorDto(id=str(findTargetIndicatorResult[0]), name=findTargetIndicatorResult[1], ticker=findTargetIndicatorResult[2])
@@ -41,7 +39,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   nameList = []
   for sourceIndicator in sourceIndicators:
     nameList.append(sourceIndicator.name)
-  print(nameList)
 
   for sourceIndicator in sourceIndicators:
     if sourceIndicator.id == targetIndicatorId:
@@ -152,7 +149,72 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
       "values": values
     }
     return result
+  
+def predictWithoutTargetIndicator(targetIndicatorId:str, db: Session) -> ForecastIndicatorDto:
+  findTargetIndicatorQuery = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{targetIndicatorId}'")
 
+  sourceIndicators: list[IndicatorDto] = []
+
+  findTargetIndicatorResult = db.execute(findTargetIndicatorQuery).fetchone()
+  if findTargetIndicatorResult:
+    targetIndicatorDto = IndicatorDto(id=str(findTargetIndicatorResult[0]), name=findTargetIndicatorResult[1], ticker=findTargetIndicatorResult[2])
+    sourceIndicators.append(targetIndicatorDto)
+
+  nameList = []
+  for sourceIndicator in sourceIndicators:
+    nameList.append(sourceIndicator.name)
+
+  for sourceIndicator in sourceIndicators:
+    if sourceIndicator.id == targetIndicatorId:
+      targetIndicatorName = sourceIndicator.name
+
+  APIList = []
+  session = requests.Session()
+  retry = Retry(connect=10, backoff_factor=1)
+  adapter = HTTPAdapter(max_retries=retry)
+  session.mount('http://', adapter)
+
+  targetIndicatorReq = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={targetIndicatorId}')
+  targetIndicatorData = targetIndicatorReq.json()
+  targetIndicatorValues = targetIndicatorData['values']
+  targetIndicatorDf = pd.DataFrame(targetIndicatorValues)
+  targetIndicatorDf['date'] = pd.to_datetime(targetIndicatorDf['date'])
+  targetIndicatorDf['value'] = targetIndicatorDf['value'].astype(float)
+  APIList.append(targetIndicatorDf)
+
+  sourceDataFrames = {}
+  for name, df in zip(nameList, APIList):
+    sourceDataFrames[name] = df.set_index('date')['value']
+
+  df_arima = pd.DataFrame(sourceDataFrames)
+
+  df_arima.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
+  df_arima = df_arima.dropna()
+  
+  weights = []
+  weights.append(0)
+  for indicator, weight in zip(df_arima, weights):
+    weight = int(weight)
+    df_arima = verification.applyWeight(df_arima, indicator, weight)
+
+  print('Arima')
+  customForecastIndicator = forecast.runArima(df_arima, targetIndicatorName, int(len(df_arima)/2))
+  forecastdata = customForecastIndicator[targetIndicatorName].to_dict()
+  forecastValuesWithoutDates = list(forecastdata.values())
+  values = []
+  currentDate = datetime.datetime.now()
+  for i in range(len(forecastValuesWithoutDates)):
+    forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
+    forecastValue = ForecastValue(
+      value = forecastValuesWithoutDates[i],
+      date = forecastDate
+    )
+    values.append(forecastValue)
+  result: ForecastIndicatorDto = {
+    "values": values
+  }
+
+  return result
 
 def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
   # 데이터베이스로부터 Indicator 정보 가져오기
