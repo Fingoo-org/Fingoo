@@ -20,10 +20,6 @@ export class IndicatorTwelveMapper {
       // return FundsDto.create(data);
       case 'bonds':
         return BondsDto.create(data);
-      case 'exchanges':
-      // return ExchangesDto.create(data);
-      case 'cryptocurrency_exchanges':
-      // return CryptocurrencyExchangesDto.create(data);
       default:
         throw new Error(`Invalid IndicatorType: ${type}`);
     }

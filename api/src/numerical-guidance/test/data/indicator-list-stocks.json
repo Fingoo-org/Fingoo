@@ -1,0 +1,276 @@
+[
+  {
+    "symbol": "000",
+    "name": "Greenvolt - Energias Renováveis, S.A.",
+    "country": "Germany",
+    "currency": "EUR",
+    "exchange": "FSX",
+    "mic_code": "XFRA",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000",
+    "name": "Greenvolt - Energias Renovaveis SA",
+    "country": "Germany",
+    "currency": "EUR",
+    "exchange": "XDUS",
+    "mic_code": "XDUS",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000",
+    "name": "Greenvolt - Energias Renovaveis SA",
+    "country": "Germany",
+    "currency": "EUR",
+    "exchange": "XBER",
+    "mic_code": "XBER",
+    "type": "Common Stock"
+  },
+  {
+    "indicatorType": "stocks",
+    "symbol": "000",
+    "name": "Greenvolt - Energias Renováveis, S.A.",
+    "country": "Germany",
+    "currency": "EUR",
+    "exchange": "Munich",
+    "mic_code": "XMUN",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000001",
+    "name": "Ping An Bank Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000002",
+    "name": "China Vanke Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000004",
+    "name": "Shenzhen GuoHua Network Security Technology Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000005",
+    "name": "Shenzhen Fountain Corporation",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000006",
+    "name": "Shenzhen Zhenye ",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000007",
+    "name": "Shenzhen Quanxinhao Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "id": "9a014568-1781-4d7b-a129-f21daefa9736",
+    "index": 11,
+    "indicatorType": "stocks",
+    "symbol": "000008",
+    "name": "China High-Speed Railway Technology Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000009",
+    "name": "China Baoan Group Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000010",
+    "name": "Shenzhen Ecobeauty Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000011",
+    "name": "Shenzhen Properties & Resources Development ",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000012",
+    "name": "CSG Holding Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000014",
+    "name": "Shahe Industrial Co., Ltd",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000016",
+    "name": "Konka Group Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000017",
+    "name": "Shenzhen China Bicycle Company ",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000019",
+    "name": "Shenzhen Cereals Holdings Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000020",
+    "name": "Shenzhen Zhongheng Huafa Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000020",
+    "name": "Dongwha Pharm.Co.,Ltd",
+    "country": "South Korea",
+    "currency": "KRW",
+    "exchange": "KRX",
+    "mic_code": "XKRX",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000021",
+    "name": "Shenzhen Kaifa Technology Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000023",
+    "name": "Shenzhen Universe Group Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000025",
+    "name": "Shenzhen Tellus Holding Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000026",
+    "name": "FIYTA Precision Technology Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000027",
+    "name": "Shenzhen Energy Group Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000028",
+    "name": "China National Accord Medicines Corporation Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000029",
+    "name": "Shenzhen Special Economic Zone Real Estate & Properties ",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000030",
+    "name": "FAWER Automotive Parts Limited Company",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  },
+  {
+    "symbol": "000031",
+    "name": "Grandjoy Holdings Group Co., Ltd.",
+    "country": "China",
+    "currency": "CNY",
+    "exchange": "SZSE",
+    "mic_code": "XSHE",
+    "type": "Common Stock"
+  }
+]

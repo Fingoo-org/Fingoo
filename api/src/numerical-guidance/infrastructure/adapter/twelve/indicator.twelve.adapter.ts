@@ -1,44 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { TwelveApiUtil } from './util/twelve-api.util';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SaveIndicatorListPort } from '../../../application/port/external/twelve/save-indicator-list.port';
 import { BondsEntity } from '../persistence/indicator/entity/bonds.entity';
 import { CryptoCurrenciesEntity } from '../persistence/indicator/entity/crypto-currencies.entity';
-import { CryptocurrencyExchangesEntity } from '../persistence/indicator/entity/cryptocurrency-exchanges.entity';
 import { ETFEntity } from '../persistence/indicator/entity/etf.entity';
-import { ExchangeEntity } from '../persistence/indicator/entity/exchange.entity';
 import { ForexPairEntity } from '../persistence/indicator/entity/forex-pair.entity';
 import { FundEntity } from '../persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../persistence/indicator/entity/stock.entity';
 import { IndicatorType } from '../../../../utils/type/type-definition';
+import { Propagation, Transactional } from 'typeorm-transactional';
 
 const indicatorTypes: IndicatorType[] = [
+  'bonds',
   'cryptocurrencies',
-  'cryptocurrency_exchanges',
-  'etf',
-  'exchanges',
   'forex_pairs',
   'indices',
+  'etf',
   'stocks',
   'funds',
 ];
 
 @Injectable()
 export class IndicatorTwelveAdapter implements SaveIndicatorListPort {
+  private readonly logger = new Logger(IndicatorTwelveAdapter.name);
+
   constructor(
     private readonly twelveApiUtil: TwelveApiUtil,
     @InjectRepository(BondsEntity)
     private readonly bondsEntityRepository: Repository<BondsEntity>,
     @InjectRepository(CryptoCurrenciesEntity)
     private readonly cryptoCurrenciesEntityRepository: Repository<CryptoCurrenciesEntity>,
-    @InjectRepository(CryptocurrencyExchangesEntity)
-    private readonly cryptocurrencyExchangesEntityRepository: Repository<CryptocurrencyExchangesEntity>,
     @InjectRepository(ETFEntity)
     private readonly etfEntityRepository: Repository<ETFEntity>,
-    @InjectRepository(ExchangeEntity)
-    private readonly exchangeEntityRepository: Repository<ExchangeEntity>,
     @InjectRepository(ForexPairEntity)
     private readonly forexPairEntityRepository: Repository<ForexPairEntity>,
     @InjectRepository(FundEntity)
@@ -49,43 +45,75 @@ export class IndicatorTwelveAdapter implements SaveIndicatorListPort {
     private readonly stockEntityRepository: Repository<StockEntity>,
   ) {}
 
-  async saveIndicatorList() {
+  @Transactional({ propagation: Propagation.REQUIRES_NEW })
+  async saveIndicatorList(count: number) {
     await this.clearIndicatorList();
-    indicatorTypes.map(async (indicatorType) => {
+    for (const indicatorType of indicatorTypes) {
       const data = await this.twelveApiUtil.getReferenceData(indicatorType);
-      await this.insertDataIntoRepository(indicatorType, data);
-    });
+      await this.insertDataIntoRepository(indicatorType, data, count);
+    }
   }
 
-  private async insertDataIntoRepository(type: IndicatorType, data: any) {
+  private async insertDataIntoRepository(type: IndicatorType, data: any, count: number) {
+    const dataList = type === 'funds' || type === 'bonds' ? data.result.list : data.data;
+    const batchSize = count;
+
+    this.logger.log(`${type} 저장 시작~!`);
+    const batchEntities = dataList.slice(0, batchSize);
+    await this.insertBatchEntities(type, batchEntities);
+    this.logger.log(`${type} 저장 끝~!!!`);
+  }
+
+  private async insertBatchEntities(type: IndicatorType, batchEntities: any[]) {
     switch (type) {
       case 'cryptocurrencies':
-        await this.cryptoCurrenciesEntityRepository.insert(data.data);
-        break;
-      case 'cryptocurrency_exchanges':
-        await this.cryptocurrencyExchangesEntityRepository.insert(data.data);
+        await this.cryptoCurrenciesEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(CryptoCurrenciesEntity)
+          .values(batchEntities)
+          .execute();
         break;
       case 'etf':
-        await this.etfEntityRepository.insert(data.data);
-        break;
-      case 'exchanges':
-        await this.exchangeEntityRepository.insert(data.data);
+        await this.etfEntityRepository.createQueryBuilder().insert().into(ETFEntity).values(batchEntities).execute();
         break;
       case 'forex_pairs':
-        await this.forexPairEntityRepository.insert(data.data);
+        await this.forexPairEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(ForexPairEntity)
+          .values(batchEntities)
+          .execute();
         break;
       case 'indices':
-        await this.indicesEntityRepository.insert(data.data);
+        await this.indicesEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(IndicesEntity)
+          .values(batchEntities)
+          .execute();
         break;
       case 'stocks':
-        await this.stockEntityRepository.insert(data.data);
+        await this.stockEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(StockEntity)
+          .values(batchEntities)
+          .execute();
         break;
       case 'funds':
-        await this.fundEntityRepository.insert(data.result.list);
+        await this.fundEntityRepository.createQueryBuilder().insert().into(FundEntity).values(batchEntities).execute();
         break;
       case 'bonds':
-        await this.fundEntityRepository.insert(data.result.list);
+        await this.bondsEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(BondsEntity)
+          .values(batchEntities)
+          .execute();
         break;
+      default:
+        throw new Error(`Unsupported indicator type: ${type}`);
     }
   }
 
@@ -93,9 +121,7 @@ export class IndicatorTwelveAdapter implements SaveIndicatorListPort {
     await Promise.all([
       this.bondsEntityRepository.clear(),
       this.cryptoCurrenciesEntityRepository.clear(),
-      this.cryptocurrencyExchangesEntityRepository.clear(),
       this.etfEntityRepository.clear(),
-      this.exchangeEntityRepository.clear(),
       this.forexPairEntityRepository.clear(),
       this.fundEntityRepository.clear(),
       this.indicesEntityRepository.clear(),

@@ -8,13 +8,22 @@ import { DataSource } from 'typeorm';
 import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
 import { BondsEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 import { CryptoCurrenciesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
-import { CryptocurrencyExchangesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/cryptocurrency-exchanges.entity';
 import { ETFEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/etf.entity';
-import { ExchangeEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/exchange.entity';
 import { ForexPairEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
 import { FundEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
+import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
+import { BadRequestException, HttpStatus } from '@nestjs/common';
+import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list.query';
+import { StockDto } from '../../../../application/query/indicator/dto/stock.dto';
+import { CryptoCurrenciesDto } from '../../../../application/query/indicator/dto/crypto-currencies.dto';
+import { ETFDto } from '../../../../application/query/indicator/dto/etf.dto';
+import { ForexPairDto } from '../../../../application/query/indicator/dto/forex-pair.dto';
+import { IndicesDto } from '../../../../application/query/indicator/dto/indices.dto';
+import { FundDto } from '../../../../application/query/indicator/dto/fund.dto';
+import { BondsDto } from '../../../../application/query/indicator/dto/bonds.dto';
+import * as fs from 'fs';
 
 const testData = {
   indicators: [
@@ -34,6 +43,10 @@ const testData = {
     },
   ],
 };
+
+const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
+const data = fs.readFileSync(filePath, 'utf8');
+const testIndicatorList = JSON.parse(data);
 
 describe('IndicatorPersistentAdapter', () => {
   let environment;
@@ -58,6 +71,10 @@ describe('IndicatorPersistentAdapter', () => {
         market: 'KOSDAQ',
       },
     ]);
+
+    const stockEntityRepository = dataSource.getRepository(StockEntity);
+    await stockEntityRepository.clear();
+    await stockEntityRepository.insert(testIndicatorList);
   };
 
   beforeAll(async () => {
@@ -69,9 +86,7 @@ describe('IndicatorPersistentAdapter', () => {
           IndicatorEntity,
           BondsEntity,
           CryptoCurrenciesEntity,
-          CryptocurrencyExchangesEntity,
           ETFEntity,
-          ExchangeEntity,
           ForexPairEntity,
           FundEntity,
           IndicesEntity,
@@ -93,9 +108,7 @@ describe('IndicatorPersistentAdapter', () => {
               IndicatorEntity,
               BondsEntity,
               CryptoCurrenciesEntity,
-              CryptocurrencyExchangesEntity,
               ETFEntity,
-              ExchangeEntity,
               ForexPairEntity,
               FundEntity,
               IndicesEntity,
@@ -129,5 +142,50 @@ describe('IndicatorPersistentAdapter', () => {
     const expectedNum: number = 2;
     expect(result).toEqual(expected);
     expect(resultNum).toEqual(expectedNum);
+  });
+
+  const cursors = [
+    { index: 1, nextIndex: 11 },
+    { index: 11, nextIndex: 21 },
+  ];
+
+  it.each(cursors)('지표 리스트 불러오기', async ({ index, nextIndex }) => {
+    // given
+    const { type, cursorToken }: GetIndicatorListQuery = {
+      type: 'stocks',
+      cursorToken: index,
+    };
+
+    // when
+    const cursorPageDto: CursorPageDto<
+      CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto
+    > = await indicatorPersistentAdapter.loadIndicatorList(type, cursorToken);
+
+    // then
+    const expectedHasNextData = true;
+    const expectedCursor = nextIndex;
+    expect(expectedHasNextData).toEqual(cursorPageDto.meta.hasNextData);
+    expect(expectedCursor).toEqual(cursorPageDto.meta.cursor);
+  });
+
+  it('지표 리스트 불러오기 - index 형식이 잘못된 경우', async () => {
+    // given
+    const invalidIndex = -10.01;
+    const { type, cursorToken }: GetIndicatorListQuery = {
+      type: 'stocks',
+      cursorToken: invalidIndex,
+    };
+
+    // when // then
+    await expect(async () => {
+      await indicatorPersistentAdapter.loadIndicatorList(type, cursorToken);
+    }).rejects.toThrow(
+      new BadRequestException({
+        HttpStatus: HttpStatus.BAD_REQUEST,
+        error: `[ERROR] index, type 요청이 올바른지 확인해주세요.`,
+        message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+        cause: Error,
+      }),
+    );
   });
 });

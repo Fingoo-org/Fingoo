@@ -7,12 +7,12 @@ export class ForexPairEntity extends BaseIndicatorEntity {
   @Column({ default: 'forex_pairs' })
   indicatorType: IndicatorType;
 
-  @Column()
+  @Column({ nullable: true })
   currency_group: string;
 
-  @Column()
+  @Column({ nullable: true })
   currency_base: string;
 
-  @Column()
+  @Column({ nullable: true })
   currency_quote: string;
 }

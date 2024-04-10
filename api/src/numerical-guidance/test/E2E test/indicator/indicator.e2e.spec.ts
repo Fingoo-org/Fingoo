@@ -1,54 +1,47 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { LiveIndicatorRedisAdapter } from '../../../infrastructure/adapter/redis/live-indicator.redis.adapter';
+import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import { DataSource } from 'typeorm';
+import { StockEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
+import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { LiveIndicatorController } from '../../../api/live-indicator/live-indicator.controller';
-import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
-import { GetLiveIndicatorQueryHandler } from '../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query.handler';
-import { LiveIndicatorKrxAdapter } from '../../../infrastructure/adapter/krx/live-indicator.krx.adapter';
-import { AuthGuard } from '../../../../auth/auth.guard';
-import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
-import { HttpModule } from '@nestjs/axios';
-import { IndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HttpModule } from '@nestjs/axios';
+import { IndicatorController } from '../../../api/indicator/indicator.controller';
 import { IndicatorEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indicator.entity';
-import { PostgreSqlContainer } from '@testcontainers/postgresql';
-import { RedisModule } from '@nestjs-modules/ioredis';
-import { RedisContainer } from '@testcontainers/redis';
-import { DataSource } from 'typeorm';
 import { BondsEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 import { CryptoCurrenciesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
 import { ETFEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/etf.entity';
 import { ForexPairEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
 import { FundEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
-import { StockEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
+import { IndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
+import { AuthGuard } from '../../../../auth/auth.guard';
+import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
+import * as request from 'supertest';
+import * as fs from 'fs';
+import { GetIndicatorListQueryHandler } from '../../../application/query/indicator/get-indicator-list.query.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
 }));
 
-describe('Live Indicator E2E Test', () => {
+const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
+const data = fs.readFileSync(filePath, 'utf8');
+const testIndicatorList = JSON.parse(data);
+
+describe('Indicator E2E Test', () => {
   let app: INestApplication;
   let dataSource: DataSource;
   let DBenvironment;
-  let redisEnvironment;
-  let liveIndicatorRedisAdapter: LiveIndicatorRedisAdapter;
 
   const seeding = async () => {
-    const indicatorEntity = dataSource.getRepository(IndicatorEntity);
-    await indicatorEntity.insert({
-      id: '160e5499-4925-4e38-bb00-8ea6d8056484',
-      name: '삼성전자',
-      ticker: '005930',
-      type: 'stocks',
-      market: 'KOSPI',
-    });
+    const stockEntityRepository = dataSource.getRepository(StockEntity);
+    await stockEntityRepository.clear();
+    await stockEntityRepository.insert(testIndicatorList);
   };
 
   beforeAll(async () => {
-    redisEnvironment = await new RedisContainer().start();
     DBenvironment = await new PostgreSqlContainer().start();
     const [module] = await Promise.all([
       Test.createTestingModule({
@@ -98,47 +91,25 @@ describe('Live Indicator E2E Test', () => {
               maxRedirects: 5,
             }),
           }),
-          RedisModule.forRootAsync({
-            imports: [ConfigModule],
-            useFactory: () => ({
-              type: 'single',
-              url: redisEnvironment.getConnectionUrl(),
-            }),
-          }),
         ],
-        controllers: [LiveIndicatorController],
+        controllers: [IndicatorController],
         providers: [
-          AdjustIndicatorValue,
-          GetLiveIndicatorQueryHandler,
-          LiveIndicatorRedisAdapter,
-          {
-            provide: 'LoadCachedLiveIndicatorPort',
-            useClass: LiveIndicatorRedisAdapter,
-          },
-          {
-            provide: 'LoadLiveIndicatorPort',
-            useClass: LiveIndicatorKrxAdapter,
-          },
-          {
-            provide: 'CachingLiveIndicatorPort',
-            useClass: LiveIndicatorRedisAdapter,
-          },
+          GetIndicatorListQueryHandler,
           {
             provide: 'LoadIndicatorPort',
+            useClass: IndicatorPersistentAdapter,
+          },
+          {
+            provide: 'LoadIndicatorsPort',
             useClass: IndicatorPersistentAdapter,
           },
           {
             provide: 'LoadIndicatorListPort',
             useClass: IndicatorPersistentAdapter,
           },
-          {
-            provide: 'IndicatorValueManager',
-            useClass: AdjustIndicatorValue,
-          },
         ],
       }).compile(),
     ]);
-    liveIndicatorRedisAdapter = module.get(LiveIndicatorRedisAdapter);
     dataSource = module.get<DataSource>(DataSource);
     await seeding();
     app = module.createNestApplication();
@@ -156,22 +127,18 @@ describe('Live Indicator E2E Test', () => {
   }, 30000);
 
   afterAll(async () => {
-    await redisEnvironment.stop();
     await DBenvironment.stop();
-    await liveIndicatorRedisAdapter.disconnectRedis();
     await app.close();
   });
 
-  it('/get live 지표 값을 불러온다.', async () => {
-    return true;
+  it('/get 지표 List를 불러온다.', async () => {
+    return request(app.getHttpServer())
+      .get(`/api/numerical-guidance/indicator/list`)
+      .query({
+        type: 'stocks',
+        cursorToken: 1,
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
   });
-  //   return request(app.getHttpServer())
-  //     .get(`/api/numerical-guidance/indicators/live/k-stock`)
-  //     .query({
-  //       indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
-  //       interval: 'day',
-  //     })
-  //     .set('Content-Type', 'application/json')
-  //     .expect(HttpStatus.OK);
-  // });
 });

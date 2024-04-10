@@ -15,7 +15,7 @@ export class BondsDto {
   index: number;
 
   @ApiProperty({
-    example: 'stocks',
+    example: 'bonds',
     description: '지표 타입',
   })
   indicatorType: IndicatorType;
@@ -56,7 +56,7 @@ export class BondsDto {
   })
   type: string;
 
-  private constructor(
+  constructor(
     id: string,
     index: number,
     indicatorType: IndicatorType,

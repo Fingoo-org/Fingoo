@@ -14,7 +14,6 @@ export class SaveIndicatorListCommandHandler implements ICommandHandler {
 
   @Transactional()
   async execute(command: SaveIndicatorListCommand) {
-    command;
-    await this.saveIndicatorListPort.saveIndicatorList();
+    await this.saveIndicatorListPort.saveIndicatorList(command.count);
   }
 }
