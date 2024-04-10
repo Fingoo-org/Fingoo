@@ -22,7 +22,6 @@ const indicatorTypes: IndicatorType[] = [
   'stocks',
   'funds',
 ];
-const SAVE_DATA_COUNT = 5000;
 
 @Injectable()
 export class IndicatorTwelveAdapter implements SaveIndicatorListPort {
@@ -47,23 +46,21 @@ export class IndicatorTwelveAdapter implements SaveIndicatorListPort {
   ) {}
 
   @Transactional({ propagation: Propagation.REQUIRES_NEW })
-  async saveIndicatorList() {
+  async saveIndicatorList(count: number) {
     await this.clearIndicatorList();
     for (const indicatorType of indicatorTypes) {
       const data = await this.twelveApiUtil.getReferenceData(indicatorType);
-      await this.insertDataIntoRepository(indicatorType, data);
+      await this.insertDataIntoRepository(indicatorType, data, count);
     }
   }
 
-  private async insertDataIntoRepository(type: IndicatorType, data: any) {
+  private async insertDataIntoRepository(type: IndicatorType, data: any, count: number) {
     const dataList = type === 'funds' || type === 'bonds' ? data.result.list : data.data;
-    const batchSize = SAVE_DATA_COUNT;
+    const batchSize = count;
 
     this.logger.log(`${type} 저장 시작~!`);
-    for (let offset = 0; offset < dataList.length; offset += batchSize) {
-      const batchEntities = dataList.slice(offset, offset + batchSize);
-      await this.insertBatchEntities(type, batchEntities);
-    }
+    const batchEntities = dataList.slice(0, batchSize);
+    await this.insertBatchEntities(type, batchEntities);
     this.logger.log(`${type} 저장 끝~!!!`);
   }
 

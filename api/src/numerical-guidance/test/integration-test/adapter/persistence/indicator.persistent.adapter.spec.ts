@@ -14,7 +14,7 @@ import { FundEntity } from '../../../../infrastructure/adapter/persistence/indic
 import { IndicesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
-import { HttpStatus, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus } from '@nestjs/common';
 import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list.query';
 import { StockDto } from '../../../../application/query/indicator/dto/stock.dto';
 import { CryptoCurrenciesDto } from '../../../../application/query/indicator/dto/crypto-currencies.dto';
@@ -170,7 +170,7 @@ describe('IndicatorPersistentAdapter', () => {
 
   it('지표 리스트 불러오기 - index 형식이 잘못된 경우', async () => {
     // given
-    const invalidIndex = -10;
+    const invalidIndex = -10.01;
     const { type, cursorToken }: GetIndicatorListQuery = {
       type: 'stocks',
       cursorToken: invalidIndex,
@@ -180,10 +180,10 @@ describe('IndicatorPersistentAdapter', () => {
     await expect(async () => {
       await indicatorPersistentAdapter.loadIndicatorList(type, cursorToken);
     }).rejects.toThrow(
-      new NotFoundException({
-        HttpStatus: HttpStatus.NOT_FOUND,
-        error: `[ERROR] index: ${cursorToken} 해당 index의 indicator를 찾을 수 없습니다.`,
-        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+      new BadRequestException({
+        HttpStatus: HttpStatus.BAD_REQUEST,
+        error: `[ERROR] index, type 요청이 올바른지 확인해주세요.`,
+        message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
         cause: Error,
       }),
     );

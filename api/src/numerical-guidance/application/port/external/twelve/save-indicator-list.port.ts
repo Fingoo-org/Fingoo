@@ -1,3 +1,3 @@
 export interface SaveIndicatorListPort {
-  saveIndicatorList(): Promise<void>;
+  saveIndicatorList(count: number): Promise<void>;
 }

@@ -49,9 +49,9 @@ export class IndicatorController {
   }
 
   @ApiOperation({ summary: '지표 리스트를 저장합니다.' })
-  @Post('/list')
-  async saveIndicatorList(): Promise<void> {
-    const command = new SaveIndicatorListCommand();
+  @Post('/list/:count')
+  async saveIndicatorList(@Query('count') count: number): Promise<void> {
+    const command = new SaveIndicatorListCommand(count);
     return this.commandBus.execute(command);
   }
 
