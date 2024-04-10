@@ -16,7 +16,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
 import { UpdateSourceIndicatorsAndWeightsPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-and-weights.port';
 import { HttpService } from '@nestjs/axios';
-import { IndicatorValue } from 'src/utils/type/type-definition';
+import { forecastApiResponse } from 'src/utils/type/type-definition';
 import { UpdateCustomForecastIndicatorNamePort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-custom-forecast-indicator-name.port';
 import { DeleteCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/delete-custom-forecast-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
@@ -74,7 +74,7 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<IndicatorValue[]> {
+  async loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<forecastApiResponse> {
     try {
       const customForecastIndicatorEntity = await this.customForecastIndicatorRepository.findOneBy({
         id: customForecastIndicatorId,
@@ -98,7 +98,12 @@ export class CustomForecastIndicatorPersistentAdapter
       const requestUrl = url + indicatorsUrl + weightsUrl;
 
       const res = await this.api.axiosRef.get(requestUrl);
-      const result = res.data.values;
+      const resultValues = res.data.values;
+      const resultSingleOrMulti = res.data.type;
+      const result = {
+        IndicatorValues: resultValues,
+        singleOrMulti: resultSingleOrMulti,
+      };
 
       return result;
     } catch (error) {

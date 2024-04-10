@@ -4,6 +4,8 @@ export type Interval = 'day' | 'week' | 'month' | 'year';
 
 export type IndicatorType = 'k-stock' | 'exchange' | 'customForecastIndicator';
 
+export type singleOrMulti = 'single' | 'multi';
+
 export type SourceIndicatorIdAndWeightType = {
   sourceIndicatorId: string;
   weight: float;
@@ -14,6 +16,11 @@ export type IndicatorValue = {
   value: string;
 };
 
+export type forecastApiResponse = {
+  IndicatorValues: IndicatorValue[];
+  singleOrMulti: singleOrMulti;
+};
+
 export type CustomForecastIndicatorValuesResponse = {
   customForecastIndicatorId: string;
   targetIndicatorId: string;
@@ -21,6 +28,7 @@ export type CustomForecastIndicatorValuesResponse = {
   ticker: string;
   name: string;
   market: string;
+  singleOrMulti: singleOrMulti;
   customForecastIndicatorValues: IndicatorValue[];
   targetIndicatorValues: IndicatorValue[];
 };
