@@ -17,32 +17,26 @@ BASE_URL = os.getenv("FAST_BASE_URL")
 
 def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[int], db: Session) -> ForecastIndicatorDto:
   # 데이터베이스로부터 Indicator 정보 가져오기
-  sourceIndicators: list[IndicatorDto] = []
+  varIndicators: list[IndicatorDto] = []
+  # 재료 지표에 타겟 인디케이터 포함(var 관점에서는 재료지표와 타겟 지표가 모두 있어야 함)
+  sourceIndicatorIds.append(targetIndicatorId)
   for sourceIndicatorId in sourceIndicatorIds:
     # 직접 SQL 쿼리를 사용하여 Indicator 데이터를 가져옴
     query = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{sourceIndicatorId}'")
     result = db.execute(query).fetchone()
-    print(query)
 
     if result:
       # 쿼리 결과를 IndicatorDto로 변환하여 리스트에 추가
       indicatorDto = IndicatorDto(id=str(result[0]), name=result[1], ticker=result[2])
-      sourceIndicators.append(indicatorDto)
-
-  findTargetIndicatorQuery = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{targetIndicatorId}'")
-
-  findTargetIndicatorResult = db.execute(findTargetIndicatorQuery).fetchone()
-  if findTargetIndicatorResult:
-    targetIndicatorDto = IndicatorDto(id=str(findTargetIndicatorResult[0]), name=findTargetIndicatorResult[1], ticker=findTargetIndicatorResult[2])
-    sourceIndicators.append(targetIndicatorDto)
-
+      varIndicators.append(indicatorDto)
+  
   nameList = []
-  for sourceIndicator in sourceIndicators:
-    nameList.append(sourceIndicator.name)
+  for varIndicator in varIndicators:
+    nameList.append(varIndicator.name)
 
-  for sourceIndicator in sourceIndicators:
-    if sourceIndicator.id == targetIndicatorId:
-      targetIndicatorName = sourceIndicator.name
+  for varIndicator in varIndicators:
+    if varIndicator.id == targetIndicatorId:
+      targetIndicatorName = varIndicator.name
 
   APIList = []
   session = requests.Session()
@@ -74,7 +68,7 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
 
   df_var = pd.DataFrame(sourceDataFrames)
 
-  df_var.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
+  df_var.columns = [varIndicator.name for varIndicator in varIndicators]
   df_var = df_var.dropna()
   print(df_var.columns)
   
@@ -107,28 +101,12 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
             )
             values.append(forecastValue)
           result: ForecastIndicatorDto = {
+            "type": "multi",
             "values": values
             }
       return result
     else:
-      # arima
-      print('Arima')
-      customForecastIndicator = forecast.runArima(df_var, targetIndicatorName, int(len(df_var)/2))
-      forecastdata = customForecastIndicator[targetIndicatorName].to_dict()
-      forecastValuesWithoutDates = list(forecastdata.values())
-      values = []
-      currentDate = datetime.datetime.now()
-      for i in range(len(forecastValuesWithoutDates)):
-        forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
-        forecastValue = ForecastValue(
-          value = forecastValuesWithoutDates[i],
-          date = forecastDate
-        )
-        values.append(forecastValue)
-      result: ForecastIndicatorDto = {
-        "values": values
-      }
-      return result
+      return predictWithoutTargetIndicator(targetIndicatorId, db)
   except Exception as error:
     print(f'Error: {error}')
     # arima
@@ -146,9 +124,10 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
       )
       values.append(forecastValue)
     result: ForecastIndicatorDto = {
+      "type": "single",
       "values": values
     }
-    return result
+    return predictWithoutTargetIndicator(targetIndicatorId, db)
   
 def predictWithoutTargetIndicator(targetIndicatorId:str, db: Session) -> ForecastIndicatorDto:
   findTargetIndicatorQuery = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{targetIndicatorId}'")
@@ -211,6 +190,7 @@ def predictWithoutTargetIndicator(targetIndicatorId:str, db: Session) -> Forecas
     )
     values.append(forecastValue)
   result: ForecastIndicatorDto = {
+    "type": "single",
     "values": values
   }
 
@@ -218,7 +198,8 @@ def predictWithoutTargetIndicator(targetIndicatorId:str, db: Session) -> Forecas
 
 def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
   # 데이터베이스로부터 Indicator 정보 가져오기
-  sourceIndicators: list[IndicatorDto] = []
+  varIndicators: list[IndicatorDto] = []
+  sourceIndicatorIds.append(targetIndicatorId)
   for sourceIndicatorId in sourceIndicatorIds:
     # 직접 SQL 쿼리를 사용하여 Indicator 데이터를 가져옴
     query = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{sourceIndicatorId}'")
@@ -227,22 +208,15 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
     if result:
       # 쿼리 결과를 IndicatorDto로 변환하여 리스트에 추가
       indicatorDto = IndicatorDto(id=str(result[0]), name=result[1], ticker=result[2])
-      sourceIndicators.append(indicatorDto)
-
-  # 데이터베이스로부터 TargetIndicator 정보 가져오기
-  findTargetIndicatorQuery = text(f"SELECT id, name, ticker FROM public.indicator WHERE id = '{targetIndicatorId}'")
-  findTargetIndicatorResult = db.execute(findTargetIndicatorQuery).fetchone()
-  if findTargetIndicatorResult:
-    targetIndicatorDto = IndicatorDto(id=str(findTargetIndicatorResult[0]), name=findTargetIndicatorResult[1], ticker=findTargetIndicatorResult[2])
-    sourceIndicators.append(targetIndicatorDto)
-
+      varIndicators.append(indicatorDto)
+  
   nameList = []
-  for sourceIndicator in sourceIndicators:
-    nameList.append(sourceIndicator.name)
-  print(nameList)
-  for sourceIndicator in sourceIndicators:
-    if sourceIndicator.id == targetIndicatorId:
-      targetIndicatorName = sourceIndicator.name
+  for varIndicator in varIndicators:
+    nameList.append(varIndicator.name)
+
+  for varIndicator in varIndicators:
+    if varIndicator.id == targetIndicatorId:
+      targetIndicatorName = varIndicator.name
 
   APIList = []
   session = requests.Session()
@@ -250,8 +224,8 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
   adapter = HTTPAdapter(max_retries=retry)
   session.mount('http://', adapter)
 
-  for sourceIndicator in sourceIndicatorIds:
-    req = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={sourceIndicator}')
+  for sourceIndicatorId in sourceIndicatorIds:
+    req = requests.get(f'http://{BASE_URL}?interval=day&indicatorId={sourceIndicatorId}')
     data = req.json()
     values = data['values']
     df = pd.DataFrame(values)
@@ -274,7 +248,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
 
   df_var = pd.DataFrame(sourceDataFrames)
 
-  df_var.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
+  df_var.columns = [varIndicator.name for varIndicator in varIndicators]
   df_var = df_var.dropna()
   print(df_var.columns)
   
@@ -295,11 +269,11 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
     grangerGroup = verification.findInfluentialGroups(checkDf)
     print(grangerGroup)
     grangerVerificationResult:list[Verification] = []
-    for sourceIndicator in sourceIndicators:
-      if sourceIndicator.name in grangerGroup:
-        ver: Verification = {"indicatorId": sourceIndicator.id, "verification": "True"}
+    for varIndicator in varIndicators:
+      if varIndicator.name in grangerGroup:
+        ver: Verification = {"indicatorId": varIndicator.id, "verification": "True"}
       else:
-        ver: Verification = {"indicatorId": sourceIndicator.id, "verification": "False"}
+        ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
       grangerVerificationResult.append(ver)
     print(grangerVerificationResult)
   except Exception:
@@ -313,11 +287,11 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
     cointJohansenVerificationResult: list[Verification] = []
     cointJohansenVerification = verification.cointJohansenVerification(df_var, grangerGroup)
     cointJohansenVerificationList = [str(item) for item in cointJohansenVerification]
-    for sourceIndicator in sourceIndicators:
-      if sourceIndicator.name in cointJohansenVerificationList:
-        ver: Verification = {'indicatorId': sourceIndicator.id, 'verification': 'True'}
+    for varIndicator in varIndicators:
+      if varIndicator.name in cointJohansenVerificationList:
+        ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'True'}
       else:
-        ver: Verification = {'indicatorId': sourceIndicator.id, 'verification': 'False'}
+        ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'False'}
       cointJohansenVerificationResult.append(ver)
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
