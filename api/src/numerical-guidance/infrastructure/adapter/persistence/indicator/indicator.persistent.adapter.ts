@@ -70,11 +70,11 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
   ): Promise<CursorPageDto<CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto>> {
     try {
       const [indicatorEntities, total] = await this.findIndicatorEntitiesByType(type, cursorToken);
+      indicatorEntities.map((indicatorEntity) => this.nullCheckForEntity(indicatorEntity));
 
       const indicatorDtos = this.mapEntitiesToDtosByType(type, indicatorEntities);
       const nextCursorTokenEntity = await this.getNextCursorTokenEntity(type, cursorToken);
 
-      this.nullCheckForEntity(nextCursorTokenEntity);
       const { hasNextData, cursor } = this.cursorController(nextCursorTokenEntity, total);
       const cursorPageMetaDto = new CursorPageMetaDto({
         total,
