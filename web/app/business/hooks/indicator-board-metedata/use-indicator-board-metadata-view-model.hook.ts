@@ -3,6 +3,7 @@ import {
   useFetchIndicatorBoardMetadataList,
   useUpdateIndicatorBoardMetadata,
   useUpdateIndicatorIdsWithsectionIds,
+  useUploadIndicatorBoardMetadataImage,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
 import { useMemo } from 'react';
@@ -12,6 +13,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
 
   const { trigger: updateIndicatorBoardMetadataTrigger } = useUpdateIndicatorBoardMetadata(metadataId);
   const { trigger: updateIndicatorIdsWithsectionIdsTrigger } = useUpdateIndicatorIdsWithsectionIds(metadataId);
+  const { trigger: uploadIndicatorBoardMetadataImageTrigger } = useUploadIndicatorBoardMetadataImage();
 
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
@@ -87,11 +89,18 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     );
   };
 
+  const uploadIndicatorBoardMetadataImage = async (imageBlod: Blob) => {
+    const formData = new FormData();
+    formData.append('fileName', imageBlod);
+    return await uploadIndicatorBoardMetadataImageTrigger(formData);
+  };
+
   return {
     indicatorBoardMetadata,
     updateIndicatorBoardMetadata,
     updateIndicatorIdsWithsectionIds,
     addsectionToIndicatorBoardMetadata,
     deleteSectionFromIndicatorBoardMetadata,
+    uploadIndicatorBoardMetadataImage,
   };
 };

@@ -1,5 +1,6 @@
 import { type Fetcher } from 'swr';
 import { instance } from '@/app/utils/http';
+import { AxiosRequestConfig } from 'axios';
 
 // Refactor: fetcher 정리 필요, 각 요청별로 나누기
 export const defaultFetcher: Fetcher<any, string> = (url) => instance.get(url).then((res) => res.data);
@@ -7,11 +8,12 @@ export const defaultFetcher: Fetcher<any, string> = (url) => instance.get(url).t
 export const postFetcher = async <RequestBody, Response = any>(
   key: string | string[],
   { arg }: { arg: RequestBody },
+  options?: AxiosRequestConfig<RequestBody>,
 ) => {
   const url = Array.isArray(key) ? key.join('/') : key;
 
   try {
-    const response = await instance.post<Response>(url, arg);
+    const response = await instance.post<Response>(url, arg, options);
 
     return response.data;
   } catch (e) {

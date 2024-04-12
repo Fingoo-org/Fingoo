@@ -8,7 +8,14 @@ import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook
 import AdvancedIndicatorsChart from './advanced-indicators-chart';
 import SimpleIndicatorsChart from './simple-indicators-chart';
 import Pending from '../../view/molocule/pending';
+import { useCallback, useState } from 'react';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
+import { useGenerateImage } from '../../view/hooks/use-generate-image';
+import ImageSharePopover from '../../view/molocule/image-share-popover/image-share-popover';
+import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+
+const BASE_URL =
+  'https://mlvbynpnwpxewztngrrz.supabase.co/storage/v1/object/public/fingoo_bucket/indicatorBoardMetadata';
 
 export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
@@ -16,14 +23,32 @@ export default function IndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel();
   const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel();
+  const { uploadIndicatorBoardMetadataImage } = useIndicatorBoardMetadataViewModel(undefined);
+  const [imageUrl, setImageUrl] = useState<string>('');
+
+  const { ref, downloadImage, generateImageBlob } = useGenerateImage<HTMLDivElement>({
+    imageName: 'chart-image',
+  });
+
+  const handleImageDownload = useCallback(async () => {
+    await downloadImage();
+  }, []);
+
+  const handleImageUrlCreate = async () => {
+    const imageFile = await generateImageBlob();
+    if (imageFile) {
+      const urlUUID = await uploadIndicatorBoardMetadataImage(imageFile);
+      setImageUrl(urlUUID);
+    }
+  };
 
   const handleToggle = (active: boolean) => {
     setIsAdvancedChart(active);
   };
 
   return (
-    <>
-      <Pending isPending={isLiveIndicatorPending || isCustomForecastIndicatorPending}>
+    <Pending isPending={isLiveIndicatorPending || isCustomForecastIndicatorPending}>
+      <div className="relative">
         <div className="flex items-center justify-center">
           <SelectedMetadataTittle />
         </div>
@@ -37,10 +62,18 @@ export default function IndicatorsChart() {
             text={'자세한 차트'}
           />
         </div>
-        <div className="w-full px-8" data-testid="indicators-chart">
+        <div ref={ref} className="w-full px-8" data-testid="indicators-chart">
           {isAdvancedChart ? <AdvancedIndicatorsChart /> : <SimpleIndicatorsChart />}
         </div>
-      </Pending>
-    </>
+        <div className="absolute right-3 top-1">
+          <ImageSharePopover
+            baseUrl={BASE_URL}
+            url={`/${imageUrl}`}
+            onPopoverTriggerClick={handleImageUrlCreate}
+            onDownloadImage={handleImageDownload}
+          />
+        </div>
+      </div>
+    </Pending>
   );
 }

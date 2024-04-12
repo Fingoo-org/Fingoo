@@ -1,4 +1,10 @@
 @tailwind base;
+/* https://github.com/niklasvh/html2canvas/issues/2775#issuecomment-1204988157 */
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
 @tailwind components;
 @tailwind utilities;
 
