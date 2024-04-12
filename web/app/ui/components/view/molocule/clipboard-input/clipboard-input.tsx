@@ -28,7 +28,7 @@ export default function ClipboardInput({ copyUrl }: ClipboardInputProps) {
   return (
     <div className="w-full max-w-sm">
       <div className="flex items-center">
-        <span className="z-10 inline-flex flex-shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-white">
+        <span className="z-10 inline-flex flex-shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-2 py-2.5 text-center text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-white">
           URL
         </span>
         <div className="relative w-full">

@@ -25,7 +25,7 @@ export default function ImageSharePopover({
       <Popover.Trigger>
         <IconButton onClick={handlePopoverTriggerClick} icon={Share1Icon} color={'gray'} />
       </Popover.Trigger>
-      <Popover.Content side={'top'} className="w-80">
+      <Popover.Content side={'top'} className="w-96">
         <ClipboardInput copyUrl={`${baseUrl}${url}`} />
         <div className="mt-4 flex justify-center">
           <Button onClick={onDownloadImage} size={'lg'} variant={'light'} color={'gray'}>
