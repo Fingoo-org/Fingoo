@@ -57,8 +57,8 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       ticker: ticker,
       name: name,
       market: market,
-      singleOrMulti: customerFroecastIndicatorValues.singleOrMulti,
-      customForecastIndicatorValues: customerFroecastIndicatorValues.IndicatorValues,
+      forecastType: customerFroecastIndicatorValues.forecastType,
+      customForecastIndicatorValues: customerFroecastIndicatorValues.indicatorValues,
       targetIndicatorValues: targetIndicatorValues,
     };
 

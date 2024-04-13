@@ -99,10 +99,10 @@ export class CustomForecastIndicatorPersistentAdapter
 
       const res = await this.api.axiosRef.get(requestUrl);
       const resultValues = res.data.values;
-      const resultSingleOrMulti = res.data.type;
+      const resultForecastType = res.data.type;
       const result = {
-        IndicatorValues: resultValues,
-        singleOrMulti: resultSingleOrMulti,
+        indicatorValues: resultValues,
+        forecastType: resultForecastType,
       };
 
       return result;

@@ -18,7 +18,7 @@ const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
   ticker: '373220',
   name: 'LG에너지솔루션',
   market: 'KOSPI',
-  singleOrMulti: 'single',
+  forecastType: 'single',
   customForecastIndicatorValues: [
     {
       value: '50328.131',
