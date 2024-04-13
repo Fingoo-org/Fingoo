@@ -16,7 +16,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
 import { UpdateSourceIndicatorsAndWeightsPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-and-weights.port';
 import { HttpService } from '@nestjs/axios';
-import { forecastApiResponse } from 'src/utils/type/type-definition';
+import { ForecastApiResponse } from 'src/utils/type/type-definition';
 import { UpdateCustomForecastIndicatorNamePort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-custom-forecast-indicator-name.port';
 import { DeleteCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/delete-custom-forecast-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
@@ -74,7 +74,7 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<forecastApiResponse> {
+  async loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<ForecastApiResponse> {
     try {
       const customForecastIndicatorEntity = await this.customForecastIndicatorRepository.findOneBy({
         id: customForecastIndicatorId,

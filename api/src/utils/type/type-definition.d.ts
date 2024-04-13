@@ -16,7 +16,7 @@ export type IndicatorValue = {
   value: string;
 };
 
-export type forecastApiResponse = {
+export type ForecastApiResponse = {
   indicatorValues: IndicatorValue[];
   forecastType: ForecastType;
 };

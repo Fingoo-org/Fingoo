@@ -5,7 +5,7 @@ import { LoadCustomForecastIndicatorValuesPort } from '../../../port/persistence
 import {
   CustomForecastIndicatorValuesResponse,
   IndicatorValue,
-  forecastApiResponse,
+  ForecastApiResponse,
 } from 'src/utils/type/type-definition';
 import { LoadCustomForecastIndicatorPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
@@ -29,7 +29,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
 
   async execute(query: GetCustomForecastIndicatorValuesQuery): Promise<CustomForecastIndicatorValuesResponse> {
     const customForecastIndicatorId = query.customForecastIndicatorId;
-    const customerFroecastIndicatorValues: forecastApiResponse =
+    const customerFroecastIndicatorValues: ForecastApiResponse =
       await this.loadCustomForecastIndicatorValuesPort.loadCustomForecastIndicatorValues(customForecastIndicatorId);
 
     const customForecastIndicator: CustomForecastIndicator =

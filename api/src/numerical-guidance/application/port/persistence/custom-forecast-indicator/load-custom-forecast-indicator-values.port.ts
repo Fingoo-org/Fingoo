@@ -1,5 +1,5 @@
-import { forecastApiResponse } from 'src/utils/type/type-definition';
+import { ForecastApiResponse } from 'src/utils/type/type-definition';
 
 export interface LoadCustomForecastIndicatorValuesPort {
-  loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<forecastApiResponse>;
+  loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<ForecastApiResponse>;
 }
