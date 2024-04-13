@@ -29,7 +29,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
 
   async execute(query: GetCustomForecastIndicatorValuesQuery): Promise<CustomForecastIndicatorValuesResponse> {
     const customForecastIndicatorId = query.customForecastIndicatorId;
-    const customerFroecastIndicatorValues: ForecastApiResponse =
+    const customFroecastIndicatorValues: ForecastApiResponse =
       await this.loadCustomForecastIndicatorValuesPort.loadCustomForecastIndicatorValues(customForecastIndicatorId);
 
     const customForecastIndicator: CustomForecastIndicator =
@@ -57,8 +57,8 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       ticker: ticker,
       name: name,
       market: market,
-      forecastType: customerFroecastIndicatorValues.forecastType,
-      customForecastIndicatorValues: customerFroecastIndicatorValues.indicatorValues,
+      forecastType: customFroecastIndicatorValues.forecastType,
+      customForecastIndicatorValues: customFroecastIndicatorValues.indicatorValues,
       targetIndicatorValues: targetIndicatorValues,
     };
 
