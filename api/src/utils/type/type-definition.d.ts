@@ -16,6 +16,11 @@ export type IndicatorValue = {
   value: string;
 };
 
+export type Verification = {
+  indicatorId: string;
+  verification: string;
+};
+
 export type ForecastApiResponse = {
   indicatorValues: IndicatorValue[];
   forecastType: ForecastType;

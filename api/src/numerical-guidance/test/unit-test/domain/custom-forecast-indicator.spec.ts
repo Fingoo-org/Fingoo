@@ -84,6 +84,43 @@ describe('예측지표', () => {
     expect(customForecastIndicator.sourceIndicatorIdsAndWeights).toEqual(expected);
   });
 
+  it('예측지표 업데이트 - 재료지표와 가중치 없는 상태로 업데이트', () => {
+    // given
+    const customForecastIndicator = new CustomForecastIndicator(
+      '26929514-237c-11ed-861d-0242ac120011',
+      'updatedCustomForecastIndicator',
+      'customForecastIndicator',
+      '26929514-237c-11ed-861d-0242ac120012',
+      [
+        {
+          indicatorId: '26929514-237c-11ed-861d-0242ac120013',
+          verification: 'True',
+        },
+      ],
+      [
+        {
+          indicatorId: '26929514-237c-11ed-861d-0242ac120013',
+          verification: 'True',
+        },
+      ],
+      [
+        {
+          weight: 50,
+          sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120013',
+        },
+      ],
+    );
+
+    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
+
+    // when
+    customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+
+    // then
+    const expected = [];
+    expect(customForecastIndicator.sourceIndicatorIdsAndWeights).toEqual(expected);
+  });
+
   it('예측지표 업데이트 - 재료 지표가 중복될 때', () => {
     // given
     const customForecastIndicator = CustomForecastIndicator.createNew(

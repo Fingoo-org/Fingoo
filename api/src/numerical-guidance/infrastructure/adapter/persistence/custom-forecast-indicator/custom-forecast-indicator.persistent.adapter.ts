@@ -204,28 +204,35 @@ export class CustomForecastIndicatorPersistentAdapter
 
       customForecastIndicatorEntity.sourceIndicatorIdsAndWeights = customForecastIndicator.sourceIndicatorIdsAndWeights;
 
-      const url: string =
-        process.env.FASTAPI_URL +
-        '/api/var-api/source-indicators-verification?targetIndicatorId=' +
-        customForecastIndicator.targetIndicatorId +
-        '&';
-      let indicatorsUrl: string = '';
-      let weightsUrl: string = '';
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
-        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].sourceIndicatorId}&`;
+      if (customForecastIndicatorEntity.sourceIndicatorIdsAndWeights.length == 0) {
+        const grangerGroup = [];
+        const cointJohansenVerification = [];
+
+        customForecastIndicatorEntity.grangerVerification = grangerGroup;
+        customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
+      } else {
+        const url: string =
+          process.env.FASTAPI_URL +
+          '/api/var-api/source-indicators-verification?targetIndicatorId=' +
+          customForecastIndicator.targetIndicatorId +
+          '&';
+        let indicatorsUrl: string = '';
+        let weightsUrl: string = '';
+        for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
+          indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].sourceIndicatorId}&`;
+        }
+        for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
+          weightsUrl += `weight=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].weight}&`;
+        }
+        const requestUrl = url + indicatorsUrl + weightsUrl;
+
+        const res = await this.api.axiosRef.get(requestUrl);
+        const grangerGroup = res.data.grangerGroup;
+        const cointJohansenVerification = res.data.cointJohansenVerification;
+
+        customForecastIndicatorEntity.grangerVerification = grangerGroup;
+        customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
       }
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
-        weightsUrl += `weight=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].weight}&`;
-      }
-      const requestUrl = url + indicatorsUrl + weightsUrl;
-
-      const res = await this.api.axiosRef.get(requestUrl);
-      const grangerGroup = res.data.grangerGroup;
-      const cointJohansenVerification = res.data.cointJohansenVerification;
-
-      customForecastIndicatorEntity.grangerVerification = grangerGroup;
-      customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
-
       await this.customForecastIndicatorRepository.save(customForecastIndicatorEntity);
     } catch (error) {
       throw new InternalServerErrorException({
