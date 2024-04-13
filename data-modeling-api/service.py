@@ -69,8 +69,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   df_var = pd.DataFrame(sourceDataFrames)
 
   df_var.columns = [varIndicator.name for varIndicator in varIndicators]
-  df_var = df_var.dropna()
-  print(df_var.columns)
   
   weights.append(0)
   for indicator, weight in zip(df_var, weights):
@@ -110,23 +108,6 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   except Exception as error:
     print(f'Error: {error}')
     # arima
-    print('Arima')
-    customForecastIndicator = forecast.runArima(df_var, targetIndicatorName, int(len(df_var)/2))
-    forecastdata = customForecastIndicator[targetIndicatorName].to_dict()
-    forecastValuesWithoutDates = list(forecastdata.values())
-    values = []
-    currentDate = datetime.datetime.now()
-    for i in range(len(forecastValuesWithoutDates)):
-      forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
-      forecastValue = ForecastValue(
-        value = forecastValuesWithoutDates[i],
-        date = forecastDate
-      )
-      values.append(forecastValue)
-    result: ForecastIndicatorDto = {
-      "type": "single",
-      "values": values
-    }
     return predictWithoutTargetIndicator(targetIndicatorId, db)
   
 def predictWithoutTargetIndicator(targetIndicatorId:str, db: Session) -> ForecastIndicatorDto:
@@ -168,7 +149,6 @@ def predictWithoutTargetIndicator(targetIndicatorId:str, db: Session) -> Forecas
   df_arima = pd.DataFrame(sourceDataFrames)
 
   df_arima.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
-  df_arima = df_arima.dropna()
   
   weights = []
   weights.append(0)
@@ -249,8 +229,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
   df_var = pd.DataFrame(sourceDataFrames)
 
   df_var.columns = [varIndicator.name for varIndicator in varIndicators]
-  df_var = df_var.dropna()
-  print(df_var.columns)
+  df_var = df_var.fillna(method='backfill')
   
   weights.append(0)
   for indicator, weight in zip(df_var, weights):
@@ -267,7 +246,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
     grangerDf = verification.grangerVerification(df_var)
     checkDf = verification.findSignificantValues(grangerDf)
     grangerGroup = verification.findInfluentialGroups(checkDf)
-    print(grangerGroup)
+    print(f'Var Group: {grangerGroup}')
     grangerVerificationResult:list[Verification] = []
     for varIndicator in varIndicators:
       if varIndicator.name in grangerGroup:
@@ -275,7 +254,6 @@ def sourceIndicatorsVerification(targetIndicatorId:str, sourceIndicatorIds: list
       else:
         ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
       grangerVerificationResult.append(ver)
-    print(grangerVerificationResult)
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
       "grangerGroup": ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.'],

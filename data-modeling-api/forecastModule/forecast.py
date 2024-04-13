@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
-  df = df.fillna(method='ffill')
+  df = df.fillna(method='backfill')
 
   dfVar = df[group]
   for i in group:
@@ -26,7 +26,7 @@ def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
   return dfVarDnorm
 
 def runArima(df: pd.DataFrame, target: str, period: int) -> pd.DataFrame:
-  df = df.fillna(method='ffill')
+  df = df.fillna(method='backfill')
 
   if verification.getADFDataFrame(df[target])['Data']['p_value'] >= 0.05:
     df[target] = df[target].diff().bfill()
@@ -45,7 +45,7 @@ def runArima(df: pd.DataFrame, target: str, period: int) -> pd.DataFrame:
   return forecast_df
 
 def optimizationArima(df: pd.DataFrame, target: str) -> str:
-  df = df.fillna(method='ffill')
+  df = df.fillna(method='backfill')
   if verification.getADFDataFrame(df[target])['Data']['p_value'] >= 0.05:
     df[target] = df[target].diff().bfill()
 
