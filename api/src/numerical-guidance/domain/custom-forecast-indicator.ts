@@ -112,11 +112,10 @@ export class CustomForecastIndicator extends AggregateRoot {
 
     if (updateSourceIndicatorIdsAndWeights.length == 0) {
       this.sourceIndicatorIdsAndWeights = [];
-      this.updatedAt = new Date();
     } else {
       this.sourceIndicatorIdsAndWeights = updateSourceIndicatorIdsAndWeights.slice();
-      this.updatedAt = new Date();
     }
+    this.updatedAt = new Date();
   }
 
   public updateCustomForecastIndicatorName(name: string) {
