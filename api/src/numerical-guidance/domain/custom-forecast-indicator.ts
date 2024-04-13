@@ -5,6 +5,7 @@ import { SourceIndicatorIdAndWeightType, Verification } from 'src/utils/type/typ
 import { ApiProperty } from '@nestjs/swagger';
 import { SourceIndicatorsShouldNotDuplicateRule } from './rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { SourceIndicatorCountShouldNotExceedLimitRule } from './rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';
+import { TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule } from './rule/TargetIndicatorShouldNotBeIncludedInSourceIndicators.rule';
 
 export class CustomForecastIndicator extends AggregateRoot {
   @ApiProperty({
@@ -102,6 +103,12 @@ export class CustomForecastIndicator extends AggregateRoot {
   public updateSourceIndicatorsAndWeights(updateSourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[]) {
     this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(updateSourceIndicatorIdsAndWeights));
     this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(updateSourceIndicatorIdsAndWeights));
+    this.checkRule(
+      new TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule(
+        updateSourceIndicatorIdsAndWeights,
+        this.targetIndicatorId,
+      ),
+    );
 
     if (updateSourceIndicatorIdsAndWeights.length == 0) {
       this.sourceIndicatorIdsAndWeights = [];

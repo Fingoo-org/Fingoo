@@ -2,6 +2,7 @@ import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-fo
 import { CustomForecastIndicatorNameShouldNotEmptyRule } from 'src/numerical-guidance/domain/rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 import { SourceIndicatorCountShouldNotExceedLimitRule } from 'src/numerical-guidance/domain/rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';
 import { SourceIndicatorsShouldNotDuplicateRule } from 'src/numerical-guidance/domain/rule/SourceIndicatorsShouldNotDuplicate.rule';
+import { TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule } from 'src/numerical-guidance/domain/rule/TargetIndicatorShouldNotBeIncludedInSourceIndicators.rule';
 import { BusinessRuleValidationException } from 'src/utils/domain/business-rule-validation.exception';
 import { IndicatorType, SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
 
@@ -150,6 +151,55 @@ describe('예측지표', () => {
     expect(updateSourceIndicatorsAndWeights).toThrow(rule.Message);
   });
 
+  it('예측지표 업데이트 - 타겟 지표가 재료지표 안에 포함될 경우', () => {
+    // given
+    const targetIndicatorId = '26929514-237c-11ed-861d-0242ac120012';
+    const customForecastIndicator = new CustomForecastIndicator(
+      '26929514-237c-11ed-861d-0242ac120011',
+      'updatedCustomForecastIndicator',
+      'customForecastIndicator',
+      targetIndicatorId,
+      [
+        {
+          indicatorId: '26929514-237c-11ed-861d-0242ac120030',
+          verification: 'True',
+        },
+      ],
+      [
+        {
+          indicatorId: '26929514-237c-11ed-861d-0242ac120031',
+          verification: 'True',
+        },
+      ],
+      [
+        {
+          weight: 50,
+          sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120032',
+        },
+      ],
+    );
+
+    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
+        weight: 0,
+      },
+    ];
+
+    // when
+    function updateSourceIndicatorsAndWeights() {
+      customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+    }
+    const rule = new TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule(
+      sourceIndicatorIdsAndWeights,
+      targetIndicatorId,
+    );
+
+    // then
+    expect(updateSourceIndicatorsAndWeights).toThrow(BusinessRuleValidationException);
+    expect(updateSourceIndicatorsAndWeights).toThrow(rule.Message);
+  });
+
   it('예측지표 업데이트 - 재료 지표가 10개가 넘어갈 경우', () => {
     // given
     const customForecastIndicator = CustomForecastIndicator.createNew(
@@ -160,47 +210,47 @@ describe('예측지표', () => {
     const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
-        weight: 'none',
+        weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
-        weight: 'none',
+        weight: 10,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120031',
-        weight: 'none',
+        weight: 10,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120041',
-        weight: 'none',
+        weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120051',
-        weight: 'none',
+        weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120061',
-        weight: 'none',
+        weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120071',
-        weight: 'none',
+        weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120081',
-        weight: 'none',
+        weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120091',
-        weight: 'none',
+        weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
-        weight: 'none',
+        weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120022',
-        weight: 'none',
+        weight: 0,
       },
     ];
 
