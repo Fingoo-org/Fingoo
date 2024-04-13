@@ -99,19 +99,15 @@ export class CustomForecastIndicator extends AggregateRoot {
     );
   }
 
-  public updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[]) {
-    this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(sourceIndicatorIdsAndWeights));
-    this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(sourceIndicatorIdsAndWeights));
-    const newSourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
+  public updateSourceIndicatorsAndWeights(updateSourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[]) {
+    this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(updateSourceIndicatorIdsAndWeights));
+    this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(updateSourceIndicatorIdsAndWeights));
 
-    if (sourceIndicatorIdsAndWeights.length == 0) {
+    if (updateSourceIndicatorIdsAndWeights.length == 0) {
       this.sourceIndicatorIdsAndWeights = [];
       this.updatedAt = new Date();
     } else {
-      for (let i = 0; i < sourceIndicatorIdsAndWeights.length; i++) {
-        newSourceIndicatorIdsAndWeights.push(sourceIndicatorIdsAndWeights[i]);
-      }
-      this.sourceIndicatorIdsAndWeights = newSourceIndicatorIdsAndWeights;
+      this.sourceIndicatorIdsAndWeights = updateSourceIndicatorIdsAndWeights.slice();
       this.updatedAt = new Date();
     }
   }
