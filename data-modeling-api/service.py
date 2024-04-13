@@ -83,26 +83,29 @@ def predict(targetIndicatorId:str, sourceIndicatorIds: list[str], weights: list[
   # var
   try: 
     if len(grangerGroup) >= 2:
-      print('Var')
-      customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
-      for name in grangerGroup:
-        if name == targetIndicatorName:
-          forecastdata = customForecastIndicator[name].to_dict()
-          forecastValuesWithoutDates = list(forecastdata.values())
-          values = []
-          currentDate = datetime.datetime.now()
-          for i in range(len(forecastValuesWithoutDates)):
-            forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
-            forecastValue = ForecastValue(
-              value = forecastValuesWithoutDates[i],
-              date = forecastDate
-            )
-            values.append(forecastValue)
-          result: ForecastIndicatorDto = {
-            "type": "multi",
-            "values": values
-            }
-      return result
+      if targetIndicatorName in grangerGroup:
+        print('Var')
+        customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
+        for name in grangerGroup:
+          if name == targetIndicatorName:
+            forecastdata = customForecastIndicator[name].to_dict()
+            forecastValuesWithoutDates = list(forecastdata.values())
+            values = []
+            currentDate = datetime.datetime.now()
+            for i in range(len(forecastValuesWithoutDates)):
+              forecastDate = (currentDate + datetime.timedelta(days=i)).strftime("%Y%m%d")
+              forecastValue = ForecastValue(
+                value = forecastValuesWithoutDates[i],
+                date = forecastDate
+              )
+              values.append(forecastValue)
+            result: ForecastIndicatorDto = {
+              "type": "multi",
+              "values": values
+              }
+        return result
+      elif targetIndicatorName not in grangerGroup:
+        return predictWithoutTargetIndicator(targetIndicatorId, db)
     else:
       return predictWithoutTargetIndicator(targetIndicatorId, db)
   except Exception as error:
