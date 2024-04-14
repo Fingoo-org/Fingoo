@@ -15,14 +15,14 @@ import { IndicesEntity } from '../../../../infrastructure/adapter/persistence/in
 import { StockEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { BadRequestException, HttpStatus } from '@nestjs/common';
-import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list.query';
-import { StockDto } from '../../../../application/query/indicator/dto/stock.dto';
-import { CryptoCurrenciesDto } from '../../../../application/query/indicator/dto/crypto-currencies.dto';
-import { ETFDto } from '../../../../application/query/indicator/dto/etf.dto';
-import { ForexPairDto } from '../../../../application/query/indicator/dto/forex-pair.dto';
-import { IndicesDto } from '../../../../application/query/indicator/dto/indices.dto';
-import { FundDto } from '../../../../application/query/indicator/dto/fund.dto';
-import { BondsDto } from '../../../../application/query/indicator/dto/bonds.dto';
+import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list/get-indicator-list.query';
+import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
+import { CryptoCurrenciesDto } from '../../../../application/query/indicator/get-indicator-list/dto/crypto-currencies.dto';
+import { ETFDto } from '../../../../application/query/indicator/get-indicator-list/dto/etf.dto';
+import { ForexPairDto } from '../../../../application/query/indicator/get-indicator-list/dto/forex-pair.dto';
+import { IndicesDto } from '../../../../application/query/indicator/get-indicator-list/dto/indices.dto';
+import { FundDto } from '../../../../application/query/indicator/get-indicator-list/dto/fund.dto';
+import { BondsDto } from '../../../../application/query/indicator/get-indicator-list/dto/bonds.dto';
 import * as fs from 'fs';
 
 const testData = {

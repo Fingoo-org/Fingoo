@@ -1,7 +1,7 @@
+import { IndicatorType } from '../../../../../../utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
-import { IndicatorType } from '../../../../../utils/type/type-definition';
 
-export class StockDto {
+export class BondsDto {
   @ApiProperty({
     example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
     description: '지표 id',
@@ -15,19 +15,19 @@ export class StockDto {
   index: number;
 
   @ApiProperty({
-    example: 'stocks',
+    example: 'bonds',
     description: '지표 타입',
   })
   indicatorType: IndicatorType;
 
   @ApiProperty({
-    example: 'AAPL',
+    example: '0P00000AMG',
     description: '지표 심볼',
   })
   symbol: string;
 
   @ApiProperty({
-    example: 'Apple Inc',
+    example: 'Morgan Stanley Investment Funds - Sustainable Asia Equity Fund B',
     description: '지표명',
   })
   name: string;
@@ -45,20 +45,14 @@ export class StockDto {
   currency: string;
 
   @ApiProperty({
-    example: 'NASDAQ',
+    example: 'OTC',
     description: '거래소 종류',
   })
   exchange: string;
 
   @ApiProperty({
-    example: 'XNGS',
-    description: '증권 거래소 식별 코드',
-  })
-  mic_code: string;
-
-  @ApiProperty({
-    example: 'Common Stock(추가 예시 : Real Estate Investment Trust (REIT))',
-    description: '주식 타입',
+    example: 'Mutual Fund',
+    description: '채권 타입',
   })
   type: string;
 
@@ -71,7 +65,6 @@ export class StockDto {
     country: string,
     currency: string,
     exchange: string,
-    mic_code: string,
     type: string,
   ) {
     this.id = id;
@@ -82,11 +75,10 @@ export class StockDto {
     this.country = country;
     this.currency = currency;
     this.exchange = exchange;
-    this.mic_code = mic_code;
     this.type = type;
   }
 
-  public static create({ id, index, indicatorType, symbol, name, country, currency, exchange, mic_code, type }) {
-    return new StockDto(id, index, indicatorType, symbol, name, country, currency, exchange, mic_code, type);
+  public static create({ id, index, indicatorType, symbol, name, country, currency, exchange, type }) {
+    return new BondsDto(id, index, indicatorType, symbol, name, country, currency, exchange, type);
   }
 }

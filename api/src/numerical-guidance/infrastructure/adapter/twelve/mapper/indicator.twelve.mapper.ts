@@ -1,4 +1,4 @@
-import { BondsDto } from '../../../../application/query/indicator/dto/bonds.dto';
+import { BondsDto } from '../../../../application/query/indicator/get-indicator-list/dto/bonds.dto';
 import { IndicatorType } from '../../../../../utils/type/type-definition';
 
 export class IndicatorTwelveMapper {

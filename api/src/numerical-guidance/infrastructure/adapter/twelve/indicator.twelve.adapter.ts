@@ -12,6 +12,8 @@ import { IndicesEntity } from '../persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../persistence/indicator/entity/stock.entity';
 import { IndicatorType } from '../../../../utils/type/type-definition';
 import { Propagation, Transactional } from 'typeorm-transactional';
+import { SearchIndicatorPort } from '../../../application/port/persistence/indicator/search-indicator.port';
+import { SearchIndicatorDto } from '../../../application/query/indicator/get-indicator-search/dto/search-indicator.dto';
 
 const indicatorTypes: IndicatorType[] = [
   'bonds',
@@ -23,8 +25,19 @@ const indicatorTypes: IndicatorType[] = [
   'funds',
 ];
 
+type SearchedSymbolType = {
+  symbol: string;
+  instrument_name: string;
+  exchange: string;
+  mic_code: string;
+  exchange_timezone: string;
+  instrument_type: string;
+  country: string;
+  currency: string;
+};
+
 @Injectable()
-export class IndicatorTwelveAdapter implements SaveIndicatorListPort {
+export class IndicatorTwelveAdapter implements SaveIndicatorListPort, SearchIndicatorPort {
   private readonly logger = new Logger(IndicatorTwelveAdapter.name);
 
   constructor(
@@ -52,6 +65,14 @@ export class IndicatorTwelveAdapter implements SaveIndicatorListPort {
       const data = await this.twelveApiUtil.getReferenceData(indicatorType);
       await this.insertDataIntoRepository(indicatorType, data, count);
     }
+  }
+
+  @Transactional()
+  async searchIndicator(symbol: string): Promise<SearchIndicatorDto> {
+    const initData: SearchedSymbolType[] = await this.twelveApiUtil.searchSymbol(symbol);
+    console.log(initData);
+    const initSymbols: string[] = initData.map((data) => data.symbol);
+    return SearchIndicatorDto.create(initSymbols);
   }
 
   private async insertDataIntoRepository(type: IndicatorType, data: any, count: number) {

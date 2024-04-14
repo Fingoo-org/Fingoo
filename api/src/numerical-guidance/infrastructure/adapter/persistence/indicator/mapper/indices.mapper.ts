@@ -1,5 +1,5 @@
 import { IndicesEntity } from '../entity/indices.entity';
-import { IndicesDto } from '../../../../../application/query/indicator/dto/indices.dto';
+import { IndicesDto } from '../../../../../application/query/indicator/get-indicator-list/dto/indices.dto';
 
 export class IndicesMapper {
   static mapEntityToDto(indicesEntity: IndicesEntity): IndicesDto {

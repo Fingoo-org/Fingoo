@@ -20,7 +20,7 @@ import { AuthGuard } from '../../../../auth/auth.guard';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
 import * as fs from 'fs';
-import { GetIndicatorListQueryHandler } from '../../../application/query/indicator/get-indicator-list.query.handler';
+import { GetIndicatorListQueryHandler } from '../../../application/query/indicator/get-indicator-list/get-indicator-list.query.handler';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IndicatorType } from '../../../../../utils/type/type-definition';
+import { IndicatorType } from '../../../../../../utils/type/type-definition';
 
 export class CryptoCurrenciesDto {
   @ApiProperty({

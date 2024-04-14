@@ -1,5 +1,5 @@
 import { CryptoCurrenciesEntity } from '../entity/crypto-currencies.entity';
-import { CryptoCurrenciesDto } from '../../../../../application/query/indicator/dto/crypto-currencies.dto';
+import { CryptoCurrenciesDto } from '../../../../../application/query/indicator/get-indicator-list/dto/crypto-currencies.dto';
 
 export class CryptoCurrenciesMapper {
   static mapEntityToDto(cryptoCurrenciesEntity: CryptoCurrenciesEntity): CryptoCurrenciesDto {

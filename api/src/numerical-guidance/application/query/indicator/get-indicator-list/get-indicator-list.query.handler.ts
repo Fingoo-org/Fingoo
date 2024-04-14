@@ -1,9 +1,9 @@
 import { GetIndicatorListQuery } from './get-indicator-list.query';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject, Injectable } from '@nestjs/common';
-import { LoadIndicatorListPort } from '../../port/persistence/indicator/load-indicator-list.port';
+import { LoadIndicatorListPort } from '../../../port/persistence/indicator/load-indicator-list.port';
 import { BondsDto } from './dto/bonds.dto';
-import { CursorPageDto } from '../../../../utils/pagination/cursor-page.dto';
+import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { CryptoCurrenciesDto } from './dto/crypto-currencies.dto';
 import { ETFDto } from './dto/etf.dto';
 import { ForexPairDto } from './dto/forex-pair.dto';

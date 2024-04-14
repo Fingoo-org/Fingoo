@@ -1,5 +1,5 @@
 import { StockEntity } from '../entity/stock.entity';
-import { StockDto } from '../../../../../application/query/indicator/dto/stock.dto';
+import { StockDto } from '../../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
 
 export class StockMapper {
   static mapEntityToDto(stockEntity: StockEntity): StockDto {

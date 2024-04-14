@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IndicatorType } from '../../../../../utils/type/type-definition';
+import { IndicatorType } from '../../../../../../utils/type/type-definition';
 
-export class ETFDto {
+export class IndicesDto {
   @ApiProperty({
     example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
     description: '지표 id',
@@ -15,19 +15,19 @@ export class ETFDto {
   index: number;
 
   @ApiProperty({
-    example: 'etf',
+    example: 'indices',
     description: '지표 타입',
   })
   indicatorType: IndicatorType;
 
   @ApiProperty({
-    example: 'SPY',
+    example: 'IXIC',
     description: '지표 심볼',
   })
   symbol: string;
 
   @ApiProperty({
-    example: 'SPDR S&P 500 ETF Trust',
+    example: 'NASDAQ Composite',
     description: '지표명',
   })
   name: string;
@@ -45,13 +45,13 @@ export class ETFDto {
   currency: string;
 
   @ApiProperty({
-    example: 'NYSE',
+    example: 'NASDAQ',
     description: '거래소 종류',
   })
   exchange: string;
 
   @ApiProperty({
-    example: 'XNYS',
+    example: 'XNGS',
     description: '증권 거래소 식별 코드',
   })
   mic_code: string;
@@ -79,6 +79,6 @@ export class ETFDto {
   }
 
   public static create({ id, index, indicatorType, symbol, name, country, currency, exchange, mic_code }) {
-    return new ETFDto(id, index, indicatorType, symbol, name, country, currency, exchange, mic_code);
+    return new IndicesDto(id, index, indicatorType, symbol, name, country, currency, exchange, mic_code);
   }
 }

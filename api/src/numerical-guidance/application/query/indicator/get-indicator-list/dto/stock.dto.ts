@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IndicatorType } from '../../../../../utils/type/type-definition';
+import { IndicatorType } from '../../../../../../utils/type/type-definition';
 
-export class IndicesDto {
+export class StockDto {
   @ApiProperty({
     example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
     description: '지표 id',
@@ -15,19 +15,19 @@ export class IndicesDto {
   index: number;
 
   @ApiProperty({
-    example: 'indices',
+    example: 'stocks',
     description: '지표 타입',
   })
   indicatorType: IndicatorType;
 
   @ApiProperty({
-    example: 'IXIC',
+    example: 'AAPL',
     description: '지표 심볼',
   })
   symbol: string;
 
   @ApiProperty({
-    example: 'NASDAQ Composite',
+    example: 'Apple Inc',
     description: '지표명',
   })
   name: string;
@@ -56,6 +56,12 @@ export class IndicesDto {
   })
   mic_code: string;
 
+  @ApiProperty({
+    example: 'Common Stock(추가 예시 : Real Estate Investment Trust (REIT))',
+    description: '주식 타입',
+  })
+  type: string;
+
   constructor(
     id: string,
     index: number,
@@ -66,6 +72,7 @@ export class IndicesDto {
     currency: string,
     exchange: string,
     mic_code: string,
+    type: string,
   ) {
     this.id = id;
     this.index = index;
@@ -76,9 +83,10 @@ export class IndicesDto {
     this.currency = currency;
     this.exchange = exchange;
     this.mic_code = mic_code;
+    this.type = type;
   }
 
-  public static create({ id, index, indicatorType, symbol, name, country, currency, exchange, mic_code }) {
-    return new IndicesDto(id, index, indicatorType, symbol, name, country, currency, exchange, mic_code);
+  public static create({ id, index, indicatorType, symbol, name, country, currency, exchange, mic_code, type }) {
+    return new StockDto(id, index, indicatorType, symbol, name, country, currency, exchange, mic_code, type);
   }
 }

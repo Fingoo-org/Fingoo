@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
-import { StockDto } from '../../../../application/query/indicator/dto/stock.dto';
+import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
 import { CursorPageMetaDto } from '../../../../../utils/pagination/cursor-page.meta.dto';
-import { GetIndicatorListQueryHandler } from '../../../../application/query/indicator/get-indicator-list.query.handler';
-import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list.query';
+import { GetIndicatorListQueryHandler } from '../../../../application/query/indicator/get-indicator-list/get-indicator-list.query.handler';
+import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list/get-indicator-list.query';
 import { LoadIndicatorListPort } from '../../../../application/port/persistence/indicator/load-indicator-list.port';
 
 const testStocksDtos = [
