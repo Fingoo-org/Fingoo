@@ -13,6 +13,7 @@ class ForecastValue(BaseModel):
         self.date = date
 
 class ForecastIndicatorDto(BaseModel):
+    type: str
     values: list[ForecastValue]
 
 class Verification(BaseModel):

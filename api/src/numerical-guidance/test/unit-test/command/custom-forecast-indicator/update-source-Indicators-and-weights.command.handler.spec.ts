@@ -63,4 +63,18 @@ describe('UpdateSourceIndicatorsAndWeightsCommandHandler', () => {
     expect(loadCustomForecastIndicatorPort.loadCustomForecastIndicator).toHaveBeenCalledTimes(1);
     expect(updateSourceIndicatorsAndWeightsPort.updateSourceIndicatorsAndWeights).toHaveBeenCalledTimes(1);
   });
+
+  it('예측지표에 indicatorId와 weight를 적용하지 않는다.', async () => {
+    const command: UpdateSourceIndicatorsAndWeightsCommand = new UpdateSourceIndicatorsAndWeightsCommand(
+      '160e5499-4925-4e38-bb00-8ea6d8056484',
+      [],
+    );
+
+    // when
+    await updateSourceIndicatorsAndWeightsCommandHandler.execute(command);
+
+    // then
+    expect(loadCustomForecastIndicatorPort.loadCustomForecastIndicator).toHaveBeenCalledTimes(1);
+    expect(updateSourceIndicatorsAndWeightsPort.updateSourceIndicatorsAndWeights).toHaveBeenCalledTimes(1);
+  });
 });

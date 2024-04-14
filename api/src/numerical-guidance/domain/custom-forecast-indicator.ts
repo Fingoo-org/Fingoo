@@ -1,10 +1,11 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { IndicatorType } from '../application/query/live-indicator/dto/live-indicator.dto';
 import { CustomForecastIndicatorNameShouldNotEmptyRule } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
-import { SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
+import { SourceIndicatorIdAndWeightType, Verification } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 import { SourceIndicatorsShouldNotDuplicateRule } from './rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { SourceIndicatorCountShouldNotExceedLimitRule } from './rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';
+import { TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule } from './rule/TargetIndicatorShouldNotBeIncludedInSourceIndicators.rule';
 
 export class CustomForecastIndicator extends AggregateRoot {
   @ApiProperty({
@@ -35,13 +36,13 @@ export class CustomForecastIndicator extends AggregateRoot {
     example: [],
     description: '그레인저 검정결과',
   })
-  grangerVerification: string[];
+  grangerVerification: Verification[];
 
   @ApiProperty({
     example: [],
     description: '공적분 검정결과',
   })
-  cointJohansenVerification: string[];
+  cointJohansenVerification: Verification[];
 
   @ApiProperty({
     example: [],
@@ -66,8 +67,8 @@ export class CustomForecastIndicator extends AggregateRoot {
     customForecastIndicatorName: string,
     type: IndicatorType,
     targetIndicatorId: string,
-    grangerVerification: string[],
-    cointJohansenVerification: string[],
+    grangerVerification: Verification[],
+    cointJohansenVerification: Verification[],
     sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[],
   ) {
     super();
@@ -84,8 +85,8 @@ export class CustomForecastIndicator extends AggregateRoot {
   }
 
   static createNew(customForecastIndicatorName: string, targetIndicatorId: string): CustomForecastIndicator {
-    const grangerVerification: string[] = [];
-    const cointJohansenVerification: string[] = [];
+    const grangerVerification: Verification[] = [];
+    const cointJohansenVerification: Verification[] = [];
     const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
     const type: IndicatorType = 'customForecastIndicator';
     return new CustomForecastIndicator(
@@ -99,14 +100,21 @@ export class CustomForecastIndicator extends AggregateRoot {
     );
   }
 
-  public updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[]) {
-    this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(sourceIndicatorIdsAndWeights));
-    this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(sourceIndicatorIdsAndWeights));
-    const newSourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
-    for (let i = 0; i < sourceIndicatorIdsAndWeights.length; i++) {
-      newSourceIndicatorIdsAndWeights.push(sourceIndicatorIdsAndWeights[i]);
+  public updateSourceIndicatorsAndWeights(updateSourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[]) {
+    this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(updateSourceIndicatorIdsAndWeights));
+    this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(updateSourceIndicatorIdsAndWeights));
+    this.checkRule(
+      new TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule(
+        updateSourceIndicatorIdsAndWeights,
+        this.targetIndicatorId,
+      ),
+    );
+
+    if (updateSourceIndicatorIdsAndWeights.length == 0) {
+      this.sourceIndicatorIdsAndWeights = [];
+    } else {
+      this.sourceIndicatorIdsAndWeights = updateSourceIndicatorIdsAndWeights.slice();
     }
-    this.sourceIndicatorIdsAndWeights = newSourceIndicatorIdsAndWeights;
     this.updatedAt = new Date();
   }
 

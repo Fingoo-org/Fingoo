@@ -12,6 +12,8 @@ export type IndicatorType =
   | 'funds'
   | 'bonds';
 
+export type ForecastType = 'single' | 'multi';
+
 export type SourceIndicatorIdAndWeightType = {
   sourceIndicatorId: string;
   weight: float;
@@ -22,6 +24,16 @@ export type IndicatorValue = {
   value: string;
 };
 
+export type Verification = {
+  indicatorId: string;
+  verification: string;
+};
+
+export type ForecastApiResponse = {
+  indicatorValues: IndicatorValue[];
+  forecastType: ForecastType;
+};
+
 export type CustomForecastIndicatorValuesResponse = {
   customForecastIndicatorId: string;
   targetIndicatorId: string;
@@ -29,6 +41,7 @@ export type CustomForecastIndicatorValuesResponse = {
   ticker: string;
   name: string;
   market: string;
+  forecastType: ForecastType;
   customForecastIndicatorValues: IndicatorValue[];
   targetIndicatorValues: IndicatorValue[];
 };

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
-import { IndicatorType, SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
+import { IndicatorType, SourceIndicatorIdAndWeightType, Verification } from 'src/utils/type/type-definition';
 import { MemberEntity } from 'src/auth/member.entity';
 
 @Entity({ name: 'CustomForecastIndicator' })
@@ -18,10 +18,10 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   targetIndicatorId: string;
 
   @Column('jsonb', { nullable: true })
-  grangerVerification: string[];
+  grangerVerification: Verification[];
 
   @Column('jsonb', { nullable: true })
-  cointJohansenVerification: string[];
+  cointJohansenVerification: Verification[];
 
   @Column('jsonb', { nullable: true })
   sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[];
@@ -33,8 +33,8 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     customForecastIndicatorName: string,
     type: IndicatorType,
     targetIndicatorId: string,
-    grangerVerification: string[],
-    cointJohansenVerification: string[],
+    grangerVerification: Verification[],
+    cointJohansenVerification: Verification[],
     sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[],
     member: MemberEntity,
     createdAt: Date,
@@ -56,8 +56,8 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     customForecastIndicatorName: string,
     type: IndicatorType,
     targetIndicatorId: string,
-    grangerVerification: string[],
-    cointJohansenVerification: string[],
+    grangerVerification: Verification[],
+    cointJohansenVerification: Verification[],
     sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[],
     member: MemberEntity,
     createdAt: Date,

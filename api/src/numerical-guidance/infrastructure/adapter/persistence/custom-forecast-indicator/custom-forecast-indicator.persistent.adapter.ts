@@ -16,7 +16,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
 import { UpdateSourceIndicatorsAndWeightsPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-and-weights.port';
 import { HttpService } from '@nestjs/axios';
-import { IndicatorValue } from 'src/utils/type/type-definition';
+import { ForecastApiResponse } from 'src/utils/type/type-definition';
 import { UpdateCustomForecastIndicatorNamePort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-custom-forecast-indicator-name.port';
 import { DeleteCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/delete-custom-forecast-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
@@ -74,7 +74,7 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<IndicatorValue[]> {
+  async loadCustomForecastIndicatorValues(customForecastIndicatorId: string): Promise<ForecastApiResponse> {
     try {
       const customForecastIndicatorEntity = await this.customForecastIndicatorRepository.findOneBy({
         id: customForecastIndicatorId,
@@ -98,7 +98,12 @@ export class CustomForecastIndicatorPersistentAdapter
       const requestUrl = url + indicatorsUrl + weightsUrl;
 
       const res = await this.api.axiosRef.get(requestUrl);
-      const result = res.data.values;
+      const resultValues = res.data.values;
+      const resultForecastType = res.data.type;
+      const result = {
+        indicatorValues: resultValues,
+        forecastType: resultForecastType,
+      };
 
       return result;
     } catch (error) {
@@ -199,28 +204,35 @@ export class CustomForecastIndicatorPersistentAdapter
 
       customForecastIndicatorEntity.sourceIndicatorIdsAndWeights = customForecastIndicator.sourceIndicatorIdsAndWeights;
 
-      const url: string =
-        process.env.FASTAPI_URL +
-        '/api/var-api/source-indicators-verification?targetIndicatorId=' +
-        customForecastIndicator.targetIndicatorId +
-        '&';
-      let indicatorsUrl: string = '';
-      let weightsUrl: string = '';
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
-        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].sourceIndicatorId}&`;
+      if (customForecastIndicatorEntity.sourceIndicatorIdsAndWeights.length == 0) {
+        const grangerGroup = [];
+        const cointJohansenVerification = [];
+
+        customForecastIndicatorEntity.grangerVerification = grangerGroup;
+        customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
+      } else {
+        const url: string =
+          process.env.FASTAPI_URL +
+          '/api/var-api/source-indicators-verification?targetIndicatorId=' +
+          customForecastIndicator.targetIndicatorId +
+          '&';
+        let indicatorsUrl: string = '';
+        let weightsUrl: string = '';
+        for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
+          indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].sourceIndicatorId}&`;
+        }
+        for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
+          weightsUrl += `weight=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].weight}&`;
+        }
+        const requestUrl = url + indicatorsUrl + weightsUrl;
+
+        const res = await this.api.axiosRef.get(requestUrl);
+        const grangerGroup = res.data.grangerGroup;
+        const cointJohansenVerification = res.data.cointJohansenVerification;
+
+        customForecastIndicatorEntity.grangerVerification = grangerGroup;
+        customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
       }
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
-        weightsUrl += `weight=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].weight}&`;
-      }
-      const requestUrl = url + indicatorsUrl + weightsUrl;
-
-      const res = await this.api.axiosRef.get(requestUrl);
-      const grangerGroup = res.data.grangerGroup;
-      const cointJohansenVerification = res.data.cointJohansenVerification;
-
-      customForecastIndicatorEntity.grangerVerification = grangerGroup;
-      customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
-
       await this.customForecastIndicatorRepository.save(customForecastIndicatorEntity);
     } catch (error) {
       throw new InternalServerErrorException({

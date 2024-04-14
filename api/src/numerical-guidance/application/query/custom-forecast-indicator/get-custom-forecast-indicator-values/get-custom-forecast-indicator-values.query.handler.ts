@@ -2,7 +2,11 @@ import { Injectable, Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCustomForecastIndicatorValuesQuery } from './get-custom-forecast-indicator-values.query';
 import { LoadCustomForecastIndicatorValuesPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
-import { CustomForecastIndicatorValuesResponse, IndicatorValue } from 'src/utils/type/type-definition';
+import {
+  CustomForecastIndicatorValuesResponse,
+  IndicatorValue,
+  ForecastApiResponse,
+} from 'src/utils/type/type-definition';
 import { LoadCustomForecastIndicatorPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { LoadIndicatorPort } from '../../../port/persistence/indicator/load-indicator.port';
@@ -25,7 +29,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
 
   async execute(query: GetCustomForecastIndicatorValuesQuery): Promise<CustomForecastIndicatorValuesResponse> {
     const customForecastIndicatorId = query.customForecastIndicatorId;
-    const customerFroecastIndicatorValues: IndicatorValue[] =
+    const customFroecastIndicatorValues: ForecastApiResponse =
       await this.loadCustomForecastIndicatorValuesPort.loadCustomForecastIndicatorValues(customForecastIndicatorId);
 
     const customForecastIndicator: CustomForecastIndicator =
@@ -53,7 +57,8 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       ticker: ticker,
       name: name,
       market: market,
-      customForecastIndicatorValues: customerFroecastIndicatorValues,
+      forecastType: customFroecastIndicatorValues.forecastType,
+      customForecastIndicatorValues: customFroecastIndicatorValues.indicatorValues,
       targetIndicatorValues: targetIndicatorValues,
     };
 
