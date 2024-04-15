@@ -76,8 +76,8 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     selectedCustomerForecastIndicatorActions.updateSourceIndicatorWeight(indicatorId, weight);
   };
 
-  const applyUpdatedSourceIndicator = () => {
-    updateSourceIndicatorTrigger(
+  const applyUpdatedSourceIndicator = async () => {
+    await updateSourceIndicatorTrigger(
       {
         sourceIndicatorIdsAndWeights: convertedSelectedCustomForecastIndicator.sourceIndicatorIdsAndWeights,
       },

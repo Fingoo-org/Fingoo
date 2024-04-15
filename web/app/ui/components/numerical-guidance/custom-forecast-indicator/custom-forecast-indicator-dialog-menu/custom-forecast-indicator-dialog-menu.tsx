@@ -12,6 +12,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { use } from 'react';
 import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
+import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 
 export default function CustomForecastIndicatorDialogMenu() {
   const {
@@ -21,6 +22,7 @@ export default function CustomForecastIndicatorDialogMenu() {
     applyUpdatedSourceIndicator,
     updateCustomForecastIndicatorName,
   } = useSelectedCustomForecastIndicatorViewModel();
+  const { mutateCustomForecastIndicator } = useCustomForecastIndicatorsValueViewModel();
   const { deleteCustomForecastIndicator } = useCustomForecastIndicatorListViewModel();
   const { closeDialog } = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU);
 
@@ -29,8 +31,9 @@ export default function CustomForecastIndicatorDialogMenu() {
     updateCustomForecastIndicatorName(name);
   };
 
-  const handleCustomForecastIndicatorApply = () => {
-    applyUpdatedSourceIndicator();
+  const handleCustomForecastIndicatorApply = async () => {
+    await applyUpdatedSourceIndicator();
+    mutateCustomForecastIndicator();
   };
 
   const handleCustomForecastIndicatorDelete = () => {
