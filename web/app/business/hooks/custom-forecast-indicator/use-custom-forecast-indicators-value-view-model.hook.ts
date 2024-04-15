@@ -9,6 +9,7 @@ export const useCustomForecastIndicatorsValueViewModel = () => {
   const {
     data: customForecastIndicatorsValueData,
     isLoading,
+    isValidating,
     mutate: mutateCustomForecastIndicator,
   } = useFetchCustomForecastIndicatorsValue(selectedMetadata?.customForecastIndicatorIds);
   const { data: customForecastIndicatorListData } = useFetchCustomForecastIndicatorList();
@@ -37,7 +38,7 @@ export const useCustomForecastIndicatorsValueViewModel = () => {
 
   return {
     customForecastIndicatorsValue: convertedCustomForecastIndicatorsValue,
-    isPending: isLoading,
+    isPending: isLoading || isValidating,
     mutateCustomForecastIndicator,
   };
 };
