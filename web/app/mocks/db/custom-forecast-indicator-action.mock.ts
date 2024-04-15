@@ -4,6 +4,7 @@ import {
   updateSourceIndicatorRequestBody,
   CreateCustomForecastIndicatorResponse,
   CustomForecastIndicatorValueResponse,
+  CustomForecastIndicatorResponse,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { mockDatabaseStore, mockDB } from '.';
 import { customForecastIndicatorMockData } from '../mock-data/custom-indicator-value.mock';
@@ -29,7 +30,11 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
       ...data,
       id,
       sourceIndicatorIdsAndWeights: [],
-    };
+      grangerVerification: [],
+      cointJohansenVerification: [],
+      type: 'customForecastIndicator',
+    } as CustomForecastIndicatorResponse;
+
     mockDatabaseStore.customForecastIndicatorList = [
       ...mockDatabaseStore.customForecastIndicatorList,
       newCustomForecastIndicator,
@@ -88,7 +93,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
       name: targetIndicator.name,
       ticker: targetIndicator.ticker,
       market: 'KOSPI',
-      type: 'stocks',
+      type: 'k-stock',
       targetIndicatorValues: targetIndicatorValue.values,
       customForecastIndicatorValues: customForecastIndicatorValue.values,
     };

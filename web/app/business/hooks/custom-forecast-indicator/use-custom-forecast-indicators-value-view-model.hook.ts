@@ -6,9 +6,12 @@ import { convertCustomForecastIndicatorsValue } from '../../services/view-model/
 
 export const useCustomForecastIndicatorsValueViewModel = () => {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { data: customForecastIndicatorsValueData, isLoading } = useFetchCustomForecastIndicatorsValue(
-    selectedMetadata?.customForecastIndicatorIds,
-  );
+  const {
+    data: customForecastIndicatorsValueData,
+    isLoading,
+    isValidating,
+    mutate: mutateCustomForecastIndicator,
+  } = useFetchCustomForecastIndicatorsValue(selectedMetadata?.customForecastIndicatorIds);
   const { data: customForecastIndicatorListData } = useFetchCustomForecastIndicatorList();
 
   const customForecastIndicatorsValueDataWithName = useMemo(() => {
@@ -35,6 +38,7 @@ export const useCustomForecastIndicatorsValueViewModel = () => {
 
   return {
     customForecastIndicatorsValue: convertedCustomForecastIndicatorsValue,
-    isPending: isLoading,
+    isPending: isLoading || isValidating,
+    mutateCustomForecastIndicator,
   };
 };

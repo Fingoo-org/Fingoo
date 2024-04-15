@@ -94,6 +94,27 @@ const initialState: MockDatabase = {
           weight: 10,
         },
       ],
+      type: 'customForecastIndicator',
+      grangerVerification: [
+        {
+          indicatorId: '1',
+          verification: 'True',
+        },
+        {
+          indicatorId: '3',
+          verification: 'True',
+        },
+      ],
+      cointJohansenVerification: [
+        {
+          indicatorId: '1',
+          verification: 'True',
+        },
+        {
+          indicatorId: '3',
+          verification: 'True',
+        },
+      ],
     },
     {
       id: '12',
@@ -107,6 +128,35 @@ const initialState: MockDatabase = {
         {
           sourceIndicatorId: '3',
           weight: 30,
+        },
+      ],
+      type: 'customForecastIndicator',
+      grangerVerification: [
+        {
+          indicatorId: '2',
+          verification: 'True',
+        },
+        {
+          indicatorId: '1',
+          verification: 'True',
+        },
+        {
+          indicatorId: '3',
+          verification: 'True',
+        },
+      ],
+      cointJohansenVerification: [
+        {
+          indicatorId: '1',
+          verification: 'True',
+        },
+        {
+          indicatorId: '3',
+          verification: 'True',
+        },
+        {
+          indicatorId: '2',
+          verification: 'True',
         },
       ],
     },
@@ -124,6 +174,35 @@ const initialState: MockDatabase = {
           weight: 20,
         },
       ],
+      type: 'customForecastIndicator',
+      grangerVerification: [
+        {
+          indicatorId: '2',
+          verification: 'True',
+        },
+        {
+          indicatorId: '1',
+          verification: 'True',
+        },
+        {
+          indicatorId: '3',
+          verification: 'True',
+        },
+      ],
+      cointJohansenVerification: [
+        {
+          indicatorId: '1',
+          verification: 'True',
+        },
+        {
+          indicatorId: '3',
+          verification: 'True',
+        },
+        {
+          indicatorId: '2',
+          verification: 'True',
+        },
+      ],
     },
     {
       id: '14',
@@ -133,6 +212,27 @@ const initialState: MockDatabase = {
         {
           sourceIndicatorId: '1',
           weight: 10,
+        },
+      ],
+      type: 'customForecastIndicator',
+      grangerVerification: [
+        {
+          indicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
+          verification: 'True',
+        },
+        {
+          indicatorId: '1',
+          verification: 'True',
+        },
+      ],
+      cointJohansenVerification: [
+        {
+          indicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
+          verification: 'True',
+        },
+        {
+          indicatorId: '1',
+          verification: 'True',
         },
       ],
     },
