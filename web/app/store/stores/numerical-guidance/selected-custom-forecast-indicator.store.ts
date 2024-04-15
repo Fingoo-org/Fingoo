@@ -31,6 +31,9 @@ const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState 
     customForecastIndicatorName: '',
     targetIndicatorId: '',
     sourceIndicatorIdsAndWeights: [],
+    grangerVerification: [],
+    cointJohansenVerification: [],
+    type: 'customForecastIndicator',
   },
   isUpdated: false,
 };

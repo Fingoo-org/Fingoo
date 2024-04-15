@@ -8,16 +8,25 @@ import {
   patchFetcher,
   postFetcher,
 } from '../fetcher';
+import { IndicatorType } from './indicator.query';
 
 export type sourceIndicator = {
   sourceIndicatorId: string;
   weight: number;
 };
 
+export type VerificationType = {
+  indicatorId: string;
+  verification: 'True' | 'False';
+};
+
 export type CustomForecastIndicatorResponse = {
   id: string;
   customForecastIndicatorName: string;
+  type: IndicatorType;
   targetIndicatorId: string;
+  grangerVerification: VerificationType[];
+  cointJohansenVerification: VerificationType[];
   sourceIndicatorIdsAndWeights: sourceIndicator[];
 };
 

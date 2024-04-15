@@ -1,24 +1,35 @@
 import {
   CustomForecastIndicatorListResponse,
   CustomForecastIndicatorResponse,
+  VerificationType,
   sourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
+import { IndicatorType } from '@/app/store/querys/numerical-guidance/indicator.query';
 
 export class CustomForecastIndicator {
   readonly id: string;
   readonly customForecastIndicatorName: string;
   readonly targetIndicatorId: string;
   readonly sourceIndicatorIdsAndWeights: sourceIndicator[];
+  readonly type: IndicatorType;
+  readonly grangerVerification: VerificationType[];
+  readonly cointJohansenVerification: VerificationType[];
   constructor({
     id,
     customForecastIndicatorName,
     targetIndicatorId,
     sourceIndicatorIdsAndWeights,
+    type,
+    grangerVerification,
+    cointJohansenVerification,
   }: CustomForecastIndicatorResponse) {
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.targetIndicatorId = targetIndicatorId;
     this.sourceIndicatorIdsAndWeights = sourceIndicatorIdsAndWeights;
+    this.type = type;
+    this.grangerVerification = grangerVerification;
+    this.cointJohansenVerification = cointJohansenVerification;
   }
 
   get sourceIndicatorIds() {
@@ -42,6 +53,9 @@ export class CustomForecastIndicator {
       customForecastIndicatorName: this.customForecastIndicatorName,
       targetIndicatorId: this.targetIndicatorId,
       sourceIndicatorIdsAndWeights: this.sourceIndicatorIdsAndWeights,
+      type: this.type,
+      grangerVerification: this.grangerVerification,
+      cointJohansenVerification: this.cointJohansenVerification,
     };
   }
 }
