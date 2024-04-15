@@ -45,6 +45,8 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
       convertCustomForecastIndicatorViewModel({
         ...selectedCustomForecastIndicator,
         customForecastIndicatorName: foundCustomForecastIndicator?.customForecastIndicatorName ?? '',
+        grangerVerification: foundCustomForecastIndicator?.grangerVerification ?? [],
+        cointJohansenVerification: foundCustomForecastIndicator?.cointJohansenVerification ?? [],
       }),
     [foundCustomForecastIndicator, selectedCustomForecastIndicator],
   );
@@ -60,6 +62,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
         return {
           ...indicator,
           weight: convertedSelectedCustomForecastIndicator.getSourceIndicatorWeight(indicator.id)!,
+          disabled: !convertedSelectedCustomForecastIndicator.checkGrantedVerificationBySourceIndicatorId(indicator.id),
         };
       });
   }, [indicatorList, sourceIndicatorIds]);
@@ -110,6 +113,8 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
       },
     );
   };
+
+  console.log(convertedSelectedCustomForecastIndicator);
 
   return {
     selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,

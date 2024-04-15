@@ -47,6 +47,16 @@ export class CustomForecastIndicator {
     return sourceIndicator?.weight;
   }
 
+  checkGrantedVerificationBySourceIndicatorId(sourceIndicatorId: string) {
+    const grangerVerification = this.grangerVerification.find((item) => {
+      return item.indicatorId === sourceIndicatorId;
+    });
+
+    if (!grangerVerification) return true;
+
+    return grangerVerification.verification === 'True';
+  }
+
   get formattedCustomForecastIndicator(): CustomForecastIndicatorResponse {
     return {
       id: this.id,

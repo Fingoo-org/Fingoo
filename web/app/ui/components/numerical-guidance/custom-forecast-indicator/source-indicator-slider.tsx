@@ -5,8 +5,16 @@ import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hook
 import IconButton from '../../view/atom/icons/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
 
+type SourceIndicatorInfo = {
+  weight: number;
+  disabled: boolean;
+  id: string;
+  ticker: string;
+  name: string;
+};
+
 type SourceIndicatorSliderProps = {
-  item: IndicatorInfoResponse & { weight: number };
+  item: SourceIndicatorInfo;
 };
 
 export default function SourceIndicatorSlider({ item }: SourceIndicatorSliderProps) {
@@ -21,7 +29,11 @@ export default function SourceIndicatorSlider({ item }: SourceIndicatorSliderPro
   return (
     <Card className="flex items-center rounded-lg px-1 py-1">
       <div className="mr-2 block w-16 truncate text-xs">{item.ticker}</div>
-      <Slider onValueChange={handleSourceIndicatorWeightChange} value={[item.weight]} key={item.id} />
+      {item.disabled ? (
+        <div className="grow">Disabled</div>
+      ) : (
+        <Slider onValueChange={handleSourceIndicatorWeightChange} value={[item.weight]} key={item.id} />
+      )}
       <IconButton color={'gray'} icon={XCircleIcon} size={'xs'} onClick={handleSourceIndicatorDelete} />
     </Card>
   );

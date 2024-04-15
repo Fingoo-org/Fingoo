@@ -3,6 +3,7 @@ import SourceIndicatorSlider from './source-indicator-slider';
 
 export default function SourceIndicatorSliderGroup() {
   const { sourceIndicatorList } = useSelectedCustomForecastIndicatorViewModel();
+  console.log(sourceIndicatorList);
   return (
     <div className="flex flex-col space-y-1">
       {sourceIndicatorList
