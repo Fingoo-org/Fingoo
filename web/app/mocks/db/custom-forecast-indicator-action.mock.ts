@@ -93,7 +93,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
       name: targetIndicator.name,
       ticker: targetIndicator.ticker,
       market: 'KOSPI',
-      type: 'stocks',
+      type: 'k-stock',
       targetIndicatorValues: targetIndicatorValue.values,
       customForecastIndicatorValues: customForecastIndicatorValue.values,
     };

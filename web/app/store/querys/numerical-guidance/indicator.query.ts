@@ -25,7 +25,7 @@ export type IndicatorValueResponse = {
 
 export type IndicatorValueItemResponse = {
   date: string;
-  value: number;
+  value: number | string;
 };
 
 export const useFetchIndicatorList = () => useSWR<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);

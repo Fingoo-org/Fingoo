@@ -45,16 +45,16 @@ export const useFetchCustomForecastIndicatorList = () => {
 
 type CustomForecastIndicatorValueItem = {
   date: string;
-  value: number;
+  value: number | string;
 };
 
 export type CustomForecastIndicatorValueResponse = {
   customForecastIndicatorId: string;
   targetIndicatorId: string;
-  name: string;
+  type: IndicatorType;
   ticker: string;
+  name: string;
   market: string;
-  type: string;
   customForecastIndicatorValues: CustomForecastIndicatorValueItem[];
   targetIndicatorValues: CustomForecastIndicatorValueItem[];
 };
