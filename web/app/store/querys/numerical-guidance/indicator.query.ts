@@ -3,6 +3,8 @@ import { API_PATH } from '../api-path';
 import { defaultFetcher, fetchIndicatorsValue } from '../fetcher';
 import { Interval } from '../../stores/numerical-guidance/workspace.store';
 
+export type IndicatorType = 'customForecastIndicator' | 'k-stock';
+
 export type IndicatorInfoResponse = {
   id: string;
   ticker: string;
@@ -17,7 +19,7 @@ export type IndicatorValueResponse = {
   indicatorId: string;
   ticker: string;
   market: string;
-  type: string;
+  type: IndicatorType;
   values: IndicatorValueItemResponse[];
 };
 
