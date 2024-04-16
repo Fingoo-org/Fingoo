@@ -21,6 +21,9 @@ import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exc
 import * as request from 'supertest';
 import * as fs from 'fs';
 import { GetIndicatorListQueryHandler } from '../../../application/query/indicator/get-indicator-list/get-indicator-list.query.handler';
+import { SearchIndicatorQueryHandler } from '../../../application/query/indicator/get-indicator-search/search-indicator.query.handler';
+import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
+import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -95,6 +98,8 @@ describe('Indicator E2E Test', () => {
         controllers: [IndicatorController],
         providers: [
           GetIndicatorListQueryHandler,
+          SearchIndicatorQueryHandler,
+          TwelveApiUtil,
           {
             provide: 'LoadIndicatorPort',
             useClass: IndicatorPersistentAdapter,
@@ -106,6 +111,16 @@ describe('Indicator E2E Test', () => {
           {
             provide: 'LoadIndicatorListPort',
             useClass: IndicatorPersistentAdapter,
+          },
+          {
+            provide: 'SearchIndicatorPort',
+            useClass: IndicatorTwelveAdapter,
+          },
+          {
+            provide: 'SaveIndicatorListPort',
+            useValue: {
+              saveIndicatorList: jest.fn().mockImplementation(() => {}),
+            },
           },
         ],
       }).compile(),
@@ -137,6 +152,16 @@ describe('Indicator E2E Test', () => {
       .query({
         type: 'stocks',
         cursorToken: 1,
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/get 지표 symbol을 검색한다.', async () => {
+    return request(app.getHttpServer())
+      .get(`/api/numerical-guidance/indicator/search`)
+      .query({
+        symbol: 'AA',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
