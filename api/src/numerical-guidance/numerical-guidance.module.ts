@@ -43,7 +43,7 @@ import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/c
 import { FileSupabaseAdapter } from './infrastructure/adapter/storage/file.supabase.adapter';
 import { UploadFileCommandHandler } from './application/command/indicator-board-metadata/upload-file/upload-file.command.handler';
 import { UpdateSectionsCommandHandler } from './application/command/indicator-board-metadata/update-sections/update-sections.command.handler';
-import { GetIndicatorListQueryHandler } from './application/query/indicator/get-indicator-list.query.handler';
+import { GetIndicatorListQueryHandler } from './application/query/indicator/get-indicator-list/get-indicator-list.query.handler';
 import { TwelveApiUtil } from './infrastructure/adapter/twelve/util/twelve-api.util';
 import { BondsEntity } from './infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 import { IndicatorTwelveAdapter } from './infrastructure/adapter/twelve/indicator.twelve.adapter';
@@ -54,6 +54,7 @@ import { ForexPairEntity } from './infrastructure/adapter/persistence/indicator/
 import { FundEntity } from './infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from './infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from './infrastructure/adapter/persistence/indicator/entity/stock.entity';
+import { SearchIndicatorQueryHandler } from './application/query/indicator/get-indicator-search/search-indicator.query.handler';
 
 @Module({
   imports: [
@@ -113,6 +114,7 @@ import { StockEntity } from './infrastructure/adapter/persistence/indicator/enti
     UpdateSectionsCommandHandler,
     GetIndicatorListQueryHandler,
     SaveIndicatorListCommandHandler,
+    SearchIndicatorQueryHandler,
     IndicatorTwelveAdapter,
     {
       provide: 'LoadCachedLiveIndicatorPort',
@@ -220,6 +222,10 @@ import { StockEntity } from './infrastructure/adapter/persistence/indicator/enti
     },
     {
       provide: 'SaveIndicatorListPort',
+      useClass: IndicatorTwelveAdapter,
+    },
+    {
+      provide: 'SearchIndicatorPort',
       useClass: IndicatorTwelveAdapter,
     },
     TwelveApiUtil,
