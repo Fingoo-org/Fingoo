@@ -1,7 +1,7 @@
-import { IndicatorType } from '../../../../../utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
+import { IndicatorType } from '../../../../../../utils/type/type-definition';
 
-export class BondsDto {
+export class FundDto {
   @ApiProperty({
     example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
     description: '지표 id',
@@ -15,7 +15,7 @@ export class BondsDto {
   index: number;
 
   @ApiProperty({
-    example: 'bonds',
+    example: 'funds',
     description: '지표 타입',
   })
   indicatorType: IndicatorType;
@@ -79,6 +79,6 @@ export class BondsDto {
   }
 
   public static create({ id, index, indicatorType, symbol, name, country, currency, exchange, type }) {
-    return new BondsDto(id, index, indicatorType, symbol, name, country, currency, exchange, type);
+    return new FundDto(id, index, indicatorType, symbol, name, country, currency, exchange, type);
   }
 }

@@ -1,5 +1,5 @@
 import { BondsEntity } from '../entity/bonds.entity';
-import { BondsDto } from '../../../../../application/query/indicator/dto/bonds.dto';
+import { BondsDto } from '../../../../../application/query/indicator/get-indicator-list/dto/bonds.dto';
 
 export class BondsMapper {
   static mapEntityToDto(bondsEntity: BondsEntity): BondsDto {

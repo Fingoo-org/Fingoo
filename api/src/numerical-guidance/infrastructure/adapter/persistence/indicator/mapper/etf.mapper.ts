@@ -1,5 +1,5 @@
 import { ETFEntity } from '../entity/etf.entity';
-import { ETFDto } from '../../../../../application/query/indicator/dto/etf.dto';
+import { ETFDto } from '../../../../../application/query/indicator/get-indicator-list/dto/etf.dto';
 
 export class ETFMapper {
   static mapEntityToDto(etfEntity: ETFEntity): ETFDto {

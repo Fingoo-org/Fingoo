@@ -1,11 +1,11 @@
 import { IndicatorType } from '../../../../../utils/type/type-definition';
-import { CryptoCurrenciesDto } from '../../../query/indicator/dto/crypto-currencies.dto';
-import { ETFDto } from '../../../query/indicator/dto/etf.dto';
-import { ForexPairDto } from '../../../query/indicator/dto/forex-pair.dto';
-import { IndicesDto } from '../../../query/indicator/dto/indices.dto';
-import { StockDto } from '../../../query/indicator/dto/stock.dto';
-import { FundDto } from '../../../query/indicator/dto/fund.dto';
-import { BondsDto } from '../../../query/indicator/dto/bonds.dto';
+import { CryptoCurrenciesDto } from '../../../query/indicator/get-indicator-list/dto/crypto-currencies.dto';
+import { ETFDto } from '../../../query/indicator/get-indicator-list/dto/etf.dto';
+import { ForexPairDto } from '../../../query/indicator/get-indicator-list/dto/forex-pair.dto';
+import { IndicesDto } from '../../../query/indicator/get-indicator-list/dto/indices.dto';
+import { StockDto } from '../../../query/indicator/get-indicator-list/dto/stock.dto';
+import { FundDto } from '../../../query/indicator/get-indicator-list/dto/fund.dto';
+import { BondsDto } from '../../../query/indicator/get-indicator-list/dto/bonds.dto';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 
 export interface LoadIndicatorListPort {

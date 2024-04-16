@@ -1,5 +1,5 @@
 import { ForexPairEntity } from '../entity/forex-pair.entity';
-import { ForexPairDto } from '../../../../../application/query/indicator/dto/forex-pair.dto';
+import { ForexPairDto } from '../../../../../application/query/indicator/get-indicator-list/dto/forex-pair.dto';
 
 export class ForexPairMapper {
   static mapEntityToDto(forexPairEntity: ForexPairEntity): ForexPairDto {

@@ -1,5 +1,5 @@
 import { FundEntity } from '../entity/fund.entity';
-import { FundDto } from '../../../../../application/query/indicator/dto/fund.dto';
+import { FundDto } from '../../../../../application/query/indicator/get-indicator-list/dto/fund.dto';
 
 export class FundMapper {
   static mapEntityToDto(fundEntity: FundEntity): FundDto {
