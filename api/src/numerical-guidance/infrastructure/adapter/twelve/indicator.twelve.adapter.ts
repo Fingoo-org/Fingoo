@@ -1,4 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { TwelveApiUtil } from './util/twelve-api.util';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,9 +18,13 @@ import { FundEntity } from '../persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../persistence/indicator/entity/stock.entity';
 import { IndicatorType } from '../../../../utils/type/type-definition';
-import { Propagation, Transactional } from 'typeorm-transactional';
+import { Transactional } from 'typeorm-transactional';
 import { SearchIndicatorPort } from '../../../application/port/persistence/indicator/search-indicator.port';
-import { SearchIndicatorDto } from '../../../application/query/indicator/get-indicator-search/dto/search-indicator.dto';
+import {
+  SearchedIndicatorsDto,
+  SearchedSymbolType,
+} from '../../../application/query/indicator/get-indicator-search/dto/searched-indicators.dto';
+import { TypeORMError } from 'typeorm/error/TypeORMError';
 
 const indicatorTypes: IndicatorType[] = [
   'bonds',
@@ -24,17 +35,6 @@ const indicatorTypes: IndicatorType[] = [
   'stocks',
   'funds',
 ];
-
-type SearchedSymbolType = {
-  symbol: string;
-  instrument_name: string;
-  exchange: string;
-  mic_code: string;
-  exchange_timezone: string;
-  instrument_type: string;
-  country: string;
-  currency: string;
-};
 
 @Injectable()
 export class IndicatorTwelveAdapter implements SaveIndicatorListPort, SearchIndicatorPort {
@@ -58,7 +58,7 @@ export class IndicatorTwelveAdapter implements SaveIndicatorListPort, SearchIndi
     private readonly stockEntityRepository: Repository<StockEntity>,
   ) {}
 
-  @Transactional({ propagation: Propagation.REQUIRES_NEW })
+  @Transactional()
   async saveIndicatorList(count: number) {
     await this.clearIndicatorList();
     for (const indicatorType of indicatorTypes) {
@@ -68,11 +68,35 @@ export class IndicatorTwelveAdapter implements SaveIndicatorListPort, SearchIndi
   }
 
   @Transactional()
-  async searchIndicator(symbol: string): Promise<SearchIndicatorDto> {
-    const initData: SearchedSymbolType[] = await this.twelveApiUtil.searchSymbol(symbol);
-    console.log(initData);
-    const initSymbols: string[] = initData.map((data) => data.symbol);
-    return SearchIndicatorDto.create(initSymbols);
+  async searchIndicator(symbol: string): Promise<SearchedIndicatorsDto> {
+    try {
+      const initData: SearchedSymbolType[] = await this.twelveApiUtil.searchSymbol(symbol);
+      const initSymbols: SearchedSymbolType[] = initData.map((data) => data);
+      return SearchedIndicatorsDto.create(initSymbols);
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException({
+          HttpStatus: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] 검색할 symbol 요청이 올바른지 확인해주세요.`,
+          message: '검색할 symbol 요청이 올바른지 확인해주세요.',
+          cause: error,
+        });
+      } else if (error instanceof TypeORMError || NotFoundException) {
+        throw new NotFoundException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] symbol: ${symbol} 해당 symbol을 찾을 수 없습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 지표를 검색하는 중 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      }
+    }
   }
 
   private async insertDataIntoRepository(type: IndicatorType, data: any, count: number) {

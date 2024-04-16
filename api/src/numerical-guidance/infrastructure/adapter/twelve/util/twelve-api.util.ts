@@ -13,4 +13,10 @@ export class TwelveApiUtil {
     const response = await this.api.axiosRef.get(requestUrl);
     return response.data;
   }
+
+  async searchSymbol(symbol: string) {
+    const requestUrl: string = `${BASE_URL}/symbol_search/?symbol=${symbol}`;
+    const response = await this.api.axiosRef.get(requestUrl);
+    return response.data.data;
+  }
 }
