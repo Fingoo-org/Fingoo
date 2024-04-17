@@ -48,6 +48,8 @@ type CustomForecastIndicatorValueItem = {
   value: number | string;
 };
 
+export type ForecastType = 'multi' | 'single';
+
 export type CustomForecastIndicatorValueResponse = {
   customForecastIndicatorId: string;
   targetIndicatorId: string;
@@ -55,6 +57,7 @@ export type CustomForecastIndicatorValueResponse = {
   ticker: string;
   name: string;
   market: string;
+  forecastType: ForecastType;
   customForecastIndicatorValues: CustomForecastIndicatorValueItem[];
   targetIndicatorValues: CustomForecastIndicatorValueItem[];
 };

@@ -1,6 +1,7 @@
 import {
   CustomForecastIndicatorResponse,
   CustomForecastIndicatorValueResponse,
+  ForecastType,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { FormattedItem, IndicatorValue, IndicatorValueItem, UnitType } from './indicator-value-view-model.service';
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
@@ -18,6 +19,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
   readonly customForecastIndicatorValues: IndicatorValueItem[];
   readonly customForecastIndicatorName: string;
   readonly targetIndicatorValues: IndicatorValueItem[];
+  readonly forecastType: ForecastType;
   private mergedValues: IndicatorValueItem[];
 
   constructor({
@@ -29,6 +31,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     customForecastIndicatorName,
     customForecastIndicatorValues,
     targetIndicatorValues,
+    forecastType,
   }: CustomForecastIndicatorValueResponse & CustomForecastIndicator) {
     const customForecastIndicatorValueItems = customForecastIndicatorValues.map((item) => new IndicatorValueItem(item));
     const targetIndicatorValueItems = targetIndicatorValues.map((item) => new IndicatorValueItem(item));
@@ -46,6 +49,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.customForecastIndicatorValues = customForecastIndicatorValueItems;
     this.targetIndicatorValues = targetIndicatorValueItems;
+    this.forecastType = forecastType;
     this.mergedValues = mergedValueItems;
   }
 
@@ -100,6 +104,7 @@ export const convertCustomForecastHistoryIndicatorsValueViewModel = (
         customForecastIndicatorValues: [],
         targetIndicatorValues: item.values,
         name: item.indicator.name,
+        forecastType: 'multi',
       }),
     ];
   }, []);
