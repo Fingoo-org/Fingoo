@@ -114,8 +114,6 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     );
   };
 
-  console.log(convertedSelectedCustomForecastIndicator);
-
   return {
     selectedCustomForecastIndicator: convertedSelectedCustomForecastIndicator,
     sourceIndicatorList,

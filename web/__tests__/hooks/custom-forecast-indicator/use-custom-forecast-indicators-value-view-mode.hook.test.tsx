@@ -36,4 +36,32 @@ describe('useCustomForecastIndicatorsValueViewModel', () => {
     // then
     await waitFor(() => expect(result.current.customForecastIndicatorsValue).toHaveLength(1));
   });
+
+  it('메타데이터가 선택되어 있을 때, 메타데이터에 예측 지표를 추가하면, 예측지표 타입을 가져온다.', async () => {
+    // given
+    const { result } = renderHook(
+      () => {
+        return {
+          ...useCustomForecastIndicatorsValueViewModel(),
+          ...useSelectedIndicatorBoardMetadata(),
+        };
+      },
+      { wrapper: SWRProviderWithoutCache },
+    );
+    act(() => {
+      result.current.selectMetadataById('1');
+    });
+
+    await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+
+    // when
+    act(() => {
+      result.current.addCustomForecastIndicatorToMetadata('14');
+    });
+
+    // then
+    await waitFor(() => expect(result.current.customForecastTypes).toHaveLength(1));
+    expect(result.current.customForecastTypes?.[0].customForecastIndicatorId).toBe('14');
+    expect(result.current.customForecastTypes?.[0].forecastType).toBe('multi');
+  });
 });

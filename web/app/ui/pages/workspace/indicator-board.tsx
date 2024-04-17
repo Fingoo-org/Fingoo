@@ -4,6 +4,7 @@ import IndicatorsChart from '../../components/numerical-guidance/indicator/indic
 import IntervalToggleGroup from '../../components/numerical-guidance/indicator/interval-toggle-group';
 import { SWRConfig } from 'swr';
 import ClientDataSuspense from '../../components/util/client-data-suspense';
+import CustomForecastIndicatorStabilityCallout from '../../components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-stability-callout';
 
 export default function IndicatorBoard() {
   return (
@@ -11,9 +12,10 @@ export default function IndicatorBoard() {
       <ClientDataSuspense fallback={<div>loading...</div>}>
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
           <IndicatorsChart />
-          <div className="pt-6">
+          <div className="py-6">
             <IntervalToggleGroup />
           </div>
+          <CustomForecastIndicatorStabilityCallout />
         </SWRConfig>
       </ClientDataSuspense>
     </Card>

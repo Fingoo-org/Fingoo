@@ -36,9 +36,17 @@ export const useCustomForecastIndicatorsValueViewModel = () => {
     return convertCustomForecastIndicatorsValue(customForecastIndicatorsValueDataWithName);
   }, [customForecastIndicatorsValueDataWithName]);
 
+  const customForecastTypes = convertedCustomForecastIndicatorsValue?.map((value) => {
+    return {
+      customForecastIndicatorId: value.customForecastIndicatorId,
+      forecastType: value.forecastType,
+    };
+  });
+
   return {
     customForecastIndicatorsValue: convertedCustomForecastIndicatorsValue,
     isPending: isLoading || isValidating,
+    customForecastTypes,
     mutateCustomForecastIndicator,
   };
 };

@@ -18,13 +18,15 @@ type SourceIndicatorSliderProps = {
 };
 
 export default function SourceIndicatorSlider({ item }: SourceIndicatorSliderProps) {
-  const { updateSourceIndicatorWeight } = useSelectedCustomForecastIndicatorViewModel();
+  const { updateSourceIndicatorWeight, deleteSourceIndicator } = useSelectedCustomForecastIndicatorViewModel();
 
   const handleSourceIndicatorWeightChange = (value: number[]) => {
     updateSourceIndicatorWeight(item.id, value[0]);
   };
 
-  const handleSourceIndicatorDelete = () => {};
+  const handleSourceIndicatorDelete = () => {
+    deleteSourceIndicator(item.id);
+  };
 
   return (
     <Card className="flex items-center rounded-lg px-1 py-1">

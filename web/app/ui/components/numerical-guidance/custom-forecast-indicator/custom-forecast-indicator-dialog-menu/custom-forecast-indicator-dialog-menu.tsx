@@ -12,6 +12,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
+import ForecastTypeToggle from '../forecast-type-toggle';
 
 export default function CustomForecastIndicatorDialogMenu() {
   const {
@@ -56,7 +57,10 @@ export default function CustomForecastIndicatorDialogMenu() {
           <Card className="h-28 p-1.5">
             <SourceIndicatorSearchList />
           </Card>
-          <div className="py-2 text-xs font-bold">가중치</div>
+          <div className="my-2 flex justify-between">
+            <div className="py-1 text-xs font-bold">재료 지표</div>
+            <ForecastTypeToggle />
+          </div>
           <SourceIndicatorSliderGroup />
         </Pending>
       </DialogMenu.Content>
