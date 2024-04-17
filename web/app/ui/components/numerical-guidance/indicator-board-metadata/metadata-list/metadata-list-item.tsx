@@ -4,7 +4,7 @@ import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indic
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import ExpandableListItem from '../../../view/molocule/expandable-list-item';
+import ExpandableListItem from '../../../view/molecule/expandable-list-item';
 import DraggableContext from '../../../util/draggable-context';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import DraggableItem, { Item } from '../../../view/atom/draggable-item';

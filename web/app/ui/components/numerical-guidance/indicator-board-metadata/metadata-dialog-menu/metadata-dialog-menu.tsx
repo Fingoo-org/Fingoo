@@ -1,5 +1,5 @@
 'use client';
-import DialogMenu from '../../../view/molocule/dialog-menu';
+import DialogMenu from '../../../view/molecule/dialog-menu';
 import { TrashIcon, PlusIcon } from '@heroicons/react/solid';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';

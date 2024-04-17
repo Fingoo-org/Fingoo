@@ -1,5 +1,5 @@
 'use client';
-import Tabs from '../../components/view/molocule/tabs';
+import Tabs from '../../components/view/molecule/tabs';
 import MetadataListContainer from './metadata-list-container';
 import IndicatorListContainer from './indicator-list-container';
 import CustomForecastIndicatorListContainer from './custom-forecast-indicator-list-container';

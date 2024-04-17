@@ -1,4 +1,4 @@
-import ToggleGroup from '../../view/molocule/toggle-group';
+import ToggleGroup from '../../view/molecule/toggle-group';
 import { intervals, useWorkspaceStore, type Interval } from '@/app/store/stores/numerical-guidance/workspace.store';
 
 function isInterval(value: string): value is Interval {

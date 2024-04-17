@@ -1,5 +1,5 @@
 import { useHistoryIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-history-indicators-value-view-model.hook';
-import AdvancedMultiLineChart from '../../view/molocule/advanced-multi-line-chart/advanced-multi-line-chart';
+import AdvancedMultiLineChart from '../../view/molecule/advanced-multi-line-chart/advanced-multi-line-chart';
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import { useEffect } from 'react';
 import { createIndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
