@@ -32,6 +32,9 @@ const config: Config = {
       },
       colors: {
         // light mode
+        fingoo: {
+          main: '#6ccabf',
+        },
         tremor: {
           brand: {
             faint: colors.blue[50],

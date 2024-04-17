@@ -52,13 +52,10 @@ export default function IndicatorsChart() {
         <div className="flex items-center justify-center">
           <SelectedMetadataTittle />
         </div>
-        <div className="px-14">
+        <div className="px-14 pb-1">
           <ToggleButton
-            className="font-medium"
-            size={'lg'}
             onToggle={handleToggle}
             disabled={selectedMetadata && indicatorsValue ? false : true}
-            icon={CheckCircledIcon}
             text={'자세한 차트'}
           />
         </div>

@@ -93,7 +93,7 @@ describe('IndicatorsChart', () => {
       await userEvent.click(await screen.findByText(/Apple Inc./i));
       expect(screen.queryByTestId('advanced-multi-line-chart')).not.toBeInTheDocument();
 
-      await userEvent.click(await screen.findByRole('button', { name: 'toggle-button' }));
+      await userEvent.click(await screen.findByRole('switch'));
 
       // then
       expect(await screen.findByTestId('advanced-multi-line-chart')).toBeInTheDocument();
@@ -167,7 +167,7 @@ describe('IndicatorsChart', () => {
       await userEvent.click(getByText(customForecastIndicatorList, /삼성전자 예측 지표/i));
       expect(screen.queryByTestId('advanced-multi-line-chart')).not.toBeInTheDocument();
 
-      await userEvent.click(await screen.findByRole('button', { name: 'toggle-button' }));
+      await userEvent.click(await screen.findByRole('switch'));
 
       // then
       expect(await screen.findByTestId('advanced-multi-line-chart')).toBeInTheDocument();
