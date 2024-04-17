@@ -12,7 +12,7 @@ export default function ToggleState<L extends React.ReactNode, R extends React.R
   const [leftState, rightState] = state;
 
   return (
-    <div className="inline-flex overflow-hidden rounded-lg bg-gray-200">
+    <div className="flex overflow-hidden rounded-lg bg-gray-200">
       <State selected={leftState === selectedState}>{leftState}</State>
       <State selected={rightState === selectedState}>{rightState}</State>
     </div>
@@ -22,7 +22,7 @@ export default function ToggleState<L extends React.ReactNode, R extends React.R
 function State({ selected, children }: React.PropsWithChildren<{ selected: boolean }>) {
   return (
     <div
-      className={cn(' px-3 py-1 font-semibold', {
+      className={cn('flex items-center px-2 text-xs	 font-semibold', {
         'bg-slate-50 text-slate-400': !selected,
         'bg-gray-600 text-white': selected,
       })}
