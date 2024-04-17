@@ -7,6 +7,8 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicato
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import ExpandableListItem from '../../../view/molocule/expandable-list-item';
+import { useSourceIndicator } from '@/app/business/hooks/custom-forecast-indicator/use-source-indicator.hook';
 
 type CustomForecastIndicatorListItemProps = {
   item: CustomForecastIndicator;
@@ -17,9 +19,11 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
     DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU,
   );
   const { selectCustomForecastIndicatorById } = useSelectedCustomForecastIndicatorViewModel();
-
   const { selectedMetadata, addCustomForecastIndicatorToMetadata, deleteCustomForecastIndicatorFromMetadata } =
     useSelectedIndicatorBoardMetadata();
+
+  const { sourceIndicatorList } = useSourceIndicator(item.id);
+
   const isSelected = selectedMetadata?.customForecastIndicatorIds?.some((id) => id === item.id) || false;
 
   const handleCustomForecastIndicatorAddToMetadata = () => {
@@ -43,20 +47,36 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
         onClick={handleCustomForecastIndicatorSelect}
         icon={DotsHorizontalIcon}
         color={'violet'}
+        className="mr-5"
       />
     );
   };
 
   return (
-    <ListItem hoverRender={hoverRender}>
-      <SelectableItem
-        key={item.id}
-        selected={isSelected}
-        onDeSelect={handleCustomForecastIndicatorDeleteFromMetadata}
-        onSelect={handleCustomForecastIndicatorAddToMetadata}
-      >
-        {item.name}
-      </SelectableItem>
-    </ListItem>
+    <ExpandableListItem
+      selected={isSelected}
+      onDeSelect={handleCustomForecastIndicatorDeleteFromMetadata}
+      onSelect={handleCustomForecastIndicatorAddToMetadata}
+      hoverRender={hoverRender}
+    >
+      <ExpandableListItem.Title>
+        <div className="py-1 pl-4">{item.name}</div>
+      </ExpandableListItem.Title>
+      <ExpandableListItem.ExpandedContent>
+        <div className="mt-2 space-y-2">
+          {sourceIndicatorList
+            ? sourceIndicatorList.map((sourceIndicator) => (
+                <div
+                  key={sourceIndicator.id}
+                  className="flex items-center justify-between rounded-md bg-gray-100 px-3 py-2"
+                >
+                  <span className="text-sm text-black">{`${sourceIndicator.ticker}(${sourceIndicator.name})`}</span>
+                  <span className="text-sm text-black">{sourceIndicator.weight}%</span>
+                </div>
+              ))
+            : null}
+        </div>
+      </ExpandableListItem.ExpandedContent>
+    </ExpandableListItem>
   );
 }
