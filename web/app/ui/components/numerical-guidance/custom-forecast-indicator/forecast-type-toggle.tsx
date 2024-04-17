@@ -1,4 +1,4 @@
-import ToggleState from '../../view/molocule/toggle-state/toggle-state';
+import ToggleState from '../../view/molecule/toggle-state/toggle-state';
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 

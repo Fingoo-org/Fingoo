@@ -1,7 +1,7 @@
 'use client';
 
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import DialogMenu from '../../view/molocule/dialog-menu';
+import DialogMenu from '../../view/molecule/dialog-menu';
 import { PlusCircleIcon } from '@heroicons/react/outline';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
 import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';

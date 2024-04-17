@@ -1,6 +1,6 @@
 import IndicatorList from '../../components/numerical-guidance/indicator/indicator-list';
 import Icon from '../../components/view/atom/icons/variant-icon';
-import Accordion from '../../components/view/molocule/accordion';
+import Accordion from '../../components/view/molecule/accordion';
 import { ChartSquareBarIcon } from '@heroicons/react/solid';
 
 export default function IndicatorListContainer() {

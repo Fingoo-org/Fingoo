@@ -8,7 +8,7 @@ import { useSelectedCustomForecastIndicatorViewModel } from '../business/hooks/c
 import useSWR from 'swr';
 import { API_PATH } from '../store/querys/api-path';
 import { defaultFetcher } from '../store/querys/fetcher';
-import Toaster from '../ui/components/view/molocule/toast/toaster';
+import Toaster from '../ui/components/view/molecule/toast/toaster';
 
 export default function Page() {
   const { selectCustomForecastIndicatorById } = useSelectedCustomForecastIndicatorViewModel();
