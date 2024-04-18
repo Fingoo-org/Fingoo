@@ -1,5 +1,5 @@
-import IndicatorBoard from '../ui/pages/workspace/indicator-board';
 import SplitScreenToggleGroup from '../ui/components/numerical-guidance/indicator-board/split-screen-toggle-group';
+import Workspace from '../ui/pages/workspace/workspace';
 
 export default function Page() {
   return (
@@ -8,7 +8,7 @@ export default function Page() {
         <SplitScreenToggleGroup />
       </div>
       <div className="flex h-full items-center justify-center">
-        <IndicatorBoard />
+        <Workspace />
       </div>
     </>
   );
