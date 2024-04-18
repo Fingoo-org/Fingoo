@@ -27,10 +27,7 @@ def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
 
 def runArima(df: pd.DataFrame, target: str, period: int) -> pd.DataFrame:
   df = df.fillna(method='backfill')
-
-  if verification.getADFDataFrame(df[target])['Data']['p_value'] >= 0.05:
-    df[target] = df[target].diff().bfill()
-
+  
   order = optimizationArima(df, target)
   p = int(order[0])
   q = int(order[1])
@@ -46,17 +43,15 @@ def runArima(df: pd.DataFrame, target: str, period: int) -> pd.DataFrame:
 
 def optimizationArima(df: pd.DataFrame, target: str) -> str:
   df = df.fillna(method='backfill')
-  if verification.getADFDataFrame(df[target])['Data']['p_value'] >= 0.05:
-    df[target] = df[target].diff().bfill()
 
   order = [3, 3, 3]
   orderList = []
   aicList = []
   bicList = []
 
-  for p in range(order[0]):
-    for q in range(order[1]):
-      for d in range(order[2]):
+  for p in range(0, order[0]):
+    for q in range(0, order[1]):
+      for d in range(0, order[2]):
         model = ARIMA(df[target], order=(p, q, d))
         try:
           fitted_model = model.fit()

@@ -19,7 +19,7 @@ services:
       - api-net
 
   fastapi:
-    image: yoonyounghun/fastapi
+    image: hunnnys/fastapi:latest
     command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
     ports:
       - 8001:8001
