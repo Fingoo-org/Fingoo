@@ -30,7 +30,7 @@ export default function SplitScreenToggleGroup() {
         <SplitSquareVerticalIcon className="h-4 w-4 rotate-90 transform" />
         <span className="ml-2 text-sm font-medium">2-split</span>
       </ToggleGroup.Item>
-      <ToggleGroup.Item value="square">
+      <ToggleGroup.Item disabled={true} value="square">
         <LayoutGridIcon className="h-4 w-4" />
         <span className="ml-2 text-sm font-medium">4-split</span>
       </ToggleGroup.Item>
