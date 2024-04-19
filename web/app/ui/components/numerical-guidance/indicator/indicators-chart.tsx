@@ -23,11 +23,12 @@ type IndicatorsChartProps = {
 
 export default function IndicatorsChart({ indicatorBoardMetadataId }: IndicatorsChartProps) {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
-  // refactor: 애 둘을 선언형으로 감추고 싶다. rule을 만들어서 해결하자. 이컴포넌트가 주요한 예시가 될 듯
-  const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel(selectedMetadata?.id);
+  const { indicatorBoardMetadata, uploadIndicatorBoardMetadataImage } =
+    useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
+  const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel(
+    indicatorBoardMetadata?.id,
+  );
   const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel();
-  const { uploadIndicatorBoardMetadataImage } = useIndicatorBoardMetadataViewModel(undefined);
   const [imageUrl, setImageUrl] = useState<string>('');
 
   const { ref, downloadImage, generateImageBlob } = useGenerateImage<HTMLDivElement>({
@@ -59,7 +60,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
         <div className="px-14 pb-1">
           <ToggleButton
             onToggle={handleToggle}
-            disabled={selectedMetadata && indicatorsValue ? false : true}
+            disabled={indicatorBoardMetadata && indicatorsValue ? false : true}
             text={'자세한 차트'}
           />
         </div>
