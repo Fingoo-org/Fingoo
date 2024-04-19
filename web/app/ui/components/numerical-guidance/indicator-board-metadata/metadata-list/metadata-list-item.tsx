@@ -27,7 +27,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     indicatorBoardMetadata?.indicatorIdsWithSectionIds,
   );
 
-  const { addIndicatorBoardInfo, checkMetadataInIndicatorBoard } = useIndicatorBoard(item.id);
+  const { addMetadataToIndicatorBoard, checkMetadataInIndicatorBoard } = useIndicatorBoard(item.id);
 
   useEffect(() => {
     setIndicatorIdsWithsectionIds(indicatorBoardMetadata?.indicatorIdsWithSectionIds);
@@ -45,7 +45,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
 
   const handleSelect = () => {
     selectMetadataById(item.id);
-    addIndicatorBoardInfo(item.id);
+    addMetadataToIndicatorBoard(item.id);
   };
 
   const handleIconButton = () => {

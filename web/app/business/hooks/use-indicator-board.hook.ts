@@ -1,10 +1,24 @@
 import { Interval, useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import { useShallow } from 'zustand/react/shallow';
+import { type SplitScreen } from '@/app/store/stores/numerical-guidance/indicator-board.store';
+
+function maxIndicatorBoard(splitScreen: SplitScreen) {
+  switch (splitScreen) {
+    case 'full':
+      return 1;
+    case 'vertical':
+      return 2;
+    case 'square':
+      return 4;
+  }
+}
 
 export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
   const indicatorBoardInfo = useIndicatorBoardStore(
     useShallow((state) => state.indicatorBoardInfos.find((info) => info.metadataId === indicatorBoardMetadataId)),
   );
+  const numberOfMetadataInIndicatorBoard = useIndicatorBoardStore((state) => state.indicatorBoardInfos.length);
+  const splitScreen = useIndicatorBoardStore((state) => state.splitScreen);
   const { addIndicatorBoardInfo, updateIndicatorBoardInfo, checkMetadataInIndicatorBoard } = useIndicatorBoardStore(
     (state) => state.actions,
   );
@@ -22,13 +36,21 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     updateIndicatorBoardInfo(indicatorBoardMetadataId, { interval });
   }
 
+  function addMetadataToIndicatorBoard(metadataId: string) {
+    if (numberOfMetadataInIndicatorBoard < maxIndicatorBoard(splitScreen)) {
+      addIndicatorBoardInfo(metadataId);
+      return true;
+    }
+    return false;
+  }
+
   return {
     indicatorBoardInfo,
     interval,
     isAdvancedChart,
-    addIndicatorBoardInfo,
     setIsAdvancedChart,
     setInterval,
     checkMetadataInIndicatorBoard,
+    addMetadataToIndicatorBoard,
   };
 };
