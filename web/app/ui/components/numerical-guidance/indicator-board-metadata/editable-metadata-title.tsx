@@ -2,7 +2,9 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicato
 import EditableText from '../../view/atom/editable-text';
 import clsx from 'clsx';
 
-export default function SelectedMetadataTittle() {
+// type EditableMetadataTittleProps = {}
+
+export default function EditableMetadataTittle() {
   const { selectedMetadata, updateMetadata } = useSelectedIndicatorBoardMetadata();
 
   const handleMetadataNameChange = (name: string) => {

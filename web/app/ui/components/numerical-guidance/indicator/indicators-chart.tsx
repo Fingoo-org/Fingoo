@@ -1,7 +1,7 @@
 'use client';
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import SelectedMetadataTittle from '../indicator-board-metadata/selected-metadata-title';
+import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
 import ToggleButton from '../../view/atom/toggle-button/toggle-button';
 import { CheckCircledIcon } from '@radix-ui/react-icons';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
@@ -55,7 +55,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
     <Pending isPending={isLiveIndicatorPending || isCustomForecastIndicatorPending}>
       <div className="relative">
         <div className="flex items-center justify-center">
-          <SelectedMetadataTittle />
+          <EditableMetadataTittle />
         </div>
         <div className="px-14 pb-1">
           <ToggleButton
