@@ -1,9 +1,7 @@
 'use client';
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
 import ToggleButton from '../../view/atom/toggle-button/toggle-button';
-import { CheckCircledIcon } from '@radix-ui/react-icons';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
 import AdvancedIndicatorsChart from './advanced-indicators-chart';
 import SimpleIndicatorsChart from './simple-indicators-chart';
