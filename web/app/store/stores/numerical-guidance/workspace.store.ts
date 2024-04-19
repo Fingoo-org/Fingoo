@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 import { storeResetFns } from '../reset-store';
-
-export const intervals = ['day', 'week', 'month', 'year'] as const;
-export type Interval = (typeof intervals)[number];
+import { Interval } from './indicator-board.store';
 
 type WorkspaceState = {
   boardId: string;

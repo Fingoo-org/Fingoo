@@ -1,5 +1,6 @@
 import ToggleGroup from '../../view/molecule/toggle-group';
-import { intervals, useWorkspaceStore, type Interval } from '@/app/store/stores/numerical-guidance/workspace.store';
+import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
+import { intervals, type Interval } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 
 function isInterval(value: string): value is Interval {
   return intervals.includes(value as Interval);
