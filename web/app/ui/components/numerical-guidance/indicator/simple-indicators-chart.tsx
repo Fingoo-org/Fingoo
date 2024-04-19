@@ -6,7 +6,7 @@ import { createIndicatorFormatter } from '@/app/business/services/chart/indicato
 
 export default function SimpleIndicatorsChart() {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { indicatorsValue } = useLiveIndicatorsValueViewModel();
+  const { indicatorsValue } = useLiveIndicatorsValueViewModel(selectedMetadata?.id);
   const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
 
   const indicatorFormatter = createIndicatorFormatter(

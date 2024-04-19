@@ -14,7 +14,7 @@ export default function AdvancedIndicatorsChart() {
     setPaginationData,
     setInitialCursorDate,
   } = useHistoryIndicatorsValueViewModel();
-  const { indicatorsValue } = useLiveIndicatorsValueViewModel();
+  const { indicatorsValue } = useLiveIndicatorsValueViewModel(selectedMetadata?.id);
   const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
 
   const indicatorFormatter = createIndicatorFormatter(

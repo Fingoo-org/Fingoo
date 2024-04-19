@@ -21,7 +21,7 @@ export default function IndicatorsChart() {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
   // refactor: 애 둘을 선언형으로 감추고 싶다. rule을 만들어서 해결하자. 이컴포넌트가 주요한 예시가 될 듯
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel();
+  const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel(selectedMetadata?.id);
   const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel();
   const { uploadIndicatorBoardMetadataImage } = useIndicatorBoardMetadataViewModel(undefined);
   const [imageUrl, setImageUrl] = useState<string>('');

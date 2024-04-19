@@ -19,7 +19,7 @@ describe('useLiveIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { indicatorsValue } = useLiveIndicatorsValueViewModel();
+        const { indicatorsValue } = useLiveIndicatorsValueViewModel('1');
         const { selectedMetadata, addIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
         const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
         return { indicatorsValue, selectedMetadata, addIndicatorToMetadata, selectMetadata };
@@ -48,7 +48,7 @@ describe('useLiveIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { indicatorsValue } = useLiveIndicatorsValueViewModel();
+        const { indicatorsValue } = useLiveIndicatorsValueViewModel('1');
         const { selectedMetadata, addIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
         const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
         return { indicatorsValue, selectedMetadata, addIndicatorToMetadata, selectMetadata };
@@ -82,7 +82,7 @@ describe('useLiveIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { indicatorsValue } = useLiveIndicatorsValueViewModel();
+        const { indicatorsValue } = useLiveIndicatorsValueViewModel('1');
         const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } =
           useSelectedIndicatorBoardMetadata();
         const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
