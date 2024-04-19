@@ -1,14 +1,13 @@
 import ToggleGroup from '../../view/molecule/toggle-group';
-import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { intervals, type Interval } from '@/app/store/stores/numerical-guidance/indicator-board.store';
+import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
 
 function isInterval(value: string): value is Interval {
   return intervals.includes(value as Interval);
 }
 
 export default function IntervalToggleGroup() {
-  const interval = useWorkspaceStore((state) => state.interval);
-  const { setInterval } = useWorkspaceStore((state) => state.actions);
+  const { interval, setInterval } = useIndicatorBoard();
 
   const handleIntervalChange = (value: string) => {
     if (isInterval(value)) {

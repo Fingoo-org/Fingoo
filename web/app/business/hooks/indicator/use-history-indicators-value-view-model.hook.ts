@@ -13,6 +13,7 @@ import {
   useFetchCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastHistoryIndicatorsValueViewModel } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
+import { useIndicatorBoard } from '../use-indicator-board.hook';
 
 const mergePaginationData = (historyIndicatorsValuePages: HistoryIndicatorsValueResponse[] | undefined) => {
   return historyIndicatorsValuePages?.reduce((acc: HistoryIndicatorValueResponse[], page, index) => {
@@ -37,7 +38,7 @@ export const useHistoryIndicatorsValueViewModel = () => {
   const [paginationData, setPaginationData] = useState<{ rowsToDownload: number } | undefined>(undefined);
   const [initialCursorDate, setInitialCursorDate] = useState<Date>(new Date());
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const interval = useWorkspaceStore((state) => state.interval);
+  const { interval } = useIndicatorBoard(selectedMetadata?.id);
   const { data: customForecastIndicatorListData } = useFetchCustomForecastIndicatorList();
 
   const { data: actualHistoryIndicatorsValuePages, setSize: setActualPageSize } = useFetchHistoryIndicatorValue(
