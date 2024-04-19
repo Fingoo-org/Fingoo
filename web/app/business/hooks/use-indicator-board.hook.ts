@@ -2,13 +2,15 @@ import { Interval, useIndicatorBoardStore } from '@/app/store/stores/numerical-g
 import { useShallow } from 'zustand/react/shallow';
 
 export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
-  const indicatorBoardInfos = useIndicatorBoardStore(
+  const indicatorBoardInfo = useIndicatorBoardStore(
     useShallow((state) => state.indicatorBoardInfos.find((info) => info.metadataId === indicatorBoardMetadataId)),
   );
-  const { updateIndicatorBoardInfo } = useIndicatorBoardStore((state) => state.actions);
+  const { addIndicatorBoardInfo, updateIndicatorBoardInfo, checkMetadataInIndicatorBoard } = useIndicatorBoardStore(
+    (state) => state.actions,
+  );
 
-  const isAdvancedChart = indicatorBoardInfos?.isAdvancedChart ?? false;
-  const interval = indicatorBoardInfos?.interval ?? 'day';
+  const isAdvancedChart = indicatorBoardInfo?.isAdvancedChart ?? false;
+  const interval = indicatorBoardInfo?.interval ?? 'day';
 
   function setIsAdvancedChart(isAdvancedChart: boolean) {
     if (!indicatorBoardMetadataId) return;
@@ -19,10 +21,14 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     if (!indicatorBoardMetadataId) return;
     updateIndicatorBoardInfo(indicatorBoardMetadataId, { interval });
   }
+
   return {
+    indicatorBoardInfo,
     interval,
     isAdvancedChart,
+    addIndicatorBoardInfo,
     setIsAdvancedChart,
     setInterval,
+    checkMetadataInIndicatorBoard,
   };
 };

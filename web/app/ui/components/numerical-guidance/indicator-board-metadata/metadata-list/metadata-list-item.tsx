@@ -11,6 +11,7 @@ import DraggableItem, { Item } from '../../../view/atom/draggable-item';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { useEffect, useState } from 'react';
 import { cn } from '@/app/utils/style';
+import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -26,11 +27,14 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     indicatorBoardMetadata?.indicatorIdsWithSectionIds,
   );
 
+  const { addIndicatorBoardInfo, checkMetadataInIndicatorBoard } = useIndicatorBoard(item.id);
+
   useEffect(() => {
     setIndicatorIdsWithsectionIds(indicatorBoardMetadata?.indicatorIdsWithSectionIds);
   }, [indicatorBoardMetadata?.indicatorIdsWithSectionIds]);
 
   const isSelected = selectedMetadata?.id === item.id;
+  const isMetadataInIndicatorBoard = checkMetadataInIndicatorBoard(item.id);
 
   const isIndicatorEmpty = indicatorBoardMetadata?.isEmpty;
 
@@ -41,6 +45,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
 
   const handleSelect = () => {
     selectMetadataById(item.id);
+    addIndicatorBoardInfo(item.id);
   };
 
   const handleIconButton = () => {
@@ -99,32 +104,38 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     ));
 
   return (
-    <ExpandableListItem selected={isSelected} onSelect={handleSelect} hoverRender={hoverRender}>
-      <ExpandableListItem.Title>
-        <div className="py-1 pl-4">{item.name}</div>
-      </ExpandableListItem.Title>
-      <ExpandableListItem.ExpandedContent>
-        <DraggableContext
-          onActiveChange={handleActiveChange}
-          onDragOver={setIndicatorIdsWithsectionIds}
-          onDragEnd={handleIndicatorsectionChange}
-          values={indicatorIdsWithSectionIds ?? {}}
-          dragOverlayItem={({ children }) => (
-            <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
-              {children}
-            </Item>
-          )}
-        >
-          <div
-            className={cn('divide-y-2', {
-              'divide-white': isSelected,
-              'divide-blue-200': !isSelected,
-            })}
+    <div
+      className={cn({
+        'border-2': isSelected,
+      })}
+    >
+      <ExpandableListItem selected={isMetadataInIndicatorBoard} onSelect={handleSelect} hoverRender={hoverRender}>
+        <ExpandableListItem.Title>
+          <div className="py-1 pl-4">{item.name}</div>
+        </ExpandableListItem.Title>
+        <ExpandableListItem.ExpandedContent>
+          <DraggableContext
+            onActiveChange={handleActiveChange}
+            onDragOver={setIndicatorIdsWithsectionIds}
+            onDragEnd={handleIndicatorsectionChange}
+            values={indicatorIdsWithSectionIds ?? {}}
+            dragOverlayItem={({ children }) => (
+              <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
+                {children}
+              </Item>
+            )}
           >
-            {indicatorIdsWithSectionIds ? renderDraggableList(indicatorIdsWithSectionIds) : null}
-          </div>
-        </DraggableContext>
-      </ExpandableListItem.ExpandedContent>
-    </ExpandableListItem>
+            <div
+              className={cn('divide-y-2', {
+                'divide-white': isSelected,
+                'divide-blue-200': !isSelected,
+              })}
+            >
+              {indicatorIdsWithSectionIds ? renderDraggableList(indicatorIdsWithSectionIds) : null}
+            </div>
+          </DraggableContext>
+        </ExpandableListItem.ExpandedContent>
+      </ExpandableListItem>
+    </div>
   );
 }
