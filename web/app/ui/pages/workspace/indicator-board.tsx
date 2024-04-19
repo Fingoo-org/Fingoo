@@ -12,7 +12,7 @@ const IndicatorBoard = React.memo(function IndicatorBoard() {
     <Card className="min-h-[32.5rem] w-full rounded-lg bg-white shadow-lg">
       <ClientDataSuspense fallback={<div>loading...</div>}>
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
-          <IndicatorsChart />
+          <IndicatorsChart indicatorBoardMetadataId="1" />
           <div className="py-6">
             <IntervalToggleGroup />
           </div>

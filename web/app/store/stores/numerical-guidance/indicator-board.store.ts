@@ -6,6 +6,7 @@ export type SplitScreen = (typeof splitScreens)[number];
 
 type IndicatorBoardState = {
   splitScreen: SplitScreen;
+  viewedIndicatorBoardMetadataIds: string[];
 };
 
 type IndicatorBoardAction = {
@@ -18,6 +19,7 @@ type IndicatorBoardStore = IndicatorBoardState & {
 
 const initialIndicatorBoardState: IndicatorBoardState = {
   splitScreen: 'full',
+  viewedIndicatorBoardMetadataIds: [],
 };
 
 export const useIndicatorBoardStore = create<IndicatorBoardStore>((set) => {

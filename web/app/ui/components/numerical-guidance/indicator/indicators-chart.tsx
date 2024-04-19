@@ -17,7 +17,11 @@ import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicat
 const BASE_URL =
   'https://mlvbynpnwpxewztngrrz.supabase.co/storage/v1/object/public/fingoo_bucket/indicatorBoardMetadata';
 
-export default function IndicatorsChart() {
+type IndicatorsChartProps = {
+  indicatorBoardMetadataId?: string;
+};
+
+export default function IndicatorsChart({ indicatorBoardMetadataId }: IndicatorsChartProps) {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
   // refactor: 애 둘을 선언형으로 감추고 싶다. rule을 만들어서 해결하자. 이컴포넌트가 주요한 예시가 될 듯
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();

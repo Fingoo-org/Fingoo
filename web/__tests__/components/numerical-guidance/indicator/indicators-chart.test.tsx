@@ -20,7 +20,7 @@ describe('IndicatorsChart', () => {
     // given
     render(
       <SWRProviderWithoutCache>
-        <IndicatorsChart />
+        <IndicatorsChart indicatorBoardMetadataId="1" />
       </SWRProviderWithoutCache>,
     );
 
@@ -34,7 +34,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart />
+          <IndicatorsChart indicatorBoardMetadataId="1" />
           <IndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -56,7 +56,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart />
+          <IndicatorsChart indicatorBoardMetadataId="1" />
           <IndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -79,7 +79,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart />
+          <IndicatorsChart indicatorBoardMetadataId="1" />
           <IndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -106,7 +106,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart />
+          <IndicatorsChart indicatorBoardMetadataId="1" />
           <CustomForecastIndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -129,7 +129,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart />
+          <IndicatorsChart indicatorBoardMetadataId="1" />
           <CustomForecastIndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -152,7 +152,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart />
+          <IndicatorsChart indicatorBoardMetadataId="1" />
           <CustomForecastIndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -185,7 +185,7 @@ describe('IndicatorsChart', () => {
           <MetadataList />
           <MetadataDialogMenu />
           <IndicatorList />
-          <IndicatorsChart />
+          <IndicatorsChart indicatorBoardMetadataId="1" />
         </SWRProviderWithoutCache>,
       );
       await user.click(await screen.findByText(/metadata1/i));
