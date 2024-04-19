@@ -9,6 +9,8 @@ import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indi
 import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
 import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
+import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import { useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 
 describe('IndicatorsChart', () => {
   beforeEach(() => {
@@ -83,9 +85,13 @@ describe('IndicatorsChart', () => {
           <IndicatorList />
         </SWRProviderWithoutCache>,
       );
-      const { result: store } = renderHook(() => useWorkspaceStore());
+      const { result: store } = renderHook(() => ({
+        ...useWorkspaceStore().actions,
+        ...useIndicatorBoardStore().actions,
+      }));
       act(() => {
-        store.current.actions.selectMetadata('1');
+        store.current.selectMetadata('1');
+        store.current.addIndicatorBoardInfo('1');
       });
       await waitFor(() => expect(screen.getByRole('tablist')).toBeVisible());
 
@@ -156,9 +162,13 @@ describe('IndicatorsChart', () => {
           <CustomForecastIndicatorList />
         </SWRProviderWithoutCache>,
       );
-      const { result: store } = renderHook(() => useWorkspaceStore());
+      const { result: store } = renderHook(() => ({
+        ...useWorkspaceStore().actions,
+        ...useIndicatorBoardStore().actions,
+      }));
       act(() => {
-        store.current.actions.selectMetadata('1');
+        store.current.selectMetadata('1');
+        store.current.addIndicatorBoardInfo('1');
       });
       await waitFor(() => expect(screen.getByRole('tablist')).toBeVisible());
 

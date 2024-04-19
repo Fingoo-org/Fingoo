@@ -20,7 +20,7 @@ type IndicatorsChartProps = {
 };
 
 export default function IndicatorsChart({ indicatorBoardMetadataId }: IndicatorsChartProps) {
-  const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard();
+  const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard(indicatorBoardMetadataId);
   const { indicatorBoardMetadata, uploadIndicatorBoardMetadataImage } =
     useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
   const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel(

@@ -22,7 +22,7 @@ type IndicatorBoardAction = {
   setSplitScreen: (splitScreen: SplitScreen) => void;
   addIndicatorBoardInfo: (metadataId: string) => void;
   deleteIndicatorBoardInfo: (metadataId: string) => void;
-  updateIndicatorBoardInfo: (newData: Partial<IndicatorBoardInfo>) => void;
+  updateIndicatorBoardInfo: (metadataId: string, newData: Partial<IndicatorBoardInfo>) => void;
 };
 
 type IndicatorBoardStore = IndicatorBoardState & {
@@ -50,10 +50,10 @@ export const useIndicatorBoardStore = create<IndicatorBoardStore>((set) => {
           indicatorBoardInfos: state.indicatorBoardInfos.filter((info) => info.metadataId !== metadataId),
         }));
       },
-      updateIndicatorBoardInfo: (newData) => {
+      updateIndicatorBoardInfo: (metadataId, newData) => {
         set((state) => ({
           indicatorBoardInfos: state.indicatorBoardInfos.map((info) =>
-            info.metadataId === newData.metadataId ? { ...info, ...newData } : info,
+            info.metadataId === metadataId ? { ...info, ...newData } : info,
           ),
         }));
       },
