@@ -4,15 +4,11 @@ import MetadataListContainer from './metadata-list-container';
 import IndicatorListContainer from './indicator-list-container';
 import CustomForecastIndicatorListContainer from './custom-forecast-indicator-list-container';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
+import { useWorkspace } from '@/app/business/hooks/use-workspace.hook';
 
 export default function IndicatorBoardToolbar() {
   const { selectedMetadataId } = useSelectedIndicatorBoardMetadata();
-  const { tabIndex, setTabIndex } = useIndicatorBoard();
+  const { tabIndex, setTabIndex } = useWorkspace();
 
   const handleTabValueChange = (value: string) => {
     setTabIndex(value);
