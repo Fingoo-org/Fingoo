@@ -106,7 +106,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   return (
     <div
       className={cn({
-        'border-2': isSelected,
+        'border-2 border-black': isSelected,
       })}
     >
       <ExpandableListItem selected={isMetadataInIndicatorBoard} onSelect={handleSelect} hoverRender={hoverRender}>
