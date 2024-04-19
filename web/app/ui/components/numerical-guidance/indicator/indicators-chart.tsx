@@ -65,7 +65,11 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
           />
         </div>
         <div ref={ref} className="w-full px-8" data-testid="indicators-chart">
-          {isAdvancedChart ? <AdvancedIndicatorsChart /> : <SimpleIndicatorsChart />}
+          {isAdvancedChart ? (
+            <AdvancedIndicatorsChart />
+          ) : (
+            <SimpleIndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
+          )}
         </div>
         <div className="absolute right-3 top-1">
           <ImageSharePopover

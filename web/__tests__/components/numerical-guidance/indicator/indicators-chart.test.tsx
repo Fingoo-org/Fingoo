@@ -20,7 +20,7 @@ describe('IndicatorsChart', () => {
     // given
     render(
       <SWRProviderWithoutCache>
-        <IndicatorsChart indicatorBoardMetadataId="1" />
+        <IndicatorsChart />
       </SWRProviderWithoutCache>,
     );
 
