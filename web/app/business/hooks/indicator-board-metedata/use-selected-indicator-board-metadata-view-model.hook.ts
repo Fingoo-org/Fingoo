@@ -7,8 +7,6 @@ import {
   useDeleteCustomForecastIndicatorFromMetadata,
   useDeleteIndicatorFromMetadata,
   useFetchIndicatorBoardMetadataList,
-  useUpdateIndicatorBoardMetadata,
-  useUpdateIndicatorIdsWithsectionIds,
 } from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useWorkspaceStore } from '../../../store/stores/numerical-guidance/workspace.store';
 import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
@@ -20,7 +18,6 @@ export const useSelectedIndicatorBoardMetadata = () => {
 
   const { trigger: addIndicatorTrigger } = useAddIndicatorToMetadata(selectedMetadataId);
   const { trigger: deleteIndicatorTrigger } = useDeleteIndicatorFromMetadata(selectedMetadataId);
-  const { trigger: updateTrigger } = useUpdateIndicatorBoardMetadata(selectedMetadataId);
   const { trigger: addCustomForecastIndicatorTrigger } = useAddCustomForecastIndicatorToMetadata(selectedMetadataId);
   const { trigger: deleteCustomForecastIndicatorTrigger } =
     useDeleteCustomForecastIndicatorFromMetadata(selectedMetadataId);
@@ -114,30 +111,11 @@ export const useSelectedIndicatorBoardMetadata = () => {
     );
   };
 
-  const updateMetadata = (data: { name: string }) => {
-    if (!selectedMetadata) {
-      return;
-    }
-    updateTrigger(
-      {
-        name: data.name,
-      },
-      {
-        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(selectedMetadataId, data.name);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
-        },
-        revalidate: false,
-      },
-    );
-  };
-
   return {
     selectedMetadataId,
     selectedMetadata,
     addIndicatorToMetadata,
     deleteIndicatorFromMetadata,
-    updateMetadata,
     addCustomForecastIndicatorToMetadata,
     selectMetadataById: selectMetadata,
     deleteCustomForecastIndicatorFromMetadata,
