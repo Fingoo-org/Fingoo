@@ -66,7 +66,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
         </div>
         <div ref={ref} className="w-full px-8" data-testid="indicators-chart">
           {isAdvancedChart ? (
-            <AdvancedIndicatorsChart />
+            <AdvancedIndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
           ) : (
             <SimpleIndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
           )}
