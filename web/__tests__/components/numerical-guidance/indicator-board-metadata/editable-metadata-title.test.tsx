@@ -31,7 +31,7 @@ describe('EditableMetadataTittle', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <EditableMetadataTittle />
+        <EditableMetadataTittle indicatorBoardMetadataId="1" />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -47,7 +47,7 @@ describe('EditableMetadataTittle', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <EditableMetadataTittle />
+        <EditableMetadataTittle indicatorBoardMetadataId="1" />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -67,7 +67,7 @@ describe('EditableMetadataTittle', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <EditableMetadataTittle />
+        <EditableMetadataTittle indicatorBoardMetadataId="1" />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -88,7 +88,7 @@ describe('EditableMetadataTittle', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <EditableMetadataTittle />
+        <EditableMetadataTittle indicatorBoardMetadataId="1" />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );

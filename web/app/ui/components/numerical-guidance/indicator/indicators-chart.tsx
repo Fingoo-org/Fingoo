@@ -55,7 +55,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
     <Pending isPending={isLiveIndicatorPending || isCustomForecastIndicatorPending}>
       <div className="relative">
         <div className="flex items-center justify-center">
-          <EditableMetadataTittle />
+          <EditableMetadataTittle indicatorBoardMetadataId={indicatorBoardMetadataId!} />
         </div>
         <div className="px-14 pb-1">
           <ToggleButton
