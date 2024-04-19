@@ -44,8 +44,10 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   const handleSelect = () => {
-    selectMetadataById(item.id);
-    addMetadataToIndicatorBoard(item.id);
+    const isSuccess = addMetadataToIndicatorBoard(item.id);
+    if (isSuccess) {
+      selectMetadataById(item.id);
+    }
   };
 
   const handleIconButton = () => {

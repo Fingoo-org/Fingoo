@@ -19,9 +19,8 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
   );
   const numberOfMetadataInIndicatorBoard = useIndicatorBoardStore((state) => state.indicatorBoardInfos.length);
   const splitScreen = useIndicatorBoardStore((state) => state.splitScreen);
-  const { addIndicatorBoardInfo, updateIndicatorBoardInfo, checkMetadataInIndicatorBoard } = useIndicatorBoardStore(
-    (state) => state.actions,
-  );
+  const { addIndicatorBoardInfo, clearIndicatorBoardInfos, updateIndicatorBoardInfo, checkMetadataInIndicatorBoard } =
+    useIndicatorBoardStore((state) => state.actions);
 
   const isAdvancedChart = indicatorBoardInfo?.isAdvancedChart ?? false;
   const interval = indicatorBoardInfo?.interval ?? 'day';
@@ -37,6 +36,12 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
   }
 
   function addMetadataToIndicatorBoard(metadataId: string) {
+    if (splitScreen === 'full') {
+      clearIndicatorBoardInfos();
+      addIndicatorBoardInfo(metadataId);
+      return true;
+    }
+
     if (numberOfMetadataInIndicatorBoard < maxIndicatorBoard(splitScreen)) {
       addIndicatorBoardInfo(metadataId);
       return true;

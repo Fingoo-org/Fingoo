@@ -24,6 +24,7 @@ type IndicatorBoardAction = {
   deleteIndicatorBoardInfo: (metadataId: string) => void;
   updateIndicatorBoardInfo: (metadataId: string, newData: Partial<IndicatorBoardInfo>) => void;
   checkMetadataInIndicatorBoard: (metadataId: string) => boolean;
+  clearIndicatorBoardInfos: () => void;
 };
 
 type IndicatorBoardStore = IndicatorBoardState & {
@@ -61,6 +62,7 @@ export const useIndicatorBoardStore = create<IndicatorBoardStore>((set, get) => 
       checkMetadataInIndicatorBoard: (metadataId) => {
         return get().indicatorBoardInfos.some((info) => info.metadataId === metadataId);
       },
+      clearIndicatorBoardInfos: () => set({ indicatorBoardInfos: [] }),
     },
   };
 });
