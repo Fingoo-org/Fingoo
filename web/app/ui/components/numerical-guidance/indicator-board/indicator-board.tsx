@@ -1,10 +1,10 @@
 'use client';
 import { Card } from '@tremor/react';
-import IndicatorsChart from '../../components/numerical-guidance/indicator/indicators-chart';
-import IntervalToggleGroup from '../../components/numerical-guidance/indicator/interval-toggle-group';
+import IndicatorsChart from '../indicator/indicators-chart';
+import IntervalToggleGroup from '../indicator/interval-toggle-group';
 import { SWRConfig } from 'swr';
-import ClientDataSuspense from '../../components/util/client-data-suspense';
-import CustomForecastIndicatorStabilityCallout from '../../components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-stability-callout';
+import ClientDataSuspense from '../../util/client-data-suspense';
+import CustomForecastIndicatorStabilityCallout from '../custom-forecast-indicator/custom-forecast-indicator-stability-callout';
 import React from 'react';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { cn } from '@/app/utils/style';

@@ -1,5 +1,5 @@
 'use client';
-import IndicatorBoard from './indicator-board';
+import IndicatorBoard from '../../components/numerical-guidance/indicator-board/indicator-board';
 import { useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import ResizablePanelGroup from '../../components/view/molecule/resizable-panel-group';
 
