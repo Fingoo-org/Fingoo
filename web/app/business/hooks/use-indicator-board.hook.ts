@@ -19,8 +19,13 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
   );
   const numberOfMetadataInIndicatorBoard = useIndicatorBoardStore((state) => state.indicatorBoardInfos.length);
   const splitScreen = useIndicatorBoardStore((state) => state.splitScreen);
-  const { addIndicatorBoardInfo, clearIndicatorBoardInfos, updateIndicatorBoardInfo, checkMetadataInIndicatorBoard } =
-    useIndicatorBoardStore((state) => state.actions);
+  const {
+    addIndicatorBoardInfo,
+    clearIndicatorBoardInfos,
+    updateIndicatorBoardInfo,
+    deleteIndicatorBoardInfo,
+    checkMetadataInIndicatorBoard,
+  } = useIndicatorBoardStore((state) => state.actions);
 
   const isAdvancedChart = indicatorBoardInfo?.isAdvancedChart ?? false;
   const interval = indicatorBoardInfo?.interval ?? 'day';
@@ -49,6 +54,10 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     return false;
   }
 
+  function deleteMetadataFromIndicatorBoard(metadataId: string) {
+    deleteIndicatorBoardInfo(metadataId);
+  }
+
   return {
     indicatorBoardInfo,
     interval,
@@ -57,5 +66,6 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     setInterval,
     checkMetadataInIndicatorBoard,
     addMetadataToIndicatorBoard,
+    deleteMetadataFromIndicatorBoard,
   };
 };

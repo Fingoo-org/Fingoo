@@ -27,7 +27,8 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     indicatorBoardMetadata?.indicatorIdsWithSectionIds,
   );
 
-  const { addMetadataToIndicatorBoard, checkMetadataInIndicatorBoard } = useIndicatorBoard(item.id);
+  const { addMetadataToIndicatorBoard, checkMetadataInIndicatorBoard, deleteMetadataFromIndicatorBoard } =
+    useIndicatorBoard(item.id);
 
   useEffect(() => {
     setIndicatorIdsWithsectionIds(indicatorBoardMetadata?.indicatorIdsWithSectionIds);
@@ -47,6 +48,13 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     const isSuccess = addMetadataToIndicatorBoard(item.id);
     if (isSuccess) {
       selectMetadataById(item.id);
+    }
+  };
+
+  const handleDeSelect = () => {
+    deleteMetadataFromIndicatorBoard(item.id);
+    if (isSelected) {
+      selectMetadataById(undefined);
     }
   };
 
@@ -111,7 +119,12 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
         'border-2 border-black': isSelected,
       })}
     >
-      <ExpandableListItem selected={isMetadataInIndicatorBoard} onSelect={handleSelect} hoverRender={hoverRender}>
+      <ExpandableListItem
+        onDeSelect={handleDeSelect}
+        selected={isMetadataInIndicatorBoard}
+        onSelect={handleSelect}
+        hoverRender={hoverRender}
+      >
         <ExpandableListItem.Title>
           <div className="py-1 pl-4">{item.name}</div>
         </ExpandableListItem.Title>
