@@ -6,14 +6,31 @@ import { SWRConfig } from 'swr';
 import ClientDataSuspense from '../../components/util/client-data-suspense';
 import CustomForecastIndicatorStabilityCallout from '../../components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-stability-callout';
 import React from 'react';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { cn } from '@/app/utils/style';
 
 type IndicatorBoardProps = {
   indicatorBoardMetadataId?: string;
 };
 
 const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetadataId }: IndicatorBoardProps) {
+  const { selectedMetadataId, selectMetadataById } = useSelectedIndicatorBoardMetadata();
+
+  const isSelected = indicatorBoardMetadataId ? selectedMetadataId === indicatorBoardMetadataId : false;
+
+  const handleMetadataSelect = () => {
+    if (indicatorBoardMetadataId) {
+      selectMetadataById(indicatorBoardMetadataId);
+    }
+  };
+
   return (
-    <Card className="min-h-[32.5rem] w-full rounded-lg bg-white">
+    <Card
+      onDoubleClick={handleMetadataSelect}
+      className={cn('min-h-[32.5rem] w-full rounded-lg bg-white', {
+        'border-2 border-lime-300': isSelected,
+      })}
+    >
       <ClientDataSuspense fallback={<div>loading...</div>}>
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
           <IndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
