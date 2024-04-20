@@ -25,6 +25,8 @@ type IndicatorBoardAction = {
   updateIndicatorBoardInfo: (metadataId: string, newData: Partial<IndicatorBoardInfo>) => void;
   checkMetadataInIndicatorBoard: (metadataId: string) => boolean;
   clearIndicatorBoardInfos: () => void;
+  sliceIndicatorBoardInfos: (length: number) => IndicatorBoardInfo[];
+  setIndicatorBoardInfos: (infos: IndicatorBoardInfo[]) => void;
 };
 
 type IndicatorBoardStore = IndicatorBoardState & {
@@ -63,6 +65,8 @@ export const useIndicatorBoardStore = create<IndicatorBoardStore>((set, get) => 
         return get().indicatorBoardInfos.some((info) => info.metadataId === metadataId);
       },
       clearIndicatorBoardInfos: () => set({ indicatorBoardInfos: [] }),
+      sliceIndicatorBoardInfos: (length) => get().indicatorBoardInfos.slice(0, length),
+      setIndicatorBoardInfos: (infos) => set({ indicatorBoardInfos: infos }),
     },
   };
 });

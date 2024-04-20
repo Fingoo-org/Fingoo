@@ -1,6 +1,7 @@
 import { Interval, useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import { useShallow } from 'zustand/react/shallow';
 import { type SplitScreen } from '@/app/store/stores/numerical-guidance/indicator-board.store';
+import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 
 function maxIndicatorBoard(splitScreen: SplitScreen) {
   switch (splitScreen) {
@@ -26,7 +27,11 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     deleteIndicatorBoardInfo,
     checkMetadataInIndicatorBoard,
     setSplitScreen,
+    sliceIndicatorBoardInfos,
+    setIndicatorBoardInfos,
   } = useIndicatorBoardStore((state) => state.actions);
+  const selectedMetadataId = useWorkspaceStore((state) => state.selectedMetadataId);
+  const { selectMetadata } = useWorkspaceStore((state) => state.actions);
 
   const isAdvancedChart = indicatorBoardInfo?.isAdvancedChart ?? false;
   const interval = indicatorBoardInfo?.interval ?? 'day';
@@ -59,6 +64,19 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     deleteIndicatorBoardInfo(metadataId);
   }
 
+  function transitionSplitScreen(screenType: SplitScreen) {
+    const slicedIndicatorBoardInfos = sliceIndicatorBoardInfos(maxIndicatorBoard(screenType));
+
+    const selectedMetadata = slicedIndicatorBoardInfos.findIndex((info) => info.metadataId === selectedMetadataId);
+
+    if (selectedMetadata === -1) {
+      selectMetadata(undefined);
+    }
+
+    setIndicatorBoardInfos(slicedIndicatorBoardInfos);
+    setSplitScreen(screenType);
+  }
+
   return {
     splitScreen,
     indicatorBoardInfo,
@@ -70,5 +88,6 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     addMetadataToIndicatorBoard,
     deleteMetadataFromIndicatorBoard,
     setSplitScreen,
+    transitionSplitScreen,
   };
 };

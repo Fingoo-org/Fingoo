@@ -12,13 +12,13 @@ export default function Workspace() {
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanelGroup.Panel defaultSize={50}>
           <div className="flex h-full items-center justify-center px-2">
-            <IndicatorBoard />
+            <IndicatorBoard indicatorBoardMetadataId={indicatorBoardInfos[0]?.metadataId} />
           </div>
         </ResizablePanelGroup.Panel>
         <ResizablePanelGroup.Handle disabled={true} />
         <ResizablePanelGroup.Panel defaultSize={50}>
           <div className="flex h-full items-center justify-center px-2">
-            <IndicatorBoard />
+            <IndicatorBoard indicatorBoardMetadataId={indicatorBoardInfos[1]?.metadataId} />
           </div>
         </ResizablePanelGroup.Panel>
       </ResizablePanelGroup>
