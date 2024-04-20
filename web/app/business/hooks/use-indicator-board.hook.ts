@@ -25,6 +25,7 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     updateIndicatorBoardInfo,
     deleteIndicatorBoardInfo,
     checkMetadataInIndicatorBoard,
+    setSplitScreen,
   } = useIndicatorBoardStore((state) => state.actions);
 
   const isAdvancedChart = indicatorBoardInfo?.isAdvancedChart ?? false;
@@ -59,6 +60,7 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
   }
 
   return {
+    splitScreen,
     indicatorBoardInfo,
     interval,
     isAdvancedChart,
@@ -67,5 +69,6 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     checkMetadataInIndicatorBoard,
     addMetadataToIndicatorBoard,
     deleteMetadataFromIndicatorBoard,
+    setSplitScreen,
   };
 };
