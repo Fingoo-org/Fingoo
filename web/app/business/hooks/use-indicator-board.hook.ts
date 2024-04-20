@@ -1,5 +1,4 @@
 import { Interval, useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
-import { useShallow } from 'zustand/react/shallow';
 import { type SplitScreen } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 
@@ -15,9 +14,9 @@ function maxIndicatorBoard(splitScreen: SplitScreen) {
 }
 
 export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
-  const indicatorBoardInfo = useIndicatorBoardStore(
-    useShallow((state) => state.indicatorBoardInfos.find((info) => info.metadataId === indicatorBoardMetadataId)),
-  );
+  const indicatorBoardInfos = useIndicatorBoardStore((state) => state.indicatorBoardInfos);
+  const indicatorBoardInfo = indicatorBoardInfos.find((info) => info.metadataId === indicatorBoardMetadataId);
+
   const numberOfMetadataInIndicatorBoard = useIndicatorBoardStore((state) => state.indicatorBoardInfos.length);
   const splitScreen = useIndicatorBoardStore((state) => state.splitScreen);
   const {
@@ -77,7 +76,16 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     setSplitScreen(screenType);
   }
 
+  function reorderIndicatorBoardInfos(metadataIds: string[]) {
+    const newIndicatorBoardInfos = metadataIds.map((metadataId) => {
+      return indicatorBoardInfos.find((info) => info.metadataId === metadataId)!;
+    });
+
+    setIndicatorBoardInfos(newIndicatorBoardInfos);
+  }
+
   return {
+    indicatorBoardInfos,
     splitScreen,
     indicatorBoardInfo,
     interval,
@@ -87,7 +95,7 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     checkMetadataInIndicatorBoard,
     addMetadataToIndicatorBoard,
     deleteMetadataFromIndicatorBoard,
-    setSplitScreen,
     transitionSplitScreen,
+    reorderIndicatorBoardInfos,
   };
 };

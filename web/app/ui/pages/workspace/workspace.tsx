@@ -1,27 +1,59 @@
 'use client';
 import IndicatorBoard from '../../components/numerical-guidance/indicator-board/indicator-board';
-import { useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import ResizablePanelGroup from '../../components/view/molecule/resizable-panel-group';
+import DraggableContext from '../../components/util/draggable-context';
+import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import { SortableContext } from '@dnd-kit/sortable';
+import Draggable from '../../components/view/atom/draggable/draggable';
 
 export default function Workspace() {
-  const { splitScreen } = useIndicatorBoardStore();
-  const { indicatorBoardInfos } = useIndicatorBoardStore((state) => state);
+  const { splitScreen, indicatorBoardInfos, reorderIndicatorBoardInfos } = useIndicatorBoard();
+
+  const handleDragEnd = (newValue: { [key: string]: string[] }) => {
+    const newIndicatorBoardMetadataIds = Object.keys(newValue).map((_, index) => newValue[`${index}`][0]);
+    reorderIndicatorBoardInfos(newIndicatorBoardMetadataIds);
+  };
+
+  const draggableContextValue = indicatorBoardInfos.reduce<{
+    [key: string]: string[];
+  }>((acc, info, index) => {
+    return {
+      ...acc,
+      [`${index}`]: [info.metadataId],
+    };
+  }, {});
 
   if (splitScreen === 'vertical') {
     return (
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanelGroup.Panel defaultSize={50}>
-          <div className="flex h-full items-center justify-center px-2">
-            <IndicatorBoard indicatorBoardMetadataId={indicatorBoardInfos[0]?.metadataId} />
-          </div>
-        </ResizablePanelGroup.Panel>
-        <ResizablePanelGroup.Handle disabled={true} />
-        <ResizablePanelGroup.Panel defaultSize={50}>
-          <div className="flex h-full items-center justify-center px-2">
-            <IndicatorBoard indicatorBoardMetadataId={indicatorBoardInfos[1]?.metadataId} />
-          </div>
-        </ResizablePanelGroup.Panel>
-      </ResizablePanelGroup>
+      <DraggableContext values={draggableContextValue} onDragSwapWithOtherContext={handleDragEnd}>
+        <ResizablePanelGroup direction="horizontal">
+          {Array.from({ length: 2 }, () => 0).map((_, index) => {
+            const item = draggableContextValue[index];
+            return (
+              <>
+                {item ? (
+                  <ResizablePanelGroup.Panel key={index} defaultSize={50}>
+                    <SortableContext id={`${index}`} items={item}>
+                      <div className="flex h-full items-center justify-center px-2">
+                        <Draggable id={item[0]}>
+                          <IndicatorBoard indicatorBoardMetadataId={item[0]} />
+                        </Draggable>
+                      </div>
+                    </SortableContext>
+                  </ResizablePanelGroup.Panel>
+                ) : (
+                  <ResizablePanelGroup.Panel key={index} defaultSize={50}>
+                    <div className="flex h-full items-center justify-center px-2">
+                      <IndicatorBoard />
+                    </div>
+                  </ResizablePanelGroup.Panel>
+                )}
+                {index === 0 ? <ResizablePanelGroup.Handle disabled={true} /> : null}
+              </>
+            );
+          })}
+        </ResizablePanelGroup>
+      </DraggableContext>
     );
   }
 
