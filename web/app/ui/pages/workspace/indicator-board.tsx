@@ -13,7 +13,7 @@ type IndicatorBoardProps = {
 
 const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetadataId }: IndicatorBoardProps) {
   return (
-    <Card className="min-h-[32.5rem] w-full rounded-lg bg-white shadow-lg">
+    <Card className="min-h-[32.5rem] w-full rounded-lg bg-white">
       <ClientDataSuspense fallback={<div>loading...</div>}>
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
           <IndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />

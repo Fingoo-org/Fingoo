@@ -114,43 +114,40 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     ));
 
   return (
-    <div
+    <ExpandableListItem
+      onDeSelect={handleDeSelect}
+      selected={isMetadataInIndicatorBoard}
+      onSelect={handleSelect}
+      hoverRender={hoverRender}
       className={cn({
-        'border-2 border-black': isSelected,
+        'border-2 border-lime-300 shadow-lg': isSelected,
       })}
     >
-      <ExpandableListItem
-        onDeSelect={handleDeSelect}
-        selected={isMetadataInIndicatorBoard}
-        onSelect={handleSelect}
-        hoverRender={hoverRender}
-      >
-        <ExpandableListItem.Title>
-          <div className="py-1 pl-4">{item.name}</div>
-        </ExpandableListItem.Title>
-        <ExpandableListItem.ExpandedContent>
-          <DraggableContext
-            onActiveChange={handleActiveChange}
-            onDragOver={setIndicatorIdsWithsectionIds}
-            onDragEnd={handleIndicatorsectionChange}
-            values={indicatorIdsWithSectionIds ?? {}}
-            dragOverlayItem={({ children }) => (
-              <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
-                {children}
-              </Item>
-            )}
+      <ExpandableListItem.Title>
+        <div className="py-1 pl-4">{item.name}</div>
+      </ExpandableListItem.Title>
+      <ExpandableListItem.ExpandedContent>
+        <DraggableContext
+          onActiveChange={handleActiveChange}
+          onDragOver={setIndicatorIdsWithsectionIds}
+          onDragEnd={handleIndicatorsectionChange}
+          values={indicatorIdsWithSectionIds ?? {}}
+          dragOverlayItem={({ children }) => (
+            <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
+              {children}
+            </Item>
+          )}
+        >
+          <div
+            className={cn('divide-y-2', {
+              'divide-white': isSelected,
+              'divide-blue-200': !isSelected,
+            })}
           >
-            <div
-              className={cn('divide-y-2', {
-                'divide-white': isSelected,
-                'divide-blue-200': !isSelected,
-              })}
-            >
-              {indicatorIdsWithSectionIds ? renderDraggableList(indicatorIdsWithSectionIds) : null}
-            </div>
-          </DraggableContext>
-        </ExpandableListItem.ExpandedContent>
-      </ExpandableListItem>
-    </div>
+            {indicatorIdsWithSectionIds ? renderDraggableList(indicatorIdsWithSectionIds) : null}
+          </div>
+        </DraggableContext>
+      </ExpandableListItem.ExpandedContent>
+    </ExpandableListItem>
   );
 }

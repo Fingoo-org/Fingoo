@@ -8,6 +8,7 @@ import { ExpandableListItemTitle } from './expandable-list-item-title';
 
 type ExpandableListItemProps = {
   selected: boolean;
+  className?: string;
   onSelect: () => void;
   onDeSelect?: () => void;
   hoverRender?: () => JSX.Element;
@@ -23,6 +24,7 @@ function getTitle(children: React.ReactNode) {
 
 export function ExpandableListItemRoot({
   selected,
+  className,
   onSelect,
   onDeSelect,
   hoverRender,
@@ -78,9 +80,13 @@ export function ExpandableListItemRoot({
         >
           <div
             onClick={handleClick}
-            className={cn('h-full w-full rounded-2xl bg-white ring-1 ring-blue-200', {
-              'bg-blue-200 text-blue-900 opacity-80': selected,
-            })}
+            className={cn(
+              'h-full w-full rounded-2xl bg-white ring-1 ring-blue-200',
+              {
+                'bg-blue-200 text-blue-900 opacity-80': selected,
+              },
+              className,
+            )}
             role="tab"
             aria-selected={`${selected}`}
           >
