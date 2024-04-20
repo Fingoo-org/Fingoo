@@ -5,6 +5,7 @@ import ResizablePanelGroup from '../../components/view/molecule/resizable-panel-
 
 export default function Workspace() {
   const { splitScreen } = useIndicatorBoardStore();
+  const { indicatorBoardInfos } = useIndicatorBoardStore((state) => state);
 
   if (splitScreen === 'vertical') {
     return (
@@ -29,7 +30,11 @@ export default function Workspace() {
       <ResizablePanelGroup.Panel defaultSize={100}>
         <div className="flex h-full items-center justify-center">
           <div className="w-[55rem]">
-            <IndicatorBoard />
+            {indicatorBoardInfos.length === 0 ? (
+              <IndicatorBoard />
+            ) : (
+              <IndicatorBoard indicatorBoardMetadataId={indicatorBoardInfos[0].metadataId} />
+            )}
           </div>
         </div>
       </ResizablePanelGroup.Panel>
