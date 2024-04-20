@@ -18,7 +18,7 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
           <IndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
           <div className="py-6">
-            <IntervalToggleGroup />
+            <IntervalToggleGroup indicatorBoardMetadataId={indicatorBoardMetadataId} />
           </div>
           <CustomForecastIndicatorStabilityCallout indicatorBoardMetadataId={indicatorBoardMetadataId} />
         </SWRConfig>

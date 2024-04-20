@@ -6,8 +6,13 @@ function isInterval(value: string): value is Interval {
   return intervals.includes(value as Interval);
 }
 
-export default function IntervalToggleGroup() {
-  const { interval, setInterval } = useIndicatorBoard();
+type IntervalToggleGroup = {
+  indicatorBoardMetadataId?: string;
+};
+
+export default function IntervalToggleGroup({ indicatorBoardMetadataId }: IntervalToggleGroup) {
+  // TODO: 수정 필요
+  const { interval, setInterval } = useIndicatorBoard(indicatorBoardMetadataId);
 
   const handleIntervalChange = (value: string) => {
     if (isInterval(value)) {
@@ -16,7 +21,12 @@ export default function IntervalToggleGroup() {
   };
 
   return (
-    <ToggleGroup value={interval} onValueChange={handleIntervalChange} type="single">
+    <ToggleGroup
+      disabled={indicatorBoardMetadataId ? false : true}
+      value={interval}
+      onValueChange={handleIntervalChange}
+      type="single"
+    >
       <ToggleGroup.Item value="day">
         <div className="w-20">Day</div>
       </ToggleGroup.Item>
