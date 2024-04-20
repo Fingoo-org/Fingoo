@@ -5,13 +5,19 @@ import DraggableContext from '../../components/util/draggable-context';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
 import { SortableContext } from '@dnd-kit/sortable';
 import Draggable from '../../components/view/atom/draggable/draggable';
+import { useState } from 'react';
 
 export default function Workspace() {
+  const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
   const { splitScreen, indicatorBoardInfos, reorderIndicatorBoardInfos } = useIndicatorBoard();
 
-  const handleDragEnd = (newValue: { [key: string]: string[] }) => {
+  const handleDragSwapWithOtherContext = (newValue: { [key: string]: string[] }) => {
     const newIndicatorBoardMetadataIds = Object.keys(newValue).map((_, index) => newValue[`${index}`][0]);
     reorderIndicatorBoardInfos(newIndicatorBoardMetadataIds);
+  };
+
+  const handleActiveChange = (activeId: string | null) => {
+    setActiveDragItemId(activeId);
   };
 
   const draggableContextValue = indicatorBoardInfos.reduce<{
@@ -25,7 +31,11 @@ export default function Workspace() {
 
   if (splitScreen === 'vertical') {
     return (
-      <DraggableContext values={draggableContextValue} onDragSwapWithOtherContext={handleDragEnd}>
+      <DraggableContext
+        values={draggableContextValue}
+        onActiveChange={handleActiveChange}
+        onDragSwapWithOtherContext={handleDragSwapWithOtherContext}
+      >
         <ResizablePanelGroup direction="horizontal">
           {Array.from({ length: 2 }, () => 0).map((_, index) => {
             const item = draggableContextValue[index];
@@ -35,7 +45,7 @@ export default function Workspace() {
                   <ResizablePanelGroup.Panel key={index} defaultSize={50}>
                     <SortableContext id={`${index}`} items={item}>
                       <div className="flex h-full items-center justify-center px-2">
-                        <Draggable id={item[0]}>
+                        <Draggable active={item[0] === activeDragItemId} handle="top" id={item[0]}>
                           <IndicatorBoard indicatorBoardMetadataId={item[0]} />
                         </Draggable>
                       </div>
