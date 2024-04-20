@@ -12,7 +12,7 @@ import {
   DragOverEvent,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { Item } from '../view/atom/draggable-item';
+import { Item } from '../view/atom/draggable/draggable-item';
 
 type DraggableContextProps = {
   values: {

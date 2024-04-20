@@ -7,7 +7,7 @@ import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import ExpandableListItem from '../../../view/molecule/expandable-list-item';
 import DraggableContext from '../../../util/draggable-context';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import DraggableItem, { Item } from '../../../view/atom/draggable-item';
+import DraggableItem, { Item } from '../../../view/atom/draggable/draggable-item';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { useEffect, useState } from 'react';
 import { cn } from '@/app/utils/style';

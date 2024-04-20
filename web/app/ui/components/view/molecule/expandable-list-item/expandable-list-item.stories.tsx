@@ -6,7 +6,7 @@ import IconButton from '../../atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import DraggableContext from '../../../util/draggable-context';
-import DraggableItem from '../../atom/draggable-item';
+import DraggableItem from '../../atom/draggable/draggable-item';
 
 const meta = {
   title: 'view/molecule/ExpandableListItem',
