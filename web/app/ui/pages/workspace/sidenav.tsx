@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import IndicatorBoardToolbar from './indicator-board-toolbar';
 import { Sidebar } from 'react-pro-sidebar';
+import { ChevronDoubleLeftIcon } from '@heroicons/react/solid';
+import IconButton from '../../components/view/atom/icons/icon-button';
 
 export default function SideNav() {
   const [collapsed, setCollapsed] = useState(false);
@@ -15,7 +17,13 @@ export default function SideNav() {
       <Sidebar collapsedWidth="120px" width="400px" collapsed={collapsed} className="h-full">
         <div className="relative">
           <div className="absolute right-0">
-            <button onClick={handleCollapse}>collpase</button>
+            <IconButton
+              data-collapsed={collapsed}
+              className="transition-transform duration-200 data-[collapsed=true]:rotate-180"
+              color={'gray'}
+              icon={ChevronDoubleLeftIcon}
+              onClick={handleCollapse}
+            />
           </div>
         </div>
         <div className="flex h-full flex-col">

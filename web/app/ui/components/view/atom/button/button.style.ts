@@ -103,6 +103,7 @@ export const getButtonColors = (variant: ButtonVariant, color: Color) => {
         bgColor: getColorClassNames('transparent').bgColor,
         borderColor: '',
         hoverBorderColor: '',
+        hoverBgColor: 'hover:bg-gray-200',
       };
   }
 };

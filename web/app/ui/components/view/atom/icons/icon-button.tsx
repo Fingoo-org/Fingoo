@@ -1,8 +1,8 @@
 import { Sizes, IconVariants } from './icon-button.style';
-import { Color, Size, IconVariant } from '@/app/utils/style';
+import { Color, Size, IconVariant, cn } from '@/app/utils/style';
 import React from 'react';
 import Icon from './variant-icon';
-import { twMerge } from 'tailwind-merge';
+import { getButtonColors } from '../button/button.style';
 
 type NativeButtonType = React.ComponentPropsWithoutRef<'button'>;
 
@@ -18,9 +18,18 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function
   { icon, onClick, size = Sizes.SM, variant = IconVariants.Simple, color = 'blue', disabled, className, ...props },
   ref,
 ) {
+  const buttonColorStyle = getButtonColors('light', color);
   return (
     <button
-      className={twMerge('border-0 outline-none ring-0', className)}
+      className={cn(
+        'rounded-md border-0 outline-none ring-0',
+        buttonColorStyle.textColor,
+        buttonColorStyle.bgColor,
+        buttonColorStyle.borderColor,
+        buttonColorStyle.hoverBgColor,
+        buttonColorStyle.hoverTextColor,
+        className,
+      )}
       {...props}
       disabled={disabled}
       ref={ref}
