@@ -1,6 +1,6 @@
 'use client';
 import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
-import ToggleGroup from '../../view/molecule/toggle-group';
+import ToggleGroup from '../../../components/view/molecule/toggle-group';
 import { type SplitScreen, splitScreens } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 
 function isSplitScreen(value: string): value is SplitScreen {

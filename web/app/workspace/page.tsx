@@ -1,4 +1,4 @@
-import SplitScreenToggleGroup from '../ui/components/numerical-guidance/indicator-board/split-screen-toggle-group';
+import SplitScreenToggleGroup from '../ui/pages/workspace/split-screen/split-screen-toggle-group';
 import Workspace from '../ui/pages/workspace/workspace';
 
 export default function Page() {
