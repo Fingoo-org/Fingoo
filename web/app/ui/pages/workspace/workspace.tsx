@@ -6,6 +6,7 @@ import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook
 import { SortableContext } from '@dnd-kit/sortable';
 import Draggable from '../../components/view/atom/draggable/draggable';
 import { useState } from 'react';
+import { cn } from '@/app/utils/style';
 
 export default function Workspace() {
   const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
@@ -44,7 +45,11 @@ export default function Workspace() {
                 {item ? (
                   <ResizablePanelGroup.Panel key={index} defaultSize={50}>
                     <SortableContext id={`${index}`} items={item}>
-                      <div className="flex h-full items-center justify-center px-2">
+                      <div
+                        className={cn('flex h-full items-center justify-center px-2', {
+                          'border-2 border-lime-300': activeDragItemId ? item[0] !== activeDragItemId : false,
+                        })}
+                      >
                         <Draggable active={item[0] === activeDragItemId} handle="top" id={item[0]}>
                           <IndicatorBoard indicatorBoardMetadataId={item[0]} />
                         </Draggable>
