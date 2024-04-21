@@ -39,7 +39,7 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
               noDataText={
                 indicatorBoardMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'
               }
-              syncId={'simple-indicators-chart'}
+              syncId={indicatorBoardMetadataId}
               className="h-80"
             />
           );
