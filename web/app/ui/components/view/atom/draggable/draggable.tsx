@@ -1,8 +1,8 @@
 import { useSortable } from '@dnd-kit/sortable';
 import React from 'react';
 import { CSS } from '@dnd-kit/utilities';
-import { Button } from '@tremor/react';
 import { cn } from '@/app/utils/style';
+import IconButton from '../icons/icon-button';
 
 type Handle = 'top';
 
@@ -37,10 +37,8 @@ export default function Draggable({
     >
       <div className="relative">
         {handle === 'top' && (
-          <div className="absolute left-1/2 top-1 z-10 -translate-x-1/2 cursor-grab">
-            <Button {...attributes} {...listeners} variant={'light'}>
-              <GripHorizontalIcon className="h-4 w-6" />
-            </Button>
+          <div className="absolute left-1/2 z-10 -translate-x-1/2 cursor-grab">
+            <IconButton size={'sm'} color={'gray'} {...attributes} {...listeners} icon={GripHorizontalIcon} />
           </div>
         )}
         {children}
