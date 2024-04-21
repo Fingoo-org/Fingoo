@@ -20,7 +20,7 @@ type DraggableContextProps = {
   };
   onDragEnd?: (newValue: { [key: string]: string[] }) => void;
   onDragSwapWithOtherContext?: (newValue: { [key: string]: string[] }) => void;
-  dragOverlayItem?: ({ children }: React.PropsWithChildren) => React.ReactElement;
+  dragOverlayItem?: ({ activeId }: { activeId: string }) => React.ReactElement;
   onDragOver?: (newValue: { [key: string]: string[] }) => void;
   onActiveChange?: (activeId: string | null) => void;
 };
@@ -56,9 +56,9 @@ export default function DraggableContext({
       <DragOverlay>
         {activeId ? (
           OverlayItem ? (
-            <OverlayItem>{activeId}</OverlayItem>
+            <OverlayItem activeId={activeId} />
           ) : (
-            <Item className=" shadow-lg">{activeId}</Item>
+            <Item className="shadow-lg">{activeId}</Item>
           )
         ) : null}
       </DragOverlay>

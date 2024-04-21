@@ -132,9 +132,9 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           onDragOver={setIndicatorIdsWithsectionIds}
           onDragEnd={handleIndicatorsectionChange}
           values={indicatorIdsWithSectionIds ?? {}}
-          dragOverlayItem={({ children }) => (
+          dragOverlayItem={({ activeId }) => (
             <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
-              {children}
+              {activeId}
             </Item>
           )}
         >

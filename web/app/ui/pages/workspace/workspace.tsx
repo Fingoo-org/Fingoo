@@ -7,6 +7,10 @@ import { SortableContext } from '@dnd-kit/sortable';
 import Draggable from '../../components/view/atom/draggable/draggable';
 import { useState } from 'react';
 import { cn } from '@/app/utils/style';
+import { Card } from '@tremor/react';
+import EditableMetadataTittle from '../../components/numerical-guidance/indicator-board-metadata/editable-metadata-title';
+import Image from 'next/image';
+import ChartImage from '@/public/assets/images/chart-image.png';
 
 export default function Workspace() {
   const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
@@ -36,6 +40,16 @@ export default function Workspace() {
         values={draggableContextValue}
         onActiveChange={handleActiveChange}
         onDragSwapWithOtherContext={handleDragSwapWithOtherContext}
+        dragOverlayItem={({ activeId }) => (
+          <Card className="min-h-[32.5rem] w-full rounded-lg bg-white opacity-60 shadow-2xl">
+            <div className="flex items-center justify-center">
+              <EditableMetadataTittle indicatorBoardMetadataId={activeId!} />
+            </div>
+            <div className="mt-12 h-5 w-full px-8">
+              <Image quality={75} src={ChartImage} alt="chart-image" />
+            </div>
+          </Card>
+        )}
       >
         <ResizablePanelGroup direction="horizontal">
           {Array.from({ length: 2 }, () => 0).map((_, index) => {
