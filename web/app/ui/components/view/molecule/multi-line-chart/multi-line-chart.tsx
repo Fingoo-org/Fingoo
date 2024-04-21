@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { ChartTooltip } from './chart-tooltip';
 import {
   FormattedRowType,
-  FormattedIndicatorValue,
   chartValueFormatterFactory,
 } from '@/app/business/services/chart/indicator-formatter.service';
 import { cn } from '@/app/utils/style';

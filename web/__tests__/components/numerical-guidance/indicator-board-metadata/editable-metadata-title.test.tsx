@@ -3,10 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import SelectedMetadataTittle from '@/app/ui/components/numerical-guidance/indicator-board-metadata/selected-metadata-title';
+import EditableMetadataTittle from '@/app/ui/components/numerical-guidance/indicator-board-metadata/editable-metadata-title';
 import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 
-describe('SelectedMetadataTittle', () => {
+describe('EditableMetadataTittle', () => {
   beforeEach(() => {
     resetMockDB();
     resetAllStore();
@@ -16,7 +16,7 @@ describe('SelectedMetadataTittle', () => {
     // given
     render(
       <SWRProviderWithoutCache>
-        <SelectedMetadataTittle />
+        <EditableMetadataTittle />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -31,7 +31,7 @@ describe('SelectedMetadataTittle', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <SelectedMetadataTittle />
+        <EditableMetadataTittle indicatorBoardMetadataId="1" />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -47,7 +47,7 @@ describe('SelectedMetadataTittle', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <SelectedMetadataTittle />
+        <EditableMetadataTittle indicatorBoardMetadataId="1" />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -67,7 +67,7 @@ describe('SelectedMetadataTittle', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <SelectedMetadataTittle />
+        <EditableMetadataTittle indicatorBoardMetadataId="1" />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -88,7 +88,7 @@ describe('SelectedMetadataTittle', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
-        <SelectedMetadataTittle />
+        <EditableMetadataTittle indicatorBoardMetadataId="1" />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );

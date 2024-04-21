@@ -52,6 +52,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-financial-charts": "^2.0.1",
+    "react-pro-sidebar": "^1.1.0",
     "react-resizable-panels": "^2.0.17",
     "react-window": "^1.8.10",
     "swr": "^2.2.4",

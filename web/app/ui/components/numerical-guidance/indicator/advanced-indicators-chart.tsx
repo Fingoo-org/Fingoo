@@ -4,17 +4,21 @@ import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/
 import { useEffect } from 'react';
 import { createIndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 
-export default function AdvancedIndicatorsChart() {
-  const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
+type AdvancedIndicatorsChartProps = {
+  indicatorBoardMetadataId?: string;
+};
+
+export default function AdvancedIndicatorsChart({ indicatorBoardMetadataId }: AdvancedIndicatorsChartProps) {
+  const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
   const {
     actualHistoryIndicatorsValue,
     customForecastHistoryIndicatorsValue,
     setPaginationData,
     setInitialCursorDate,
   } = useHistoryIndicatorsValueViewModel();
-  const { indicatorsValue } = useLiveIndicatorsValueViewModel();
+  const { indicatorsValue } = useLiveIndicatorsValueViewModel(indicatorBoardMetadata?.id);
   const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
 
   const indicatorFormatter = createIndicatorFormatter(
@@ -39,9 +43,9 @@ export default function AdvancedIndicatorsChart() {
   const initialLength = formattedLiveIndicatorsRows?.length || 0;
   const initialIndex = initialLength - (formattedAdvencedIndicatorsRows?.length || 0);
 
-  const categoriesList = selectedMetadata?.indicatorIdsWithSectionIds
-    ? Object.keys(selectedMetadata?.indicatorIdsWithSectionIds).map((sectionId, index) => {
-        const indicatorIds = selectedMetadata?.indicatorIdsWithSectionIds[`section${index + 1}`];
+  const categoriesList = indicatorBoardMetadata?.indicatorIdsWithSectionIds
+    ? Object.keys(indicatorBoardMetadata?.indicatorIdsWithSectionIds).map((sectionId, index) => {
+        const indicatorIds = indicatorBoardMetadata?.indicatorIdsWithSectionIds[`section${index + 1}`];
 
         const categories = indicatorFormatter
           .getIdentifiersByIds(indicatorIds)

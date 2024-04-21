@@ -1,12 +1,18 @@
 import Callout from '../../view/molecule/callout';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
+import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 
-export default function CustomForecastIndicatorStabilityCallout() {
-  const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
+type CustomForecastIndicatorStabilityCalloutProps = {
+  indicatorBoardMetadataId?: string;
+};
+
+export default function CustomForecastIndicatorStabilityCallout({
+  indicatorBoardMetadataId,
+}: CustomForecastIndicatorStabilityCalloutProps) {
+  const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
   const { customForecastIndicatorList } = useCustomForecastIndicatorListViewModel();
 
-  const customForecastIndicatorInMetadata = selectedMetadata?.customForecastIndicatorIds.map((id) =>
+  const customForecastIndicatorInMetadata = indicatorBoardMetadata?.customForecastIndicatorIds.map((id) =>
     customForecastIndicatorList?.findCustomForecastIndicatorById(id),
   );
 

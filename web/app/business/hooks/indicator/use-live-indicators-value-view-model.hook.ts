@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
 import { useFetchLiveIndicatorsValue } from '../../../store/querys/numerical-guidance/indicator.query';
 import { convertLiveIndicatorsValueViewModel } from '../../services/view-model/indicator-value/actual-indicators-value-view-model.service';
-import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
+import { useIndicatorBoardMetadataViewModel } from '../indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+import { useIndicatorBoard } from '../indicator-board/use-indicator-board.hook';
 
-export const useLiveIndicatorsValueViewModel = () => {
-  const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const interval = useWorkspaceStore((state) => state.interval);
+export const useLiveIndicatorsValueViewModel = (indicatorBoardMetadataId?: string) => {
+  const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
+  const { interval } = useIndicatorBoard(indicatorBoardMetadataId);
+
   const { data: indicatorsValueData, isLoading } = useFetchLiveIndicatorsValue(
-    selectedMetadata?.indicatorIds,
+    indicatorBoardMetadata?.indicatorIds,
     interval,
   );
 

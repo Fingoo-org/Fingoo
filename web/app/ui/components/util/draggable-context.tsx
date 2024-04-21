@@ -12,14 +12,15 @@ import {
   DragOverEvent,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { Item } from '../view/atom/draggable-item';
+import { Item } from '../view/atom/draggable/draggable-item';
 
 type DraggableContextProps = {
   values: {
     [containerId: string]: string[];
   };
-  onDragEnd: (newValue: { [key: string]: string[] }) => void;
-  dragOverlayItem?: ({ children }: React.PropsWithChildren) => React.ReactElement;
+  onDragEnd?: (newValue: { [key: string]: string[] }) => void;
+  onDragSwapWithOtherContext?: (newValue: { [key: string]: string[] }) => void;
+  dragOverlayItem?: ({ activeId }: { activeId: string }) => React.ReactElement;
   onDragOver?: (newValue: { [key: string]: string[] }) => void;
   onActiveChange?: (activeId: string | null) => void;
 };
@@ -31,6 +32,7 @@ export default function DraggableContext({
   onDragOver,
   onDragEnd,
   onActiveChange,
+  onDragSwapWithOtherContext,
 }: React.PropsWithChildren<DraggableContextProps>) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -54,9 +56,9 @@ export default function DraggableContext({
       <DragOverlay>
         {activeId ? (
           OverlayItem ? (
-            <OverlayItem>{activeId}</OverlayItem>
+            <OverlayItem activeId={activeId} />
           ) : (
-            <Item className=" shadow-lg">{activeId}</Item>
+            <Item className="shadow-lg">{activeId}</Item>
           )
         ) : null}
       </DragOverlay>
@@ -97,19 +99,39 @@ export default function DraggableContext({
     if (!over) return;
 
     const activeContainerId = active.data.current?.sortable.containerId;
-    const ovetContainerId = over.data.current?.sortable.containerId;
+    const overContainerId = over.data.current?.sortable.containerId;
 
-    if (!activeContainerId || !ovetContainerId) return;
+    if (!activeContainerId || !overContainerId) return;
 
-    if (activeContainerId === ovetContainerId) {
+    if (activeContainerId === overContainerId) {
       const value = values[activeContainerId as string];
       const oldIndex = value.indexOf(active.id as string);
       const newIndex = value.indexOf(over.id as string);
 
-      onDragEnd({
+      onDragEnd?.({
         ...values,
         [activeContainerId]: arrayMove(value, oldIndex, newIndex),
       });
+    } else {
+      const activeValue = values[activeContainerId as string];
+      const overValue = values[overContainerId as string];
+
+      const activeValueIndex = activeValue.indexOf(active.id as string);
+      const cachedActiveValue = activeValue[activeValueIndex];
+      const overValueIndex = overValue.indexOf(over.id as string);
+      const cachedOverValue = overValue[overValueIndex];
+
+      activeValue[activeValueIndex] = cachedOverValue;
+      overValue[overValueIndex] = cachedActiveValue;
+
+      const newValues = {
+        ...values,
+        [activeContainerId]: [...activeValue],
+        [overContainerId]: [...overValue],
+      };
+
+      onDragSwapWithOtherContext?.(newValues);
+      console.log('다른 컨텍스트로 이동');
     }
     setActiveId(null);
     onActiveChange?.(null);

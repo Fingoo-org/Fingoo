@@ -7,10 +7,11 @@ import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import ExpandableListItem from '../../../view/molecule/expandable-list-item';
 import DraggableContext from '../../../util/draggable-context';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import DraggableItem, { Item } from '../../../view/atom/draggable-item';
+import DraggableItem, { Item } from '../../../view/atom/draggable/draggable-item';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { useEffect, useState } from 'react';
 import { cn } from '@/app/utils/style';
+import { useIndicatorBoard } from '@/app/business/hooks/indicator-board/use-indicator-board.hook';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -26,11 +27,15 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     indicatorBoardMetadata?.indicatorIdsWithSectionIds,
   );
 
+  const { addMetadataToIndicatorBoard, checkMetadataInIndicatorBoard, deleteMetadataFromIndicatorBoard } =
+    useIndicatorBoard(item.id);
+
   useEffect(() => {
     setIndicatorIdsWithsectionIds(indicatorBoardMetadata?.indicatorIdsWithSectionIds);
   }, [indicatorBoardMetadata?.indicatorIdsWithSectionIds]);
 
   const isSelected = selectedMetadata?.id === item.id;
+  const isMetadataInIndicatorBoard = checkMetadataInIndicatorBoard(item.id);
 
   const isIndicatorEmpty = indicatorBoardMetadata?.isEmpty;
 
@@ -40,7 +45,17 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   const handleSelect = () => {
-    selectMetadataById(item.id);
+    const isSuccess = addMetadataToIndicatorBoard(item.id);
+    if (isSuccess) {
+      selectMetadataById(item.id);
+    }
+  };
+
+  const handleDeSelect = () => {
+    deleteMetadataFromIndicatorBoard(item.id);
+    if (isSelected) {
+      selectMetadataById(undefined);
+    }
   };
 
   const handleIconButton = () => {
@@ -99,7 +114,15 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     ));
 
   return (
-    <ExpandableListItem selected={isSelected} onSelect={handleSelect} hoverRender={hoverRender}>
+    <ExpandableListItem
+      onDeSelect={handleDeSelect}
+      selected={isMetadataInIndicatorBoard}
+      onSelect={handleSelect}
+      hoverRender={hoverRender}
+      className={cn({
+        'border-2 border-lime-300 shadow-lg': isSelected,
+      })}
+    >
       <ExpandableListItem.Title>
         <div className="py-1 pl-4">{item.name}</div>
       </ExpandableListItem.Title>
@@ -109,9 +132,9 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           onDragOver={setIndicatorIdsWithsectionIds}
           onDragEnd={handleIndicatorsectionChange}
           values={indicatorIdsWithSectionIds ?? {}}
-          dragOverlayItem={({ children }) => (
+          dragOverlayItem={({ activeId }) => (
             <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
-              {children}
+              {activeId}
             </Item>
           )}
         >

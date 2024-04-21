@@ -194,35 +194,6 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       expect(result.current.selectedMetadata?.indicatorIds).toEqual([]);
       expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1']).toEqual([]);
     });
-
-    describe('updateMetadata', () => {
-      it('메타데이터를 선택했을 때, 선택한 메타데이터의 이름을 변경하면, 메타데이터 값에 변경된 이름이 반영된다.', async () => {
-        // given
-        const { result } = renderHook(() => {
-          return {
-            ...useSelectedIndicatorBoardMetadata(),
-            ...useIndicatorBoardMetadataList(),
-            ...useWorkspaceStore(),
-          };
-        });
-        await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
-        act(() => {
-          if (result.current.metadataList?.[0]) {
-            result.current.actions.selectMetadata(result.current.metadataList?.[0].id);
-          }
-        });
-        await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
-
-        // when
-        act(() => {
-          result.current.updateMetadata({ name: 'changedName' });
-        });
-        await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
-
-        // then
-        expect(result.current.selectedMetadata?.name).toEqual('changedName');
-      });
-    });
   });
 
   describe('addCustomForecastIndicatorToMetadata', () => {
