@@ -1,6 +1,6 @@
 import ToggleGroup from '../../view/molecule/toggle-group';
 import { intervals, type Interval } from '@/app/store/stores/numerical-guidance/indicator-board.store';
-import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import { useIndicatorBoard } from '@/app/business/hooks/indicator-board/use-indicator-board.hook';
 
 function isInterval(value: string): value is Interval {
   return intervals.includes(value as Interval);

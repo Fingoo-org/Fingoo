@@ -9,7 +9,7 @@ import { Card } from '@tremor/react';
 import Image from 'next/image';
 import ChartImage from '@/public/assets/images/chart-image.png';
 import { useState } from 'react';
-import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import { useIndicatorBoard } from '@/app/business/hooks/indicator-board/use-indicator-board.hook';
 
 export default function VerticalSplitScreen() {
   const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);

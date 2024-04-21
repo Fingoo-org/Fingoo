@@ -1,5 +1,5 @@
 'use client';
-import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import { useIndicatorBoard } from '@/app/business/hooks/indicator-board/use-indicator-board.hook';
 import VerticalSplitScreen from './split-screen/vertical-split-screen';
 import FullScreen from './split-screen/full-screen';
 

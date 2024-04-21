@@ -1,4 +1,4 @@
-import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import { useIndicatorBoard } from '@/app/business/hooks/indicator-board/use-indicator-board.hook';
 import IndicatorBoard from '@/app/ui/components/numerical-guidance/indicator-board/indicator-board';
 import ResizablePanelGroup from '@/app/ui/components/view/molecule/resizable-panel-group';
 

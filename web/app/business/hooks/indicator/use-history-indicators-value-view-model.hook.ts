@@ -13,7 +13,7 @@ import {
   useFetchCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastHistoryIndicatorsValueViewModel } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
-import { useIndicatorBoard } from '../use-indicator-board.hook';
+import { useIndicatorBoard } from '../indicator-board/use-indicator-board.hook';
 
 const mergePaginationData = (historyIndicatorsValuePages: HistoryIndicatorsValueResponse[] | undefined) => {
   return historyIndicatorsValuePages?.reduce((acc: HistoryIndicatorValueResponse[], page, index) => {

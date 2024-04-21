@@ -2,7 +2,7 @@
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
 import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
 import ToggleButton from '../../view/atom/toggle-button/toggle-button';
-import { useIndicatorBoard } from '@/app/business/hooks/use-indicator-board.hook';
+import { useIndicatorBoard } from '@/app/business/hooks/indicator-board/use-indicator-board.hook';
 import AdvancedIndicatorsChart from './advanced-indicators-chart';
 import SimpleIndicatorsChart from './simple-indicators-chart';
 import Pending from '../../view/molecule/pending';
