@@ -25,14 +25,24 @@ export class ActualIndicatorValue extends IndicatorValue {
     this.values = values.map((item) => new IndicatorValueItem(item));
   }
 
+  formattedItemsValue({ unitType }: { unitType: UnitType }) {
+    return this.values.map((item) => {
+      return {
+        date: item.date,
+        value: this.caculateValue(item, unitType),
+        displayValue: item.parseValueToInt,
+      };
+    });
+  }
+
   formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
-    return this.values.reduce<FormattedItem>((acc, item) => {
+    return this.formattedItemsValue({ unitType }).reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {
           [this.ticker]: {
-            value: this.caculateValue(item, unitType),
-            displayValue: item.parseValueToInt,
+            value: item.value,
+            displayValue: item.displayValue,
           },
         },
       };
