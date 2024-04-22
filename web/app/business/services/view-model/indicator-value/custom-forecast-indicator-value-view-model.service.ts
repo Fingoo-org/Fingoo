@@ -58,7 +58,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     return caculator.caculate();
   }
 
-  formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
+  formatItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
     return this.caculateItemsValue({ unitType }).reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,

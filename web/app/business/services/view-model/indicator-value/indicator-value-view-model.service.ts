@@ -37,7 +37,7 @@ export abstract class IndicatorValue {
 
   abstract caculateItemsValue({ unitType }: { unitType: UnitType }): CaculatedItem[];
 
-  abstract formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem;
+  abstract formatItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem;
 
   abstract get identifier(): string;
 }

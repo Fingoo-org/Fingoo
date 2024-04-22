@@ -9,11 +9,11 @@ describe('ActualIndicatorValue', () => {
     expect(actualIndicatorValue).toBeInstanceOf(ActualIndicatorValue);
   });
 
-  it('formattedItemsByDate should return formatted items by date', () => {
+  it('formatItemsByDate should return formatted items by date', () => {
     const indicatorValue = mockDB.getIndicatorValue('1');
     const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-    const formattedItems = actualIndicatorValue.formattedItemsByDate({ unitType: 'default' });
+    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'default' });
 
     expect(formattedItems['2024-01-01']).toEqual({
       AAPL: {
@@ -35,11 +35,11 @@ describe('ActualIndicatorValue', () => {
     });
   });
 
-  it('formattedItemsByDate should return formatted items by date with unitType as index', () => {
+  it('formatItemsByDate should return formatted items by date with unitType as index', () => {
     const indicatorValue = mockDB.getIndicatorValue('1');
     const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-    const formattedItems = actualIndicatorValue.formattedItemsByDate({ unitType: 'index' });
+    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'index' });
 
     console.log(formattedItems);
     expect(formattedItems['2024-01-01']).toEqual({

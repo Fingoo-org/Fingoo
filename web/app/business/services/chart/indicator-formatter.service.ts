@@ -23,7 +23,7 @@ export class IndicatorFormatter {
 
   get formattedIndicatorsByDate() {
     return this.indicatorsValue.reduce<FormattedItem>((acc, indicator) => {
-      const formattedItems = indicator.formattedItemsByDate({ unitType: this.unitType });
+      const formattedItems = indicator.formatItemsByDate({ unitType: this.unitType });
       Object.keys(formattedItems).forEach((date) => {
         let formattedDate: string | Date = new Date(date);
         if (formattedDate.toString().startsWith('Invalid')) {
