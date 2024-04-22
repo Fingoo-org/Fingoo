@@ -4,6 +4,8 @@ import {
   IndicatorsValueResponse,
 } from '../../../../store/querys/numerical-guidance/indicator.query';
 import { IndicatorValueItem, IndicatorValue, FormattedItem, UnitType } from './indicator-value-view-model.service';
+import { IndexUnitCalculator } from '../../chart/unit-calculator/index-unit-calculator.service';
+import { DefaultUnitCalculator } from '../../chart/unit-calculator/default-unit-calculator.service';
 
 export class ActualIndicatorValue extends IndicatorValue {
   readonly indicatorId: string;
@@ -26,13 +28,10 @@ export class ActualIndicatorValue extends IndicatorValue {
   }
 
   formattedItemsValue({ unitType }: { unitType: UnitType }) {
-    return this.values.map((item) => {
-      return {
-        date: item.date,
-        value: this.caculateValue(item, unitType),
-        displayValue: item.parseValueToInt,
-      };
-    });
+    const caculator =
+      unitType === 'index' ? new IndexUnitCalculator(this.values) : new DefaultUnitCalculator(this.values);
+
+    return caculator.caculate();
   }
 
   formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
