@@ -7,6 +7,12 @@ export type FormattedItem = {
   };
 };
 
+export type CaculatedItem = {
+  date: string;
+  value: number;
+  displayValue: number;
+};
+
 export type UnitType = 'index' | 'default';
 
 export class IndicatorValueItem {
@@ -40,6 +46,8 @@ export abstract class IndicatorValue {
     this.maxValue = maxValue;
     this.minValue = minValue;
   }
+
+  abstract formattedItemsValue({ unitType }: { unitType: UnitType }): CaculatedItem[];
 
   abstract formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem;
 
