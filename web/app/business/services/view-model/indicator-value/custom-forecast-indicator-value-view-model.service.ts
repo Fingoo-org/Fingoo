@@ -51,7 +51,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     this.mergedValues = mergedValueItems;
   }
 
-  formattedItemsValue({ unitType }: { unitType: UnitType }) {
+  caculateItemsValue({ unitType }: { unitType: UnitType }) {
     const caculator =
       unitType === 'index' ? new IndexUnitCalculator(this.mergedValues) : new DefaultUnitCalculator(this.mergedValues);
 
@@ -59,7 +59,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
   }
 
   formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
-    return this.formattedItemsValue({ unitType }).reduce<FormattedItem>((acc, item) => {
+    return this.caculateItemsValue({ unitType }).reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {

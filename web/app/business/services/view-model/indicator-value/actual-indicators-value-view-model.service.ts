@@ -22,7 +22,7 @@ export class ActualIndicatorValue extends IndicatorValue {
     this.values = values.map((item) => new IndicatorValueItem(item));
   }
 
-  formattedItemsValue({ unitType }: { unitType: UnitType }) {
+  caculateItemsValue({ unitType }: { unitType: UnitType }) {
     const caculator =
       unitType === 'index' ? new IndexUnitCalculator(this.values) : new DefaultUnitCalculator(this.values);
 
@@ -30,7 +30,7 @@ export class ActualIndicatorValue extends IndicatorValue {
   }
 
   formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
-    return this.formattedItemsValue({ unitType }).reduce<FormattedItem>((acc, item) => {
+    return this.caculateItemsValue({ unitType }).reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {

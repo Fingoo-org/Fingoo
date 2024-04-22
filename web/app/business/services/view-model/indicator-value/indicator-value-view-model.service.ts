@@ -35,7 +35,7 @@ export abstract class IndicatorValue {
     this.id = id;
   }
 
-  abstract formattedItemsValue({ unitType }: { unitType: UnitType }): CaculatedItem[];
+  abstract caculateItemsValue({ unitType }: { unitType: UnitType }): CaculatedItem[];
 
   abstract formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem;
 
