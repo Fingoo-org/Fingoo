@@ -38,11 +38,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     const customForecastIndicatorValueItems = customForecastIndicatorValues.map((item) => new IndicatorValueItem(item));
     const targetIndicatorValueItems = targetIndicatorValues.map((item) => new IndicatorValueItem(item));
     const mergedValueItems = [...targetIndicatorValueItems, ...customForecastIndicatorValueItems];
-    super(
-      customForecastIndicatorId,
-      Math.max(...mergedValueItems.map((item) => item.parseValueToInt)),
-      Math.min(...mergedValueItems.map((item) => item.parseValueToInt)),
-    );
+    super(customForecastIndicatorId);
     this.customForecastIndicatorId = customForecastIndicatorId;
     this.targetIndicatorId = targetIndicatorId;
     this.ticker = ticker;

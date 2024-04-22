@@ -14,12 +14,7 @@ export class ActualIndicatorValue extends IndicatorValue {
   readonly type: string;
   readonly values: IndicatorValueItem[];
   constructor({ indicatorId, ticker, market, type, values }: IndicatorValueResponse) {
-    const valueItems = values.map((item) => new IndicatorValueItem(item));
-    super(
-      indicatorId,
-      Math.max(...valueItems.map((item) => item.parseValueToInt)),
-      Math.min(...valueItems.map((item) => item.parseValueToInt)),
-    );
+    super(indicatorId);
     this.indicatorId = indicatorId;
     this.ticker = ticker;
     this.market = market;

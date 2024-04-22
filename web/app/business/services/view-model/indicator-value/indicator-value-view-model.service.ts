@@ -23,14 +23,6 @@ export class IndicatorValueItem {
     this.value = value;
   }
 
-  calcuateIndexValue(maxValue: number, minValue: number) {
-    if (typeof this.value === 'number') {
-      return ((this.value - minValue) / (maxValue - minValue)) * 100;
-    } else {
-      return ((parseInt(this.value) - minValue) / (maxValue - minValue)) * 100;
-    }
-  }
-
   get parseValueToInt() {
     return typeof this.value === 'number' ? this.value : parseInt(this.value);
   }
@@ -38,13 +30,9 @@ export class IndicatorValueItem {
 
 export abstract class IndicatorValue {
   public id: string;
-  protected maxValue: number;
-  protected minValue: number;
 
-  constructor(id: string, maxValue: number, minValue: number) {
+  constructor(id: string) {
     this.id = id;
-    this.maxValue = maxValue;
-    this.minValue = minValue;
   }
 
   abstract formattedItemsValue({ unitType }: { unitType: UnitType }): CaculatedItem[];
@@ -52,8 +40,4 @@ export abstract class IndicatorValue {
   abstract formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem;
 
   abstract get identifier(): string;
-
-  caculateValue(item: IndicatorValueItem, unitType: UnitType) {
-    return unitType === 'index' ? item.calcuateIndexValue(this.maxValue, this.minValue) : item.parseValueToInt;
-  }
 }
