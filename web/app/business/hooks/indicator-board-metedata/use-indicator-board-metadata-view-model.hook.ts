@@ -15,10 +15,12 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   const { trigger: updateIndicatorIdsWithsectionIdsTrigger } = useUpdateIndicatorIdsWithsectionIds(metadataId);
   const { trigger: uploadIndicatorBoardMetadataImageTrigger } = useUploadIndicatorBoardMetadataImage();
 
-  const indicatorsInMetadataUnitType = useIndicatorBoardMetadataStore((state) => state.indicatorsInMetadataUnitType);
+  const indicatorsUnitType = useIndicatorBoardMetadataStore(
+    (state) => state.indicatorsInMetadataUnitType[metadataId ?? ''],
+  );
   const { updateUnitType } = useIndicatorBoardMetadataStore((state) => state.actions);
 
-  const indicatorsUnitType = metadataId ? indicatorsInMetadataUnitType[metadataId] : undefined;
+  // const indicatorsUnitType = metadataId ? indicatorsInMetadataUnitType[metadataId] : undefined;
 
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
