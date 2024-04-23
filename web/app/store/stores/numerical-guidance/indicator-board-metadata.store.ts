@@ -44,10 +44,10 @@ export const useIndicatorBoardMetadataStore = create<IndicatorBoardMetadataStore
           ).reduce<IndicatorInMetadataUnitTypes>((acc, metadataId) => {
             acc[metadataId] = indicatorsInMetadataUnitType[metadataId].map((indicator) => {
               return {
+                ...indicator,
                 ...state.indicatorsInMetadataUnitType[metadataId]?.find(
                   (indicatorInMetadata) => indicatorInMetadata.indicatorId === indicator.indicatorId,
                 ),
-                ...indicator,
               };
             });
             return acc;
