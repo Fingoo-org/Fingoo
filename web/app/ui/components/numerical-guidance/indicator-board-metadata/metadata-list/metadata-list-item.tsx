@@ -12,6 +12,7 @@ import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicat
 import { useEffect, useState } from 'react';
 import { cn } from '@/app/utils/style';
 import { useIndicatorBoard } from '@/app/business/hooks/indicator-board/use-indicator-board.hook';
+import IndicatorUnitSelector from './indicator-unit-selector';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -90,14 +91,20 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
         <div>
           {indicatorIdsWithSectionIds[`section${index + 1}`].length > 0 ? (
             indicatorIdsWithSectionIds[`section${index + 1}`].map((indicatorId) => (
-              <DraggableItem
-                className="flex items-center before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400 first:mt-2 last:mb-2"
-                active={activeDragItemId === indicatorId}
-                key={indicatorId}
-                id={indicatorId}
-              >
-                {indicatorId}
-              </DraggableItem>
+              <div className="relative" key={indicatorId}>
+                <DraggableItem
+                  className="flex h-9 items-center before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400 first:mt-2 last:mb-2"
+                  active={activeDragItemId === indicatorId}
+                  id={indicatorId}
+                >
+                  {indicatorId}
+                </DraggableItem>
+                {activeDragItemId !== indicatorId ? (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <IndicatorUnitSelector />
+                  </div>
+                ) : null}
+              </div>
             ))
           ) : (
             <DraggableItem
@@ -133,7 +140,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           onDragEnd={handleIndicatorsectionChange}
           values={indicatorIdsWithSectionIds ?? {}}
           dragOverlayItem={({ activeId }) => (
-            <Item className="flex items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
+            <Item className="flex h-9 items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
               {activeId}
             </Item>
           )}
