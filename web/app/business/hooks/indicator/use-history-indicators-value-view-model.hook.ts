@@ -6,8 +6,6 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicator-value/actual-indicators-value-view-model.service';
 import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
-import { useCustomForecastIndicatorListViewModel } from '../custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 import {
   CustomForecastIndicatorResponse,
   useFetchCustomForecastIndicatorList,
