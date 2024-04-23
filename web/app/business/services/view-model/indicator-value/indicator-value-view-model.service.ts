@@ -25,14 +25,19 @@ export class IndicatorValueItem {
 
 export abstract class IndicatorValue {
   public id: string;
+  protected _unitType: UnitType = 'default';
 
   constructor(id: string) {
     this.id = id;
   }
 
-  abstract caculateItemsValue({ unitType }: { unitType: UnitType }): CaculatedItem[];
+  set unitType(unitType: UnitType) {
+    this._unitType = unitType;
+  }
 
-  abstract formatItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem;
+  abstract caculateItemsValue(): CaculatedItem[];
+
+  abstract formatItemsByDate(): FormattedItem;
 
   abstract get identifier(): string;
 }

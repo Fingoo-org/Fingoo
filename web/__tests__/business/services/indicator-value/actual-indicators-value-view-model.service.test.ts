@@ -13,7 +13,8 @@ describe('ActualIndicatorValue', () => {
     const indicatorValue = mockDB.getIndicatorValue('1');
     const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'default' });
+    actualIndicatorValue.unitType = 'default';
+    const formattedItems = actualIndicatorValue.formatItemsByDate();
 
     expect(formattedItems['2024-01-01']).toEqual({
       AAPL: {
@@ -39,7 +40,8 @@ describe('ActualIndicatorValue', () => {
     const indicatorValue = mockDB.getIndicatorValue('1');
     const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'index' });
+    actualIndicatorValue.unitType = 'index';
+    const formattedItems = actualIndicatorValue.formatItemsByDate();
 
     expect(formattedItems['2024-01-01']).toEqual({
       AAPL: {
@@ -65,7 +67,8 @@ describe('ActualIndicatorValue', () => {
     const indicatorValue = mockDB.getIndicatorValue('1');
     const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'MoM' });
+    actualIndicatorValue.unitType = 'MoM';
+    const formattedItems = actualIndicatorValue.formatItemsByDate();
 
     expect(formattedItems['2024-01-04']).toEqual({
       AAPL: {
@@ -85,7 +88,8 @@ describe('ActualIndicatorValue', () => {
     const indicatorValue = mockDB.getIndicatorValue('1');
     const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'MoM' });
+    actualIndicatorValue.unitType = 'MoM';
+    const formattedItems = actualIndicatorValue.formatItemsByDate();
 
     expect(formattedItems['2024-01-05']).toEqual({
       AAPL: {
@@ -105,7 +109,8 @@ describe('ActualIndicatorValue', () => {
     const indicatorValue = mockDB.getIndicatorValue('1');
     const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'MoM' });
+    actualIndicatorValue.unitType = 'MoM';
+    const formattedItems = actualIndicatorValue.formatItemsByDate();
 
     expect(formattedItems['2024-02-29']).toEqual({
       AAPL: {

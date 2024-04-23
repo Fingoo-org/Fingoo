@@ -4,7 +4,7 @@ import {
   IndicatorsValueResponse,
 } from '../../../../store/querys/numerical-guidance/indicator.query';
 import { IndicatorValueItem, IndicatorValue, FormattedItem } from './indicator-value-view-model.service';
-import { UnitType, createUnitCalculator } from '../../chart/unit-calculator/unit-calculator-factory.service';
+import { createUnitCalculator } from '../../chart/unit-calculator/unit-calculator-factory.service';
 
 export class ActualIndicatorValue extends IndicatorValue {
   readonly indicatorId: string;
@@ -21,12 +21,12 @@ export class ActualIndicatorValue extends IndicatorValue {
     this.values = values.map((item) => new IndicatorValueItem(item));
   }
 
-  caculateItemsValue({ unitType }: { unitType: UnitType }) {
-    return createUnitCalculator(this.values, unitType).caculate();
+  caculateItemsValue() {
+    return createUnitCalculator(this.values, this._unitType).caculate();
   }
 
-  formatItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
-    return this.caculateItemsValue({ unitType }).reduce<FormattedItem>((acc, item) => {
+  formatItemsByDate(): FormattedItem {
+    return this.caculateItemsValue().reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {

@@ -50,12 +50,12 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     this.mergedValues = mergedValueItems;
   }
 
-  caculateItemsValue({ unitType }: { unitType: UnitType }) {
-    return createUnitCalculator(this.mergedValues, unitType).caculate();
+  caculateItemsValue() {
+    return createUnitCalculator(this.mergedValues, this._unitType).caculate();
   }
 
-  formatItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
-    return this.caculateItemsValue({ unitType }).reduce<FormattedItem>((acc, item) => {
+  formatItemsByDate(): FormattedItem {
+    return this.caculateItemsValue().reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {

@@ -23,7 +23,7 @@ export class IndicatorFormatter {
   // fix: date가 빵구나면 순서가 섞이는 문제 발생.. interval에 따라 포메팅..? max 설정할 때 수정
   get formattedIndicatorsByDate() {
     return this.indicatorsValue.reduce<FormattedItem>((acc, indicator) => {
-      const formattedItems = indicator.formatItemsByDate({ unitType: this.unitType });
+      const formattedItems = indicator.formatItemsByDate();
       Object.keys(formattedItems).forEach((date) => {
         let formattedDate: string | Date = new Date(date);
         if (formattedDate.toString().startsWith('Invalid')) {

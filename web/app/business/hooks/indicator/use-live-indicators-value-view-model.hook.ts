@@ -19,6 +19,8 @@ export const useLiveIndicatorsValueViewModel = (indicatorBoardMetadataId?: strin
     return convertLiveIndicatorsValueViewModel(indicatorsValueData);
   }, [indicatorsValueData]);
 
+  // 여기에 추가하고 indicatorsInMetadataUnitType 데이터에 의존하게 하면,
+
   return {
     indicatorsValue: convertedIndciatorsValue,
     isPending: isLoading,
