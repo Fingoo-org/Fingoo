@@ -61,25 +61,25 @@ describe('ActualIndicatorValue', () => {
     });
   });
 
-  // it('formatItemsByDate should return formatted items by date with unitType as MoM', () => {
-  //   const indicatorValue = mockDB.getIndicatorValue('1');
-  //   const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
+  it('formatItemsByDate should return formatted items by date with unitType as MoM', () => {
+    const indicatorValue = mockDB.getIndicatorValue('1');
+    const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-  //   const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'MoM' });
+    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'MoM' });
 
-  //   expect(formattedItems['2024-01-04']).toEqual({
-  //     AAPL: {
-  //       value: 0,
-  //       displayValue: 20000,
-  //     },
-  //   });
-  //   expect(formattedItems['2024-02-04']).toEqual({
-  //     AAPL: {
-  //       value: 80,
-  //       displayValue: 36000,
-  //     },
-  //   });
-  // });
+    expect(formattedItems['2024-01-04']).toEqual({
+      AAPL: {
+        value: 0,
+        displayValue: 20000,
+      },
+    });
+    expect(formattedItems['2024-02-04']).toEqual({
+      AAPL: {
+        value: 80,
+        displayValue: 36000,
+      },
+    });
+  });
 
   // it('formatted items by date with unitType as MoM, 주말로 인해 한달 전과 동일한 날짜가 없는 경우', () => {
   //   const indicatorValue = mockDB.getIndicatorValue('1');
@@ -101,23 +101,23 @@ describe('ActualIndicatorValue', () => {
   //   });
   // });
 
-  // it('월의 마지막 날이 달라서 동일한 날짜가 없는 경우', () => {
-  //   const indicatorValue = mockDB.getIndicatorValue('1');
-  //   const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
+  it('월의 마지막 날이 달라서 동일한 날짜가 없는 경우', () => {
+    const indicatorValue = mockDB.getIndicatorValue('1');
+    const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-  //   const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'MoM' });
+    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'MoM' });
 
-  //   expect(formattedItems['2024-02-29']).toEqual({
-  //     AAPL: {
-  //       value: 0,
-  //       displayValue: 49000,
-  //     },
-  //   });
-  //   expect(formattedItems['2024-03-31']).toEqual({
-  //     AAPL: {
-  //       value: -12.65,
-  //       displayValue: 42800,
-  //     },
-  //   });
-  // });
+    expect(formattedItems['2024-02-29']).toEqual({
+      AAPL: {
+        value: 63.33,
+        displayValue: 49000,
+      },
+    });
+    expect(formattedItems['2024-03-31']).toEqual({
+      AAPL: {
+        value: -12.65,
+        displayValue: 42800,
+      },
+    });
+  });
 });
