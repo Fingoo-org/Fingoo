@@ -101,7 +101,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
                 </DraggableItem>
                 {activeDragItemId !== indicatorId ? (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    <IndicatorUnitSelector />
+                    <IndicatorUnitSelector indicatorBoardMetadataId={item.id} indicatorId={indicatorId} />
                   </div>
                 ) : null}
               </div>
