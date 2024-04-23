@@ -3,9 +3,9 @@ import {
   CustomForecastIndicatorValueResponse,
   ForecastType,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { FormattedItem, IndicatorValue, IndicatorValueItem, UnitType } from './indicator-value-view-model.service';
+import { FormattedItem, IndicatorValue, IndicatorValueItem } from './indicator-value-view-model.service';
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
-import { createUnitCalculator } from '../../chart/unit-calculator/unit-calculator-factory.service';
+import { createUnitCalculator, UnitType } from '../../chart/unit-calculator/unit-calculator-factory.service';
 
 type CustomForecastIndicator = {
   customForecastIndicatorName: string;
