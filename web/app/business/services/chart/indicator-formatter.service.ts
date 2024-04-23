@@ -20,6 +20,7 @@ export class IndicatorFormatter {
     this.unitType = indicatorsValue.length > 1 ? 'index' : 'default';
   }
 
+  // fix: date가 빵구나면 순서가 섞이는 문제 발생.. interval에 따라 포메팅..? max 설정할 때 수정
   get formattedIndicatorsByDate() {
     return this.indicatorsValue.reduce<FormattedItem>((acc, indicator) => {
       const formattedItems = indicator.formatItemsByDate({ unitType: this.unitType });
