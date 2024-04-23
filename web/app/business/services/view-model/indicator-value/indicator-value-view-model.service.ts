@@ -1,5 +1,6 @@
 import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
 import { FormattedIndicatorValue } from '../../chart/indicator-formatter.service';
+import { UnitType } from '../../chart/unit-calculator/unit-calculator-factory.service';
 
 export type FormattedItem = {
   [date: string]: {
@@ -12,8 +13,6 @@ export type CaculatedItem = {
   value: number;
   displayValue: number;
 };
-
-export type UnitType = 'index' | 'default';
 
 export class IndicatorValueItem {
   readonly date: string;

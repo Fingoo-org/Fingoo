@@ -3,8 +3,8 @@ import {
   IndicatorValueResponse,
   IndicatorsValueResponse,
 } from '../../../../store/querys/numerical-guidance/indicator.query';
-import { IndicatorValueItem, IndicatorValue, FormattedItem, UnitType } from './indicator-value-view-model.service';
-import { createUnitCalculator } from '../../chart/unit-calculator/unit-calculator-factory.service';
+import { IndicatorValueItem, IndicatorValue, FormattedItem } from './indicator-value-view-model.service';
+import { UnitType, createUnitCalculator } from '../../chart/unit-calculator/unit-calculator-factory.service';
 
 export class ActualIndicatorValue extends IndicatorValue {
   readonly indicatorId: string;

@@ -25,7 +25,7 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
       },
       {
         date: '2024-01-05',
-        value: 10000,
+        value: 42000,
       },
       {
         date: '2024-01-08',
