@@ -5,8 +5,7 @@ import {
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { FormattedItem, IndicatorValue, IndicatorValueItem, UnitType } from './indicator-value-view-model.service';
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
-import { DefaultUnitCalculator } from '../../chart/unit-calculator/default-unit-calculator.service';
-import { IndexUnitCalculator } from '../../chart/unit-calculator/index-unit-calculator.service';
+import { createUnitCalculator } from '../../chart/unit-calculator/unit-calculator-factory.service';
 
 type CustomForecastIndicator = {
   customForecastIndicatorName: string;
@@ -52,10 +51,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
   }
 
   caculateItemsValue({ unitType }: { unitType: UnitType }) {
-    const caculator =
-      unitType === 'index' ? new IndexUnitCalculator(this.mergedValues) : new DefaultUnitCalculator(this.mergedValues);
-
-    return caculator.caculate();
+    return createUnitCalculator(this.mergedValues, unitType).caculate();
   }
 
   formatItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {

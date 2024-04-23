@@ -1,5 +1,6 @@
 import { utcFormat, utcParse } from 'd3-time-format';
 import { FormattedItem, IndicatorValue } from '../view-model/indicator-value/indicator-value-view-model.service';
+import { UnitType } from './unit-calculator/unit-calculator-factory.service';
 
 export const parseTime = utcParse('%Y%m%d');
 export const formatTime = utcFormat('%Y-%m-%d');
@@ -12,8 +13,6 @@ export type FormattedIndicatorValue = {
 export type FormattedRowType = {
   [ticker: string]: FormattedIndicatorValue | string;
 };
-
-export type UnitType = 'index' | 'default';
 
 export class IndicatorFormatter {
   private unitType: UnitType;
