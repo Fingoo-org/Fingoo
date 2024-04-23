@@ -16,6 +16,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   const { trigger: uploadIndicatorBoardMetadataImageTrigger } = useUploadIndicatorBoardMetadataImage();
 
   const indicatorsInMetadataUnitType = useIndicatorBoardMetadataStore((state) => state.indicatorsInMetadataUnitType);
+  const { updateUnitType } = useIndicatorBoardMetadataStore((state) => state.actions);
 
   const indicatorsUnitType = metadataId ? indicatorsInMetadataUnitType[metadataId] : undefined;
 
@@ -107,5 +108,6 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     addsectionToIndicatorBoardMetadata,
     deleteSectionFromIndicatorBoardMetadata,
     uploadIndicatorBoardMetadataImage,
+    updateUnitType,
   };
 };

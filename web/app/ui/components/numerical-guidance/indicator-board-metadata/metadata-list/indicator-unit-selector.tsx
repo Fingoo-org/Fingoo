@@ -1,20 +1,31 @@
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import Select from '../../../view/molecule/select';
+import { unitType, UnitType } from '@/app/business/services/chart/unit-calculator/unit-calculator-factory.service';
 
 type IndicatorUnitSelectorProps = {
   indicatorBoardMetadataId: string;
   indicatorId: string;
 };
 
+function isUnitType(unitType: string): unitType is UnitType {
+  return unitType.includes(unitType);
+}
+
 export default function IndicatorUnitSelector({ indicatorBoardMetadataId, indicatorId }: IndicatorUnitSelectorProps) {
-  const { indicatorsUnitType } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
+  const { indicatorsUnitType, updateUnitType } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
 
   const { unitType } = indicatorsUnitType?.find((indicator) => indicator.indicatorId === indicatorId) || {
     unitType: 'default',
   };
 
+  const handleUnitTypeChange = (unitType: string) => {
+    if (isUnitType(unitType)) {
+      updateUnitType(indicatorBoardMetadataId, indicatorId, unitType);
+    }
+  };
+
   return (
-    <Select value={unitType}>
+    <Select value={unitType} onValueChange={handleUnitTypeChange}>
       <Select.Trigger className="w-18 h-7">
         <Select.Value placeholder="unit" />
       </Select.Trigger>
