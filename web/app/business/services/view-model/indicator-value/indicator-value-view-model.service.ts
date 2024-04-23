@@ -22,10 +22,6 @@ export class IndicatorValueItem {
     this.date = date;
     this.value = value;
   }
-
-  get parseValueToInt() {
-    return typeof this.value === 'number' ? this.value : parseInt(this.value);
-  }
 }
 
 export abstract class IndicatorValue {

@@ -1,34 +1,41 @@
-import type { IndicatorValueItem } from '../../view-model/indicator-value/indicator-value-view-model.service';
+type ValueItem = {
+  date: string;
+  value: number | string;
+};
 
 export class IndexUnitCalculator {
-  private _indicatorValueItems: IndicatorValueItem[];
+  private _valueItems: ValueItem[];
   private _max: number;
   private _min: number;
-  constructor(indicatorValueItems: IndicatorValueItem[]) {
-    this._indicatorValueItems = indicatorValueItems;
+  constructor(valueItems: ValueItem[]) {
+    this._valueItems = valueItems;
     this._max = this.max;
     this._min = this.min;
   }
 
   get max() {
-    return Math.max(...this._indicatorValueItems.map((item) => item.parseValueToInt));
+    return Math.max(...this._valueItems.map((item) => this.parseValueToInt(item.value)));
   }
 
   get min() {
-    return Math.min(...this._indicatorValueItems.map((item) => item.parseValueToInt));
+    return Math.min(...this._valueItems.map((item) => this.parseValueToInt(item.value)));
   }
 
   caculate() {
-    return this._indicatorValueItems.map((item) => {
+    return this._valueItems.map((item) => {
       return {
         date: item.date,
         value: this.caculateItem(item),
-        displayValue: item.parseValueToInt,
+        displayValue: this.parseValueToInt(item.value),
       };
     });
   }
 
-  caculateItem(item: IndicatorValueItem) {
-    return ((item.parseValueToInt - this._min) / (this._max - this._min)) * 100;
+  caculateItem(item: ValueItem) {
+    return ((this.parseValueToInt(item.value) - this._min) / (this._max - this._min)) * 100;
+  }
+
+  parseValueToInt(value: number | string) {
+    return typeof value === 'number' ? value : parseInt(value);
   }
 }

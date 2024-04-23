@@ -1,18 +1,25 @@
-import type { IndicatorValueItem } from '../../view-model/indicator-value/indicator-value-view-model.service';
+type ValueItem = {
+  date: string;
+  value: number | string;
+};
 
 export class DefaultUnitCalculator {
-  private _indicatorValueItems: IndicatorValueItem[];
-  constructor(indicatorValueItems: IndicatorValueItem[]) {
-    this._indicatorValueItems = indicatorValueItems;
+  private _valueItems: ValueItem[];
+  constructor(valueItems: ValueItem[]) {
+    this._valueItems = valueItems;
   }
 
   caculate() {
-    return this._indicatorValueItems.map((item) => {
+    return this._valueItems.map((item) => {
       return {
         date: item.date,
-        value: item.parseValueToInt,
-        displayValue: item.parseValueToInt,
+        value: this.parseValueToInt(item.value),
+        displayValue: this.parseValueToInt(item.value),
       };
     });
+  }
+
+  parseValueToInt(value: number | string) {
+    return typeof value === 'number' ? value : parseInt(value);
   }
 }
