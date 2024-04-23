@@ -17,17 +17,34 @@ export class MoMUnitCalulator extends UnitCalculator {
   }
 
   caculateItemValue(item: ValueItem) {
-    const targetDate = dayjs(item.date);
     const targetValue = this.parseValueToInt(item.value);
 
-    this._cachedValue[targetDate.format('YYYY-MM-DD')] = targetValue;
+    this._cachedValue[item.date] = targetValue;
 
-    const previousValue = this.getPreviousValue(targetDate);
+    const previousValue = this.getPreviousValue(item.date);
     if (previousValue) {
       return this.caculateMoM(targetValue, previousValue);
     } else {
       return 0;
     }
+  }
+
+  getPreviousValue(targetDate: string) {
+    const previoutDate = this.getPreviousDate(targetDate);
+
+    return previoutDate ? this._cachedValue[previoutDate] : undefined;
+  }
+
+  getPreviousDate(targetDate: string) {
+    const standardDate = dayjs(targetDate).subtract(1, 'month');
+
+    for (let i = 0; i < 7; i++) {
+      const date = standardDate.subtract(i, 'day').format('YYYY-MM-DD');
+      if (this._cachedValue[date]) {
+        return date;
+      }
+    }
+    return;
   }
 
   caculateMoM(targetValue: number, previousValue: number) {
@@ -36,23 +53,5 @@ export class MoMUnitCalulator extends UnitCalculator {
 
   parseValueFixed(value: number, fractionDigits: number) {
     return parseFloat(value.toFixed(fractionDigits));
-  }
-
-  getPreviousValue(date: dayjs.Dayjs) {
-    const standardDate = date.subtract(1, 'month');
-
-    const previoutDate = this.getPreviousDate(standardDate);
-
-    return previoutDate ? this._cachedValue[previoutDate] : undefined;
-  }
-
-  getPreviousDate(targetDate: dayjs.Dayjs) {
-    for (let i = 0; i < 7; i++) {
-      const date = targetDate.subtract(i, 'day').format('YYYY-MM-DD');
-      if (this._cachedValue[date]) {
-        return date;
-      }
-    }
-    return;
   }
 }
