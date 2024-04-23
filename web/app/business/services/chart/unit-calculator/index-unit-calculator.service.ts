@@ -1,14 +1,10 @@
-type ValueItem = {
-  date: string;
-  value: number | string;
-};
+import { UnitCalculator, type ValueItem } from './unit-calculator.service';
 
-export class IndexUnitCalculator {
-  private _valueItems: ValueItem[];
+export class IndexUnitCalculator extends UnitCalculator {
   private _max: number;
   private _min: number;
   constructor(valueItems: ValueItem[]) {
-    this._valueItems = valueItems;
+    super(valueItems);
     this._max = this.max;
     this._min = this.min;
   }
@@ -33,9 +29,5 @@ export class IndexUnitCalculator {
 
   caculateItem(item: ValueItem) {
     return ((this.parseValueToInt(item.value) - this._min) / (this._max - this._min)) * 100;
-  }
-
-  parseValueToInt(value: number | string) {
-    return typeof value === 'number' ? value : parseInt(value);
   }
 }

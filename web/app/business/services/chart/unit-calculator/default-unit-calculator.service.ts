@@ -1,14 +1,6 @@
-type ValueItem = {
-  date: string;
-  value: number | string;
-};
+import { UnitCalculator } from './unit-calculator.service';
 
-export class DefaultUnitCalculator {
-  private _valueItems: ValueItem[];
-  constructor(valueItems: ValueItem[]) {
-    this._valueItems = valueItems;
-  }
-
+export class DefaultUnitCalculator extends UnitCalculator {
   caculate() {
     return this._valueItems.map((item) => {
       return {
@@ -17,9 +9,5 @@ export class DefaultUnitCalculator {
         displayValue: this.parseValueToInt(item.value),
       };
     });
-  }
-
-  parseValueToInt(value: number | string) {
-    return typeof value === 'number' ? value : parseInt(value);
   }
 }

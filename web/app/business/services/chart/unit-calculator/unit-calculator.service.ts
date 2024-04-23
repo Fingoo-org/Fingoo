@@ -1,1 +1,23 @@
-// TODO 나중에 생김
+export type ValueItem = {
+  date: string;
+  value: number | string;
+};
+
+type CaculatedValueItem = {
+  date: string;
+  value: number;
+  displayValue: number;
+};
+
+export abstract class UnitCalculator {
+  protected _valueItems: ValueItem[];
+  constructor(valueItems: ValueItem[]) {
+    this._valueItems = valueItems;
+  }
+
+  abstract caculate(): CaculatedValueItem[];
+
+  parseValueToInt(value: number | string) {
+    return typeof value === 'number' ? value : parseInt(value);
+  }
+}
