@@ -81,25 +81,25 @@ describe('ActualIndicatorValue', () => {
     });
   });
 
-  // it('formatted items by date with unitType as MoM, 주말로 인해 한달 전과 동일한 날짜가 없는 경우', () => {
-  //   const indicatorValue = mockDB.getIndicatorValue('1');
-  //   const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
+  it('formatted items by date with unitType as MoM, 주말로 인해 한달 전과 동일한 날짜가 없는 경우', () => {
+    const indicatorValue = mockDB.getIndicatorValue('1');
+    const actualIndicatorValue = new ActualIndicatorValue(indicatorValue!);
 
-  //   const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'MoM' });
+    const formattedItems = actualIndicatorValue.formatItemsByDate({ unitType: 'MoM' });
 
-  //   expect(formattedItems['2024-01-05']).toEqual({
-  //     AAPL: {
-  //       value: 0,
-  //       displayValue: 42000,
-  //     },
-  //   });
-  //   expect(formattedItems['2024-02-07']).toEqual({
-  //     AAPL: {
-  //       value: -7.14,
-  //       displayValue: 39000,
-  //     },
-  //   });
-  // });
+    expect(formattedItems['2024-01-05']).toEqual({
+      AAPL: {
+        value: 0,
+        displayValue: 42000,
+      },
+    });
+    expect(formattedItems['2024-02-07']).toEqual({
+      AAPL: {
+        value: -7.14,
+        displayValue: 39000,
+      },
+    });
+  });
 
   it('월의 마지막 날이 달라서 동일한 날짜가 없는 경우', () => {
     const indicatorValue = mockDB.getIndicatorValue('1');

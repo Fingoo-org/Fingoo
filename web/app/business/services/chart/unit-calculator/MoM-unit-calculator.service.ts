@@ -22,9 +22,9 @@ export class MoMUnitCalulator extends UnitCalculator {
 
     this._cachedValue[targetDate.format('YYYY-MM-DD')] = targetValue;
 
-    const previoutDate = targetDate.subtract(1, 'month').format('YYYY-MM-DD');
-    if (this._cachedValue[previoutDate]) {
-      return this.caculateMoM(targetValue, this._cachedValue[previoutDate]);
+    const previousValue = this.getPreviousValue(targetDate);
+    if (previousValue) {
+      return this.caculateMoM(targetValue, previousValue);
     } else {
       return 0;
     }
@@ -36,5 +36,23 @@ export class MoMUnitCalulator extends UnitCalculator {
 
   parseValueFixed(value: number, fractionDigits: number) {
     return parseFloat(value.toFixed(fractionDigits));
+  }
+
+  getPreviousValue(date: dayjs.Dayjs) {
+    const standardDate = date.subtract(1, 'month');
+
+    const previoutDate = this.getPreviousDate(standardDate);
+
+    return previoutDate ? this._cachedValue[previoutDate] : undefined;
+  }
+
+  getPreviousDate(targetDate: dayjs.Dayjs) {
+    for (let i = 0; i < 7; i++) {
+      const date = targetDate.subtract(i, 'day').format('YYYY-MM-DD');
+      if (this._cachedValue[date]) {
+        return date;
+      }
+    }
+    return;
   }
 }
