@@ -22,24 +22,51 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <ConversationCard defaultOpen={args.defaultOpen}>
-      <ConversationCard.Header title="defaultOpen: true" infoIcon={InfoCircledIcon} collapsibleIcon={ChevronDownIcon} />
-      <ConversationCard.Content initContent={['item1', 'item2']} />
-    </ConversationCard>
-  ),
-};
-
-export const CollapsibleFalse: Story = {
-  render: (args) => (
-    <ConversationCard defaultOpen={args.defaultOpen}>
       <ConversationCard.Header
-        title="defaultOpen: false"
+        title="short conversation"
         infoIcon={InfoCircledIcon}
         collapsibleIcon={ChevronDownIcon}
       />
-      <ConversationCard.Content initContent={['item1', 'item2']} />
+      <ConversationCard.Content
+        initContent={[
+          { role: 'user', text: 'welcome' },
+          { role: 'assistant', text: 'nicetoMeetyou' },
+        ]}
+      />
     </ConversationCard>
   ),
   args: {
-    defaultOpen: false,
+    defaultOpen: true,
+  },
+};
+
+export const CollapsibleTrue: Story = {
+  render: (args) => (
+    <ConversationCard defaultOpen={args.defaultOpen}>
+      <ConversationCard.Header
+        title="long conversation scroll"
+        infoIcon={InfoCircledIcon}
+        collapsibleIcon={ChevronDownIcon}
+      />
+      <ConversationCard.Content
+        initContent={[
+          {
+            role: 'user',
+            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
+          },
+          {
+            role: 'assistant',
+            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of typeLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever ......",
+          },
+          {
+            role: 'user',
+            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
+          },
+        ]}
+      />
+    </ConversationCard>
+  ),
+  args: {
+    defaultOpen: true,
   },
 };
