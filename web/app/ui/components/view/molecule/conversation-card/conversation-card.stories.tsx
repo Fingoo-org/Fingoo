@@ -29,8 +29,8 @@ export const Default: Story = {
       />
       <ConversationCard.Content
         initContent={[
-          { role: 'user', text: 'welcome' },
-          { role: 'assistant', text: 'nicetoMeetyou' },
+          { role: 'user', content: 'welcome' },
+          { role: 'assistant', content: 'nicetoMeetyou' },
         ]}
       />
     </ConversationCard>
@@ -52,15 +52,18 @@ export const CollapsibleTrue: Story = {
         initContent={[
           {
             role: 'user',
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
+            content:
+              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
           },
           {
             role: 'assistant',
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of typeLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever ......",
+            content:
+              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of typeLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever ......",
           },
           {
             role: 'user',
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
+            content:
+              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
           },
         ]}
       />

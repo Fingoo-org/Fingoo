@@ -6,17 +6,17 @@ type ConverationCardProps = {
   initContent?: MessageProps[];
 };
 const ConversationCardContent = ({ initContent = [] }: ConverationCardProps) => {
-  const [contents, setContents] = useState<MessageProps[]>(initContent);
+  const [messages, setMessages] = useState<MessageProps[]>(initContent);
 
   useEffect(() => {
-    setContents(initContent);
+    setMessages(initContent);
   }, [initContent]);
 
   return (
     <Collapsible.Content className=" h-96 overflow-scroll rounded-b-xl border bg-white">
       <div className="space-y-3 p-3">
-        {contents.map((content, index) => (
-          <Message key={index} role={content.role} text={content.text} />
+        {messages.map((message, index) => (
+          <Message key={index} role={message.role} content={message.content} />
         ))}
       </div>
     </Collapsible.Content>
