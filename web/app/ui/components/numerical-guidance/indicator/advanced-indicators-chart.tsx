@@ -17,7 +17,7 @@ export default function AdvancedIndicatorsChart({ indicatorBoardMetadataId }: Ad
     customForecastHistoryIndicatorsValue,
     setPaginationData,
     setInitialCursorDate,
-  } = useHistoryIndicatorsValueViewModel();
+  } = useHistoryIndicatorsValueViewModel(indicatorBoardMetadata?.id);
   const { indicatorsValue } = useLiveIndicatorsValueViewModel(indicatorBoardMetadata?.id);
   const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel(indicatorBoardMetadata?.id);
 

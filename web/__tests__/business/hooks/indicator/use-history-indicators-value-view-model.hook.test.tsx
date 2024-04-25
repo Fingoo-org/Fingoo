@@ -22,7 +22,7 @@ describe('useHistoryIndicatorsValueViewModel', () => {
     // given
     const { result } = renderHook(
       () => {
-        const { actualHistoryIndicatorsValue, setPaginationData } = useHistoryIndicatorsValueViewModel();
+        const { actualHistoryIndicatorsValue, setPaginationData } = useHistoryIndicatorsValueViewModel('1');
         const { addIndicatorToMetadata, selectedMetadata } = useSelectedIndicatorBoardMetadata();
         const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
         return {
