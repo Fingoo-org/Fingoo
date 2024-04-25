@@ -6,7 +6,6 @@ export type ValueItem = {
 type CaculatedValueItem = {
   date: string;
   value: number;
-  displayValue: number;
 };
 
 export abstract class UnitCalculator {

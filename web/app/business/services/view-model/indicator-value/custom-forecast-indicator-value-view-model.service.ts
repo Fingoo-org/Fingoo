@@ -3,7 +3,7 @@ import {
   CustomForecastIndicatorValueResponse,
   ForecastType,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { FormattedItem, IndicatorValue, IndicatorValueItem } from './indicator-value-view-model.service';
+import { CaculatedItem, FormattedItem, IndicatorValue, IndicatorValueItem } from './indicator-value-view-model.service';
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { createUnitCalculator, UnitType } from '../../chart/unit-calculator/unit-calculator-factory.service';
 
@@ -50,8 +50,16 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     this.mergedValues = mergedValueItems;
   }
 
-  caculateItemsValue() {
-    return createUnitCalculator(this.mergedValues, this._unitType).caculate();
+  caculateItemsValue(): CaculatedItem[] {
+    const caculatedValues = createUnitCalculator(this.mergedValues, this._unitType).caculate();
+    return caculatedValues.map((item, index) => {
+      const displayValue = this.mergedValues[index].value;
+      return {
+        date: item.date,
+        value: item.value,
+        displayValue: typeof displayValue === 'number' ? displayValue : parseInt(displayValue),
+      };
+    });
   }
 
   formatItemsByDate(): FormattedItem {

@@ -6,7 +6,6 @@ export class DefaultUnitCalculator extends UnitCalculator {
       return {
         date: item.date,
         value: this.parseValueToInt(item.value),
-        displayValue: this.parseValueToInt(item.value),
       };
     });
   }

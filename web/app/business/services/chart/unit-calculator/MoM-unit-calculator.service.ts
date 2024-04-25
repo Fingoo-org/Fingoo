@@ -9,7 +9,6 @@ export class MoMUnitCalulator extends UnitCalculator {
       return {
         date: item.date,
         value: this.caculateItemValue(item),
-        displayValue: this.parseValueToInt(item.value),
       };
     });
     this._cachedValue = {};

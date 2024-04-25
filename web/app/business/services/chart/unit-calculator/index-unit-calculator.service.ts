@@ -22,7 +22,6 @@ export class IndexUnitCalculator extends UnitCalculator {
       return {
         date: item.date,
         value: this.caculateItem(item),
-        displayValue: this.parseValueToInt(item.value),
       };
     });
   }
