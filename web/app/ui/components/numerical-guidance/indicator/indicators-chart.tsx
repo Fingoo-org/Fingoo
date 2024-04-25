@@ -78,6 +78,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
             url={`/${imageUrl}`}
             onPopoverTriggerClick={handleImageUrlCreate}
             onDownloadImage={handleImageDownload}
+            disabled={!indicatorBoardMetadataId ? true : false}
           >
             <div className="flex w-full justify-center pt-4">
               <CSVDownloadButton indicatorBoardMetadataId={indicatorBoardMetadataId} />

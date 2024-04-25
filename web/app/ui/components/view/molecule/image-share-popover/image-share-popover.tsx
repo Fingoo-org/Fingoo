@@ -7,6 +7,7 @@ import Button from '../../atom/button/button';
 type ImageSharePopoverProps = {
   url?: string;
   baseUrl?: string;
+  disabled?: boolean;
   onDownloadImage: () => void;
   onPopoverTriggerClick?: () => void;
 };
@@ -14,6 +15,7 @@ type ImageSharePopoverProps = {
 export default function ImageSharePopover({
   url,
   baseUrl = '',
+  disabled = false,
   onDownloadImage,
   onPopoverTriggerClick,
   children,
@@ -24,7 +26,7 @@ export default function ImageSharePopover({
   return (
     <Popover>
       <Popover.Trigger>
-        <IconButton onClick={handlePopoverTriggerClick} icon={Share1Icon} color={'gray'} />
+        <IconButton disabled={disabled} onClick={handlePopoverTriggerClick} icon={Share1Icon} color={'gray'} />
       </Popover.Trigger>
       <Popover.Content side={'top'} className="w-96">
         <ClipboardInput copyUrl={`${baseUrl}${url}`} />
