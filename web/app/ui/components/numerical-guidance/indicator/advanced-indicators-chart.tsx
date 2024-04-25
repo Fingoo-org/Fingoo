@@ -30,6 +30,7 @@ export default function AdvancedIndicatorsChart({ indicatorBoardMetadataId }: Ad
     customForecastHistoryIndicatorsValue ?? [],
   );
 
+  // fix: unit type이 서로 다른 문제 발생.. 병합해서 처리할 필요가 있음
   const formattedLiveIndicatorsRows = indicatorFormatter.formattedIndicatorsInRow;
   const formattedHistoryIndicatorsRows = historyIndicatorFormatter.formattedIndicatorsInRow;
 
