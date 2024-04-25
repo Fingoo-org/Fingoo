@@ -3,45 +3,22 @@ import {
   IndicatorValueResponse,
   IndicatorsValueResponse,
 } from '../../../../store/querys/numerical-guidance/indicator.query';
-import {
-  IndicatorValueItem,
-  IndicatorValue,
-  FormattedItem,
-  CaculatedItem,
-  FormatOptions,
-} from './indicator-value-view-model.service';
-import { createUnitCalculator } from '../../chart/unit-calculator/unit-calculator-factory.service';
+import { IndicatorValueItem, IndicatorValue, FormattedItem, FormatOptions } from './indicator-value-view-model.service';
 
 export class ActualIndicatorValue extends IndicatorValue {
   readonly indicatorId: string;
   readonly ticker: string;
   readonly market: string;
   readonly type: string;
-  readonly values: IndicatorValueItem[];
   constructor({ indicatorId, ticker, market, type, values }: IndicatorValueResponse) {
-    super(indicatorId);
+    super(
+      indicatorId,
+      values.map((item) => new IndicatorValueItem(item)),
+    );
     this.indicatorId = indicatorId;
     this.ticker = ticker;
     this.market = market;
     this.type = type;
-    this.values = values.map((item) => new IndicatorValueItem(item));
-  }
-
-  caculateItemsValue(isValueWithIndexUnit: boolean): CaculatedItem[] {
-    const caculatedDisplayValues = createUnitCalculator(this.values, this._unitType).caculate();
-
-    const caculatedValues = isValueWithIndexUnit
-      ? createUnitCalculator(caculatedDisplayValues, 'index').caculate()
-      : caculatedDisplayValues;
-
-    return caculatedDisplayValues.map((item, index) => {
-      const value = caculatedValues[index].value;
-      return {
-        date: item.date,
-        value: value,
-        displayValue: item.value,
-      };
-    });
   }
 
   formatItemsByDate(options?: FormatOptions): FormattedItem {

@@ -1,6 +1,6 @@
 import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
 import { FormattedIndicatorValue } from '../../chart/indicator-formatter.service';
-import { UnitType } from '../../chart/unit-calculator/unit-calculator-factory.service';
+import { createUnitCalculator, UnitType } from '../../chart/unit-calculator/unit-calculator-factory.service';
 
 export type FormattedItem = {
   [date: string]: {
@@ -28,18 +28,35 @@ export class IndicatorValueItem {
 }
 
 export abstract class IndicatorValue {
-  public id: string;
+  readonly id: string;
   protected _unitType: UnitType = 'default';
+  readonly values: IndicatorValueItem[] = [];
 
-  constructor(id: string) {
+  constructor(id: string, values: IndicatorValueItem[]) {
     this.id = id;
+    this.values = values;
   }
 
   set unitType(unitType: UnitType) {
     this._unitType = unitType;
   }
 
-  abstract caculateItemsValue(isValueWithIndexUnit: boolean): CaculatedItem[];
+  caculateItemsValue(isValueWithIndexUnit: boolean): CaculatedItem[] {
+    const caculatedDisplayValues = createUnitCalculator(this.values, this._unitType).caculate();
+
+    const caculatedValues = isValueWithIndexUnit
+      ? createUnitCalculator(caculatedDisplayValues, 'index').caculate()
+      : caculatedDisplayValues;
+
+    return caculatedDisplayValues.map((item, index) => {
+      const value = caculatedValues[index].value;
+      return {
+        date: item.date,
+        value: value,
+        displayValue: item.value,
+      };
+    });
+  }
 
   abstract formatItemsByDate(options?: FormatOptions): FormattedItem;
 
