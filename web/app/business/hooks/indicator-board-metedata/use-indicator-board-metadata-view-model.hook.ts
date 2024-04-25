@@ -20,8 +20,6 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   );
   const { updateUnitType } = useIndicatorBoardMetadataStore((state) => state.actions);
 
-  // const indicatorsUnitType = metadataId ? indicatorsInMetadataUnitType[metadataId] : undefined;
-
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
 
