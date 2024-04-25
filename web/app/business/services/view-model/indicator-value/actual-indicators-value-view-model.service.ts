@@ -31,7 +31,7 @@ export class ActualIndicatorValue extends IndicatorValue {
     const caculatedDisplayValues = createUnitCalculator(this.values, this._unitType).caculate();
 
     const caculatedValues = isValueWithIndexUnit
-      ? createUnitCalculator(this.values, 'index').caculate()
+      ? createUnitCalculator(caculatedDisplayValues, 'index').caculate()
       : caculatedDisplayValues;
 
     return caculatedDisplayValues.map((item, index) => {
