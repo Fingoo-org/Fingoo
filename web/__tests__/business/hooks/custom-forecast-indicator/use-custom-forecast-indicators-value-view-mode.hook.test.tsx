@@ -16,7 +16,7 @@ describe('useCustomForecastIndicatorsValueViewModel', () => {
     const { result } = renderHook(
       () => {
         return {
-          ...useCustomForecastIndicatorsValueViewModel(),
+          ...useCustomForecastIndicatorsValueViewModel('1'),
           ...useSelectedIndicatorBoardMetadata(),
         };
       },
@@ -42,7 +42,7 @@ describe('useCustomForecastIndicatorsValueViewModel', () => {
     const { result } = renderHook(
       () => {
         return {
-          ...useCustomForecastIndicatorsValueViewModel(),
+          ...useCustomForecastIndicatorsValueViewModel('1'),
           ...useSelectedIndicatorBoardMetadata(),
         };
       },

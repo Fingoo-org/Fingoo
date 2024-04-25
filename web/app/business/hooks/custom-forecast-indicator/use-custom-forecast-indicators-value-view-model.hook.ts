@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { convertCustomForecastIndicatorsValue } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
 import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
 
-export const useCustomForecastIndicatorsValueViewModel = () => {
+export const useCustomForecastIndicatorsValueViewModel = (indicatorBoardMetadataId?: string) => {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
   const {
     data: customForecastIndicatorsValueData,

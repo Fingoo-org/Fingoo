@@ -11,7 +11,7 @@ type SimpleIndicatorsChartProps = {
 export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: SimpleIndicatorsChartProps) {
   const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
   const { indicatorsValue } = useLiveIndicatorsValueViewModel(indicatorBoardMetadata?.id);
-  const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel();
+  const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel(indicatorBoardMetadata?.id);
 
   const indicatorFormatter = createIndicatorFormatter(
     indicatorsValue?.indicatorsValue ?? [],
