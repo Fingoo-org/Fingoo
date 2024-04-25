@@ -11,6 +11,7 @@ import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/
 import { useGenerateImage } from '../../view/hooks/use-generate-image';
 import ImageSharePopover from '../../view/molecule/image-share-popover/image-share-popover';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+import CSVDownloadButton from './csv-download-button';
 
 const BASE_URL =
   'https://mlvbynpnwpxewztngrrz.supabase.co/storage/v1/object/public/fingoo_bucket/indicatorBoardMetadata';
@@ -77,7 +78,12 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
             url={`/${imageUrl}`}
             onPopoverTriggerClick={handleImageUrlCreate}
             onDownloadImage={handleImageDownload}
-          />
+            disabled={!indicatorBoardMetadataId ? true : false}
+          >
+            <div className="flex w-full justify-center pt-4">
+              <CSVDownloadButton indicatorBoardMetadataId={indicatorBoardMetadataId} />
+            </div>
+          </ImageSharePopover>
         </div>
       </div>
     </Pending>

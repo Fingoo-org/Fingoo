@@ -11,6 +11,10 @@ export type FormattedRowType = {
   [ticker: string]: FormattedIndicatorValue | string;
 };
 
+function isFormattedIndicatorValue(value: any): value is FormattedIndicatorValue {
+  return typeof value === 'object' && value !== null && 'value' in value && 'displayValue' in value;
+}
+
 export class IndicatorFormatter {
   private unitType: UnitType;
   constructor(private indicatorsValue: IndicatorValue[]) {
@@ -38,6 +42,21 @@ export class IndicatorFormatter {
         date,
         ...formattedIndicatorsByDate[date],
       };
+    });
+  }
+
+  get formmatedIndicatorsToCSV() {
+    return this.formattedIndicatorsInRow.map((row) => {
+      return Object.keys(row).reduce<{ [key: string]: string | number }>((acc, key) => {
+        const value = row[key];
+        if (isFormattedIndicatorValue(value)) {
+          acc[key] = value.displayValue;
+        } else {
+          acc[key] = value;
+        }
+
+        return acc;
+      }, {});
     });
   }
 
