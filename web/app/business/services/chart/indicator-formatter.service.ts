@@ -1,9 +1,6 @@
-import { utcFormat, utcParse } from 'd3-time-format';
 import { FormattedItem, IndicatorValue } from '../view-model/indicator-value/indicator-value-view-model.service';
 import { UnitType } from './unit-calculator/unit-calculator-factory.service';
-
-export const parseTime = utcParse('%Y%m%d');
-export const formatTime = utcFormat('%Y-%m-%d');
+import { formatDate } from '@/app/utils/date-formatter';
 
 export type FormattedIndicatorValue = {
   value: number;
@@ -27,12 +24,7 @@ export class IndicatorFormatter {
         isValueWithIndexUnit: this.unitType === 'index',
       });
       Object.keys(formattedItems).forEach((date) => {
-        let formattedDate: string | Date = new Date(date);
-        if (formattedDate.toString().startsWith('Invalid')) {
-          formattedDate = parseTime(date) ?? new Date(date);
-        }
-        formattedDate = formatTime(formattedDate);
-
+        const formattedDate = formatDate(date);
         acc[formattedDate] = { ...acc[formattedDate], ...formattedItems[date] };
       });
       return acc;
