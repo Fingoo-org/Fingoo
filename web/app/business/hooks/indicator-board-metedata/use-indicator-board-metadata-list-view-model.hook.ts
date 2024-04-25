@@ -34,7 +34,7 @@ export const useIndicatorBoardMetadataList = () => {
     if (convertedIndicatorBoardMetadataList) {
       const indicatorsInMetadataUnitType = convertedIndicatorBoardMetadataList.reduce<IndicatorInMetadataUnitTypes>(
         (acc, metadata) => {
-          acc[metadata.id] = metadata.indicatorIds.map((indicatorId) => ({
+          acc[metadata.id] = [...metadata.indicatorIds, ...metadata.customForecastIndicatorIds].map((indicatorId) => ({
             indicatorId,
             unitType: 'default',
           }));

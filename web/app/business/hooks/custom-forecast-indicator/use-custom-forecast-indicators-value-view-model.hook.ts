@@ -3,6 +3,7 @@ import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/u
 import { useFetchCustomForecastIndicatorList } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useMemo } from 'react';
 import { convertCustomForecastIndicatorsValue } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
+import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
 
 export const useCustomForecastIndicatorsValueViewModel = () => {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
@@ -13,6 +14,10 @@ export const useCustomForecastIndicatorsValueViewModel = () => {
     mutate: mutateCustomForecastIndicator,
   } = useFetchCustomForecastIndicatorsValue(selectedMetadata?.customForecastIndicatorIds);
   const { data: customForecastIndicatorListData } = useFetchCustomForecastIndicatorList();
+
+  const indicatorsUnitType = useIndicatorBoardMetadataStore(
+    (state) => state.indicatorsInMetadataUnitType[selectedMetadata?.id ?? ''],
+  );
 
   const customForecastIndicatorsValueDataWithName = useMemo(() => {
     if (!customForecastIndicatorsValueData || !customForecastIndicatorListData) return undefined;
@@ -33,8 +38,15 @@ export const useCustomForecastIndicatorsValueViewModel = () => {
   const convertedCustomForecastIndicatorsValue = useMemo(() => {
     if (!customForecastIndicatorsValueDataWithName) return undefined;
 
-    return convertCustomForecastIndicatorsValue(customForecastIndicatorsValueDataWithName);
-  }, [customForecastIndicatorsValueDataWithName]);
+    const convertedCustomForecastIndicatorsValue = convertCustomForecastIndicatorsValue(
+      customForecastIndicatorsValueDataWithName,
+    );
+    convertedCustomForecastIndicatorsValue.forEach((indicator) => {
+      const unitType = indicatorsUnitType?.find((unit) => unit.indicatorId === indicator.id)?.unitType;
+      indicator.unitType = unitType ?? 'default';
+    });
+    return convertedCustomForecastIndicatorsValue;
+  }, [customForecastIndicatorsValueDataWithName, indicatorsUnitType]);
 
   const customForecastTypes = convertedCustomForecastIndicatorsValue?.map((value) => {
     return {
