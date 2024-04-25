@@ -46,19 +46,19 @@ describe('ActualIndicatorValue', () => {
     expect(formattedItems['2024-01-01']).toEqual({
       AAPL: {
         value: 0,
-        displayValue: 10000,
+        displayValue: 0,
       },
     });
     expect(formattedItems['2024-01-18']).toEqual({
       AAPL: {
         value: 20,
-        displayValue: 19000,
+        displayValue: 20,
       },
     });
     expect(formattedItems['2024-01-27']).toEqual({
       AAPL: {
         value: 40,
-        displayValue: 28000,
+        displayValue: 40,
       },
     });
   });
@@ -73,13 +73,13 @@ describe('ActualIndicatorValue', () => {
     expect(formattedItems['2024-01-04']).toEqual({
       AAPL: {
         value: 0,
-        displayValue: 20000,
+        displayValue: 0,
       },
     });
     expect(formattedItems['2024-02-04']).toEqual({
       AAPL: {
         value: 80,
-        displayValue: 36000,
+        displayValue: 80,
       },
     });
   });
@@ -94,13 +94,13 @@ describe('ActualIndicatorValue', () => {
     expect(formattedItems['2024-01-05']).toEqual({
       AAPL: {
         value: 0,
-        displayValue: 42000,
+        displayValue: 0,
       },
     });
     expect(formattedItems['2024-02-07']).toEqual({
       AAPL: {
         value: -7.14,
-        displayValue: 39000,
+        displayValue: -7.14,
       },
     });
   });
@@ -115,13 +115,13 @@ describe('ActualIndicatorValue', () => {
     expect(formattedItems['2024-02-29']).toEqual({
       AAPL: {
         value: 63.33,
-        displayValue: 49000,
+        displayValue: 63.33,
       },
     });
     expect(formattedItems['2024-03-31']).toEqual({
       AAPL: {
         value: -12.65,
-        displayValue: 42800,
+        displayValue: -12.65,
       },
     });
   });

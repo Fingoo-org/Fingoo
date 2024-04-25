@@ -14,6 +14,10 @@ export type CaculatedItem = {
   displayValue: number;
 };
 
+export type FormatOptions = {
+  isValueWithIndexUnit?: boolean;
+};
+
 export class IndicatorValueItem {
   readonly date: string;
   readonly value: number | string;
@@ -35,9 +39,9 @@ export abstract class IndicatorValue {
     this._unitType = unitType;
   }
 
-  abstract caculateItemsValue(): CaculatedItem[];
+  abstract caculateItemsValue(isValueWithIndexUnit: boolean): CaculatedItem[];
 
-  abstract formatItemsByDate(): FormattedItem;
+  abstract formatItemsByDate(options?: FormatOptions): FormattedItem;
 
   abstract get identifier(): string;
 }

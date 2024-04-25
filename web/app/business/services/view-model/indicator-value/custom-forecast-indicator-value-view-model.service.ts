@@ -3,7 +3,13 @@ import {
   CustomForecastIndicatorValueResponse,
   ForecastType,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { CaculatedItem, FormattedItem, IndicatorValue, IndicatorValueItem } from './indicator-value-view-model.service';
+import {
+  CaculatedItem,
+  FormatOptions,
+  FormattedItem,
+  IndicatorValue,
+  IndicatorValueItem,
+} from './indicator-value-view-model.service';
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { createUnitCalculator, UnitType } from '../../chart/unit-calculator/unit-calculator-factory.service';
 
@@ -50,8 +56,9 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     this.mergedValues = mergedValueItems;
   }
 
-  caculateItemsValue(): CaculatedItem[] {
+  caculateItemsValue(isValueWithIndexUnit: boolean): CaculatedItem[] {
     const caculatedValues = createUnitCalculator(this.mergedValues, this._unitType).caculate();
+
     return caculatedValues.map((item, index) => {
       const displayValue = this.mergedValues[index].value;
       return {
@@ -62,8 +69,9 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     });
   }
 
-  formatItemsByDate(): FormattedItem {
-    return this.caculateItemsValue().reduce<FormattedItem>((acc, item) => {
+  formatItemsByDate(options?: FormatOptions): FormattedItem {
+    const { isValueWithIndexUnit } = options || { isValueWithIndexUnit: false };
+    return this.caculateItemsValue(isValueWithIndexUnit ?? false).reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {

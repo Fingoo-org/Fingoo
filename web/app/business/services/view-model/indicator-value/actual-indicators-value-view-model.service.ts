@@ -3,7 +3,13 @@ import {
   IndicatorValueResponse,
   IndicatorsValueResponse,
 } from '../../../../store/querys/numerical-guidance/indicator.query';
-import { IndicatorValueItem, IndicatorValue, FormattedItem, CaculatedItem } from './indicator-value-view-model.service';
+import {
+  IndicatorValueItem,
+  IndicatorValue,
+  FormattedItem,
+  CaculatedItem,
+  FormatOptions,
+} from './indicator-value-view-model.service';
 import { createUnitCalculator } from '../../chart/unit-calculator/unit-calculator-factory.service';
 
 export class ActualIndicatorValue extends IndicatorValue {
@@ -21,20 +27,26 @@ export class ActualIndicatorValue extends IndicatorValue {
     this.values = values.map((item) => new IndicatorValueItem(item));
   }
 
-  caculateItemsValue(): CaculatedItem[] {
-    const caculatedValues = createUnitCalculator(this.values, this._unitType).caculate();
-    return caculatedValues.map((item, index) => {
-      const displayValue = this.values[index].value;
+  caculateItemsValue(isValueWithIndexUnit: boolean): CaculatedItem[] {
+    const caculatedDisplayValues = createUnitCalculator(this.values, this._unitType).caculate();
+
+    const caculatedValues = isValueWithIndexUnit
+      ? createUnitCalculator(this.values, 'index').caculate()
+      : caculatedDisplayValues;
+
+    return caculatedDisplayValues.map((item, index) => {
+      const value = caculatedValues[index].value;
       return {
         date: item.date,
-        value: item.value,
-        displayValue: typeof displayValue === 'number' ? displayValue : parseInt(displayValue),
+        value: value,
+        displayValue: item.value,
       };
     });
   }
 
-  formatItemsByDate(): FormattedItem {
-    return this.caculateItemsValue().reduce<FormattedItem>((acc, item) => {
+  formatItemsByDate(options?: FormatOptions): FormattedItem {
+    const { isValueWithIndexUnit } = options || { isValueWithIndexUnit: false };
+    return this.caculateItemsValue(isValueWithIndexUnit ?? false).reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {
