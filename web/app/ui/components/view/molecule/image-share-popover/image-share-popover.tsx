@@ -16,7 +16,8 @@ export default function ImageSharePopover({
   baseUrl = '',
   onDownloadImage,
   onPopoverTriggerClick,
-}: ImageSharePopoverProps) {
+  children,
+}: React.PropsWithChildren<ImageSharePopoverProps>) {
   const handlePopoverTriggerClick = () => {
     onPopoverTriggerClick?.();
   };
@@ -32,6 +33,7 @@ export default function ImageSharePopover({
             Download Image
           </Button>
         </div>
+        {children}
       </Popover.Content>
     </Popover>
   );
