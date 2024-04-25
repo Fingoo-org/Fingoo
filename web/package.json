@@ -52,6 +52,7 @@
     "lucide-react": "^0.343.0",
     "next": "14.0.4",
     "react": "^18",
+    "react-csv": "^2.2.2",
     "react-dom": "^18",
     "react-financial-charts": "^2.0.1",
     "react-pro-sidebar": "^1.1.0",
