@@ -5,15 +5,13 @@ import {
 } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { useEffect, useMemo, useState } from 'react';
 import { convertHistoryIndicatorsValueViewModel } from '../../services/view-model/indicator-value/actual-indicators-value-view-model.service';
-import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
-import { useCustomForecastIndicatorListViewModel } from '../custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 import {
   CustomForecastIndicatorResponse,
   useFetchCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastHistoryIndicatorsValueViewModel } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
 import { useIndicatorBoard } from '../indicator-board/use-indicator-board.hook';
+import { useIndicatorBoardMetadataViewModel } from '../indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 
 const mergePaginationData = (historyIndicatorsValuePages: HistoryIndicatorsValueResponse[] | undefined) => {
   return historyIndicatorsValuePages?.reduce((acc: HistoryIndicatorValueResponse[], page, index) => {
@@ -34,15 +32,16 @@ const mergePaginationData = (historyIndicatorsValuePages: HistoryIndicatorsValue
   }, []);
 };
 
-export const useHistoryIndicatorsValueViewModel = () => {
+export const useHistoryIndicatorsValueViewModel = (indicatorBoardMetadataId?: string) => {
+  const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
+
   const [paginationData, setPaginationData] = useState<{ rowsToDownload: number } | undefined>(undefined);
   const [initialCursorDate, setInitialCursorDate] = useState<Date>(new Date());
-  const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
-  const { interval } = useIndicatorBoard(selectedMetadata?.id);
+  const { interval } = useIndicatorBoard(indicatorBoardMetadata?.id);
   const { data: customForecastIndicatorListData } = useFetchCustomForecastIndicatorList();
 
   const { data: actualHistoryIndicatorsValuePages, setSize: setActualPageSize } = useFetchHistoryIndicatorValue(
-    selectedMetadata?.indicatorIds,
+    indicatorBoardMetadata?.indicatorIds,
     {
       rowsToDownload: paginationData?.rowsToDownload ?? 10,
       initialCursorDate,
@@ -52,16 +51,16 @@ export const useHistoryIndicatorsValueViewModel = () => {
   );
 
   const selectedCustomForeacastIndicator = useMemo(() => {
-    if (selectedMetadata === undefined || customForecastIndicatorListData === undefined) return undefined;
+    if (indicatorBoardMetadata === undefined || customForecastIndicatorListData === undefined) return undefined;
 
-    return selectedMetadata.customForecastIndicatorIds
+    return indicatorBoardMetadata.customForecastIndicatorIds
       .map((customForecastIndicatorId) => {
         return customForecastIndicatorListData.find(
           (customForecastIndicator) => customForecastIndicator.id === customForecastIndicatorId,
         );
       })
       .filter((indicator) => indicator !== undefined) as CustomForecastIndicatorResponse[];
-  }, [selectedMetadata, customForecastIndicatorListData]);
+  }, [indicatorBoardMetadata, customForecastIndicatorListData]);
 
   const { data: customForecastHistoryIndicatorsValuePages, setSize: setCustomForecastPageSize } =
     useFetchHistoryIndicatorValue(

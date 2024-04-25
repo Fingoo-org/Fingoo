@@ -7,13 +7,18 @@ import {
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
 import { useMemo } from 'react';
+import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
 
 export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefined) => {
   const { data: indicatorBoardMetadataList } = useFetchIndicatorBoardMetadataList();
-
   const { trigger: updateIndicatorBoardMetadataTrigger } = useUpdateIndicatorBoardMetadata(metadataId);
   const { trigger: updateIndicatorIdsWithsectionIdsTrigger } = useUpdateIndicatorIdsWithsectionIds(metadataId);
   const { trigger: uploadIndicatorBoardMetadataImageTrigger } = useUploadIndicatorBoardMetadataImage();
+
+  const indicatorsUnitType = useIndicatorBoardMetadataStore(
+    (state) => state.indicatorsInMetadataUnitType[metadataId ?? ''],
+  );
+  const { updateUnitType } = useIndicatorBoardMetadataStore((state) => state.actions);
 
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
@@ -97,10 +102,12 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
 
   return {
     indicatorBoardMetadata,
+    indicatorsUnitType,
     updateIndicatorBoardMetadata,
     updateIndicatorIdsWithsectionIds,
     addsectionToIndicatorBoardMetadata,
     deleteSectionFromIndicatorBoardMetadata,
     uploadIndicatorBoardMetadataImage,
+    updateUnitType,
   };
 };

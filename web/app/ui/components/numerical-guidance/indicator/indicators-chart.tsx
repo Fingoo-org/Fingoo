@@ -26,7 +26,9 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
   const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel(
     indicatorBoardMetadata?.id,
   );
-  const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel();
+  const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel(
+    indicatorBoardMetadata?.id,
+  );
   const [imageUrl, setImageUrl] = useState<string>('');
 
   const { ref, downloadImage, generateImageBlob } = useGenerateImage<HTMLDivElement>({

@@ -3,7 +3,7 @@ import {
   CustomForecastIndicatorValueResponse,
   ForecastType,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { FormattedItem, IndicatorValue, IndicatorValueItem, UnitType } from './indicator-value-view-model.service';
+import { FormatOptions, FormattedItem, IndicatorValue, IndicatorValueItem } from './indicator-value-view-model.service';
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 
 type CustomForecastIndicator = {
@@ -20,7 +20,6 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
   readonly customForecastIndicatorName: string;
   readonly targetIndicatorValues: IndicatorValueItem[];
   readonly forecastType: ForecastType;
-  private mergedValues: IndicatorValueItem[];
 
   constructor({
     customForecastIndicatorId,
@@ -36,11 +35,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     const customForecastIndicatorValueItems = customForecastIndicatorValues.map((item) => new IndicatorValueItem(item));
     const targetIndicatorValueItems = targetIndicatorValues.map((item) => new IndicatorValueItem(item));
     const mergedValueItems = [...targetIndicatorValueItems, ...customForecastIndicatorValueItems];
-    super(
-      customForecastIndicatorId,
-      Math.max(...mergedValueItems.map((item) => item.parseValueToInt)),
-      Math.min(...mergedValueItems.map((item) => item.parseValueToInt)),
-    );
+    super(customForecastIndicatorId, mergedValueItems);
     this.customForecastIndicatorId = customForecastIndicatorId;
     this.targetIndicatorId = targetIndicatorId;
     this.ticker = ticker;
@@ -50,17 +45,17 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     this.customForecastIndicatorValues = customForecastIndicatorValueItems;
     this.targetIndicatorValues = targetIndicatorValueItems;
     this.forecastType = forecastType;
-    this.mergedValues = mergedValueItems;
   }
 
-  formattedItemsByDate({ unitType }: { unitType: UnitType }): FormattedItem {
-    return this.mergedValues.reduce<FormattedItem>((acc, item) => {
+  formatItemsByDate(options?: FormatOptions): FormattedItem {
+    const { isValueWithIndexUnit } = options || { isValueWithIndexUnit: false };
+    return this.caculateItemsValue(isValueWithIndexUnit ?? false).reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
         [item.date]: {
           [this.customForecastIndicatorName]: {
-            value: this.caculateValue(item, unitType),
-            displayValue: item.parseValueToInt,
+            value: item.value,
+            displayValue: item.displayValue,
           },
         },
       };

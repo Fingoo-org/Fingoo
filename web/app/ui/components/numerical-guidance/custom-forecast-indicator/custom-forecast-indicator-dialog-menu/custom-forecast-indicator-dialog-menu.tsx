@@ -11,8 +11,8 @@ import Pending from '../../../view/molecule/pending';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
-import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import ForecastTypeToggle from '../forecast-type-toggle';
+import { useCustomForecastIndicatorsValueBySelectedMetadata } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-value.hook';
 
 export default function CustomForecastIndicatorDialogMenu() {
   const {
@@ -22,7 +22,7 @@ export default function CustomForecastIndicatorDialogMenu() {
     applyUpdatedSourceIndicator,
     updateCustomForecastIndicatorName,
   } = useSelectedCustomForecastIndicatorViewModel();
-  const { mutateCustomForecastIndicator } = useCustomForecastIndicatorsValueViewModel();
+  const { mutateCustomForecastIndicator } = useCustomForecastIndicatorsValueBySelectedMetadata();
   const { deleteCustomForecastIndicator } = useCustomForecastIndicatorListViewModel();
   const { closeDialog } = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU);
 

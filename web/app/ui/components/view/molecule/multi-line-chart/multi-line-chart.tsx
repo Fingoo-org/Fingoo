@@ -34,11 +34,12 @@ export default function MultiLineChart({
       <LineChart
         {...props}
         syncId={syncId}
-        className={cn('h-full', className)}
+        className={cn('h-full ', className)}
         data={formatteedData}
         index={index}
         categories={categories}
-        colors={['indigo-300', 'rose-200', 'fuchsia-300', 'indigo-300', 'blue-300']}
+        // colors={['indigo-300', 'indigo-300', 'indigo-300', 'green-300', 'violet-400']}
+        colors={['yellow-400', 'rose-300', 'green-300', 'blue-400', 'violet-400']}
         yAxisWidth={60}
         onValueChange={(v) => setValue(v)}
         showAnimation={true}
