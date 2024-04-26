@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { LiveStockDto } from '../../../../application/query/live-indicator/dto/live-stock.dto';
+import { LiveStockDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { LiveIndicatorRedisAdapter } from '../../../../infrastructure/adapter/redis/live-indicator.redis.adapter';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';

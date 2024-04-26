@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IndicatorType, IndicatorValue } from '../../../../../utils/type/type-definition';
+import { IndicatorType, IndicatorValue } from '../../../../../../utils/type/type-definition';
 
 export class LiveForexPairDto {
   @ApiProperty({

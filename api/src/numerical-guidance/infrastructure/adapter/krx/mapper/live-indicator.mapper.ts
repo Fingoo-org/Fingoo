@@ -1,9 +1,9 @@
-import { LiveStockDto } from '../../../../application/query/live-indicator/dto/live-stock.dto';
-import { LiveEtfDto } from '../../../../application/query/live-indicator/dto/live-etf.dto';
-import { LiveIndicesDto } from '../../../../application/query/live-indicator/dto/live-indices.dto';
-import { LiveFundDto } from '../../../../application/query/live-indicator/dto/live-fund.dto';
-import { LiveBondsDto } from '../../../../application/query/live-indicator/dto/live-bonds.dto';
-import { LiveForexPairDto } from '../../../../application/query/live-indicator/dto/live-forex-pair.dto';
+import { LiveStockDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
+import { LiveEtfDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-etf.dto';
+import { LiveIndicesDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-indices.dto';
+import { LiveFundDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-fund.dto';
+import { LiveBondsDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-bonds.dto';
+import { LiveForexPairDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-forex-pair.dto';
 
 export class LiveIndicatorMapper {
   static mapToDto(indicatorType: string, redisData: string) {

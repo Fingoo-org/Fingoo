@@ -1,4 +1,4 @@
-import { LiveStockDto } from 'src/numerical-guidance/application/query/live-indicator/dto/live-stock.dto';
+import { LiveStockDto } from 'src/numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import * as fs from 'fs';
 import { AdjustIndicatorValue } from '../../util/adjust-indicator-value';
 import { IndicatorValue, Interval } from '../../../utils/type/type-definition';

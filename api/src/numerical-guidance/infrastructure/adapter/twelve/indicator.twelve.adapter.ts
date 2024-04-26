@@ -32,14 +32,14 @@ import {
   SearchedSymbolType,
 } from '../../../application/query/indicator/get-indicator-search/dto/searched-indicators.dto';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
-import { LiveStockDto } from '../../../application/query/live-indicator/dto/live-stock.dto';
+import { LiveStockDto } from '../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { IndicatorValueManager } from '../../../util/indicator-value-manager';
-import { LoadLiveIndicatorPort } from '../../../application/port/external/krx/load-live-indicator.port';
-import { LiveEtfDto } from '../../../application/query/live-indicator/dto/live-etf.dto';
-import { LiveForexPairDto } from '../../../application/query/live-indicator/dto/live-forex-pair.dto';
-import { LiveIndicesDto } from '../../../application/query/live-indicator/dto/live-indices.dto';
-import { LiveBondsDto } from '../../../application/query/live-indicator/dto/live-bonds.dto';
-import { LiveFundDto } from '../../../application/query/live-indicator/dto/live-fund.dto';
+import { LoadLiveIndicatorPort } from '../../../application/port/external/twelve/load-live-indicator.port';
+import { LiveEtfDto } from '../../../application/query/live-indicator/get-live-indicator/dto/live-etf.dto';
+import { LiveForexPairDto } from '../../../application/query/live-indicator/get-live-indicator/dto/live-forex-pair.dto';
+import { LiveIndicesDto } from '../../../application/query/live-indicator/get-live-indicator/dto/live-indices.dto';
+import { LiveBondsDto } from '../../../application/query/live-indicator/get-live-indicator/dto/live-bonds.dto';
+import { LiveFundDto } from '../../../application/query/live-indicator/get-live-indicator/dto/live-fund.dto';
 
 const indicatorTypes: IndicatorType[] = [
   'bonds',

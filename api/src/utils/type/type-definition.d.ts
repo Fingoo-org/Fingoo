@@ -1,10 +1,10 @@
-import { LiveStockDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-stock.dto';
-import { LiveEtfDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-etf.dto';
-import { LiveForexPairDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-forex-pair.dto';
-import { LiveIndicesDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-indices.dto';
-import { LiveBondsDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-bonds.dto';
-import { LiveFundDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-fund.dto';
-import { LiveCryptoCurrenciesDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-crypto-currencies.dto';
+import { LiveStockDto } from '../../numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
+import { LiveEtfDto } from '../../numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-etf.dto';
+import { LiveForexPairDto } from '../../numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-forex-pair.dto';
+import { LiveIndicesDto } from '../../numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-indices.dto';
+import { LiveBondsDto } from '../../numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-bonds.dto';
+import { LiveFundDto } from '../../numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-fund.dto';
+import { LiveCryptoCurrenciesDto } from '../../numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-crypto-currencies.dto';
 import { CryptoCurrenciesDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/crypto-currencies.dto';
 import { ETFDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/etf.dto';
 import { ForexPairDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/forex-pair.dto';

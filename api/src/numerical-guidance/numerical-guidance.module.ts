@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { LiveIndicatorRedisAdapter } from './infrastructure/adapter/redis/live-indicator.redis.adapter';
 import { CqrsModule } from '@nestjs/cqrs';
 import { HttpModule } from '@nestjs/axios';
-import { GetIndicatorsQueryHandler } from './application/query/indicator/basic/get-indicator/get-indicators.query.handler';
 import { IndicatorPersistentAdapter } from './infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 import { CreateIndicatorBoardMetadataCommandHandler } from './application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
@@ -92,7 +91,6 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
     AuthService,
     GetLiveIndicatorQueryHandler,
     GetHistoryIndicatorQueryHandler,
-    GetIndicatorsQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,
     GetIndicatorBoardMetadataQueryHandler,
     InsertIndicatorIdCommandHandler,

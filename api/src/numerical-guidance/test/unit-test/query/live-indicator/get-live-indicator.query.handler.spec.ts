@@ -4,20 +4,25 @@ import { LoadCachedLiveIndicatorPort } from '../../../../application/port/cache/
 import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
-import { LiveStockDto } from '../../../../application/query/live-indicator/dto/live-stock.dto';
+import { LiveStockDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { GetLiveIndicatorQueryHandler } from '../../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query.handler';
-import { LoadLiveIndicatorPort } from '../../../../application/port/external/krx/load-live-indicator.port';
+import { LoadLiveIndicatorPort } from '../../../../application/port/external/twelve/load-live-indicator.port';
 import { GetLiveIndicatorQuery } from '../../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query';
-import { Indicator, IndicatorDto } from '../../../../application/query/indicator/basic/dto/indicator.dto';
 import { LoadIndicatorPort } from '../../../../application/port/persistence/indicator/load-indicator.port';
+import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
 
 const testData = liveIndicatorTestData;
-const testIndicator: Indicator = {
-  id: '160e5499-4925-4e38-bb00-8ea6d8056484',
-  name: '삼성전자',
-  ticker: '005931',
-  type: 'stocks',
-  exchange: 'KOSPI',
+const testIndicator: StockDto = {
+  id: '5776afe3-6a3f-42e9-83ec-cb634b76f958',
+  index: 1,
+  symbol: 'AAPL',
+  indicatorType: 'stocks',
+  name: 'Apple Inc',
+  currency: 'USD',
+  exchange: 'NASDAQ',
+  mic_code: 'XNGS',
+  country: 'United States',
+  type: 'Common Stock',
 };
 
 describe('GetLiveIndicatorQueryHandler', () => {
@@ -53,7 +58,7 @@ describe('GetLiveIndicatorQueryHandler', () => {
           provide: 'LoadIndicatorPort',
           useValue: {
             loadIndicator: jest.fn().mockImplementation(() => {
-              return IndicatorDto.create(testIndicator);
+              return testIndicator;
             }),
           },
         },

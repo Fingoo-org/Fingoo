@@ -5,7 +5,6 @@ import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/p
 import { IndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { DataSource } from 'typeorm';
-import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
 import { BondsEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 import { CryptoCurrenciesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
 import { ETFEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/etf.entity';
@@ -19,25 +18,6 @@ import { GetIndicatorListQuery } from '../../../../application/query/indicator/g
 import * as fs from 'fs';
 import { IndicatorDtoType } from '../../../../../utils/type/type-definition';
 
-const testData = {
-  indicators: [
-    {
-      id: '160e5499-4925-4e38-bb00-8ea6d8056484',
-      name: '삼성전자',
-      ticker: '005930',
-      type: 'stocks',
-      exchange: 'KOSPI',
-    },
-    {
-      id: '1ebee29f-7208-4df6-b53d-521b2f81fdce',
-      name: '이스트아시아',
-      ticker: '900110',
-      type: 'stocks',
-      exchange: 'KOSDAQ',
-    },
-  ],
-};
-
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
 const testIndicatorList = JSON.parse(data);
@@ -47,25 +27,6 @@ describe('IndicatorPersistentAdapter', () => {
   let dataSource: DataSource;
   let indicatorPersistentAdapter: IndicatorPersistentAdapter;
   const seeding = async () => {
-    const indicatorRepository = dataSource.getRepository(IndicatorEntity);
-    await indicatorRepository.clear();
-    await indicatorRepository.insert([
-      {
-        id: '160e5499-4925-4e38-bb00-8ea6d8056484',
-        name: '삼성전자',
-        ticker: '005930',
-        type: 'stocks',
-        exchange: 'KOSPI',
-      },
-      {
-        id: '1ebee29f-7208-4df6-b53d-521b2f81fdce',
-        name: '이스트아시아',
-        ticker: '900110',
-        type: 'stocks',
-        exchange: 'KOSDAQ',
-      },
-    ]);
-
     const stockEntityRepository = dataSource.getRepository(StockEntity);
     await stockEntityRepository.clear();
     await stockEntityRepository.insert(testIndicatorList);
@@ -122,20 +83,6 @@ describe('IndicatorPersistentAdapter', () => {
   afterAll(async () => {
     await environment.stop();
     dataSource.destroy();
-  });
-
-  it('지표 리스트를 가져올 때 데이터가 올바른지 확인', async () => {
-    // given
-
-    // when
-    const result: IndicatorsDto = await indicatorPersistentAdapter.loadIndicators();
-    const resultNum: number = result.indicators.length;
-
-    // then
-    const expected = testData;
-    const expectedNum: number = 2;
-    expect(result).toEqual(expected);
-    expect(resultNum).toEqual(expectedNum);
   });
 
   const cursors = [

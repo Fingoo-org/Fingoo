@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { GetHistoryIndicatorQuery } from './get-history-indicator.query';
 import { LoadHistoryIndicatorPort } from '../../../port/persistence/indicator/load-history-indicator.port';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
-import { HistoryIndicatorDto } from '../dto/history-indicator.dto';
+import { HistoryIndicatorDto } from './dto/history-indicator.dto';
 
 @Injectable()
 @QueryHandler(GetHistoryIndicatorQuery)

@@ -1,7 +1,7 @@
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Controller, Get, Query } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { LiveStockDto } from '../../application/query/live-indicator/dto/live-stock.dto';
+import { LiveStockDto } from '../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { GetLiveIndicatorDto } from './dto/get-live-indicator.dto';
 import { GetLiveIndicatorQuery } from '../../application/query/live-indicator/get-live-indicator/get-live-indicator.query';

@@ -12,7 +12,7 @@ import {
 import { LoadCustomForecastIndicatorPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { LoadIndicatorPort } from '../../../port/persistence/indicator/load-indicator.port';
-import { LoadLiveIndicatorPort } from '../../../port/external/krx/load-live-indicator.port';
+import { LoadLiveIndicatorPort } from '../../../port/external/twelve/load-live-indicator.port';
 
 @Injectable()
 @QueryHandler(GetCustomForecastIndicatorValuesQuery)

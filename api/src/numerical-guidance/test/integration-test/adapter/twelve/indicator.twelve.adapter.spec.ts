@@ -15,7 +15,7 @@ import { StockEntity } from '../../../../infrastructure/adapter/persistence/indi
 import { TwelveApiUtil } from '../../../../infrastructure/adapter/twelve/util/twelve-api.util';
 import { HttpModule } from '@nestjs/axios';
 import { AdjustIndicatorValue } from '../../../../util/adjust-indicator-value';
-import { LiveStockDto } from '../../../../application/query/live-indicator/dto/live-stock.dto';
+import { LiveStockDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { DataSource } from 'typeorm';
 import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
 import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';

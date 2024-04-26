@@ -5,13 +5,10 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { LoadIndicatorsPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicators.port';
 import { MoreThanOrEqual, Repository } from 'typeorm';
 import { IndicatorEntity } from './entity/indicator.entity';
-import { IndicatorMapper } from './mapper/indicator.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoadIndicatorPort } from '../../../../application/port/persistence/indicator/load-indicator.port';
-import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
 import { LoadIndicatorListPort } from '../../../../application/port/persistence/indicator/load-indicator-list.port';
 import { IndicatorDtoType, IndicatorType } from '../../../../../utils/type/type-definition';
@@ -43,7 +40,7 @@ const DATA_COUNT: number = 10;
 const EMPTY_VALUE_SIZE: number = 0;
 
 @Injectable()
-export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndicatorsPort, LoadIndicatorListPort {
+export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndicatorListPort {
   constructor(
     @InjectRepository(IndicatorEntity)
     private readonly indicatorEntityRepository: Repository<IndicatorEntity>,
@@ -133,37 +130,6 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
           error: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
           message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요. 잠시후 다시 시도해주세요.',
-          cause: error,
-        });
-      }
-    }
-  }
-
-  async loadIndicators(): Promise<IndicatorsDto> {
-    try {
-      const indicatorEntities = await this.indicatorEntityRepository.find();
-
-      return IndicatorMapper.mapEntitiesToDto(indicatorEntities);
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException({
-          HttpStatus: HttpStatus.NOT_FOUND,
-          error: `[ERROR] 지표들를 찾을 수 없습니다.`,
-          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
-          cause: error,
-        });
-      } else if (error instanceof TypeORMError) {
-        throw new BadRequestException({
-          HttpStatus: HttpStatus.BAD_REQUEST,
-          error: `[ERROR] 지표를 불러오는 도중에 entity 오류가 발생했습니다.`,
-          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
-          cause: error,
-        });
-      } else {
-        throw new InternalServerErrorException({
-          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
-          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
           cause: error,
         });
       }
