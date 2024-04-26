@@ -27,10 +27,6 @@ import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/i
 import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
 import * as request from 'supertest';
 
-jest.mock('typeorm-transactional', () => ({
-  Transactional: () => () => ({}),
-}));
-
 describe('Live Indicator E2E Test', () => {
   let app: INestApplication;
   let dataSource: DataSource;

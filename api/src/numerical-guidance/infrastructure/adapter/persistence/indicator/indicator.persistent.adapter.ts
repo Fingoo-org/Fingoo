@@ -22,7 +22,7 @@ import { StockEntity } from './entity/stock.entity';
 import { CursorPageMetaDto } from '../../../../../utils/pagination/cursor-page.meta.dto';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { SaveIndicatorListPort } from '../../../../application/port/external/twelve/save-indicator-list.port';
-import { Transactional } from 'typeorm-transactional';
+import { Propagation, Transactional } from 'typeorm-transactional';
 import { TwelveApiUtil } from '../../twelve/util/twelve-api.util';
 import { IndicatorMapper } from './mapper/indicator.mapper';
 
@@ -61,7 +61,7 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     private readonly stockEntityRepository: Repository<StockEntity>,
   ) {}
 
-  @Transactional()
+  @Transactional({ propagation: Propagation.REQUIRES_NEW })
   async saveIndicatorList(count: number) {
     await this.clearIndicatorList();
     for (const indicatorType of indicatorTypes) {
@@ -144,7 +144,7 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
         throw new InternalServerErrorException({
           HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
           error: '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
-          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요. 잠시후 다시 시도해주세요.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
           cause: error,
         });
       }
@@ -224,13 +224,22 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
   }
 
   private async insertDataIntoRepository(type: IndicatorType, data: any, count: number) {
-    const dataList = type === 'funds' || type === 'bonds' ? data.result.list : data.data;
-    const batchSize = count;
+    try {
+      const dataList = type === 'funds' || type === 'bonds' ? data.result.list : data.data;
+      const batchSize = count;
 
-    this.logger.log(`${type} 저장 시작~!`);
-    const batchEntities = dataList.slice(0, batchSize);
-    await this.insertBatchEntities(type, batchEntities);
-    this.logger.log(`${type} 저장 끝~!!!`);
+      this.logger.log(`${type} 저장 시작~!`);
+      const batchEntities = dataList.slice(0, batchSize);
+      await this.insertBatchEntities(type, batchEntities);
+      this.logger.log(`${type} 저장 끝~!!!`);
+    } catch (error) {
+      throw new InternalServerErrorException({
+        HttpStatus: HttpStatus.BAD_REQUEST,
+        error: `[ERROR] 지표를 저장하는 중에 오류가 발생했습니다.`,
+        message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+        cause: error,
+      });
+    }
   }
 
   private async insertBatchEntities(type: IndicatorType, batchEntities: any[]) {

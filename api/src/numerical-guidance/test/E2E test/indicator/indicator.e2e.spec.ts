@@ -26,10 +26,6 @@ import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/i
 import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 
-jest.mock('typeorm-transactional', () => ({
-  Transactional: () => () => ({}),
-}));
-
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
 const testIndicatorList = JSON.parse(data);
