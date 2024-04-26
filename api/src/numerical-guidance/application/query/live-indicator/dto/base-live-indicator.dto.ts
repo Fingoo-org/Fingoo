@@ -1,4 +1,4 @@
-import { IndicatorType, IndicatorValue, Market } from 'src/utils/type/type-definition';
+import { IndicatorType, IndicatorValue } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class BaseLiveIndicatorDto {
@@ -30,7 +30,7 @@ export class BaseLiveIndicatorDto {
     example: 'KOSPI',
     description: '주식 시장',
   })
-  market: Market;
+  exchange: string;
 
   @ApiProperty({
     example: 2,
@@ -58,7 +58,7 @@ export class BaseLiveIndicatorDto {
     type: IndicatorType,
     symbol: string,
     name: string,
-    market: Market,
+    exchange: string,
     totalCount: number,
     values: IndicatorValue[],
   ) {
@@ -66,13 +66,13 @@ export class BaseLiveIndicatorDto {
     this.type = type;
     this.symbol = symbol;
     this.name = name;
-    this.market = market;
+    this.exchange = exchange;
     this.totalCount = totalCount;
     this.values = values;
   }
 
-  static create({ indicatorId, type, symbol, name, market, totalCount, values }): BaseLiveIndicatorDto {
-    return new BaseLiveIndicatorDto(indicatorId, type, symbol, name, market, totalCount, values);
+  static create({ indicatorId, type, symbol, name, exchange, totalCount, values }): BaseLiveIndicatorDto {
+    return new BaseLiveIndicatorDto(indicatorId, type, symbol, name, exchange, totalCount, values);
   }
 }
 
