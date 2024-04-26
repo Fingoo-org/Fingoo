@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { LiveIndicatorRedisAdapter } from './infrastructure/adapter/redis/live-indicator.redis.adapter';
-import { LiveIndicatorKrxAdapter } from './infrastructure/adapter/krx/live-indicator.krx.adapter';
 import { CqrsModule } from '@nestjs/cqrs';
 import { HttpModule } from '@nestjs/axios';
 import { GetIndicatorsQueryHandler } from './application/query/indicator/basic/get-indicator/get-indicators.query.handler';
@@ -120,10 +119,10 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
     },
-    {
-      provide: 'LoadLiveIndicatorPort',
-      useClass: LiveIndicatorKrxAdapter,
-    },
+    // {
+    //   provide: 'LoadLiveIndicatorPort',
+    //   useClass: LiveIndicatorKrxAdapter,
+    // },
     {
       provide: 'LoadHistoryIndicatorPort',
       useClass: HistoryIndicatorPersistentAdapter,
@@ -226,6 +225,10 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
     },
     {
       provide: 'SearchIndicatorPort',
+      useClass: IndicatorTwelveAdapter,
+    },
+    {
+      provide: 'LoadLiveIndicatorPort',
       useClass: IndicatorTwelveAdapter,
     },
     TwelveApiUtil,
