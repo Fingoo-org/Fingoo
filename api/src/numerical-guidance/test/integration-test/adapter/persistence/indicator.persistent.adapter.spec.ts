@@ -16,14 +16,8 @@ import { StockEntity } from '../../../../infrastructure/adapter/persistence/indi
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { BadRequestException, HttpStatus } from '@nestjs/common';
 import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list/get-indicator-list.query';
-import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
-import { CryptoCurrenciesDto } from '../../../../application/query/indicator/get-indicator-list/dto/crypto-currencies.dto';
-import { ETFDto } from '../../../../application/query/indicator/get-indicator-list/dto/etf.dto';
-import { ForexPairDto } from '../../../../application/query/indicator/get-indicator-list/dto/forex-pair.dto';
-import { IndicesDto } from '../../../../application/query/indicator/get-indicator-list/dto/indices.dto';
-import { FundDto } from '../../../../application/query/indicator/get-indicator-list/dto/fund.dto';
-import { BondsDto } from '../../../../application/query/indicator/get-indicator-list/dto/bonds.dto';
 import * as fs from 'fs';
+import { IndicatorDtoType } from '../../../../../utils/type/type-definition';
 
 const testData = {
   indicators: [
@@ -32,14 +26,14 @@ const testData = {
       name: '삼성전자',
       ticker: '005930',
       type: 'stocks',
-      market: 'KOSPI',
+      exchange: 'KOSPI',
     },
     {
       id: '1ebee29f-7208-4df6-b53d-521b2f81fdce',
       name: '이스트아시아',
       ticker: '900110',
       type: 'stocks',
-      market: 'KOSDAQ',
+      exchange: 'KOSDAQ',
     },
   ],
 };
@@ -61,14 +55,14 @@ describe('IndicatorPersistentAdapter', () => {
         name: '삼성전자',
         ticker: '005930',
         type: 'stocks',
-        market: 'KOSPI',
+        exchange: 'KOSPI',
       },
       {
         id: '1ebee29f-7208-4df6-b53d-521b2f81fdce',
         name: '이스트아시아',
         ticker: '900110',
         type: 'stocks',
-        market: 'KOSDAQ',
+        exchange: 'KOSDAQ',
       },
     ]);
 
@@ -157,9 +151,10 @@ describe('IndicatorPersistentAdapter', () => {
     };
 
     // when
-    const cursorPageDto: CursorPageDto<
-      CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto
-    > = await indicatorPersistentAdapter.loadIndicatorList(type, cursorToken);
+    const cursorPageDto: CursorPageDto<IndicatorDtoType> = await indicatorPersistentAdapter.loadIndicatorList(
+      type,
+      cursorToken,
+    );
 
     // then
     const expectedHasNextData = true;

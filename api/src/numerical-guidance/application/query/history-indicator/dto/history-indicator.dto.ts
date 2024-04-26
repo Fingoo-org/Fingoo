@@ -1,5 +1,5 @@
 import { Indicator } from '../../indicator/basic/dto/indicator.dto';
-import { IndicatorValue } from '../../live-indicator/dto/live-indicator.dto';
+import { IndicatorValue } from '../../../../../utils/type/type-definition';
 
 export type HistoryIndicatorValue = {
   date: Date;

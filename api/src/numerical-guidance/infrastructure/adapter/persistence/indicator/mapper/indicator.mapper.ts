@@ -9,7 +9,7 @@ export class IndicatorMapper {
       name: indicatorEntity.name,
       ticker: indicatorEntity.ticker,
       type: indicatorEntity.type,
-      market: indicatorEntity.market,
+      exchange: indicatorEntity.exchange,
     };
     return IndicatorDto.create(indicator);
   }

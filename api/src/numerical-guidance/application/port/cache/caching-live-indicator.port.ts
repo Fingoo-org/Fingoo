@@ -1,5 +1,5 @@
-import { LiveKRXIndicatorDto } from '../../query/live-indicator/dto/live-indicator.dto';
+import { LiveIndicatorDtoType } from '../../../../utils/type/type-definition';
 
 export interface CachingLiveIndicatorPort {
-  cachingLiveIndicator(fluctuatingIndicatorKey: string, fluctuatingIndicatorDto: LiveKRXIndicatorDto): Promise<void>;
+  cachingLiveIndicator(key: string, liveIndicatorDto: LiveIndicatorDtoType): Promise<void>;
 }

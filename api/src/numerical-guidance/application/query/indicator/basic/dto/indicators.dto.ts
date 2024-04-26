@@ -6,14 +6,14 @@ export class IndicatorsDto {
     example: [
       {
         id: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
-        market: 'KOSPI',
+        exchange: 'KOSPI',
         name: '삼성전자',
         ticker: '005930',
         type: 'stocks',
       },
       {
         id: 'ffd70fe4-d422-47f8-977e-69b9ea83cb8a',
-        market: 'KOSDAQ',
+        exchange: 'KOSDAQ',
         name: '이스트아시아',
         ticker: '900110',
         type: 'stocks',
@@ -30,7 +30,7 @@ export class IndicatorsDto {
   static create(indicators: Indicator[]): IndicatorsDto {
     const resultIndicators: Indicator[] = indicators.map((indicator) => ({
       id: indicator.id,
-      market: indicator.market,
+      exchange: indicator.exchange,
       name: indicator.name,
       ticker: indicator.ticker,
       type: indicator.type,

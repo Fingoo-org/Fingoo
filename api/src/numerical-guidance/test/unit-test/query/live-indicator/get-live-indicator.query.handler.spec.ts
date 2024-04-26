@@ -4,7 +4,7 @@ import { LoadCachedLiveIndicatorPort } from '../../../../application/port/cache/
 import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
-import { LiveKRXIndicatorDto } from '../../../../application/query/live-indicator/dto/live-indicator.dto';
+import { LiveStockDto } from '../../../../application/query/live-indicator/dto/live-stock.dto';
 import { GetLiveIndicatorQueryHandler } from '../../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query.handler';
 import { LoadLiveIndicatorPort } from '../../../../application/port/external/krx/load-live-indicator.port';
 import { GetLiveIndicatorQuery } from '../../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query';
@@ -17,7 +17,7 @@ const testIndicator: Indicator = {
   name: '삼성전자',
   ticker: '005931',
   type: 'stocks',
-  market: 'KOSPI',
+  exchange: 'KOSPI',
 };
 
 describe('GetLiveIndicatorQueryHandler', () => {
@@ -45,7 +45,7 @@ describe('GetLiveIndicatorQueryHandler', () => {
           provide: 'LoadLiveIndicatorPort',
           useValue: {
             loadLiveIndicator: jest.fn().mockImplementation(() => {
-              return LiveKRXIndicatorDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
+              return LiveStockDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
             }),
           },
         },
@@ -80,6 +80,8 @@ describe('GetLiveIndicatorQueryHandler', () => {
     const getLiveIndicatorQuery: GetLiveIndicatorQuery = new GetLiveIndicatorQuery(
       '160e5499-4925-4e38-bb00-8ea6d8056484',
       'day',
+      '2024-02-11',
+      'stocks',
     );
 
     //when
@@ -96,6 +98,8 @@ describe('GetLiveIndicatorQueryHandler', () => {
     const getLiveIndicatorQuery: GetLiveIndicatorQuery = new GetLiveIndicatorQuery(
       '160e5499-4925-4e38-bb00-8ea6d8056484',
       'day',
+      '2024-02-11',
+      'stocks',
     );
 
     //when

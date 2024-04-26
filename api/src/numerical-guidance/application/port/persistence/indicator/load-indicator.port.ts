@@ -1,5 +1,5 @@
-import { IndicatorDto } from '../../../query/indicator/basic/dto/indicator.dto';
+import { IndicatorDtoType, IndicatorType } from '../../../../../utils/type/type-definition';
 
 export interface LoadIndicatorPort {
-  loadIndicator(id: string): Promise<IndicatorDto>;
+  loadIndicator(id: string, indicatorType: IndicatorType): Promise<IndicatorDtoType>;
 }

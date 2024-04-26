@@ -286,8 +286,6 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
     );
 
-    console.log(result);
-
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
     expect(result.indicatorIds).toEqual(['indicatorId1', 'indicatorId2']);

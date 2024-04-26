@@ -1,7 +1,6 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
-import { IndicatorType } from '../application/query/live-indicator/dto/live-indicator.dto';
 import { CustomForecastIndicatorNameShouldNotEmptyRule } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
-import { SourceIndicatorIdAndWeightType, Verification } from 'src/utils/type/type-definition';
+import { IndicatorType, SourceIndicatorIdAndWeightType, Verification } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 import { SourceIndicatorsShouldNotDuplicateRule } from './rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { SourceIndicatorCountShouldNotExceedLimitRule } from './rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';

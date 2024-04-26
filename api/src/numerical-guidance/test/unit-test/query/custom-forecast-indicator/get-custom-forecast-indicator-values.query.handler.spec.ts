@@ -5,7 +5,7 @@ import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-fo
 import { CustomForecastIndicatorValuesResponse } from 'src/utils/type/type-definition';
 import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
 import { Indicator, IndicatorDto } from 'src/numerical-guidance/application/query/indicator/basic/dto/indicator.dto';
-import { LiveKRXIndicatorDto } from 'src/numerical-guidance/application/query/live-indicator/dto/live-indicator.dto';
+import { LiveStockDto } from 'src/numerical-guidance/application/query/live-indicator/dto/live-stock.dto';
 import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
 import { LoadLiveIndicatorPort } from 'src/numerical-guidance/application/port/external/krx/load-live-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
@@ -17,7 +17,7 @@ const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
   type: 'stocks',
   ticker: '373220',
   name: 'LG에너지솔루션',
-  market: 'KOSPI',
+  exchange: 'KOSPI',
   forecastType: 'single',
   customForecastIndicatorValues: [
     {
@@ -40,7 +40,7 @@ const testIndicator: Indicator = {
   name: '삼성전자',
   ticker: '005931',
   type: 'stocks',
-  market: 'KOSPI',
+  exchange: 'KOSPI',
 };
 
 describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
@@ -66,7 +66,7 @@ describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
           provide: 'LoadLiveIndicatorPort',
           useValue: {
             loadLiveIndicator: jest.fn().mockImplementation(() => {
-              return LiveKRXIndicatorDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
+              return LiveStockDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
             }),
           },
         },

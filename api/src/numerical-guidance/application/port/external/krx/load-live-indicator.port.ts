@@ -1,10 +1,10 @@
-import { LiveKRXIndicatorDto } from '../../../query/live-indicator/dto/live-indicator.dto';
+import { IndicatorDtoType, Interval, LiveIndicatorDtoType } from '../../../../../utils/type/type-definition';
 
 export interface LoadLiveIndicatorPort {
   loadLiveIndicator(
-    indicatorId: string,
-    ticker: string,
-    interval: string,
-    market: string,
-  ): Promise<LiveKRXIndicatorDto>;
+    indicatorDto: IndicatorDtoType,
+    interval: Interval,
+    startDate: string,
+    endDate: string,
+  ): Promise<LiveIndicatorDtoType>;
 }

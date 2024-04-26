@@ -11,7 +11,7 @@ export class HistoryIndicatorMapper {
       name: historyIndicatorEntity.name,
       ticker: historyIndicatorEntity.ticker,
       type: historyIndicatorEntity.type,
-      market: historyIndicatorEntity.market,
+      exchange: historyIndicatorEntity.exchange,
     };
     return HistoryIndicatorDto.create(historyIndicator, values);
   }
