@@ -1,28 +1,32 @@
-import {
-  LiveKRXIndicatorDto,
-  IndicatorValue,
-} from '../../../../application/query/live-indicator/dto/live-indicator.dto';
+import { LiveStockDto } from '../../../../application/query/live-indicator/dto/live-stock.dto';
+import { LiveEtfDto } from '../../../../application/query/live-indicator/dto/live-etf.dto';
+import { LiveIndicesDto } from '../../../../application/query/live-indicator/dto/live-indices.dto';
+import { LiveFundDto } from '../../../../application/query/live-indicator/dto/live-fund.dto';
+import { LiveBondsDto } from '../../../../application/query/live-indicator/dto/live-bonds.dto';
+import { LiveForexPairDto } from '../../../../application/query/live-indicator/dto/live-forex-pair.dto';
 
 export class LiveIndicatorMapper {
-  static mapToDto(stringData: string) {
-    const data: {
-      indicatorId: string;
-      type: string;
-      ticker: number;
-      name: number;
-      market: number;
-      totalCount: number;
-      values: IndicatorValue[];
-    } = JSON.parse(stringData);
+  static mapToDto(indicatorType: string, redisData: string) {
+    const DtoType = this.findDtoType(indicatorType);
+    return DtoType.create(JSON.parse(redisData));
+  }
 
-    return LiveKRXIndicatorDto.create({
-      indicatorId: data.indicatorId,
-      type: data.type,
-      ticker: data.ticker,
-      name: data.name,
-      market: data.market,
-      totalCount: data.totalCount,
-      values: data.values,
-    });
+  private static findDtoType(type: string) {
+    switch (type) {
+      case 'etf':
+        return LiveEtfDto;
+      case 'indices':
+        return LiveIndicesDto;
+      case 'stocks':
+        return LiveStockDto;
+      case 'funds':
+        return LiveFundDto;
+      case 'bonds':
+        return LiveBondsDto;
+      case 'forex_pairs':
+        return LiveForexPairDto;
+      case 'cryptocurrencies':
+        return LiveForexPairDto;
+    }
   }
 }

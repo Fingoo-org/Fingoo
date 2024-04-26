@@ -6,7 +6,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { LoadIndicatorsPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicators.port';
-import { IndicatorDto } from 'src/numerical-guidance/application/query/indicator/basic/dto/indicator.dto';
 import { MoreThanOrEqual, Repository } from 'typeorm';
 import { IndicatorEntity } from './entity/indicator.entity';
 import { IndicatorMapper } from './mapper/indicator.mapper';
@@ -15,7 +14,7 @@ import { LoadIndicatorPort } from '../../../../application/port/persistence/indi
 import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
 import { LoadIndicatorListPort } from '../../../../application/port/persistence/indicator/load-indicator-list.port';
-import { IndicatorType } from '../../../../../utils/type/type-definition';
+import { IndicatorDtoType, IndicatorType } from '../../../../../utils/type/type-definition';
 import { BondsMapper } from './mapper/bonds.mapper';
 import { BondsEntity } from './entity/bonds.entity';
 import { CryptoCurrenciesEntity } from './entity/crypto-currencies.entity';
@@ -64,10 +63,7 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     private readonly stockEntityRepository: Repository<StockEntity>,
   ) {}
 
-  async loadIndicatorList(
-    type: IndicatorType,
-    cursorToken: number,
-  ): Promise<CursorPageDto<CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto>> {
+  async loadIndicatorList(type: IndicatorType, cursorToken: number): Promise<CursorPageDto<IndicatorDtoType>> {
     try {
       const [indicatorEntities, total] = await this.findIndicatorEntitiesByType(type, cursorToken);
       indicatorEntities.map((indicatorEntity) => this.nullCheckForEntity(indicatorEntity));
@@ -110,11 +106,12 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     }
   }
 
-  async loadIndicator(id: string): Promise<IndicatorDto> {
+  async loadIndicator(id: string, indicatorType: IndicatorType): Promise<IndicatorDtoType> {
     try {
-      const indicatorEntity = await this.indicatorEntityRepository.findOneBy({ id });
+      const repository = this.repositoryHandler(indicatorType);
+      const indicatorEntity = await repository.findOneBy({ id });
       this.nullCheckForEntity(indicatorEntity);
-      return IndicatorMapper.mapEntityToDto(indicatorEntity);
+      return this.mapEntityToDtoByType(indicatorType, indicatorEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
@@ -199,9 +196,7 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     return entityRepositories[type];
   }
 
-  private dtoHandler(
-    type: IndicatorType,
-  ): CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto {
+  private dtoHandler(type: IndicatorType): IndicatorDtoType {
     const dtos = {
       cryptocurrencies: CryptoCurrenciesDto,
       etf: ETFDto,
@@ -261,6 +256,25 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
         return FundMapper.mapEntitiesToDtos(indicatorEntities);
       case 'bonds':
         return BondsMapper.mapEntitiesToDtos(indicatorEntities);
+    }
+  }
+
+  private mapEntityToDtoByType(type: IndicatorType, indicatorEntity): IndicatorDtoType {
+    switch (type) {
+      case 'cryptocurrencies':
+        return CryptoCurrenciesMapper.mapEntityToDto(indicatorEntity);
+      case 'etf':
+        return BondsMapper.mapEntityToDto(indicatorEntity);
+      case 'forex_pairs':
+        return ForexPairMapper.mapEntityToDto(indicatorEntity);
+      case 'indices':
+        return IndicesMapper.mapEntityToDto(indicatorEntity);
+      case 'stocks':
+        return StockMapper.mapEntityToDto(indicatorEntity);
+      case 'funds':
+        return FundMapper.mapEntityToDto(indicatorEntity);
+      case 'bonds':
+        return BondsMapper.mapEntityToDto(indicatorEntity);
     }
   }
 
