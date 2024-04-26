@@ -2,13 +2,13 @@ import React from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
 import IconButton from '../../atom/icons/icon-button';
 
-type ConversationCardHeaderProps = {
+type ChatCardHeaderProps = {
   title: string;
   infoIcon?: React.ElementType;
   collapsibleIcon?: React.ElementType;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const ConversationCardHeader = ({ title, infoIcon, collapsibleIcon, ...props }: ConversationCardHeaderProps) => {
+const ChatCardHeader = ({ title, infoIcon, collapsibleIcon, ...props }: ChatCardHeaderProps) => {
   return (
     <div
       className="flex items-center justify-between rounded-t-xl bg-black px-5 text-xl font-semibold text-white"
@@ -23,4 +23,4 @@ const ConversationCardHeader = ({ title, infoIcon, collapsibleIcon, ...props }: 
   );
 };
 
-export default ConversationCardHeader;
+export default ChatCardHeader;
