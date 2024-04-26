@@ -1,4 +1,17 @@
-export type Market = 'KOSPI' | 'KOSDAQ' | 'NASDAQ' | 'NYSE';
+import { LiveStockDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-stock.dto';
+import { LiveEtfDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-etf.dto';
+import { LiveForexPairDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-forex-pair.dto';
+import { LiveIndicesDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-indices.dto';
+import { LiveBondsDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-bonds.dto';
+import { LiveFundDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-fund.dto';
+import { LiveCryptoCurrenciesDto } from '../../numerical-guidance/application/query/live-indicator/dto/live-crypto-currencies.dto';
+import { CryptoCurrenciesDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/crypto-currencies.dto';
+import { ETFDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/etf.dto';
+import { ForexPairDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/forex-pair.dto';
+import { IndicesDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/indices.dto';
+import { StockDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/stock.dto';
+import { FundDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/fund.dto';
+import { BondsDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/bonds.dto';
 
 export type Interval = 'day' | 'week' | 'month' | 'year';
 
@@ -11,6 +24,17 @@ export type IndicatorType =
   | 'customForecastIndicator'
   | 'funds'
   | 'bonds';
+
+export type LiveIndicatorDtoType =
+  | LiveStockDto
+  | LiveEtfDto
+  | LiveForexPairDto
+  | LiveIndicesDto
+  | LiveBondsDto
+  | LiveFundDto
+  | LiveCryptoCurrenciesDto;
+
+export type IndicatorDtoType = CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto;
 
 export type ForecastType = 'single' | 'multi';
 
@@ -40,7 +64,7 @@ export type CustomForecastIndicatorValuesResponse = {
   type: IndicatorType;
   ticker: string;
   name: string;
-  market: string;
+  exchange: string;
   forecastType: ForecastType;
   customForecastIndicatorValues: IndicatorValue[];
   targetIndicatorValues: IndicatorValue[];
