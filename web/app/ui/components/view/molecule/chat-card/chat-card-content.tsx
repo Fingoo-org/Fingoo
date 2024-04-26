@@ -10,10 +10,8 @@ const ChatCardContent = ({ initContent = [] }: ChatCardProps) => {
   const [messages, setMessages] = useState<MessageProps[]>(initContent);
 
   useEffect(() => {
-    Chatref.current?.scrollIntoView({ behavior: 'auto' });
-  }, []);
-  useEffect(() => {
     setMessages(initContent);
+    Chatref.current?.scrollIntoView({ behavior: 'auto' });
   }, [initContent]);
 
   return (
