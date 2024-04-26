@@ -3,7 +3,7 @@ import { LoadCachedLiveIndicatorPort } from '../../../application/port/cache/loa
 import { CachingLiveIndicatorPort } from '../../../application/port/cache/caching-live-indicator.port';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
-import { LiveIndicatorMapper } from '../krx/mapper/live-indicator.mapper';
+import { LiveIndicatorMapper } from '../twelve/mapper/live-indicator.mapper';
 import { LiveIndicatorDtoType } from '../../../../utils/type/type-definition';
 
 const REDIS_EXPIRE_TIME = 93600;

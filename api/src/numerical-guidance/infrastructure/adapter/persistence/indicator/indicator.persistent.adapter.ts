@@ -3,16 +3,15 @@ import {
   HttpStatus,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { MoreThanOrEqual, Repository } from 'typeorm';
-import { IndicatorEntity } from './entity/indicator.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoadIndicatorPort } from '../../../../application/port/persistence/indicator/load-indicator.port';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
 import { LoadIndicatorListPort } from '../../../../application/port/persistence/indicator/load-indicator-list.port';
 import { IndicatorDtoType, IndicatorType } from '../../../../../utils/type/type-definition';
-import { BondsMapper } from './mapper/bonds.mapper';
 import { BondsEntity } from './entity/bonds.entity';
 import { CryptoCurrenciesEntity } from './entity/crypto-currencies.entity';
 import { ETFEntity } from './entity/etf.entity';
@@ -20,30 +19,32 @@ import { ForexPairEntity } from './entity/forex-pair.entity';
 import { FundEntity } from './entity/fund.entity';
 import { IndicesEntity } from './entity/indices.entity';
 import { StockEntity } from './entity/stock.entity';
-import { BondsDto } from '../../../../application/query/indicator/get-indicator-list/dto/bonds.dto';
 import { CursorPageMetaDto } from '../../../../../utils/pagination/cursor-page.meta.dto';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
-import { CryptoCurrenciesDto } from '../../../../application/query/indicator/get-indicator-list/dto/crypto-currencies.dto';
-import { ETFDto } from '../../../../application/query/indicator/get-indicator-list/dto/etf.dto';
-import { ForexPairDto } from '../../../../application/query/indicator/get-indicator-list/dto/forex-pair.dto';
-import { IndicesDto } from '../../../../application/query/indicator/get-indicator-list/dto/indices.dto';
-import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
-import { FundDto } from '../../../../application/query/indicator/get-indicator-list/dto/fund.dto';
-import { CryptoCurrenciesMapper } from './mapper/crypto-currencies.mapper';
-import { ForexPairMapper } from './mapper/forex-pair.mapper';
-import { IndicesMapper } from './mapper/indices.mapper';
-import { StockMapper } from './mapper/stock.mapper';
-import { FundMapper } from './mapper/fund.mapper';
+import { SaveIndicatorListPort } from '../../../../application/port/external/twelve/save-indicator-list.port';
+import { Transactional } from 'typeorm-transactional';
+import { TwelveApiUtil } from '../../twelve/util/twelve-api.util';
+import { IndicatorMapper } from './mapper/indicator.mapper';
 
 const ORDER_TYPE: string = 'ASC';
 const DATA_COUNT: number = 10;
 const EMPTY_VALUE_SIZE: number = 0;
+const indicatorTypes: IndicatorType[] = [
+  'bonds',
+  'cryptocurrencies',
+  'forex_pairs',
+  'indices',
+  'etf',
+  'stocks',
+  'funds',
+];
 
 @Injectable()
-export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndicatorListPort {
+export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndicatorListPort, SaveIndicatorListPort {
+  private readonly logger = new Logger(IndicatorPersistentAdapter.name);
+
   constructor(
-    @InjectRepository(IndicatorEntity)
-    private readonly indicatorEntityRepository: Repository<IndicatorEntity>,
+    private readonly twelveApiUtil: TwelveApiUtil,
     @InjectRepository(BondsEntity)
     private readonly bondsEntityRepository: Repository<BondsEntity>,
     @InjectRepository(CryptoCurrenciesEntity)
@@ -60,12 +61,26 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     private readonly stockEntityRepository: Repository<StockEntity>,
   ) {}
 
+  @Transactional()
+  async saveIndicatorList(count: number) {
+    await this.clearIndicatorList();
+    for (const indicatorType of indicatorTypes) {
+      const data = await this.twelveApiUtil.getReferenceData(indicatorType, 'South Korea');
+      await this.insertDataIntoRepository(indicatorType, data, count);
+    }
+
+    for (const indicatorType of indicatorTypes) {
+      const data = await this.twelveApiUtil.getReferenceData(indicatorType, 'United States');
+      await this.insertDataIntoRepository(indicatorType, data, count);
+    }
+  }
+
   async loadIndicatorList(type: IndicatorType, cursorToken: number): Promise<CursorPageDto<IndicatorDtoType>> {
     try {
       const [indicatorEntities, total] = await this.findIndicatorEntitiesByType(type, cursorToken);
       indicatorEntities.map((indicatorEntity) => this.nullCheckForEntity(indicatorEntity));
 
-      const indicatorDtos = this.mapEntitiesToDtosByType(type, indicatorEntities);
+      const indicatorDtos = IndicatorMapper.mapEntitiesToDtosByType(type, indicatorEntities);
       const nextCursorTokenEntity = await this.getNextCursorTokenEntity(type, cursorToken);
 
       const { hasNextData, cursor } = this.cursorController(nextCursorTokenEntity, total);
@@ -75,7 +90,7 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
         cursor,
       });
 
-      const DTOType = this.dtoHandler(type);
+      const DTOType = IndicatorMapper.dtoHandler(type);
       return new CursorPageDto<typeof DTOType>(indicatorDtos, cursorPageMetaDto);
     } catch (error) {
       if (error instanceof BadRequestException) {
@@ -108,7 +123,7 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
       const repository = this.repositoryHandler(indicatorType);
       const indicatorEntity = await repository.findOneBy({ id });
       this.nullCheckForEntity(indicatorEntity);
-      return this.mapEntityToDtoByType(indicatorType, indicatorEntity);
+      return IndicatorMapper.mapEntityToDtoByType(indicatorType, indicatorEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
@@ -162,20 +177,6 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     return entityRepositories[type];
   }
 
-  private dtoHandler(type: IndicatorType): IndicatorDtoType {
-    const dtos = {
-      cryptocurrencies: CryptoCurrenciesDto,
-      etf: ETFDto,
-      forex_pairs: ForexPairDto,
-      indices: IndicesDto,
-      stocks: StockDto,
-      funds: FundDto,
-      bonds: BondsDto,
-    };
-
-    return dtos[type];
-  }
-
   private async findIndicatorEntitiesByType(type: IndicatorType, indexToken: number) {
     const repository = this.repositoryHandler(type);
 
@@ -203,47 +204,6 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     }
   }
 
-  private mapEntitiesToDtosByType(
-    type: IndicatorType,
-    indicatorEntities,
-  ): CryptoCurrenciesDto[] | ETFDto[] | ForexPairDto[] | IndicesDto[] | StockDto[] | FundDto[] | BondsDto[] {
-    switch (type) {
-      case 'cryptocurrencies':
-        return CryptoCurrenciesMapper.mapEntitiesToDtos(indicatorEntities);
-      case 'etf':
-        return BondsMapper.mapEntitiesToDtos(indicatorEntities);
-      case 'forex_pairs':
-        return ForexPairMapper.mapEntitiesToDtos(indicatorEntities);
-      case 'indices':
-        return IndicesMapper.mapEntitiesToDtos(indicatorEntities);
-      case 'stocks':
-        return StockMapper.mapEntitiesToDtos(indicatorEntities);
-      case 'funds':
-        return FundMapper.mapEntitiesToDtos(indicatorEntities);
-      case 'bonds':
-        return BondsMapper.mapEntitiesToDtos(indicatorEntities);
-    }
-  }
-
-  private mapEntityToDtoByType(type: IndicatorType, indicatorEntity): IndicatorDtoType {
-    switch (type) {
-      case 'cryptocurrencies':
-        return CryptoCurrenciesMapper.mapEntityToDto(indicatorEntity);
-      case 'etf':
-        return BondsMapper.mapEntityToDto(indicatorEntity);
-      case 'forex_pairs':
-        return ForexPairMapper.mapEntityToDto(indicatorEntity);
-      case 'indices':
-        return IndicesMapper.mapEntityToDto(indicatorEntity);
-      case 'stocks':
-        return StockMapper.mapEntityToDto(indicatorEntity);
-      case 'funds':
-        return FundMapper.mapEntityToDto(indicatorEntity);
-      case 'bonds':
-        return BondsMapper.mapEntityToDto(indicatorEntity);
-    }
-  }
-
   private async getNextCursorTokenEntity(type: IndicatorType, cursorToken: number) {
     const repository = this.repositoryHandler(type);
     const nextCursorToken = cursorToken + DATA_COUNT;
@@ -261,5 +221,80 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
       cursor = cursorToken.index;
     }
     return { hasNextData, cursor };
+  }
+
+  private async insertDataIntoRepository(type: IndicatorType, data: any, count: number) {
+    const dataList = type === 'funds' || type === 'bonds' ? data.result.list : data.data;
+    const batchSize = count;
+
+    this.logger.log(`${type} 저장 시작~!`);
+    const batchEntities = dataList.slice(0, batchSize);
+    await this.insertBatchEntities(type, batchEntities);
+    this.logger.log(`${type} 저장 끝~!!!`);
+  }
+
+  private async insertBatchEntities(type: IndicatorType, batchEntities: any[]) {
+    switch (type) {
+      case 'cryptocurrencies':
+        await this.cryptoCurrenciesEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(CryptoCurrenciesEntity)
+          .values(batchEntities)
+          .execute();
+        break;
+      case 'etf':
+        await this.etfEntityRepository.createQueryBuilder().insert().into(ETFEntity).values(batchEntities).execute();
+        break;
+      case 'forex_pairs':
+        await this.forexPairEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(ForexPairEntity)
+          .values(batchEntities)
+          .execute();
+        break;
+      case 'indices':
+        await this.indicesEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(IndicesEntity)
+          .values(batchEntities)
+          .execute();
+        break;
+      case 'stocks':
+        await this.stockEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(StockEntity)
+          .values(batchEntities)
+          .execute();
+        break;
+      case 'funds':
+        await this.fundEntityRepository.createQueryBuilder().insert().into(FundEntity).values(batchEntities).execute();
+        break;
+      case 'bonds':
+        await this.bondsEntityRepository
+          .createQueryBuilder()
+          .insert()
+          .into(BondsEntity)
+          .values(batchEntities)
+          .execute();
+        break;
+      default:
+        throw new Error(`Unsupported indicator type: ${type}`);
+    }
+  }
+
+  private async clearIndicatorList() {
+    await Promise.all([
+      this.bondsEntityRepository.clear(),
+      this.cryptoCurrenciesEntityRepository.clear(),
+      this.etfEntityRepository.clear(),
+      this.forexPairEntityRepository.clear(),
+      this.fundEntityRepository.clear(),
+      this.indicesEntityRepository.clear(),
+      this.stockEntityRepository.clear(),
+    ]);
   }
 }

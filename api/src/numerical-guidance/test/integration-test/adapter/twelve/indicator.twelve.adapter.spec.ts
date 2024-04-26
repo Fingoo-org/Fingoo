@@ -27,7 +27,6 @@ jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
 }));
 
-// TODO: seeding 후 추가
 describe('IndicatorTwelveAdapter', () => {
   let environment;
   let dataSource: DataSource;

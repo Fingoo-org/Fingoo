@@ -17,6 +17,8 @@ import { BadRequestException, HttpStatus } from '@nestjs/common';
 import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list/get-indicator-list.query';
 import * as fs from 'fs';
 import { IndicatorDtoType } from '../../../../../utils/type/type-definition';
+import { TwelveApiUtil } from '../../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import { HttpModule } from '@nestjs/axios';
 
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
@@ -37,6 +39,13 @@ describe('IndicatorPersistentAdapter', () => {
 
     const module = await Test.createTestingModule({
       imports: [
+        ConfigModule.forRoot(),
+        HttpModule.registerAsync({
+          useFactory: () => ({
+            timeout: 10000,
+            maxRedirects: 5,
+          }),
+        }),
         TypeOrmModule.forFeature([
           IndicatorEntity,
           BondsEntity,
@@ -73,7 +82,7 @@ describe('IndicatorPersistentAdapter', () => {
           }),
         }),
       ],
-      providers: [IndicatorPersistentAdapter],
+      providers: [IndicatorPersistentAdapter, TwelveApiUtil],
     }).compile();
     indicatorPersistentAdapter = module.get(IndicatorPersistentAdapter);
     dataSource = module.get<DataSource>(DataSource);
