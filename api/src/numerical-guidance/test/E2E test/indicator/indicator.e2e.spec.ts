@@ -24,6 +24,7 @@ import { GetIndicatorListQueryHandler } from '../../../application/query/indicat
 import { SearchIndicatorQueryHandler } from '../../../application/query/indicator/get-indicator-search/search-indicator.query.handler';
 import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
 import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -121,6 +122,10 @@ describe('Indicator E2E Test', () => {
             useValue: {
               saveIndicatorList: jest.fn().mockImplementation(() => {}),
             },
+          },
+          {
+            provide: 'IndicatorValueManager',
+            useClass: AdjustIndicatorValue,
           },
         ],
       }).compile(),

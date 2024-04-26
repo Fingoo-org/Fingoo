@@ -14,14 +14,39 @@ import { IndicesEntity } from '../../../../infrastructure/adapter/persistence/in
 import { StockEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { TwelveApiUtil } from '../../../../infrastructure/adapter/twelve/util/twelve-api.util';
 import { HttpModule } from '@nestjs/axios';
+import { AdjustIndicatorValue } from '../../../../util/adjust-indicator-value';
+import { LiveStockDto } from '../../../../application/query/live-indicator/dto/live-stock.dto';
+import { DataSource } from 'typeorm';
+import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
+import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
+import { LiveIndicatorDtoType } from '../../../../../utils/type/type-definition';
+
+const testData = liveIndicatorTestData;
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
 }));
 
+// TODO: seeding 후 추가
 describe('IndicatorTwelveAdapter', () => {
   let environment;
+  let dataSource: DataSource;
   let indicatorTwelveAdapter: IndicatorTwelveAdapter;
+  const seeding = async () => {
+    const stockRepository = dataSource.getRepository(StockEntity);
+    stockRepository.insert({
+      id: '5776afe3-6a3f-42e9-83ec-cb634b76f958',
+      index: 1,
+      symbol: 'AAPL',
+      indicatorType: 'stocks',
+      name: 'Apple Inc',
+      currency: 'USD',
+      exchange: 'NASDAQ',
+      mic_code: 'XNGS',
+      country: 'United States',
+      type: 'Common Stock',
+    });
+  };
 
   beforeAll(async () => {
     environment = await new PostgreSqlContainer().start();
@@ -71,9 +96,18 @@ describe('IndicatorTwelveAdapter', () => {
           }),
         }),
       ],
-      providers: [IndicatorTwelveAdapter, TwelveApiUtil],
+      providers: [
+        IndicatorTwelveAdapter,
+        TwelveApiUtil,
+        {
+          provide: 'IndicatorValueManager',
+          useClass: AdjustIndicatorValue,
+        },
+      ],
     }).compile();
     indicatorTwelveAdapter = module.get(IndicatorTwelveAdapter);
+    dataSource = module.get<DataSource>(DataSource);
+    await seeding();
   }, 20000);
 
   afterAll(async () => {
@@ -90,4 +124,32 @@ describe('IndicatorTwelveAdapter', () => {
     // then
     expect(result).not.toEqual(null);
   });
+
+  it('live 지표를 가져온다.', async () => {
+    // given
+    const indicatorDto: StockDto = {
+      id: '5776afe3-6a3f-42e9-83ec-cb634b76f958',
+      index: 1,
+      symbol: 'AAPL',
+      indicatorType: 'stocks',
+      name: 'Apple Inc',
+      currency: 'USD',
+      exchange: 'NASDAQ',
+      mic_code: 'XNGS',
+      country: 'United States',
+      type: 'Common Stock',
+    };
+
+    // when
+    const result: LiveIndicatorDtoType = await indicatorTwelveAdapter.loadLiveIndicator(
+      indicatorDto,
+      'day',
+      '2024-02-12',
+      '2024-03-16',
+    );
+
+    // then
+    const expected: LiveStockDto = LiveStockDto.create({ ...testData });
+    expect(result).toEqual(expected);
+  }, 15000);
 });
