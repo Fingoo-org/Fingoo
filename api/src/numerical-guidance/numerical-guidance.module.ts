@@ -117,10 +117,6 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
     },
-    // {
-    //   provide: 'LoadLiveIndicatorPort',
-    //   useClass: LiveIndicatorKrxAdapter,
-    // },
     {
       provide: 'LoadHistoryIndicatorPort',
       useClass: HistoryIndicatorPersistentAdapter,
@@ -219,7 +215,7 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
     },
     {
       provide: 'SaveIndicatorListPort',
-      useClass: IndicatorTwelveAdapter,
+      useClass: IndicatorPersistentAdapter,
     },
     {
       provide: 'SearchIndicatorPort',
