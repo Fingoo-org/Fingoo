@@ -8,7 +8,7 @@ const meta: Meta<typeof ChatCard> = {
   component: ChatCard,
   decorators: [
     (Story) => (
-      <div className="w-96">
+      <div className="w-full">
         <Story />
       </div>
     ),
