@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { TwelveApiUtil } from './util/twelve-api.util';
@@ -23,13 +24,10 @@ import { IndicatorValueManager } from '../../../util/indicator-value-manager';
 import { LoadLiveIndicatorPort } from '../../../application/port/external/twelve/load-live-indicator.port';
 import { IndicatorTwelveMapper } from './mapper/indicator.twelve.mapper';
 
-export const DAY_NUMBER_OF_DAYS = 35;
-export const WEEK_NUMBER_OF_DAYS = 240;
-export const MONTH_NUMBER_OF_DAYS = 1000;
-export const YEAR_NUMBER_OF_DAYS = 10000;
-
 @Injectable()
 export class IndicatorTwelveAdapter implements SearchIndicatorPort, LoadLiveIndicatorPort {
+  private readonly logger = new Logger(IndicatorTwelveAdapter.name);
+
   constructor(
     private readonly twelveApiUtil: TwelveApiUtil,
     @Inject('IndicatorValueManager')
@@ -80,6 +78,7 @@ export class IndicatorTwelveAdapter implements SearchIndicatorPort, LoadLiveIndi
         rowStartDate,
         rowEndDate,
       );
+      if (responseData.code === 404) this.logger.error({ message: responseData.message });
       const values: any[] = responseData.values.map((value) => {
         return { date: value.datetime, value: value.close };
       });
