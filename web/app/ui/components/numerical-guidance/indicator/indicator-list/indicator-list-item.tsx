@@ -5,7 +5,7 @@ import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import IconButton from '../../../view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 
 type IndicatorListItemProps = {
   item: IndicatorInfoResponse;

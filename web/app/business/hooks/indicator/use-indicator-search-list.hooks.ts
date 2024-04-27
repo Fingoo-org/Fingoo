@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import { IndicatorInfoResponse, useFetchIndicatorList } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import { useFetchIndicatorList } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 
 export const useIndicatorSearchList = (searchTerm: string) => {
   const { data: indicatorList } = useFetchIndicatorList();
