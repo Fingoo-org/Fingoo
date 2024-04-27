@@ -8,7 +8,7 @@ import IndicatorListItem from './indicator-list-item';
 import { cn } from '@/app/utils/style';
 
 export default function IndicatorListResult() {
-  const { indicatorList } = useIndicatorListByType();
+  const { indicatorList, loadMoreIndicators } = useIndicatorListByType();
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
 
   const render = ({ index, style, data }: ListChildComponentProps<Indicator[]>) => {

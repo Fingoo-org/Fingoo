@@ -5,7 +5,7 @@ import { convertIndicatorViewModel } from '../../services/view-model/indicator-l
 
 export const useIndicatorListByType = () => {
   const selectedIndicatorType = useIndicatorListStore((state) => state.selectedIndicatorType);
-  const { data: indicatorList } = useFetchIndicatorListByType(selectedIndicatorType);
+  const { data: indicatorList, setSize } = useFetchIndicatorListByType(selectedIndicatorType);
 
   const convertedIndicatorList = useMemo(() => {
     if (!indicatorList) return undefined;
@@ -17,7 +17,12 @@ export const useIndicatorListByType = () => {
       .flat();
   }, [indicatorList]);
 
+  const loadMoreIndicators = () => {
+    setSize((size) => size + 1);
+  };
+
   return {
     indicatorList: convertedIndicatorList,
+    loadMoreIndicators,
   };
 };
