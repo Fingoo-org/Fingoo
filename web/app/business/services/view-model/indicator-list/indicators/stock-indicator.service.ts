@@ -1,4 +1,4 @@
-import { Indicator } from '../indicator-view-model.service';
+import { Indicator } from './indicator.service';
 
 import { StocksIndicatorResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 

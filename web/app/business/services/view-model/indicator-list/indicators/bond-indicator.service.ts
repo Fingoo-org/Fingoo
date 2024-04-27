@@ -1,5 +1,5 @@
 import { BondsIndicatorResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
-import { Indicator } from '../indicator-view-model.service';
+import { Indicator } from './indicator.service';
 
 export class BondIndicator extends Indicator {
   readonly symbol: String;

@@ -1,5 +1,5 @@
 import { IndicesIndicatorResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
-import { Indicator } from '../indicator-view-model.service';
+import { Indicator } from './indicator.service';
 
 export class IndexIndicator extends Indicator {
   readonly symbol: String;

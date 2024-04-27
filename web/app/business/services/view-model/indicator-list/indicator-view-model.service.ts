@@ -1,3 +1,10 @@
+import { StockIndicator } from './indicators/stock-indicator.service';
+import { ForexPairIndicator } from './indicators/forex-pair-indicator.service';
+import { CryptocurrencyIndicator } from './indicators/cryptocurrency-indicator.service';
+import { IndexIndicator } from './indicators/index-indicator.service';
+import { FundIndicator } from './indicators/fund-indicator.service';
+import { BondIndicator } from './indicators/bond-indicator.service';
+import { EtfIndicator } from './indicators/etf-indicator.service';
 import {
   indicatorByTypeResponse,
   StocksIndicatorResponse,
@@ -8,30 +15,8 @@ import {
   FundsIndicatorResponse,
   BondsIndicatorResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import { Indicator } from './indicators/indicator.service';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
-import { StockIndicator } from './indicators/stock-indicator.service';
-import { ForexPairIndicator } from './indicators/forex-pair-indicator.service';
-import { CryptocurrencyIndicator } from './indicators/cryptocurrency-indicator.service';
-import { IndexIndicator } from './indicators/index-indicator.service';
-import { FundIndicator } from './indicators/fund-indicator.service';
-import { BondIndicator } from './indicators/bond-indicator.service';
-import { EtfIndicator } from './indicators/etf-indicator.service';
-
-export abstract class Indicator {
-  readonly id: String;
-  readonly indicatorType: IndicatorType;
-
-  constructor(id: String, indicatorType: IndicatorType) {
-    this.id = id;
-    this.indicatorType = indicatorType;
-  }
-
-  abstract get symbol(): String;
-
-  abstract get name(): String;
-
-  abstract get exchange(): String;
-}
 
 function createIndicator(indicatorType: IndicatorType, data: indicatorByTypeResponse): Indicator {
   switch (indicatorType) {
