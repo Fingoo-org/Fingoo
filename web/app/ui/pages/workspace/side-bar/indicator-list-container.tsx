@@ -3,11 +3,13 @@ import IndicatorList from '../../../components/numerical-guidance/indicator/indi
 import Icon from '../../../components/view/atom/icons/variant-icon';
 import Accordion from '../../../components/view/molecule/accordion';
 import { ChartSquareBarIcon } from '@heroicons/react/solid';
+import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-result';
 
 export default function IndicatorListContainer() {
   return (
     <div>
       <IndicatorTypeToggleGroup />
+      <IndicatorListResult />
       {/* <DepretedComponent /> */}
     </div>
   );
