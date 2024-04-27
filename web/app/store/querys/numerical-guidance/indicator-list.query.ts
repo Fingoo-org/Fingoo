@@ -1,6 +1,8 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
 import { defaultFetcher } from '../fetcher';
+import useSWRInfinite from 'swr/infinite';
+import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
 
 export type IndicatorInfoResponse = {
   id: string;
@@ -88,7 +90,13 @@ export type BondsIndicatorResponse = {
   type: string;
 };
 
-export type indicatorListResponse =
+type PaginationMeta = {
+  total: number;
+  hasNextData: boolean;
+  cursor: number;
+};
+
+export type indicatorByTypeResponse =
   | StocksIndicatorResponse
   | ForexPairsIndicatorResponse
   | CryptocurrenciesIndicatorResponse
@@ -96,5 +104,25 @@ export type indicatorListResponse =
   | IndicesIndicatorResponse
   | FundsIndicatorResponse
   | BondsIndicatorResponse;
+
+export type IndicatorListResponse = {
+  data: indicatorByTypeResponse[];
+  meta: PaginationMeta;
+};
+
+export const useFetchIndicatorListByType = (indicatorType: IndicatorType) => {
+  const getKey = (pageIndex: number, previousPageData: IndicatorListResponse) => {
+    // 끝에 도달
+    if (previousPageData && !previousPageData.meta.hasNextData) return null;
+
+    // 첫 페이지, `previousPageData`가 없음
+    if (pageIndex === 0) return `/${API_PATH.indicatorList}/list?type=${indicatorType}&cursorToken=1`;
+
+    // API의 엔드포인트에 커서를 추가
+    return `/${API_PATH.indicatorList}/list?type=${indicatorType}&cursorToken=${previousPageData.meta.cursor}`;
+  };
+
+  return useSWRInfinite<IndicatorListResponse>(getKey, defaultFetcher);
+};
 
 export const useFetchIndicatorList = () => useSWR<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);
