@@ -38,6 +38,7 @@ const indicatorTypes: IndicatorType[] = [
   'stocks',
   'funds',
 ];
+const BATCH_SIZE: number = 1000;
 
 @Injectable()
 export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndicatorListPort, SaveIndicatorListPort {
@@ -64,6 +65,8 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
   @Transactional({ propagation: Propagation.REQUIRES_NEW })
   async saveIndicatorList(count: number) {
     await this.clearIndicatorList();
+    this.logger.log('[!!지표 리스트 저장 시작!!]');
+    console.time('[!!지표 리스트 저장 시간 측정!!]');
     for (const indicatorType of indicatorTypes) {
       const data = await this.twelveApiUtil.getReferenceData(indicatorType, 'South Korea');
       await this.insertDataIntoRepository(indicatorType, data, count);
@@ -73,6 +76,8 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
       const data = await this.twelveApiUtil.getReferenceData(indicatorType, 'United States');
       await this.insertDataIntoRepository(indicatorType, data, count);
     }
+    this.logger.log('[!!지표 리스트 저장 끝!!]');
+    console.timeEnd('[!!지표 리스트 저장 시간 측정!!]');
   }
 
   async loadIndicatorList(type: IndicatorType, cursorToken: number): Promise<CursorPageDto<IndicatorDtoType>> {
@@ -226,11 +231,12 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
   private async insertDataIntoRepository(type: IndicatorType, data: any, count: number) {
     try {
       const dataList = type === 'funds' || type === 'bonds' ? data.result.list : data.data;
-      const batchSize = count;
 
       this.logger.log(`${type} 저장 시작~!`);
-      const batchEntities = dataList.slice(0, batchSize);
-      await this.insertBatchEntities(type, batchEntities);
+      for (let i = 0; i < count; i += BATCH_SIZE) {
+        const batchEntities = dataList.slice(i, i + BATCH_SIZE);
+        await this.insertBatchEntities(type, batchEntities);
+      }
       this.logger.log(`${type} 저장 끝~!!!`);
     } catch (error) {
       throw new InternalServerErrorException({
