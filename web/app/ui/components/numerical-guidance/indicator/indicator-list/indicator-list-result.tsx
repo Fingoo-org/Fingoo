@@ -1,11 +1,9 @@
-import { useFetchIndicatorListByType } from '@/app/store/querys/numerical-guidance/indicator-list.query';
-import { useIndicatorListStore } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import { useIndicatorListByType } from '@/app/business/hooks/indicator/use-indicator-list-by-type.hook';
 
 export default function IndicatorListResult() {
-  const selectedIndicatorType = useIndicatorListStore((state) => state.selectedIndicatorType);
-  const { data } = useFetchIndicatorListByType(selectedIndicatorType);
+  const { indicatorList } = useIndicatorListByType();
 
-  console.log(data);
+  console.log(indicatorList);
 
   return <div></div>;
 }
