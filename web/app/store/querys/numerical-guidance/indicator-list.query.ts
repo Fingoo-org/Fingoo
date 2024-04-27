@@ -116,10 +116,10 @@ export const useFetchIndicatorListByType = (indicatorType: IndicatorType) => {
     if (previousPageData && !previousPageData.meta.hasNextData) return null;
 
     // 첫 페이지, `previousPageData`가 없음
-    if (pageIndex === 0) return `/${API_PATH.indicatorList}/list?type=${indicatorType}&cursorToken=1`;
+    if (pageIndex === 0) return `${API_PATH.indicatorList}/list?type=${indicatorType}&cursorToken=1`;
 
     // API의 엔드포인트에 커서를 추가
-    return `/${API_PATH.indicatorList}/list?type=${indicatorType}&cursorToken=${previousPageData.meta.cursor}`;
+    return `${API_PATH.indicatorList}/list?type=${indicatorType}&cursorToken=${previousPageData.meta.cursor}`;
   };
 
   return useSWRInfinite<IndicatorListResponse>(getKey, defaultFetcher);
