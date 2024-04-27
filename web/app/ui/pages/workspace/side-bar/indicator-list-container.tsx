@@ -1,3 +1,4 @@
+import IndicatorTypeToggleGroup from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-type-toggle-group';
 import IndicatorList from '../../../components/numerical-guidance/indicator/indicator-list/indicator-list';
 import Icon from '../../../components/view/atom/icons/variant-icon';
 import Accordion from '../../../components/view/molecule/accordion';
@@ -6,6 +7,7 @@ import { ChartSquareBarIcon } from '@heroicons/react/solid';
 export default function IndicatorListContainer() {
   return (
     <div>
+      <IndicatorTypeToggleGroup />
       <Accordion type="single" collapsible>
         <Accordion.Item value="indicator">
           <Accordion.Trigger>
