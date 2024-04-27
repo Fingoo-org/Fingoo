@@ -2,12 +2,12 @@ import { IndicesIndicatorResponse } from '@/app/store/querys/numerical-guidance/
 import { Indicator } from './indicator.service';
 
 export class IndexIndicator extends Indicator {
-  readonly symbol: String;
-  readonly name: String;
-  readonly country: String;
-  readonly currency: String;
-  readonly exchange: String;
-  readonly mic_code: String;
+  readonly symbol: string;
+  readonly name: string;
+  readonly country: string;
+  readonly currency: string;
+  readonly exchange: string;
+  readonly mic_code: string;
 
   constructor({ id, indicatorType, symbol, name, country, currency, exchange, mic_code }: IndicesIndicatorResponse) {
     super(id, indicatorType);

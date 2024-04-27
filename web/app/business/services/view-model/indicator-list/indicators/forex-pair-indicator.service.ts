@@ -3,10 +3,10 @@ import { Indicator } from './indicator.service';
 import { ForexPairsIndicatorResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 
 export class ForexPairIndicator extends Indicator {
-  readonly symbol: String;
-  readonly currency_group: String;
-  readonly currency_base: String;
-  readonly currency_quote: String;
+  readonly symbol: string;
+  readonly currency_group: string;
+  readonly currency_base: string;
+  readonly currency_quote: string;
 
   constructor({
     id,
@@ -23,11 +23,11 @@ export class ForexPairIndicator extends Indicator {
     this.currency_quote = currency_quote;
   }
 
-  get name(): String {
+  get name(): string {
     return `${this.currency_base}/${this.currency_quote}`;
   }
 
-  get exchange(): String {
+  get exchange(): string {
     return this.currency_group;
   }
 }

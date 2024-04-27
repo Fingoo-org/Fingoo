@@ -2,11 +2,11 @@ import { FundsIndicatorResponse } from '@/app/store/querys/numerical-guidance/in
 import { Indicator } from './indicator.service';
 
 export class FundIndicator extends Indicator {
-  readonly symbol: String;
-  readonly name: String;
-  readonly country: String;
-  readonly currency: String;
-  readonly exchange: String;
+  readonly symbol: string;
+  readonly name: string;
+  readonly country: string;
+  readonly currency: string;
+  readonly exchange: string;
 
   constructor({ id, indicatorType, symbol, name, country, currency, exchange }: FundsIndicatorResponse) {
     super(id, indicatorType);

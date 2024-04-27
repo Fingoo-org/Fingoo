@@ -1,17 +1,17 @@
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 export abstract class Indicator {
-  readonly id: String;
+  readonly id: string;
   readonly indicatorType: IndicatorType;
 
-  constructor(id: String, indicatorType: IndicatorType) {
+  constructor(id: string, indicatorType: IndicatorType) {
     this.id = id;
     this.indicatorType = indicatorType;
   }
 
-  abstract get symbol(): String;
+  abstract get symbol(): string;
 
-  abstract get name(): String;
+  abstract get name(): string;
 
-  abstract get exchange(): String;
+  abstract get exchange(): string;
 }

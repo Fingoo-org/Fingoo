@@ -3,13 +3,13 @@ import { Indicator } from './indicator.service';
 import { StocksIndicatorResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 
 export class StockIndicator extends Indicator {
-  readonly symbol: String;
-  readonly name: String;
-  readonly country: String;
-  readonly currency: String;
-  readonly exchange: String;
-  readonly mic_code: String;
-  readonly type: String;
+  readonly symbol: string;
+  readonly name: string;
+  readonly country: string;
+  readonly currency: string;
+  readonly exchange: string;
+  readonly mic_code: string;
+  readonly type: string;
 
   constructor({
     id,

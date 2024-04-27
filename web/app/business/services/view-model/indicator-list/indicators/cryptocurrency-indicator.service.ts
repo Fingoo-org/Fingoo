@@ -2,9 +2,9 @@ import { CryptocurrenciesIndicatorResponse } from '@/app/store/querys/numerical-
 import { Indicator } from './indicator.service';
 
 export class CryptocurrencyIndicator extends Indicator {
-  readonly symbol: String;
-  readonly currency_base: String;
-  readonly currency_quote: String;
+  readonly symbol: string;
+  readonly currency_base: string;
+  readonly currency_quote: string;
 
   constructor({ id, indicatorType, symbol, currency_base, currency_quote }: CryptocurrenciesIndicatorResponse) {
     super(id, indicatorType);
@@ -13,11 +13,11 @@ export class CryptocurrencyIndicator extends Indicator {
     this.currency_quote = currency_quote;
   }
 
-  get name(): String {
+  get name(): string {
     return `${this.currency_base}/${this.currency_quote}`;
   }
 
-  get exchange(): String {
+  get exchange(): string {
     return this.currency_base;
   }
 }
