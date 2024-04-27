@@ -1,15 +1,5 @@
 import ToggleGroup from '../../../view/molecule/toggle-group';
 
-export type IndicatorType =
-  | 'stocks'
-  | 'forex_pairs'
-  | 'cryptocurrencies'
-  | 'etf'
-  | 'indices'
-  | 'customForecastIndicator'
-  | 'funds'
-  | 'bonds';
-
 export default function IndicatorTypeToggleGroup() {
   return (
     <ToggleGroup type="single" size={'wide'}>
