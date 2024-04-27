@@ -1,10 +1,10 @@
 import { LiveStockDto } from 'src/numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import * as fs from 'fs';
 import { AdjustIndicatorValue } from '../../util/adjust-indicator-value';
-import { IndicatorValue, Interval } from '../../../utils/type/type-definition';
+import { IndicatorValue } from '../../../utils/type/type-definition';
 import { StockDto } from '../../application/query/indicator/get-indicator-list/dto/stock.dto';
 
-const filePath = './src/numerical-guidance/test/data/liveIndicatorIntervalTestData.json';
+const filePath = './src/numerical-guidance/test/data/liveIndicatorTestDataPerMonth.json';
 
 const data = fs.readFileSync(filePath, 'utf8');
 const jsonData = JSON.parse(data);
@@ -46,46 +46,14 @@ const dailyTestData = LiveStockDto.create({
 describe('AdjustIndicatorValue', () => {
   beforeEach(async () => {});
 
-  it('interval을 week로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
-    // given
-    const interval: Interval = 'week';
-
-    // when
+  it('month values를 year로 변환', async () => {
+    //given //when
     const adjustIndicatorValue = new AdjustIndicatorValue();
-    const result: IndicatorValue[] = await adjustIndicatorValue.adjustValuesByInterval(dailyTestData.values, interval);
-
-    const weeklyAverages = result.map((item) => item['value']);
-
-    // then
-    const expected: string[] = ['172.546000', '170.814002', '181.124000', '182.692502', '184.501994'];
-
-    expect(weeklyAverages).toEqual(expected);
-  });
-
-  it('interval을 month로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
-    // given
-    const interval: Interval = 'month';
-    // when
-    const adjustIndicatorValue = new AdjustIndicatorValue();
-    const result: IndicatorValue[] = await adjustIndicatorValue.adjustValuesByInterval(dailyTestData.values, interval);
-
-    const monthlyAverages = result.map((item) => item['value']);
-    // then
-    const expected: string[] = ['172.405455', '183.018460'];
-    expect(monthlyAverages).toEqual(expected);
-  });
-
-  it('interval을 year로 설정했을 경우 데이터를 잘 변환하는지 확인', async () => {
-    //given
-    const interval = 'year';
-
-    //when
-    const adjustIndicatorValue = new AdjustIndicatorValue();
-    const result: IndicatorValue[] = await adjustIndicatorValue.adjustValuesByInterval(dailyTestData.values, interval);
+    const result: IndicatorValue[] = await adjustIndicatorValue.convertIndicatorValueMonthToYear(dailyTestData.values);
 
     const yearlyAverages = result.map((item) => item['value']);
     // then
-    const expected: string[] = ['178.154166'];
+    const expected: string[] = ['176.482497', '175.523332', '153.912498', '141.688337', '97.094583'];
     expect(yearlyAverages).toEqual(expected);
   });
 });
