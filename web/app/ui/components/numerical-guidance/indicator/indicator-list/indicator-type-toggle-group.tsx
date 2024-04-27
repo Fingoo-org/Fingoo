@@ -1,8 +1,26 @@
 import ToggleGroup from '../../../view/molecule/toggle-group';
+import {
+  IndicatorType,
+  indicatorTypes,
+  useIndicatorListStore,
+} from '@/app/store/stores/numerical-guidance/indicator-list.store';
+
+function isIndicatorType(value: string): value is IndicatorType {
+  return indicatorTypes.includes(value as IndicatorType);
+}
 
 export default function IndicatorTypeToggleGroup() {
+  const selectedIndicatorType = useIndicatorListStore((state) => state.selectedIndicatorType);
+  const { selectIndicatorType } = useIndicatorListStore((state) => state.actions);
+
+  const handleIndicatorTypeChange = (indicatorType: string) => {
+    if (isIndicatorType(indicatorType)) {
+      selectIndicatorType(indicatorType);
+    }
+  };
+
   return (
-    <ToggleGroup type="single" size={'wide'}>
+    <ToggleGroup value={selectedIndicatorType} onValueChange={handleIndicatorTypeChange} type="single" size={'wide'}>
       <ToggleGroup.Item value="stocks">주식</ToggleGroup.Item>
       <ToggleGroup.Item value="funds">펀드</ToggleGroup.Item>
       <ToggleGroup.Item value="forex_pairs">외환</ToggleGroup.Item>
