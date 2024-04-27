@@ -71,44 +71,28 @@ export class IndicatorTwelveAdapter implements SearchIndicatorPort, LoadLiveIndi
     rowStartDate: string,
     rowEndDate: string,
   ): Promise<LiveIndicatorDtoType> {
-    try {
-      const responseData = await this.twelveApiUtil.getTimeSeries(
-        indicatorDto.symbol,
-        interval,
-        rowStartDate,
-        rowEndDate,
-      );
-      if (responseData.code === 404) this.logger.error({ message: responseData.message });
-      const values: any[] = responseData.values.map((value) => {
-        return { date: value.datetime, value: value.close };
-      });
+    const responseData = await this.twelveApiUtil.getTimeSeries(
+      indicatorDto.symbol,
+      interval,
+      rowStartDate,
+      rowEndDate,
+    );
 
-      const adjustedValuesByInterval = await this.indicatorValueManager.adjustValuesByInterval(values, interval);
+    const values: IndicatorValue[] = this.convertRowDataToIndicatorValue(responseData);
+    return await this.generateIndicatorDto(interval, indicatorDto, responseData, values);
+  }
 
-      return IndicatorTwelveMapper.mapToIndicatorDtoByType(indicatorDto, adjustedValuesByInterval, responseData);
-    } catch (error) {
-      if (error instanceof TypeError) {
-        throw new InternalServerErrorException({
-          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: `[ERROR] Twelve API response 값을 찾을 수 없습니다. (해당 지표는 현재 plan에서 사용할 수 없습니다.)`,
-          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
-          cause: error,
-        });
-      } else if (error instanceof Error) {
-        throw new NotFoundException({
-          HttpStatus: HttpStatus.NOT_FOUND,
-          error: '[ERROR] API response body 값을 찾을 수 없습니다.',
-          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
-          cause: error,
-        });
-      } else if (error instanceof BadRequestException) {
-        throw new BadRequestException({
-          HttpStatus: HttpStatus.BAD_REQUEST,
-          error: `[ERROR] 잘못된 요청값입니다. indicatorId, interval이 올바른지 확인해주세요.`,
-          message: '입력값이 올바른지 확인해주세요. 지표는 day, week, month, year 별로 확인 가능합니다.',
-          cause: error,
-        });
-      }
+  private convertRowDataToIndicatorValue(responseData): IndicatorValue[] {
+    return responseData.values.map((value) => {
+      return { date: value.datetime, value: value.close };
+    });
+  }
+
+  private async generateIndicatorDto(interval: Interval, indicatorDto, responseData, values) {
+    if (interval == 'year') {
+      const valuesPerOneYear = await this.indicatorValueManager.convertIndicatorValueMonthToYear(values);
+      return IndicatorTwelveMapper.mapToIndicatorDtoByType(indicatorDto, valuesPerOneYear, responseData);
     }
+    return IndicatorTwelveMapper.mapToIndicatorDtoByType(indicatorDto, values, responseData);
   }
 }
