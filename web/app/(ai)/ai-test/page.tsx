@@ -34,6 +34,33 @@ const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
     };
     return functionResponse;
   }
+
+  if (functionCall.name === 'get_stock_price') {
+    if (functionCall.arguments) {
+      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
+      console.log(parsedFunctionCallArguments);
+    }
+
+    // Generate a fake price
+    const price = Math.floor(Math.random() * (100 - 30 + 1) + 30) * 100;
+
+    const functionResponse: ChatRequest = {
+      messages: [
+        ...chatMessages,
+        {
+          id: generateId(),
+          tool_call_id: toolCalls[0].id,
+          name: 'get_current_weather',
+          role: 'tool' as const,
+          content: JSON.stringify({
+            price,
+            info: 'This data is randomly generated and came from a fake stock price API!',
+          }),
+        },
+      ],
+    };
+    return functionResponse;
+  }
 };
 
 import { useChat } from 'ai/react';
@@ -41,7 +68,15 @@ import { useChat } from 'ai/react';
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     experimental_onToolCall: toolCallHandler,
+    onFinish: (message) => {
+      console.log('finished', message);
+    },
+    onResponse: (response) => {
+      console.log('response', response);
+    },
   });
+
+  console.log('messages', messages);
 
   return (
     <div className="stretch mx-auto flex w-full max-w-md flex-col py-24">
