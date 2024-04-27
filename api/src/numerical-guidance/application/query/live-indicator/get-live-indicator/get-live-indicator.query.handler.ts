@@ -6,12 +6,6 @@ import { Interval, LiveIndicatorDtoType } from '../../../../../utils/type/type-d
 import { CachingLiveIndicatorPort } from '../../../port/cache/caching-live-indicator.port';
 import { LoadCachedLiveIndicatorPort } from '../../../port/cache/load-cached-live-indicator.port';
 import { LoadIndicatorPort } from '../../../port/persistence/indicator/load-indicator.port';
-import {
-  DAY_NUMBER_OF_DAYS,
-  MONTH_NUMBER_OF_DAYS,
-  WEEK_NUMBER_OF_DAYS,
-  YEAR_NUMBER_OF_DAYS,
-} from '../../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
 
 @Injectable()
 @QueryHandler(GetLiveIndicatorQuery)
@@ -49,20 +43,17 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
     return indicatorDto == null;
   }
 
-  private createLiveIndicatorKey(indicatorDto, interval: Interval, rowStartDate: string) {
-    const startDate = new Date(rowStartDate);
-    const numberOfDays = this.convertIntervalToNumberOfDays(interval);
-    const endDate = this.getEndDate(startDate, numberOfDays);
+  private createLiveIndicatorKey(indicatorDto, interval: Interval, formattedStartDate: string) {
+    const endDate = this.getEndDate();
     return {
-      key: `${indicatorDto.indicatorType}/live${indicatorDto.symbol}${interval}${rowStartDate}${endDate}`,
+      key: `${indicatorDto.indicatorType}/live${indicatorDto.symbol}${interval}${formattedStartDate}${endDate}`,
       endDate: endDate,
     };
   }
 
-  private getEndDate(startDate: Date, numOfDays: number): string {
-    const pastDate: Date = startDate;
-    pastDate.setDate(startDate.getDate() + numOfDays);
-    return this.formatDateToString(pastDate);
+  private getEndDate(): string {
+    const currentDate = new Date();
+    return this.formatDateToString(currentDate);
   }
 
   private formatDateToString(date: Date): string {
@@ -71,18 +62,5 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;
-  }
-
-  private convertIntervalToNumberOfDays(interval: Interval) {
-    switch (interval) {
-      case 'day':
-        return DAY_NUMBER_OF_DAYS;
-      case 'week':
-        return WEEK_NUMBER_OF_DAYS;
-      case 'month':
-        return MONTH_NUMBER_OF_DAYS;
-      case 'year':
-        return YEAR_NUMBER_OF_DAYS;
-    }
   }
 }
