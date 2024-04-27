@@ -8,19 +8,25 @@ export default function IndicatorListContainer() {
   return (
     <div>
       <IndicatorTypeToggleGroup />
-      <Accordion type="single" collapsible>
-        <Accordion.Item value="indicator">
-          <Accordion.Trigger>
-            <div className="text-md flex items-center py-1">
-              <Icon size={'md'} icon={ChartSquareBarIcon} color={'gray'} />
-              <div className="pl-3">지표</div>
-            </div>
-          </Accordion.Trigger>
-          <Accordion.Content>
-            <IndicatorList />
-          </Accordion.Content>
-        </Accordion.Item>
-      </Accordion>
+      {/* <DepretedComponent /> */}
     </div>
+  );
+}
+
+function DepretedComponent() {
+  return (
+    <Accordion type="single" collapsible>
+      <Accordion.Item value="indicator">
+        <Accordion.Trigger>
+          <div className="text-md flex items-center py-1">
+            <Icon size={'md'} icon={ChartSquareBarIcon} color={'gray'} />
+            <div className="pl-3">지표</div>
+          </div>
+        </Accordion.Trigger>
+        <Accordion.Content>
+          <IndicatorList />
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
   );
 }
