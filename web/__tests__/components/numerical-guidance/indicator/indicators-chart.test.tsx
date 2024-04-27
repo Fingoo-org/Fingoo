@@ -5,7 +5,7 @@ import { resetMockDB } from '@/app/mocks/db';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import IndicatorsChart from '@/app/ui/components/numerical-guidance/indicator/indicators-chart';
-import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list';
+import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list';
 import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
 import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';

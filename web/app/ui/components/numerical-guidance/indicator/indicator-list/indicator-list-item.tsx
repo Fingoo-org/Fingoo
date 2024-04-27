@@ -1,9 +1,9 @@
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import SelectableItem from '../../view/atom/selectable-item';
-import ListItem from '../../view/atom/list-item';
-import { useDialog } from '../../view/hooks/use-dialog.hook';
+import SelectableItem from '../../../view/atom/selectable-item';
+import ListItem from '../../../view/atom/list-item';
+import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import IconButton from '../../view/atom/icons/icon-button';
+import IconButton from '../../../view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
 

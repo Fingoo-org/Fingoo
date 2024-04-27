@@ -1,4 +1,4 @@
-import IndicatorList from '../../../components/numerical-guidance/indicator/indicator-list';
+import IndicatorList from '../../../components/numerical-guidance/indicator/indicator-list/indicator-list';
 import Icon from '../../../components/view/atom/icons/variant-icon';
 import Accordion from '../../../components/view/molecule/accordion';
 import { ChartSquareBarIcon } from '@heroicons/react/solid';
