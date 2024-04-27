@@ -19,7 +19,12 @@ export default function IndicatorListResult() {
 
   return (
     <div className={cn('h-72', { hidden: selectedMetadata === undefined })}>
-      <WindowList maxVieweditemCount={8} items={indicatorList || []} renderRow={render} />
+      <WindowList
+        loadMoreItems={loadMoreIndicators}
+        maxVieweditemCount={8}
+        items={indicatorList || []}
+        renderRow={render}
+      />
     </div>
   );
 }
