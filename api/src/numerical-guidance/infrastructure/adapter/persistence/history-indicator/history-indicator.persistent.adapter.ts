@@ -62,7 +62,7 @@ export class HistoryIndicatorPersistentAdapter implements LoadHistoryIndicatorPo
       };
     });
 
-    indicatorValues = await this.indicatorValueManager.adjustValuesByInterval(indicatorValues, interval);
+    indicatorValues = await this.indicatorValueManager.convertIndicatorValueMonthToYear(indicatorValues);
 
     const historyIndicatorDto = HistoryIndicatorMapper.mapEntitiesToDto(historyIndicatorEntity, indicatorValues);
 
