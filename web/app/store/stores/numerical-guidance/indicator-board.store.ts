@@ -7,10 +7,14 @@ export type SplitScreen = (typeof splitScreens)[number];
 export const intervals = ['day', 'week', 'month', 'year'] as const;
 export type Interval = (typeof intervals)[number];
 
+export const dateRange = ['default', '1Y', '5Y', '10Y', 'MAX'] as const;
+export type DateRange = (typeof dateRange)[number];
+
 type IndicatorBoardInfo = {
   metadataId: string;
   interval: Interval;
   isAdvancedChart: boolean;
+  dateRange: DateRange;
 };
 
 type IndicatorBoardState = {
@@ -46,7 +50,10 @@ export const useIndicatorBoardStore = create<IndicatorBoardStore>((set, get) => 
       setSplitScreen: (splitScreen) => set({ splitScreen }),
       addIndicatorBoardInfo: (metadataId) => {
         set((state) => ({
-          indicatorBoardInfos: [...state.indicatorBoardInfos, { metadataId, interval: 'week', isAdvancedChart: false }],
+          indicatorBoardInfos: [
+            ...state.indicatorBoardInfos,
+            { metadataId, interval: 'week', isAdvancedChart: false, dateRange: 'default' },
+          ],
         }));
       },
       deleteIndicatorBoardInfo: (metadataId) => {

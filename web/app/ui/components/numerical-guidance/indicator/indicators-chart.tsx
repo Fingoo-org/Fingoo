@@ -12,7 +12,7 @@ import { useGenerateImage } from '../../view/hooks/use-generate-image';
 import ImageSharePopover from '../../view/molecule/image-share-popover/image-share-popover';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import CSVDownloadButton from './csv-download-button';
-import DateNavigator from './date-navigator';
+import DateRangeNavigator from './date-range-navigator';
 
 const BASE_URL =
   'https://mlvbynpnwpxewztngrrz.supabase.co/storage/v1/object/public/fingoo_bucket/indicatorBoardMetadata';
@@ -60,7 +60,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
           <EditableMetadataTittle indicatorBoardMetadataId={indicatorBoardMetadataId!} />
         </div>
         <div className="flex px-14 pt-6">
-          <DateNavigator />
+          <DateRangeNavigator />
         </div>
         <div ref={ref} className="w-full px-8" data-testid="indicators-chart">
           {isAdvancedChart ? (
