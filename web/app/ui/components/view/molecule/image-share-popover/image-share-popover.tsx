@@ -29,7 +29,7 @@ export default function ImageSharePopover({
         <IconButton disabled={disabled} onClick={handlePopoverTriggerClick} icon={Share1Icon} color={'gray'} />
       </Popover.Trigger>
       <Popover.Content side={'top'} className="w-96">
-        <ClipboardInput copyUrl={`${baseUrl}${url}`} />
+        <ClipboardInput copyUrl={`${baseUrl}${url}`} displayUrl={`https://fingoo${url}`} />
         <div className="mt-4 flex justify-center">
           <Button onClick={onDownloadImage} size={'lg'} variant={'light'} color={'gray'}>
             Download Image
