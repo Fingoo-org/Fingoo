@@ -46,7 +46,7 @@ export const useIndicatorBoardStore = create<IndicatorBoardStore>((set, get) => 
       setSplitScreen: (splitScreen) => set({ splitScreen }),
       addIndicatorBoardInfo: (metadataId) => {
         set((state) => ({
-          indicatorBoardInfos: [...state.indicatorBoardInfos, { metadataId, interval: 'day', isAdvancedChart: false }],
+          indicatorBoardInfos: [...state.indicatorBoardInfos, { metadataId, interval: 'week', isAdvancedChart: false }],
         }));
       },
       deleteIndicatorBoardInfo: (metadataId) => {
