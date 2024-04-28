@@ -55,8 +55,6 @@ export type CustomForecastIndicatorValueResponse = {
   targetIndicatorId: string;
   type: IndicatorType;
   ticker: string;
-  name: string;
-  market: string;
   forecastType: ForecastType;
   customForecastIndicatorValues: CustomForecastIndicatorValueItem[];
   targetIndicatorValues: CustomForecastIndicatorValueItem[];

@@ -30,9 +30,7 @@ export type HistoryIndicatorCursorPaginationMetadataResponse = {
 
 export type HistoryIndicatorInfo = {
   id: string;
-  ticker: string;
-  name: string;
-  market: string;
+  symbol: string;
   type: IndicatorType;
 };
 

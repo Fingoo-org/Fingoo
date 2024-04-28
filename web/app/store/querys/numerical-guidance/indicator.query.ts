@@ -10,8 +10,7 @@ export type IndicatorsValueResponse = {
 
 export type IndicatorValueResponse = {
   indicatorId: string;
-  ticker: string;
-  market: string;
+  symbol: string;
   type: IndicatorType;
   values: IndicatorValueItemResponse[];
 };
@@ -47,11 +46,5 @@ export const useFetchLiveIndicatorsValueByType = (params: LiveIndicatorRequestPa
   const { indicatorType, startDate, interval, ids } = params;
   const key = ids ? [`${API_PATH.liveIndicatorValue}`, interval, indicatorType, startDate, ...ids] : null;
 
-  return useSWR<
-    {
-      indicatorsValue: LiveIndicatorValueResponse[];
-    },
-    any,
-    string[] | null
-  >(key, fetchLiveIndicatorsValue);
+  return useSWR<IndicatorsValueResponse, any, string[] | null>(key, fetchLiveIndicatorsValue);
 };

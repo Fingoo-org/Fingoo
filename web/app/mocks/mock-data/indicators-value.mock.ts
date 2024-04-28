@@ -3,8 +3,7 @@ import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/in
 export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {
     indicatorId: '1',
-    ticker: 'AAPL',
-    market: 'US',
+    symbol: 'AAPL',
     type: 'stocks',
     values: [
       {
@@ -403,8 +402,7 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   },
   {
     indicatorId: '2',
-    ticker: 'MSFT',
-    market: 'US',
+    symbol: 'MSFT',
     type: 'stocks',
     values: [
       {
@@ -555,8 +553,7 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   },
   {
     indicatorId: '3',
-    ticker: 'GOOG',
-    market: 'US',
+    symbol: 'GOOG',
     type: 'stocks',
     values: [
       {
@@ -667,9 +664,8 @@ export const indicatorsValueMockData: IndicatorValueResponse[] = [
   },
   {
     indicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
-    ticker: '005930',
+    symbol: '005930',
     type: 'stocks',
-    market: 'KOSPI',
     values: [
       {
         date: '2024-01-01',
