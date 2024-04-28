@@ -1,6 +1,6 @@
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import Select from '../../../view/molecule/select';
-import { unitType, UnitType } from '@/app/business/services/chart/unit-calculator/unit-calculator-factory.service';
+import { unitTypes, UnitType } from '@/app/business/services/chart/unit-calculator/unit-calculator-factory.service';
 
 type IndicatorUnitSelectorProps = {
   indicatorBoardMetadataId: string;
@@ -8,7 +8,7 @@ type IndicatorUnitSelectorProps = {
 };
 
 function isUnitType(unitType: string): unitType is UnitType {
-  return unitType.includes(unitType);
+  return unitTypes.includes(unitType as UnitType);
 }
 
 export default function IndicatorUnitSelector({ indicatorBoardMetadataId, indicatorId }: IndicatorUnitSelectorProps) {
@@ -36,6 +36,7 @@ export default function IndicatorUnitSelector({ indicatorBoardMetadataId, indica
           <Select.Item value="default">default</Select.Item>
           <Select.Item value="index">index</Select.Item>
           <Select.Item value="MoM">MoM</Select.Item>
+          <Select.Item value="YoY">YoY</Select.Item>
           {/* <Select.Item>percent</Select.Item> */}
         </Select.Group>
       </Select.Content>
