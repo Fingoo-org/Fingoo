@@ -1,4 +1,3 @@
-import { useIndicatorList } from '@/app/business/hooks/indicator/use-indicator-list.hook';
 import WindowList from '../../view/molecule/window-list';
 import { ListChildComponentProps } from 'react-window';
 import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
