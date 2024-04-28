@@ -1,27 +1,10 @@
-import { Interval } from '../../utils/type/type-definition';
-
 export abstract class IndicatorValueManager<T> {
-  public abstract calculateValues(boundValues: T[], identifier: string): T[];
+  public abstract calculateValues(boundValues: T[]): T[];
 
   public abstract getCurrentDateString(value: T): string;
 
-  public abstract resetDataStructure(): void;
-
-  async adjustValuesByInterval(values: T[], interval: Interval): Promise<T[]> {
-    if (interval == 'day') {
-      return values;
-    }
-
-    const resultValues: T[] = [];
-    values.map((value) => {
-      const currentDate = new Date(this.getCurrentDateString(value));
-      const identifier = this.createIdentifier(interval, currentDate);
-      const boundValues = this.bindValues(values, interval, currentDate);
-      const calculatedValues = this.calculateValues(boundValues, identifier);
-      resultValues.push(...calculatedValues);
-    });
-    this.resetDataStructure();
-    return resultValues;
+  async convertIndicatorValueMonthToYear(values: T[]): Promise<T[]> {
+    return this.calculateValues(values);
   }
 
   public formatStringToDate(dateString: string): Date {
@@ -62,51 +45,6 @@ export abstract class IndicatorValueManager<T> {
     targetDate.setMonth(0);
     targetDate.setDate(1);
     return targetDate;
-  }
-
-  private bindValues(values: T[], interval: Interval, currentDate: Date): T[] {
-    return values.filter((value) => {
-      const valueDate = new Date(this.getCurrentDateString(value));
-
-      switch (interval) {
-        case 'day':
-          return true;
-        case 'week':
-          return this.checkSameWeek(currentDate, valueDate);
-        case 'month':
-          return this.checkSameMonth(currentDate, valueDate);
-        case 'year':
-          return this.checkSameYear(currentDate, valueDate);
-      }
-    });
-  }
-
-  private checkSameWeek(currentDate: Date, valueDate: Date) {
-    return (
-      currentDate.getFullYear() === valueDate.getFullYear() &&
-      this.getISOWeekNumber(currentDate) === this.getISOWeekNumber(valueDate)
-    );
-  }
-
-  private checkSameMonth(currentDate: Date, valueDate: Date) {
-    return currentDate.getFullYear() === valueDate.getFullYear() && currentDate.getMonth() === valueDate.getMonth();
-  }
-
-  private checkSameYear(currentDate: Date, valueDate: Date) {
-    return currentDate.getFullYear() === valueDate.getFullYear();
-  }
-
-  private createIdentifier(interval: Interval, currentDate: Date) {
-    switch (interval) {
-      case 'day':
-        return currentDate.getDay().toString();
-      case 'week':
-        return `${currentDate.getFullYear()}-${this.getISOWeekNumber(currentDate)}`;
-      case 'month':
-        return currentDate.getFullYear().toString() + currentDate.getMonth().toString();
-      case 'year':
-        return currentDate.getFullYear().toString() + currentDate.getFullYear().toString();
-    }
   }
 
   private getISOWeekNumber(date: Date): number {

@@ -15,16 +15,11 @@ export class LiveIndicatorController {
   @ApiOkResponse({ type: LiveStockDto })
   @ApiExceptionResponse(
     400,
-    '입력값이 올바른지 확인해주세요. 지표는 day, week, month, year 별로 확인 가능합니다.',
-    '[ERROR] 잘못된 요청값입니다. indicatorId, interval이 올바른지 확인해주세요.',
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] 현재 startDate에 해당하는 데이터가 존재하지 않습니다. 1901년 01월 01일 이후의 날짜를 입력해주세요.',
   )
   @ApiExceptionResponse(
     404,
-    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
-    '[ERROR] API response body 값을 찾을 수 없습니다.',
-  )
-  @ApiExceptionResponse(
-    500,
     '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
     '[ERROR] Twelve API response 값을 찾을 수 없습니다. (해당 지표는 현재 plan에서 사용할 수 없습니다.)',
   )
