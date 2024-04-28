@@ -40,7 +40,7 @@ export class IndicatorTwelveMapper {
         });
       case 'forex_pairs':
         return LiveForexPairDto.create({
-          id: indicatorDto.id,
+          indicatorId: indicatorDto.id,
           symbol: indicatorDto.symbol,
           type: indicatorDto.indicatorType,
           currency_group: responseData.meta.currency_group,

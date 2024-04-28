@@ -80,7 +80,7 @@ export class LiveForexPairDto {
   }
 
   public static create({
-    id,
+    indicatorId,
     symbol,
     type,
     currency_group,
@@ -89,6 +89,15 @@ export class LiveForexPairDto {
     totalCount,
     values,
   }): LiveForexPairDto {
-    return new LiveForexPairDto(id, symbol, type, currency_group, currency_base, currency_quote, totalCount, values);
+    return new LiveForexPairDto(
+      indicatorId,
+      symbol,
+      type,
+      currency_group,
+      currency_base,
+      currency_quote,
+      totalCount,
+      values,
+    );
   }
 }
