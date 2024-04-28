@@ -60,7 +60,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
           <EditableMetadataTittle indicatorBoardMetadataId={indicatorBoardMetadataId!} />
         </div>
         <div className="flex px-14 pt-6">
-          <DateRangeNavigator />
+          <DateRangeNavigator indicatorBoardMetadataId={indicatorBoardMetadataId!} />
         </div>
         <div ref={ref} className="w-full px-8" data-testid="indicators-chart">
           {isAdvancedChart ? (

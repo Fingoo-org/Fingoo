@@ -1,4 +1,8 @@
-import { Interval, useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
+import {
+  DateRange,
+  Interval,
+  useIndicatorBoardStore,
+} from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import { type SplitScreen } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 
@@ -34,6 +38,7 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
 
   const isAdvancedChart = indicatorBoardInfo?.isAdvancedChart ?? false;
   const interval = indicatorBoardInfo?.interval ?? 'day';
+  const dateRange = indicatorBoardInfo?.dateRange ?? 'default';
 
   function setIsAdvancedChart(isAdvancedChart: boolean) {
     if (!indicatorBoardMetadataId) return;
@@ -43,6 +48,11 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
   function setInterval(interval: Interval) {
     if (!indicatorBoardMetadataId) return;
     updateIndicatorBoardInfo(indicatorBoardMetadataId, { interval });
+  }
+
+  function updateDateRange(dateRange: DateRange) {
+    if (!indicatorBoardMetadataId) return;
+    updateIndicatorBoardInfo(indicatorBoardMetadataId, { dateRange });
   }
 
   function addMetadataToIndicatorBoard(metadataId: string) {
@@ -90,6 +100,7 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     indicatorBoardInfo,
     interval,
     isAdvancedChart,
+    dateRange,
     setIsAdvancedChart,
     setInterval,
     checkMetadataInIndicatorBoard,
@@ -97,5 +108,6 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     deleteMetadataFromIndicatorBoard,
     transitionSplitScreen,
     reorderIndicatorBoardInfos,
+    updateDateRange,
   };
 };
