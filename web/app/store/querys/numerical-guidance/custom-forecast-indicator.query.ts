@@ -8,7 +8,7 @@ import {
   patchFetcher,
   postFetcher,
 } from '../fetcher';
-import { IndicatorType } from './indicator.query';
+import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
 
 export type sourceIndicator = {
   sourceIndicatorId: string;

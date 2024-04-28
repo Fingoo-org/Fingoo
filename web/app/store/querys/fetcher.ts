@@ -30,6 +30,25 @@ export const deleteFetcher = async (key: string | string[]) => {
   }
 };
 
+export const fetchLiveIndicatorsValue = async ([url, interval, indicatorType, startDate, ...ids]: string[]) => {
+  const indicatorsvalue = await Promise.all(
+    ids.map((id) =>
+      instance
+        .get(url, {
+          params: {
+            interval,
+            indicatorType,
+            startDate,
+            indicatorId: id,
+          },
+        })
+        .then((res) => res.data),
+    ),
+  );
+  return { indicatorsValue: indicatorsvalue };
+};
+
+// deprecate
 export const fetchIndicatorsValue = async ([url, interval, ...ids]: string[]) => {
   const indicatorsvalue = await Promise.all(
     ids.map((id) =>
