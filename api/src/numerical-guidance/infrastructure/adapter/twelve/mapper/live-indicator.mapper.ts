@@ -4,6 +4,7 @@ import { LiveIndicesDto } from '../../../../application/query/live-indicator/get
 import { LiveFundDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-fund.dto';
 import { LiveBondsDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-bonds.dto';
 import { LiveForexPairDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-forex-pair.dto';
+import { LiveCryptoCurrenciesDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-crypto-currencies.dto';
 
 export class LiveIndicatorMapper {
   static mapToDto(indicatorType: string, redisData: string) {
@@ -26,7 +27,7 @@ export class LiveIndicatorMapper {
       case 'forex_pairs':
         return LiveForexPairDto;
       case 'cryptocurrencies':
-        return LiveForexPairDto;
+        return LiveCryptoCurrenciesDto;
     }
   }
 }

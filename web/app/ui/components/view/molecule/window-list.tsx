@@ -23,13 +23,13 @@ export default function WindowList<T>({ items, maxVieweditemCount, renderRow, lo
     <div role="tablist" ref={containerRef} className="h-full max-h-full w-full	">
       <InfiniteLoader
         isItemLoaded={(index: number) => {
-          console.log(index);
           return index === items.length - 1 ? false : true;
         }}
         itemCount={items.length}
         loadMoreItems={() => {
           loadMoreItems?.();
         }}
+        threshold={1}
       >
         {({ onItemsRendered, ref }) => (
           <List

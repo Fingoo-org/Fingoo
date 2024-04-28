@@ -21,7 +21,7 @@ export const indicatorHandlers = [
     await delayForDevelopment();
     return HttpResponse.json(data);
   }),
-  http.get(`${API_PATH.liveIndicatorValue}/k-stock`, async ({ request }) => {
+  http.get(`${API_PATH.liveIndicatorValue}`, async ({ request }) => {
     const url = new URL(request.url);
     const indicatorId = url.searchParams.get('indicatorId');
     if (indicatorId === null) {

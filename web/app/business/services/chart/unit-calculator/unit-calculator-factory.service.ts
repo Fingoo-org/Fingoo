@@ -1,11 +1,12 @@
 import { MoMUnitCalulator } from './MoM-unit-calculator.service';
+import { YoYUnitCalulator } from './YoY-unit-calculator.service';
 import { DefaultUnitCalculator } from './default-unit-calculator.service';
 import { IndexUnitCalculator } from './index-unit-calculator.service';
 import { UnitCalculator, ValueItem } from './unit-calculator.service';
 
-export const unitType = ['MoM', 'index', 'default'] as const;
+export const unitTypes = ['YoY', 'MoM', 'index', 'default'] as const;
 
-export type UnitType = (typeof unitType)[number];
+export type UnitType = (typeof unitTypes)[number];
 
 export function createUnitCalculator(valueItems: ValueItem[], unitType: UnitType): UnitCalculator {
   switch (unitType) {
@@ -13,6 +14,8 @@ export function createUnitCalculator(valueItems: ValueItem[], unitType: UnitType
       return new IndexUnitCalculator(valueItems);
     case 'MoM':
       return new MoMUnitCalulator(valueItems);
+    case 'YoY':
+      return new YoYUnitCalulator(valueItems);
     default:
       return new DefaultUnitCalculator(valueItems);
   }

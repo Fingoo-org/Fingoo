@@ -12,6 +12,7 @@ import { useGenerateImage } from '../../view/hooks/use-generate-image';
 import ImageSharePopover from '../../view/molecule/image-share-popover/image-share-popover';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import CSVDownloadButton from './csv-download-button';
+import DateRangeNavigator from './date-range-navigator';
 
 const BASE_URL =
   'https://mlvbynpnwpxewztngrrz.supabase.co/storage/v1/object/public/fingoo_bucket/indicatorBoardMetadata';
@@ -58,12 +59,8 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
         <div className="flex items-center justify-center">
           <EditableMetadataTittle indicatorBoardMetadataId={indicatorBoardMetadataId!} />
         </div>
-        <div className="px-14 pb-1">
-          <ToggleButton
-            onToggle={handleToggle}
-            disabled={indicatorBoardMetadata && indicatorsValue ? false : true}
-            text={'자세한 차트'}
-          />
+        <div className="flex px-14 pt-6">
+          <DateRangeNavigator indicatorBoardMetadataId={indicatorBoardMetadataId!} />
         </div>
         <div ref={ref} className="w-full px-8" data-testid="indicators-chart">
           {isAdvancedChart ? (
@@ -84,6 +81,13 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
               <CSVDownloadButton indicatorBoardMetadataId={indicatorBoardMetadataId} />
             </div>
           </ImageSharePopover>
+        </div>
+        <div className="absolute left-3 top-1">
+          <ToggleButton
+            onToggle={handleToggle}
+            disabled={indicatorBoardMetadata && indicatorsValue ? false : true}
+            text={'자세한 차트'}
+          />
         </div>
       </div>
     </Pending>

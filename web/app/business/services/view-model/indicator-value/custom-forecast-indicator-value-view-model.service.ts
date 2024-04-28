@@ -14,7 +14,6 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
   readonly customForecastIndicatorId: string;
   readonly targetIndicatorId: string;
   readonly ticker: string;
-  readonly market: string;
   readonly type: string;
   readonly customForecastIndicatorValues: IndicatorValueItem[];
   readonly customForecastIndicatorName: string;
@@ -25,7 +24,6 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     customForecastIndicatorId,
     targetIndicatorId,
     ticker,
-    market,
     type,
     customForecastIndicatorName,
     customForecastIndicatorValues,
@@ -39,7 +37,6 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     this.customForecastIndicatorId = customForecastIndicatorId;
     this.targetIndicatorId = targetIndicatorId;
     this.ticker = ticker;
-    this.market = market;
     this.type = type;
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.customForecastIndicatorValues = customForecastIndicatorValueItems;
@@ -92,13 +89,11 @@ export const convertCustomForecastHistoryIndicatorsValueViewModel = (
       new CustomForecastIndicatorValue({
         customForecastIndicatorId: customForecastIndicator.id,
         targetIndicatorId: customForecastIndicator.targetIndicatorId,
-        ticker: item.indicator.ticker,
-        market: item.indicator.market,
+        ticker: item.indicator.symbol,
         type: item.indicator.type,
         customForecastIndicatorName: customForecastIndicator.customForecastIndicatorName,
         customForecastIndicatorValues: [],
         targetIndicatorValues: item.values,
-        name: item.indicator.name,
         forecastType: 'multi',
       }),
     ];

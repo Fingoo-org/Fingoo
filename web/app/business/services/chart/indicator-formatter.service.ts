@@ -37,12 +37,14 @@ export class IndicatorFormatter {
 
   get formattedIndicatorsInRow() {
     const formattedIndicatorsByDate = this.formattedIndicatorsByDate;
-    return Object.keys(formattedIndicatorsByDate).map<FormattedRowType>((date) => {
-      return {
-        date,
-        ...formattedIndicatorsByDate[date],
-      };
-    });
+    return Object.keys(formattedIndicatorsByDate)
+      .map<FormattedRowType>((date) => {
+        return {
+          date,
+          ...formattedIndicatorsByDate[date],
+        };
+      })
+      .reverse();
   }
 
   get formmatedIndicatorsToCSV() {

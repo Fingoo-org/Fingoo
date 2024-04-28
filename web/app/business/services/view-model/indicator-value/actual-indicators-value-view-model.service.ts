@@ -4,20 +4,19 @@ import {
   IndicatorsValueResponse,
 } from '../../../../store/querys/numerical-guidance/indicator.query';
 import { IndicatorValueItem, IndicatorValue, FormattedItem, FormatOptions } from './indicator-value-view-model.service';
+import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 export class ActualIndicatorValue extends IndicatorValue {
   readonly indicatorId: string;
-  readonly ticker: string;
-  readonly market: string;
-  readonly type: string;
-  constructor({ indicatorId, ticker, market, type, values }: IndicatorValueResponse) {
+  readonly symbol: string;
+  readonly type: IndicatorType;
+  constructor({ indicatorId, symbol, type, values }: IndicatorValueResponse) {
     super(
       indicatorId,
       values.map((item) => new IndicatorValueItem(item)),
     );
     this.indicatorId = indicatorId;
-    this.ticker = ticker;
-    this.market = market;
+    this.symbol = symbol;
     this.type = type;
   }
 
@@ -27,7 +26,7 @@ export class ActualIndicatorValue extends IndicatorValue {
       return {
         ...acc,
         [item.date]: {
-          [this.ticker]: {
+          [this.symbol]: {
             value: item.value,
             displayValue: item.displayValue,
           },
@@ -37,7 +36,7 @@ export class ActualIndicatorValue extends IndicatorValue {
   }
 
   get identifier() {
-    return this.ticker;
+    return this.symbol;
   }
 }
 
@@ -52,7 +51,7 @@ export class ActualIndicatorsValue {
   }
 
   get tickerList() {
-    return this.indicatorsValue.map((indicator) => indicator.ticker);
+    return this.indicatorsValue.map((indicator) => indicator.symbol);
   }
 }
 

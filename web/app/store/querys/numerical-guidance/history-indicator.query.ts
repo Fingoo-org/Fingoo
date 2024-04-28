@@ -3,7 +3,7 @@ import { API_PATH } from '../api-path';
 import { fetchIndicatorsValue } from '../fetcher';
 import { utcFormat, utcParse } from 'd3-time-format';
 import type { Interval } from '../../stores/numerical-guidance/indicator-board.store';
-import { IndicatorType } from './indicator.query';
+import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
 
 export const parseTime = utcParse('%Y%m%d');
 export const formatTime = utcFormat('%Y%m%d');
@@ -30,9 +30,7 @@ export type HistoryIndicatorCursorPaginationMetadataResponse = {
 
 export type HistoryIndicatorInfo = {
   id: string;
-  ticker: string;
-  name: string;
-  market: string;
+  symbol: string;
   type: IndicatorType;
 };
 

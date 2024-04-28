@@ -13,6 +13,16 @@ export default function IndicatorListResult() {
 
   const render = ({ index, style, data }: ListChildComponentProps<Indicator[]>) => {
     const indicator = data[index];
+    const isLast = index === data.length - 1;
+
+    if (isLast) {
+      return (
+        <div style={style}>
+          <IndicatorListItem item={indicator} />
+          <div className="text-gray-400">Loading...</div>
+        </div>
+      );
+    }
 
     return <IndicatorListItem item={indicator} style={style} />;
   };

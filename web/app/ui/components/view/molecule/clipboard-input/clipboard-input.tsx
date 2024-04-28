@@ -4,9 +4,10 @@ import { useState } from 'react';
 
 type ClipboardInputProps = {
   copyUrl: string;
+  displayUrl?: string;
 };
 
-export default function ClipboardInput({ copyUrl }: ClipboardInputProps) {
+export default function ClipboardInput({ copyUrl, displayUrl }: ClipboardInputProps) {
   const { toast } = useToast();
   const [isCopied, setIsCopied] = useState(false);
 
@@ -36,7 +37,7 @@ export default function ClipboardInput({ copyUrl }: ClipboardInputProps) {
             id="website-url"
             type="text"
             className="block w-full border border-e-0 border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-            value={copyUrl}
+            value={displayUrl ? displayUrl : copyUrl}
             readOnly
             disabled
           />

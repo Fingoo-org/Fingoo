@@ -18,6 +18,7 @@ export const toggleVariants = cva(
       },
       size: {
         default: 'h-9 px-3',
+        xs: 'text-xs h-6 px-1',
         sm: 'h-8 px-2',
         lg: 'h-10 px-3',
         wide: 'h-9 px-4',

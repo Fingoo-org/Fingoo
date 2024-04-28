@@ -4,7 +4,7 @@ import {
   VerificationType,
   sourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { IndicatorType } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 export class CustomForecastIndicator {
   readonly id: string;

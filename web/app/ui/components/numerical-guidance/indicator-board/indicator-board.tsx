@@ -1,7 +1,7 @@
 'use client';
 import { Card } from '@tremor/react';
 import IndicatorsChart from '../indicator/indicators-chart';
-import IntervalToggleGroup from '../indicator/interval-toggle-group';
+import IntervalToggleGroup from './interval-toggle-group';
 import { SWRConfig } from 'swr';
 import ClientDataSuspense from '../../util/client-data-suspense';
 import CustomForecastIndicatorStabilityCallout from '../custom-forecast-indicator/custom-forecast-indicator-stability-callout';
