@@ -5,20 +5,22 @@ import { useIndicatorBoardMetadataViewModel } from '../indicator-board-metedata/
 import { useIndicatorBoard } from '../indicator-board/use-indicator-board.hook';
 import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
 import { useFetchLiveIndicatorsValueByType } from '../../../store/querys/numerical-guidance/indicator.query';
+import { getStartDate } from '@/app/utils/date-formatter';
 
 export const useLiveIndicatorsValueViewModel = (indicatorBoardMetadataId?: string) => {
   const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
-  const { interval } = useIndicatorBoard(indicatorBoardMetadataId);
+  const { interval, dateRange } = useIndicatorBoard(indicatorBoardMetadataId);
   const indicatorsUnitType = useIndicatorBoardMetadataStore(
     (state) => state.indicatorsInMetadataUnitType[indicatorBoardMetadataId ?? ''],
   );
 
   const params: LiveIndicatorRequestParams = {
     indicatorType: 'forex_pairs',
-    startDate: '2021-07-01',
+    startDate: getStartDate(dateRange, interval),
     interval,
     ids: indicatorBoardMetadata?.indicatorIds,
   };
+
   const { data: indicatorsValueData, isLoading } = useFetchLiveIndicatorsValueByType(params);
 
   const convertedIndciatorsValue = useMemo(() => {
