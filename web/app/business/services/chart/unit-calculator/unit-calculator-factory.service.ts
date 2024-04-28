@@ -1,5 +1,5 @@
 import { MoMUnitCalulator } from './MoM-unit-calculator.service';
-import { YoYUnitCalulator } from './YOY-unit-calculator.service';
+import { YoYUnitCalulator } from './YoY-unit-calculator.service';
 import { DefaultUnitCalculator } from './default-unit-calculator.service';
 import { IndexUnitCalculator } from './index-unit-calculator.service';
 import { UnitCalculator, ValueItem } from './unit-calculator.service';
