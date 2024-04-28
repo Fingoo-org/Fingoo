@@ -1,5 +1,6 @@
 import { HistoryIndicatorValueCursorPaginationResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
-import { IndicatorInfoResponse, IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { mockDatabaseStore } from '.';
 
 export type MockIndicatorAction = {

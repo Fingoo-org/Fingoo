@@ -1,14 +1,14 @@
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import SelectableItem from '../../view/atom/selectable-item';
-import ListItem from '../../view/atom/list-item';
-import { useDialog } from '../../view/hooks/use-dialog.hook';
+import SelectableItem from '../../../view/atom/selectable-item';
+import ListItem from '../../../view/atom/list-item';
+import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import IconButton from '../../view/atom/icons/icon-button';
+import IconButton from '../../../view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
 
 type IndicatorListItemProps = {
-  item: IndicatorInfoResponse;
+  item: Indicator;
   style?: React.CSSProperties; // for react-window
 };
 
@@ -44,7 +44,7 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
             key={item.id}
             selected={isSelected}
           >
-            {item.name}
+            {item.name}({item.symbol})
           </SelectableItem>
         </ListItem>
       </div>

@@ -1,7 +1,7 @@
 import { useIndicatorList } from '@/app/business/hooks/indicator/use-indicator-list.hook';
 import WindowList from '../../view/molecule/window-list';
 import { ListChildComponentProps } from 'react-window';
-import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import TinyInput from '../../view/atom/tiny-input/tiny-input';
 import { SearchIcon } from '@heroicons/react/solid';
 import SourceIndicatorSearchListItem from './source-indicator-search-list-item';

@@ -2,7 +2,7 @@ import { act, render, renderHook, screen, waitFor } from '@testing-library/react
 import userEvent from '@testing-library/user-event';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
-import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list';
+import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 

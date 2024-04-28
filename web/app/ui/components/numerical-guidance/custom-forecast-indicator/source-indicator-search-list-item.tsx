@@ -1,5 +1,5 @@
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
-import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import SelectableItem from '../../view/atom/selectable-item';
 import ToolTip from '../../view/atom/tooltip';
 import Icon from '../../view/atom/icons/variant-icon';
