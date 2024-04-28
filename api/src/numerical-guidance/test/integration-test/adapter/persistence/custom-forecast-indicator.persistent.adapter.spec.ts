@@ -61,14 +61,14 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       name: 'LG전자',
       ticker: '066570',
       type: 'stocks',
-      market: 'KOSPI',
+      exchange: 'KOSPI',
     });
     await indicatorRepository.insert({
       id: '26929514-237c-11ed-861d-0242ac120012',
       name: '삼성SDI',
       ticker: '006400',
       type: 'stocks',
-      market: 'KOSPI',
+      exchange: 'KOSPI',
     });
   };
 

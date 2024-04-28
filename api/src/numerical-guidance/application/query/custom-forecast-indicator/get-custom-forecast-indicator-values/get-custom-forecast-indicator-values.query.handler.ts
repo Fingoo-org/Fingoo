@@ -1,17 +1,18 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetCustomForecastIndicatorValuesQuery } from './get-custom-forecast-indicator-values.query';
 import { LoadCustomForecastIndicatorValuesPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
 import {
   CustomForecastIndicatorValuesResponse,
-  IndicatorValue,
   ForecastApiResponse,
+  IndicatorType,
+  IndicatorValue,
+  LiveIndicatorDtoType,
 } from 'src/utils/type/type-definition';
 import { LoadCustomForecastIndicatorPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { LoadIndicatorPort } from '../../../port/persistence/indicator/load-indicator.port';
-import { LiveKRXIndicatorDto } from '../../live-indicator/dto/live-indicator.dto';
-import { LoadLiveIndicatorPort } from '../../../port/external/krx/load-live-indicator.port';
+import { LoadLiveIndicatorPort } from '../../../port/external/twelve/load-live-indicator.port';
 
 @Injectable()
 @QueryHandler(GetCustomForecastIndicatorValuesQuery)
@@ -37,15 +38,15 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
 
     const targetIndicatorId = customForecastIndicator.targetIndicatorId;
     const interval = 'day';
+    const tempType: IndicatorType = 'stocks'; // TODO: 임시 타입
 
-    const indicatorDto = await this.loadIndicatorPort.loadIndicator(targetIndicatorId);
-    const { ticker, market, name, type } = indicatorDto.indicator;
+    const indicatorDto = await this.loadIndicatorPort.loadIndicator(targetIndicatorId, tempType);
 
-    const targetIndicator: LiveKRXIndicatorDto = await this.loadLiveIndicatorPort.loadLiveIndicator(
-      targetIndicatorId,
-      ticker,
+    const targetIndicator: LiveIndicatorDtoType = await this.loadLiveIndicatorPort.loadLiveIndicator(
+      indicatorDto,
       interval,
-      market,
+      'rowStartDate',
+      'rowEndDate',
     );
 
     const targetIndicatorValues: IndicatorValue[] = targetIndicator.values;
@@ -53,15 +54,31 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
     const customForecastIndicatorValuesResponse: CustomForecastIndicatorValuesResponse = {
       customForecastIndicatorId: customForecastIndicatorId,
       targetIndicatorId: targetIndicatorId,
-      type: type,
-      ticker: ticker,
-      name: name,
-      market: market,
+      type: indicatorDto.indicatorType,
+      ticker: indicatorDto.symbol,
+      name: this.getIndicatorNameByType(indicatorDto),
+      exchange: this.getMarketByType(indicatorDto),
       forecastType: customFroecastIndicatorValues.forecastType,
       customForecastIndicatorValues: customFroecastIndicatorValues.indicatorValues,
       targetIndicatorValues: targetIndicatorValues,
     };
 
     return customForecastIndicatorValuesResponse;
+  }
+
+  // TODO: 요구사항에 맞게 변경
+  private getIndicatorNameByType(indicatorDto): string {
+    if (indicatorDto.type == 'cryptocurrencies') {
+      return indicatorDto.symbol;
+    }
+    return indicatorDto.name;
+  }
+
+  // TODO: 요구사항에 맞게 변경
+  private getMarketByType(indicatorDto): string {
+    if (indicatorDto.type == 'forex_pairs' || indicatorDto.type == 'cryptocurrencies') {
+      return '거래소 X';
+    }
+    return indicatorDto.exchange;
   }
 }

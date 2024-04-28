@@ -24,10 +24,7 @@ import { GetIndicatorListQueryHandler } from '../../../application/query/indicat
 import { SearchIndicatorQueryHandler } from '../../../application/query/indicator/get-indicator-search/search-indicator.query.handler';
 import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
 import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
-
-jest.mock('typeorm-transactional', () => ({
-  Transactional: () => () => ({}),
-}));
+import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
@@ -121,6 +118,10 @@ describe('Indicator E2E Test', () => {
             useValue: {
               saveIndicatorList: jest.fn().mockImplementation(() => {}),
             },
+          },
+          {
+            provide: 'IndicatorValueManager',
+            useClass: AdjustIndicatorValue,
           },
         ],
       }).compile(),

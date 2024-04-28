@@ -1,4 +1,4 @@
-import { IndicatorType, Market } from '../../../../../../utils/type/type-definition';
+import { IndicatorType } from '../../../../../../utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 
 export type Indicator = {
@@ -6,14 +6,14 @@ export type Indicator = {
   name: string;
   ticker: string;
   type: IndicatorType;
-  market: Market;
+  exchange: string;
 };
 
 export class IndicatorDto {
   @ApiProperty({
     example: {
       id: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
-      market: 'KOSPI',
+      exchange: 'KOSPI',
       name: '삼성전자',
       ticker: '005930',
       type: 'stocks',
@@ -60,5 +60,5 @@ export class IndicatorSwaggerSchema {
     example: 'KOSPI',
     description: '지표 시장',
   })
-  market: Market;
+  exchange: string;
 }

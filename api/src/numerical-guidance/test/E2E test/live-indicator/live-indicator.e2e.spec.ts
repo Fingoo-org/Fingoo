@@ -1,4 +1,4 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { LiveIndicatorRedisAdapter } from '../../../infrastructure/adapter/redis/live-indicator.redis.adapter';
 import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -6,7 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LiveIndicatorController } from '../../../api/live-indicator/live-indicator.controller';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 import { GetLiveIndicatorQueryHandler } from '../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query.handler';
-import { LiveIndicatorKrxAdapter } from '../../../infrastructure/adapter/krx/live-indicator.krx.adapter';
 import { AuthGuard } from '../../../../auth/auth.guard';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import { HttpModule } from '@nestjs/axios';
@@ -24,10 +23,9 @@ import { ForexPairEntity } from '../../../infrastructure/adapter/persistence/ind
 import { FundEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
-
-jest.mock('typeorm-transactional', () => ({
-  Transactional: () => () => ({}),
-}));
+import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
+import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import * as request from 'supertest';
 
 describe('Live Indicator E2E Test', () => {
   let app: INestApplication;
@@ -37,13 +35,18 @@ describe('Live Indicator E2E Test', () => {
   let liveIndicatorRedisAdapter: LiveIndicatorRedisAdapter;
 
   const seeding = async () => {
-    const indicatorEntity = dataSource.getRepository(IndicatorEntity);
-    await indicatorEntity.insert({
-      id: '160e5499-4925-4e38-bb00-8ea6d8056484',
-      name: '삼성전자',
-      ticker: '005930',
-      type: 'stocks',
-      market: 'KOSPI',
+    const stockRepository = dataSource.getRepository(StockEntity);
+    stockRepository.insert({
+      id: '5776afe3-6a3f-42e9-83ec-cb634b76f958',
+      index: 1,
+      symbol: 'AAPL',
+      indicatorType: 'stocks',
+      name: 'Apple Inc',
+      currency: 'USD',
+      exchange: 'NASDAQ',
+      mic_code: 'XNGS',
+      country: 'United States',
+      type: 'Common Stock',
     });
   };
 
@@ -117,7 +120,7 @@ describe('Live Indicator E2E Test', () => {
           },
           {
             provide: 'LoadLiveIndicatorPort',
-            useClass: LiveIndicatorKrxAdapter,
+            useClass: IndicatorTwelveAdapter,
           },
           {
             provide: 'CachingLiveIndicatorPort',
@@ -131,6 +134,8 @@ describe('Live Indicator E2E Test', () => {
             provide: 'LoadIndicatorListPort',
             useClass: IndicatorPersistentAdapter,
           },
+          IndicatorTwelveAdapter,
+          TwelveApiUtil,
           {
             provide: 'IndicatorValueManager',
             useClass: AdjustIndicatorValue,
@@ -163,15 +168,15 @@ describe('Live Indicator E2E Test', () => {
   });
 
   it('/get live 지표 값을 불러온다.', async () => {
-    return true;
+    return request(app.getHttpServer())
+      .get(`/api/numerical-guidance/indicators/live`)
+      .query({
+        indicatorId: '5776afe3-6a3f-42e9-83ec-cb634b76f958',
+        interval: 'day',
+        indicatorType: 'stocks',
+        startDate: '2024-02-11',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
   });
-  //   return request(app.getHttpServer())
-  //     .get(`/api/numerical-guidance/indicators/live/k-stock`)
-  //     .query({
-  //       indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
-  //       interval: 'day',
-  //     })
-  //     .set('Content-Type', 'application/json')
-  //     .expect(HttpStatus.OK);
-  // });
 });

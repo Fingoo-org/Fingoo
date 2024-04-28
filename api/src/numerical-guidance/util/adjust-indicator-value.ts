@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { IndicatorValueManager } from './indicator-value-manager';
-import { IndicatorValue } from '../application/query/live-indicator/dto/live-indicator.dto';
+import { IndicatorValue } from '../../utils/type/type-definition';
+
+const DATA_DECIMAL_POINT = 6;
 
 @Injectable()
 export class AdjustIndicatorValue extends IndicatorValueManager<IndicatorValue> {
@@ -11,14 +13,14 @@ export class AdjustIndicatorValue extends IndicatorValueManager<IndicatorValue> 
 
     if (boundValues.length > 0) {
       if (!this.processedValues.has(identifier)) {
-        const boundValueSum = boundValues.reduce((sum, item) => sum + parseInt(item.value), 0);
+        const boundValueSum = boundValues.reduce((sum, item) => sum + parseFloat(item.value), 0);
         const average = boundValueSum / boundValues.length;
 
         const { date } = boundValues[0];
 
         calculatedValues.push({
           date,
-          value: average.toFixed(2),
+          value: average.toFixed(DATA_DECIMAL_POINT),
         });
 
         this.processedValues.add(identifier);

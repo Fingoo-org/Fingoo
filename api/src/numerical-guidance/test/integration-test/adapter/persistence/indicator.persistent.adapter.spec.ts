@@ -5,7 +5,6 @@ import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/p
 import { IndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { DataSource } from 'typeorm';
-import { IndicatorsDto } from '../../../../application/query/indicator/basic/dto/indicators.dto';
 import { BondsEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 import { CryptoCurrenciesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
 import { ETFEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/etf.entity';
@@ -16,33 +15,10 @@ import { StockEntity } from '../../../../infrastructure/adapter/persistence/indi
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { BadRequestException, HttpStatus } from '@nestjs/common';
 import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list/get-indicator-list.query';
-import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
-import { CryptoCurrenciesDto } from '../../../../application/query/indicator/get-indicator-list/dto/crypto-currencies.dto';
-import { ETFDto } from '../../../../application/query/indicator/get-indicator-list/dto/etf.dto';
-import { ForexPairDto } from '../../../../application/query/indicator/get-indicator-list/dto/forex-pair.dto';
-import { IndicesDto } from '../../../../application/query/indicator/get-indicator-list/dto/indices.dto';
-import { FundDto } from '../../../../application/query/indicator/get-indicator-list/dto/fund.dto';
-import { BondsDto } from '../../../../application/query/indicator/get-indicator-list/dto/bonds.dto';
 import * as fs from 'fs';
-
-const testData = {
-  indicators: [
-    {
-      id: '160e5499-4925-4e38-bb00-8ea6d8056484',
-      name: '삼성전자',
-      ticker: '005930',
-      type: 'stocks',
-      market: 'KOSPI',
-    },
-    {
-      id: '1ebee29f-7208-4df6-b53d-521b2f81fdce',
-      name: '이스트아시아',
-      ticker: '900110',
-      type: 'stocks',
-      market: 'KOSDAQ',
-    },
-  ],
-};
+import { IndicatorDtoType } from '../../../../../utils/type/type-definition';
+import { TwelveApiUtil } from '../../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import { HttpModule } from '@nestjs/axios';
 
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
@@ -53,25 +29,6 @@ describe('IndicatorPersistentAdapter', () => {
   let dataSource: DataSource;
   let indicatorPersistentAdapter: IndicatorPersistentAdapter;
   const seeding = async () => {
-    const indicatorRepository = dataSource.getRepository(IndicatorEntity);
-    await indicatorRepository.clear();
-    await indicatorRepository.insert([
-      {
-        id: '160e5499-4925-4e38-bb00-8ea6d8056484',
-        name: '삼성전자',
-        ticker: '005930',
-        type: 'stocks',
-        market: 'KOSPI',
-      },
-      {
-        id: '1ebee29f-7208-4df6-b53d-521b2f81fdce',
-        name: '이스트아시아',
-        ticker: '900110',
-        type: 'stocks',
-        market: 'KOSDAQ',
-      },
-    ]);
-
     const stockEntityRepository = dataSource.getRepository(StockEntity);
     await stockEntityRepository.clear();
     await stockEntityRepository.insert(testIndicatorList);
@@ -82,6 +39,13 @@ describe('IndicatorPersistentAdapter', () => {
 
     const module = await Test.createTestingModule({
       imports: [
+        ConfigModule.forRoot(),
+        HttpModule.registerAsync({
+          useFactory: () => ({
+            timeout: 10000,
+            maxRedirects: 5,
+          }),
+        }),
         TypeOrmModule.forFeature([
           IndicatorEntity,
           BondsEntity,
@@ -118,7 +82,7 @@ describe('IndicatorPersistentAdapter', () => {
           }),
         }),
       ],
-      providers: [IndicatorPersistentAdapter],
+      providers: [IndicatorPersistentAdapter, TwelveApiUtil],
     }).compile();
     indicatorPersistentAdapter = module.get(IndicatorPersistentAdapter);
     dataSource = module.get<DataSource>(DataSource);
@@ -128,20 +92,6 @@ describe('IndicatorPersistentAdapter', () => {
   afterAll(async () => {
     await environment.stop();
     dataSource.destroy();
-  });
-
-  it('지표 리스트를 가져올 때 데이터가 올바른지 확인', async () => {
-    // given
-
-    // when
-    const result: IndicatorsDto = await indicatorPersistentAdapter.loadIndicators();
-    const resultNum: number = result.indicators.length;
-
-    // then
-    const expected = testData;
-    const expectedNum: number = 2;
-    expect(result).toEqual(expected);
-    expect(resultNum).toEqual(expectedNum);
   });
 
   const cursors = [
@@ -157,9 +107,10 @@ describe('IndicatorPersistentAdapter', () => {
     };
 
     // when
-    const cursorPageDto: CursorPageDto<
-      CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto
-    > = await indicatorPersistentAdapter.loadIndicatorList(type, cursorToken);
+    const cursorPageDto: CursorPageDto<IndicatorDtoType> = await indicatorPersistentAdapter.loadIndicatorList(
+      type,
+      cursorToken,
+    );
 
     // then
     const expectedHasNextData = true;

@@ -5,11 +5,10 @@ import { HistoryIndicatorEntity } from './entity/history-indicator.entity';
 import { Between, LessThan, LessThanOrEqual, Repository } from 'typeorm';
 import { HistoryIndicatorValueEntity } from '../history-indicator-value/entity/history-indicator-value.entity';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
-import { HistoryIndicatorDto } from '../../../../application/query/history-indicator/dto/history-indicator.dto';
+import { HistoryIndicatorDto } from '../../../../application/query/history-indicator/get-history-indicator/dto/history-indicator.dto';
 import { CursorPageMetaDto } from '../../../../../utils/pagination/cursor-page.meta.dto';
-import { Interval } from '../../../../../utils/type/type-definition';
+import { IndicatorValue, Interval } from '../../../../../utils/type/type-definition';
 import { HistoryIndicatorMapper } from './mapper/history-indicator.mapper';
-import { IndicatorValue } from '../../../../application/query/live-indicator/dto/live-indicator.dto';
 import { IndicatorValueManager } from '../../../../util/indicator-value-manager';
 
 const ORDER_TYPE: string = 'DESC';

@@ -14,7 +14,7 @@ export abstract class IndicatorValueManager<T> {
 
     const resultValues: T[] = [];
     values.map((value) => {
-      const currentDate = this.formatStringToDate(this.getCurrentDateString(value));
+      const currentDate = new Date(this.getCurrentDateString(value));
       const identifier = this.createIdentifier(interval, currentDate);
       const boundValues = this.bindValues(values, interval, currentDate);
       const calculatedValues = this.calculateValues(boundValues, identifier);
@@ -66,7 +66,7 @@ export abstract class IndicatorValueManager<T> {
 
   private bindValues(values: T[], interval: Interval, currentDate: Date): T[] {
     return values.filter((value) => {
-      const valueDate = this.formatStringToDate(this.getCurrentDateString(value));
+      const valueDate = new Date(this.getCurrentDateString(value));
 
       switch (interval) {
         case 'day':

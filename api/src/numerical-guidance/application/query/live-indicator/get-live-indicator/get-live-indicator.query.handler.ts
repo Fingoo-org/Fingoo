@@ -1,9 +1,8 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { GetLiveIndicatorQuery } from './get-live-indicator.query';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { LoadLiveIndicatorPort } from '../../../port/external/krx/load-live-indicator.port';
-import { LiveKRXIndicatorDto } from '../dto/live-indicator.dto';
-import { Interval } from '../../../../../utils/type/type-definition';
+import { LoadLiveIndicatorPort } from '../../../port/external/twelve/load-live-indicator.port';
+import { Interval, LiveIndicatorDtoType } from '../../../../../utils/type/type-definition';
 import { CachingLiveIndicatorPort } from '../../../port/cache/caching-live-indicator.port';
 import { LoadCachedLiveIndicatorPort } from '../../../port/cache/load-cached-live-indicator.port';
 import { LoadIndicatorPort } from '../../../port/persistence/indicator/load-indicator.port';
@@ -23,40 +22,45 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
     private readonly loadIndicatorPort: LoadIndicatorPort,
   ) {}
 
-  async execute(query: GetLiveIndicatorQuery): Promise<LiveKRXIndicatorDto> {
-    const { indicatorId, interval } = query;
+  async execute(query: GetLiveIndicatorQuery): Promise<LiveIndicatorDtoType> {
+    const { indicatorId, interval, startDate, indicatorType } = query;
 
-    const indicatorDto = await this.loadIndicatorPort.loadIndicator(indicatorId);
-    const { ticker, market } = indicatorDto.indicator;
+    const indicatorDto = await this.loadIndicatorPort.loadIndicator(indicatorId, indicatorType);
 
-    const key = this.createLiveIndicatorKey(indicatorId, interval);
+    const { key, endDate } = this.createLiveIndicatorKey(indicatorDto, interval, startDate);
 
-    let fluctuatingIndicatorDto: LiveKRXIndicatorDto =
-      await this.loadCachedLiveIndicatorPort.loadCachedLiveIndicator(key);
+    let liveIndicatorDto: LiveIndicatorDtoType = await this.loadCachedLiveIndicatorPort.loadCachedLiveIndicator(key);
 
-    if (this.isNotCached(fluctuatingIndicatorDto)) {
-      fluctuatingIndicatorDto = await this.loadLiveIndicatorPort.loadLiveIndicator(
-        indicatorId,
-        ticker,
-        interval,
-        market,
-      );
-      await this.cachingLiveIndicatorPort.cachingLiveIndicator(key, fluctuatingIndicatorDto);
-      this.logger.log('KRX 호출');
+    if (this.isNotCached(liveIndicatorDto)) {
+      liveIndicatorDto = await this.loadLiveIndicatorPort.loadLiveIndicator(indicatorDto, interval, startDate, endDate);
+      await this.cachingLiveIndicatorPort.cachingLiveIndicator(key, liveIndicatorDto);
+      this.logger.log('Live indicator(TWELVE) 호출');
     }
-    return fluctuatingIndicatorDto;
+    return liveIndicatorDto;
   }
 
-  private isNotCached(fluctuatingIndicatorDto: LiveKRXIndicatorDto): boolean {
-    return fluctuatingIndicatorDto == null;
+  private isNotCached(indicatorDto: LiveIndicatorDtoType): boolean {
+    return indicatorDto == null;
   }
 
-  private createLiveIndicatorKey(ticker: string, interval: Interval) {
-    const today: Date = new Date();
-    const date = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today
-      .getDate()
-      .toString()
-      .padStart(2, '0')}`;
-    return `live${ticker}${interval}${date}`;
+  private createLiveIndicatorKey(indicatorDto, interval: Interval, formattedStartDate: string) {
+    const endDate = this.getEndDate();
+    return {
+      key: `${indicatorDto.indicatorType}/live${indicatorDto.symbol}${interval}${formattedStartDate}${endDate}`,
+      endDate: endDate,
+    };
+  }
+
+  private getEndDate(): string {
+    const currentDate = new Date();
+    return this.formatDateToString(currentDate);
+  }
+
+  private formatDateToString(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
 }

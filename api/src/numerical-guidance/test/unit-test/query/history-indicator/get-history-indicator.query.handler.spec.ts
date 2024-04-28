@@ -4,7 +4,7 @@ import { LoadHistoryIndicatorPort } from '../../../../application/port/persisten
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
-import { HistoryIndicatorDto } from '../../../../application/query/history-indicator/dto/history-indicator.dto';
+import { HistoryIndicatorDto } from '../../../../application/query/history-indicator/get-history-indicator/dto/history-indicator.dto';
 import { GetHistoryIndicatorQuery } from '../../../../application/query/history-indicator/get-history-indicator/get-history-indicator.query';
 
 describe('GetLiveIndicatorQueryHandler', () => {

@@ -1,24 +1,24 @@
-import { IndicatorType, IndicatorValue, Market } from 'src/utils/type/type-definition';
+import { IndicatorType, IndicatorValue } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class LiveKRXIndicatorDto {
+export class BaseLiveIndicatorDto {
   @ApiProperty({
-    example: 'e1fa7b2a-4823-4351-8d26-738680cb6aa1',
-    description: '지표 PK',
+    example: '160e5499-4925-4e38-bb00-8ea6d8056484',
+    description: '지표 PK (UUID)',
   })
-  indicatorId: string;
+  readonly indicatorId: string;
+
+  @ApiProperty({
+    example: '005930',
+    description: '지표 symbol',
+  })
+  symbol: string;
 
   @ApiProperty({
     example: 'stocks',
     description: '지표 종류',
   })
   type: IndicatorType;
-
-  @ApiProperty({
-    example: '005930',
-    description: 'krx 고유 티커번호',
-  })
-  ticker: string;
 
   @ApiProperty({
     example: '삼성전자',
@@ -30,11 +30,11 @@ export class LiveKRXIndicatorDto {
     example: 'KOSPI',
     description: '주식 시장',
   })
-  market: Market;
+  exchange: string;
 
   @ApiProperty({
     example: 2,
-    description: 'cursor metadata',
+    description: '지표 값들의 수',
   })
   totalCount: number;
 
@@ -49,33 +49,32 @@ export class LiveKRXIndicatorDto {
         value: '74100',
       },
     ],
-    description: 'cursor metadata',
+    description: '지표 값들',
   })
   values: IndicatorValue[];
 
-  private constructor(
+  constructor(
     indicatorId: string,
     type: IndicatorType,
-    ticker: string,
+    symbol: string,
     name: string,
-    market: Market,
+    exchange: string,
     totalCount: number,
     values: IndicatorValue[],
   ) {
     this.indicatorId = indicatorId;
     this.type = type;
-    this.ticker = ticker;
+    this.symbol = symbol;
     this.name = name;
-    this.market = market;
+    this.exchange = exchange;
     this.totalCount = totalCount;
     this.values = values;
   }
 
-  static create({ indicatorId, type, ticker, name, market, totalCount, values }): LiveKRXIndicatorDto {
-    return new LiveKRXIndicatorDto(indicatorId, type, ticker, name, market, totalCount, values);
+  static create({ indicatorId, type, symbol, name, exchange, totalCount, values }): BaseLiveIndicatorDto {
+    return new BaseLiveIndicatorDto(indicatorId, type, symbol, name, exchange, totalCount, values);
   }
 }
-export { IndicatorType, IndicatorValue };
 
 export class IndicatorValueSwaggerSchema {
   @ApiProperty({

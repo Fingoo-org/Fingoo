@@ -21,7 +21,7 @@ export class CryptoCurrenciesDto {
   indicatorType: IndicatorType;
 
   @ApiProperty({
-    example: '0P00000AMG',
+    example: 'BTC/USD',
     description: '지표 심볼',
   })
   symbol: string;

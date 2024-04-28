@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { LiveKRXIndicatorDto } from '../../../../application/query/live-indicator/dto/live-indicator.dto';
+import { LiveStockDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { LiveIndicatorRedisAdapter } from '../../../../infrastructure/adapter/redis/live-indicator.redis.adapter';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
@@ -47,15 +47,14 @@ describe('liveIndicatorRedisAdapter', () => {
 
   it('redis에서 캐시된 값을 불러오는 경우.', async () => {
     //given
-    const indicatorId = '160e5499-4925-4e38-bb00-8ea6d8056484';
-    const testCachingData = LiveKRXIndicatorDto.create({ indicatorId, ...testData });
-    await liveIndicatorRedisAdapter.cachingLiveIndicator('testTicker', testCachingData);
+    const testCachingData = LiveStockDto.create({ ...testData });
+    await liveIndicatorRedisAdapter.cachingLiveIndicator('stocks/', testCachingData);
 
     //when
-    const result = await liveIndicatorRedisAdapter.loadCachedLiveIndicator('testTicker');
+    const result = await liveIndicatorRedisAdapter.loadCachedLiveIndicator('stocks/');
 
     //then
-    const expected = LiveKRXIndicatorDto.create({ indicatorId, ...testData });
+    const expected = LiveStockDto.create({ ...testData });
 
     expect(result).toEqual(expected);
   });
@@ -63,7 +62,7 @@ describe('liveIndicatorRedisAdapter', () => {
   it('redis에 캐시된 값이 없을 경우.', async () => {
     //given
     const indicatorId = '160e5499-4925-4e38-bb00-8ea6d8056484';
-    const testCachingData = LiveKRXIndicatorDto.create({ indicatorId, ...testData });
+    const testCachingData = LiveStockDto.create({ indicatorId, ...testData });
     await liveIndicatorRedisAdapter.cachingLiveIndicator('testTicker', testCachingData);
 
     //when

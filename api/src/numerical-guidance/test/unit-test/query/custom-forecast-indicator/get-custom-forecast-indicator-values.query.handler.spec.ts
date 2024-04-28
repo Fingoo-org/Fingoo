@@ -4,12 +4,12 @@ import { GetCustomForecastIndicatorValuesQueryHandler } from 'src/numerical-guid
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorValuesResponse } from 'src/utils/type/type-definition';
 import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
-import { Indicator, IndicatorDto } from 'src/numerical-guidance/application/query/indicator/basic/dto/indicator.dto';
-import { LiveKRXIndicatorDto } from 'src/numerical-guidance/application/query/live-indicator/dto/live-indicator.dto';
+import { LiveStockDto } from 'src/numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
-import { LoadLiveIndicatorPort } from 'src/numerical-guidance/application/port/external/krx/load-live-indicator.port';
+import { LoadLiveIndicatorPort } from 'src/numerical-guidance/application/port/external/twelve/load-live-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
+import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
 
 const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
   customForecastIndicatorId: '2c9846d1-d496-4d6d-96c5-d3b065708573',
@@ -17,7 +17,7 @@ const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
   type: 'stocks',
   ticker: '373220',
   name: 'LG에너지솔루션',
-  market: 'KOSPI',
+  exchange: 'KOSPI',
   forecastType: 'single',
   customForecastIndicatorValues: [
     {
@@ -35,12 +35,17 @@ const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
 
 const testData = liveIndicatorTestData;
 
-const testIndicator: Indicator = {
-  id: '160e5499-4925-4e38-bb00-8ea6d8056484',
-  name: '삼성전자',
-  ticker: '005931',
-  type: 'stocks',
-  market: 'KOSPI',
+const indicatorDto: StockDto = {
+  id: '5776afe3-6a3f-42e9-83ec-cb634b76f958',
+  index: 1,
+  symbol: 'AAPL',
+  indicatorType: 'stocks',
+  name: 'Apple Inc',
+  currency: 'USD',
+  exchange: 'NASDAQ',
+  mic_code: 'XNGS',
+  country: 'United States',
+  type: 'Common Stock',
 };
 
 describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
@@ -58,7 +63,7 @@ describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
           provide: 'LoadIndicatorPort',
           useValue: {
             loadIndicator: jest.fn().mockImplementation(() => {
-              return IndicatorDto.create(testIndicator);
+              return indicatorDto;
             }),
           },
         },
@@ -66,7 +71,7 @@ describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
           provide: 'LoadLiveIndicatorPort',
           useValue: {
             loadLiveIndicator: jest.fn().mockImplementation(() => {
-              return LiveKRXIndicatorDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
+              return LiveStockDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
             }),
           },
         },

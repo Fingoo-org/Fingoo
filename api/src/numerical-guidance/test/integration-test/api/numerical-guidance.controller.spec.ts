@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import { LiveKRXIndicatorDto } from '../../../application/query/live-indicator/dto/live-indicator.dto';
+import { LiveStockDto } from '../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { liveIndicatorTestData } from '../../data/liveIndicator.test.data';
 import { CreateIndicatorBoardMetadataCommandHandler } from '../../../application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
 import { InsertIndicatorIdCommandHandler } from '../../../application/command/indicator/insert-indicator-id/insert-indicator-id.command.handler';
@@ -43,7 +43,7 @@ describe('NumericalGuidanceControllers', () => {
             provide: 'LoadCachedLiveIndicatorPort',
             useValue: {
               loadCachedLiveIndicator: jest.fn().mockImplementation(() => {
-                return LiveKRXIndicatorDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
+                return LiveStockDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
               }),
             },
           },

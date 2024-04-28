@@ -41,7 +41,7 @@ describe('History Indicator E2E Test', () => {
       name: '삼성전자',
       ticker: '005930',
       type: 'stocks',
-      market: 'KOSPI',
+      exchange: 'KOSPI',
     });
 
     const indicatorEntityByTicker = await dataSource.getRepository(IndicatorEntity).findOneBy({ ticker: '005930' });
@@ -50,7 +50,7 @@ describe('History Indicator E2E Test', () => {
       name: indicatorEntityByTicker.name,
       type: indicatorEntityByTicker.type,
       ticker: indicatorEntityByTicker.ticker,
-      market: indicatorEntityByTicker.market,
+      exchange: indicatorEntityByTicker.exchange,
       values: [],
     });
 
