@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { API_PATH } from '../api-path';
-import { fetchIndicatorsValue } from '../fetcher';
+import { fetchIndicatorsValue, fetchLiveIndicatorsValue } from '../fetcher';
 import { Interval } from '../../stores/numerical-guidance/indicator-board.store';
 import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
 
@@ -33,7 +33,25 @@ export type LiveIndicatorRequestParams = {
   indicatorType: IndicatorType;
   startDate: string;
   interval: Interval;
-  ids: string[];
+  ids: string[] | undefined;
 };
 
-export const useFetchLiveIndicatorsValueByType = () => {};
+export type LiveIndicatorValueResponse = {
+  indicatorId: string;
+  symbol: string;
+  type: IndicatorType;
+  values: IndicatorValueItemResponse[];
+};
+
+export const useFetchLiveIndicatorsValueByType = (params: LiveIndicatorRequestParams) => {
+  const { indicatorType, startDate, interval, ids } = params;
+  const key = ids ? [`${API_PATH.liveIndicatorValue}`, interval, indicatorType, startDate, ...ids] : null;
+
+  return useSWR<
+    {
+      indicatorsValue: LiveIndicatorValueResponse[];
+    },
+    any,
+    string[] | null
+  >(key, fetchLiveIndicatorsValue);
+};
