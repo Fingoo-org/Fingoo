@@ -118,6 +118,7 @@ jobs:
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
           echo "SUPABASE_BUCKET_NAME=${{ secrets.SUPABASE_BUCKET_NAME }}" >> .env
           echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
+          echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
         working-directory: ${{ env.WORKDIR }}
       - name: Run tests
         run: npm test
