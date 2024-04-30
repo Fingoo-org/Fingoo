@@ -1,8 +1,6 @@
 version: '3.7'
 
 services:
-  web:
-    image: hunnnys/web:latest
   api:
     image: hunnnys/api:latest
     environment:
@@ -13,14 +11,27 @@ services:
     - REDIS_URL=${REDIS_URL}
     - SERVICE_KEY=${SERVICE_KEY}
     - FASTAPI_URL=${FASTAPI_URL}
+    - SUPABASE_URL=${SUPABASE_URL}
+    - SUPABASE_BUCKET_NAME=${SUPABASE_BUCKET_NAME}
+    - SUPABASE_KEY=${SUPABASE_KEY}
+    - TWELVE_KEY=${TWELVE_KEY}
+
   db:
     image: postgres:16
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
   redis: 
     image: redis:latest
+
   data-modeling-api:
-    image: yoonyounghun/fastapi:latest
+    image: hunnnys/fastapi:latest
     environment:
-      - BASE_URL=${BASE_URL}
+      - FAST_DB_HOST=${FAST_DB_HOST}
+      - FAST_DB_PORT=${FAST_DB_PORT}
+      - FAST_POSTGRES_USER=${FAST_POSTGRES_USER}
+      - FAST_POSTGRES_PASSWORD=${FAST_POSTGRES_PASSWORD}
+      - FAST_SERVICE_KEY=${FAST_SERVICE_KEY}
+      - FASTAPI_URL=${FASTAPI_URL}
+      - FAST_BASE_URL=${FAST_BASE_URL}
