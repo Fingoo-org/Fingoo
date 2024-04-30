@@ -32,12 +32,12 @@ async function bootstrap() {
   );
 
   // codespace 환경에서 포트포워딩을 위해 설정
-  const applicationHost =
-    process.env.NODE_ENV === 'production'
-      ? 'https://fingoo-web-beta.vercel.app'
-      : process.env.CODESPACES === 'true'
-        ? 'https://' + process.env.CODESPACE_NAME + '-3000.app.github.dev'
-        : 'http://localhost';
+  const applicationHost = 'https://fingoo-web-beta.vercel.app';
+  // process.env.NODE_ENV === 'production'
+  //   ? 'https://fingoo-web-beta.vercel.app'
+  //   : process.env.CODESPACES === 'true'
+  //     ? 'https://' + process.env.CODESPACE_NAME + '-3000.app.github.dev'
+  //     : 'http://localhost';
 
   app.enableCors({
     origin: applicationHost,
