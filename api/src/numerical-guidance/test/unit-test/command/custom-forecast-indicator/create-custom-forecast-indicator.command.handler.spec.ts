@@ -27,7 +27,12 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
                 '008628f5-4dbd-4c3b-b793-ca0fa22b3cfa',
                 'name',
                 'customForecastIndicator',
-                '008628f5-4dbd-4c3b-b793-ca0fa22b3cfb',
+                {
+                  targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+                  indicatorType: 'stock',
+                  exchange: 'KOSPI',
+                  symbol: 'PPAL',
+                },
                 [],
                 [],
                 [],
@@ -48,7 +53,12 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
     // given
     const command: CreateCustomForecastIndicatorCommand = new CreateCustomForecastIndicatorCommand(
       '예측지표',
-      'uuid',
+      {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        indicatorType: 'stock',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       1,
     );
 

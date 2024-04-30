@@ -27,7 +27,7 @@ import { CustomForecastIndicatorPersistentAdapter } from './infrastructure/adapt
 import { CustomForecastIndicatorEntity } from './infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
 import { GetCustomForecastIndicatorQueryHandler } from './application/query/custom-forecast-indicator/get-custom-forecast-indicator/get-custom-forecast-indicator.query.handler';
 import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from './application/query/custom-forecast-indicator/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query.handler';
-import { UpdateSourceIndicatorsAndWeightsCommandHandler } from './application/command/custom-forecast-indicator/update-source-indicators-and-weights/update-source-indicators-and-weights.command.handler';
+import { UpdateSourceIndicatorsInformationCommandHandler } from './application/command/custom-forecast-indicator/update-source-indicators-and-weights/update-source-indicators-information.command.handler';
 import { GetCustomForecastIndicatorValuesQueryHandler } from './application/query/custom-forecast-indicator/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query.handler';
 import { InsertCustomForecastIndicatorIdCommandHandler } from './application/command/custom-forecast-indicator/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command.handler';
 import { CustomForecastIndicatorController } from './api/custom-forecast-indicator/custom-forecast-indicator.controller';
@@ -101,7 +101,7 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
     CreateCustomForecastIndicatorCommandHandler,
     GetCustomForecastIndicatorQueryHandler,
     GetCustomForecastIndicatorsByMemberIdQueryHandler,
-    UpdateSourceIndicatorsAndWeightsCommandHandler,
+    UpdateSourceIndicatorsInformationCommandHandler,
     GetCustomForecastIndicatorValuesQueryHandler,
     InsertCustomForecastIndicatorIdCommandHandler,
     DeleteCustomForecastIndicatorIdCommandHandler,
@@ -186,7 +186,7 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
       useClass: CustomForecastIndicatorPersistentAdapter,
     },
     {
-      provide: 'UpdateSourceIndicatorsAndWeightsPort',
+      provide: 'UpdateSourceIndicatorsInformationPort',
       useClass: CustomForecastIndicatorPersistentAdapter,
     },
     {

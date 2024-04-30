@@ -10,10 +10,10 @@ export class CustomForecastIndicatorMapper {
     const customForecastIndicatorEntity: CustomForecastIndicatorEntity = CustomForecastIndicatorEntity.createNew(
       customForecastIndicator.customForecastIndicatorName,
       customForecastIndicator.type,
-      customForecastIndicator.targetIndicatorId,
+      customForecastIndicator.targetIndicatorInformation,
       customForecastIndicator.grangerVerification,
       customForecastIndicator.cointJohansenVerification,
-      customForecastIndicator.sourceIndicatorIdsAndWeights,
+      customForecastIndicator.sourceIndicatorsInformation,
       member,
       customForecastIndicator.createdAt,
       customForecastIndicator.updatedAt,
@@ -26,10 +26,10 @@ export class CustomForecastIndicatorMapper {
       entity.id,
       entity.customForecastIndicatorName,
       entity.type,
-      entity.targetIndicatorId,
+      entity.targetIndicatorInformation,
       entity.grangerVerification,
       entity.cointJohansenVerification,
-      entity.sourceIndicatorIdsAndWeights,
+      entity.sourceIndicatorsInformation,
     );
     return customForecastIndicator;
   }

@@ -15,10 +15,10 @@ export class CreateCustomForecastIndicatorCommandHandler implements ICommandHand
 
   @Transactional()
   async execute(command: CreateCustomForecastIndicatorCommand): Promise<string> {
-    const { customForecastIndicatorName, targetIndicatorId, memberId } = command;
+    const { customForecastIndicatorName, targetIndicatorInformation, memberId } = command;
     const customForecastIndicator: CustomForecastIndicator = CustomForecastIndicator.createNew(
       customForecastIndicatorName,
-      targetIndicatorId,
+      targetIndicatorInformation,
     );
 
     return await this.createCustomForecastIndicatorPort.createCustomForecastIndicator(

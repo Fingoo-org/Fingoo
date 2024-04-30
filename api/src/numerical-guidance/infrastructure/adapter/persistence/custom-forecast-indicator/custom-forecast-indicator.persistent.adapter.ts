@@ -14,7 +14,7 @@ import { CustomForecastIndicatorMapper } from './mapper/custom-forecast-indicato
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { AuthService } from 'src/auth/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
-import { UpdateSourceIndicatorsAndWeightsPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-and-weights.port';
+import { UpdateSourceIndicatorsInformationPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-information.port';
 import { HttpService } from '@nestjs/axios';
 import { ForecastApiResponse } from 'src/utils/type/type-definition';
 import { UpdateCustomForecastIndicatorNamePort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-custom-forecast-indicator-name.port';
@@ -28,7 +28,7 @@ export class CustomForecastIndicatorPersistentAdapter
     LoadCustomForecastIndicatorPort,
     LoadCustomForecastIndicatorsByMemberIdPort,
     LoadCustomForecastIndicatorValuesPort,
-    UpdateSourceIndicatorsAndWeightsPort,
+    UpdateSourceIndicatorsInformationPort,
     DeleteCustomForecastIndicatorPort,
     UpdateCustomForecastIndicatorNamePort
 {
@@ -85,15 +85,15 @@ export class CustomForecastIndicatorPersistentAdapter
       const url: string =
         process.env.FASTAPI_URL +
         '/api/var-api/custom-forecast-indicator?targetIndicatorId=' +
-        customForecastIndicator.targetIndicatorId +
+        customForecastIndicator.targetIndicatorInformation.targetIndicatorId +
         '&';
       let indicatorsUrl: string = '';
       let weightsUrl: string = '';
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
-        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].sourceIndicatorId}&`;
+      for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
+        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
       }
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
-        weightsUrl += `weight=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].weight}&`;
+      for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
+        weightsUrl += `weight=${customForecastIndicator.sourceIndicatorsInformation[i].weight}&`;
       }
       const requestUrl = url + indicatorsUrl + weightsUrl;
 
@@ -195,34 +195,35 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async updateSourceIndicatorsAndWeights(customForecastIndicator: CustomForecastIndicator): Promise<void> {
+  async updateSourceIndicatorsInformation(customForecastIndicator: CustomForecastIndicator): Promise<void> {
     try {
       const id = customForecastIndicator.id;
       const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
         await this.customForecastIndicatorRepository.findOneBy({ id });
       this.nullCheckForEntity(customForecastIndicatorEntity);
 
-      customForecastIndicatorEntity.sourceIndicatorIdsAndWeights = customForecastIndicator.sourceIndicatorIdsAndWeights;
+      customForecastIndicatorEntity.sourceIndicatorsInformation = customForecastIndicator.sourceIndicatorsInformation;
 
-      if (customForecastIndicatorEntity.sourceIndicatorIdsAndWeights.length == 0) {
+      if (customForecastIndicatorEntity.sourceIndicatorsInformation.length == 0) {
         const grangerGroup = [];
         const cointJohansenVerification = [];
 
         customForecastIndicatorEntity.grangerVerification = grangerGroup;
         customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
       } else {
+        // TODO: fast api 내부 로직 수정 후 request url 수정
         const url: string =
           process.env.FASTAPI_URL +
           '/api/var-api/source-indicators-verification?targetIndicatorId=' +
-          customForecastIndicator.targetIndicatorId +
+          customForecastIndicator.targetIndicatorInformation.targetIndicatorId +
           '&';
         let indicatorsUrl: string = '';
         let weightsUrl: string = '';
-        for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
-          indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].sourceIndicatorId}&`;
+        for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
+          indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
         }
-        for (let i = 0; i < customForecastIndicator.sourceIndicatorIdsAndWeights.length; i++) {
-          weightsUrl += `weight=${customForecastIndicator.sourceIndicatorIdsAndWeights[i].weight}&`;
+        for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
+          weightsUrl += `weight=${customForecastIndicator.sourceIndicatorsInformation[i].weight}&`;
         }
         const requestUrl = url + indicatorsUrl + weightsUrl;
 

@@ -36,7 +36,8 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
     const customForecastIndicator: CustomForecastIndicator =
       await this.loadCustomForecastIndicatorPort.loadCustomForecastIndicator(customForecastIndicatorId);
 
-    const targetIndicatorId = customForecastIndicator.targetIndicatorId;
+    const targetIndicatorInformation = customForecastIndicator.targetIndicatorInformation;
+    const targetIndicatorId = targetIndicatorInformation.targetIndicatorId;
     const interval = 'day';
     const tempType: IndicatorType = 'stocks'; // TODO: 임시 타입
 
@@ -57,7 +58,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       type: indicatorDto.indicatorType,
       ticker: indicatorDto.symbol,
       name: this.getIndicatorNameByType(indicatorDto),
-      exchange: this.getMarketByType(indicatorDto),
+      exchange: this.getExchangeByType(indicatorDto),
       forecastType: customFroecastIndicatorValues.forecastType,
       customForecastIndicatorValues: customFroecastIndicatorValues.indicatorValues,
       targetIndicatorValues: targetIndicatorValues,
@@ -75,7 +76,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
   }
 
   // TODO: 요구사항에 맞게 변경
-  private getMarketByType(indicatorDto): string {
+  private getExchangeByType(indicatorDto): string {
     if (indicatorDto.type == 'forex_pairs' || indicatorDto.type == 'cryptocurrencies') {
       return '거래소 X';
     }

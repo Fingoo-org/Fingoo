@@ -140,16 +140,4 @@ describe('NumericalGuidanceControllers', () => {
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);
   });
-
-  it('/post 예측지표를 생성할 때 유효하지 않은 데이터를 전송한다. - 유효하지 않은 uuid 전송', () => {
-    return request(app.getHttpServer())
-      .post('/api/numerical-guidance/custom-forecast-indicator')
-      .send({
-        customForecastIndicatorName: '예측지표',
-        targetIndicatorId: 'invalid-uuid',
-        memberId: 1,
-      })
-      .set('Content-Type', 'application/json')
-      .expect(HttpStatus.BAD_REQUEST);
-  });
 });

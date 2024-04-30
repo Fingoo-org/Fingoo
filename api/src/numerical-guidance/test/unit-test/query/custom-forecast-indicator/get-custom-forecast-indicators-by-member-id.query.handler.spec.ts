@@ -14,7 +14,14 @@ describe('GetCustomForecastIndicatorsByMemberId', () => {
           provide: 'LoadCustomForecastIndicatorsByMemberIdPort',
           useValue: {
             loadCustomForecastIndicatorsByMemberId: jest.fn().mockImplementation(() => {
-              const dataList = [CustomForecastIndicator.createNew('예측지표', '1097501c-df28-4484-a60b-e2770cb781d2')];
+              const dataList = [
+                CustomForecastIndicator.createNew('예측지표', {
+                  targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+                  indicatorType: 'stock',
+                  exchange: 'KOSPI',
+                  symbol: 'PPAL',
+                }),
+              ];
               return dataList;
             }),
           },
@@ -32,7 +39,14 @@ describe('GetCustomForecastIndicatorsByMemberId', () => {
     const result = await getCustomForecastIndicatorsByMemberIdQueryHandler.execute(testQuery);
 
     // then
-    const expected = [CustomForecastIndicator.createNew('예측지표', '1097501c-df28-4484-a60b-e2770cb781d2')];
+    const expected = [
+      CustomForecastIndicator.createNew('예측지표', {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        indicatorType: 'stock',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      }),
+    ];
     expect(result[0].customForecastIndicatorName).toEqual(expected[0].customForecastIndicatorName);
   });
 });

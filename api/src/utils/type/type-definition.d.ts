@@ -38,9 +38,17 @@ export type IndicatorDtoType = CryptoCurrenciesDto | ETFDto | ForexPairDto | Ind
 
 export type ForecastType = 'single' | 'multi';
 
-export type SourceIndicatorIdAndWeightType = {
+export type SourceIndicatorInformation = {
   sourceIndicatorId: string;
+  indicatorType: string;
   weight: float;
+};
+
+export type TargetIndicatorInformation = {
+  targetIndicatorId: string;
+  indicatorType: string;
+  exchange: string;
+  symbol: string;
 };
 
 export type IndicatorValue = {

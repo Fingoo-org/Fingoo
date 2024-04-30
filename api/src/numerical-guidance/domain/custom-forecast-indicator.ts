@@ -1,6 +1,11 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { CustomForecastIndicatorNameShouldNotEmptyRule } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
-import { IndicatorType, SourceIndicatorIdAndWeightType, Verification } from 'src/utils/type/type-definition';
+import {
+  IndicatorType,
+  SourceIndicatorInformation,
+  TargetIndicatorInformation,
+  Verification,
+} from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 import { SourceIndicatorsShouldNotDuplicateRule } from './rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { SourceIndicatorCountShouldNotExceedLimitRule } from './rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';
@@ -26,10 +31,15 @@ export class CustomForecastIndicator extends AggregateRoot {
   type: IndicatorType;
 
   @ApiProperty({
-    example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
-    description: '타켓지표 id',
+    example: {
+      targetIndicatorId: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
+      name: '예측지표',
+      exchange: 'KOSPI',
+      symbol: 'PPAL',
+    },
+    description: '타켓지표 정보',
   })
-  targetIndicatorId: string;
+  targetIndicatorInformation: TargetIndicatorInformation;
 
   @ApiProperty({
     example: [],
@@ -47,7 +57,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     example: [],
     description: '재료지표와 가중치',
   })
-  sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[];
+  sourceIndicatorsInformation: SourceIndicatorInformation[];
 
   @ApiProperty({
     example: '2024-03-08T02:34:57.630Z',
@@ -65,54 +75,57 @@ export class CustomForecastIndicator extends AggregateRoot {
     id: string,
     customForecastIndicatorName: string,
     type: IndicatorType,
-    targetIndicatorId: string,
+    targetIndicatorInformation: TargetIndicatorInformation,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
-    sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[],
+    sourceIndicatorsInformation: SourceIndicatorInformation[],
   ) {
     super();
     this.checkRule(new CustomForecastIndicatorNameShouldNotEmptyRule(customForecastIndicatorName));
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.type = type;
-    this.targetIndicatorId = targetIndicatorId;
+    this.targetIndicatorInformation = targetIndicatorInformation;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
-    this.sourceIndicatorIdsAndWeights = sourceIndicatorIdsAndWeights;
+    this.sourceIndicatorsInformation = sourceIndicatorsInformation;
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }
 
-  static createNew(customForecastIndicatorName: string, targetIndicatorId: string): CustomForecastIndicator {
+  static createNew(
+    customForecastIndicatorName: string,
+    targetIndicatorInformation: TargetIndicatorInformation,
+  ): CustomForecastIndicator {
     const grangerVerification: Verification[] = [];
     const cointJohansenVerification: Verification[] = [];
-    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
+    const sourceIndicatorsInformation: SourceIndicatorInformation[] = [];
     const type: IndicatorType = 'customForecastIndicator';
     return new CustomForecastIndicator(
       null,
       customForecastIndicatorName,
       type,
-      targetIndicatorId,
+      targetIndicatorInformation,
       grangerVerification,
       cointJohansenVerification,
-      sourceIndicatorIdsAndWeights,
+      sourceIndicatorsInformation,
     );
   }
 
-  public updateSourceIndicatorsAndWeights(updateSourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[]) {
-    this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(updateSourceIndicatorIdsAndWeights));
-    this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(updateSourceIndicatorIdsAndWeights));
+  public updateSourceIndicatorsInformation(updateSourceIndicatorsInformation: SourceIndicatorInformation[]) {
+    this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(updateSourceIndicatorsInformation));
+    this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(updateSourceIndicatorsInformation));
     this.checkRule(
       new TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule(
-        updateSourceIndicatorIdsAndWeights,
-        this.targetIndicatorId,
+        updateSourceIndicatorsInformation,
+        this.targetIndicatorInformation.targetIndicatorId,
       ),
     );
 
-    if (updateSourceIndicatorIdsAndWeights.length == 0) {
-      this.sourceIndicatorIdsAndWeights = [];
+    if (updateSourceIndicatorsInformation.length == 0) {
+      this.sourceIndicatorsInformation = [];
     } else {
-      this.sourceIndicatorIdsAndWeights = updateSourceIndicatorIdsAndWeights.slice();
+      this.sourceIndicatorsInformation = updateSourceIndicatorsInformation.slice();
     }
     this.updatedAt = new Date();
   }

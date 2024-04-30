@@ -35,7 +35,12 @@ describe('UpdateCustomForecastIndicatorNameCommandHandler', () => {
                 '294612ba-9c7f-46a9-bc0c-272a5ec2b799',
                 'name',
                 'customForecastIndicator',
-                '294612ba-9c7f-46a9-bc0c-272a5ec2b799',
+                {
+                  targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+                  indicatorType: 'stock',
+                  exchange: 'KOSPI',
+                  symbol: 'PPAL',
+                },
                 [],
                 [],
                 [],

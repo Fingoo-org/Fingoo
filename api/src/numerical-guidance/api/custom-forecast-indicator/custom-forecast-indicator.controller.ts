@@ -10,8 +10,8 @@ import { CreateCustomForecastIndicatorCommand } from '../../application/command/
 import { CustomForecastIndicator } from '../../domain/custom-forecast-indicator';
 import { GetCustomForecastIndicatorQuery } from '../../application/query/custom-forecast-indicator/get-custom-forecast-indicator/get-custom-forecast-indicator.query';
 import { GetCustomForecastIndicatorsByMemberIdQuery } from '../../application/query/custom-forecast-indicator/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query';
-import { UpdateSourceIndicatorsAndWeightsDto } from './dto/update-source-indicators-and-weights.dto';
-import { UpdateSourceIndicatorsAndWeightsCommand } from '../../application/command/custom-forecast-indicator/update-source-indicators-and-weights/update-source-indicators-and-weights.command';
+import { UpdateSourceIndicatorsInformationDto } from './dto/update-source-indicators-information.dto';
+import { UpdateSourceIndicatorsInformationCommand } from '../../application/command/custom-forecast-indicator/update-source-indicators-and-weights/update-source-indicators-informations.command';
 import { CustomForecastIndicatorValuesResponse } from '../../../utils/type/type-definition';
 import { GetCustomForecastIndicatorValuesQuery } from '../../application/query/custom-forecast-indicator/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query';
 import { DeleteCustomForecastIndicatorCommand } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command';
@@ -54,7 +54,7 @@ export class CustomForecastIndicatorController {
   ): Promise<string> {
     const command = new CreateCustomForecastIndicatorCommand(
       createCustomForecastIndicatorDto.customForecastIndicatorName,
-      createCustomForecastIndicatorDto.targetIndicatorId,
+      createCustomForecastIndicatorDto.targetIndicatorInformation,
       member.id,
     );
     return await this.commandBus.execute(command);
@@ -127,13 +127,13 @@ export class CustomForecastIndicatorController {
     required: true,
   })
   @Patch('/custom-forecast-indicator/:customForecastIndicatorId')
-  async updateSourceIndicatorsAndWeights(
+  async updateSourceIndicatorsInformation(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
-    @Body() updateSourceIndicatorsAndWeightsDto: UpdateSourceIndicatorsAndWeightsDto,
+    @Body() updateSourceIndicatorsAndWeightsDto: UpdateSourceIndicatorsInformationDto,
   ) {
-    const command = new UpdateSourceIndicatorsAndWeightsCommand(
+    const command = new UpdateSourceIndicatorsInformationCommand(
       customForecastIndicatorId,
-      updateSourceIndicatorsAndWeightsDto.sourceIndicatorIdsAndWeights,
+      updateSourceIndicatorsAndWeightsDto.sourceIndicatorsInformation,
     );
     await this.commandBus.execute(command);
   }
