@@ -17,6 +17,8 @@ USER node
 
 FROM base As Production
 
+ENV NODE_ENV production
+
 COPY --chown=node:node --from=build /api/node_modules ./node_modules
 COPY --chown=node:node --from=build /api/dist ./dist
 
