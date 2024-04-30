@@ -37,9 +37,8 @@ async function bootstrap() {
       ? 'https://' + process.env.CODESPACE_NAME + '-3000.app.github.dev'
       : 'http://localhost';
 
-  console.log('applicationHost', applicationHost);
   app.enableCors({
-    origin: applicationHost,
+    origin: [applicationHost, 'http://localhost:3330', 'https://fingoo-web-beta.vercel.app'],
     credentials: true,
   });
 
