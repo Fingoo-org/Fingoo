@@ -192,6 +192,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setting .env
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+        working-directory: ${{ env.WORKDIR }}
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
         working-directory: ${{ env.WORKDIR }}
