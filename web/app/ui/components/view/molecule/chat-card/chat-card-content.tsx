@@ -16,7 +16,7 @@ const ChatCardContent = ({ messages = [], isLoading }: ChatCardProps) => {
   }, []);
 
   return (
-    <Collapsible.Content className="grow rounded-b-xl border bg-white">
+    <Collapsible.Content className="h-96 overflow-y-auto	rounded-b-xl border bg-white">
       <div className="space-y-3 p-3">
         {messages.map((message) => (
           <MessageItem key={message.id} role={message.role} content={message.content} />

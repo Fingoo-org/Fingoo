@@ -11,7 +11,7 @@ type ChatCardHeaderProps = {
 const ChatCardHeader = ({ title, infoIcon, collapsibleIcon, ...props }: ChatCardHeaderProps) => {
   return (
     <div
-      className="flex w-full items-center justify-between rounded-t-xl bg-black px-5 text-xl font-semibold text-white"
+      className="flex h-10 w-full items-center justify-between rounded-t-xl bg-black px-5 text-xl font-semibold text-white"
       {...props}
     >
       {infoIcon ? <IconButton size="xl" icon={infoIcon} color="white" /> : null}
