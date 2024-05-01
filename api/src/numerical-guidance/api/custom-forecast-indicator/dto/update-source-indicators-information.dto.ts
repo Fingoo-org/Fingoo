@@ -7,12 +7,12 @@ export class UpdateSourceIndicatorsInformationDto {
     example: [
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120020',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 70,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120032',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
     ],
