@@ -13,7 +13,7 @@ export class IndicatorIdInSectionsShouldBeInIndicatorRule implements BusinessRul
     return '지표의 값과 축에 들어있는 지표 값이 일치하지 않습니다.';
   }
 
-  public hasInvalidDataInSections(): boolean {
+  private hasInvalidDataInSections(): boolean {
     const allSectionIds = Object.values(this.sections).flat();
     const allIds = [...this.indicatorIds, ...this.customForecastIndicatorIds];
     return !this.hasAllValuesInSection(allSectionIds, allIds) || this.hasInvalidValuesInSection(allIds);
