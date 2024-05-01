@@ -85,6 +85,7 @@ describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
                 'customForecastIndicator',
                 {
                   targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+                  targetIndicatorName: '예측지표',
                   indicatorType: 'stock',
                   exchange: 'KOSPI',
                   symbol: 'PPAL',

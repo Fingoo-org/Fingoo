@@ -4,6 +4,7 @@ import { CreateCustomForecastIndicatorPort } from '../../../port/persistence/cus
 import { CreateCustomForecastIndicatorCommand } from './create-custom-forecast-indicator.command';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { Transactional } from 'typeorm-transactional';
+import { TargetIndicatorInformation } from 'src/utils/type/type-definition';
 
 @Injectable()
 @CommandHandler(CreateCustomForecastIndicatorCommand)
@@ -15,7 +16,15 @@ export class CreateCustomForecastIndicatorCommandHandler implements ICommandHand
 
   @Transactional()
   async execute(command: CreateCustomForecastIndicatorCommand): Promise<string> {
-    const { customForecastIndicatorName, targetIndicatorInformation, memberId } = command;
+    const { customForecastIndicatorName, targetIndicatorId, targetIndicatorType, memberId } = command;
+    const targetIndicatorInformation: TargetIndicatorInformation = {
+      targetIndicatorId: targetIndicatorId,
+      targetIndicatorName: '',
+      indicatorType: targetIndicatorType,
+      exchange: '',
+      symbol: '',
+    };
+
     const customForecastIndicator: CustomForecastIndicator = CustomForecastIndicator.createNew(
       customForecastIndicatorName,
       targetIndicatorInformation,

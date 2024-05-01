@@ -16,6 +16,7 @@ describe('GetCustomForecastIndicatorQueryHandler', () => {
             loadCustomForecastIndicator: jest.fn().mockImplementation(() => {
               const data = CustomForecastIndicator.createNew('예측지표', {
                 targetIndicatorId: '목표지표 uuid',
+                targetIndicatorName: '예측지표',
                 indicatorType: 'stock',
                 exchange: 'KOSPI',
                 symbol: 'PPAL',

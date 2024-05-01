@@ -54,7 +54,8 @@ export class CustomForecastIndicatorController {
   ): Promise<string> {
     const command = new CreateCustomForecastIndicatorCommand(
       createCustomForecastIndicatorDto.customForecastIndicatorName,
-      createCustomForecastIndicatorDto.targetIndicatorInformation,
+      createCustomForecastIndicatorDto.targetIndicatorId,
+      createCustomForecastIndicatorDto.targetIndicatorType,
       member.id,
     );
     return await this.commandBus.execute(command);

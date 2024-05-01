@@ -46,6 +46,7 @@ export type SourceIndicatorInformation = {
 
 export type TargetIndicatorInformation = {
   targetIndicatorId: string;
+  targetIndicatorName: string;
   indicatorType: string;
   exchange: string;
   symbol: string;
