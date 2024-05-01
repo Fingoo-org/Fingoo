@@ -67,7 +67,6 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
     return customForecastIndicatorValuesResponse;
   }
 
-  // TODO: 요구사항에 맞게 변경
   private getIndicatorNameByType(indicatorDto): string {
     if (indicatorDto.type == 'cryptocurrencies') {
       return indicatorDto.symbol;
@@ -75,7 +74,6 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
     return indicatorDto.name;
   }
 
-  // TODO: 요구사항에 맞게 변경
   private getExchangeByType(indicatorDto): string {
     if (indicatorDto.type == 'forex_pairs' || indicatorDto.type == 'cryptocurrencies') {
       return '거래소 X';
