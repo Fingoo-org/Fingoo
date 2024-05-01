@@ -41,8 +41,8 @@ describe('Customer Forecast Indicator E2E Test', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba99',
       indicatorBoardMetadataName: '예측지표추가 테스트용 메타데이터',
-      indicatorIds: { indicatorIds: [] },
-      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      indicatorInfos: [],
+      customForecastIndicatorIds: [],
       createdAt: new Date('2024-02-23 10:00:02.292086'),
       updatedAt: new Date('2024-02-23 10:00:02.292086'),
       member: { id: 1 },

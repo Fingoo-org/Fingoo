@@ -28,10 +28,18 @@ import { DeleteCustomForecastIndicatorIdCommandHandler } from 'src/numerical-gui
 import { FileSupabaseAdapter } from '../../../infrastructure/adapter/storage/file.supabase.adapter';
 import { UploadFileCommandHandler } from '../../../application/command/indicator-board-metadata/upload-file/upload-file.command.handler';
 import { UpdateSectionsCommandHandler } from '../../../application/command/indicator-board-metadata/update-sections/update-sections.command.handler';
+import { IndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
+import { BondsEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/bonds.entity';
+import { CryptoCurrenciesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
+import { ETFEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/etf.entity';
+import { ForexPairEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
+import { FundEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
+import { IndicesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
+import { StockEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
+import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import { addTransactionalDataSource, initializeTransactionalContext } from 'typeorm-transactional';
 
-jest.mock('typeorm-transactional', () => ({
-  Transactional: () => () => ({}),
-}));
+initializeTransactionalContext();
 
 describe('Indicator Board Metadata E2E Test', () => {
   let app: INestApplication;
@@ -47,8 +55,15 @@ describe('Indicator Board Metadata E2E Test', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       indicatorBoardMetadataName: 'name',
-      indicatorIds: { indicatorIds: ['a79eface-1fd3-4b85-92ae-9628d37951fb'] },
-      customForecastIndicatorIds: { customForecastIndicatorIds: ['customForecastIndicatorId1'] },
+      indicatorInfos: [
+        {
+          id: 'a79eface-1fd3-4b85-92ae-9628d37951fb',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+      ],
+      customForecastIndicatorIds: ['customForecastIndicatorId1'],
       sections: { section1: ['a79eface-1fd3-4b85-92ae-9628d37951fb', 'customForecastIndicatorId1'] },
       member: { id: 1 },
     });
@@ -56,11 +71,46 @@ describe('Indicator Board Metadata E2E Test', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba77',
       indicatorBoardMetadataName: '삭제용 indicatorBoardMetadata',
-      indicatorIds: { indicatorIds: ['indicatorId1'] },
-      customForecastIndicatorIds: { customForecastIndicatorIds: ['customForecastIndicatorId1'] },
-      sections: { section1: ['indicatorId1', 'customForecastIndicatorId1'] },
+      indicatorInfos: [
+        {
+          id: 'a79eface-1fd3-4b85-92ae-9628d37951fa',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+      ],
+      customForecastIndicatorIds: ['customForecastIndicatorId1'],
+      sections: { section1: ['a79eface-1fd3-4b85-92ae-9628d37951fa', 'customForecastIndicatorId1'] },
       member: { id: 1 },
     });
+
+    const stockRepository = dataSource.getRepository(StockEntity);
+    await stockRepository.insert([
+      {
+        id: 'a79eface-1fd3-4b85-92ae-9628d37951fa',
+        index: 1,
+        symbol: 'AAPL',
+        indicatorType: 'stocks',
+        name: 'Apple Inc',
+        currency: 'USD',
+        exchange: 'NASDAQ',
+        mic_code: 'XNGS',
+        country: 'United States',
+        type: 'Common Stock',
+      },
+      {
+        id: 'a79eface-1fd3-4b85-92ae-9628d37951fb',
+        index: 2,
+        symbol: 'AAPL',
+        indicatorType: 'stocks',
+        name: 'Apple Inc',
+        currency: 'USD',
+        exchange: 'NASDAQ',
+        mic_code: 'XNGS',
+        country: 'United States',
+        type: 'Common Stock',
+      },
+    ]);
   };
 
   beforeAll(async () => {
@@ -72,7 +122,17 @@ describe('Indicator Board Metadata E2E Test', () => {
           ConfigModule.forRoot({
             isGlobal: true,
           }),
-          TypeOrmModule.forFeature([MemberEntity, IndicatorBoardMetadataEntity]),
+          TypeOrmModule.forFeature([
+            MemberEntity,
+            IndicatorBoardMetadataEntity,
+            BondsEntity,
+            CryptoCurrenciesEntity,
+            ETFEntity,
+            ForexPairEntity,
+            FundEntity,
+            IndicesEntity,
+            StockEntity,
+          ]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -85,7 +145,18 @@ describe('Indicator Board Metadata E2E Test', () => {
               username: DBenvironment.getUsername(),
               password: DBenvironment.getPassword(),
               database: DBenvironment.getDatabase(),
-              entities: [IndicatorBoardMetadataEntity, MemberEntity, IndicatorEntity],
+              entities: [
+                IndicatorBoardMetadataEntity,
+                MemberEntity,
+                IndicatorEntity,
+                BondsEntity,
+                CryptoCurrenciesEntity,
+                ETFEntity,
+                ForexPairEntity,
+                FundEntity,
+                IndicesEntity,
+                StockEntity,
+              ],
               synchronize: true,
             }),
           }),
@@ -98,6 +169,7 @@ describe('Indicator Board Metadata E2E Test', () => {
         ],
         controllers: [IndicatorBoardMetadataController],
         providers: [
+          TwelveApiUtil,
           AdjustIndicatorValue,
           AuthService,
           GetIndicatorBoardMetadataQueryHandler,
@@ -156,6 +228,10 @@ describe('Indicator Board Metadata E2E Test', () => {
             useClass: IndicatorBoardMetadataPersistentAdapter,
           },
           {
+            provide: 'LoadIndicatorPort',
+            useClass: IndicatorPersistentAdapter,
+          },
+          {
             provide: AuthGuard,
             useValue: {
               canActivate: jest.fn().mockImplementation((context) => {
@@ -171,6 +247,7 @@ describe('Indicator Board Metadata E2E Test', () => {
     ]);
     fileSupabaseAdapter = module.get(FileSupabaseAdapter);
     dataSource = module.get<DataSource>(DataSource);
+    addTransactionalDataSource(dataSource);
     await seeding();
     app = module.createNestApplication();
     app.useGlobalPipes(
@@ -210,6 +287,7 @@ describe('Indicator Board Metadata E2E Test', () => {
       .post(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
       .send({
         indicatorId: 'a79eface-1fd3-4b85-92ae-9628d37951fa',
+        indicatorType: 'stocks',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);
@@ -220,6 +298,7 @@ describe('Indicator Board Metadata E2E Test', () => {
       .post(`/api/numerical-guidance/indicator-board-metadata/0d73cea1-35a5-432f-bcd1-27ae3541ba60`)
       .send({
         indicatorId: 'a79eface-1fd3-4b85-92ae-9628d37951fb',
+        indicatorType: 'stocks',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.BAD_REQUEST);

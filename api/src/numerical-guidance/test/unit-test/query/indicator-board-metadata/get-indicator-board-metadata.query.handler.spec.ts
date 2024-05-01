@@ -30,8 +30,8 @@ describe('GetIndicatorBoardMetadataQueryHandler', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetadataName: '메타데이터',
-      indicatorIds: { indicatorIds: [] },
-      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      indicatorInfos: [],
+      customForecastIndicatorIds: [],
       sections: { section1: [] },
       member: { id: 10 },
     });
@@ -84,7 +84,7 @@ describe('GetIndicatorBoardMetadataQueryHandler', () => {
     const expectedName = '메타데이터';
     const expectedIndicatorIds = [];
     expect(result.indicatorBoardMetadataName).toEqual(expectedName);
-    expect(result.indicatorIds).toEqual(expectedIndicatorIds);
+    expect(result.indicatorInfos).toEqual(expectedIndicatorIds);
   });
 
   it('지표보드 메타데이터 id로 메타데이터 가져오기 - DB에 존재하지 않는 경우', async () => {
