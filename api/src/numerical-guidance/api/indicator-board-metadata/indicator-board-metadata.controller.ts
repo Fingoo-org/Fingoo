@@ -142,7 +142,11 @@ export class IndicatorBoardMetadataController {
   })
   @Post('/indicator-board-metadata/:id')
   async insertNewIndicatorId(@Param('id') indicatorBoardMetadataId, @Body() insertIndicatorDto: InsertIndicatorDto) {
-    const command = new InsertIndicatorIdCommand(indicatorBoardMetadataId, insertIndicatorDto.indicatorId);
+    const command = new InsertIndicatorIdCommand(
+      indicatorBoardMetadataId,
+      insertIndicatorDto.indicatorId,
+      insertIndicatorDto.indicatorType,
+    );
 
     await this.commandBus.execute(command);
   }
