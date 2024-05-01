@@ -6,10 +6,8 @@ export class IndicatorBoardMetadataMapper {
   static mapDomainToNewEntity(indicatorBoardMetaData: IndicatorBoardMetadata, member: MemberEntity) {
     const indicatorBoardMetadataEntity: IndicatorBoardMetadataEntity = new IndicatorBoardMetadataEntity();
     indicatorBoardMetadataEntity.indicatorBoardMetadataName = indicatorBoardMetaData.indicatorBoardMetadataName;
-    indicatorBoardMetadataEntity.indicatorIds = { indicatorIds: indicatorBoardMetaData.indicatorIds };
-    indicatorBoardMetadataEntity.customForecastIndicatorIds = {
-      customForecastIndicatorIds: indicatorBoardMetaData.customForecastIndicatorIds,
-    };
+    indicatorBoardMetadataEntity.indicatorInfos = indicatorBoardMetaData.indicatorInfos;
+    indicatorBoardMetadataEntity.customForecastIndicatorIds = indicatorBoardMetaData.customForecastIndicatorIds;
     indicatorBoardMetadataEntity.sections = indicatorBoardMetaData.sections;
     indicatorBoardMetadataEntity.member = member;
     indicatorBoardMetadataEntity.createdAt = indicatorBoardMetaData.createdAt;
@@ -21,19 +19,12 @@ export class IndicatorBoardMetadataMapper {
     return new IndicatorBoardMetadata(
       entity.id,
       entity.indicatorBoardMetadataName,
-      this.createArray(entity.indicatorIds['indicatorIds'].toString()),
-      this.createArray(entity.customForecastIndicatorIds['customForecastIndicatorIds'].toString()),
+      entity.indicatorInfos,
+      entity.customForecastIndicatorIds,
       this.createRecord(entity.sections),
       entity.createdAt,
       entity.updatedAt,
     );
-  }
-
-  private static createArray(stringArray: string) {
-    if (stringArray.length == 0 || stringArray == '') {
-      return [];
-    }
-    return stringArray.split(',');
   }
 
   private static createRecord(data): Record<string, string[]> {

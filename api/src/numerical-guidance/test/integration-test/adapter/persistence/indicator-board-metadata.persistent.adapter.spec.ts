@@ -30,8 +30,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       indicatorBoardMetadataName: 'name',
-      indicatorIds: { indicatorIds: [] },
-      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      indicatorInfos: [],
+      customForecastIndicatorIds: [],
       sections: { section1: [] },
       member: { id: 10 },
     });
@@ -39,8 +39,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba72',
       indicatorBoardMetadataName: 'name',
-      indicatorIds: { indicatorIds: [] },
-      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      indicatorInfos: [],
+      customForecastIndicatorIds: [],
       sections: { section1: [] },
       member: { id: 5 },
     });
@@ -48,8 +48,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: 'f2be45ee-d73b-43b6-9344-a8f2264bee40',
       indicatorBoardMetadataName: 'name',
-      indicatorIds: { indicatorIds: [] },
-      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      indicatorInfos: [],
+      customForecastIndicatorIds: [],
       sections: { section1: [] },
       member: { id: 5 },
     });
@@ -57,8 +57,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       indicatorBoardMetadataName: 'name',
-      indicatorIds: { indicatorIds: [] },
-      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      indicatorInfos: [],
+      customForecastIndicatorIds: [],
       sections: { section1: [] },
       member: { id: 5 },
     });
@@ -66,10 +66,21 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba10',
       indicatorBoardMetadataName: 'memberTest',
-      indicatorIds: { indicatorIds: ['indicatorId1', 'indicatorId2'] },
-      customForecastIndicatorIds: {
-        customForecastIndicatorIds: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
-      },
+      indicatorInfos: [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
+      customForecastIndicatorIds: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       sections: {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -79,10 +90,21 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba11',
       indicatorBoardMetadataName: 'memberTest',
-      indicatorIds: { indicatorIds: ['indicatorId1', 'indicatorId2'] },
-      customForecastIndicatorIds: {
-        customForecastIndicatorIds: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
-      },
+      indicatorInfos: [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
+      customForecastIndicatorIds: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       sections: {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -92,10 +114,21 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba12',
       indicatorBoardMetadataName: 'memberTest',
-      indicatorIds: { indicatorIds: ['indicatorId1', 'indicatorId2'] },
-      customForecastIndicatorIds: {
-        customForecastIndicatorIds: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
-      },
+      indicatorInfos: [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
+      customForecastIndicatorIds: ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       sections: {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
@@ -105,8 +138,8 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
       indicatorBoardMetadataName: 'name',
-      indicatorIds: { indicatorIds: [] },
-      customForecastIndicatorIds: { customForecastIndicatorIds: [] },
+      indicatorInfos: [],
+      customForecastIndicatorIds: [],
       sections: { section1: [] },
       member: { id: 9999 },
     });
@@ -114,14 +147,25 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541b010',
       indicatorBoardMetadataName: '예측지표 삭제 테스트',
-      indicatorIds: { indicatorIds: ['indicatorId1', 'indicatorId2'] },
-      customForecastIndicatorIds: {
-        customForecastIndicatorIds: [
-          'customForecastIndicatorId1',
-          'customForecastIndicatorId2',
-          'customForecastIndicatorId3',
-        ],
-      },
+      indicatorInfos: [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
+      customForecastIndicatorIds: [
+        'customForecastIndicatorId1',
+        'customForecastIndicatorId2',
+        'customForecastIndicatorId3',
+      ],
       sections: {
         section1: [
           'indicatorId1',
@@ -225,7 +269,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const expectedIndicatorId = [];
 
     expect(result.indicatorBoardMetadataName).toEqual(expectedName);
-    expect(result.indicatorIds).toEqual(expectedIndicatorId);
+    expect(result.indicatorInfos).toEqual(expectedIndicatorId);
   });
 
   it('생성한 지표보드 메타데이터 id로 메타데이터 가져오기 - DB에 존재하지 않는 경우', async () => {
@@ -271,7 +315,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const newIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       [],
       {
         section1: ['indicatorId1', 'indicatorId2'],
@@ -288,7 +345,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
-    expect(result.indicatorIds).toEqual(['indicatorId1', 'indicatorId2']);
+    expect(result.indicatorInfos).toEqual([
+      {
+        exchange: 'NASDAQ',
+        id: 'indicatorId1',
+        indicatorType: 'stocks',
+        name: 'Apple Inc',
+      },
+      {
+        exchange: 'NYSE',
+        id: 'indicatorId2',
+        indicatorType: 'stocks',
+        name: 'Advance Auto Parts Inc',
+      },
+    ]);
     const expectedSectionsLength = 2;
     expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
       expectedSectionsLength,
@@ -347,7 +417,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const newIndicatorBoardMetaData: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'f2be45ee-d73b-43b6-9344-a8f2264bee41',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
@@ -375,7 +458,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const deleteIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       [],
       {
         section1: ['indicatorId1', 'indicatorId2'],
@@ -392,7 +488,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
     // then
     expect(result.indicatorBoardMetadataName).toEqual('name');
-    expect(result.indicatorIds).toEqual(['indicatorId1', 'indicatorId2']);
+    expect(result.indicatorInfos).toEqual([
+      {
+        exchange: 'NASDAQ',
+        id: 'indicatorId1',
+        indicatorType: 'stocks',
+        name: 'Apple Inc',
+      },
+      {
+        exchange: 'NYSE',
+        id: 'indicatorId2',
+        indicatorType: 'stocks',
+        name: 'Advance Auto Parts Inc',
+      },
+    ]);
     const expectedSectionsLength = 2;
     expect(Object.values(result.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
       expectedSectionsLength,
@@ -405,7 +514,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const deleteIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
@@ -433,7 +555,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const indicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541b010',
       '예측지표 삭제 테스트',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
@@ -463,7 +598,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const indicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae35419999',
       '예측지표 삭제 테스트',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
@@ -546,7 +694,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const updateIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       '0d73cea1-35a5-432f-bcd1-27ae3541ba60',
       'updateName',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
@@ -570,7 +731,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const invalidIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'e46240d3-7d15-48e7-a9b7-f490bf9ca6e0',
       'updateName',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
@@ -598,7 +772,20 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     const invalidIndicatorBoardMetadata: IndicatorBoardMetadata = new IndicatorBoardMetadata(
       'invalidId',
       'updateName',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId1', 'customForecastIndicatorId2'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],

@@ -35,7 +35,14 @@ describe('DeleteIndicatorIdCommandHandler', () => {
               return new IndicatorBoardMetadata(
                 'id',
                 'name',
-                ['160e5499-4925-4e38-bb00-8ea6d8056484'],
+                [
+                  {
+                    id: '160e5499-4925-4e38-bb00-8ea6d8056484',
+                    indicatorType: 'stocks',
+                    name: 'Apple Inc',
+                    exchange: 'NASDAQ',
+                  },
+                ],
                 ['120e5434-4925-4e38-bb00-8ea6d8056481'],
                 { section1: ['160e5499-4925-4e38-bb00-8ea6d8056484', '120e5434-4925-4e38-bb00-8ea6d8056481'] },
                 currentDate,

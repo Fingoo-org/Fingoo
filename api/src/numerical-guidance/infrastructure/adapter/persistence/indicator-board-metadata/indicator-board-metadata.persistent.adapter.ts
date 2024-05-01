@@ -156,7 +156,7 @@ export class IndicatorBoardMetadataPersistentAdapter
         await this.indicatorBoardMetadataRepository.findOneBy({ id });
       this.nullCheckForEntity(indicatorBoardMetaDataEntity);
 
-      indicatorBoardMetaDataEntity.indicatorIds = { indicatorIds: indicatorBoardMetadata.indicatorIds };
+      indicatorBoardMetaDataEntity.indicatorInfos = indicatorBoardMetadata.indicatorInfos;
       indicatorBoardMetaDataEntity.sections = indicatorBoardMetadata.sections;
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetaDataEntity);
@@ -194,9 +194,7 @@ export class IndicatorBoardMetadataPersistentAdapter
         await this.indicatorBoardMetadataRepository.findOneBy({ id });
       this.nullCheckForEntity(indicatorBoardMetadataEntity);
 
-      indicatorBoardMetadataEntity.customForecastIndicatorIds = {
-        customForecastIndicatorIds: indicatorBoardMetadata.customForecastIndicatorIds,
-      };
+      indicatorBoardMetadataEntity.customForecastIndicatorIds = indicatorBoardMetadata.customForecastIndicatorIds;
       indicatorBoardMetadataEntity.sections = indicatorBoardMetadata.sections;
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntity);
@@ -234,9 +232,7 @@ export class IndicatorBoardMetadataPersistentAdapter
         await this.indicatorBoardMetadataRepository.findOneBy({ id });
       this.nullCheckForEntity(indicatorBoardMetadataEntity);
 
-      indicatorBoardMetadataEntity.customForecastIndicatorIds = {
-        customForecastIndicatorIds: indicatorBoardMetadata.customForecastIndicatorIds,
-      };
+      indicatorBoardMetadataEntity.customForecastIndicatorIds = indicatorBoardMetadata.customForecastIndicatorIds;
       indicatorBoardMetadataEntity.sections = indicatorBoardMetadata.sections;
 
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntity);
@@ -275,7 +271,7 @@ export class IndicatorBoardMetadataPersistentAdapter
         await this.indicatorBoardMetadataRepository.findOneBy({ id });
       this.nullCheckForEntity(indicatorBoardMetadataEntity);
 
-      indicatorBoardMetadataEntity.indicatorIds = { indicatorIds: indicatorBoardMetadata.indicatorIds };
+      indicatorBoardMetadataEntity.indicatorInfos = indicatorBoardMetadata.indicatorInfos;
       indicatorBoardMetadataEntity.sections = indicatorBoardMetadata.sections;
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntity);
     } catch (error) {

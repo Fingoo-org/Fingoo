@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MemberEntity } from '../../../../../../auth/member.entity';
 import { BaseEntity } from '../../base.entity';
+import { IndicatorInfo } from '../../../../../domain/indicator-board-metadata';
 
 @Entity({ name: 'IndicatorBoardMetadata' })
 export class IndicatorBoardMetadataEntity extends BaseEntity {
@@ -10,11 +11,11 @@ export class IndicatorBoardMetadataEntity extends BaseEntity {
   @Column()
   indicatorBoardMetadataName: string;
 
-  @Column({ type: 'hstore', nullable: true })
-  indicatorIds: Record<string, string[]>;
+  @Column('jsonb', { nullable: true })
+  indicatorInfos: IndicatorInfo[];
 
-  @Column({ type: 'hstore', nullable: true })
-  customForecastIndicatorIds: Record<string, string[]>;
+  @Column('jsonb', { nullable: true })
+  customForecastIndicatorIds: string[];
 
   @Column({ type: 'hstore', nullable: true })
   sections: Record<string, string[]>;

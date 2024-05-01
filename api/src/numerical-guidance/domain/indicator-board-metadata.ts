@@ -5,6 +5,14 @@ import { IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule } from './rule/
 import { OnlyRegisteredIdCanBeRemovedRule } from './rule/OnlyRegisteredIdCanBeRemoved.rule';
 import { ApiProperty } from '@nestjs/swagger';
 import { IndicatorIdInSectionsShouldBeInIndicatorRule } from './rule/IndicatorIdInSectionsShouldBeInIndicator.rule';
+import { IndicatorType } from '../../utils/type/type-definition';
+
+export type IndicatorInfo = {
+  id: string;
+  indicatorType: IndicatorType;
+  name: string; // cryptocurrencies, forex_pairs -> currency_base 대체
+  exchange: string; // cryptocurrencies -> currency_base, forex_pairs -> group 대체
+};
 
 export class IndicatorBoardMetadata extends AggregateRoot {
   @ApiProperty({
@@ -23,7 +31,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     example: ['c6a99067-27d0-4358-b3d5-e63a64b604c0', 'c6a99067-27d0-4358-b3d5-e63a64b604c3'],
     description: '지표 id 모음',
   })
-  indicatorIds: string[];
+  indicatorInfos: IndicatorInfo[];
 
   @ApiProperty({
     example: ['c6a99067-27d0-4358-b3d5-e63a64b604c1', 'c6a99067-27d0-4358-b3d5-e63a64b604c7'],
@@ -50,7 +58,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   updatedAt: Date;
 
   static createNew(indicatorBoardMetadataName: string): IndicatorBoardMetadata {
-    const initIndicatorIds: string[] = [];
+    const initIndicatorIds: IndicatorInfo[] = [];
     const initCustomForecastIndicatorIds: string[] = [];
     const initSections: Record<string, string[]> = { section1: [] };
     const currentDate: Date = new Date();
@@ -65,8 +73,8 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     );
   }
 
-  public insertIndicatorId(id: string): void {
-    this.insertIdAndUpdateSections(id, this.indicatorIds);
+  public insertIndicatorId(indicatorIdInfo: IndicatorInfo): void {
+    this.insertIndicatorInfoAndUpdateSections(indicatorIdInfo, this.indicatorInfos);
   }
 
   public insertCustomForecastIndicatorId(id: string): void {
@@ -74,7 +82,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
   }
 
   public deleteIndicatorId(id: string): void {
-    this.deleteIdAndUpdateSections(id, this.indicatorIds);
+    this.deleteIndicatorInfoAndUpdateSections(id, this.indicatorInfos);
   }
 
   public deleteCustomForecastIndicatorId(id: string): void {
@@ -83,7 +91,11 @@ export class IndicatorBoardMetadata extends AggregateRoot {
 
   public updateSections(sections: Record<string, string[]>): void {
     this.checkRule(
-      new IndicatorIdInSectionsShouldBeInIndicatorRule(this.indicatorIds, this.customForecastIndicatorIds, sections),
+      new IndicatorIdInSectionsShouldBeInIndicatorRule(
+        this.getIdsFromIndicatorInfos(this.indicatorInfos),
+        this.customForecastIndicatorIds,
+        sections,
+      ),
     );
     this.sections = sections;
   }
@@ -96,7 +108,7 @@ export class IndicatorBoardMetadata extends AggregateRoot {
 
   private insertIdAndUpdateSections(id: string, ids: string[]): void {
     let newIds: string[] = [...ids];
-    const currentIds = this.convertToArray(newIds);
+    const currentIds = this.convertIdsToArray(newIds);
     currentIds.push(id);
     newIds = currentIds;
 
@@ -108,8 +120,38 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(newIds));
     this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(newSections));
 
-    ids === this.indicatorIds ? (this.indicatorIds = newIds) : (this.customForecastIndicatorIds = newIds);
+    this.customForecastIndicatorIds = newIds;
     this.sections = newSections;
+  }
+
+  private insertIndicatorInfoAndUpdateSections(indicatorInfo: IndicatorInfo, indicatorIdInfos: IndicatorInfo[]): void {
+    const newIndicatorInfos: IndicatorInfo[] = [...indicatorIdInfos];
+    newIndicatorInfos.push(indicatorInfo);
+
+    const newSections: Record<string, string[]> = { ...this.sections };
+    const { currentSection, lastKey } = this.getCurrentSectionAndLastKey(newSections);
+    currentSection.push(indicatorInfo.id);
+
+    newSections[lastKey] = currentSection;
+    this.checkRule(
+      new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(this.getIdsFromIndicatorInfos(newIndicatorInfos)),
+    );
+    this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(newSections));
+
+    this.indicatorInfos = newIndicatorInfos;
+    this.sections = newSections;
+  }
+
+  private deleteIndicatorInfoAndUpdateSections(id: string, indicatorIdInfos: IndicatorInfo[]): void {
+    let updateIndicatorInfos: IndicatorInfo[] = [...indicatorIdInfos];
+    this.checkRule(new OnlyRegisteredIdCanBeRemovedRule(this.getIdsFromIndicatorInfos(indicatorIdInfos), id));
+    updateIndicatorInfos = updateIndicatorInfos.filter((indicatorInfo) => indicatorInfo.id !== id);
+
+    const sections: Record<string, string[]> = { ...this.sections };
+    const updatedSections = this.removeIdFromSections(sections, id);
+
+    this.indicatorInfos = updateIndicatorInfos;
+    this.sections = updatedSections;
   }
 
   private deleteIdAndUpdateSections(id: string, ids: string[]): void {
@@ -120,11 +162,11 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     const sections: Record<string, string[]> = { ...this.sections };
     const updatedSections = this.removeIdFromSections(sections, id);
 
-    ids === this.indicatorIds ? (this.indicatorIds = updateIds) : (this.customForecastIndicatorIds = updateIds);
+    this.customForecastIndicatorIds = updateIds;
     this.sections = updatedSections;
   }
 
-  private convertToArray(indicatorIds: string[]): string[] {
+  private convertIdsToArray(indicatorIds: string[]): string[] {
     if (indicatorIds.length == 1 && indicatorIds[0] == '') {
       return [];
     }
@@ -148,10 +190,16 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     );
   }
 
+  private getIdsFromIndicatorInfos(indicatorInfos: IndicatorInfo[]): string[] {
+    return indicatorInfos.map((indicatorInfo) => {
+      return indicatorInfo.id;
+    });
+  }
+
   constructor(
     id: string,
     indicatorBoardMetadataName: string,
-    indicatorIds: string[],
+    indicatorInfos: IndicatorInfo[],
     customForecastIndicatorIds: string[],
     sections: Record<string, string[]>,
     createdAt: Date,
@@ -160,14 +208,20 @@ export class IndicatorBoardMetadata extends AggregateRoot {
     super();
     this.checkRule(new IndicatorBoardMetadataNameShouldNotEmptyRule(indicatorBoardMetadataName));
     this.checkRule(new IndicatorBoardMetadataCountShouldNotExceedLimitRule(sections));
-    this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(indicatorIds));
+    this.checkRule(
+      new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(this.getIdsFromIndicatorInfos(indicatorInfos)),
+    );
     this.checkRule(new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(customForecastIndicatorIds));
     this.checkRule(
-      new IndicatorIdInSectionsShouldBeInIndicatorRule(indicatorIds, customForecastIndicatorIds, sections),
+      new IndicatorIdInSectionsShouldBeInIndicatorRule(
+        this.getIdsFromIndicatorInfos(indicatorInfos),
+        customForecastIndicatorIds,
+        sections,
+      ),
     );
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
-    this.indicatorIds = indicatorIds;
+    this.indicatorInfos = indicatorInfos;
     this.customForecastIndicatorIds = customForecastIndicatorIds;
     this.sections = sections;
     this.createdAt = createdAt;

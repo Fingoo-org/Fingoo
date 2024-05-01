@@ -1,10 +1,16 @@
-import { IndicatorBoardMetadata } from '../../../domain/indicator-board-metadata';
+import { IndicatorBoardMetadata, IndicatorInfo } from '../../../domain/indicator-board-metadata';
 import { IndicatorBoardMetadataCountShouldNotExceedLimitRule } from '../../../domain/rule/IndicatorBoardMetadataCountShouldNotExceedLimit.rule';
 import { BusinessRuleValidationException } from '../../../../utils/domain/business-rule-validation.exception';
 import { IndicatorBoardMetadataNameShouldNotEmptyRule } from '../../../domain/rule/IndicatorBoardMetadataNameShouldNotEmpty.rule';
 import { IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule } from '../../../domain/rule/IndicatorInIndicatorBoardMetadataShouldNotDuplicate.rule';
 import { OnlyRegisteredIdCanBeRemovedRule } from '../../../domain/rule/OnlyRegisteredIdCanBeRemoved.rule';
 import { IndicatorIdInSectionsShouldBeInIndicatorRule } from '../../../domain/rule/IndicatorIdInSectionsShouldBeInIndicator.rule';
+
+function getIdsFromIndicatorInfos(indicatorInfos: IndicatorInfo[]): string[] {
+  return indicatorInfos.map((indicatorInfo) => {
+    return indicatorInfo.id;
+  });
+}
 
 describe('지표보드 메타데이터', () => {
   it('지표보드 메타데이터 도메인 생성', () => {
@@ -31,13 +37,19 @@ describe('지표보드 메타데이터', () => {
     // given
     const indicatorBoardMetadata = IndicatorBoardMetadata.createNew('name');
     const indicatorId = '160e5499-4925-4e38-bb00-8ea6d8056484';
+    const indicatorInfo: IndicatorInfo = {
+      id: indicatorId,
+      indicatorType: 'stocks',
+      name: 'Apple Inc',
+      exchange: 'NASDAQ',
+    };
 
     // when
-    indicatorBoardMetadata.insertIndicatorId(indicatorId);
+    indicatorBoardMetadata.insertIndicatorId(indicatorInfo);
 
     // then
     const expected = ['160e5499-4925-4e38-bb00-8ea6d8056484'];
-    expect(expected.toString()).toEqual(indicatorBoardMetadata.indicatorIds.toString());
+    expect(expected.toString()).toEqual(indicatorBoardMetadata.indicatorInfos[0].id.toString());
     const expectedSectionsLength = 1;
     expect(Object.values(indicatorBoardMetadata.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
       expectedSectionsLength,
@@ -50,7 +62,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId4', 'customForecastIndicatorId5'],
       {
         section1: [
@@ -65,10 +90,16 @@ describe('지표보드 메타데이터', () => {
       currentDate,
     );
     const indicatorId = 'indicatorId6';
+    const indicatorInfo: IndicatorInfo = {
+      id: indicatorId,
+      indicatorType: 'stocks',
+      name: 'Apple Inc',
+      exchange: 'NASDAQ',
+    };
 
     //when
     function insertIndicatorId() {
-      indicatorBoardMetadata.insertIndicatorId(indicatorId);
+      indicatorBoardMetadata.insertIndicatorId(indicatorInfo);
     }
     const rule = new IndicatorBoardMetadataCountShouldNotExceedLimitRule(indicatorBoardMetadata.sections);
 
@@ -83,7 +114,21 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id2',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
+
       ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
@@ -92,12 +137,20 @@ describe('지표보드 메타데이터', () => {
       currentDate,
     );
     const indicatorId = 'indicatorId1';
+    const indicatorInfo: IndicatorInfo = {
+      id: indicatorId,
+      indicatorType: 'stocks',
+      name: 'Apple Inc',
+      exchange: 'NASDAQ',
+    };
 
     //when
     function insertIndicatorId() {
-      indicatorBoardMetadata.insertIndicatorId(indicatorId);
+      indicatorBoardMetadata.insertIndicatorId(indicatorInfo);
     }
-    const rule = new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(indicatorBoardMetadata.indicatorIds);
+    const rule = new IndicatorInIndicatorBoardMetadataShouldNotDuplicateRule(
+      getIdsFromIndicatorInfos(indicatorBoardMetadata.indicatorInfos),
+    );
 
     //then
     expect(insertIndicatorId).toThrow(BusinessRuleValidationException);
@@ -110,7 +163,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id2',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
@@ -138,7 +204,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id2',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
@@ -197,7 +276,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
@@ -211,8 +303,15 @@ describe('지표보드 메타데이터', () => {
     indicatorBoardMetadata.deleteIndicatorId(indicatorId);
 
     // then
-    const expected = ['indicatorId2'];
-    expect(expected).toEqual(indicatorBoardMetadata.indicatorIds);
+    const expected = [
+      {
+        id: 'indicatorId2',
+        indicatorType: 'stocks',
+        name: 'Advance Auto Parts Inc',
+        exchange: 'NYSE',
+      },
+    ];
+    expect(expected).toEqual(indicatorBoardMetadata.indicatorInfos);
     const expectedSectionsLength = 3;
     expect(Object.values(indicatorBoardMetadata.sections).reduce((acc, values) => acc + values.length, 0)).toEqual(
       expectedSectionsLength,
@@ -225,7 +324,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
@@ -239,7 +351,10 @@ describe('지표보드 메타데이터', () => {
     function deleteIndicatorId() {
       indicatorBoardMetadata.deleteIndicatorId(invalidIndicatorId);
     }
-    const rule = new OnlyRegisteredIdCanBeRemovedRule(indicatorBoardMetadata.indicatorIds, invalidIndicatorId);
+    const rule = new OnlyRegisteredIdCanBeRemovedRule(
+      getIdsFromIndicatorInfos(indicatorBoardMetadata.indicatorInfos),
+      invalidIndicatorId,
+    );
 
     //then
     expect(deleteIndicatorId).toThrow(BusinessRuleValidationException);
@@ -252,7 +367,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
@@ -275,7 +403,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
@@ -302,7 +443,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId5'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId5'],
@@ -329,7 +483,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id2',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId4'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId4'],
@@ -359,7 +526,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId5'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId5'],
@@ -385,7 +565,20 @@ describe('지표보드 메타데이터', () => {
     const indicatorBoardMetadata = new IndicatorBoardMetadata(
       'id1',
       'name',
-      ['indicatorId1', 'indicatorId2'],
+      [
+        {
+          id: 'indicatorId1',
+          indicatorType: 'stocks',
+          name: 'Apple Inc',
+          exchange: 'NASDAQ',
+        },
+        {
+          id: 'indicatorId2',
+          indicatorType: 'stocks',
+          name: 'Advance Auto Parts Inc',
+          exchange: 'NYSE',
+        },
+      ],
       ['customForecastIndicatorId3', 'customForecastIndicatorId5'],
       {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId3', 'customForecastIndicatorId5'],
@@ -403,7 +596,7 @@ describe('지표보드 메타데이터', () => {
       indicatorBoardMetadata.updateSections(invalidSections);
     }
     const rule = new IndicatorIdInSectionsShouldBeInIndicatorRule(
-      indicatorBoardMetadata.indicatorIds,
+      getIdsFromIndicatorInfos(indicatorBoardMetadata.indicatorInfos),
       indicatorBoardMetadata.customForecastIndicatorIds,
       invalidSections,
     );
