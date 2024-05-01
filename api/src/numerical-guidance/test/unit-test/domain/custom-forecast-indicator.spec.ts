@@ -14,7 +14,7 @@ describe('예측지표', () => {
     const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
       targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
       targetIndicatorName: '예측지표',
-      indicatorType: 'stock',
+      indicatorType: 'stocks',
       exchange: 'KOSPI',
       symbol: 'PPAL',
     });
@@ -28,7 +28,7 @@ describe('예측지표', () => {
       {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         targetIndicatorName: '예측지표',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
@@ -48,7 +48,7 @@ describe('예측지표', () => {
       CustomForecastIndicator.createNew(content, {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         targetIndicatorName: '예측지표',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       });
@@ -68,7 +68,7 @@ describe('예측지표', () => {
       CustomForecastIndicator.createNew(content, {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         targetIndicatorName: '예측지표',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       });
@@ -85,7 +85,7 @@ describe('예측지표', () => {
     const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
       targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
       targetIndicatorName: '예측지표',
-      indicatorType: 'stock',
+      indicatorType: 'stocks',
       exchange: 'KOSPI',
       symbol: 'PPAL',
     });
@@ -120,7 +120,7 @@ describe('예측지표', () => {
       {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         targetIndicatorName: '예측지표',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
@@ -160,7 +160,7 @@ describe('예측지표', () => {
     const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
       targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
       targetIndicatorName: '예측지표',
-      indicatorType: 'stock',
+      indicatorType: 'stocks',
       exchange: 'KOSPI',
       symbol: 'PPAL',
     });
@@ -199,7 +199,7 @@ describe('예측지표', () => {
       {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         targetIndicatorName: '예측지표',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
@@ -251,7 +251,7 @@ describe('예측지표', () => {
     const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
       targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
       targetIndicatorName: '예측지표',
-      indicatorType: 'stock',
+      indicatorType: 'stocks',
       exchange: 'KOSPI',
       symbol: 'PPAL',
     });
@@ -334,7 +334,7 @@ describe('예측지표', () => {
       {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         targetIndicatorName: '예측지표',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
@@ -360,7 +360,7 @@ describe('예측지표', () => {
       {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         targetIndicatorName: '예측지표',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },

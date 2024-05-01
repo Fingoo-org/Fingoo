@@ -17,7 +17,7 @@ describe('GetCustomForecastIndicatorQueryHandler', () => {
               const data = CustomForecastIndicator.createNew('예측지표', {
                 targetIndicatorId: '목표지표 uuid',
                 targetIndicatorName: '예측지표',
-                indicatorType: 'stock',
+                indicatorType: 'stocks',
                 exchange: 'KOSPI',
                 symbol: 'PPAL',
               });

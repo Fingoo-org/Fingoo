@@ -30,7 +30,7 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
                 {
                   targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
                   targetIndicatorName: '타겟 지표',
-                  indicatorType: 'stock',
+                  indicatorType: 'stocks',
                   exchange: 'KOSPI',
                   symbol: 'PPAL',
                 },
@@ -55,7 +55,7 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
     const command: CreateCustomForecastIndicatorCommand = new CreateCustomForecastIndicatorCommand(
       '예측지표',
       '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-      'stock',
+      'stocks',
       1,
     );
 

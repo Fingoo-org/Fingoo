@@ -55,7 +55,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       type: 'customForecastIndicator',
       targetIndicatorInformation: {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
@@ -73,7 +73,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       type: 'customForecastIndicator',
       targetIndicatorInformation: {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
@@ -91,7 +91,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       type: 'customForecastIndicator',
       targetIndicatorInformation: {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf3',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },

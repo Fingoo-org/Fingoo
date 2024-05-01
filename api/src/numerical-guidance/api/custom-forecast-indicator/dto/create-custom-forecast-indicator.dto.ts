@@ -1,5 +1,6 @@
 import { IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IndicatorType } from 'src/utils/type/type-definition';
 
 export class CreateCustomForecatIndicatorDto {
   @ApiProperty({ example: '예측지표', description: '예측지표 이름' })
@@ -13,5 +14,5 @@ export class CreateCustomForecatIndicatorDto {
 
   @ApiProperty({ example: 'stock', description: '목표지표 type' })
   @IsString()
-  targetIndicatorType: string;
+  targetIndicatorType: IndicatorType;
 }
