@@ -33,6 +33,7 @@ export class CustomForecastIndicator extends AggregateRoot {
   @ApiProperty({
     example: {
       targetIndicatorId: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
+      targetIndicatorName: '타겟지표 이름',
       name: '예측지표',
       exchange: 'KOSPI',
       symbol: 'PPAL',
