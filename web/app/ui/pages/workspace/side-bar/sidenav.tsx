@@ -4,6 +4,7 @@ import IndicatorBoardToolbar from './indicator-board-toolbar';
 import { Sidebar } from 'react-pro-sidebar';
 import { ChevronDoubleLeftIcon } from '@heroicons/react/solid';
 import IconButton from '../../../components/view/atom/icons/icon-button';
+import ChatCard from '@/app/ui/components/view/molecule/chat-card';
 
 export default function SideNav() {
   const [collapsed, setCollapsed] = useState(false);
@@ -29,7 +30,7 @@ export default function SideNav() {
         <div className="flex h-full flex-col">
           <SideNavHeader />
           <div className="grow">
-            <div className="grid h-full grid-rows-[5fr_4fr] ">
+            <div className="grid h-full grid-rows-[5fr_7fr] ">
               {!collapsed ? (
                 <div>
                   <IndicatorBoardToolbar />
@@ -37,7 +38,17 @@ export default function SideNav() {
               ) : (
                 <div></div>
               )}
-              <div className="h-full bg-red-500"></div>
+              <div className="h-full pb-8">
+                <ChatCard defaultOpen={true}>
+                  <ChatCard.Header title="short chat" />
+                  <ChatCard.Content
+                    initContent={[
+                      { role: 'user', content: 'welcome', isLoading: false },
+                      { role: 'assistant', content: 'nicetoMeety', isLoading: false },
+                    ]}
+                  />
+                </ChatCard>
+              </div>
             </div>
           </div>
         </div>

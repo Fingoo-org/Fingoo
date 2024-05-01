@@ -7,5 +7,9 @@ type ChatCardProps = {
 };
 
 export const ChatCardRoot = ({ defaultOpen, children }: ChatCardProps) => {
-  return <Collapsible.Root defaultOpen={defaultOpen}>{children}</Collapsible.Root>;
+  return (
+    <Collapsible.Root className="flex h-full flex-col" defaultOpen={defaultOpen}>
+      {children}
+    </Collapsible.Root>
+  );
 };

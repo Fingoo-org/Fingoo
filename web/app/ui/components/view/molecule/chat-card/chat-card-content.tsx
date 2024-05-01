@@ -15,7 +15,7 @@ const ChatCardContent = ({ initContent = [] }: ChatCardProps) => {
   }, [initContent]);
 
   return (
-    <Collapsible.Content className=" h-96 overflow-scroll rounded-b-xl border bg-white">
+    <Collapsible.Content className="grow overflow-scroll rounded-b-xl border bg-white">
       <div className="space-y-3 p-3">
         {messages.map((message, index) => (
           <Message key={index} role={message.role} content={message.content} isLoading={message.isLoading} />

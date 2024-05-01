@@ -8,9 +8,9 @@ import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicato
 export default function IndicatorListContainer() {
   return (
     <div>
-      <IndicatorTypeToggleGroup />
-      <IndicatorListResult />
-      {/* <DepretedComponent /> */}
+      {/* <IndicatorTypeToggleGroup />
+      <IndicatorListResult /> */}
+      <DepretedComponent />
     </div>
   );
 }
