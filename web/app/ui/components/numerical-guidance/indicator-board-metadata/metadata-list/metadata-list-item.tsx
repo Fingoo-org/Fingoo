@@ -74,7 +74,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
         ref={iconButtonRef}
         onClick={handleIconButton}
         icon={DotsHorizontalIcon}
-        color={'violet'}
+        color={'emerald'}
         className="mr-5"
       />
     );
@@ -93,7 +93,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
             indicatorIdsWithSectionIds[`section${index + 1}`].map((indicatorId) => (
               <div className="relative" key={indicatorId}>
                 <DraggableItem
-                  className="flex h-9 items-center before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400 first:mt-2 last:mb-2"
+                  className="flex h-9 items-center before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-fingoo-sub first:mt-2 last:mb-2"
                   active={activeDragItemId === indicatorId}
                   id={indicatorId}
                 >
@@ -108,7 +108,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
             ))
           ) : (
             <DraggableItem
-              className="border-dotted border-blue-500"
+              className="border-dotted border-fingoo-main"
               active={false}
               disabled={true}
               id={`sectionContext${index + 1}`}
@@ -127,7 +127,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       onSelect={handleSelect}
       hoverRender={hoverRender}
       className={cn({
-        'border-2 border-lime-300 shadow-lg': isSelected,
+        'border-2 border-fingoo-main bg-fingoo-sub text-fingoo-gray-6 shadow-lg': isSelected,
       })}
     >
       <ExpandableListItem.Title>
@@ -140,7 +140,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           onDragEnd={handleIndicatorsectionChange}
           values={indicatorIdsWithSectionIds ?? {}}
           dragOverlayItem={({ activeId }) => (
-            <Item className="flex h-9 items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-blue-400">
+            <Item className="flex h-9 items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-fingoo-sub">
               {activeId}
             </Item>
           )}

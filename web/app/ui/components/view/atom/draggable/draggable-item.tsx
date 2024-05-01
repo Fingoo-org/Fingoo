@@ -44,7 +44,7 @@ export default function DraggableItem({
   return (
     <Item
       className={cn(
-        'my-2 rounded-lg border border-blue-200 bg-white',
+        'my-2 rounded-lg border border-fingoo-sub bg-white',
         {
           'opacity-20': active,
         },

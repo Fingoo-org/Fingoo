@@ -34,6 +34,15 @@ const config: Config = {
         // light mode
         fingoo: {
           main: '#6ccabf',
+          sub: '#B5E4DF',
+          gray: {
+            1.5: '#F1F1F1',
+            2: '#DDDDDD',
+            3: '#BBBBBB',
+            4: '#AAAAAA',
+            5: '#666666',
+            6: '#333333',
+          },
         },
         tremor: {
           brand: {

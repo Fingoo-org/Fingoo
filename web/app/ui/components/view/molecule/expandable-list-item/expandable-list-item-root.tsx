@@ -32,7 +32,7 @@ export function ExpandableListItemRoot({
 }: React.PropsWithChildren<ExpandableListItemProps>) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const title = getTitle(children);
+  const Title = getTitle(children);
   const ExpandedContent = getExpandedContent(children);
 
   const handleValueChange = (value: string) => {
@@ -81,16 +81,16 @@ export function ExpandableListItemRoot({
           <div
             onClick={handleClick}
             className={cn(
-              'h-full w-full rounded-2xl bg-white ring-1 ring-blue-200',
+              'h-full w-full rounded-2xl bg-white text-fingoo-gray-5 ring-1 ring-fingoo-gray-3',
               {
-                'bg-blue-200 text-blue-900 opacity-80': selected,
+                'bg-fingoo-main text-white opacity-80': selected,
               },
               className,
             )}
             role="tab"
             aria-selected={`${selected}`}
           >
-            {title}
+            {Title}
             <Accordion.Content>
               <div className="px-4 py-1">{ExpandedContent}</div>
             </Accordion.Content>

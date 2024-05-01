@@ -28,7 +28,7 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
     <Card
       onDoubleClick={handleMetadataSelect}
       className={cn('min-h-[32.5rem] w-full rounded-lg bg-white', {
-        'border-2 border-lime-300': isSelected,
+        'border-4 border-fingoo-main': isSelected,
       })}
     >
       <ClientDataSuspense fallback={<div>loading...</div>}>

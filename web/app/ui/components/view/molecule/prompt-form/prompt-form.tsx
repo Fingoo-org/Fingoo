@@ -5,44 +5,45 @@ import TextAreaAutoSize from 'react-textarea-autosize';
 import Tooltip from '../../atom/tooltip';
 import IconButton from '../../atom/icons/icon-button';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
+import { ChatRequestOptions } from 'ai';
+import { cn } from '@/app/utils/style';
 
 type PromptFormProps = {
-  input: string;
-  setInput: (value: string) => void;
-  disable: boolean;
-  formAction?: React.FormEventHandler<HTMLFormElement>;
+  value: string;
+  disable?: boolean;
+  formAction: (e: React.FormEvent<HTMLFormElement>, chatRequestOptions?: ChatRequestOptions | undefined) => void;
+  onValueChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
-const PromptForm = ({ input, setInput, disable, formAction }: PromptFormProps) => {
+const PromptForm = ({ value, onValueChange, disable, formAction }: PromptFormProps) => {
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
   const { formRef, onKeyDown } = useSubmit();
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    if (formAction) {
-      formAction(e);
-    }
-  };
-
   return (
     <form
-      className={`align-center flex w-96 justify-around rounded-md border border-gray-500 ${disable ? `bg-gray-100` : `bg-white`}`}
+      className={cn(
+        'flex w-full items-center justify-around rounded-lg border border-fingoo-gray-5',
+        {
+          'bg-gray-100': disable,
+          'bg-white': !disable,
+        },
+        'has-[:focus]:ring-2',
+        'has-[:focus]:border-fingoo-main has-[:focus]:ring-fingoo-sub',
+      )}
       ref={formRef}
-      onSubmit={handleSubmit}
+      onSubmit={formAction}
     >
       <TextAreaAutoSize
         ref={textAreaRef}
-        className=" bg flex w-11/12 resize-none border-none text-sm disabled:bg-gray-100"
-        onChange={(e) => setInput(e.currentTarget.value)}
+        className="flex w-11/12 resize-none rounded-lg  border-none text-sm focus:outline-none focus:ring-0 disabled:bg-gray-100"
+        onChange={onValueChange}
         placeholder="내용을 입력하세요"
-        value={input}
+        value={value}
         onKeyDown={onKeyDown}
         disabled={disable}
-        minRows={2}
+        minRows={1}
       />
-      <Tooltip message="Send a message">
-        <IconButton color="black" size="md" icon={PaperPlaneIcon} type="submit" disabled={disable} />
-      </Tooltip>
+      <IconButton color="black" size="md" icon={PaperPlaneIcon} type="submit" disabled={disable} />
     </form>
   );
 };
