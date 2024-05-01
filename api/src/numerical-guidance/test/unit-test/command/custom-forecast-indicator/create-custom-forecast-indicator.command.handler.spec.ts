@@ -32,7 +32,7 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
                   targetIndicatorName: '타겟 지표',
                   indicatorType: 'stocks',
                   exchange: 'KOSPI',
-                  symbol: 'PPAL',
+                  symbol: 'AAAA',
                 },
                 [],
                 [],
@@ -40,6 +40,26 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
               );
               const testDataId = testData.id;
               return testDataId;
+            }),
+          },
+        },
+        {
+          provide: 'LoadIndicatorPort',
+          useValue: {
+            loadIndicator: jest.fn().mockImplementation(() => {
+              const stockDto = {
+                id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+                index: 1,
+                indicatorType: 'stocks',
+                symbol: 'AAAA',
+                name: '타겟 지표',
+                country: 'korea',
+                currency: 'currency',
+                exchange: 'KOSPI',
+                mic_code: 'mic_code',
+                type: 'type',
+              };
+              return stockDto;
             }),
           },
         },

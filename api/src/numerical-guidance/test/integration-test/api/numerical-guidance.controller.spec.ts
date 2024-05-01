@@ -83,6 +83,26 @@ describe('NumericalGuidanceControllers', () => {
               loadCustomForecastIndicator: jest.fn(),
             },
           },
+          {
+            provide: 'LoadIndicatorPort',
+            useValue: {
+              loadIndicator: jest.fn().mockImplementation(() => {
+                const stockDto = {
+                  id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+                  index: 1,
+                  indicatorType: 'stocks',
+                  symbol: 'AAAA',
+                  name: '타겟 지표',
+                  country: 'korea',
+                  currency: 'currency',
+                  exchange: 'KOSPI',
+                  mic_code: 'mic_code',
+                  type: 'type',
+                };
+                return stockDto;
+              }),
+            },
+          },
         ],
       }).compile(),
     ]);
@@ -122,8 +142,8 @@ describe('NumericalGuidanceControllers', () => {
       .post('/api/numerical-guidance/custom-forecast-indicator')
       .send({
         customForecastIndicatorName: '예측지표',
-        targetIndicatorId: '2efa1d0c-51b3-42b1-81ba-487a07c4c5b2',
-        targetIndicatorType: 'stock',
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorType: 'stocks',
         memberId: 1,
       })
       .set('Content-Type', 'application/json')

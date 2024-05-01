@@ -12,7 +12,7 @@ export class CreateCustomForecatIndicatorDto {
   @IsUUID()
   targetIndicatorId: string;
 
-  @ApiProperty({ example: 'stock', description: '목표지표 type' })
+  @ApiProperty({ example: 'stocks', description: '목표지표 type' })
   @IsString()
   targetIndicatorType: IndicatorType;
 }

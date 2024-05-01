@@ -23,10 +23,20 @@ import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exc
 import * as request from 'supertest';
 import { DeleteCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
 import { UpdateCustomForecastIndicatorNameCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
+import { IndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
+import { StockEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/stock.entity';
+import { TwelveApiUtil } from 'src/numerical-guidance/infrastructure/adapter/twelve/util/twelve-api.util';
+import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indicator.entity';
+import { BondsEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/bonds.entity';
+import { CryptoCurrenciesEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
+import { ETFEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/etf.entity';
+import { ForexPairEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
+import { FundEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/fund.entity';
+import { IndicesEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indices.entity';
+import { addTransactionalDataSource, initializeTransactionalContext } from 'typeorm-transactional';
+import { AdjustIndicatorValue } from 'src/numerical-guidance/util/adjust-indicator-value';
 
-jest.mock('typeorm-transactional', () => ({
-  Transactional: () => () => ({}),
-}));
+initializeTransactionalContext();
 
 describe('Customer Forecast Indicator E2E Test', () => {
   let app: INestApplication;
@@ -36,6 +46,20 @@ describe('Customer Forecast Indicator E2E Test', () => {
   const seeding = async () => {
     const memberEntity = dataSource.getRepository(MemberEntity);
     await memberEntity.insert({ id: 1 });
+
+    const stockRepository = dataSource.getRepository(StockEntity);
+    await stockRepository.insert({
+      id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      index: 1,
+      symbol: 'PPAL',
+      indicatorType: 'stocks',
+      name: 'Apple Inc',
+      currency: 'USD',
+      exchange: 'KOSPI',
+      mic_code: 'XNGS',
+      country: 'United States',
+      type: 'Common Stock',
+    });
 
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
     await indicatorBoardMetadataRepository.insert({
@@ -55,6 +79,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       type: 'customForecastIndicator',
       targetIndicatorInformation: {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: 'Apple Inc',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
@@ -73,6 +98,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       type: 'customForecastIndicator',
       targetIndicatorInformation: {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
+        targetIndicatorName: 'Apple Inc',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
@@ -91,6 +117,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       type: 'customForecastIndicator',
       targetIndicatorInformation: {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf3',
+        targetIndicatorName: 'Apple Inc',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
@@ -113,7 +140,19 @@ describe('Customer Forecast Indicator E2E Test', () => {
           ConfigModule.forRoot({
             isGlobal: true,
           }),
-          TypeOrmModule.forFeature([MemberEntity, IndicatorBoardMetadataEntity, CustomForecastIndicatorEntity]),
+          TypeOrmModule.forFeature([
+            MemberEntity,
+            IndicatorBoardMetadataEntity,
+            CustomForecastIndicatorEntity,
+            StockEntity,
+            IndicesEntity,
+            FundEntity,
+            ForexPairEntity,
+            ETFEntity,
+            CryptoCurrenciesEntity,
+            BondsEntity,
+            IndicatorEntity,
+          ]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -126,7 +165,19 @@ describe('Customer Forecast Indicator E2E Test', () => {
               username: DBenvironment.getUsername(),
               password: DBenvironment.getPassword(),
               database: DBenvironment.getDatabase(),
-              entities: [IndicatorBoardMetadataEntity, MemberEntity, CustomForecastIndicatorEntity],
+              entities: [
+                MemberEntity,
+                IndicatorBoardMetadataEntity,
+                CustomForecastIndicatorEntity,
+                StockEntity,
+                IndicesEntity,
+                FundEntity,
+                ForexPairEntity,
+                ETFEntity,
+                CryptoCurrenciesEntity,
+                BondsEntity,
+                IndicatorEntity,
+              ],
               synchronize: true,
             }),
           }),
@@ -139,6 +190,8 @@ describe('Customer Forecast Indicator E2E Test', () => {
         ],
         controllers: [CustomForecastIndicatorController],
         providers: [
+          TwelveApiUtil,
+          AdjustIndicatorValue,
           AuthService,
           InsertCustomForecastIndicatorIdCommandHandler,
           CreateCustomForecastIndicatorCommandHandler,
@@ -175,6 +228,10 @@ describe('Customer Forecast Indicator E2E Test', () => {
             useClass: CustomForecastIndicatorPersistentAdapter,
           },
           {
+            provide: 'LoadIndicatorPort',
+            useClass: IndicatorPersistentAdapter,
+          },
+          {
             provide: AuthGuard,
             useValue: {
               canActivate: jest.fn().mockImplementation((context) => {
@@ -189,6 +246,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       }).compile(),
     ]);
     dataSource = module.get<DataSource>(DataSource);
+    addTransactionalDataSource(dataSource);
     await seeding();
     app = module.createNestApplication();
     app.useGlobalPipes(
@@ -209,16 +267,17 @@ describe('Customer Forecast Indicator E2E Test', () => {
     await app.close();
   });
 
-  // it('/post 예측 지표를 생성한다.', async () => {
-  //   return request(app.getHttpServer())
-  //     .post('/api/numerical-guidance/custom-forecast-indicator')
-  //     .send({
-  //       customForecastIndicatorName: '예측지표',
-  //       targetIndicatorInformation: {}
-  //     })
-  //     .set('Content-Type', 'application/json')
-  //     .expect(HttpStatus.CREATED);
-  // });
+  it('/post 예측 지표를 생성한다.', async () => {
+    return request(app.getHttpServer())
+      .post('/api/numerical-guidance/custom-forecast-indicator')
+      .send({
+        customForecastIndicatorName: '예측지표',
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorType: 'stocks',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.CREATED);
+  });
 
   it('/get 예측 지표 id로 예측지표를 불러온다.', async () => {
     return request(app.getHttpServer())
