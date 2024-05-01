@@ -40,7 +40,7 @@ export type ForecastType = 'single' | 'multi';
 
 export type SourceIndicatorInformation = {
   sourceIndicatorId: string;
-  indicatorType: string;
+  indicatorType: IndicatorType;
   weight: float;
 };
 

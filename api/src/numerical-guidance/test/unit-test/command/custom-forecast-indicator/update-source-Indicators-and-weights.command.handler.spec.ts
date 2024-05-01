@@ -61,12 +61,12 @@ describe('UpdateSourceIndicatorsAndWeightsCommandHandler', () => {
       [
         {
           weight: 'none',
-          indicatorType: 'stock',
+          indicatorType: 'stocks',
           sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
         },
         {
           weight: '0.07/8',
-          indicatorType: 'stock',
+          indicatorType: 'stocks',
           sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
         },
       ],

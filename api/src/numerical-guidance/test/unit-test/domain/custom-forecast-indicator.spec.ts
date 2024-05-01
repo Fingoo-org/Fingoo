@@ -93,12 +93,12 @@ describe('예측지표', () => {
     const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 'none',
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 'none',
       },
     ];
@@ -139,7 +139,7 @@ describe('예측지표', () => {
       [
         {
           weight: 50,
-          indicatorType: 'stock',
+          indicatorType: 'stocks',
           sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120013',
         },
       ],
@@ -168,12 +168,12 @@ describe('예측지표', () => {
     const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 'none',
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 'none',
       },
     ];
@@ -218,7 +218,7 @@ describe('예측지표', () => {
       [
         {
           weight: 50,
-          indicatorType: 'stock',
+          indicatorType: 'stocks',
           sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120032',
         },
       ],
@@ -227,7 +227,7 @@ describe('예측지표', () => {
     const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
         sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
     ];
@@ -259,57 +259,57 @@ describe('예측지표', () => {
     const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 10,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120031',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 10,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120041',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120051',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120061',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120071',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120081',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120091',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120022',
-        indicatorType: 'stock',
+        indicatorType: 'stocks',
         weight: 0,
       },
     ];
