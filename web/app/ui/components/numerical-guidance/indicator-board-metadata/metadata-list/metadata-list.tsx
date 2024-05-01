@@ -27,7 +27,7 @@ const MetadataList = React.memo(function MetadataList() {
   return (
     <Pending isPending={isPending}>
       {metadataList ? <List list={metadataList} render={renderItem} /> : null}
-      <Button color={'blue'} onClick={handleMetadataCreateAndSelect}>
+      <Button color={'emerald'} onClick={handleMetadataCreateAndSelect}>
         create
       </Button>
     </Pending>
