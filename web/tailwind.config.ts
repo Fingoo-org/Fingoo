@@ -37,6 +37,7 @@ const config: Config = {
           sub: '#B5E4DF',
           gray: {
             1.5: '#F1F1F1',
+            5: '#666666',
             6: '#333333',
           },
         },
