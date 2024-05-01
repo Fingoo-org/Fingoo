@@ -4,7 +4,9 @@ import { InsertIndicatorIdPort } from '../../../port/persistence/indicator-board
 import { Transactional } from 'typeorm-transactional';
 import { InsertIndicatorIdCommand } from './insert-indicator-id.command';
 import { LoadIndicatorBoardMetadataPort } from '../../../port/persistence/indicator-board-metadata/load-indiactor-board-metadata.port';
-import { IndicatorBoardMetadata } from '../../../../domain/indicator-board-metadata';
+import { IndicatorBoardMetadata, IndicatorInfo } from '../../../../domain/indicator-board-metadata';
+import { LoadIndicatorPort } from '../../../port/persistence/indicator/load-indicator.port';
+import { IndicatorDtoType } from '../../../../../utils/type/type-definition';
 
 @Injectable()
 @CommandHandler(InsertIndicatorIdCommand)
@@ -14,16 +16,46 @@ export class InsertIndicatorIdCommandHandler implements ICommandHandler {
     private readonly insertIndicatorIdPort: InsertIndicatorIdPort,
     @Inject('LoadIndicatorBoardMetadataPort')
     private readonly loadIndicatorBoardMetaDataPort: LoadIndicatorBoardMetadataPort,
+    @Inject('LoadIndicatorPort')
+    private readonly loadIndicatorPort: LoadIndicatorPort,
   ) {}
 
   @Transactional()
   async execute(command: InsertIndicatorIdCommand) {
-    const { indicatorBoardMetadataId, indicatorId } = command;
+    const { indicatorBoardMetadataId, indicatorId, indicatorType } = command;
     const indicatorBoardMetaData: IndicatorBoardMetadata =
       await this.loadIndicatorBoardMetaDataPort.loadIndicatorBoardMetadata(indicatorBoardMetadataId);
 
-    indicatorBoardMetaData.insertIndicatorId(indicatorId);
+    const indicatorDto = await this.loadIndicatorPort.loadIndicator(indicatorId, indicatorType);
+
+    indicatorBoardMetaData.insertIndicatorId(this.getIndicatorInfo(indicatorDto));
 
     await this.insertIndicatorIdPort.addIndicatorId(indicatorBoardMetaData);
+  }
+
+  private getIndicatorInfo(indicatorDto: IndicatorDtoType): IndicatorInfo {
+    return {
+      id: indicatorDto.id,
+      indicatorType: indicatorDto.indicatorType,
+      name: this.getIndicatorNameByType(indicatorDto),
+      exchange: this.getIndicatorExchangeByType(indicatorDto),
+    };
+  }
+
+  private getIndicatorNameByType(indicatorDto): string {
+    if (indicatorDto.type == 'cryptocurrencies' || indicatorDto.type == 'forex_pairs') {
+      return indicatorDto.currency_base;
+    }
+    return indicatorDto.name;
+  }
+
+  private getIndicatorExchangeByType(indicatorDto): string {
+    if (indicatorDto.type == 'cryptocurrencies') {
+      return indicatorDto.currency_base;
+    }
+    if (indicatorDto.type == 'forex_pairs') {
+      return indicatorDto.currency_group;
+    }
+    return indicatorDto.exchange;
   }
 }
