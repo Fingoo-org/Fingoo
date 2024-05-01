@@ -11,7 +11,7 @@ type PromptFormProps = {
   value: string;
   disable?: boolean;
   formAction: (e: React.FormEvent<HTMLFormElement>, chatRequestOptions?: ChatRequestOptions | undefined) => void;
-  onValueChange: (value: string) => void;
+  onValueChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 const PromptForm = ({ value, onValueChange, disable, formAction }: PromptFormProps) => {
@@ -27,7 +27,7 @@ const PromptForm = ({ value, onValueChange, disable, formAction }: PromptFormPro
       <TextAreaAutoSize
         ref={textAreaRef}
         className=" bg flex w-11/12 resize-none border-none text-sm disabled:bg-gray-100"
-        onChange={(e) => onValueChange(e.currentTarget.value)}
+        onChange={onValueChange}
         placeholder="내용을 입력하세요"
         value={value}
         onKeyDown={onKeyDown}

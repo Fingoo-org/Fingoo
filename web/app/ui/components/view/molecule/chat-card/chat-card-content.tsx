@@ -18,10 +18,10 @@ const ChatCardContent = ({ messages = [], isLoading }: ChatCardProps) => {
   return (
     <Collapsible.Content className="grow overflow-scroll rounded-b-xl border bg-white">
       <div className="space-y-3 p-3">
-        {messages.map((message, index) => (
-          <MessageItem key={index} role={message.role} content={message.content} />
+        {messages.map((message) => (
+          <MessageItem key={message.id} role={message.role} content={message.content} />
         ))}
-        {isLoading ? <DotSpinner /> : null}
+        {isLoading ? <MessageItem role="assistant" content={<DotSpinner />} /> : null}
         <div ref={Chatref}></div>
       </div>
     </Collapsible.Content>

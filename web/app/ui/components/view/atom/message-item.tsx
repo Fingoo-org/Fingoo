@@ -1,6 +1,6 @@
 export type MessageProps = {
   role: 'function' | 'user' | 'assistant' | 'system' | 'data' | 'tool';
-  content: string;
+  content: React.ReactNode;
 };
 
 export const MessageItem = ({ role, content }: MessageProps) => {
