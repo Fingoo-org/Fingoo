@@ -24,9 +24,9 @@ export const Default: Story = {
     <ChatCard defaultOpen={args.defaultOpen}>
       <ChatCard.Header title="short chat" infoIcon={InfoCircledIcon} collapsibleIcon={ChevronDownIcon} />
       <ChatCard.Content
-        initContent={[
-          { role: 'user', content: 'welcome', isLoading: false },
-          { role: 'assistant', content: 'nicetoMeetyou', isLoading: false },
+        messages={[
+          { id: '1', role: 'user', content: 'welcome' },
+          { id: '2', role: 'assistant', content: 'nicetoMeetyou' },
         ]}
       />
     </ChatCard>
@@ -41,24 +41,24 @@ export const LongMessageChat: Story = {
     <ChatCard defaultOpen={args.defaultOpen}>
       <ChatCard.Header title="long chat scroll" infoIcon={InfoCircledIcon} collapsibleIcon={ChevronDownIcon} />
       <ChatCard.Content
-        initContent={[
+        messages={[
           {
+            id: '1',
             role: 'user',
             content:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
-            isLoading: false,
           },
           {
+            id: '2',
             role: 'assistant',
             content:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of typeLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever ......",
-            isLoading: false,
           },
           {
+            id: '3',
             role: 'user',
             content:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
-            isLoading: false,
           },
         ]}
       />
@@ -74,30 +74,30 @@ export const LongMessageLoadingChat: Story = {
     <ChatCard defaultOpen={args.defaultOpen}>
       <ChatCard.Header title="long chat with loading" infoIcon={InfoCircledIcon} collapsibleIcon={ChevronDownIcon} />
       <ChatCard.Content
-        initContent={[
+        messages={[
           {
+            id: '1',
             role: 'user',
             content:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
-            isLoading: false,
           },
           {
+            id: '2',
             role: 'assistant',
             content:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of typeLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever ......",
-            isLoading: false,
           },
           {
+            id: '3',
             role: 'user',
             content:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
-            isLoading: false,
           },
           {
+            id: '4',
             role: 'assistant',
             content:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever",
-            isLoading: true,
           },
         ]}
       />

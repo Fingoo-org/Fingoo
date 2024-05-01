@@ -5,6 +5,7 @@ import { Sidebar } from 'react-pro-sidebar';
 import { ChevronDoubleLeftIcon } from '@heroicons/react/solid';
 import IconButton from '../../../components/view/atom/icons/icon-button';
 import ChatCard from '@/app/ui/components/view/molecule/chat-card';
+import Chat from '@/app/ui/components/linguistic-guidance/chat';
 
 export default function SideNav() {
   const [collapsed, setCollapsed] = useState(false);
@@ -39,15 +40,7 @@ export default function SideNav() {
                 <div></div>
               )}
               <div className="h-full pb-8">
-                <ChatCard defaultOpen={true}>
-                  <ChatCard.Header title="short chat" />
-                  <ChatCard.Content
-                    initContent={[
-                      { role: 'user', content: 'welcome', isLoading: false },
-                      { role: 'assistant', content: 'nicetoMeety', isLoading: false },
-                    ]}
-                  />
-                </ChatCard>
+                <Chat />
               </div>
             </div>
           </div>
