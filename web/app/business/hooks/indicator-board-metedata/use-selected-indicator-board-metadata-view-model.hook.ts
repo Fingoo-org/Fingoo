@@ -41,7 +41,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
     }
 
     addIndicatorTrigger(
-      { indicatorId: indicatorInfo.id },
+      { indicatorId: indicatorInfo.id, indicatorType: indicatorInfo.indicatorType },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
           convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, indicatorInfo);

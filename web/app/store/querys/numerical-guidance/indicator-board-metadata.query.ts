@@ -30,6 +30,7 @@ export type CreateIndicatorMetadataResponse = string;
 
 export type AddIndicatorToMetadataRequestBody = {
   indicatorId: string;
+  indicatorType: IndicatorType;
 };
 
 export const useFetchIndicatorBoardMetadataList = () =>
