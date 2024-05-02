@@ -38,6 +38,7 @@ describe('DeleteIndicatorIdCommandHandler', () => {
                 [
                   {
                     id: '160e5499-4925-4e38-bb00-8ea6d8056484',
+                    symbol: 'AAPL',
                     indicatorType: 'stocks',
                     name: 'Apple Inc',
                     exchange: 'NASDAQ',

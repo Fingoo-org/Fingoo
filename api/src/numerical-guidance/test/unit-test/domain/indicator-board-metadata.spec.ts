@@ -39,6 +39,7 @@ describe('지표보드 메타데이터', () => {
     const indicatorId = '160e5499-4925-4e38-bb00-8ea6d8056484';
     const indicatorInfo: IndicatorInfo = {
       id: indicatorId,
+      symbol: 'AAPL',
       indicatorType: 'stocks',
       name: 'Apple Inc',
       exchange: 'NASDAQ',
@@ -65,12 +66,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -92,6 +95,7 @@ describe('지표보드 메타데이터', () => {
     const indicatorId = 'indicatorId6';
     const indicatorInfo: IndicatorInfo = {
       id: indicatorId,
+      symbol: 'AAPL',
       indicatorType: 'stocks',
       name: 'Apple Inc',
       exchange: 'NASDAQ',
@@ -117,12 +121,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -139,6 +145,7 @@ describe('지표보드 메타데이터', () => {
     const indicatorId = 'indicatorId1';
     const indicatorInfo: IndicatorInfo = {
       id: indicatorId,
+      symbol: 'AAPL',
       indicatorType: 'stocks',
       name: 'Apple Inc',
       exchange: 'NASDAQ',
@@ -166,12 +173,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -207,12 +216,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -279,12 +290,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -306,6 +319,7 @@ describe('지표보드 메타데이터', () => {
     const expected = [
       {
         id: 'indicatorId2',
+        symbol: 'AAPL',
         indicatorType: 'stocks',
         name: 'Advance Auto Parts Inc',
         exchange: 'NYSE',
@@ -327,12 +341,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -370,12 +386,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -406,12 +424,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -446,12 +466,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -486,12 +508,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -529,12 +553,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -568,12 +594,14 @@ describe('지표보드 메타데이터', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
