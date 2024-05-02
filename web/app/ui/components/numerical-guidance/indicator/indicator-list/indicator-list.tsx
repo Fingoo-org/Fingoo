@@ -18,7 +18,7 @@ const IndicatorList = React.memo(function IndicatorList() {
   };
 
   return (
-    <div className={cn('h-72', { hidden: selectedMetadata === undefined })}>
+    <div className={cn('h-72 px-4', { hidden: selectedMetadata === undefined })}>
       <WindowList maxVieweditemCount={4} items={indicatorList || []} renderRow={render} />
     </div>
   );

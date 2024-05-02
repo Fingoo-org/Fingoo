@@ -22,9 +22,10 @@ export default function SelectableItem({
   return (
     <button
       className={cn(
-        'h-full w-full rounded-full bg-white pl-4 ring-1 ring-blue-200',
+        'h-full w-full bg-white px-4 py-2 ring-1 ring-fingoo-sub',
+        ' hover:opacity-60',
         {
-          'bg-blue-200 text-blue-900 opacity-80': selected,
+          'bg-fingoo-main text-white': selected,
         },
         className,
       )}
@@ -33,9 +34,7 @@ export default function SelectableItem({
       onClick={handleClick}
       style={style}
     >
-      <div className=" h-full rounded font-medium hover:bg-blue-50 hover:text-blue-700 hover:opacity-20">
-        {children}
-      </div>
+      <div className="h-full w-full font-semibold ">{children}</div>
     </button>
   );
 }
