@@ -90,22 +90,27 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       >
         <div>
           {indicatorIdsWithSectionIds[`section${index + 1}`].length > 0 ? (
-            indicatorIdsWithSectionIds[`section${index + 1}`].map((indicatorId) => (
-              <div className="relative" key={indicatorId}>
-                <DraggableItem
-                  className="flex h-9 items-center before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-fingoo-sub first:mt-2 last:mb-2"
-                  active={activeDragItemId === indicatorId}
-                  id={indicatorId}
-                >
-                  {indicatorId}
-                </DraggableItem>
-                {activeDragItemId !== indicatorId ? (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    <IndicatorUnitSelector indicatorBoardMetadataId={item.id} indicatorId={indicatorId} />
-                  </div>
-                ) : null}
-              </div>
-            ))
+            indicatorIdsWithSectionIds[`section${index + 1}`].map((indicatorId) => {
+              const indicatorInfo = indicatorBoardMetadata?.getIndicatorInfo(indicatorId);
+              const indicatorText = `${indicatorInfo?.symbol}(${indicatorInfo?.name})`;
+              return (
+                <div className="relative" key={indicatorId}>
+                  <DraggableItem
+                    className="flex h-9 items-center before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-fingoo-sub first:mt-2 last:mb-2"
+                    active={activeDragItemId === indicatorId}
+                    id={indicatorId}
+                  >
+                    <div className="w-52 truncate">{indicatorText}</div>
+                    <div className="grow"></div>
+                  </DraggableItem>
+                  {activeDragItemId !== indicatorId ? (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <IndicatorUnitSelector indicatorBoardMetadataId={item.id} indicatorId={indicatorId} />
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })
           ) : (
             <DraggableItem
               className="border-dotted border-fingoo-main"
@@ -139,16 +144,20 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           onDragOver={setIndicatorIdsWithsectionIds}
           onDragEnd={handleIndicatorsectionChange}
           values={indicatorIdsWithSectionIds ?? {}}
-          dragOverlayItem={({ activeId }) => (
-            <Item className="flex h-9 items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-fingoo-sub">
-              {activeId}
-            </Item>
-          )}
+          dragOverlayItem={({ activeId }) => {
+            const indicatorInfo = indicatorBoardMetadata?.getIndicatorInfo(activeId);
+            const indicatorText = `${indicatorInfo?.symbol}(${indicatorInfo?.name})`;
+            return (
+              <Item className="flex h-9 items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-fingoo-sub">
+                {indicatorText}
+              </Item>
+            );
+          }}
         >
           <div
             className={cn('divide-y-2', {
               'divide-white': isSelected,
-              'divide-blue-200': !isSelected,
+              'divide-fingoo-sub': !isSelected,
             })}
           >
             {indicatorIdsWithSectionIds ? renderDraggableList(indicatorIdsWithSectionIds) : null}

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import {
   AddIndicatorToMetadataRequestBody,
   IndicatorBoardMetadataResponse,
+  IndicatorInfoResponse,
   useAddCustomForecastIndicatorToMetadata,
   useAddIndicatorToMetadata,
   useDeleteCustomForecastIndicatorFromMetadata,
@@ -34,18 +35,21 @@ export const useSelectedIndicatorBoardMetadata = () => {
   }, [selectedMetadataId, convertedIndicatorBoardMetadataList]);
 
   // Refactor: 컴포넌트는 AddIndicatorToMetadataRequestBody를 몰라도 된다.
-  const addIndicatorToMetadata = (data: AddIndicatorToMetadataRequestBody) => {
+  const addIndicatorToMetadata = (indicatorInfo: IndicatorInfoResponse) => {
     if (!selectedMetadata) {
       return;
     }
 
-    addIndicatorTrigger(data, {
-      optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-        convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, data.indicatorId);
-        return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+    addIndicatorTrigger(
+      { indicatorId: indicatorInfo.id, indicatorType: indicatorInfo.indicatorType },
+      {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+          convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, indicatorInfo);
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+        },
+        revalidate: false,
       },
-      revalidate: false,
-    });
+    );
   };
 
   const addCustomForecastIndicatorToMetadata = (customForecastIndicatorId: string) => {

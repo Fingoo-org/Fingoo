@@ -6,6 +6,7 @@ import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import IconButton from '../../../view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
+import { cn } from '@/app/utils/style';
 
 type IndicatorListItemProps = {
   item: Indicator;
@@ -16,7 +17,14 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.INDICATOR_EDIT_MENU);
   const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } = useSelectedIndicatorBoardMetadata();
   const isSelected = selectedMetadata?.indicatorIds?.some((id) => id === item.id) || false;
-  const handleItemSelect = () => addIndicatorToMetadata({ indicatorId: item.id });
+  const handleItemSelect = () =>
+    addIndicatorToMetadata({
+      id: item.id,
+      name: item.name,
+      symbol: item.symbol,
+      exchange: item.exchange,
+      indicatorType: item.indicatorType,
+    });
   const handleItemDeSelect = () => deleteIndicatorFromMetadata(item.id);
 
   const handleIconButton = () => {
@@ -30,12 +38,12 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
         ref={iconButtonRef}
         onClick={handleIconButton}
         icon={DotsHorizontalIcon}
-        color={'violet'}
+        color={'emerald'}
       />
     );
   };
   return (
-    <div style={style}>
+    <div style={style} className="px-4">
       <div className="flex h-full items-center justify-center">
         <ListItem hoverRender={hoverRender}>
           <SelectableItem
@@ -43,8 +51,20 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
             onDeSelect={handleItemDeSelect}
             key={item.id}
             selected={isSelected}
+            className="rounded-lg"
           >
-            {item.name}({item.symbol})
+            <div className="mr-9 flex items-center justify-between text-xs">
+              <div>{item.symbol}</div>
+              <div>{item.exchange}</div>
+            </div>
+            <div
+              className={cn('mr-9 flex items-center justify-between text-[8px] font-normal	text-fingoo-gray-5', {
+                'text-white': isSelected,
+              })}
+            >
+              <div>{item.name}</div>
+              <div>{item.indicatorType}</div>
+            </div>
           </SelectableItem>
         </ListItem>
       </div>

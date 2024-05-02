@@ -34,7 +34,7 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
             <MultiLineChart
               data-testid={`simple-indicators-chart-section${index + 1}`}
               key={sectionId}
-              data={formattedIndicatorsRows || []}
+              data={indicatorBoardMetadata ? formattedIndicatorsRows : []}
               categories={categories}
               noDataText={
                 indicatorBoardMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'
@@ -46,7 +46,7 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
         })
       ) : (
         <MultiLineChart
-          data={formattedIndicatorsRows || []}
+          data={indicatorBoardMetadata ? formattedIndicatorsRows : []}
           categories={[]}
           noDataText={
             indicatorBoardMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'

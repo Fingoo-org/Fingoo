@@ -6,8 +6,10 @@ import {
   AddCustomForecastIndicatorToMetadataRequestBody,
   CreateIndicatorMetadataResponse,
   UpdateIndicatorBoardMetadataSectionsRequestBody,
+  IndicatorInfoResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { mockDatabaseStore } from '.';
+import { symbol } from 'zod';
 
 export type MockIndicatorBoardMetadataAction = {
   getMetadataList: () => IndicatorBoardMetadataResponse[];
@@ -31,7 +33,7 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
     const newMetadata = {
       ...data,
       id,
-      indicatorIds: [],
+      indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: {
         section1: [],
@@ -48,7 +50,16 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
     const lastsectionId = Object.keys(mockDatabaseStore.metadataList[index].sections).length;
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
-      indicatorIds: [...mockDatabaseStore.metadataList[index].indicatorIds, data.indicatorId],
+      indicatorInfos: [
+        ...mockDatabaseStore.metadataList[index].indicatorInfos,
+        {
+          id: data.indicatorId,
+          name: 'mock',
+          symbol: 'mock',
+          exchange: 'mock',
+          indicatorType: 'stocks',
+        } as IndicatorInfoResponse,
+      ],
       sections: {
         ...mockDatabaseStore.metadataList[index].sections,
         [`section${lastsectionId}`]: [
@@ -64,7 +75,9 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
-      indicatorIds: mockDatabaseStore.metadataList[index].indicatorIds.filter((id) => id !== indicatorId),
+      indicatorInfos: mockDatabaseStore.metadataList[index].indicatorInfos.filter(
+        (indicatorInfo) => indicatorInfo.id !== indicatorId,
+      ),
       sections: Object.entries(mockDatabaseStore.metadataList[index].sections).reduce<{
         [key: string]: string[];
       }>((acc, [key, value]) => {

@@ -1,6 +1,7 @@
 import { type Fetcher } from 'swr';
 import { instance } from '@/app/utils/http';
 import { AxiosRequestConfig } from 'axios';
+import { IndicatorInfoResponse } from './numerical-guidance/indicator-board-metadata.query';
 
 // Refactor: fetcher 정리 필요, 각 요청별로 나누기
 export const defaultFetcher: Fetcher<any, string> = (url) => instance.get(url).then((res) => res.data);
@@ -30,10 +31,14 @@ export const deleteFetcher = async (key: string | string[]) => {
   }
 };
 
-export const fetchLiveIndicatorsValue = async ([url, interval, indicatorType, startDate, ...ids]: string[]) => {
+export const fetchLiveIndicatorsValue = async (
+  [url, interval, startDate, ...ids]: string[],
+  indicatorInfos: IndicatorInfoResponse[],
+) => {
   const indicatorsvalue = await Promise.all(
-    ids.map((id) =>
-      instance
+    ids.map((id) => {
+      const indicatorType = indicatorInfos.find((info) => info.id === id)?.indicatorType;
+      return instance
         .get(url, {
           params: {
             interval,
@@ -42,8 +47,8 @@ export const fetchLiveIndicatorsValue = async ([url, interval, indicatorType, st
             indicatorId: id,
           },
         })
-        .then((res) => res.data),
-    ),
+        .then((res) => res.data);
+    }),
   );
   return { indicatorsValue: indicatorsvalue };
 };
