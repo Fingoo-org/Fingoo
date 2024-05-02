@@ -63,17 +63,12 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
   ) {}
 
   @Transactional({ propagation: Propagation.REQUIRES_NEW })
-  async saveIndicatorList(count: number) {
+  async saveIndicatorList(count: number, country: string) {
     await this.clearIndicatorList();
     this.logger.log('[!!지표 리스트 저장 시작!!]');
     console.time('[!!지표 리스트 저장 시간 측정!!]');
     for (const indicatorType of indicatorTypes) {
-      const data = await this.twelveApiUtil.getReferenceData(indicatorType, 'South Korea');
-      await this.insertDataIntoRepository(indicatorType, data, count);
-    }
-
-    for (const indicatorType of indicatorTypes) {
-      const data = await this.twelveApiUtil.getReferenceData(indicatorType, 'United States');
+      const data = await this.twelveApiUtil.getReferenceData(indicatorType, country);
       await this.insertDataIntoRepository(indicatorType, data, count);
     }
     this.logger.log('[!!지표 리스트 저장 끝!!]');
@@ -234,6 +229,11 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
 
       this.logger.log(`${type} 저장 시작~!`);
       for (let i = 0; i < count; i += BATCH_SIZE) {
+        if (count < BATCH_SIZE) {
+          const batchEntities = dataList.slice(i, i + count);
+          await this.insertBatchEntities(type, batchEntities);
+          break;
+        }
         const batchEntities = dataList.slice(i, i + BATCH_SIZE);
         await this.insertBatchEntities(type, batchEntities);
       }
