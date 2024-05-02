@@ -15,13 +15,15 @@ export const useLiveIndicatorsValueViewModel = (indicatorBoardMetadataId?: strin
   );
 
   const params: LiveIndicatorRequestParams = {
-    indicatorType: 'forex_pairs',
     startDate: getStartDate(dateRange, interval),
     interval,
     ids: indicatorBoardMetadata?.indicatorIds,
   };
 
-  const { data: indicatorsValueData, isLoading } = useFetchLiveIndicatorsValueByType(params);
+  const { data: indicatorsValueData, isLoading } = useFetchLiveIndicatorsValueByType(
+    params,
+    indicatorBoardMetadata?.indicatorInfos ?? [],
+  );
 
   const convertedIndciatorsValue = useMemo(() => {
     if (!indicatorsValueData) return undefined;

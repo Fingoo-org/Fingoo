@@ -11,7 +11,7 @@ export class IndicatorBoardMetadata {
   readonly indicatorBoardMetadataName: string;
   // private name: string;
   public customForecastIndicatorIds: string[];
-  private indicatorInfos: IndicatorInfoResponse[];
+  public indicatorInfos: IndicatorInfoResponse[];
   private sections: { [key: string]: string[] };
   constructor({
     id,
