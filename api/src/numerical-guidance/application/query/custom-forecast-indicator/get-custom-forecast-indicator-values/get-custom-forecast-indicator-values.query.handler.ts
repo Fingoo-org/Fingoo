@@ -39,15 +39,17 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
     const targetIndicatorInformation = customForecastIndicator.targetIndicatorInformation;
     const targetIndicatorId = targetIndicatorInformation.targetIndicatorId;
     const interval = 'day';
-    const tempType: IndicatorType = 'stocks'; // TODO: 임시 타입
+    const endDate = this.getEndDate();
+    const startDate = this.getStartDate();
+    const tempType: IndicatorType = targetIndicatorInformation.indicatorType;
 
     const indicatorDto = await this.loadIndicatorPort.loadIndicator(targetIndicatorId, tempType);
 
     const targetIndicator: LiveIndicatorDtoType = await this.loadLiveIndicatorPort.loadLiveIndicator(
       indicatorDto,
       interval,
-      'rowStartDate',
-      'rowEndDate',
+      startDate,
+      endDate,
     );
 
     const targetIndicatorValues: IndicatorValue[] = targetIndicator.values;
@@ -79,5 +81,24 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       return '거래소 X';
     }
     return indicatorDto.exchange;
+  }
+
+  private getEndDate(): string {
+    const currentDate = new Date();
+    return this.formatDateToString(currentDate);
+  }
+
+  private getStartDate(): string {
+    const startDate: Date = new Date();
+    startDate.setDate(startDate.getDate() - 15);
+    return this.formatDateToString(startDate);
+  }
+
+  private formatDateToString(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
 }
