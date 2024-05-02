@@ -1,6 +1,6 @@
 import {
   IndicatorBoardMetadataResponse,
-  IndicatorInfo,
+  IndicatorInfoResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
 export class IndicatorBoardMetadata {
@@ -11,7 +11,7 @@ export class IndicatorBoardMetadata {
   readonly indicatorBoardMetadataName: string;
   // private name: string;
   public customForecastIndicatorIds: string[];
-  private indicatorInfos: IndicatorInfo[];
+  private indicatorInfos: IndicatorInfoResponse[];
   private sections: { [key: string]: string[] };
   constructor({
     id,
@@ -57,7 +57,11 @@ export class IndicatorBoardMetadata {
     return this.indicatorInfos.length === 0 && this.customForecastIndicatorIds.length === 0;
   }
 
-  addIndicator(newIndicatorInfo: IndicatorInfo) {
+  getIndicatorInfo(indicatorId: string) {
+    return this.indicatorInfos.find((indicatorInfo) => indicatorInfo.id === indicatorId);
+  }
+
+  addIndicator(newIndicatorInfo: IndicatorInfoResponse) {
     this.indicatorInfos = [...this.indicatorInfos, newIndicatorInfo];
     this.sections = {
       ...this.sections,
@@ -155,7 +159,7 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     this.splice(index, 1);
   }
 
-  addIndicatorToMetadataById(metadataId: string | undefined, indicatorInfo: IndicatorInfo) {
+  addIndicatorToMetadataById(metadataId: string | undefined, indicatorInfo: IndicatorInfoResponse) {
     const metadata = this.find((metadata) => metadata.id === metadataId);
     if (!metadata) return;
 

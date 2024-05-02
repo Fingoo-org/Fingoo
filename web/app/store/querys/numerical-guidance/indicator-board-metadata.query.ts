@@ -4,7 +4,7 @@ import { defaultFetcher, deleteFetcher, patchFetcher, postFetcher } from '../fet
 import useSWRMutation from 'swr/mutation';
 import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
 
-export type IndicatorInfo = {
+export type IndicatorInfoResponse = {
   id: string;
   name: string;
   symbol: string;
@@ -15,7 +15,7 @@ export type IndicatorInfo = {
 export type IndicatorBoardMetadataResponse = {
   id: string;
   indicatorBoardMetadataName: string;
-  indicatorInfos: IndicatorInfo[];
+  indicatorInfos: IndicatorInfoResponse[];
   customForecastIndicatorIds: string[];
   sections: {
     [sectionId: string]: string[];

@@ -6,7 +6,7 @@ import {
   AddCustomForecastIndicatorToMetadataRequestBody,
   CreateIndicatorMetadataResponse,
   UpdateIndicatorBoardMetadataSectionsRequestBody,
-  IndicatorInfo,
+  IndicatorInfoResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { mockDatabaseStore } from '.';
 import { symbol } from 'zod';
@@ -58,7 +58,7 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
           symbol: 'mock',
           exchange: 'mock',
           indicatorType: 'stocks',
-        } as IndicatorInfo,
+        } as IndicatorInfoResponse,
       ],
       sections: {
         ...mockDatabaseStore.metadataList[index].sections,
