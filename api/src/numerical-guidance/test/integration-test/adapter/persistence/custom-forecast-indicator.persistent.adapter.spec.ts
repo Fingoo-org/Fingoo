@@ -29,30 +29,45 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       customForecastIndicatorName: '예측지표',
       type: 'customForecastIndicator',
-      targetIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
+      targetIndicatorInformation: {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       grangerVerification: [],
       cointJohansenVerification: [],
-      sourceIndicatorIdsAndWeights: [],
+      sourceIndicatorsInformation: [],
     });
 
     await customForecastIndicatorRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
       customForecastIndicatorName: '삭제용예측지표',
       type: 'customForecastIndicator',
-      targetIndicatorId: '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
+      targetIndicatorInformation: {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       grangerVerification: [],
       cointJohansenVerification: [],
-      sourceIndicatorIdsAndWeights: [],
+      sourceIndicatorsInformation: [],
     });
 
     await customForecastIndicatorRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
       customForecastIndicatorName: '수정전예측지표이름',
       type: 'customForecastIndicator',
-      targetIndicatorId: '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      targetIndicatorInformation: {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf3',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       grangerVerification: [],
       cointJohansenVerification: [],
-      sourceIndicatorIdsAndWeights: [],
+      sourceIndicatorsInformation: [],
     });
 
     const indicatorRepository = dataSource.getRepository(IndicatorEntity);
@@ -117,10 +132,13 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
 
   it('예측지표 생성하고 생성한 id로 예측지표 확인', async () => {
     // given
-    const customForecastIndicator: CustomForecastIndicator = CustomForecastIndicator.createNew(
-      '예측지표 이름',
-      'f5206520-da94-11ee-b91b-3551e6db3bbd',
-    );
+    const customForecastIndicator: CustomForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
+      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      targetIndicatorName: '타겟 지표',
+      indicatorType: 'stocks',
+      exchange: 'KOSPI',
+      symbol: 'PPAL',
+    });
     const memberId = 10;
 
     // when
@@ -139,10 +157,13 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
 
   it('예측지표 생성 - 회원을 찾지 못한 경우', async () => {
     // given
-    const customForecastIndicator: CustomForecastIndicator = CustomForecastIndicator.createNew(
-      '예측지표 이름',
-      'f5206520-da94-11ee-b91b-3551e6db3bbd',
-    );
+    const customForecastIndicator: CustomForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
+      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      targetIndicatorName: '타겟 지표',
+      indicatorType: 'stocks',
+      exchange: 'KOSPI',
+      symbol: 'PPAL',
+    });
     const invalidMemberId = 100;
 
     // when
@@ -241,7 +262,13 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
       '수정한예측지표이름',
       'customForecastIndicator',
-      '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '타겟 지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       [],
       [],
       [],
@@ -264,7 +291,13 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       '0d73cea1-35a5-432f-bcd1-27ae3541ba57',
       '수정한예측지표이름',
       'customForecastIndicator',
-      '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '타겟 지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       [],
       [],
       [],
@@ -289,7 +322,13 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       'invail-id',
       '수정한예측지표이름',
       'customForecastIndicator',
-      '0d73cea1-35a5-432f-bcd1-27ae3541ba75',
+      {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '타겟 지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       [],
       [],
       [],

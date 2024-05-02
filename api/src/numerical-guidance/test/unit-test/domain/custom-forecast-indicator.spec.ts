@@ -4,17 +4,20 @@ import { SourceIndicatorCountShouldNotExceedLimitRule } from 'src/numerical-guid
 import { SourceIndicatorsShouldNotDuplicateRule } from 'src/numerical-guidance/domain/rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule } from 'src/numerical-guidance/domain/rule/TargetIndicatorShouldNotBeIncludedInSourceIndicators.rule';
 import { BusinessRuleValidationException } from 'src/utils/domain/business-rule-validation.exception';
-import { IndicatorType, SourceIndicatorIdAndWeightType } from 'src/utils/type/type-definition';
+import { IndicatorType, SourceIndicatorInformation } from 'src/utils/type/type-definition';
 
 describe('예측지표', () => {
   it('예측 지표 생성', () => {
     // given
 
     // when
-    const customForecastIndicator = CustomForecastIndicator.createNew(
-      '예측지표 이름',
-      'f5206520-da94-11ee-b91b-3551e6db3bbd',
-    );
+    const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
+      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      targetIndicatorName: '예측지표',
+      indicatorType: 'stocks',
+      exchange: 'KOSPI',
+      symbol: 'PPAL',
+    });
 
     // then
     const type: IndicatorType = 'customForecastIndicator';
@@ -22,13 +25,19 @@ describe('예측지표', () => {
       'uuid',
       '예측지표 이름',
       type,
-      'f5206520-da94-11ee-b91b-3551e6db3bbd',
+      {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '예측지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       [],
       [],
       [],
     );
     expect(expected.customForecastIndicatorName).toEqual(customForecastIndicator.customForecastIndicatorName);
-    expect(expected.targetIndicatorId).toEqual(customForecastIndicator.targetIndicatorId);
+    expect(expected.targetIndicatorInformation).toEqual(customForecastIndicator.targetIndicatorInformation);
   });
 
   it('예측지표 생성-지표이름이 빈 값일 경우 - 빈 문자열일 경우', () => {
@@ -36,7 +45,13 @@ describe('예측지표', () => {
     const content = '';
     // when
     function createNewCustomForecastIndicator() {
-      CustomForecastIndicator.createNew(content, 'f5206520-da94-11ee-b91b-3551e6db3bbd');
+      CustomForecastIndicator.createNew(content, {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '예측지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      });
     }
     const rule = new CustomForecastIndicatorNameShouldNotEmptyRule(content);
 
@@ -50,7 +65,13 @@ describe('예측지표', () => {
     const content = '      ';
     // when
     function createNewCustomForecastIndicator() {
-      CustomForecastIndicator.createNew(content, 'f5206520-da94-11ee-b91b-3551e6db3bbd');
+      CustomForecastIndicator.createNew(content, {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '예측지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      });
     }
     const rule = new CustomForecastIndicatorNameShouldNotEmptyRule(content);
 
@@ -61,28 +82,33 @@ describe('예측지표', () => {
 
   it('예측지표 업데이트', () => {
     // given
-    const customForecastIndicator = CustomForecastIndicator.createNew(
-      '예측지표 이름',
-      'f5206520-da94-11ee-b91b-3551e6db3bbd',
-    );
+    const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
+      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      targetIndicatorName: '예측지표',
+      indicatorType: 'stocks',
+      exchange: 'KOSPI',
+      symbol: 'PPAL',
+    });
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [
+    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
+        indicatorType: 'stocks',
         weight: 'none',
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        indicatorType: 'stocks',
         weight: 'none',
       },
     ];
 
     // when
-    customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
 
     // then
     const expected = sourceIndicatorIdsAndWeights;
-    expect(customForecastIndicator.sourceIndicatorIdsAndWeights).toEqual(expected);
+    expect(customForecastIndicator.sourceIndicatorsInformation).toEqual(expected);
   });
 
   it('예측지표 업데이트 - 재료지표와 가중치 없는 상태로 업데이트', () => {
@@ -91,7 +117,13 @@ describe('예측지표', () => {
       '26929514-237c-11ed-861d-0242ac120011',
       'updatedCustomForecastIndicator',
       'customForecastIndicator',
-      '26929514-237c-11ed-861d-0242ac120012',
+      {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '예측지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       [
         {
           indicatorId: '26929514-237c-11ed-861d-0242ac120013',
@@ -107,42 +139,48 @@ describe('예측지표', () => {
       [
         {
           weight: 50,
+          indicatorType: 'stocks',
           sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120013',
         },
       ],
     );
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [];
+    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [];
 
     // when
-    customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
 
     // then
     const expected = [];
-    expect(customForecastIndicator.sourceIndicatorIdsAndWeights).toEqual(expected);
+    expect(customForecastIndicator.sourceIndicatorsInformation).toEqual(expected);
   });
 
   it('예측지표 업데이트 - 재료 지표가 중복될 때', () => {
     // given
-    const customForecastIndicator = CustomForecastIndicator.createNew(
-      '예측지표 이름',
-      'f5206520-da94-11ee-b91b-3551e6db3bbd',
-    );
+    const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
+      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      targetIndicatorName: '예측지표',
+      indicatorType: 'stocks',
+      exchange: 'KOSPI',
+      symbol: 'PPAL',
+    });
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [
+    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        indicatorType: 'stocks',
         weight: 'none',
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        indicatorType: 'stocks',
         weight: 'none',
       },
     ];
 
     // when
     function updateSourceIndicatorsAndWeights() {
-      customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
     }
     const rule = new SourceIndicatorsShouldNotDuplicateRule(sourceIndicatorIdsAndWeights);
 
@@ -158,10 +196,16 @@ describe('예측지표', () => {
       '26929514-237c-11ed-861d-0242ac120011',
       'updatedCustomForecastIndicator',
       'customForecastIndicator',
-      targetIndicatorId,
+      {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '예측지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       [
         {
-          indicatorId: '26929514-237c-11ed-861d-0242ac120030',
+          indicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
           verification: 'True',
         },
       ],
@@ -174,21 +218,23 @@ describe('예측지표', () => {
       [
         {
           weight: 50,
+          indicatorType: 'stocks',
           sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120032',
         },
       ],
     );
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [
+    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
+        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        indicatorType: 'stocks',
         weight: 0,
       },
     ];
 
     // when
     function updateSourceIndicatorsAndWeights() {
-      customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
     }
     const rule = new TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule(
       sourceIndicatorIdsAndWeights,
@@ -202,61 +248,75 @@ describe('예측지표', () => {
 
   it('예측지표 업데이트 - 재료 지표가 10개가 넘어갈 경우', () => {
     // given
-    const customForecastIndicator = CustomForecastIndicator.createNew(
-      '예측지표 이름',
-      'f5206520-da94-11ee-b91b-3551e6db3bbd',
-    );
+    const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
+      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      targetIndicatorName: '예측지표',
+      indicatorType: 'stocks',
+      exchange: 'KOSPI',
+      symbol: 'PPAL',
+    });
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorIdAndWeightType[] = [
+    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        indicatorType: 'stocks',
         weight: 10,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120031',
+        indicatorType: 'stocks',
         weight: 10,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120041',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120051',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120061',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120071',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120081',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120091',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
+        indicatorType: 'stocks',
         weight: 0,
       },
       {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120022',
+        indicatorType: 'stocks',
         weight: 0,
       },
     ];
 
     // when
     function updateSourceIndicatorsAndWeights() {
-      customForecastIndicator.updateSourceIndicatorsAndWeights(sourceIndicatorIdsAndWeights);
+      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
     }
     const rule = new SourceIndicatorCountShouldNotExceedLimitRule(sourceIndicatorIdsAndWeights);
 
@@ -271,7 +331,13 @@ describe('예측지표', () => {
       'f5206520-da94-11ee-b91b-3551e6db3bbd',
       '예측지표',
       'customForecastIndicator',
-      'f5206520-da94-11ee-b91b-3551e6db3bbd',
+      {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '예측지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       [],
       [],
       [],
@@ -291,7 +357,13 @@ describe('예측지표', () => {
       'f5206520-da94-11ee-b91b-3551e6db3bbd',
       '예측지표',
       'customForecastIndicator',
-      'f5206520-da94-11ee-b91b-3551e6db3bbd',
+      {
+        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        targetIndicatorName: '예측지표',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
       [],
       [],
       [],

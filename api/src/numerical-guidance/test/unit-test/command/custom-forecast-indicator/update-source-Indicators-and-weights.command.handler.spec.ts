@@ -1,80 +1,96 @@
 import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
-import { UpdateSourceIndicatorsAndWeightsCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/update-source-indicators-and-weights/update-source-indicators-and-weights.command.handler';
-import { UpdateSourceIndicatorsAndWeightsPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-and-weights.port';
+import { UpdateSourceIndicatorsInformationCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/update-source-indicators-and-weights/update-source-indicators-information.command.handler';
+import { UpdateSourceIndicatorsInformationPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-information.port';
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
-import { UpdateSourceIndicatorsAndWeightsCommand } from 'src/numerical-guidance/application/command/custom-forecast-indicator/update-source-indicators-and-weights/update-source-indicators-and-weights.command';
+import { UpdateSourceIndicatorsInformationCommand } from 'src/numerical-guidance/application/command/custom-forecast-indicator/update-source-indicators-and-weights/update-source-indicators-informations.command';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
 }));
 
 describe('UpdateSourceIndicatorsAndWeightsCommandHandler', () => {
-  let updateSourceIndicatorsAndWeightsCommandHandler: UpdateSourceIndicatorsAndWeightsCommandHandler;
-  let updateSourceIndicatorsAndWeightsPort: UpdateSourceIndicatorsAndWeightsPort;
+  let updateSourceIndicatorsInformationCommandHandler: UpdateSourceIndicatorsInformationCommandHandler;
+  let updateSourceIndicatorsInformationPort: UpdateSourceIndicatorsInformationPort;
   let loadCustomForecastIndicatorPort: LoadCustomForecastIndicatorPort;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [CqrsModule, ConfigModule.forRoot()],
       providers: [
-        UpdateSourceIndicatorsAndWeightsCommandHandler,
+        UpdateSourceIndicatorsInformationCommandHandler,
         {
-          provide: 'UpdateSourceIndicatorsAndWeightsPort',
+          provide: 'UpdateSourceIndicatorsInformationPort',
           useValue: {
-            updateSourceIndicatorsAndWeights: jest.fn(),
+            updateSourceIndicatorsInformation: jest.fn(),
           },
         },
         {
           provide: 'LoadCustomForecastIndicatorPort',
           useValue: {
             loadCustomForecastIndicator: jest.fn().mockImplementation(() => {
-              return new CustomForecastIndicator('id', 'name', 'customForecastIndicator', 'targetId', [], [], []);
+              return new CustomForecastIndicator(
+                'id',
+                'name',
+                'customForecastIndicator',
+                {
+                  targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+                  targetIndicatorName: '타겟지표',
+                  indicatorType: 'stocks',
+                  exchange: 'KOSPI',
+                  symbol: 'PPAL',
+                },
+                [],
+                [],
+                [],
+              );
             }),
           },
         },
       ],
     }).compile();
-    updateSourceIndicatorsAndWeightsCommandHandler = module.get(UpdateSourceIndicatorsAndWeightsCommandHandler);
-    updateSourceIndicatorsAndWeightsPort = module.get('UpdateSourceIndicatorsAndWeightsPort');
+    updateSourceIndicatorsInformationCommandHandler = module.get(UpdateSourceIndicatorsInformationCommandHandler);
+    updateSourceIndicatorsInformationPort = module.get('UpdateSourceIndicatorsInformationPort');
     loadCustomForecastIndicatorPort = module.get('LoadCustomForecastIndicatorPort');
   }, 10000);
-  it('예측지표에 indicatorId와 weight를 추가한다.', async () => {
-    const command: UpdateSourceIndicatorsAndWeightsCommand = new UpdateSourceIndicatorsAndWeightsCommand(
+  it('예측지표에 재료 지표 정보를 추가한다.', async () => {
+    const command: UpdateSourceIndicatorsInformationCommand = new UpdateSourceIndicatorsInformationCommand(
       '160e5499-4925-4e38-bb00-8ea6d8056484',
       [
         {
           weight: 'none',
+          indicatorType: 'stocks',
           sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
         },
         {
           weight: '0.07/8',
+          indicatorType: 'stocks',
           sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
         },
       ],
     );
 
     // when
-    await updateSourceIndicatorsAndWeightsCommandHandler.execute(command);
+    await updateSourceIndicatorsInformationCommandHandler.execute(command);
 
     // then
     expect(loadCustomForecastIndicatorPort.loadCustomForecastIndicator).toHaveBeenCalledTimes(1);
-    expect(updateSourceIndicatorsAndWeightsPort.updateSourceIndicatorsAndWeights).toHaveBeenCalledTimes(1);
+    expect(updateSourceIndicatorsInformationPort.updateSourceIndicatorsInformation).toHaveBeenCalledTimes(1);
   });
 
-  it('예측지표에 indicatorId와 weight를 적용하지 않는다.', async () => {
-    const command: UpdateSourceIndicatorsAndWeightsCommand = new UpdateSourceIndicatorsAndWeightsCommand(
+  it('예측지표에 재료지표를 적용하지 않는다.', async () => {
+    const command: UpdateSourceIndicatorsInformationCommand = new UpdateSourceIndicatorsInformationCommand(
       '160e5499-4925-4e38-bb00-8ea6d8056484',
       [],
     );
 
     // when
-    await updateSourceIndicatorsAndWeightsCommandHandler.execute(command);
+    await updateSourceIndicatorsInformationCommandHandler.execute(command);
 
     // then
     expect(loadCustomForecastIndicatorPort.loadCustomForecastIndicator).toHaveBeenCalledTimes(1);
-    expect(updateSourceIndicatorsAndWeightsPort.updateSourceIndicatorsAndWeights).toHaveBeenCalledTimes(1);
+    expect(updateSourceIndicatorsInformationPort.updateSourceIndicatorsInformation).toHaveBeenCalledTimes(1);
   });
 });

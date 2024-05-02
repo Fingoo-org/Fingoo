@@ -14,7 +14,13 @@ describe('GetCustomForecastIndicatorQueryHandler', () => {
           provide: 'LoadCustomForecastIndicatorPort',
           useValue: {
             loadCustomForecastIndicator: jest.fn().mockImplementation(() => {
-              const data = CustomForecastIndicator.createNew('예측지표', '목표지표 uuid');
+              const data = CustomForecastIndicator.createNew('예측지표', {
+                targetIndicatorId: '목표지표 uuid',
+                targetIndicatorName: '예측지표',
+                indicatorType: 'stocks',
+                exchange: 'KOSPI',
+                symbol: 'PPAL',
+              });
               return data;
             }),
           },
@@ -35,6 +41,6 @@ describe('GetCustomForecastIndicatorQueryHandler', () => {
     const expectedName = '예측지표';
     const expectedTargetIndicatorId = '목표지표 uuid';
     expect(result.customForecastIndicatorName).toEqual(expectedName);
-    expect(result.targetIndicatorId).toEqual(expectedTargetIndicatorId);
+    expect(result.targetIndicatorInformation.targetIndicatorId).toEqual(expectedTargetIndicatorId);
   });
 });
