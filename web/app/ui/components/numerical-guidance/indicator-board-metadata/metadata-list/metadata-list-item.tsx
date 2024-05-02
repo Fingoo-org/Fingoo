@@ -157,7 +157,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           <div
             className={cn('divide-y-2', {
               'divide-white': isSelected,
-              'divide-blue-200': !isSelected,
+              'divide-fingoo-sub': !isSelected,
             })}
           >
             {indicatorIdsWithSectionIds ? renderDraggableList(indicatorIdsWithSectionIds) : null}
