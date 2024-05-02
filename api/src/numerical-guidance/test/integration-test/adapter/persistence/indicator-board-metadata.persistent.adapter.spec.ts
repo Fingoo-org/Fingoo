@@ -69,12 +69,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorInfos: [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -93,12 +95,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorInfos: [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -117,12 +121,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorInfos: [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -150,12 +156,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorInfos: [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -318,12 +326,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -349,12 +359,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       {
         exchange: 'NASDAQ',
         id: 'indicatorId1',
+        symbol: 'AAPL',
         indicatorType: 'stocks',
         name: 'Apple Inc',
       },
       {
         exchange: 'NYSE',
         id: 'indicatorId2',
+        symbol: 'AAPL',
         indicatorType: 'stocks',
         name: 'Advance Auto Parts Inc',
       },
@@ -420,12 +432,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -461,12 +475,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -492,12 +508,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       {
         exchange: 'NASDAQ',
         id: 'indicatorId1',
+        symbol: 'AAPL',
         indicatorType: 'stocks',
         name: 'Apple Inc',
       },
       {
         exchange: 'NYSE',
         id: 'indicatorId2',
+        symbol: 'AAPL',
         indicatorType: 'stocks',
         name: 'Advance Auto Parts Inc',
       },
@@ -517,12 +535,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -558,12 +578,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -601,12 +623,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -697,12 +721,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -734,12 +760,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',
@@ -775,12 +803,14 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       [
         {
           id: 'indicatorId1',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Apple Inc',
           exchange: 'NASDAQ',
         },
         {
           id: 'indicatorId2',
+          symbol: 'AAPL',
           indicatorType: 'stocks',
           name: 'Advance Auto Parts Inc',
           exchange: 'NYSE',

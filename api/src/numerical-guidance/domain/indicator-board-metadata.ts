@@ -9,6 +9,7 @@ import { IndicatorType } from '../../utils/type/type-definition';
 
 export type IndicatorInfo = {
   id: string;
+  symbol: string;
   indicatorType: IndicatorType;
   name: string; // cryptocurrencies, forex_pairs -> currency_base 대체
   exchange: string; // cryptocurrencies -> currency_base, forex_pairs -> group 대체

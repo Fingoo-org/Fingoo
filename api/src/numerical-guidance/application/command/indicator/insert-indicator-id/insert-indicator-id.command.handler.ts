@@ -34,8 +34,10 @@ export class InsertIndicatorIdCommandHandler implements ICommandHandler {
   }
 
   private getIndicatorInfo(indicatorDto: IndicatorDtoType): IndicatorInfo {
+    console.log('name', indicatorDto);
     return {
       id: indicatorDto.id,
+      symbol: indicatorDto.symbol,
       indicatorType: indicatorDto.indicatorType,
       name: this.getIndicatorNameByType(indicatorDto),
       exchange: this.getIndicatorExchangeByType(indicatorDto),
@@ -43,17 +45,17 @@ export class InsertIndicatorIdCommandHandler implements ICommandHandler {
   }
 
   private getIndicatorNameByType(indicatorDto): string {
-    if (indicatorDto.type == 'cryptocurrencies' || indicatorDto.type == 'forex_pairs') {
+    if (indicatorDto.indicatorType === 'cryptocurrencies' || indicatorDto.indicatorType === 'forex_pairs') {
       return indicatorDto.currency_base;
     }
     return indicatorDto.name;
   }
 
   private getIndicatorExchangeByType(indicatorDto): string {
-    if (indicatorDto.type == 'cryptocurrencies') {
+    if (indicatorDto.indicatorType === 'cryptocurrencies') {
       return indicatorDto.currency_base;
     }
-    if (indicatorDto.type == 'forex_pairs') {
+    if (indicatorDto.indicatorType == 'forex_pairs') {
       return indicatorDto.currency_group;
     }
     return indicatorDto.exchange;
