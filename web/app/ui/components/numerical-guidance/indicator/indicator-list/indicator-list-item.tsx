@@ -38,7 +38,7 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
         ref={iconButtonRef}
         onClick={handleIconButton}
         icon={DotsHorizontalIcon}
-        color={'violet'}
+        color={'emerald'}
       />
     );
   };
