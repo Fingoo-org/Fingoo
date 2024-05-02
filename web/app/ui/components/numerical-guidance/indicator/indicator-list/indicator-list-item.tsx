@@ -16,7 +16,14 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.INDICATOR_EDIT_MENU);
   const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } = useSelectedIndicatorBoardMetadata();
   const isSelected = selectedMetadata?.indicatorIds?.some((id) => id === item.id) || false;
-  const handleItemSelect = () => addIndicatorToMetadata({ indicatorId: item.id });
+  const handleItemSelect = () =>
+    addIndicatorToMetadata({
+      id: item.id,
+      name: item.name,
+      symbol: item.symbol,
+      exchange: item.exchange,
+      indicatorType: item.indicatorType,
+    });
   const handleItemDeSelect = () => deleteIndicatorFromMetadata(item.id);
 
   const handleIconButton = () => {

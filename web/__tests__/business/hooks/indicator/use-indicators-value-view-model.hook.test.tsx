@@ -34,7 +34,11 @@ describe('useLiveIndicatorsValueViewModel', () => {
     // // when
     act(() => {
       result.current.addIndicatorToMetadata({
-        indicatorId: '1',
+        id: '1',
+        symbol: 'AAPL',
+        name: 'Apple Inc.',
+        exchange: 'US',
+        indicatorType: 'stocks',
       });
     });
     await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());
@@ -63,12 +67,20 @@ describe('useLiveIndicatorsValueViewModel', () => {
     // // when
     act(() => {
       result.current.addIndicatorToMetadata({
-        indicatorId: '1',
+        id: '1',
+        symbol: 'AAPL',
+        name: 'Apple Inc.',
+        exchange: 'US',
+        indicatorType: 'stocks',
       });
     });
     act(() => {
       result.current.addIndicatorToMetadata({
-        indicatorId: '2',
+        id: '2',
+        symbol: 'MSFT',
+        name: 'Microsoft Corporation',
+        exchange: 'US',
+        indicatorType: 'stocks',
       });
     });
     await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());
@@ -104,7 +116,11 @@ describe('useLiveIndicatorsValueViewModel', () => {
     // // when
     act(() => {
       result.current.addIndicatorToMetadata({
-        indicatorId: '1',
+        id: '1',
+        symbol: 'AAPL',
+        name: 'Apple Inc.',
+        exchange: 'US',
+        indicatorType: 'stocks',
       });
     });
     await waitFor(() => expect(result.current.indicatorsValue).not.toBeUndefined());

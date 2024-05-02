@@ -2,11 +2,20 @@ import useSWR from 'swr';
 import { API_PATH } from '../api-path';
 import { defaultFetcher, deleteFetcher, patchFetcher, postFetcher } from '../fetcher';
 import useSWRMutation from 'swr/mutation';
+import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
+
+export type IndicatorInfo = {
+  id: string;
+  name: string;
+  symbol: string;
+  exchange: string;
+  indicatorType: IndicatorType;
+};
 
 export type IndicatorBoardMetadataResponse = {
   id: string;
   indicatorBoardMetadataName: string;
-  indicatorIds: string[];
+  indicatorInfos: IndicatorInfo[];
   customForecastIndicatorIds: string[];
   sections: {
     [sectionId: string]: string[];

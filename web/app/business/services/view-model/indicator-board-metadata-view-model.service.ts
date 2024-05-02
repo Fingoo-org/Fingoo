@@ -1,4 +1,7 @@
-import { IndicatorBoardMetadataResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
+import {
+  IndicatorBoardMetadataResponse,
+  IndicatorInfo,
+} from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
 export class IndicatorBoardMetadata {
   // 여기는 response와 같아야함
@@ -8,20 +11,19 @@ export class IndicatorBoardMetadata {
   readonly indicatorBoardMetadataName: string;
   // private name: string;
   public customForecastIndicatorIds: string[];
-  public indicatorIds: string[];
+  private indicatorInfos: IndicatorInfo[];
   private sections: { [key: string]: string[] };
   constructor({
     id,
     indicatorBoardMetadataName,
-    indicatorIds,
+    indicatorInfos,
     customForecastIndicatorIds,
     sections,
   }: IndicatorBoardMetadataResponse) {
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
     this.sections = sections;
-    // temp: api 문제로 임시 처리
-    this.indicatorIds = indicatorIds.filter((id) => id !== '');
+    this.indicatorInfos = indicatorInfos;
     this.customForecastIndicatorIds = customForecastIndicatorIds;
   }
 
@@ -37,25 +39,29 @@ export class IndicatorBoardMetadata {
     return `section${Object.keys(this.sections).length}`;
   }
 
+  get indicatorIds() {
+    return this.indicatorInfos.map((info) => info.id);
+  }
+
   get formattedIndicatorBoardMetadata(): IndicatorBoardMetadataResponse {
     return {
       id: this.id,
       indicatorBoardMetadataName: this.name,
-      indicatorIds: this.indicatorIds,
+      indicatorInfos: this.indicatorInfos,
       customForecastIndicatorIds: this.customForecastIndicatorIds,
       sections: this.sections,
     };
   }
 
   get isEmpty() {
-    return this.indicatorIds.length === 0 && this.customForecastIndicatorIds.length === 0;
+    return this.indicatorInfos.length === 0 && this.customForecastIndicatorIds.length === 0;
   }
 
-  addIndicator(indicatorId: string) {
-    this.indicatorIds = [...this.indicatorIds, indicatorId];
+  addIndicator(newIndicatorInfo: IndicatorInfo) {
+    this.indicatorInfos = [...this.indicatorInfos, newIndicatorInfo];
     this.sections = {
       ...this.sections,
-      [this.lastsectionId]: [...this.sections[this.lastsectionId], indicatorId],
+      [this.lastsectionId]: [...this.sections[this.lastsectionId], newIndicatorInfo.id],
     };
   }
 
@@ -79,7 +85,7 @@ export class IndicatorBoardMetadata {
   }
 
   deleteIndicator(indicatorId: string) {
-    this.indicatorIds = this.indicatorIds.filter((id) => id !== indicatorId);
+    this.indicatorInfos = this.indicatorInfos.filter((indicatorInfo) => indicatorInfo.id !== indicatorId);
     this.sections = Object.entries(this.sections).reduce<{
       [key: string]: string[];
     }>((acc, [key, value]) => {
@@ -149,11 +155,11 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     this.splice(index, 1);
   }
 
-  addIndicatorToMetadataById(metadataId: string | undefined, indicatorId: string) {
+  addIndicatorToMetadataById(metadataId: string | undefined, indicatorInfo: IndicatorInfo) {
     const metadata = this.find((metadata) => metadata.id === metadataId);
     if (!metadata) return;
 
-    metadata.addIndicator(indicatorId);
+    metadata.addIndicator(indicatorInfo);
   }
 
   addCustomForecastIndicatorToMetadataById(metadataId: string | undefined, customForecastIndicatorId: string) {

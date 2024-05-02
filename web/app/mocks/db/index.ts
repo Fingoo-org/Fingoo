@@ -35,7 +35,7 @@ const initialState: MockDatabase = {
     {
       id: '1',
       indicatorBoardMetadataName: 'metadata1',
-      indicatorIds: [],
+      indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: {
         section1: [],
@@ -44,7 +44,7 @@ const initialState: MockDatabase = {
     {
       id: '2',
       indicatorBoardMetadataName: 'metadata2',
-      indicatorIds: [],
+      indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: {
         section1: [],
@@ -53,7 +53,7 @@ const initialState: MockDatabase = {
     {
       id: '3',
       indicatorBoardMetadataName: 'metadata3',
-      indicatorIds: [],
+      indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: {
         section1: [],

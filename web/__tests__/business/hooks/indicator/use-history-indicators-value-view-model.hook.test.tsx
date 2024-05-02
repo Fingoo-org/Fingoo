@@ -44,7 +44,11 @@ describe('useHistoryIndicatorsValueViewModel', () => {
     const indicator = findIndicatorByName('삼성전자');
     act(() => {
       result.current.addIndicatorToMetadata({
-        indicatorId: indicator?.id ?? '1',
+        id: indicator?.id ?? '',
+        symbol: indicator?.ticker ?? '',
+        name: indicator?.name ?? '',
+        exchange: 'KRX',
+        indicatorType: 'stocks',
       });
     });
     act(() => {

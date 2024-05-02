@@ -140,7 +140,11 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       act(() => {
         if (result.current.indicatorList?.[0]) {
           result.current.addIndicatorToMetadata({
-            indicatorId: '1',
+            id: '1',
+            symbol: 'AAPL',
+            name: 'Apple Inc.',
+            exchange: 'US',
+            indicatorType: 'stocks',
           });
         }
       });
@@ -176,7 +180,11 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       act(() => {
         if (result.current.indicatorList?.[0]) {
           result.current.addIndicatorToMetadata({
-            indicatorId: '1',
+            id: '1',
+            symbol: 'AAPL',
+            name: 'Apple Inc.',
+            exchange: 'US',
+            indicatorType: 'stocks',
           });
         }
       });
