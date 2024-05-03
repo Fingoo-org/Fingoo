@@ -39,7 +39,7 @@ export default function MultiLineChart({
         index={index}
         categories={categories}
         // colors={['indigo-300', 'indigo-300', 'indigo-300', 'green-300', 'violet-400']}
-        colors={['yellow-400', 'rose-300', 'green-300', 'blue-400', 'violet-400']}
+        colors={['yellow-400', 'rose-300', 'green-300', 'blue-400', 'violet-400', 'red-400', 'red-400']}
         yAxisWidth={60}
         onValueChange={(v) => setValue(v)}
         showAnimation={true}
