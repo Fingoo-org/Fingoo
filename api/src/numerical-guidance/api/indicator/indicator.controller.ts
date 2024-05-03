@@ -12,6 +12,7 @@ import { CursorPageDto } from '../../../utils/pagination/cursor-page.dto';
 import { SearchedIndicatorsDto } from '../../application/query/indicator/get-indicator-search/dto/searched-indicators.dto';
 import { SearchSymbolDto } from './dto/search-symbol.dto';
 import { IndicatorDtoType } from '../../../utils/type/type-definition';
+import { SaveIndicatorListDto } from '../../application/command/indicator/save-indicator-list/dto/save-indicator-list.dto';
 
 @ApiTags('IndicatorController')
 @Controller('/api/numerical-guidance/indicator')
@@ -23,8 +24,8 @@ export class IndicatorController {
 
   @ApiOperation({ summary: '지표 리스트를 저장합니다.' })
   @Post('/list')
-  async saveIndicatorList(@Query('count') count: number): Promise<void> {
-    const command = new SaveIndicatorListCommand(count);
+  async saveIndicatorList(@Query() saveIndicatorListDto: SaveIndicatorListDto): Promise<void> {
+    const command = new SaveIndicatorListCommand(saveIndicatorListDto.count, saveIndicatorListDto.country);
     return this.commandBus.execute(command);
   }
 
