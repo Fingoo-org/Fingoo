@@ -13,22 +13,26 @@ def hello() :
 @app.get("/api/var-api/custom-forecast-indicator/")
 def loadPredictedIndicator(
     targetIndicatorId: str = Query(...),
+    targetIndicatorType: str = Query(...),
     sourceIndicatorId: list[str] = Query(default = None),
+    sourceIndicatorType: list[str] = Query(default = None),
     weight: list[int] = Query(default = None),
     ):
 	
     if not sourceIndicatorId and not weight:
-        prediction = predictWithoutTargetIndicator(targetIndicatorId, get_db())
+        prediction = predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, get_db())
     else:
-        prediction = predict(targetIndicatorId, sourceIndicatorId, weight, get_db())
+        prediction = predict(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, get_db())
 
     return prediction
 
 @app.get("/api/var-api/source-indicators-verification/")
 def loadSourceIndicatorsVerification(
     targetIndicatorId: str = Query(...),
+    targetIndicatorType: str = Query(...),
     sourceIndicatorId: list[str] = Query(default = None),
+    sourceIndicatorType: list[str] = Query(default = None),
     weight: list[int] = Query(default = None),
     ):
-	verificaion = sourceIndicatorsVerification(targetIndicatorId, sourceIndicatorId, weight, get_db())
+	verificaion = sourceIndicatorsVerification(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, get_db())
 	return verificaion
