@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm';
 import { BaseIndicatorEntity } from './base-indicator.entity';
 import { IndicatorType } from '../../../../../../utils/type/type-definition';
 
-@Entity({ name: 'CryptoCurrencies' })
+@Entity({ name: 'cryptocurrencies' })
 export class CryptoCurrenciesEntity extends BaseIndicatorEntity {
   @Column({ default: 'cryptocurrencies' })
   indicatorType: IndicatorType;
