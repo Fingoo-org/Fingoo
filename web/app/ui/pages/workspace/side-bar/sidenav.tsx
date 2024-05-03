@@ -30,16 +30,16 @@ export default function SideNav() {
         </div>
         <div className="flex h-full flex-col">
           <SideNavHeader />
-          <div className="grow">
-            <div className="grid h-full grid-rows-[5fr_7fr] ">
+          <div className="flex-auto">
+            <div className="flex h-full flex-col">
               {!collapsed ? (
-                <div>
+                <div className="grow">
                   <IndicatorBoardToolbar />
                 </div>
               ) : (
                 <div></div>
               )}
-              <div className="h-full pb-8">
+              <div className="flex h-[500px] flex-col justify-end pb-6">
                 <Chat />
               </div>
             </div>
@@ -52,7 +52,7 @@ export default function SideNav() {
 
 function SideNavHeader() {
   return (
-    <div className="ml-8 flex h-32 items-center">
+    <div className="ml-8 flex h-[10%] items-center">
       <div className="mr-8 h-14 w-14 min-w-14 rounded-lg bg-gray-300"></div>
       <p className="truncate text-xl">Fingoo</p>
     </div>

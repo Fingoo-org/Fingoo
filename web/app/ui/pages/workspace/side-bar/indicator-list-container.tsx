@@ -7,7 +7,7 @@ import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicato
 
 export default function IndicatorListContainer() {
   return (
-    <div>
+    <div className="flex h-full flex-col">
       <IndicatorTypeToggleGroup />
       <IndicatorListResult />
       {/* <DepretedComponent /> */}
