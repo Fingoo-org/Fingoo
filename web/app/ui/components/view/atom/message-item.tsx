@@ -1,3 +1,5 @@
+import { cn } from '@/app/utils/style';
+
 export type MessageProps = {
   role: 'function' | 'user' | 'assistant' | 'system' | 'data' | 'tool';
   content: React.ReactNode;
@@ -6,14 +8,18 @@ export type MessageProps = {
 export const MessageItem = ({ role, content }: MessageProps) => {
   return (
     <div
-      className={` flex h-auto flex-col-reverse ${role === 'user' ? `items-end justify-end` : `items-start justify-start`}`}
+      className={cn('flex h-auto flex-col-reverse', {
+        'items-end justify-end': role === 'user',
+        'items-start justify-start': role !== 'user',
+      })}
     >
       <div
-        className={`flex w-auto max-w-64 rounded-lg p-3 ${
-          role === 'user' ? `justify-end bg-[#333333] text-right text-white` : `justify-start bg-[#f1f1f1] text-black`
-        }`}
+        className={cn('flex w-auto max-w-64 rounded-lg p-2', {
+          'justify-end bg-[#333333] text-right text-white': role === 'user',
+          'justify-start bg-[#f1f1f1] text-black': role !== 'user',
+        })}
       >
-        <div className="flex font-pretendard text-sm font-light">{content}</div>
+        <div className="flex font-pretendard text-xs font-semibold">{content}</div>
       </div>
     </div>
   );

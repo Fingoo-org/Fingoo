@@ -51,7 +51,7 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
             onDeSelect={handleItemDeSelect}
             key={item.id}
             selected={isSelected}
-            className="rounded-lg"
+            className="rounded-lg py-1"
           >
             <div className="mr-9 flex items-center justify-between text-xs">
               <div>{item.symbol}</div>

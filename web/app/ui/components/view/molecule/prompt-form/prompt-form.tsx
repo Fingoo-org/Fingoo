@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSubmit } from '../../hooks/use-submit.hooks';
-import { Textarea } from '@tremor/react';
 import TextAreaAutoSize from 'react-textarea-autosize';
-import Tooltip from '../../atom/tooltip';
 import IconButton from '../../atom/icons/icon-button';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
 import { ChatRequestOptions } from 'ai';
 import { cn } from '@/app/utils/style';
+import { TextInput } from '@tremor/react';
 
 type PromptFormProps = {
   value: string;
@@ -16,13 +15,13 @@ type PromptFormProps = {
 };
 
 const PromptForm = ({ value, onValueChange, disable, formAction }: PromptFormProps) => {
-  const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
+  const textAreaRef = React.useRef<HTMLInputElement>(null);
   const { formRef, onKeyDown } = useSubmit();
 
   return (
     <form
       className={cn(
-        'flex w-full items-center justify-around rounded-lg border border-fingoo-gray-5',
+        'flex w-full items-center justify-around rounded-lg border border-fingoo-gray-3',
         {
           'bg-gray-100': disable,
           'bg-white': !disable,
@@ -33,15 +32,14 @@ const PromptForm = ({ value, onValueChange, disable, formAction }: PromptFormPro
       ref={formRef}
       onSubmit={formAction}
     >
-      <TextAreaAutoSize
+      <TextInput
         ref={textAreaRef}
-        className="flex w-11/12 resize-none rounded-lg  border-none text-sm focus:outline-none focus:ring-0 disabled:bg-gray-100"
+        className="flex w-11/12 resize-none rounded-lg border-0 text-sm outline-none ring-0 hover:bg-white focus:border-0 focus:bg-white focus:outline-none focus:ring-0 disabled:bg-gray-100"
         onChange={onValueChange}
         placeholder="내용을 입력하세요"
         value={value}
         onKeyDown={onKeyDown}
         disabled={disable}
-        minRows={1}
       />
       <IconButton color="black" size="md" icon={PaperPlaneIcon} type="submit" disabled={disable} />
     </form>

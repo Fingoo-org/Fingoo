@@ -7,12 +7,14 @@ export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
 
   return (
-    <ChatCard defaultOpen={true} className="2lg:px-10 px-6">
-      <ChatCard.Header title="Asking GPT" />
-      <ChatCard.Content isLoading={isLoading} messages={messages} />
-      <div className="pt-5">
+    <div className="2lg:px-10 px-6">
+      <ChatCard defaultOpen={true}>
+        <ChatCard.Header title="Asking GPT" />
+        <ChatCard.Content isLoading={isLoading} messages={messages} />
+      </ChatCard>
+      <div className="pt-2">
         <PromptForm value={input} onValueChange={handleInputChange} formAction={handleSubmit} />
       </div>
-    </ChatCard>
+    </div>
   );
 }
