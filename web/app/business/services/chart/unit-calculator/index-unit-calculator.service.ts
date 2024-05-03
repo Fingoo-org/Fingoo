@@ -18,6 +18,6 @@ export class IndexUnitCalculator extends UnitCalculator {
   }
 
   caculateItem(item: ValueItem) {
-    return ((this.parseValueToInt(item.value) - this._min) / (this._max - this._min)) * 100;
+    return this.parseValueFixed(((this.parseValueToInt(item.value) - this._min) / (this._max - this._min)) * 100, 2);
   }
 }
