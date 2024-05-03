@@ -15,8 +15,8 @@ export default function SideNav() {
   };
 
   return (
-    <div className="h-full bg-white">
-      <Sidebar collapsedWidth="120px" width="400px" collapsed={collapsed} className="h-full">
+    <div className="h-screen bg-white">
+      <Sidebar collapsedWidth="120px" width="400px" collapsed={collapsed} className="h-screen">
         <div className="relative">
           <div className="absolute right-0">
             <IconButton
@@ -28,18 +28,18 @@ export default function SideNav() {
             />
           </div>
         </div>
-        <div className="flex h-full flex-col">
+        <div className="flex h-screen flex-col">
           <SideNavHeader />
-          <div className="flex-auto">
-            <div className="flex h-full flex-col">
+          <div className="grow">
+            <div className="grid h-full grid-rows-[5fr_7fr]">
               {!collapsed ? (
-                <div className="grow">
+                <div>
                   <IndicatorBoardToolbar />
                 </div>
               ) : (
                 <div></div>
               )}
-              <div className="flex h-[500px] flex-col justify-end pb-6">
+              <div className="flex flex-col justify-center">
                 <Chat />
               </div>
             </div>

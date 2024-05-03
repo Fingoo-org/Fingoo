@@ -22,7 +22,7 @@ const PromptForm = ({ value, onValueChange, disable, formAction }: PromptFormPro
   return (
     <form
       className={cn(
-        'flex w-full items-center justify-around rounded-lg border border-fingoo-gray-5',
+        'flex w-full items-center justify-around rounded-lg border border-fingoo-gray-3',
         {
           'bg-gray-100': disable,
           'bg-white': !disable,

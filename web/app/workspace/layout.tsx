@@ -3,7 +3,7 @@ import FloatingComponentContainer from '../ui/pages/workspace/floating-component
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen  md:flex-row md:overflow-hidden">
+    <div className="flex h-screen md:flex-row md:overflow-hidden">
       <SideNav />
       <div className="grow">{children}</div>
       <FloatingComponentContainer />
