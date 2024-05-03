@@ -5,6 +5,10 @@ export function formatDate(date: string | dayjs.Dayjs) {
   return parseDate(date).format('YYYY-MM-DD');
 }
 
+export function addOneDay(date: string | dayjs.Dayjs) {
+  return parseDate(date).add(1, 'day').format('YYYY-MM-DD');
+}
+
 export function parseDate(date: string | dayjs.Dayjs): dayjs.Dayjs {
   if (dayjs(date, 'YYYY-MM-DD', true).isValid()) {
     return dayjs(date);
@@ -22,11 +26,11 @@ function getSmallestDate(date1: string, date2: string) {
 }
 
 export function getBigestDateInArray(dates: string[]) {
-  return dates.reduce((acc, date) => getBiggestDate(acc, date));
+  return dates.reduce((acc, date) => getBiggestDate(acc, date), dates[0]);
 }
 
 export function getSmallestDateInArray(dates: string[]) {
-  return dates.reduce((acc, date) => getSmallestDate(acc, date));
+  return dates.reduce((acc, date) => getSmallestDate(acc, date), dates[0]);
 }
 
 export function getStartDate(dateRange: DateRange, interval: Interval) {

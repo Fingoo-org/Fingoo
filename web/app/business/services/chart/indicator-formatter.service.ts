@@ -1,6 +1,7 @@
 import { FormattedItem, IndicatorValue } from '../view-model/indicator-value/indicator-value-view-model.service';
 import { UnitType } from './unit-calculator/unit-calculator-factory.service';
-import { formatDate } from '@/app/utils/date-formatter';
+import { addOneDay, formatDate } from '@/app/utils/date-formatter';
+import { getBigestDateInArray, getSmallestDateInArray } from '@/app/utils/date-formatter';
 
 export type FormattedIndicatorValue = {
   value: number;
@@ -35,16 +36,32 @@ export class IndicatorFormatter {
     }, {});
   }
 
-  get formattedIndicatorsInRow() {
-    const formattedIndicatorsByDate = this.formattedIndicatorsByDate;
-    return Object.keys(formattedIndicatorsByDate)
-      .map<FormattedRowType>((date) => {
-        return {
-          date,
-          ...formattedIndicatorsByDate[date],
-        };
-      })
-      .reverse();
+  get formattedIndicatorsInRow(): FormattedRowType[] {
+    const formmatedItems = this.indicatorsValue.map((indicator) =>
+      indicator.formatItemsByDate({
+        isValueWithIndexUnit: this.unitType === 'index',
+      }),
+    );
+
+    const iteratorCallback = (date: string) => {
+      const isHasDate = formmatedItems.some((items) => date in items);
+
+      if (!isHasDate) {
+        return;
+      }
+
+      return {
+        date,
+        ...formmatedItems.reduce<FormattedRowType>((acc, items) => {
+          return {
+            ...acc,
+            ...items[date],
+          };
+        }, {}),
+      };
+    };
+
+    return this.iterateSmallestToBiggestDate(iteratorCallback);
   }
 
   get formmatedIndicatorsToCSV() {
@@ -60,6 +77,24 @@ export class IndicatorFormatter {
         return acc;
       }, {});
     });
+  }
+
+  iterateSmallestToBiggestDate(callback: (date: string) => FormattedRowType | undefined): FormattedRowType[] {
+    const biggestDate = getBigestDateInArray(this.indicatorsValue.map((indicator) => indicator.lastDate));
+    const smallestDate = getSmallestDateInArray(this.indicatorsValue.map((indicator) => indicator.startDate));
+
+    console.log('biggestDate', biggestDate);
+    console.log('smallestDate', smallestDate);
+    let currentDate = smallestDate;
+    let result = [];
+    while (currentDate <= biggestDate) {
+      const callbackResult = callback(currentDate);
+      if (callbackResult) {
+        result.push(callbackResult);
+      }
+      currentDate = addOneDay(currentDate);
+    }
+    return result;
   }
 
   get columns() {
