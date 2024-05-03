@@ -65,18 +65,18 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       customForecastIndicatorValues: customFroecastIndicatorValues.indicatorValues,
       targetIndicatorValues: targetIndicatorValues,
     };
-
+    console.log(customForecastIndicatorValuesResponse);
     return customForecastIndicatorValuesResponse;
   }
 
-  private getIndicatorNameByType(indicatorDto): string {
-    if (indicatorDto.type == 'cryptocurrencies') {
-      return indicatorDto.symbol;
+  private getIndicatorNameByType(indicatorDto: any): string {
+    if (indicatorDto.type == 'forex_pairs' || indicatorDto.type == 'cryptocurrencies') {
+      return 'currency_base';
     }
     return indicatorDto.name;
   }
 
-  private getExchangeByType(indicatorDto): string {
+  private getExchangeByType(indicatorDto: any): string {
     if (indicatorDto.type == 'forex_pairs' || indicatorDto.type == 'cryptocurrencies') {
       return '거래소 X';
     }
