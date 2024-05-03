@@ -9,7 +9,7 @@ export abstract class ChangeUnitCalculator extends UnitCalculator {
     const result = this._valueItems.map((item) => {
       return {
         date: item.date,
-        value: this.caculateItemValue(item),
+        value: this.caculateItem(item),
       };
     });
     return result;
@@ -19,17 +19,13 @@ export abstract class ChangeUnitCalculator extends UnitCalculator {
     return this.parseValueFixed(((targetValue - previousValue) / previousValue) * 100, 2);
   }
 
-  parseValueFixed(value: number, fractionDigits: number) {
-    return parseFloat(value.toFixed(fractionDigits));
-  }
-
   cacheValue() {
     this._valueItems.forEach((item) => {
       this._cachedValue[formatDate(item.date)] = this.parseValueToInt(item.value);
     });
   }
 
-  caculateItemValue(item: ValueItem) {
+  caculateItem(item: ValueItem) {
     const targetValue = this.parseValueToInt(item.value);
     const previousValue = this.getPreviousValue(item.date);
     if (previousValue) {

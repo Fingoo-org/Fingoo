@@ -17,15 +17,6 @@ export class IndexUnitCalculator extends UnitCalculator {
     return Math.min(...this._valueItems.map((item) => this.parseValueToInt(item.value)));
   }
 
-  caculate() {
-    return this._valueItems.map((item) => {
-      return {
-        date: item.date,
-        value: this.caculateItem(item),
-      };
-    });
-  }
-
   caculateItem(item: ValueItem) {
     return ((this.parseValueToInt(item.value) - this._min) / (this._max - this._min)) * 100;
   }
