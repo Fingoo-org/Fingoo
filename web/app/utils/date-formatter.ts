@@ -13,6 +13,22 @@ export function parseDate(date: string | dayjs.Dayjs): dayjs.Dayjs {
   }
 }
 
+function getBiggestDate(date1: string, date2: string) {
+  return parseDate(date1).isAfter(parseDate(date2)) ? date1 : date2;
+}
+
+function getSmallestDate(date1: string, date2: string) {
+  return parseDate(date1).isBefore(parseDate(date2)) ? date1 : date2;
+}
+
+export function getBigestDateInArray(dates: string[]) {
+  return dates.reduce((acc, date) => getBiggestDate(acc, date));
+}
+
+export function getSmallestDateInArray(dates: string[]) {
+  return dates.reduce((acc, date) => getSmallestDate(acc, date));
+}
+
 export function getStartDate(dateRange: DateRange, interval: Interval) {
   return calculateStartDate(dateRange, interval).format('YYYY-MM-DD');
 }

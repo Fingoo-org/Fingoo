@@ -1,6 +1,7 @@
 import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
 import { FormattedIndicatorValue } from '../../chart/indicator-formatter.service';
 import { createUnitCalculator, UnitType } from '../../chart/unit-calculator/unit-calculator-factory.service';
+import { getBigestDateInArray, getSmallestDateInArray } from '@/app/utils/date-formatter';
 
 export type FormattedItem = {
   [date: string]: {
@@ -61,4 +62,12 @@ export abstract class IndicatorValue {
   abstract formatItemsByDate(options?: FormatOptions): FormattedItem;
 
   abstract get identifier(): string;
+
+  get lastDate() {
+    return getBigestDateInArray([this.values[0].date, this.values[this.values.length - 1].date]);
+  }
+
+  get startDate() {
+    return getSmallestDateInArray([this.values[0].date, this.values[this.values.length - 1].date]);
+  }
 }
