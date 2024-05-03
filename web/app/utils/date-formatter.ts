@@ -5,12 +5,32 @@ export function formatDate(date: string | dayjs.Dayjs) {
   return parseDate(date).format('YYYY-MM-DD');
 }
 
+export function addOneDay(date: string | dayjs.Dayjs) {
+  return parseDate(date).add(1, 'day').format('YYYY-MM-DD');
+}
+
 export function parseDate(date: string | dayjs.Dayjs): dayjs.Dayjs {
   if (dayjs(date, 'YYYY-MM-DD', true).isValid()) {
     return dayjs(date);
   } else {
     return dayjs(date, 'YYYYMMDD');
   }
+}
+
+function getBiggestDate(date1: string, date2: string) {
+  return parseDate(date1).isAfter(parseDate(date2)) ? date1 : date2;
+}
+
+function getSmallestDate(date1: string, date2: string) {
+  return parseDate(date1).isBefore(parseDate(date2)) ? date1 : date2;
+}
+
+export function getBigestDateInArray(dates: string[]) {
+  return dates.reduce((acc, date) => getBiggestDate(acc, date), dates[0]);
+}
+
+export function getSmallestDateInArray(dates: string[]) {
+  return dates.reduce((acc, date) => getSmallestDate(acc, date), dates[0]);
 }
 
 export function getStartDate(dateRange: DateRange, interval: Interval) {

@@ -1,12 +1,7 @@
-import { UnitCalculator } from './unit-calculator.service';
+import { UnitCalculator, ValueItem } from './unit-calculator.service';
 
 export class DefaultUnitCalculator extends UnitCalculator {
-  caculate() {
-    return this._valueItems.map((item) => {
-      return {
-        date: item.date,
-        value: this.parseValueToInt(item.value),
-      };
-    });
+  caculateItem(item: ValueItem) {
+    return this.parseValueFixed(item.value, 2);
   }
 }

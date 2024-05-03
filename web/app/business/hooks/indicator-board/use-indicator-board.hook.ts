@@ -52,6 +52,10 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
 
   function updateDateRange(dateRange: DateRange) {
     if (!indicatorBoardMetadataId) return;
+    if (dateRange === 'MAX') {
+      updateIndicatorBoardInfo(indicatorBoardMetadataId, { dateRange, interval: 'month' });
+      return;
+    }
     updateIndicatorBoardInfo(indicatorBoardMetadataId, { dateRange });
   }
 
