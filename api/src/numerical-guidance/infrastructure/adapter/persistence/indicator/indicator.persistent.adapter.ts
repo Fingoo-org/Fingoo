@@ -80,7 +80,24 @@ export class IndicatorPersistentAdapter
 
   async searchIndicatorBySymbol(symbol: string): Promise<IndicatorDtoType> {
     try {
-      const indicator = await this.stockEntityRepository.findOneBy({ symbol: symbol });
+      let indicator: IndicatorDtoType;
+
+      const indicatorRepositories = [
+        this.stockEntityRepository,
+        this.bondsEntityRepository,
+        this.cryptoCurrenciesEntityRepository,
+        this.etfEntityRepository,
+        this.forexPairEntityRepository,
+        this.indicesEntityRepository,
+        this.fundEntityRepository,
+      ];
+
+      for (const repository of indicatorRepositories) {
+        indicator = await repository.findOneBy({ symbol: symbol });
+        if (indicator) {
+          break;
+        }
+      }
       return indicator;
     } catch (error) {
       if (error instanceof BadRequestException) {
