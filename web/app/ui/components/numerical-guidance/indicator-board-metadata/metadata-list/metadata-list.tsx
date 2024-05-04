@@ -26,7 +26,9 @@ const MetadataList = React.memo(function MetadataList() {
 
   return (
     <Pending isPending={isPending}>
-      {metadataList ? <List list={metadataList} render={renderItem} /> : null}
+      <div className=" h-[26vh] overflow-y-auto px-2 pt-2 scrollbar-thin">
+        {metadataList ? <List list={metadataList} render={renderItem} /> : null}
+      </div>
       <Button color={'emerald'} onClick={handleMetadataCreateAndSelect}>
         create
       </Button>
