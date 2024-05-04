@@ -1,5 +1,7 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
+import useSWRImmutable from 'swr/immutable';
+
 import { API_PATH } from '../api-path';
 import {
   defaultFetcher,
@@ -13,21 +15,27 @@ import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.st
 export type sourceIndicator = {
   sourceIndicatorId: string;
   weight: number;
+  indicatorType: IndicatorType;
 };
 
 export type VerificationType = {
   indicatorId: string;
   verification: 'True' | 'False';
 };
+export type TargetIndicatorInfo = {
+  symbol: string;
+  targetIndicatorId: string;
+  indicatorType: IndicatorType;
+};
 
 export type CustomForecastIndicatorResponse = {
   id: string;
   customForecastIndicatorName: string;
   type: IndicatorType;
-  targetIndicatorId: string;
+  targetIndicatorInformation: TargetIndicatorInfo;
   grangerVerification: VerificationType[];
   cointJohansenVerification: VerificationType[];
-  sourceIndicatorIdsAndWeights: sourceIndicator[];
+  sourceIndicatorsInformation: sourceIndicator[];
 };
 
 export type CustomForecastIndicatorListResponse = CustomForecastIndicatorResponse[];
@@ -35,6 +43,7 @@ export type CustomForecastIndicatorListResponse = CustomForecastIndicatorRespons
 export type CreateCustomForecastIndicatorRequestBody = {
   customForecastIndicatorName: string;
   targetIndicatorId: string;
+  targetIndicatorType: IndicatorType;
 };
 
 export type CreateCustomForecastIndicatorResponse = string;
@@ -65,7 +74,10 @@ export const useFetchCustomForecastIndicatorsValue = (customForecastIndicatorIds
     ? [`${API_PATH.customForecastIndicator}/value`, ...customForecastIndicatorIds]
     : null;
 
-  return useSWR<CustomForecastIndicatorValueResponse[], any, string[] | null>(key, fetchCustomForecastIndicatorsValue);
+  return useSWRImmutable<CustomForecastIndicatorValueResponse[], any, string[] | null>(
+    key,
+    fetchCustomForecastIndicatorsValue,
+  );
 };
 
 export const useCreateCustomForecastIndicator = () => {
@@ -76,7 +88,7 @@ export const useCreateCustomForecastIndicator = () => {
 };
 
 export type updateSourceIndicatorRequestBody = {
-  sourceIndicatorIdsAndWeights: sourceIndicator[];
+  sourceIndicatorsInformation: sourceIndicator[];
 };
 export const useUpdateSourceIndicator = (customForecastIndicatorId: string | undefined) => {
   return useSWRMutation(

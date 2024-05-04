@@ -46,7 +46,7 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
         ref={iconButtonRef}
         onClick={handleCustomForecastIndicatorSelect}
         icon={DotsHorizontalIcon}
-        color={'violet'}
+        color={'emerald'}
         className="mr-5"
       />
     );
@@ -70,7 +70,7 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
                   key={sourceIndicator.id}
                   className="flex items-center justify-between rounded-md bg-gray-100 px-3 py-2"
                 >
-                  <span className="text-sm text-black">{`${sourceIndicator.ticker}(${sourceIndicator.name})`}</span>
+                  <span className="text-sm text-black">{`${sourceIndicator.id}(${sourceIndicator.indicatorType})`}</span>
                   <span className="text-sm text-black">{sourceIndicator.weight}%</span>
                 </div>
               ))

@@ -82,13 +82,13 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
             </div>
           </ImageSharePopover>
         </div>
-        <div className="absolute left-3 top-1">
+        {/* <div className="absolute left-3 top-1">
           <ToggleButton
             onToggle={handleToggle}
             disabled={indicatorBoardMetadata && indicatorsValue ? false : true}
             text={'자세한 차트'}
           />
-        </div>
+        </div> */}
       </div>
     </Pending>
   );

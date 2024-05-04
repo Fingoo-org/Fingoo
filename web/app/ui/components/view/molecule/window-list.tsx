@@ -40,6 +40,7 @@ export default function WindowList<T>({ items, maxVieweditemCount, renderRow, lo
             itemCount={items.length}
             itemSize={itemHeight}
             width="100%"
+            className="scrollbar-thin"
           >
             {renderRow}
           </List>

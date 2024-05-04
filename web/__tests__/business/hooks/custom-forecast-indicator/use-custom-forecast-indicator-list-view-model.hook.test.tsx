@@ -30,7 +30,7 @@ describe('useCustomForecastIndicatorListViewModel', () => {
 
     // when
     act(() => {
-      result.current.createCustomForecastIndicator({ targetIndicatorId: '1' });
+      result.current.createCustomForecastIndicator({ targetIndicatorId: '1', indicatorType: 'stocks' });
     });
 
     // then

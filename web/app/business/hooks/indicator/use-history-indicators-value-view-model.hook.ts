@@ -64,7 +64,7 @@ export const useHistoryIndicatorsValueViewModel = (indicatorBoardMetadataId?: st
 
   const { data: customForecastHistoryIndicatorsValuePages, setSize: setCustomForecastPageSize } =
     useFetchHistoryIndicatorValue(
-      selectedCustomForeacastIndicator?.map((indicator) => indicator.targetIndicatorId),
+      selectedCustomForeacastIndicator?.map((indicator) => indicator.targetIndicatorInformation.targetIndicatorId),
       {
         rowsToDownload: paginationData?.rowsToDownload ?? 10,
         initialCursorDate,
