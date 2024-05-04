@@ -84,18 +84,24 @@ export class CustomForecastIndicatorPersistentAdapter
       const customForecastIndicator = CustomForecastIndicatorMapper.mapEntityToDomain(customForecastIndicatorEntity);
       const url: string =
         process.env.FASTAPI_URL +
-        '/api/var-api/custom-forecast-indicator?targetIndicatorId=' +
+        'api/var-api/custom-forecast-indicator?targetIndicatorId=' +
         customForecastIndicator.targetIndicatorInformation.targetIndicatorId +
+        '&targetIndicatorType=' +
+        customForecastIndicator.targetIndicatorInformation.indicatorType +
         '&';
       let indicatorsUrl: string = '';
+      let indicatorsTypeUrl: string = '';
       let weightsUrl: string = '';
       for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
         indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
       }
       for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
+        indicatorsTypeUrl += `sourceIndicatorType=${customForecastIndicator.sourceIndicatorsInformation[i].indicatorType}&`;
+      }
+      for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
         weightsUrl += `weight=${customForecastIndicator.sourceIndicatorsInformation[i].weight}&`;
       }
-      const requestUrl = url + indicatorsUrl + weightsUrl;
+      const requestUrl = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl;
 
       const res = await this.api.axiosRef.get(requestUrl);
       const resultValues = res.data.values;
@@ -104,7 +110,6 @@ export class CustomForecastIndicatorPersistentAdapter
         indicatorValues: resultValues,
         forecastType: resultForecastType,
       };
-
       return result;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -211,21 +216,26 @@ export class CustomForecastIndicatorPersistentAdapter
         customForecastIndicatorEntity.grangerVerification = grangerGroup;
         customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
       } else {
-        // TODO: fast api 내부 로직 수정 후 request url 수정
         const url: string =
           process.env.FASTAPI_URL +
-          '/api/var-api/source-indicators-verification?targetIndicatorId=' +
+          'api/var-api/source-indicators-verification?targetIndicatorId=' +
           customForecastIndicator.targetIndicatorInformation.targetIndicatorId +
+          '&targetIndicatorType=' +
+          customForecastIndicator.targetIndicatorInformation.indicatorType +
           '&';
         let indicatorsUrl: string = '';
+        let indicatorsTypeUrl: string = '';
         let weightsUrl: string = '';
         for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
           indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
         }
         for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
+          indicatorsTypeUrl += `sourceIndicatorType=${customForecastIndicator.sourceIndicatorsInformation[i].indicatorType}&`;
+        }
+        for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
           weightsUrl += `weight=${customForecastIndicator.sourceIndicatorsInformation[i].weight}&`;
         }
-        const requestUrl = url + indicatorsUrl + weightsUrl;
+        const requestUrl = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl;
 
         const res = await this.api.axiosRef.get(requestUrl);
         const grangerGroup = res.data.grangerGroup;

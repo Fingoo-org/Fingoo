@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm';
 import { BaseIndicatorEntity } from './base-indicator.entity';
 import { IndicatorType } from '../../../../../../utils/type/type-definition';
 
-@Entity({ name: 'Indices' })
+@Entity({ name: 'indices' })
 export class IndicesEntity extends BaseIndicatorEntity {
   @Column({ default: 'indices' })
   indicatorType: IndicatorType;

@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm';
 import { BaseIndicatorEntity } from './base-indicator.entity';
 import { IndicatorType } from '../../../../../../utils/type/type-definition';
 
-@Entity({ name: 'Stock' })
+@Entity({ name: 'stocks' })
 export class StockEntity extends BaseIndicatorEntity {
   @Column({ default: 'stocks' })
   indicatorType: IndicatorType;
