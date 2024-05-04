@@ -9,7 +9,7 @@ function isIndicatorType(value: string): value is IndicatorType {
   return indicatorTypes.includes(value as IndicatorType);
 }
 
-export default function IndicatorTypeToggleGroup() {
+export default function IndicatorListTypeToggleGroup() {
   const selectedIndicatorType = useIndicatorListStore((state) => state.selectedIndicatorType);
   const { selectIndicatorType } = useIndicatorListStore((state) => state.actions);
 
