@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { SearchIndicatorIdBySymbolQuery } from './get-indicator-id-by-symbol.query';
+import { SearchIndicatorIdBySymbolQuery } from './search-indicator-id-by-symbol.query';
 import { SearchIndicatorIdBySymbolPort } from 'src/numerical-guidance/application/port/persistence/indicator/search-indicator-id-by-symbol.port';
 
 @Injectable()
