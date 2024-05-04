@@ -82,7 +82,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   const applyUpdatedSourceIndicator = async () => {
     await updateSourceIndicatorTrigger(
       {
-        sourceIndicatorIdsAndWeights: convertedSelectedCustomForecastIndicator.sourceIndicatorIdsAndWeights,
+        sourceIndicatorsInformation: convertedSelectedCustomForecastIndicator.sourceIndicatorsInformation,
       },
       {
         onSuccess: () => {

@@ -34,7 +34,7 @@ const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState 
       targetIndicatorId: '',
       indicatorType: 'stocks',
     },
-    sourceIndicatorIdsAndWeights: [],
+    sourceIndicatorsInformation: [],
     grangerVerification: [],
     cointJohansenVerification: [],
     type: 'customForecastIndicator',
@@ -80,8 +80,8 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
           ...state,
           selectedCustomForecastIndicator: {
             ...state.selectedCustomForecastIndicator,
-            sourceIndicatorIdsAndWeights: [
-              ...state.selectedCustomForecastIndicator.sourceIndicatorIdsAndWeights,
+            sourceIndicatorsInformation: [
+              ...state.selectedCustomForecastIndicator.sourceIndicatorsInformation,
               { sourceIndicatorId: indicatorId, weight: 0 },
             ],
           },
@@ -92,7 +92,7 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
           ...state,
           selectedCustomForecastIndicator: {
             ...state.selectedCustomForecastIndicator,
-            sourceIndicatorIdsAndWeights: state.selectedCustomForecastIndicator.sourceIndicatorIdsAndWeights.filter(
+            sourceIndicatorsInformation: state.selectedCustomForecastIndicator.sourceIndicatorsInformation.filter(
               (sourceIndicator) => sourceIndicator.sourceIndicatorId !== indicatorId,
             ),
           },
@@ -100,7 +100,7 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
       },
       updateSourceIndicatorWeight(indicatorId, weight) {
         get().actions.update((state) => {
-          const sourceIndicatorIdsAndWeights = state.selectedCustomForecastIndicator.sourceIndicatorIdsAndWeights.map(
+          const sourceIndicatorsInformation = state.selectedCustomForecastIndicator.sourceIndicatorsInformation.map(
             (sourceIndicator) => {
               if (sourceIndicator.sourceIndicatorId === indicatorId) {
                 return { ...sourceIndicator, weight };
@@ -112,7 +112,7 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
             ...state,
             selectedCustomForecastIndicator: {
               ...state.selectedCustomForecastIndicator,
-              sourceIndicatorIdsAndWeights,
+              sourceIndicatorsInformation,
             },
           };
         });

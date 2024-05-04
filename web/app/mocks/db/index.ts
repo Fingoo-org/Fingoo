@@ -93,7 +93,7 @@ const initialState: MockDatabase = {
         targetIndicatorId: '1',
         indicatorType: 'stocks',
       },
-      sourceIndicatorIdsAndWeights: [
+      sourceIndicatorsInformation: [
         {
           sourceIndicatorId: '3',
           weight: 10,
@@ -129,7 +129,7 @@ const initialState: MockDatabase = {
         targetIndicatorId: '2',
         indicatorType: 'stocks',
       },
-      sourceIndicatorIdsAndWeights: [
+      sourceIndicatorsInformation: [
         {
           sourceIndicatorId: '1',
           weight: 20,
@@ -177,7 +177,7 @@ const initialState: MockDatabase = {
         targetIndicatorId: '3',
         indicatorType: 'stocks',
       },
-      sourceIndicatorIdsAndWeights: [
+      sourceIndicatorsInformation: [
         {
           sourceIndicatorId: '1',
           weight: 10,
@@ -225,7 +225,7 @@ const initialState: MockDatabase = {
         targetIndicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
         indicatorType: 'stocks',
       },
-      sourceIndicatorIdsAndWeights: [
+      sourceIndicatorsInformation: [
         {
           sourceIndicatorId: '1',
           weight: 10,

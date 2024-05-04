@@ -13,6 +13,7 @@ import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.st
 export type sourceIndicator = {
   sourceIndicatorId: string;
   weight: number;
+  // indicatorType: IndicatorType;
 };
 
 export type VerificationType = {
@@ -32,7 +33,7 @@ export type CustomForecastIndicatorResponse = {
   targetIndicatorInformation: TargetIndicatorInfo;
   grangerVerification: VerificationType[];
   cointJohansenVerification: VerificationType[];
-  sourceIndicatorIdsAndWeights: sourceIndicator[];
+  sourceIndicatorsInformation: sourceIndicator[];
 };
 
 export type CustomForecastIndicatorListResponse = CustomForecastIndicatorResponse[];
@@ -82,7 +83,7 @@ export const useCreateCustomForecastIndicator = () => {
 };
 
 export type updateSourceIndicatorRequestBody = {
-  sourceIndicatorIdsAndWeights: sourceIndicator[];
+  sourceIndicatorsInformation: sourceIndicator[];
 };
 export const useUpdateSourceIndicator = (customForecastIndicatorId: string | undefined) => {
   return useSWRMutation(

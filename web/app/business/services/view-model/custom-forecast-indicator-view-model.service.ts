@@ -11,7 +11,7 @@ export class CustomForecastIndicator {
   readonly id: string;
   readonly customForecastIndicatorName: string;
   readonly targetIndicatorInformation: TargetIndicatorInfo;
-  readonly sourceIndicatorIdsAndWeights: sourceIndicator[];
+  readonly sourceIndicatorsInformation: sourceIndicator[];
   readonly type: IndicatorType;
   readonly grangerVerification: VerificationType[];
   readonly cointJohansenVerification: VerificationType[];
@@ -19,7 +19,7 @@ export class CustomForecastIndicator {
     id,
     customForecastIndicatorName,
     targetIndicatorInformation,
-    sourceIndicatorIdsAndWeights,
+    sourceIndicatorsInformation,
     type,
     grangerVerification,
     cointJohansenVerification,
@@ -27,14 +27,14 @@ export class CustomForecastIndicator {
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.targetIndicatorInformation = targetIndicatorInformation;
-    this.sourceIndicatorIdsAndWeights = sourceIndicatorIdsAndWeights;
+    this.sourceIndicatorsInformation = sourceIndicatorsInformation;
     this.type = type;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
   }
 
   get sourceIndicatorIds() {
-    return this.sourceIndicatorIdsAndWeights.map((sourceIndicator) => sourceIndicator.sourceIndicatorId);
+    return this.sourceIndicatorsInformation.map((sourceIndicator) => sourceIndicator.sourceIndicatorId);
   }
 
   get targetIndicatorId() {
@@ -46,7 +46,7 @@ export class CustomForecastIndicator {
   }
 
   getSourceIndicatorWeight(sourceIndicatorId: string) {
-    const sourceIndicator = this.sourceIndicatorIdsAndWeights.find(
+    const sourceIndicator = this.sourceIndicatorsInformation.find(
       (sourceIndicator) => sourceIndicator.sourceIndicatorId === sourceIndicatorId,
     );
     return sourceIndicator?.weight;
@@ -67,7 +67,7 @@ export class CustomForecastIndicator {
       id: this.id,
       customForecastIndicatorName: this.customForecastIndicatorName,
       targetIndicatorInformation: this.targetIndicatorInformation,
-      sourceIndicatorIdsAndWeights: this.sourceIndicatorIdsAndWeights,
+      sourceIndicatorsInformation: this.sourceIndicatorsInformation,
       type: this.type,
       grangerVerification: this.grangerVerification,
       cointJohansenVerification: this.cointJohansenVerification,

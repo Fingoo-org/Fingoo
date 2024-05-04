@@ -34,7 +34,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
         indicatorType: 'stocks',
       },
       id,
-      sourceIndicatorIdsAndWeights: [],
+      sourceIndicatorsInformation: [],
       grangerVerification: [],
       cointJohansenVerification: [],
       type: 'customForecastIndicator',
@@ -53,7 +53,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     );
     const newCustomForecastIndicator = {
       ...mockDatabaseStore.customForecastIndicatorList[index],
-      sourceIndicatorIdsAndweights: [...data.sourceIndicatorIdsAndWeights],
+      sourceIndicatorIdsAndweights: [...data.sourceIndicatorsInformation],
     };
     mockDatabaseStore.customForecastIndicatorList[index] = newCustomForecastIndicator;
   },
