@@ -40,6 +40,7 @@ export type CustomForecastIndicatorListResponse = CustomForecastIndicatorRespons
 export type CreateCustomForecastIndicatorRequestBody = {
   customForecastIndicatorName: string;
   targetIndicatorId: string;
+  targetIndicatorType: IndicatorType;
 };
 
 export type CreateCustomForecastIndicatorResponse = string;
