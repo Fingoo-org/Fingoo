@@ -46,7 +46,7 @@ export default function CustomForecastIndicatorListItem({ item }: CustomForecast
         ref={iconButtonRef}
         onClick={handleCustomForecastIndicatorSelect}
         icon={DotsHorizontalIcon}
-        color={'violet'}
+        color={'emerald'}
         className="mr-5"
       />
     );

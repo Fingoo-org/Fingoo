@@ -7,6 +7,7 @@ import Pending from '../../../view/molecule/pending';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import MetadataListItem from './metadata-list-item';
 import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
+import { PlusIcon } from '@heroicons/react/solid';
 
 const MetadataList = React.memo(function MetadataList() {
   const { metadataList, createIndicatorBoardMetadata, isPending } = useIndicatorBoardMetadataList();
@@ -26,12 +27,20 @@ const MetadataList = React.memo(function MetadataList() {
 
   return (
     <Pending isPending={isPending}>
-      <div className=" h-[26vh] overflow-y-auto px-3 pt-5 scrollbar-thin">
+      <div className="flex justify-end py-2 pb-3 pr-2">
+        <Button
+          color={'slate'}
+          variant={'light'}
+          className="rounded-lg bg-fingoo-gray-1.5 px-2 py-1 text-fingoo-gray-5"
+          onClick={handleMetadataCreateAndSelect}
+        >
+          <PlusIcon className="h-4 w-4 pr-1 font-semibold" />
+          메타데이터 추가
+        </Button>
+      </div>
+      <div className=" h-[26vh] overflow-y-auto px-3 pt-1 scrollbar-thin">
         {metadataList ? <List list={metadataList} render={renderItem} /> : null}
       </div>
-      <Button color={'emerald'} onClick={handleMetadataCreateAndSelect}>
-        create
-      </Button>
     </Pending>
   );
 });
