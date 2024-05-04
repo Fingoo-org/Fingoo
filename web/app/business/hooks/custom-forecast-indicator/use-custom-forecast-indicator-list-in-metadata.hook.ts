@@ -22,7 +22,18 @@ export const useCustomForecastIndicatorListInMetadata = (indicatorBoardMetadataI
     return convertCustomForecastIndicatorsViewModel(customForecastIndicatorListInMetadata);
   }, [customForecastIndicatorListInMetadata]);
 
+  const targetIndicatorInfo = customForecastIndicatorListInMetadata?.map((customForecastIndicator) => {
+    return {
+      id: customForecastIndicator.targetIndicatorInformation.targetIndicatorId,
+      indicatorType: customForecastIndicator.targetIndicatorInformation.indicatorType,
+    };
+  });
+
+  const targetIndicatorIds = targetIndicatorInfo?.map((targetIndicator) => targetIndicator.id);
+
   return {
     customForecastIndicatorListInMetadata: convertedCustomForecastIndicatorListInMetadata,
+    targetIndicatorInfo,
+    targetIndicatorIds,
   };
 };

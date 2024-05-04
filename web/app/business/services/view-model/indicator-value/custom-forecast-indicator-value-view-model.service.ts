@@ -31,9 +31,11 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     targetIndicatorValues,
     forecastType,
   }: CustomForecastIndicatorValueResponse & CustomForecastIndicator) {
-    const customForecastIndicatorValueItems = customForecastIndicatorValues.map((item) => new IndicatorValueItem(item));
+    const customForecastIndicatorValueItems = customForecastIndicatorValues
+      .map((item) => new IndicatorValueItem(item))
+      .reverse();
     const targetIndicatorValueItems = targetIndicatorValues.map((item) => new IndicatorValueItem(item));
-    const mergedValueItems = [...targetIndicatorValueItems, ...customForecastIndicatorValueItems];
+    const mergedValueItems = [...customForecastIndicatorValueItems, ...targetIndicatorValueItems];
     super(customForecastIndicatorId, mergedValueItems);
     this.customForecastIndicatorId = customForecastIndicatorId;
     this.targetIndicatorId = targetIndicatorId;
