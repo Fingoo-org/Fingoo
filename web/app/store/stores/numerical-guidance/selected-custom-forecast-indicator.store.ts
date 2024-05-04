@@ -29,7 +29,11 @@ const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState 
   selectedCustomForecastIndicator: {
     id: '',
     customForecastIndicatorName: '',
-    targetIndicatorId: '',
+    targetIndicatorInformation: {
+      symbol: '',
+      targetIndicatorId: '',
+      indicatorType: 'stocks',
+    },
     sourceIndicatorIdsAndWeights: [],
     grangerVerification: [],
     cointJohansenVerification: [],

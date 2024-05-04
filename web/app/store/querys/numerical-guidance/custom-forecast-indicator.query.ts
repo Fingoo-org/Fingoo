@@ -19,12 +19,17 @@ export type VerificationType = {
   indicatorId: string;
   verification: 'True' | 'False';
 };
+export type TargetIndicatorInfo = {
+  symbol: string;
+  targetIndicatorId: string;
+  indicatorType: IndicatorType;
+};
 
 export type CustomForecastIndicatorResponse = {
   id: string;
   customForecastIndicatorName: string;
   type: IndicatorType;
-  targetIndicatorId: string;
+  targetIndicatorInformation: TargetIndicatorInfo;
   grangerVerification: VerificationType[];
   cointJohansenVerification: VerificationType[];
   sourceIndicatorIdsAndWeights: sourceIndicator[];

@@ -1,6 +1,7 @@
 import {
   CustomForecastIndicatorListResponse,
   CustomForecastIndicatorResponse,
+  TargetIndicatorInfo,
   VerificationType,
   sourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
@@ -9,7 +10,7 @@ import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-l
 export class CustomForecastIndicator {
   readonly id: string;
   readonly customForecastIndicatorName: string;
-  readonly targetIndicatorId: string;
+  readonly targetIndicatorInformation: TargetIndicatorInfo;
   readonly sourceIndicatorIdsAndWeights: sourceIndicator[];
   readonly type: IndicatorType;
   readonly grangerVerification: VerificationType[];
@@ -17,7 +18,7 @@ export class CustomForecastIndicator {
   constructor({
     id,
     customForecastIndicatorName,
-    targetIndicatorId,
+    targetIndicatorInformation,
     sourceIndicatorIdsAndWeights,
     type,
     grangerVerification,
@@ -25,7 +26,7 @@ export class CustomForecastIndicator {
   }: CustomForecastIndicatorResponse) {
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
-    this.targetIndicatorId = targetIndicatorId;
+    this.targetIndicatorInformation = targetIndicatorInformation;
     this.sourceIndicatorIdsAndWeights = sourceIndicatorIdsAndWeights;
     this.type = type;
     this.grangerVerification = grangerVerification;
@@ -34,6 +35,10 @@ export class CustomForecastIndicator {
 
   get sourceIndicatorIds() {
     return this.sourceIndicatorIdsAndWeights.map((sourceIndicator) => sourceIndicator.sourceIndicatorId);
+  }
+
+  get targetIndicatorId() {
+    return this.targetIndicatorInformation.targetIndicatorId;
   }
 
   get name() {
@@ -61,7 +66,7 @@ export class CustomForecastIndicator {
     return {
       id: this.id,
       customForecastIndicatorName: this.customForecastIndicatorName,
-      targetIndicatorId: this.targetIndicatorId,
+      targetIndicatorInformation: this.targetIndicatorInformation,
       sourceIndicatorIdsAndWeights: this.sourceIndicatorIdsAndWeights,
       type: this.type,
       grangerVerification: this.grangerVerification,
