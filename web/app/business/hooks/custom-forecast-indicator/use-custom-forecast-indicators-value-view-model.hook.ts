@@ -4,9 +4,12 @@ import { useMemo } from 'react';
 import { convertCustomForecastIndicatorsValue } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
 import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
 import { useIndicatorBoardMetadataViewModel } from '../indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+import { useCustomForecastIndicatorListInMetadata } from './use-custom-forecast-indicator-list-in-metadata.hook';
 
 export const useCustomForecastIndicatorsValueViewModel = (indicatorBoardMetadataId?: string) => {
   const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
+
+  const { customForecastIndicatorListInMetadata } = useCustomForecastIndicatorListInMetadata(indicatorBoardMetadataId);
 
   const {
     data: customForecastIndicatorsValueData,
