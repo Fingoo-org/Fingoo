@@ -4,7 +4,7 @@ import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { useCustomForecastIndicatorsValueBySelectedMetadata } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-value.hook';
+import { useCustomForecastIndicatorsValueByMetadata } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-value-by-metadata.hook';
 
 describe('useCustomForecastIndicatorsValueViewModel', () => {
   beforeEach(() => {
@@ -43,7 +43,7 @@ describe('useCustomForecastIndicatorsValueViewModel', () => {
     const { result } = renderHook(
       () => {
         return {
-          ...useCustomForecastIndicatorsValueBySelectedMetadata(),
+          ...useCustomForecastIndicatorsValueByMetadata(),
           ...useSelectedIndicatorBoardMetadata(),
         };
       },
