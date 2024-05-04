@@ -4,9 +4,9 @@ import { GetIndicatorBoardMetadataListQueryHandler } from 'src/numerical-guidanc
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MemberEntity } from '../../../../../auth/member.entity';
+import { MemberEntity } from '../../../../../auth/entity/member.entity';
 import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
-import { AuthService } from '../../../../../auth/auth.service';
+import { AuthService } from '../../../../../auth/application/auth.service';
 import { DataSource } from 'typeorm';
 import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
 

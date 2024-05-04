@@ -12,7 +12,7 @@ import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter
 import { IndicatorBoardMetadataMapper } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata/mapper/indicator-board-metadata.mapper';
 import { QueryFailedError, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthService } from '../../../../../auth/auth.service';
+import { AuthService } from '../../../../../auth/application/auth.service';
 
 @Injectable()
 @QueryHandler(GetIndicatorBoardMetadataListQuery)

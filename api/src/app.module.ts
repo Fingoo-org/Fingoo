@@ -13,7 +13,7 @@ import { RedisConfigService } from './utils/config/redis.config.service';
 import { AuthModule } from './auth/auth.module';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth/auth.guard';
+import { AuthGuard } from './auth/util/auth.guard';
 
 @Module({
   imports: [

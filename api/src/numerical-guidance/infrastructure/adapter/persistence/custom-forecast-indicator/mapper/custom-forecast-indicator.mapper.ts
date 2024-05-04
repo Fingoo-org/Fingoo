@@ -1,6 +1,6 @@
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorEntity } from '../entity/custom-forecast-indicator.entity';
-import { MemberEntity } from 'src/auth/member.entity';
+import { MemberEntity } from 'src/auth/entity/member.entity';
 
 export class CustomForecastIndicatorMapper {
   static mapDomainToNewEntity(

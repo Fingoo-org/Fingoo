@@ -4,7 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 import { HttpExceptionFilter } from './utils/exception-filter/http-exception-filter';
-import { AuthGuard } from './auth/auth.guard';
+import { AuthGuard } from './auth/util/auth.guard';
 
 async function bootstrap() {
   initializeTransactionalContext();

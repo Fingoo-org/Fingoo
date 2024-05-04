@@ -6,7 +6,7 @@ import {
   TargetIndicatorInformation,
   Verification,
 } from 'src/utils/type/type-definition';
-import { MemberEntity } from 'src/auth/member.entity';
+import { MemberEntity } from 'src/auth/entity/member.entity';
 
 @Entity({ name: 'CustomForecastIndicator' })
 export class CustomForecastIndicatorEntity extends BaseEntity {

@@ -2,10 +2,10 @@ import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } fr
 import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
-import { AuthGuard } from '../../../auth/auth.guard';
+import { AuthGuard } from '../../../auth/util/auth.guard';
 import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-metadata.dto';
-import { Member } from '../../../auth/get-member.decorator';
-import { MemberEntity } from '../../../auth/member.entity';
+import { Member } from '../../../auth/util/get-member.decorator';
+import { MemberEntity } from '../../../auth/entity/member.entity';
 import { CreateIndicatorBoardMetadataCommand } from '../../application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command';
 import { IndicatorBoardMetadata } from '../../domain/indicator-board-metadata';
 import { GetIndicatorBoardMetadataQuery } from '../../application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query';

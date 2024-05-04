@@ -1,8 +1,8 @@
 import { Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { MemberEntity } from './member.entity';
-import { AuthGuard } from './auth.guard';
-import { Member } from './get-member.decorator';
+import { AuthService } from '../application/auth.service';
+import { MemberEntity } from '../entity/member.entity';
+import { AuthGuard } from '../util/auth.guard';
+import { Member } from '../util/get-member.decorator';
 
 @Controller('/api/auth')
 export class AuthController {

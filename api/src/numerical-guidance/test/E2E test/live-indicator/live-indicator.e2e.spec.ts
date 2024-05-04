@@ -6,7 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LiveIndicatorController } from '../../../api/live-indicator/live-indicator.controller';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 import { GetLiveIndicatorQueryHandler } from '../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query.handler';
-import { AuthGuard } from '../../../../auth/auth.guard';
+import { AuthGuard } from '../../../../auth/util/auth.guard';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import { HttpModule } from '@nestjs/axios';
 import { IndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';

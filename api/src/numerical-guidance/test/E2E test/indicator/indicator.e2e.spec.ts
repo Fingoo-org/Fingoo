@@ -16,7 +16,7 @@ import { ForexPairEntity } from '../../../infrastructure/adapter/persistence/ind
 import { FundEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { IndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
-import { AuthGuard } from '../../../../auth/auth.guard';
+import { AuthGuard } from '../../../../auth/util/auth.guard';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
 import * as fs from 'fs';

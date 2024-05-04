@@ -4,9 +4,9 @@ import { IndicatorBoardMetadataPersistentAdapter } from '../../../../infrastruct
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetadata } from '../../../../domain/indicator-board-metadata';
 import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
-import { MemberEntity } from '../../../../../auth/member.entity';
+import { MemberEntity } from '../../../../../auth/entity/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
-import { AuthService } from '../../../../../auth/auth.service';
+import { AuthService } from '../../../../../auth/application/auth.service';
 import { DataSource } from 'typeorm';
 import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
 

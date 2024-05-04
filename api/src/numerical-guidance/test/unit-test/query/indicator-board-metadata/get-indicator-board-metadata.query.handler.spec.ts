@@ -2,12 +2,12 @@ import { Test } from '@nestjs/testing';
 import { GetIndicatorBoardMetadataQuery } from 'src/numerical-guidance/application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query';
 import { GetIndicatorBoardMetadataQueryHandler } from 'src/numerical-guidance/application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
-import { MemberEntity } from '../../../../../auth/member.entity';
+import { MemberEntity } from '../../../../../auth/entity/member.entity';
 import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthService } from '../../../../../auth/auth.service';
+import { AuthService } from '../../../../../auth/application/auth.service';
 import { DataSource } from 'typeorm';
 
 jest.mock('typeorm-transactional', () => ({

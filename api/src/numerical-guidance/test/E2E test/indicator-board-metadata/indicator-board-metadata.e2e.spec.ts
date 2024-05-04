@@ -1,7 +1,7 @@
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { IndicatorEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indicator.entity';
-import { MemberEntity } from '../../../../auth/member.entity';
+import { MemberEntity } from '../../../../auth/entity/member.entity';
 import { IndicatorBoardMetadataEntity } from '../../../infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { Test } from '@nestjs/testing';
@@ -11,7 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 import { IndicatorBoardMetadataController } from '../../../api/indicator-board-metadata/indicator-board-metadata.controller';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
-import { AuthService } from '../../../../auth/auth.service';
+import { AuthService } from '../../../../auth/application/auth.service';
 import { GetIndicatorBoardMetadataQueryHandler } from '../../../application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { InsertIndicatorIdCommandHandler } from '../../../application/command/indicator/insert-indicator-id/insert-indicator-id.command.handler';
 import { InsertCustomForecastIndicatorIdCommandHandler } from '../../../application/command/custom-forecast-indicator/insert-custom-forecast-indicator-id/insert-custom-forecast-indicator-id.command.handler';
@@ -20,7 +20,7 @@ import { DeleteIndicatorIdCommandHandler } from '../../../application/command/in
 import { DeleteIndicatorBoardMetadataCommandHandler } from '../../../application/command/indicator-board-metadata/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../../application/command/indicator-board-metadata/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
-import { AuthGuard } from '../../../../auth/auth.guard';
+import { AuthGuard } from '../../../../auth/util/auth.guard';
 import { of } from 'rxjs';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';

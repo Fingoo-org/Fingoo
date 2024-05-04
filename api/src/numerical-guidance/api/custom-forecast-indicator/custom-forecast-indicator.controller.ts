@@ -2,10 +2,10 @@ import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } fr
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
-import { AuthGuard } from '../../../auth/auth.guard';
+import { AuthGuard } from '../../../auth/util/auth.guard';
 import { CreateCustomForecatIndicatorDto } from './dto/create-custom-forecast-indicator.dto';
-import { Member } from '../../../auth/get-member.decorator';
-import { MemberEntity } from '../../../auth/member.entity';
+import { Member } from '../../../auth/util/get-member.decorator';
+import { MemberEntity } from '../../../auth/entity/member.entity';
 import { CreateCustomForecastIndicatorCommand } from '../../application/command/custom-forecast-indicator/create-custom-forecast-indicator/create-custom-forecast-indicator.command';
 import { CustomForecastIndicator } from '../../domain/custom-forecast-indicator';
 import { GetCustomForecastIndicatorQuery } from '../../application/query/custom-forecast-indicator/get-custom-forecast-indicator/get-custom-forecast-indicator.query';
