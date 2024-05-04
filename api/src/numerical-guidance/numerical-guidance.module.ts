@@ -53,6 +53,7 @@ import { FundEntity } from './infrastructure/adapter/persistence/indicator/entit
 import { IndicesEntity } from './infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from './infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { SearchIndicatorQueryHandler } from './application/query/indicator/get-indicator-search/search-indicator.query.handler';
+import { SearchIndicatorBySymbolQueryHandler } from './application/query/indicator/get-search-indicator-by-symbol/search-indicator-by-symbol.query.handler';
 
 @Module({
   imports: [
@@ -112,6 +113,7 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
     GetIndicatorListQueryHandler,
     SaveIndicatorListCommandHandler,
     SearchIndicatorQueryHandler,
+    SearchIndicatorBySymbolQueryHandler,
     IndicatorTwelveAdapter,
     {
       provide: 'LoadCachedLiveIndicatorPort',
@@ -215,6 +217,10 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
     },
     {
       provide: 'SaveIndicatorListPort',
+      useClass: IndicatorPersistentAdapter,
+    },
+    {
+      provide: 'SearchIndicatorBySymbolPort',
       useClass: IndicatorPersistentAdapter,
     },
     {
