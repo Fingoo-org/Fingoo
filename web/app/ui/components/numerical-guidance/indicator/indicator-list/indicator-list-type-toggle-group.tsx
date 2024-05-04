@@ -6,18 +6,12 @@ import {
   useIndicatorListStore,
 } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
-function isIndicatorType(value: string): value is IndicatorType {
-  return indicatorTypes.includes(value as IndicatorType);
-}
-
 export default function IndicatorListTypeToggleGroup() {
   const selectedIndicatorType = useIndicatorListStore((state) => state.selectedIndicatorType);
   const { selectIndicatorType } = useIndicatorListStore((state) => state.actions);
 
-  const handleIndicatorTypeChange = (indicatorType: string) => {
-    if (isIndicatorType(indicatorType)) {
-      selectIndicatorType(indicatorType);
-    }
+  const handleIndicatorTypeChange = (indicatorType: IndicatorType) => {
+    selectIndicatorType(indicatorType);
   };
 
   return (
