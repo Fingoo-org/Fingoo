@@ -54,7 +54,7 @@ export default function CustomForecastIndicatorDialogMenu() {
       </DialogMenu.Header>
       <DialogMenu.Content>
         <Pending isPending={isPending}>
-          <Card className="h-28 p-1.5">
+          <Card className="h-52 p-1.5">
             <SourceIndicatorSearchList />
           </Card>
           <div className="my-2 flex justify-between">

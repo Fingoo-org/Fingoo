@@ -8,11 +8,14 @@ import { useState } from 'react';
 import { useIndicatorSearchList } from '@/app/business/hooks/indicator/use-indicator-search-list.hooks';
 import { useIndicatorListByType } from '@/app/business/hooks/indicator/use-indicator-list-by-type.hook';
 import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
+import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import IndicatorTypeToggleGroup from '../../view/molecule/indicator-type-toggle-group';
 
 export default function SourceIndicatorSearchList() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [indicatorType, setIndicatorType] = useState<IndicatorType>('stocks');
   const { indicatorList, loadMoreIndicators } = useIndicatorListByType({
-    indicatorType: 'stocks',
+    indicatorType,
   });
 
   // const searchedIndicatorList = useIndicatorSearchList(searchTerm);
@@ -30,6 +33,7 @@ export default function SourceIndicatorSearchList() {
   return (
     <div className="flex h-full flex-col">
       <TinyInput onValueChange={handleSearchTermChange} withDebounce={500} icon={SearchIcon} defaultValue="" />
+      <IndicatorTypeToggleGroup value={indicatorType} onValueChange={setIndicatorType} size={'narrow'} />
       <div className="flex-1 py-1.5 pl-6">
         <WindowList
           loadMoreItems={loadMoreIndicators}
