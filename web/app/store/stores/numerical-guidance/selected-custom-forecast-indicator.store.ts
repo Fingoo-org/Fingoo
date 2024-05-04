@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { storeResetFns } from '../reset-store';
 import { CustomForecastIndicatorResponse } from '../../querys/numerical-guidance/custom-forecast-indicator.query';
 import { deepEqual } from '@/app/utils/helper';
+import { IndicatorType } from './indicator-list.store';
 
 type SelectedCustomForecastIndicatorState = {
   selectedCustomForecastIndicator: CustomForecastIndicatorResponse;
@@ -15,7 +16,7 @@ type SelectedCustomForecastIndicatorAction = {
       state: SelectedCustomForecastIndicatorStore,
     ) => SelectedCustomForecastIndicatorStore | Partial<SelectedCustomForecastIndicatorStore>,
   ) => void;
-  addSourceIndicator: (indicatorId: string) => void;
+  addSourceIndicator: (indicatorId: string, indicatorType: IndicatorType) => void;
   deleteSourceIndicator: (indicatorId: string) => void;
   updateSourceIndicatorWeight: (indicatorId: string, weight: number) => void;
   initialize: () => void;
@@ -75,14 +76,14 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
           };
         });
       },
-      addSourceIndicator: (indicatorId) => {
+      addSourceIndicator: (indicatorId, indicatorType) => {
         get().actions.update((state) => ({
           ...state,
           selectedCustomForecastIndicator: {
             ...state.selectedCustomForecastIndicator,
             sourceIndicatorsInformation: [
               ...state.selectedCustomForecastIndicator.sourceIndicatorsInformation,
-              { sourceIndicatorId: indicatorId, weight: 0 },
+              { sourceIndicatorId: indicatorId, weight: 0, indicatorType },
             ],
           },
         }));

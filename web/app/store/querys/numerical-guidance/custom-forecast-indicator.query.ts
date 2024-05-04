@@ -13,7 +13,7 @@ import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.st
 export type sourceIndicator = {
   sourceIndicatorId: string;
   weight: number;
-  // indicatorType: IndicatorType;
+  indicatorType: IndicatorType;
 };
 
 export type VerificationType = {

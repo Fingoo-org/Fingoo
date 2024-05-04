@@ -10,6 +10,7 @@ import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspa
 import { useFetchIndicatorList } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
 import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
+import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
@@ -67,8 +68,8 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
       });
   }, [indicatorList, sourceIndicatorIds]);
 
-  const addSourceIndicator = (indicatorId: string) => {
-    selectedCustomerForecastIndicatorActions.addSourceIndicator(indicatorId);
+  const addSourceIndicator = (indicatorId: string, indicatorType: IndicatorType) => {
+    selectedCustomerForecastIndicatorActions.addSourceIndicator(indicatorId, indicatorType);
   };
 
   const deleteSourceIndicator = (indicatorId: string) => {

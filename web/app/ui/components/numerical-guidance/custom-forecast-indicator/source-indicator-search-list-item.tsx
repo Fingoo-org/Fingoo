@@ -22,7 +22,8 @@ export default function SourceIndicatorSearchListItem({ item, style }: SourceInd
   const isSelected = selectedCustomForecastIndicator?.sourceIndicatorIds?.includes(indicator.id) || isTargetIndicator;
 
   const handleSourceIndicatorAdd = () => {
-    addSourceIndicator(indicator.id);
+    // Risk: mock 상태
+    addSourceIndicator(indicator.id, 'stocks');
   };
 
   const handleSourceIndicatorDelete = () => {

@@ -97,6 +97,7 @@ const initialState: MockDatabase = {
         {
           sourceIndicatorId: '3',
           weight: 10,
+          indicatorType: 'stocks',
         },
       ],
       type: 'customForecastIndicator',
@@ -133,10 +134,12 @@ const initialState: MockDatabase = {
         {
           sourceIndicatorId: '1',
           weight: 20,
+          indicatorType: 'stocks',
         },
         {
           sourceIndicatorId: '3',
           weight: 30,
+          indicatorType: 'stocks',
         },
       ],
       type: 'customForecastIndicator',
@@ -181,10 +184,12 @@ const initialState: MockDatabase = {
         {
           sourceIndicatorId: '1',
           weight: 10,
+          indicatorType: 'stocks',
         },
         {
           sourceIndicatorId: '2',
           weight: 20,
+          indicatorType: 'stocks',
         },
       ],
       type: 'customForecastIndicator',
@@ -229,6 +234,7 @@ const initialState: MockDatabase = {
         {
           sourceIndicatorId: '1',
           weight: 10,
+          indicatorType: 'stocks',
         },
       ],
       type: 'customForecastIndicator',

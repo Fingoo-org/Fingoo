@@ -79,7 +79,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
       });
       await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
       act(() => {
-        result.current.addSourceIndicator('2');
+        result.current.addSourceIndicator('2', 'stocks');
       });
 
       // then
