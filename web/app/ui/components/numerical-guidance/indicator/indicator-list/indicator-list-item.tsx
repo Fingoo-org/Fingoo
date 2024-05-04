@@ -62,7 +62,7 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
                 'text-white': isSelected,
               })}
             >
-              <div>{item.name}</div>
+              <div className="w-1/2 truncate text-left">{item.name}</div>
               <div>{item.indicatorType}</div>
             </div>
           </SelectableItem>
