@@ -6,12 +6,18 @@ import { SearchIcon } from '@heroicons/react/solid';
 import SourceIndicatorSearchListItem from './source-indicator-search-list-item';
 import { useState } from 'react';
 import { useIndicatorSearchList } from '@/app/business/hooks/indicator/use-indicator-search-list.hooks';
+import { useIndicatorListByType } from '@/app/business/hooks/indicator/use-indicator-list-by-type.hook';
+import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
 
 export default function SourceIndicatorSearchList() {
   const [searchTerm, setSearchTerm] = useState('');
-  const searchedIndicatorList = useIndicatorSearchList(searchTerm);
+  const { indicatorList, loadMoreIndicators } = useIndicatorListByType({
+    indicatorType: 'stocks',
+  });
 
-  const render = ({ index, style, data }: ListChildComponentProps<IndicatorInfoResponse[]>) => {
+  // const searchedIndicatorList = useIndicatorSearchList(searchTerm);
+
+  const render = ({ index, style, data }: ListChildComponentProps<Indicator[]>) => {
     const indicator = data[index];
 
     return <SourceIndicatorSearchListItem item={indicator} style={style} />;
@@ -25,7 +31,12 @@ export default function SourceIndicatorSearchList() {
     <div className="flex h-full flex-col">
       <TinyInput onValueChange={handleSearchTermChange} withDebounce={500} icon={SearchIcon} defaultValue="" />
       <div className="flex-1 py-1.5 pl-6">
-        <WindowList maxVieweditemCount={3} items={searchedIndicatorList || []} renderRow={render} />
+        <WindowList
+          loadMoreItems={loadMoreIndicators}
+          maxVieweditemCount={3}
+          items={indicatorList || []}
+          renderRow={render}
+        />
       </div>
     </div>
   );

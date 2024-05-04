@@ -1,11 +1,17 @@
 import { useFetchIndicatorListByType } from '@/app/store/querys/numerical-guidance/indicator-list.query';
-import { useIndicatorListStore } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import { IndicatorType, useIndicatorListStore } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { useMemo } from 'react';
 import { convertIndicatorViewModel } from '../../services/view-model/indicator-list/indicator-view-model.service';
 
-export const useIndicatorListByType = () => {
+type Options = {
+  indicatorType?: IndicatorType;
+};
+
+export const useIndicatorListByType = (options?: Options) => {
+  const { indicatorType } = options || {};
+
   const selectedIndicatorType = useIndicatorListStore((state) => state.selectedIndicatorType);
-  const { data: indicatorList, setSize } = useFetchIndicatorListByType(selectedIndicatorType);
+  const { data: indicatorList, setSize } = useFetchIndicatorListByType(indicatorType ?? selectedIndicatorType);
 
   const convertedIndicatorList = useMemo(() => {
     if (!indicatorList) return undefined;
