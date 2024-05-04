@@ -1,5 +1,7 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
+import useSWRImmutable from 'swr/immutable';
+
 import { API_PATH } from '../api-path';
 import {
   defaultFetcher,
@@ -72,7 +74,10 @@ export const useFetchCustomForecastIndicatorsValue = (customForecastIndicatorIds
     ? [`${API_PATH.customForecastIndicator}/value`, ...customForecastIndicatorIds]
     : null;
 
-  return useSWR<CustomForecastIndicatorValueResponse[], any, string[] | null>(key, fetchCustomForecastIndicatorsValue);
+  return useSWRImmutable<CustomForecastIndicatorValueResponse[], any, string[] | null>(
+    key,
+    fetchCustomForecastIndicatorsValue,
+  );
 };
 
 export const useCreateCustomForecastIndicator = () => {

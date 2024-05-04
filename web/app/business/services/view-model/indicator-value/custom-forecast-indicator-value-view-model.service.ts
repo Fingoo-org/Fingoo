@@ -5,6 +5,7 @@ import {
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { FormatOptions, FormattedItem, IndicatorValue, IndicatorValueItem } from './indicator-value-view-model.service';
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
+import { formatDate } from '@/app/utils/date-formatter';
 
 type CustomForecastIndicator = {
   customForecastIndicatorName: string;
@@ -49,7 +50,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     return this.caculateItemsValue(isValueWithIndexUnit ?? false).reduce<FormattedItem>((acc, item) => {
       return {
         ...acc,
-        [item.date]: {
+        [formatDate(item.date)]: {
           [this.customForecastIndicatorName]: {
             value: item.value,
             displayValue: item.displayValue,

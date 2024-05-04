@@ -26,11 +26,11 @@ function getSmallestDate(date1: string, date2: string) {
 }
 
 export function getBigestDateInArray(dates: string[]) {
-  return dates.reduce((acc, date) => getBiggestDate(acc, date), dates[0]);
+  return formatDate(dates.reduce((acc, date) => getBiggestDate(acc, date), dates[0]));
 }
 
 export function getSmallestDateInArray(dates: string[]) {
-  return dates.reduce((acc, date) => getSmallestDate(acc, date), dates[0]);
+  return formatDate(dates.reduce((acc, date) => getSmallestDate(acc, date), dates[0]));
 }
 
 export function getStartDate(dateRange: DateRange, interval: Interval) {
