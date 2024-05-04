@@ -23,7 +23,7 @@ export default function SourceIndicatorSearchListItem({ item, style }: SourceInd
 
   const handleSourceIndicatorAdd = () => {
     // Risk: mock 상태
-    addSourceIndicator(indicator.id, 'stocks');
+    addSourceIndicator(indicator.id, item.indicatorType);
   };
 
   const handleSourceIndicatorDelete = () => {
@@ -38,11 +38,11 @@ export default function SourceIndicatorSearchListItem({ item, style }: SourceInd
       onDeSelect={handleSourceIndicatorDelete}
       style={style}
     >
-      <div className="flex w-full items-center justify-between">
-        <span className="text-xs">{indicatorDisplayName}</span>
+      <div className="flex h-full w-full items-center justify-between ">
+        <span className="truncate text-xs font-normal">{indicatorDisplayName}</span>
         {isTargetIndicator ? (
           <ToolTip message="대상 지표입니다.">
-            <Icon size={'xs'} icon={SparklesIcon} />
+            <SparklesIcon className="h-4 w-4 text-black" />
           </ToolTip>
         ) : null}
       </div>

@@ -31,13 +31,15 @@ export default function SourceIndicatorSearchList() {
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full w-full flex-col">
       <TinyInput onValueChange={handleSearchTermChange} withDebounce={500} icon={SearchIcon} defaultValue="" />
-      <IndicatorTypeToggleGroup value={indicatorType} onValueChange={setIndicatorType} size={'narrow'} />
-      <div className="flex-1 py-1.5 pl-6">
+      <div className="py-2">
+        <IndicatorTypeToggleGroup value={indicatorType} onValueChange={setIndicatorType} size={'narrow'} />
+      </div>
+      <div className="h-40">
         <WindowList
           loadMoreItems={loadMoreIndicators}
-          maxVieweditemCount={3}
+          maxVieweditemCount={4.5}
           items={indicatorList || []}
           renderRow={render}
         />
