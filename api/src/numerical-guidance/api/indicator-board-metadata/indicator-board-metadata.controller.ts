@@ -1,11 +1,9 @@
-import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
-import { AuthGuard } from '../../../auth/util/auth.guard';
 import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-metadata.dto';
-import { Member } from '../../../auth/util/get-member.decorator';
-import { MemberEntity } from '../../../auth/entity/member.entity';
+import { LoginUser } from '../../../auth/util/get-member.decorator';
 import { CreateIndicatorBoardMetadataCommand } from '../../application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command';
 import { IndicatorBoardMetadata } from '../../domain/indicator-board-metadata';
 import { GetIndicatorBoardMetadataQuery } from '../../application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query';
@@ -23,6 +21,8 @@ import { ApiFile } from '../../../utils/file/api-file.decorator';
 import { UploadFileCommand } from '../../application/command/indicator-board-metadata/upload-file/upload-file.command';
 import { UpdateSectionsDto } from './dto/update-sections.dto';
 import { UpdateSectionsCommand } from '../../application/command/indicator-board-metadata/update-sections/update-sections.command';
+import { User } from '@supabase/supabase-js';
+import { Public } from '../../../auth/util/is-public.decorator';
 
 @ApiTags('IndicatorBoardMetadataController')
 @Controller('/api/numerical-guidance')
@@ -53,15 +53,16 @@ export class IndicatorBoardMetadataController {
     `[ERROR] 지표보드 메타데이터를 생성하는 도중에 오류가 발생했습니다. 다음과 같은 상황을 확인해보세요.
           1. indicatorBoardMetaData 값 중 비어있는 값이 있는지 확인해주세요.`,
   )
-  @UseGuards(AuthGuard)
+  @ApiBearerAuth('Authorization')
+  @Public()
   @Post('/indicator-board-metadata')
   async createIndicatorBoardMetadata(
     @Body() createIndicatorBoardMetadataDto: CreateIndicatorBoardMetadataDto,
-    @Member() member: MemberEntity,
+    @LoginUser() user: User,
   ): Promise<string> {
     const command = new CreateIndicatorBoardMetadataCommand(
       createIndicatorBoardMetadataDto.indicatorBoardMetadataName,
-      member.id,
+      user.id,
     );
     return await this.commandBus.execute(command);
   }
@@ -89,18 +90,19 @@ export class IndicatorBoardMetadataController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Get('/indicator-board-metadata/:id')
   async getIndicatorBoardMetadataById(@Param('id') id): Promise<IndicatorBoardMetadata> {
     const query = new GetIndicatorBoardMetadataQuery(id);
     return await this.queryBus.execute(query);
   }
 
-  @ApiOperation({ summary: '특정 사용자의 member id로 메타데이터 리스트를 가져옵니다.' })
+  @ApiOperation({ summary: '특정 사용자의 user id로 메타데이터 리스트를 가져옵니다.' })
   @ApiOkResponse({ type: [IndicatorBoardMetadata] })
   @ApiExceptionResponse(
     400,
     '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
-    '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. member id값이 number인지 확인하세요.',
+    '[ERROR] 메타데이터 리스트를 불러오는 중 오류가 발생했습니다. user id값이 number인지 확인하세요.',
   )
   @ApiExceptionResponse(
     404,
@@ -112,9 +114,10 @@ export class IndicatorBoardMetadataController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     '[ERROR] 지표를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
   )
+  @ApiBearerAuth('Authorization')
   @Get('/indicator-board-metadata')
-  async getIndicatorBoardMetadataListByMember(@Member() member: MemberEntity): Promise<IndicatorBoardMetadata[]> {
-    const query = new GetIndicatorBoardMetadataListQuery(member.id);
+  async getIndicatorBoardMetadataListByMember(@LoginUser() user: User): Promise<IndicatorBoardMetadata[]> {
+    const query = new GetIndicatorBoardMetadataListQuery(user.id);
     return await this.queryBus.execute(query);
   }
 
@@ -140,6 +143,7 @@ export class IndicatorBoardMetadataController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Post('/indicator-board-metadata/:id')
   async insertNewIndicatorId(@Param('id') indicatorBoardMetadataId, @Body() insertIndicatorDto: InsertIndicatorDto) {
     const command = new InsertIndicatorIdCommand(
@@ -173,6 +177,7 @@ export class IndicatorBoardMetadataController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa874',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Post('/indicator-board-metadata/custom-forecast-indicator/:id')
   async insertNewCustomForecastIndicatorId(
     @Param('id') indicatorBoardMetadataId,
@@ -214,6 +219,7 @@ export class IndicatorBoardMetadataController {
     example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Delete('/indicator-board-metadata/:indicatorBoardMetadataId/indicator/:indicatorId')
   async deleteIndicatorId(
     @Param('indicatorBoardMetadataId') indicatorBoardMetadataId,
@@ -252,6 +258,7 @@ export class IndicatorBoardMetadataController {
     example: 'c6a99067-27d0-4358-b3d5-e63a64b604c0',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Delete('/indicator-board-metadata/:indicatorBoardMetadataId/custom-forecast-indicator/:customForecastIndicatorId')
   async deleteCustomForecastIndicatorId(
     @Param('indicatorBoardMetadataId') indicatorBoardMetadataId,
@@ -285,6 +292,7 @@ export class IndicatorBoardMetadataController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Delete('/indicator-board-metadata/:id')
   async deleteIndicatorBoardMetadata(@Param('id') id) {
     const command = new DeleteIndicatorBoardMetadataCommand(id);
@@ -315,6 +323,7 @@ export class IndicatorBoardMetadataController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Patch('/indicator-board-metadata/:id/sections')
   async updateSections(@Param('id') id, @Body() updateSectionsDto: UpdateSectionsDto) {
     const command = new UpdateSectionsCommand(id, updateSectionsDto.sections);
@@ -345,6 +354,7 @@ export class IndicatorBoardMetadataController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Patch('/indicator-board-metadata/:id')
   async updateIndicatorBoardMetadataName(
     @Param('id') id,
@@ -358,6 +368,7 @@ export class IndicatorBoardMetadataController {
   @ApiOperation({ summary: 'supabase에 file을 upload 합니다.' })
   @ApiFile('fileName')
   @ApiCreatedResponse()
+  @ApiBearerAuth('Authorization')
   @Post('/indicator-board-metadata/file/upload')
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     const command = new UploadFileCommand(file);

@@ -1,22 +1,34 @@
-import { Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthService } from '../application/auth.service';
-import { MemberEntity } from '../entity/member.entity';
-import { AuthGuard } from '../util/auth.guard';
-import { Member } from '../util/get-member.decorator';
+import { SignUpDto } from './dto/request/sign-up.dto';
+import { SignInDto } from './dto/request/sign-in.dto';
+import { Public } from '../util/is-public.decorator';
+import { UserCertificationDto } from './dto/response/user-certification.dto';
+import { LoginUser } from '../util/get-member.decorator';
+import { User } from '@supabase/supabase-js';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('/api/auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post('/signUp')
-  signUp(): Promise<void> {
-    return this.authService.signUp();
+  async signUp(@Body() signUpDto: SignUpDto): Promise<UserCertificationDto> {
+    const { email, password } = signUpDto;
+    return this.authService.signUp(email, password);
   }
 
-  @UseGuards(AuthGuard)
-  @Get('/signIn')
-  signIn(@Member() member: MemberEntity): number {
-    this.authService.findById(member.id);
-    return member.id;
+  @Public()
+  @Post('/signIn')
+  async signIn(@Body() signInDto: SignInDto): Promise<UserCertificationDto> {
+    const { email, password } = signInDto;
+    return this.authService.singIn(email, password);
+  }
+
+  @ApiBearerAuth('Authorization')
+  @Get('/check-user')
+  async userCheck(@LoginUser() user: User) {
+    return user;
   }
 }
