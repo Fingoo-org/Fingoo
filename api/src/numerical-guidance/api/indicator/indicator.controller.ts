@@ -54,7 +54,7 @@ export class IndicatorController {
   }
 
   @ApiOperation({ summary: '지표 symbol을 검색합니다.' })
-  @ApiOkResponse({ type: '53c422bd-083a-4732-8ebe-ec72f19135dd' })
+  @ApiOkResponse({ type: [SearchedIndicatorsDto] })
   @ApiExceptionResponse(
     400,
     '검색할 symbol 요청이 올바른지 확인해주세요.',
@@ -78,7 +78,7 @@ export class IndicatorController {
   }
 
   @ApiOperation({ summary: '지표 symbol로 지표 id를 검색합니다. - DB 활용' })
-  @ApiOkResponse({ type: [SearchedIndicatorsDto] })
+  @ApiOkResponse({ type: '53c422bd-083a-4732-8ebe-ec72f19135dd' })
   @ApiExceptionResponse(
     400,
     '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
