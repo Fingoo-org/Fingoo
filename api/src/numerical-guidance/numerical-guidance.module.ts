@@ -7,7 +7,6 @@ import { CreateIndicatorBoardMetadataCommandHandler } from './application/comman
 import { IndicatorBoardMetadataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetadataEntity } from './infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
-import { AuthService } from '../auth/application/auth.service';
 import { MemberEntity } from '../auth/entity/member.entity';
 import { GetIndicatorBoardMetadataQueryHandler } from './application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { InsertIndicatorIdCommandHandler } from './application/command/indicator/insert-indicator-id/insert-indicator-id.command.handler';
@@ -53,9 +52,11 @@ import { FundEntity } from './infrastructure/adapter/persistence/indicator/entit
 import { IndicesEntity } from './infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from './infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { SearchIndicatorQueryHandler } from './application/query/indicator/get-indicator-search/search-indicator.query.handler';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     CqrsModule,
     HttpModule.registerAsync({
       useFactory: () => ({
@@ -88,7 +89,6 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
   ],
   providers: [
     AdjustIndicatorValue,
-    AuthService,
     GetLiveIndicatorQueryHandler,
     GetHistoryIndicatorQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,

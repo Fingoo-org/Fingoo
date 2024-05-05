@@ -7,13 +7,13 @@ import { DataSource } from 'typeorm';
 import { TypeOrmConfigService } from './utils/config/typeorm.config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from '@nestjs-modules/ioredis';
-// import { MyRedisModule } from './redis/redis.module';
 import { NumericalGuidanceModule } from './numerical-guidance/numerical-guidance.module';
 import { RedisConfigService } from './utils/config/redis.config.service';
 import { AuthModule } from './auth/auth.module';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth/util/auth.guard';
+import { CustomAuthGuard } from './auth/util/custom-auth.guard';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -38,13 +38,14 @@ import { AuthGuard } from './auth/util/auth.guard';
     // MyRedisModule, https://github.com/nest-modules/ioredis/issues/280
     NumericalGuidanceModule,
     AuthModule,
+    PassportModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: CustomAuthGuard,
     },
   ],
 })
