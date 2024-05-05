@@ -13,7 +13,7 @@ import { FundEntity } from '../../../../infrastructure/adapter/persistence/indic
 import { IndicesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
-import { BadRequestException, HttpStatus } from '@nestjs/common';
+import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list/get-indicator-list.query';
 import * as fs from 'fs';
 import { IndicatorDtoType } from '../../../../../utils/type/type-definition';
@@ -32,8 +32,19 @@ describe('IndicatorPersistentAdapter', () => {
     const stockEntityRepository = dataSource.getRepository(StockEntity);
     await stockEntityRepository.clear();
     await stockEntityRepository.insert(testIndicatorList);
+    await stockEntityRepository.insert({
+      id: '34bcb58c-1ea6-44a5-bb6a-dcd8929ab2b6',
+      index: 1,
+      indicatorType: 'stocks',
+      symbol: 'validSymbol',
+      name: 'search test indicator',
+      country: 'South Korea',
+      currency: 'KRW',
+      exchange: 'KRX',
+      mic_code: 'XKRX',
+      type: 'Common Stock',
+    });
   };
-
   beforeAll(async () => {
     environment = await new PostgreSqlContainer().start();
 
@@ -135,6 +146,41 @@ describe('IndicatorPersistentAdapter', () => {
         HttpStatus: HttpStatus.BAD_REQUEST,
         error: `[ERROR] index, type 요청이 올바른지 확인해주세요.`,
         message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+        cause: Error,
+      }),
+    );
+  });
+
+  it('symbol로 지표 검색하기', async () => {
+    // given
+    const symbol = 'validSymbol';
+
+    // when
+    const indicator: any = await indicatorPersistentAdapter.searchIndicatorBySymbol(symbol);
+
+    // then
+    expect(indicator.id).toEqual('34bcb58c-1ea6-44a5-bb6a-dcd8929ab2b6');
+    expect(indicator.symbol).toEqual(symbol);
+    expect(indicator.country).toEqual('South Korea');
+    expect(indicator.currency).toEqual('KRW');
+    expect(indicator.exchange).toEqual('KRX');
+    expect(indicator.mic_code).toEqual('XKRX');
+    expect(indicator.type).toEqual('Common Stock');
+    expect(indicator.name).toEqual('search test indicator');
+  });
+
+  it('symbol로 지표 검색하기', async () => {
+    // given
+    const symbol = 'InvalidSymbol';
+
+    // when // then
+    expect(async () => {
+      await indicatorPersistentAdapter.searchIndicatorBySymbol(symbol);
+    }).rejects.toThrow(
+      new NotFoundException({
+        HttpStatus: HttpStatus.NOT_FOUND,
+        error: `[ERROR] symbol: ${symbol} 해당 symbol의 indicator를 찾을 수 없습니다.`,
+        message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
         cause: Error,
       }),
     );
