@@ -99,7 +99,7 @@ export class IndicatorController {
     example: 'AAPL',
     required: true,
   })
-  @Get('/search-id-by-symbol/:symbol')
+  @Get('/search-by-symbol/:symbol')
   async searchIndicatorIdBySymbol(@Param('symbol') symbol): Promise<string> {
     const query = new SearchIndicatorBySymbolQuery(symbol);
     return await this.queryBus.execute(query);

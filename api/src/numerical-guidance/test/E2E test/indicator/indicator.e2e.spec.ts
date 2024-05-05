@@ -188,14 +188,14 @@ describe('Indicator E2E Test', () => {
 
   it('/get symbol로 지표를 검색한다.', async () => {
     return request(app.getHttpServer())
-      .get('/api/numerical-guidance/indicator/search-id-by-symbol/validSymbol')
+      .get('/api/numerical-guidance/indicator/search-by-symbol/validSymbol')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });
 
   it('/get symbol로 지표를 검색한다. - symbol을 찾지 못한 경우', async () => {
     return request(app.getHttpServer())
-      .get('/api/numerical-guidance/indicator/search-id-by-symbol/invalidSymbol')
+      .get('/api/numerical-guidance/indicator/search-by-symbol/invalidSymbol')
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);
   });
