@@ -1,17 +1,29 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
-import { MemberEntity } from '../entity/member.entity';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { Request } from 'express';
+import { IS_PUBLIC_KEY } from './is-public.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+  constructor() {}
+
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const reflector: Reflector = new Reflector();
+    const isPublic = reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [context.getHandler(), context.getClass()]);
+    if (isPublic) {
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest();
-    return this.validateRequest(request);
+    const token = this.extractTokenFromHeader(request);
+    if (!token) {
+      throw new UnauthorizedException();
+    }
+    return true;
   }
 
-  private validateRequest(request: any): Observable<boolean> {
-    const member: MemberEntity = { id: 1 }; // mock user
-    request.member = member; // request에 유저 정보를 할당합니다.
-    return of(true); // 유저가 인증되었음을 나타내는 Observable을 반환합니다.
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }
