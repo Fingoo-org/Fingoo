@@ -17,8 +17,7 @@ import { GetCustomForecastIndicatorQueryHandler } from '../../../application/que
 import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from '../../../application/query/custom-forecast-indicator/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { CustomForecastIndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
-import { AuthGuard } from '../../../../auth/util/auth.guard';
-import { of } from 'rxjs';
+import { CustomAuthGuard } from '../../../../auth/util/custom-auth.guard';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
 import { DeleteCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
@@ -35,6 +34,7 @@ import { FundEntity } from 'src/numerical-guidance/infrastructure/adapter/persis
 import { IndicesEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { addTransactionalDataSource, initializeTransactionalContext } from 'typeorm-transactional';
 import { AdjustIndicatorValue } from 'src/numerical-guidance/util/adjust-indicator-value';
+import { AuthModule } from '../../../../auth/auth.module';
 
 initializeTransactionalContext();
 
@@ -45,7 +45,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
 
   const seeding = async () => {
     const memberEntity = dataSource.getRepository(MemberEntity);
-    await memberEntity.insert({ id: 1 });
+    await memberEntity.insert({ id: '1', email: 'test@gmail.com' });
 
     const stockRepository = dataSource.getRepository(StockEntity);
     await stockRepository.insert({
@@ -69,7 +69,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       customForecastIndicatorIds: [],
       createdAt: new Date('2024-02-23 10:00:02.292086'),
       updatedAt: new Date('2024-02-23 10:00:02.292086'),
-      member: { id: 1 },
+      member: { id: '1', email: 'test@gmail.com' },
     });
 
     const customForecastIndicatorEntity = dataSource.getRepository(CustomForecastIndicatorEntity);
@@ -87,7 +87,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorsInformation: [],
-      member: { id: 1 },
+      member: { id: '1', email: 'test@gmail.com' },
       createdAt: new Date('2024-02-23 10:00:02.292086'),
       updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
@@ -106,7 +106,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorsInformation: [],
-      member: { id: 1 },
+      member: { id: '1', email: 'test@gmail.com' },
       createdAt: new Date('2024-02-23 10:00:02.292086'),
       updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
@@ -125,7 +125,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorsInformation: [],
-      member: { id: 1 },
+      member: { id: '1', email: 'test@gmail.com' },
       createdAt: new Date('2024-02-23 10:00:02.292086'),
       updatedAt: new Date('2024-02-23 10:00:02.292086'),
     });
@@ -136,6 +136,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
     const [module] = await Promise.all([
       Test.createTestingModule({
         imports: [
+          AuthModule,
           CqrsModule,
           ConfigModule.forRoot({
             isGlobal: true,
@@ -232,14 +233,9 @@ describe('Customer Forecast Indicator E2E Test', () => {
             useClass: IndicatorPersistentAdapter,
           },
           {
-            provide: AuthGuard,
+            provide: CustomAuthGuard,
             useValue: {
-              canActivate: jest.fn().mockImplementation((context) => {
-                const request = context.switchToHttp().getRequest();
-                const member: MemberEntity = { id: 1 };
-                request.member = member;
-                return of(true);
-              }),
+              canActivate: jest.fn(() => true),
             },
           },
         ],
@@ -258,7 +254,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       }),
     );
     app.useGlobalFilters(new HttpExceptionFilter());
-    app.useGlobalGuards(new AuthGuard());
+    app.useGlobalGuards(new CustomAuthGuard());
     await app.init();
   }, 30000);
 
@@ -275,6 +271,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         targetIndicatorType: 'stocks',
       })
+      .auth('token', { type: 'bearer' })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);
   });

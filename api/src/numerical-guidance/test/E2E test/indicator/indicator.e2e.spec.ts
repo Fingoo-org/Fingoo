@@ -16,7 +16,6 @@ import { ForexPairEntity } from '../../../infrastructure/adapter/persistence/ind
 import { FundEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { IndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
-import { AuthGuard } from '../../../../auth/util/auth.guard';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
 import * as fs from 'fs';
@@ -25,6 +24,7 @@ import { SearchIndicatorQueryHandler } from '../../../application/query/indicato
 import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
 import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
+import { CustomAuthGuard } from '../../../../auth/util/custom-auth.guard';
 
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
@@ -138,7 +138,7 @@ describe('Indicator E2E Test', () => {
       }),
     );
     app.useGlobalFilters(new HttpExceptionFilter());
-    app.useGlobalGuards(new AuthGuard());
+    app.useGlobalGuards(new CustomAuthGuard());
     await app.init();
   }, 30000);
 

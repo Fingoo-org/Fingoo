@@ -21,9 +21,9 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
 
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
-    await memberRepository.insert({ id: 10 });
-    await memberRepository.insert({ id: 5 });
-    await memberRepository.insert({ id: 999 });
+    await memberRepository.insert({ id: '10' });
+    await memberRepository.insert({ id: '5' });
+    await memberRepository.insert({ id: '999' });
     memberRepository.save;
 
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
@@ -33,7 +33,7 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: 10 },
+      member: { id: '10' },
     });
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
@@ -41,7 +41,7 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: 10 },
+      member: { id: '10' },
     });
   };
 
@@ -83,7 +83,7 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
 
   it('사용자 id로 메타데이터 리스트 가져오기.', async () => {
     // given
-    const memberId = 10;
+    const memberId = '10';
     const testQuery = new GetIndicatorBoardMetadataListQuery(memberId);
 
     // when
@@ -96,7 +96,7 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
 
   it('사용자 id로 메타데이터 리스트를 가져오기 - 해당 회원이 없을 경우', async () => {
     // given
-    const invalidId = 111;
+    const invalidId = '111';
     const testQuery = new GetIndicatorBoardMetadataListQuery(invalidId);
 
     // when // then
@@ -114,7 +114,7 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
 
   it('사용자 id로 메타데이터 리스트를 가져오기 - 유효하지 않은 member id값일 경우', async () => {
     // given
-    const invalidId = 10.112;
+    const invalidId = '10.112';
     const testQuery = new GetIndicatorBoardMetadataListQuery(invalidId);
 
     // when // then

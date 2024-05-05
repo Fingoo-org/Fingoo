@@ -21,9 +21,9 @@ describe('GetIndicatorBoardMetadataQueryHandler', () => {
 
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
-    await memberRepository.insert({ id: 10 });
-    await memberRepository.insert({ id: 5 });
-    await memberRepository.insert({ id: 999 });
+    await memberRepository.insert({ id: '10' });
+    await memberRepository.insert({ id: '5' });
+    await memberRepository.insert({ id: '999' });
     memberRepository.save;
 
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
@@ -33,7 +33,7 @@ describe('GetIndicatorBoardMetadataQueryHandler', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: 10 },
+      member: { id: '10' },
     });
   };
 

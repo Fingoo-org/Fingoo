@@ -47,7 +47,7 @@ export class IndicatorBoardMetadataPersistentAdapter
 
   async createIndicatorBoardMetadata(
     indicatorBoardMetadata: IndicatorBoardMetadata,
-    memberId: number,
+    memberId: string,
   ): Promise<string> {
     try {
       const member = await this.authService.findById(memberId);

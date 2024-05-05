@@ -20,7 +20,7 @@ import { DeleteIndicatorIdCommandHandler } from '../../../application/command/in
 import { DeleteIndicatorBoardMetadataCommandHandler } from '../../../application/command/indicator-board-metadata/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from '../../../application/command/indicator-board-metadata/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
-import { AuthGuard } from '../../../../auth/util/auth.guard';
+import { CustomAuthGuard } from '../../../../auth/util/custom-auth.guard';
 import { of } from 'rxjs';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
@@ -49,7 +49,7 @@ describe('Indicator Board Metadata E2E Test', () => {
 
   const seeding = async () => {
     const memberEntity = dataSource.getRepository(MemberEntity);
-    await memberEntity.insert({ id: 1 });
+    await memberEntity.insert({ id: '1' });
 
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
     await indicatorBoardMetadataRepository.insert({
@@ -65,7 +65,7 @@ describe('Indicator Board Metadata E2E Test', () => {
       ],
       customForecastIndicatorIds: ['customForecastIndicatorId1'],
       sections: { section1: ['a79eface-1fd3-4b85-92ae-9628d37951fb', 'customForecastIndicatorId1'] },
-      member: { id: 1 },
+      member: { id: '1' },
     });
 
     await indicatorBoardMetadataRepository.insert({
@@ -81,7 +81,7 @@ describe('Indicator Board Metadata E2E Test', () => {
       ],
       customForecastIndicatorIds: ['customForecastIndicatorId1'],
       sections: { section1: ['a79eface-1fd3-4b85-92ae-9628d37951fa', 'customForecastIndicatorId1'] },
-      member: { id: 1 },
+      member: { id: '1' },
     });
 
     const stockRepository = dataSource.getRepository(StockEntity);
@@ -232,11 +232,11 @@ describe('Indicator Board Metadata E2E Test', () => {
             useClass: IndicatorPersistentAdapter,
           },
           {
-            provide: AuthGuard,
+            provide: CustomAuthGuard,
             useValue: {
               canActivate: jest.fn().mockImplementation((context) => {
                 const request = context.switchToHttp().getRequest();
-                const member: MemberEntity = { id: 1 };
+                const member: MemberEntity = { id: '1', email: 'test@gmail.com' };
                 request.member = member;
                 return of(true);
               }),
@@ -259,7 +259,7 @@ describe('Indicator Board Metadata E2E Test', () => {
       }),
     );
     app.useGlobalFilters(new HttpExceptionFilter());
-    app.useGlobalGuards(new AuthGuard());
+    app.useGlobalGuards(new CustomAuthGuard());
     await app.init();
   }, 30000);
 

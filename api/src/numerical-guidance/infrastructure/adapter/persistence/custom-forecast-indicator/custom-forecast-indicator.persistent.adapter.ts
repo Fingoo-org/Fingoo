@@ -138,7 +138,7 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async loadCustomForecastIndicatorsByMemberId(memberId: number): Promise<CustomForecastIndicator[]> {
+  async loadCustomForecastIndicatorsByMemberId(memberId: string): Promise<CustomForecastIndicator[]> {
     try {
       const member = await this.authService.findById(memberId);
       this.nullCheckForEntity(member);
@@ -171,7 +171,7 @@ export class CustomForecastIndicatorPersistentAdapter
 
   async createCustomForecastIndicator(
     customForecastIndicator: CustomForecastIndicator,
-    memberId: number,
+    memberId: string,
   ): Promise<string> {
     try {
       const member = await this.authService.findById(memberId);

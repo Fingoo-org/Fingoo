@@ -6,6 +6,6 @@ export class CreateCustomForecastIndicatorCommand implements ICommand {
     readonly customForecastIndicatorName: string,
     readonly targetIndicatorId: string,
     readonly targetIndicatorType: IndicatorType,
-    readonly memberId: number,
+    readonly memberId: string,
   ) {}
 }
