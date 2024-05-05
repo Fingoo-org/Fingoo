@@ -26,6 +26,20 @@ import { Propagation, Transactional } from 'typeorm-transactional';
 import { TwelveApiUtil } from '../../twelve/util/twelve-api.util';
 import { IndicatorMapper } from './mapper/indicator.mapper';
 import { SearchIndicatorBySymbolPort } from 'src/numerical-guidance/application/port/persistence/indicator/search-indicator-by-symbol.port';
+import { StockMapper } from './mapper/stock.mapper';
+import { IndicesMapper } from './mapper/indices.mapper';
+import { ForexPairMapper } from './mapper/forex-pair.mapper';
+import { CryptoCurrenciesMapper } from './mapper/crypto-currencies.mapper';
+import { ETFMapper } from './mapper/etf.mapper';
+import { FundMapper } from './mapper/fund.mapper';
+import { BondsMapper } from './mapper/bonds.mapper';
+import { StockDto } from 'src/numerical-guidance/application/query/indicator/get-indicator-list/dto/stock.dto';
+import { IndicesDto } from 'src/numerical-guidance/application/query/indicator/get-indicator-list/dto/indices.dto';
+import { ForexPairDto } from 'src/numerical-guidance/application/query/indicator/get-indicator-list/dto/forex-pair.dto';
+import { CryptoCurrenciesDto } from 'src/numerical-guidance/application/query/indicator/get-indicator-list/dto/crypto-currencies.dto';
+import { ETFDto } from 'src/numerical-guidance/application/query/indicator/get-indicator-list/dto/etf.dto';
+import { FundDto } from 'src/numerical-guidance/application/query/indicator/get-indicator-list/dto/fund.dto';
+import { BondsDto } from 'src/numerical-guidance/application/query/indicator/get-indicator-list/dto/bonds.dto';
 
 const ORDER_TYPE: string = 'ASC';
 const DATA_COUNT: number = 10;
@@ -80,7 +94,7 @@ export class IndicatorPersistentAdapter
 
   async searchIndicatorBySymbol(symbol: string): Promise<IndicatorDtoType> {
     try {
-      let indicator: IndicatorDtoType;
+      let indicatorEntity: any;
 
       const indicatorRepositories = [
         this.stockEntityRepository,
@@ -93,12 +107,13 @@ export class IndicatorPersistentAdapter
       ];
 
       for (const repository of indicatorRepositories) {
-        indicator = await repository.findOneBy({ symbol: symbol });
-        if (indicator) {
+        indicatorEntity = await repository.findOneBy({ symbol: symbol });
+        if (indicatorEntity) {
           break;
         }
       }
-      return indicator;
+
+      return this.loadIndicatorDtoByType(indicatorEntity.indicatorType, indicatorEntity);
     } catch (error) {
       if (error instanceof BadRequestException) {
         throw new BadRequestException({
@@ -361,5 +376,31 @@ export class IndicatorPersistentAdapter
       this.indicesEntityRepository.clear(),
       this.stockEntityRepository.clear(),
     ]);
+  }
+
+  private loadIndicatorDtoByType(indicatorType: IndicatorType, indicatorEntity: any) {
+    switch (indicatorType) {
+      case 'stocks':
+        const stockIndicator: StockDto = StockMapper.mapEntityToDto(indicatorEntity);
+        return stockIndicator;
+      case 'indices':
+        const indicesIndicator: IndicesDto = IndicesMapper.mapEntityToDto(indicatorEntity);
+        return indicesIndicator;
+      case 'forex_pairs':
+        const forexPairIndicator: ForexPairDto = ForexPairMapper.mapEntityToDto(indicatorEntity);
+        return forexPairIndicator;
+      case 'cryptocurrencies':
+        const cryptocurrenciesIndicator: CryptoCurrenciesDto = CryptoCurrenciesMapper.mapEntityToDto(indicatorEntity);
+        return cryptocurrenciesIndicator;
+      case 'etf':
+        const etfIndicator: ETFDto = ETFMapper.mapEntityToDto(indicatorEntity);
+        return etfIndicator;
+      case 'funds':
+        const fundIndicator: FundDto = FundMapper.mapEntityToDto(indicatorEntity);
+        return fundIndicator;
+      case 'bonds':
+        const bondsIndicator: BondsDto = BondsMapper.mapEntityToDto(indicatorEntity);
+        return bondsIndicator;
+    }
   }
 }
