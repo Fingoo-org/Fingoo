@@ -1,6 +1,7 @@
 import {
   CustomForecastIndicatorListResponse,
   CustomForecastIndicatorResponse,
+  TargetIndicatorInfo,
   VerificationType,
   sourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
@@ -9,31 +10,35 @@ import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-l
 export class CustomForecastIndicator {
   readonly id: string;
   readonly customForecastIndicatorName: string;
-  readonly targetIndicatorId: string;
-  readonly sourceIndicatorIdsAndWeights: sourceIndicator[];
+  readonly targetIndicatorInformation: TargetIndicatorInfo;
+  readonly sourceIndicatorsInformation: sourceIndicator[];
   readonly type: IndicatorType;
   readonly grangerVerification: VerificationType[];
   readonly cointJohansenVerification: VerificationType[];
   constructor({
     id,
     customForecastIndicatorName,
-    targetIndicatorId,
-    sourceIndicatorIdsAndWeights,
+    targetIndicatorInformation,
+    sourceIndicatorsInformation,
     type,
     grangerVerification,
     cointJohansenVerification,
   }: CustomForecastIndicatorResponse) {
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
-    this.targetIndicatorId = targetIndicatorId;
-    this.sourceIndicatorIdsAndWeights = sourceIndicatorIdsAndWeights;
+    this.targetIndicatorInformation = targetIndicatorInformation;
+    this.sourceIndicatorsInformation = sourceIndicatorsInformation;
     this.type = type;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
   }
 
   get sourceIndicatorIds() {
-    return this.sourceIndicatorIdsAndWeights.map((sourceIndicator) => sourceIndicator.sourceIndicatorId);
+    return this.sourceIndicatorsInformation.map((sourceIndicator) => sourceIndicator.sourceIndicatorId);
+  }
+
+  get targetIndicatorId() {
+    return this.targetIndicatorInformation.targetIndicatorId;
   }
 
   get name() {
@@ -41,7 +46,7 @@ export class CustomForecastIndicator {
   }
 
   getSourceIndicatorWeight(sourceIndicatorId: string) {
-    const sourceIndicator = this.sourceIndicatorIdsAndWeights.find(
+    const sourceIndicator = this.sourceIndicatorsInformation.find(
       (sourceIndicator) => sourceIndicator.sourceIndicatorId === sourceIndicatorId,
     );
     return sourceIndicator?.weight;
@@ -61,8 +66,8 @@ export class CustomForecastIndicator {
     return {
       id: this.id,
       customForecastIndicatorName: this.customForecastIndicatorName,
-      targetIndicatorId: this.targetIndicatorId,
-      sourceIndicatorIdsAndWeights: this.sourceIndicatorIdsAndWeights,
+      targetIndicatorInformation: this.targetIndicatorInformation,
+      sourceIndicatorsInformation: this.sourceIndicatorsInformation,
       type: this.type,
       grangerVerification: this.grangerVerification,
       cointJohansenVerification: this.cointJohansenVerification,

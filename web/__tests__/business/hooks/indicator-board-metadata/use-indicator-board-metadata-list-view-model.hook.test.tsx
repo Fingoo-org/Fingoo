@@ -1,4 +1,4 @@
-import { useIndicatorBoardMetadataList } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
+import { useIndicatorBoardMetadataList } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 import { renderHook, waitFor } from '@testing-library/react';
 import { server } from '@/app/mocks/server.mock';
 import { HttpResponse, http } from 'msw';

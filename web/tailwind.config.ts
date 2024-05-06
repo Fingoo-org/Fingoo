@@ -4,6 +4,7 @@ import forms from '@tailwindcss/forms';
 import colors from 'tailwindcss/colors';
 import animate from 'tailwindcss-animate';
 import { fontFamily } from 'tailwindcss/defaultTheme';
+import scrollbar from 'tailwind-scrollbar';
 
 const config: Config = {
   content: [
@@ -161,6 +162,6 @@ const config: Config = {
         /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
     },
   ],
-  plugins: [headlessui, forms, animate],
+  plugins: [headlessui, forms, animate, scrollbar({ nocompatible: true })],
 };
 export default config;

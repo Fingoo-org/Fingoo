@@ -1,9 +1,9 @@
-import { useIndicatorListByType } from '@/app/business/hooks/indicator/use-indicator-list-by-type.hook';
+import { useIndicatorListByType } from '@/app/business/hooks/numerical-guidance/indicator/use-indicator-list-by-type.hook';
 import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
 import { ListChildComponentProps } from 'react-window';
 import WindowList from '../../../view/molecule/window-list';
 import React from 'react';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import IndicatorListItem from './indicator-list-item';
 import { cn } from '@/app/utils/style';
 
@@ -28,7 +28,7 @@ export default function IndicatorListResult() {
   };
 
   return (
-    <div className={cn('h-56 pt-2', { hidden: selectedMetadata === undefined })}>
+    <div className={cn('h-[24vh] pt-2', { hidden: selectedMetadata === undefined })}>
       <WindowList
         loadMoreItems={loadMoreIndicators}
         maxVieweditemCount={4.5}

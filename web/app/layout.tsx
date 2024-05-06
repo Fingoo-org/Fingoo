@@ -18,7 +18,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="kr">
+    <html
+      lang="kr"
+      className="scrollbar-track-gray-300 scrollbar-thumb-fingoo-main scrollbar-track-rounded-full scrollbar-thumb-rounded-full"
+    >
       <body className={cn(myFont.variable, 'font-pretendard')}>
         <MSWComponent>
           <SWRProvider>{children}</SWRProvider>

@@ -1,4 +1,4 @@
-import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import Select from '../../../view/molecule/select';
 import { unitTypes, UnitType } from '@/app/business/services/chart/unit-calculator/unit-calculator-factory.service';
 

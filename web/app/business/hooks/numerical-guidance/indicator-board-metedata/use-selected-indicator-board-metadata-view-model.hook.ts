@@ -8,9 +8,9 @@ import {
   useDeleteCustomForecastIndicatorFromMetadata,
   useDeleteIndicatorFromMetadata,
   useFetchIndicatorBoardMetadataList,
-} from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { useWorkspaceStore } from '../../../store/stores/numerical-guidance/workspace.store';
-import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
+} from '../../../../store/querys/numerical-guidance/indicator-board-metadata.query';
+import { useWorkspaceStore } from '../../../../store/stores/numerical-guidance/workspace.store';
+import { convertIndcatorBoardMetadataList } from '../../../services/view-model/indicator-board-metadata-view-model.service';
 
 export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useWorkspaceStore((state) => state.selectedMetadataId);
@@ -56,6 +56,8 @@ export const useSelectedIndicatorBoardMetadata = () => {
     if (!selectedMetadata) {
       return;
     }
+
+    console.log('호출!');
 
     addCustomForecastIndicatorTrigger(
       {

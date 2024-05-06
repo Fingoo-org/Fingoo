@@ -3,8 +3,8 @@ import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB, mockDB } from '@/app/mocks/db';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/indicator/use-live-indicators-value-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { ActualIndicatorsValue } from '@/app/business/services/view-model/indicator-value/actual-indicators-value-view-model.service';
 
 const wrapper = SWRProviderWithoutCache;

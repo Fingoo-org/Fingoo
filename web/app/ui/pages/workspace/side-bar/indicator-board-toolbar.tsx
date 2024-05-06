@@ -3,7 +3,7 @@ import Tabs from '../../../components/view/molecule/tabs';
 import MetadataListContainer from './metadata-list-container';
 import IndicatorListContainer from './indicator-list-container';
 import CustomForecastIndicatorListContainer from './custom-forecast-indicator-list-container';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useWorkspace } from '@/app/business/hooks/use-workspace.hook';
 
 export default function IndicatorBoardToolbar() {

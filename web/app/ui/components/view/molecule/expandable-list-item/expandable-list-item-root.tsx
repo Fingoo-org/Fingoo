@@ -81,7 +81,7 @@ export function ExpandableListItemRoot({
           <div
             onClick={handleClick}
             className={cn(
-              'h-full w-full rounded-2xl bg-white text-fingoo-gray-5 ring-1 ring-fingoo-gray-3',
+              'h-full w-full rounded-lg bg-white text-fingoo-gray-5 ring-1 ring-fingoo-gray-3',
               {
                 'bg-fingoo-main text-white opacity-80': selected,
               },

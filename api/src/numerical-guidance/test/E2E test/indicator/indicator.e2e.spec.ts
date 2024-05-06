@@ -24,6 +24,7 @@ import { SearchIndicatorQueryHandler } from '../../../application/query/indicato
 import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
 import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
+import { SearchIndicatorBySymbolQueryHandler } from 'src/numerical-guidance/application/query/indicator/get-search-indicator-by-symbol/search-indicator-by-symbol.query.handler';
 
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
@@ -38,6 +39,18 @@ describe('Indicator E2E Test', () => {
     const stockEntityRepository = dataSource.getRepository(StockEntity);
     await stockEntityRepository.clear();
     await stockEntityRepository.insert(testIndicatorList);
+    await stockEntityRepository.insert({
+      id: '34bcb58c-1ea6-44a5-bb6a-dcd8929ab2b6',
+      index: 1,
+      indicatorType: 'stocks',
+      symbol: 'validSymbol',
+      name: 'search test indicator',
+      country: 'South Korea',
+      currency: 'KRW',
+      exchange: 'KRX',
+      mic_code: 'XKRX',
+      type: 'Common Stock',
+    });
   };
 
   beforeAll(async () => {
@@ -95,6 +108,7 @@ describe('Indicator E2E Test', () => {
         providers: [
           GetIndicatorListQueryHandler,
           SearchIndicatorQueryHandler,
+          SearchIndicatorBySymbolQueryHandler,
           TwelveApiUtil,
           {
             provide: 'LoadIndicatorPort',
@@ -106,6 +120,10 @@ describe('Indicator E2E Test', () => {
           },
           {
             provide: 'LoadIndicatorListPort',
+            useClass: IndicatorPersistentAdapter,
+          },
+          {
+            provide: 'SearchIndicatorBySymbolPort',
             useClass: IndicatorPersistentAdapter,
           },
           {
@@ -164,5 +182,19 @@ describe('Indicator E2E Test', () => {
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
+  });
+
+  it('/get symbol로 지표를 검색한다.', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/indicator/search-by-symbol/validSymbol')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/get symbol로 지표를 검색한다. - symbol을 찾지 못한 경우', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/indicator/search-by-symbol/invalidSymbol')
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.NOT_FOUND);
   });
 });

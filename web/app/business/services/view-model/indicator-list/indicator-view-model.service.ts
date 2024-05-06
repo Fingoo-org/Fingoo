@@ -16,9 +16,9 @@ import {
   BondsIndicatorResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { Indicator } from './indicators/indicator.service';
-import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
-function createIndicator(indicatorType: IndicatorType, data: indicatorByTypeResponse): Indicator {
+export function createIndicator(data: indicatorByTypeResponse): Indicator {
+  const { indicatorType } = data;
   switch (indicatorType) {
     case 'stocks':
       return new StockIndicator(data as StocksIndicatorResponse);
@@ -40,5 +40,5 @@ function createIndicator(indicatorType: IndicatorType, data: indicatorByTypeResp
 }
 
 export function convertIndicatorViewModel(data: indicatorByTypeResponse[]): Indicator[] {
-  return data.map((indicator) => createIndicator(indicator.indicatorType, indicator));
+  return data.map((indicator) => createIndicator(indicator));
 }

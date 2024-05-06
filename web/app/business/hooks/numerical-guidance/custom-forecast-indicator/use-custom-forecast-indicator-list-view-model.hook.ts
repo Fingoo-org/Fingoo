@@ -4,9 +4,10 @@ import {
   useDeleteCustomForecastIndicator,
   useFetchCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { convertCustomForecastIndicatorsViewModel } from '../../services/view-model/custom-forecast-indicator-view-model.service';
+import { convertCustomForecastIndicatorsViewModel } from '../../../services/view-model/custom-forecast-indicator-view-model.service';
 import { useMemo } from 'react';
 import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
+import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 export const useCustomForecastIndicatorListViewModel = () => {
   const { data: customForecastIndicatorList, isValidating } = useFetchCustomForecastIndicatorList();
@@ -22,10 +23,19 @@ export const useCustomForecastIndicatorListViewModel = () => {
     return convertCustomForecastIndicatorsViewModel(customForecastIndicatorList);
   }, [customForecastIndicatorList]);
 
-  const createCustomForecastIndicator = async ({ targetIndicatorId }: { targetIndicatorId: string }) => {
+  const createCustomForecastIndicator = async ({
+    targetIndicatorId,
+    indicatorType,
+    customForecastIndicatorName,
+  }: {
+    targetIndicatorId: string;
+    indicatorType: IndicatorType;
+    customForecastIndicatorName?: string;
+  }) => {
     const body = {
-      customForecastIndicatorName: '새로운 예측 지표',
+      customForecastIndicatorName: customForecastIndicatorName ?? '새로운 예측 지표',
       targetIndicatorId,
+      targetIndicatorType: indicatorType,
     };
 
     const customForecastIndicatorId = await createCustomForecastIndicatorTrigger(body);

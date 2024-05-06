@@ -4,12 +4,12 @@ import {
   useUpdateCustomForecastIndicatorName,
   useUpdateSourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { convertCustomForecastIndicatorViewModel } from '../../services/view-model/custom-forecast-indicator-view-model.service';
+import { convertCustomForecastIndicatorViewModel } from '../../../services/view-model/custom-forecast-indicator-view-model.service';
 import { useEffect, useMemo } from 'react';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
-import { useFetchIndicatorList } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
 import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
+import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
@@ -19,7 +19,6 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomerForecastIndicatorActions = useSelectedCustomForecastIndicatorStore((state) => state.actions);
 
   const { data: customForecastIndicatorList, isValidating } = useFetchCustomForecastIndicatorList();
-  const { data: indicatorList } = useFetchIndicatorList();
 
   const { trigger: updateSourceIndicatorTrigger, isMutating: isUpdateSourceIndicatorMutating } =
     useUpdateSourceIndicator(selectedCustomForecastIndicatorId);
@@ -51,24 +50,22 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     [foundCustomForecastIndicator, selectedCustomForecastIndicator],
   );
 
-  const sourceIndicatorIds = convertedSelectedCustomForecastIndicator?.sourceIndicatorIds;
-
   const sourceIndicatorList = useMemo(() => {
-    if (!sourceIndicatorIds) return [];
+    if (!convertedSelectedCustomForecastIndicator) return [];
 
-    return indicatorList
-      ?.filter((indicator) => sourceIndicatorIds.includes(indicator.id))
-      .map((indicator) => {
-        return {
-          ...indicator,
-          weight: convertedSelectedCustomForecastIndicator.getSourceIndicatorWeight(indicator.id)!,
-          disabled: !convertedSelectedCustomForecastIndicator.checkGrantedVerificationBySourceIndicatorId(indicator.id),
-        };
-      });
-  }, [indicatorList, sourceIndicatorIds]);
+    return convertedSelectedCustomForecastIndicator.sourceIndicatorsInformation.map((sourceIndicator) => {
+      return {
+        ...sourceIndicator,
+        id: sourceIndicator.sourceIndicatorId,
+        disabled: !convertedSelectedCustomForecastIndicator.checkGrantedVerificationBySourceIndicatorId(
+          sourceIndicator.sourceIndicatorId,
+        ),
+      };
+    });
+  }, [convertedSelectedCustomForecastIndicator]);
 
-  const addSourceIndicator = (indicatorId: string) => {
-    selectedCustomerForecastIndicatorActions.addSourceIndicator(indicatorId);
+  const addSourceIndicator = (indicatorId: string, indicatorType: IndicatorType) => {
+    selectedCustomerForecastIndicatorActions.addSourceIndicator(indicatorId, indicatorType);
   };
 
   const deleteSourceIndicator = (indicatorId: string) => {
@@ -82,7 +79,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   const applyUpdatedSourceIndicator = async () => {
     await updateSourceIndicatorTrigger(
       {
-        sourceIndicatorIdsAndWeights: convertedSelectedCustomForecastIndicator.sourceIndicatorIdsAndWeights,
+        sourceIndicatorsInformation: convertedSelectedCustomForecastIndicator.sourceIndicatorsInformation,
       },
       {
         onSuccess: () => {

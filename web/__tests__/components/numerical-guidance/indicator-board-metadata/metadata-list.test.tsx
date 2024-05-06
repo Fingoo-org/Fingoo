@@ -34,7 +34,7 @@ describe('MetadataList', () => {
     await waitFor(async () => expect(await screen.findByText(/metadata1/i)).toBeInTheDocument());
 
     // when
-    await user.click(screen.getByRole('button', { name: /create/i }));
+    await user.click(screen.getByRole('button', { name: /메타데이터 추가/i }));
 
     // then
     expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(4);
@@ -51,8 +51,8 @@ describe('MetadataList', () => {
     await waitFor(async () => expect(await screen.findByText(/metadata1/i)).toBeInTheDocument());
 
     // when;
-    await user.click(screen.getByRole('button', { name: /create/i }));
-    await user.click(screen.getByRole('button', { name: /create/i }));
+    await user.click(screen.getByRole('button', { name: /메타데이터 추가/i }));
+    await user.click(screen.getByRole('button', { name: /메타데이터 추가/i }));
 
     // then
     expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(5);

@@ -88,11 +88,16 @@ const initialState: MockDatabase = {
     {
       id: '11',
       customForecastIndicatorName: 'customForecastIndicator1',
-      targetIndicatorId: '1',
-      sourceIndicatorIdsAndWeights: [
+      targetIndicatorInformation: {
+        symbol: 'AAPL',
+        targetIndicatorId: '1',
+        indicatorType: 'stocks',
+      },
+      sourceIndicatorsInformation: [
         {
           sourceIndicatorId: '3',
           weight: 10,
+          indicatorType: 'stocks',
         },
       ],
       type: 'customForecastIndicator',
@@ -120,15 +125,21 @@ const initialState: MockDatabase = {
     {
       id: '12',
       customForecastIndicatorName: 'customForecastIndicator2',
-      targetIndicatorId: '2',
-      sourceIndicatorIdsAndWeights: [
+      targetIndicatorInformation: {
+        symbol: 'MSFT',
+        targetIndicatorId: '2',
+        indicatorType: 'stocks',
+      },
+      sourceIndicatorsInformation: [
         {
           sourceIndicatorId: '1',
           weight: 20,
+          indicatorType: 'stocks',
         },
         {
           sourceIndicatorId: '3',
           weight: 30,
+          indicatorType: 'stocks',
         },
       ],
       type: 'customForecastIndicator',
@@ -164,15 +175,21 @@ const initialState: MockDatabase = {
     {
       id: '13',
       customForecastIndicatorName: 'customForecastIndicator3',
-      targetIndicatorId: '3',
-      sourceIndicatorIdsAndWeights: [
+      targetIndicatorInformation: {
+        symbol: 'GOOG',
+        targetIndicatorId: '3',
+        indicatorType: 'stocks',
+      },
+      sourceIndicatorsInformation: [
         {
           sourceIndicatorId: '1',
           weight: 10,
+          indicatorType: 'stocks',
         },
         {
           sourceIndicatorId: '2',
           weight: 20,
+          indicatorType: 'stocks',
         },
       ],
       type: 'customForecastIndicator',
@@ -208,11 +225,16 @@ const initialState: MockDatabase = {
     {
       id: '14',
       customForecastIndicatorName: '삼성전자 예측 지표',
-      targetIndicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
-      sourceIndicatorIdsAndWeights: [
+      targetIndicatorInformation: {
+        symbol: '삼성전자',
+        targetIndicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
+        indicatorType: 'stocks',
+      },
+      sourceIndicatorsInformation: [
         {
           sourceIndicatorId: '1',
           weight: 10,
+          indicatorType: 'stocks',
         },
       ],
       type: 'customForecastIndicator',

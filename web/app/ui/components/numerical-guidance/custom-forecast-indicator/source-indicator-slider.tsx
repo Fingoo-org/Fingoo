@@ -1,16 +1,18 @@
 import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { Card } from '@tremor/react';
 import Slider from '../../view/atom/slider/slider';
-import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 import IconButton from '../../view/atom/icons/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
+import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 type SourceIndicatorInfo = {
   weight: number;
   disabled: boolean;
   id: string;
-  ticker: string;
-  name: string;
+  indicatorType: IndicatorType;
+  // ticker: string;
+  // name: string;
 };
 
 type SourceIndicatorSliderProps = {
@@ -30,7 +32,7 @@ export default function SourceIndicatorSlider({ item }: SourceIndicatorSliderPro
 
   return (
     <Card className="flex items-center rounded-lg px-1 py-1">
-      <div className="mr-2 block w-16 truncate text-xs">{item.ticker}</div>
+      <div className="mr-2 block w-16 truncate text-xs">{item.id}</div>
       {item.disabled ? (
         <div className="grow">Disabled</div>
       ) : (

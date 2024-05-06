@@ -1,4 +1,4 @@
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import SelectableItem from '../../../view/atom/selectable-item';
 import ListItem from '../../../view/atom/list-item';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
@@ -62,7 +62,7 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
                 'text-white': isSelected,
               })}
             >
-              <div>{item.name}</div>
+              <div className="w-1/2 truncate text-left">{item.name}</div>
               <div>{item.indicatorType}</div>
             </div>
           </SelectableItem>

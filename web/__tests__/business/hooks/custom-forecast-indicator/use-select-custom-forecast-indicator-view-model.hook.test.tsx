@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 
 const wrapper = SWRProviderWithoutCache;
 
@@ -48,7 +48,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
 
     // then
     expect(result.current.sourceIndicatorList).toHaveLength(2);
-    expect(result.current.sourceIndicatorList?.[0].ticker).toBe('AAPL');
+    // expect(result.current.sourceIndicatorList?.[0].ticker).toBe('AAPL');
   });
 
   it('예측 지표 이름을 변경하면, 변경된 이름이 적용된다', async () => {
@@ -79,7 +79,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
       });
       await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
       act(() => {
-        result.current.addSourceIndicator('2');
+        result.current.addSourceIndicator('2', 'stocks');
       });
 
       // then

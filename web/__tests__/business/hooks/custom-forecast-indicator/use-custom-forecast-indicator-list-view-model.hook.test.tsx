@@ -2,7 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
+import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 
 const wrapper = SWRProviderWithoutCache;
 
@@ -30,7 +30,7 @@ describe('useCustomForecastIndicatorListViewModel', () => {
 
     // when
     act(() => {
-      result.current.createCustomForecastIndicator({ targetIndicatorId: '1' });
+      result.current.createCustomForecastIndicator({ targetIndicatorId: '1', indicatorType: 'stocks' });
     });
 
     // then

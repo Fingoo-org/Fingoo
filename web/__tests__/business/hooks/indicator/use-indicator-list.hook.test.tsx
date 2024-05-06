@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
-import { useIndicatorList } from '@/app/business/hooks/indicator/use-indicator-list.hook';
+import { useIndicatorList } from '@/app/business/hooks/numerical-guidance/indicator/use-indicator-list.hook';
 
 const wrapper = SWRProviderWithoutCache;
 

@@ -1,4 +1,4 @@
-import IndicatorTypeToggleGroup from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-type-toggle-group';
+import IndicatorListTypeToggleGroup from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-type-toggle-group';
 import IndicatorList from '../../../components/numerical-guidance/indicator/indicator-list/indicator-list';
 import Icon from '../../../components/view/atom/icons/variant-icon';
 import Accordion from '../../../components/view/molecule/accordion';
@@ -8,7 +8,7 @@ import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicato
 export default function IndicatorListContainer() {
   return (
     <div className="flex h-full flex-col">
-      <IndicatorTypeToggleGroup />
+      <IndicatorListTypeToggleGroup />
       <IndicatorListResult />
       {/* <DepretedComponent /> */}
     </div>

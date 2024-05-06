@@ -55,6 +55,7 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/get-i
 import { AuthService } from '../auth/application/auth.service';
 import { SupabaseStrategy } from '../auth/supabase/supabase.strategy';
 import { SupabaseService } from '../auth/supabase/supabase.service';
+import { SearchIndicatorBySymbolQueryHandler } from './application/query/indicator/get-search-indicator-by-symbol/search-indicator-by-symbol.query.handler';
 
 @Module({
   imports: [
@@ -116,6 +117,7 @@ import { SupabaseService } from '../auth/supabase/supabase.service';
     GetIndicatorListQueryHandler,
     SaveIndicatorListCommandHandler,
     SearchIndicatorQueryHandler,
+    SearchIndicatorBySymbolQueryHandler,
     IndicatorTwelveAdapter,
     {
       provide: 'LoadCachedLiveIndicatorPort',
@@ -219,6 +221,10 @@ import { SupabaseService } from '../auth/supabase/supabase.service';
     },
     {
       provide: 'SaveIndicatorListPort',
+      useClass: IndicatorPersistentAdapter,
+    },
+    {
+      provide: 'SearchIndicatorBySymbolPort',
       useClass: IndicatorPersistentAdapter,
     },
     {
