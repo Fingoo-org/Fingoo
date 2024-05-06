@@ -5,7 +5,7 @@ import DialogMenu from '../../view/molecule/dialog-menu';
 import { PlusCircleIcon } from '@heroicons/react/outline';
 import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 import { useDialog } from '../../view/hooks/use-dialog.hook';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useWorkspace } from '@/app/business/hooks/use-workspace.hook';
 import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
 

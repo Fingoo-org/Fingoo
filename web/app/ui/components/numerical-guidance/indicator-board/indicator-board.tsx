@@ -6,7 +6,7 @@ import { SWRConfig } from 'swr';
 import ClientDataSuspense from '../../util/client-data-suspense';
 import CustomForecastIndicatorStabilityCallout from '../custom-forecast-indicator/custom-forecast-indicator-stability-callout';
 import React from 'react';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { cn } from '@/app/utils/style';
 
 type IndicatorBoardProps = {

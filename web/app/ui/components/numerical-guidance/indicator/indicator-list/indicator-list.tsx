@@ -2,7 +2,7 @@ import { ListChildComponentProps } from 'react-window';
 import WindowList from '../../../view/molecule/window-list';
 import { useIndicatorList } from '@/app/business/hooks/indicator/use-indicator-list.hook';
 import React from 'react';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import IndicatorListItem from './deprecate/indicator-list-item';
 import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { cn } from '@/app/utils/style';

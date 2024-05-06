@@ -2,7 +2,7 @@ import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/
 import MultiLineChart from '../../view/molecule/multi-line-chart/multi-line-chart';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { createIndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
-import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 
 type SimpleIndicatorsChartProps = {
   indicatorBoardMetadataId?: string;

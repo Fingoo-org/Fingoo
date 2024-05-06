@@ -3,7 +3,7 @@ import { Indicator } from '@/app/business/services/view-model/indicator-list/ind
 import { ListChildComponentProps } from 'react-window';
 import WindowList from '../../../view/molecule/window-list';
 import React from 'react';
-import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import IndicatorListItem from './indicator-list-item';
 import { cn } from '@/app/utils/style';
 

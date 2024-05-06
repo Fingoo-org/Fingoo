@@ -3,7 +3,7 @@ import { useFetchCustomForecastIndicatorList } from '@/app/store/querys/numerica
 import { useMemo } from 'react';
 import { convertCustomForecastIndicatorsValue } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
 import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
-import { useIndicatorBoardMetadataViewModel } from '../indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+import { useIndicatorBoardMetadataViewModel } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { useCustomForecastIndicatorListInMetadata } from './use-custom-forecast-indicator-list-in-metadata.hook';
 import { useIndicatorBoard } from '../indicator-board/use-indicator-board.hook';
 import {

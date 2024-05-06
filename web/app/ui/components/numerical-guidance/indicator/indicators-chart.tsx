@@ -10,7 +10,7 @@ import { useCallback, useState } from 'react';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { useGenerateImage } from '../../view/hooks/use-generate-image';
 import ImageSharePopover from '../../view/molecule/image-share-popover/image-share-popover';
-import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import CSVDownloadButton from './csv-download-button';
 import DateRangeNavigator from './date-range-navigator';
 
