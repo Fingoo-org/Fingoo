@@ -1,14 +1,14 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, Logger } from '@nestjs/common';
-import { SupabaseService } from './supabase.service';
 import * as process from 'process';
+import { User } from '@supabase/supabase-js';
 
 @Injectable()
 export class SupabaseStrategy extends PassportStrategy(Strategy) {
   private readonly logger = new Logger(SupabaseStrategy.name);
 
-  constructor(private readonly supabaseService: SupabaseService) {
+  constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -16,9 +16,7 @@ export class SupabaseStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(token: string) {
-    const supabaseClient = await this.supabaseService.getClient();
-    const user = supabaseClient.auth.getUser(token);
+  async validate(user: User) {
     return user;
   }
 }
