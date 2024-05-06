@@ -6,15 +6,12 @@ const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
   console.log('chatMessages:', chatMessages);
   console.log('toolCalls:', toolCalls);
   const functionCall = toolCalls[0].function;
-  if (functionCall.name === 'get_current_weather') {
+
+  if (functionCall.name === 'predict_economic_indicator') {
     if (functionCall.arguments) {
       const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
       console.log(parsedFunctionCallArguments);
     }
-
-    // Generate a fake temperature
-    const temperature = Math.floor(Math.random() * (100 - 30 + 1) + 30);
-    const weather = ['sunny', 'cloudy', 'rainy', 'snowy'][Math.floor(Math.random() * 4)];
 
     const functionResponse: ChatRequest = {
       messages: [
@@ -22,39 +19,31 @@ const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
         {
           id: generateId(),
           tool_call_id: toolCalls[0].id,
-          name: 'get_current_weather',
+          name: 'predict_economic_indicator',
           role: 'tool' as const,
           content: JSON.stringify({
-            temperature,
-            weather,
-            info: 'This data is randomly generated and came from a fake weather API!',
-          }),
-        },
-      ],
-    };
-    return functionResponse;
-  }
-
-  if (functionCall.name === 'get_stock_price') {
-    if (functionCall.arguments) {
-      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
-      console.log(parsedFunctionCallArguments);
-    }
-
-    // Generate a fake price
-    const price = Math.floor(Math.random() * (100 - 30 + 1) + 30) * 100;
-
-    const functionResponse: ChatRequest = {
-      messages: [
-        ...chatMessages,
-        {
-          id: generateId(),
-          tool_call_id: toolCalls[0].id,
-          name: 'get_current_weather',
-          role: 'tool' as const,
-          content: JSON.stringify({
-            price,
-            info: 'This data is randomly generated and came from a fake stock price API!',
+            predictedEconomicIndicatorValues: [
+              {
+                value: 100,
+                date: '20240510',
+              },
+              {
+                value: 167.41568388543206,
+                date: '20240511',
+              },
+              {
+                value: 143.98269881536103,
+                date: '20240512',
+              },
+              {
+                value: 151.14716030892865,
+                date: '20240513',
+              },
+              {
+                value: 215.12078847030588,
+                date: '20240514',
+              },
+            ],
           }),
         },
       ],
@@ -75,8 +64,6 @@ export default function Chat() {
       console.log('response', response);
     },
   });
-
-  console.log('messages', messages);
 
   return (
     <div className="stretch mx-auto flex w-full max-w-md flex-col py-24">

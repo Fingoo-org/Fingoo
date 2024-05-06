@@ -41,7 +41,7 @@
     "@remixicon/react": "^4.1.1",
     "@tremor/react": "^3.13.4",
     "@types/react-window": "^1.8.8",
-    "ai": "^3.0.24",
+    "ai": "3.0.24",
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
