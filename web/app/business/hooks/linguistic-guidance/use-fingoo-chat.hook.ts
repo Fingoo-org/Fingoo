@@ -76,9 +76,9 @@ export const useFingooChat = () => {
       // 3: 예측 지표의 재료 지표를 업데이트 한다.
       const body: updateSourceIndicatorRequestBody = {
         sourceIndicatorsInformation: source_indicators.map((indicator) => ({
-          sourceIndicatorId: indicator.id,
+          sourceIndicatorId: indicator!.id,
           weight: 0,
-          indicatorType: indicator.indicatorType,
+          indicatorType: indicator!.indicatorType,
         })),
       };
       await instance.patch(`${API_PATH.customForecastIndicator}/${custonforecastIndicatorId}`, body);
