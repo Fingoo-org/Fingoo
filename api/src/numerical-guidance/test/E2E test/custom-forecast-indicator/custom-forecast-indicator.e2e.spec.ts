@@ -17,7 +17,6 @@ import { GetCustomForecastIndicatorQueryHandler } from '../../../application/que
 import { GetCustomForecastIndicatorsByMemberIdQueryHandler } from '../../../application/query/custom-forecast-indicator/get-custom-forecast-indicators-by-member-id/get-custom-forecast-indicators-by-member-id.query.handler';
 import { IndicatorBoardMetadataPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { CustomForecastIndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
-import { CustomAuthGuard } from '../../../../auth/util/custom-auth.guard';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
 import { DeleteCustomForecastIndicatorCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
@@ -35,6 +34,10 @@ import { IndicesEntity } from 'src/numerical-guidance/infrastructure/adapter/per
 import { addTransactionalDataSource, initializeTransactionalContext } from 'typeorm-transactional';
 import { AdjustIndicatorValue } from 'src/numerical-guidance/util/adjust-indicator-value';
 import { AuthModule } from '../../../../auth/auth.module';
+import { SupabaseService } from '../../../../auth/supabase/supabase.service';
+import { SupabaseStrategy } from '../../../../auth/supabase/supabase.strategy';
+import { MockAuthGuard, mockAuthorization, mockUser } from '../../../../auth/test/data/mock-auth.guard';
+import { of } from 'rxjs';
 
 initializeTransactionalContext();
 
@@ -194,6 +197,8 @@ describe('Customer Forecast Indicator E2E Test', () => {
           TwelveApiUtil,
           AdjustIndicatorValue,
           AuthService,
+          SupabaseService,
+          SupabaseStrategy,
           InsertCustomForecastIndicatorIdCommandHandler,
           CreateCustomForecastIndicatorCommandHandler,
           GetCustomForecastIndicatorQueryHandler,
@@ -233,9 +238,14 @@ describe('Customer Forecast Indicator E2E Test', () => {
             useClass: IndicatorPersistentAdapter,
           },
           {
-            provide: CustomAuthGuard,
+            provide: MockAuthGuard,
             useValue: {
-              canActivate: jest.fn(() => true),
+              canActivate: jest.fn().mockImplementation((context) => {
+                const request = context.switchToHttp().getRequest();
+                request.user = mockUser;
+                request.headers.authorization = mockAuthorization;
+                return of(true);
+              }),
             },
           },
         ],
@@ -254,7 +264,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
       }),
     );
     app.useGlobalFilters(new HttpExceptionFilter());
-    app.useGlobalGuards(new CustomAuthGuard());
+    app.useGlobalGuards(new MockAuthGuard());
     await app.init();
   }, 30000);
 
@@ -271,7 +281,6 @@ describe('Customer Forecast Indicator E2E Test', () => {
         targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         targetIndicatorType: 'stocks',
       })
-      .auth('token', { type: 'bearer' })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.CREATED);
   });
