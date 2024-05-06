@@ -1,7 +1,7 @@
 import { useFetchCustomForecastIndicatorsValue } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useFetchCustomForecastIndicatorList } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useMemo } from 'react';
-import { convertCustomForecastIndicatorsValue } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
+import { convertCustomForecastIndicatorsValue } from '../../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
 import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
 import { useIndicatorBoardMetadataViewModel } from '../indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { useCustomForecastIndicatorListInMetadata } from './use-custom-forecast-indicator-list-in-metadata.hook';
@@ -31,7 +31,10 @@ export const useCustomForecastIndicatorsValueViewModel = (indicatorBoardMetadata
     ids: targetIndicatorIds,
   };
 
-  const { data: liveIndicatorsValueData } = useFetchLiveIndicatorsValueByType(params, targetIndicatorInfo ?? []);
+  const { data: liveIndicatorsValueData, isLoading: isLiveLoading } = useFetchLiveIndicatorsValueByType(
+    params,
+    targetIndicatorInfo ?? [],
+  );
 
   const { data: customForecastIndicatorListData } = useFetchCustomForecastIndicatorList();
 
@@ -40,7 +43,12 @@ export const useCustomForecastIndicatorsValueViewModel = (indicatorBoardMetadata
   );
 
   const customForecastIndicatorsValueWithTargetIndicatorValue = useMemo(() => {
-    if (!customForecastIndicatorsValueData || !liveIndicatorsValueData) return undefined;
+    if (
+      !customForecastIndicatorsValueData ||
+      !liveIndicatorsValueData ||
+      liveIndicatorsValueData.indicatorsValue.length === 0
+    )
+      return undefined;
 
     return customForecastIndicatorsValueData.map((customForecastIndicatorValue) => {
       const targetIndicatorValue = liveIndicatorsValueData.indicatorsValue.find(

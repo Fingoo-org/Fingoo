@@ -1,7 +1,7 @@
 import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { Card } from '@tremor/react';
 import Slider from '../../view/atom/slider/slider';
-import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 import IconButton from '../../view/atom/icons/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';

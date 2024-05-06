@@ -1,4 +1,4 @@
-import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 import SelectableItem from '../../view/atom/selectable-item';
 import ToolTip from '../../view/atom/tooltip';
 import Icon from '../../view/atom/icons/variant-icon';

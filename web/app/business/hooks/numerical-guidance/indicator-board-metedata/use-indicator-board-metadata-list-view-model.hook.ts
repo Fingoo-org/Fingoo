@@ -3,10 +3,10 @@ import {
   IndicatorBoardMetadataResponse,
   useCreateIndicatorMetadata,
   useDeleteIndicatorBoardMetadata,
-} from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
-import { useFetchIndicatorBoardMetadataList } from '../../../store/querys/numerical-guidance/indicator-board-metadata.query';
+} from '../../../../store/querys/numerical-guidance/indicator-board-metadata.query';
+import { useFetchIndicatorBoardMetadataList } from '../../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useEffect, useMemo } from 'react';
-import { convertIndcatorBoardMetadataList } from '../../services/view-model/indicator-board-metadata-view-model.service';
+import { convertIndcatorBoardMetadataList } from '../../../services/view-model/indicator-board-metadata-view-model.service';
 import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
 import {
   IndicatorInMetadataUnitTypes,

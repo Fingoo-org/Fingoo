@@ -1,10 +1,10 @@
 'use client';
 import ChatCard from '../view/molecule/chat-card';
-import { useChat } from 'ai/react';
 import PromptForm from '../view/molecule/prompt-form/prompt-form';
+import { useFingooChat } from '@/app/business/hooks/linguistic-guidance/use-fingoo-chat.hook';
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useFingooChat();
 
   return (
     <div className="2lg:px-10 px-6">

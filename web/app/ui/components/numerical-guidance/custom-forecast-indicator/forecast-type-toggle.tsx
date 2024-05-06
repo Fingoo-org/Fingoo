@@ -1,7 +1,7 @@
 import ToggleState from '../../view/molecule/toggle-state/toggle-state';
-import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
-import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
-import { useCustomForecastIndicatorsValueByMetadata } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicator-value-by-metadata.hook';
+import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
+import { useCustomForecastIndicatorsValueByMetadata } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-value-by-metadata.hook';
 
 export default function ForecastTypeToggle() {
   const { selectedCustomForecastIndicator } = useSelectedCustomForecastIndicatorViewModel();

@@ -1,82 +1,8 @@
 'use client';
-import { generateId, type ChatRequest, type FunctionCallHandler, type ToolCallHandler } from 'ai';
-
-const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
-  console.log('client');
-  console.log('chatMessages:', chatMessages);
-  console.log('toolCalls:', toolCalls);
-  const functionCall = toolCalls[0].function;
-  if (functionCall.name === 'get_current_weather') {
-    if (functionCall.arguments) {
-      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
-      console.log(parsedFunctionCallArguments);
-    }
-
-    // Generate a fake temperature
-    const temperature = Math.floor(Math.random() * (100 - 30 + 1) + 30);
-    const weather = ['sunny', 'cloudy', 'rainy', 'snowy'][Math.floor(Math.random() * 4)];
-
-    const functionResponse: ChatRequest = {
-      messages: [
-        ...chatMessages,
-        {
-          id: generateId(),
-          tool_call_id: toolCalls[0].id,
-          name: 'get_current_weather',
-          role: 'tool' as const,
-          content: JSON.stringify({
-            temperature,
-            weather,
-            info: 'This data is randomly generated and came from a fake weather API!',
-          }),
-        },
-      ],
-    };
-    return functionResponse;
-  }
-
-  if (functionCall.name === 'get_stock_price') {
-    if (functionCall.arguments) {
-      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
-      console.log(parsedFunctionCallArguments);
-    }
-
-    // Generate a fake price
-    const price = Math.floor(Math.random() * (100 - 30 + 1) + 30) * 100;
-
-    const functionResponse: ChatRequest = {
-      messages: [
-        ...chatMessages,
-        {
-          id: generateId(),
-          tool_call_id: toolCalls[0].id,
-          name: 'get_current_weather',
-          role: 'tool' as const,
-          content: JSON.stringify({
-            price,
-            info: 'This data is randomly generated and came from a fake stock price API!',
-          }),
-        },
-      ],
-    };
-    return functionResponse;
-  }
-};
-
-import { useChat } from 'ai/react';
+import { useFingooChat } from '@/app/business/hooks/linguistic-guidance/use-fingoo-chat.hook';
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    experimental_onToolCall: toolCallHandler,
-    onFinish: (message) => {
-      console.log('finished', message);
-    },
-    onResponse: (response) => {
-      console.log('response', response);
-    },
-  });
-
-  console.log('messages', messages);
+  const { messages, input, handleInputChange, handleSubmit } = useFingooChat();
 
   return (
     <div className="stretch mx-auto flex w-full max-w-md flex-col py-24">

@@ -8,7 +8,7 @@ export type MessageProps = {
 export const MessageItem = ({ role, content }: MessageProps) => {
   return (
     <div
-      className={cn('flex h-auto flex-col-reverse', {
+      className={cn('flex h-auto flex-col-reverse whitespace-pre-wrap', {
         'items-end justify-end': role === 'user',
         'items-start justify-start': role !== 'user',
       })}

@@ -9,7 +9,7 @@ import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indi
 import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
 import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
-import { useIndicatorBoard } from '@/app/business/hooks/indicator-board/use-indicator-board.hook';
+import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import { useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 
 describe('IndicatorsChart', () => {
