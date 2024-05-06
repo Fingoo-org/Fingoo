@@ -1,4 +1,4 @@
-import { useIndicatorListByType } from '@/app/business/hooks/indicator/use-indicator-list-by-type.hook';
+import { useIndicatorListByType } from '@/app/business/hooks/numerical-guidance/indicator/use-indicator-list-by-type.hook';
 import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
 import { ListChildComponentProps } from 'react-window';
 import WindowList from '../../../view/molecule/window-list';

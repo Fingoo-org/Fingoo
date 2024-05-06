@@ -1,4 +1,4 @@
-import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
+import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/indicator/use-live-indicators-value-view-model.hook';
 import MultiLineChart from '../../view/molecule/multi-line-chart/multi-line-chart';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { createIndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';

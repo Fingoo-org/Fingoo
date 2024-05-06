@@ -1,5 +1,5 @@
 'use client';
-import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
+import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/indicator/use-live-indicators-value-view-model.hook';
 import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
 import ToggleButton from '../../view/atom/toggle-button/toggle-button';
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';

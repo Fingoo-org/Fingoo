@@ -1,6 +1,6 @@
-import { useHistoryIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-history-indicators-value-view-model.hook';
+import { useHistoryIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/indicator/use-history-indicators-value-view-model.hook';
 import AdvancedMultiLineChart from '../../view/molecule/advanced-multi-line-chart/advanced-multi-line-chart';
-import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/indicator/use-live-indicators-value-view-model.hook';
+import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/indicator/use-live-indicators-value-view-model.hook';
 import { useEffect } from 'react';
 import { createIndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';

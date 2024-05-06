@@ -1,6 +1,6 @@
 import { ListChildComponentProps } from 'react-window';
 import WindowList from '../../../view/molecule/window-list';
-import { useIndicatorList } from '@/app/business/hooks/indicator/use-indicator-list.hook';
+import { useIndicatorList } from '@/app/business/hooks/numerical-guidance/indicator/use-indicator-list.hook';
 import React from 'react';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import IndicatorListItem from './deprecate/indicator-list-item';
