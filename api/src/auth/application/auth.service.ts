@@ -1,52 +1,33 @@
-import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { MemberEntity } from '../entity/member.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SupabaseService } from '../supabase/supabase.service';
-import { AuthError } from '@supabase/supabase-js';
-import { UserCertificationDto } from '../api/dto/response/user-certification.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(MemberEntity)
     private readonly memberRepository: Repository<MemberEntity>,
-    private readonly supabaseService: SupabaseService,
   ) {}
 
-  async singIn(email: string, password: string): Promise<UserCertificationDto> {
+  async findById(id: string): Promise<MemberEntity> {
     try {
-      return await this.supabaseService.signIn(email, password);
+      const memberEntity: MemberEntity = await this.memberRepository.findOneBy({ id });
+      this.nullCheckForEntity(memberEntity);
+      return memberEntity;
     } catch (error) {
-      if (error instanceof AuthError) {
-        throw new UnauthorizedException({
-          HttpStatus: HttpStatus.UNAUTHORIZED,
-          error: `[ERROR] 로그인 중 문제가 발생했습니다.`,
-          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] memberId: ${id} 해당 회원을 찾을 수 없습니다.`,
+          message: '회원 정보가 올바른지 확인해주세요.',
           cause: error,
         });
       }
     }
   }
 
-  async signUp(email: string, password: string): Promise<UserCertificationDto> {
-    try {
-      const userCertificationDto = await this.supabaseService.signUp(email, password);
-      await this.memberRepository.insert({ id: userCertificationDto.userId, email: email });
-      return userCertificationDto;
-    } catch (error) {
-      if (error instanceof AuthError) {
-        throw new UnauthorizedException({
-          HttpStatus: HttpStatus.UNAUTHORIZED,
-          error: `[ERROR] 회원가입 중 문제가 발생했습니다.`,
-          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
-          cause: error,
-        });
-      }
-    }
-  }
-
-  async findById(id: string) {
-    return await this.memberRepository.findOneBy({ id });
+  private nullCheckForEntity(entity) {
+    if (entity == null) throw new NotFoundException();
   }
 }
