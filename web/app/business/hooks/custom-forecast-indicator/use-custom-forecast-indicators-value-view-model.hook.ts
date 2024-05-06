@@ -5,7 +5,7 @@ import { convertCustomForecastIndicatorsValue } from '../../services/view-model/
 import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
 import { useIndicatorBoardMetadataViewModel } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { useCustomForecastIndicatorListInMetadata } from './use-custom-forecast-indicator-list-in-metadata.hook';
-import { useIndicatorBoard } from '../indicator-board/use-indicator-board.hook';
+import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
 import {
   LiveIndicatorRequestParams,
   useFetchLiveIndicatorsValueByType,

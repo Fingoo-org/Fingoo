@@ -1,5 +1,5 @@
 'use client';
-import { useIndicatorBoard } from '@/app/business/hooks/indicator-board/use-indicator-board.hook';
+import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import ToggleGroup from '../../../components/view/molecule/toggle-group';
 import { type SplitScreen, splitScreens } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 

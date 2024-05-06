@@ -10,7 +10,7 @@ import {
   useFetchCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastHistoryIndicatorsValueViewModel } from '../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
-import { useIndicatorBoard } from '../indicator-board/use-indicator-board.hook';
+import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
 import { useIndicatorBoardMetadataViewModel } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 
 const mergePaginationData = (historyIndicatorsValuePages: HistoryIndicatorsValueResponse[] | undefined) => {
