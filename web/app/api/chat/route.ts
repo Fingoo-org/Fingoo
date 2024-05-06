@@ -25,14 +25,14 @@ const functions: Array<ChatCompletionTool> = [
         properties: {
           target_symbol: {
             type: 'string',
-            description: '예측할 목표 경제 지표의 심볼',
+            description: '예측할 목표 경제 지표의 심볼(예시: 005930, EUR/USD, BTC/USD, SPY, IXIC, 0P00000AMG 등)',
           },
           source_symbols: {
             type: 'array',
             items: {
               type: 'string',
             },
-            description: '재료 지표의 심볼 리스트',
+            description: '재료 지표의 심볼 리스트(예시: [005930, EUR/USD, BTC/USD, SPY, IXIC, 0P00000AMG])',
           },
         },
         required: ['target_symbol', 'source_symbols'],
@@ -74,7 +74,9 @@ export async function POST(req: Request) {
         가이드라인:
         - 목표 지표와 재료 지표가 무엇인지 명확히 설명해야 합니다.
         - 예측 결과 값을 제공해야 합니다.
-        - 예측 결과에 대한 GPT만의 해석을 제공해야 합니다.
+        - 해석에는 목표 지표와 재료 지표의 연관성에 대한 지식을 설명해야 합니다.
+        - 예측 결과 값을 기반으로 해당 지표가 상승하는지 하락하는지에 대한 해석을 제공 합니다.
+        - 예측 결과 값을 기반으로 GPT가 알고 있는 지식을 활용하여 해석을 제공 합니다.
         - 예측 결과 값이 부정확할 수 있음을 설명해야 합니다.
         
         출력 지시사항:
