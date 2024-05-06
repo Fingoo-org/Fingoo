@@ -21,9 +21,9 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
 
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
-    await memberRepository.insert({ id: '10' });
-    await memberRepository.insert({ id: '5' });
-    await memberRepository.insert({ id: '999' });
+    await memberRepository.insert({ id: '10', email: 'test@gmail.com' });
+    await memberRepository.insert({ id: '5', email: 'test@gmail.com' });
+    await memberRepository.insert({ id: '999', email: 'test@gmail.com' });
     memberRepository.save;
 
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
@@ -33,7 +33,7 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: '10' },
+      member: { id: '10', email: 'test@gmail.com' },
     });
     await indicatorBoardMetadataRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba74',
@@ -41,7 +41,7 @@ describe('GetIndicatorBoardMetadataListQueryHandler', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: '10' },
+      member: { id: '10', email: 'test@gmail.com' },
     });
   };
 

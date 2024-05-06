@@ -33,7 +33,7 @@ describe('History Indicator E2E Test', () => {
 
   const seeding = async () => {
     const memberEntity = dataSource.getRepository(MemberEntity);
-    await memberEntity.insert({ id: '1' });
+    await memberEntity.insert({ id: '1', email: 'test@gmail.com' });
 
     const indicatorEntity = dataSource.getRepository(IndicatorEntity);
     await indicatorEntity.insert({

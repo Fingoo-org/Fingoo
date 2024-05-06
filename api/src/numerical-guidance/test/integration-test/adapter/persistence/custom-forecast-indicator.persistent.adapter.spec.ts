@@ -23,8 +23,8 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
   let customForecastIndicatorPersistentAdapter: CustomForecastIndicatorPersistentAdapter;
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
-    await memberRepository.insert({ id: '10', email: 'test@gmail.com' });
-    const member = await memberRepository.findOneBy({ id: '10' });
+    await memberRepository.insert({ id: '1', email: 'test@gmail.com' });
+    const member = await memberRepository.findOneBy({ id: '1' });
 
     const customForecastIndicatorRepository = dataSource.getRepository(CustomForecastIndicatorEntity);
     await customForecastIndicatorRepository.insert({
@@ -144,7 +144,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       exchange: 'KOSPI',
       symbol: 'PPAL',
     });
-    const memberId = '10';
+    const memberId: string = '1';
 
     // when
     const resultId = await customForecastIndicatorPersistentAdapter.createCustomForecastIndicator(

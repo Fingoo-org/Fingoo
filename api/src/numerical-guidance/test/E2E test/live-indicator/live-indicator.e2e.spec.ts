@@ -6,7 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LiveIndicatorController } from '../../../api/live-indicator/live-indicator.controller';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 import { GetLiveIndicatorQueryHandler } from '../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query.handler';
-import { CustomAuthGuard } from '../../../../auth/util/custom-auth.guard';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import { HttpModule } from '@nestjs/axios';
 import { IndicatorPersistentAdapter } from '../../../infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
@@ -156,7 +155,6 @@ describe('Live Indicator E2E Test', () => {
       }),
     );
     app.useGlobalFilters(new HttpExceptionFilter());
-    app.useGlobalGuards(new CustomAuthGuard());
     await app.init();
   }, 30000);
 
