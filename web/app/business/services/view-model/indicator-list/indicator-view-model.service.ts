@@ -17,7 +17,7 @@ import {
 } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { Indicator } from './indicators/indicator.service';
 
-function createIndicator(data: indicatorByTypeResponse): Indicator {
+export function createIndicator(data: indicatorByTypeResponse): Indicator {
   const { indicatorType } = data;
   switch (indicatorType) {
     case 'stocks':
