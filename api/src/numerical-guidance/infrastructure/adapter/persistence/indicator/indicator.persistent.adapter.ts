@@ -25,6 +25,7 @@ import { SaveIndicatorListPort } from '../../../../application/port/external/twe
 import { Propagation, Transactional } from 'typeorm-transactional';
 import { TwelveApiUtil } from '../../twelve/util/twelve-api.util';
 import { IndicatorMapper } from './mapper/indicator.mapper';
+import { SearchIndicatorBySymbolPort } from 'src/numerical-guidance/application/port/persistence/indicator/search-indicator-by-symbol.port';
 
 const ORDER_TYPE: string = 'ASC';
 const DATA_COUNT: number = 10;
@@ -41,7 +42,9 @@ const indicatorTypes: IndicatorType[] = [
 const BATCH_SIZE: number = 1000;
 
 @Injectable()
-export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndicatorListPort, SaveIndicatorListPort {
+export class IndicatorPersistentAdapter
+  implements LoadIndicatorPort, LoadIndicatorListPort, SaveIndicatorListPort, SearchIndicatorBySymbolPort
+{
   private readonly logger = new Logger(IndicatorPersistentAdapter.name);
 
   constructor(
@@ -73,6 +76,54 @@ export class IndicatorPersistentAdapter implements LoadIndicatorPort, LoadIndica
     }
     this.logger.log('[!!지표 리스트 저장 끝!!]');
     console.timeEnd('[!!지표 리스트 저장 시간 측정!!]');
+  }
+
+  async searchIndicatorBySymbol(symbol: string): Promise<IndicatorDtoType> {
+    try {
+      let indicatorEntity: any;
+
+      const indicatorRepositories = [
+        this.stockEntityRepository,
+        this.bondsEntityRepository,
+        this.cryptoCurrenciesEntityRepository,
+        this.etfEntityRepository,
+        this.forexPairEntityRepository,
+        this.indicesEntityRepository,
+        this.fundEntityRepository,
+      ];
+
+      for (const repository of indicatorRepositories) {
+        indicatorEntity = await repository.findOneBy({ symbol: symbol });
+        if (indicatorEntity) {
+          break;
+        }
+      }
+
+      return IndicatorMapper.mapEntityToDtoByType(indicatorEntity.indicatorType, indicatorEntity);
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] ${symbol}: 잘못된 형식의 symbol요청입니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else if (error instanceof TypeORMError || NotFoundException) {
+        throw new NotFoundException({
+          HttpStatus: HttpStatus.NOT_FOUND,
+          error: `[ERROR] symbol: ${symbol} 해당 symbol의 indicator를 찾을 수 없습니다.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+          cause: error,
+        });
+      } else {
+        throw new InternalServerErrorException({
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 지표id를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      }
+    }
   }
 
   async loadIndicatorList(type: IndicatorType, cursorToken: number): Promise<CursorPageDto<IndicatorDtoType>> {

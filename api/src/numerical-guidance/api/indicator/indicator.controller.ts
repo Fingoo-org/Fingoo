@@ -1,5 +1,5 @@
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { GetIndicatorListQuery } from '../../application/query/indicator/get-indicator-list/get-indicator-list.query';
@@ -13,6 +13,7 @@ import { SearchedIndicatorsDto } from '../../application/query/indicator/get-ind
 import { SearchSymbolDto } from './dto/search-symbol.dto';
 import { IndicatorDtoType } from '../../../utils/type/type-definition';
 import { SaveIndicatorListDto } from '../../application/command/indicator/save-indicator-list/dto/save-indicator-list.dto';
+import { SearchIndicatorBySymbolQuery } from 'src/numerical-guidance/application/query/indicator/get-search-indicator-by-symbol/search-indicator-by-symbol.query';
 
 @ApiTags('IndicatorController')
 @Controller('/api/numerical-guidance/indicator')
@@ -74,5 +75,33 @@ export class IndicatorController {
     console.log(searchSymbolDto.symbol);
     const query = new SearchIndicatorQuery(searchSymbolDto.symbol);
     return this.queryBus.execute(query);
+  }
+
+  @ApiOperation({ summary: '지표 symbol로 지표 id를 검색합니다. - DB 활용' })
+  @ApiOkResponse({ type: '53c422bd-083a-4732-8ebe-ec72f19135dd' })
+  @ApiExceptionResponse(
+    400,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] ${symbol}: 잘못된 형식의 symbol요청입니다.',
+  )
+  @ApiExceptionResponse(
+    404,
+    '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
+    '[ERROR] symbol: ${symbol} 해당 symbol의 indicator를 찾을 수 없습니다.',
+  )
+  @ApiExceptionResponse(
+    500,
+    '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+    '[ERROR] 지표id를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
+  )
+  @ApiParam({
+    name: 'symbol',
+    example: 'AAPL',
+    required: true,
+  })
+  @Get('/search-by-symbol/:symbol')
+  async searchIndicatorIdBySymbol(@Param('symbol') symbol): Promise<string> {
+    const query = new SearchIndicatorBySymbolQuery(symbol);
+    return await this.queryBus.execute(query);
   }
 }
