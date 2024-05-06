@@ -31,7 +31,10 @@ export const useCustomForecastIndicatorsValueViewModel = (indicatorBoardMetadata
     ids: targetIndicatorIds,
   };
 
-  const { data: liveIndicatorsValueData } = useFetchLiveIndicatorsValueByType(params, targetIndicatorInfo ?? []);
+  const { data: liveIndicatorsValueData, isLoading: isLiveLoading } = useFetchLiveIndicatorsValueByType(
+    params,
+    targetIndicatorInfo ?? [],
+  );
 
   const { data: customForecastIndicatorListData } = useFetchCustomForecastIndicatorList();
 
@@ -40,7 +43,12 @@ export const useCustomForecastIndicatorsValueViewModel = (indicatorBoardMetadata
   );
 
   const customForecastIndicatorsValueWithTargetIndicatorValue = useMemo(() => {
-    if (!customForecastIndicatorsValueData || !liveIndicatorsValueData) return undefined;
+    if (
+      !customForecastIndicatorsValueData ||
+      !liveIndicatorsValueData ||
+      liveIndicatorsValueData.indicatorsValue.length === 0
+    )
+      return undefined;
 
     return customForecastIndicatorsValueData.map((customForecastIndicatorValue) => {
       const targetIndicatorValue = liveIndicatorsValueData.indicatorsValue.find(

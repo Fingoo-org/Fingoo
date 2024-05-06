@@ -26,12 +26,14 @@ export const useCustomForecastIndicatorListViewModel = () => {
   const createCustomForecastIndicator = async ({
     targetIndicatorId,
     indicatorType,
+    customForecastIndicatorName,
   }: {
     targetIndicatorId: string;
     indicatorType: IndicatorType;
+    customForecastIndicatorName?: string;
   }) => {
     const body = {
-      customForecastIndicatorName: '새로운 예측 지표',
+      customForecastIndicatorName: customForecastIndicatorName ?? '새로운 예측 지표',
       targetIndicatorId,
       targetIndicatorType: indicatorType,
     };
