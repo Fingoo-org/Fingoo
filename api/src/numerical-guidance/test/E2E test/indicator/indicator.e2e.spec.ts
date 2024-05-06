@@ -24,7 +24,6 @@ import { SearchIndicatorQueryHandler } from '../../../application/query/indicato
 import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
 import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
-import { CustomAuthGuard } from '../../../../auth/util/custom-auth.guard';
 
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
@@ -138,7 +137,6 @@ describe('Indicator E2E Test', () => {
       }),
     );
     app.useGlobalFilters(new HttpExceptionFilter());
-    app.useGlobalGuards(new CustomAuthGuard());
     await app.init();
   }, 30000);
 
