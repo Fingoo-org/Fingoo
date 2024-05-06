@@ -37,7 +37,7 @@ import { LiveIndicatorController } from './api/live-indicator/live-indicator.con
 import { DeleteCustomForecastIndicatorIdCommandHandler } from './application/command/custom-forecast-indicator/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
 import { DeleteCustomForecastIndicatorCommandHandler } from './application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
 import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/command/custom-forecast-indicator/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
-import { FileSupabaseAdapter } from './infrastructure/adapter/storage/file.supabase.adapter';
+import { FileSupabaseAdapter } from './infrastructure/adapter/storage/supabase/file.supabase.adapter';
 import { UploadFileCommandHandler } from './application/command/indicator-board-metadata/upload-file/upload-file.command.handler';
 import { UpdateSectionsCommandHandler } from './application/command/indicator-board-metadata/update-sections/update-sections.command.handler';
 import { GetIndicatorListQueryHandler } from './application/query/indicator/get-indicator-list/get-indicator-list.query.handler';
@@ -52,11 +52,12 @@ import { FundEntity } from './infrastructure/adapter/persistence/indicator/entit
 import { IndicesEntity } from './infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from './infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { SearchIndicatorQueryHandler } from './application/query/indicator/get-indicator-search/search-indicator.query.handler';
-import { AuthModule } from '../auth/auth.module';
+import { AuthService } from '../auth/application/auth.service';
+import { SupabaseStrategy } from '../auth/supabase/supabase.strategy';
+import { SupabaseService } from '../auth/supabase/supabase.service';
 
 @Module({
   imports: [
-    AuthModule,
     CqrsModule,
     HttpModule.registerAsync({
       useFactory: () => ({
@@ -88,6 +89,9 @@ import { AuthModule } from '../auth/auth.module';
     LiveIndicatorController,
   ],
   providers: [
+    AuthService,
+    SupabaseService,
+    SupabaseStrategy,
     AdjustIndicatorValue,
     GetLiveIndicatorQueryHandler,
     GetHistoryIndicatorQueryHandler,

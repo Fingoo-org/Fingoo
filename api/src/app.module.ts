@@ -13,7 +13,6 @@ import { AuthModule } from './auth/auth.module';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { APP_GUARD } from '@nestjs/core';
 import { CustomAuthGuard } from './auth/util/custom-auth.guard';
-import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -38,7 +37,6 @@ import { PassportModule } from '@nestjs/passport';
     // MyRedisModule, https://github.com/nest-modules/ioredis/issues/280
     NumericalGuidanceModule,
     AuthModule,
-    PassportModule,
   ],
   controllers: [AppController],
   providers: [
