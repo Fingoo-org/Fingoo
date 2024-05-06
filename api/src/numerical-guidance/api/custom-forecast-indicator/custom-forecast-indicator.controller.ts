@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { CreateCustomForecatIndicatorDto } from './dto/create-custom-forecast-indicator.dto';
-import { LoginUser } from '../../../auth/util/get-member.decorator';
+import { LoginUser } from '../../../auth/util/get-login-user.decorator';
 import { CreateCustomForecastIndicatorCommand } from '../../application/command/custom-forecast-indicator/create-custom-forecast-indicator/create-custom-forecast-indicator.command';
 import { CustomForecastIndicator } from '../../domain/custom-forecast-indicator';
 import { GetCustomForecastIndicatorQuery } from '../../application/query/custom-forecast-indicator/get-custom-forecast-indicator/get-custom-forecast-indicator.query';

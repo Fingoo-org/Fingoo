@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile } from 
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { CreateIndicatorBoardMetadataDto } from './dto/create-indicator-board-metadata.dto';
-import { LoginUser } from '../../../auth/util/get-member.decorator';
+import { LoginUser } from '../../../auth/util/get-login-user.decorator';
 import { CreateIndicatorBoardMetadataCommand } from '../../application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command';
 import { IndicatorBoardMetadata } from '../../domain/indicator-board-metadata';
 import { GetIndicatorBoardMetadataQuery } from '../../application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query';
@@ -22,7 +22,6 @@ import { UploadFileCommand } from '../../application/command/indicator-board-met
 import { UpdateSectionsDto } from './dto/update-sections.dto';
 import { UpdateSectionsCommand } from '../../application/command/indicator-board-metadata/update-sections/update-sections.command';
 import { User } from '@supabase/supabase-js';
-import { Public } from '../../../auth/util/is-public.decorator';
 
 @ApiTags('IndicatorBoardMetadataController')
 @Controller('/api/numerical-guidance')
@@ -54,7 +53,6 @@ export class IndicatorBoardMetadataController {
           1. indicatorBoardMetaData 값 중 비어있는 값이 있는지 확인해주세요.`,
   )
   @ApiBearerAuth('Authorization')
-  @Public()
   @Post('/indicator-board-metadata')
   async createIndicatorBoardMetadata(
     @Body() createIndicatorBoardMetadataDto: CreateIndicatorBoardMetadataDto,

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { createClient } from '@supabase/supabase-js';
 import * as process from 'process';
-import { UploadFilePort } from '../../../application/port/external/file/upload-file.port';
+import { UploadFilePort } from '../../../../application/port/external/file/upload-file.port';
 import { uuid } from '@supabase/supabase-js/dist/main/lib/helpers';
 
 @Injectable()
