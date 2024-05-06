@@ -1,5 +1,5 @@
 import { useFetchCustomForecastIndicatorsValue } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '../indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 
 export const useCustomForecastIndicatorsValueByMetadata = () => {
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();

@@ -1,4 +1,4 @@
-import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 import SourceIndicatorSlider from './source-indicator-slider';
 
 export default function SourceIndicatorSliderGroup() {

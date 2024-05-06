@@ -7,7 +7,7 @@ import AdvancedIndicatorsChart from './advanced-indicators-chart';
 import SimpleIndicatorsChart from './simple-indicators-chart';
 import Pending from '../../view/molecule/pending';
 import { useCallback, useState } from 'react';
-import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
+import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { useGenerateImage } from '../../view/hooks/use-generate-image';
 import ImageSharePopover from '../../view/molecule/image-share-popover/image-share-popover';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';

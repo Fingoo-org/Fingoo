@@ -3,7 +3,7 @@ import AdvancedMultiLineChart from '../../view/molecule/advanced-multi-line-char
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/indicator/use-live-indicators-value-view-model.hook';
 import { useEffect } from 'react';
 import { createIndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
-import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
+import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 
 type AdvancedIndicatorsChartProps = {

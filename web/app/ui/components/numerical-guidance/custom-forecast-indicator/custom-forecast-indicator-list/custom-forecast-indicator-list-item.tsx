@@ -6,9 +6,9 @@ import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
 import ExpandableListItem from '../../../view/molecule/expandable-list-item';
-import { useSourceIndicator } from '@/app/business/hooks/custom-forecast-indicator/use-source-indicator.hook';
+import { useSourceIndicator } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-source-indicator.hook';
 
 type CustomForecastIndicatorListItemProps = {
   item: CustomForecastIndicator;
