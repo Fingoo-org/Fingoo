@@ -16,6 +16,8 @@ export class GetCustomForecastIndicatorQueryHandler implements IQueryHandler {
     const customForecastIndicatorId = query.customForecastIndicatorId;
     const customForecastIndicator: CustomForecastIndicator =
       await this.loadCustomForecastIndicatorPort.loadCustomForecastIndicator(customForecastIndicatorId);
+
+    console.log(customForecastIndicator.targetIndicator);
     return customForecastIndicator;
   }
 }

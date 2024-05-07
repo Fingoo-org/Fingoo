@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
 import {
+  IndicatorDtoType,
   IndicatorType,
   SourceIndicatorInformation,
-  TargetIndicatorInformation,
   Verification,
 } from 'src/utils/type/type-definition';
 import { MemberEntity } from 'src/auth/member.entity';
@@ -20,7 +20,7 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   type: IndicatorType;
 
   @Column('jsonb', { nullable: true })
-  targetIndicatorInformation: TargetIndicatorInformation;
+  targetIndicator: IndicatorDtoType;
 
   @Column('jsonb', { nullable: true })
   grangerVerification: Verification[];
@@ -37,7 +37,7 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   constructor(
     customForecastIndicatorName: string,
     type: IndicatorType,
-    targetIndicatorInformation: TargetIndicatorInformation,
+    targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
     sourceIndicatorIdsAndWeights: SourceIndicatorInformation[],
@@ -48,7 +48,7 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     super();
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.type = type;
-    this.targetIndicatorInformation = targetIndicatorInformation;
+    this.targetIndicator = targetIndicator;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
     this.sourceIndicatorsInformation = sourceIndicatorIdsAndWeights;
@@ -60,7 +60,7 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   static createNew(
     customForecastIndicatorName: string,
     type: IndicatorType,
-    targetIndicatorInformation: TargetIndicatorInformation,
+    targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
     sourceIndicatorIdsAndWeights: SourceIndicatorInformation[],
@@ -71,7 +71,7 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     return new CustomForecastIndicatorEntity(
       customForecastIndicatorName,
       type,
-      targetIndicatorInformation,
+      targetIndicator,
       grangerVerification,
       cointJohansenVerification,
       sourceIndicatorIdsAndWeights,

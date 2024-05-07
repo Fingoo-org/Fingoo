@@ -1,9 +1,9 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { CustomForecastIndicatorNameShouldNotEmptyRule } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 import {
+  IndicatorDtoType,
   IndicatorType,
   SourceIndicatorInformation,
-  TargetIndicatorInformation,
   Verification,
 } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
@@ -40,7 +40,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     },
     description: '타켓지표 정보',
   })
-  targetIndicatorInformation: TargetIndicatorInformation;
+  targetIndicator: any;
 
   @ApiProperty({
     example: [],
@@ -76,7 +76,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     id: string,
     customForecastIndicatorName: string,
     type: IndicatorType,
-    targetIndicatorInformation: TargetIndicatorInformation,
+    targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
     sourceIndicatorsInformation: SourceIndicatorInformation[],
@@ -86,7 +86,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.type = type;
-    this.targetIndicatorInformation = targetIndicatorInformation;
+    this.targetIndicator = targetIndicator;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
     this.sourceIndicatorsInformation = sourceIndicatorsInformation;
@@ -94,10 +94,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     this.updatedAt = new Date();
   }
 
-  static createNew(
-    customForecastIndicatorName: string,
-    targetIndicatorInformation: TargetIndicatorInformation,
-  ): CustomForecastIndicator {
+  static createNew(customForecastIndicatorName: string, targetIndicator: IndicatorDtoType): CustomForecastIndicator {
     const grangerVerification: Verification[] = [];
     const cointJohansenVerification: Verification[] = [];
     const sourceIndicatorsInformation: SourceIndicatorInformation[] = [];
@@ -106,7 +103,7 @@ export class CustomForecastIndicator extends AggregateRoot {
       null,
       customForecastIndicatorName,
       type,
-      targetIndicatorInformation,
+      targetIndicator,
       grangerVerification,
       cointJohansenVerification,
       sourceIndicatorsInformation,
@@ -119,7 +116,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     this.checkRule(
       new TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule(
         updateSourceIndicatorsInformation,
-        this.targetIndicatorInformation.targetIndicatorId,
+        this.targetIndicator.id,
       ),
     );
 
