@@ -1,9 +1,10 @@
+import { SourceIndicatorDtoType } from 'src/utils/type/type-definition';
 import { BusinessRule } from '../../../utils/domain/business.rule';
 
 const INDICATOR_MAXIMUM = 10;
 
 export class SourceIndicatorCountShouldNotExceedLimitRule implements BusinessRule {
-  constructor(private readonly sourceIndicatorIds: any[]) {}
+  constructor(private readonly sourceIndicatorIds: SourceIndicatorDtoType[]) {}
 
   isBroken = () => this.sourceIndicatorIds.length > INDICATOR_MAXIMUM;
 
