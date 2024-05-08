@@ -134,7 +134,7 @@ export class CustomForecastIndicatorController {
   ) {
     const command = new UpdateSourceIndicatorsInformationCommand(
       customForecastIndicatorId,
-      updateSourceIndicatorsAndWeightsDto.sourceIndicatorsInformation,
+      updateSourceIndicatorsAndWeightsDto.sourceIndicatorsRequestInformation,
     );
     await this.commandBus.execute(command);
   }

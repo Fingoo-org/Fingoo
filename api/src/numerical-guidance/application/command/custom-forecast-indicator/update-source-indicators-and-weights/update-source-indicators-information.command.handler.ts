@@ -5,6 +5,7 @@ import { UpdateSourceIndicatorsInformationCommand } from './update-source-indica
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { Transactional } from 'typeorm-transactional';
 import { LoadCustomForecastIndicatorPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
+import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
 
 @Injectable()
 @CommandHandler(UpdateSourceIndicatorsInformationCommand)
@@ -14,16 +15,28 @@ export class UpdateSourceIndicatorsInformationCommandHandler implements ICommand
     private readonly updateSourceIndicatorsInformationPort: UpdateSourceIndicatorsInformationPort,
     @Inject('LoadCustomForecastIndicatorPort')
     private readonly loadCustomForecastIndicatorPort: LoadCustomForecastIndicatorPort,
+    @Inject('LoadIndicatorPort')
+    private readonly loadIndicatorPort: LoadIndicatorPort,
   ) {}
 
   @Transactional()
   async execute(command: UpdateSourceIndicatorsInformationCommand): Promise<void> {
-    const { customForecastIndicatorId, sourceIndicatorsInformation } = command;
+    const { customForecastIndicatorId, sourceIndicatorsRequestInformation } = command;
+
     const customForecastIndicator: CustomForecastIndicator =
       await this.loadCustomForecastIndicatorPort.loadCustomForecastIndicator(customForecastIndicatorId);
 
-    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorsInformation);
+    const sourceIndicatorsInformation: any[] = [];
 
+    for (const sourceIndicatorInformation of sourceIndicatorsRequestInformation) {
+      const sourceIndicatorId = sourceIndicatorInformation.sourceIndicatorId;
+      const sourceIndicatorType = sourceIndicatorInformation.indicatorType;
+      const sourceIndicator: any = await this.loadIndicatorPort.loadIndicator(sourceIndicatorId, sourceIndicatorType);
+      sourceIndicator.weight = sourceIndicatorInformation.weight;
+      sourceIndicatorsInformation.push(sourceIndicator);
+    }
+    console.log(sourceIndicatorsInformation);
+    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorsInformation);
     await this.updateSourceIndicatorsInformationPort.updateSourceIndicatorsInformation(customForecastIndicator);
   }
 }

@@ -1,11 +1,6 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { CustomForecastIndicatorNameShouldNotEmptyRule } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
-import {
-  IndicatorDtoType,
-  IndicatorType,
-  SourceIndicatorInformation,
-  Verification,
-} from 'src/utils/type/type-definition';
+import { IndicatorDtoType, IndicatorType, Verification } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 import { SourceIndicatorsShouldNotDuplicateRule } from './rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { SourceIndicatorCountShouldNotExceedLimitRule } from './rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';
@@ -58,7 +53,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     example: [],
     description: '재료지표와 가중치',
   })
-  sourceIndicatorsInformation: SourceIndicatorInformation[];
+  sourceIndicatorsInformation: any[];
 
   @ApiProperty({
     example: '2024-03-08T02:34:57.630Z',
@@ -79,7 +74,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
-    sourceIndicatorsInformation: SourceIndicatorInformation[],
+    sourceIndicatorsInformation: any[],
   ) {
     super();
     this.checkRule(new CustomForecastIndicatorNameShouldNotEmptyRule(customForecastIndicatorName));
@@ -97,7 +92,7 @@ export class CustomForecastIndicator extends AggregateRoot {
   static createNew(customForecastIndicatorName: string, targetIndicator: IndicatorDtoType): CustomForecastIndicator {
     const grangerVerification: Verification[] = [];
     const cointJohansenVerification: Verification[] = [];
-    const sourceIndicatorsInformation: SourceIndicatorInformation[] = [];
+    const sourceIndicatorsInformation: any[] = [];
     const type: IndicatorType = 'customForecastIndicator';
     return new CustomForecastIndicator(
       null,
@@ -110,7 +105,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     );
   }
 
-  public updateSourceIndicatorsInformation(updateSourceIndicatorsInformation: SourceIndicatorInformation[]) {
+  public updateSourceIndicatorsInformation(updateSourceIndicatorsInformation: any[]) {
     this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(updateSourceIndicatorsInformation));
     this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(updateSourceIndicatorsInformation));
     this.checkRule(

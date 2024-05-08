@@ -1,9 +1,8 @@
 import { BusinessRule } from '../../../utils/domain/business.rule';
-import { SourceIndicatorInformation } from 'src/utils/type/type-definition';
 
 export class TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule implements BusinessRule {
   constructor(
-    private readonly sourceIndicatorInformation: SourceIndicatorInformation[],
+    private readonly sourceIndicatorInformation: any[],
     private readonly targetIndicatorId: string,
   ) {}
 
@@ -14,12 +13,9 @@ export class TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule implements
     return `타겟지표는 재료지표에 포함될 수 없습니다.`;
   }
 
-  private checkIsTargetIndicatorInSourceIndicators(
-    sourceIndicatorInformation: SourceIndicatorInformation[],
-    targetIndicatorId: string,
-  ) {
-    const sourceIndicatorIds: string[] = sourceIndicatorInformation.map((indicatorId) => {
-      return indicatorId.sourceIndicatorId;
+  private checkIsTargetIndicatorInSourceIndicators(sourceIndicatorInformation: any[], targetIndicatorId: string) {
+    const sourceIndicatorIds: string[] = sourceIndicatorInformation.map((indicator) => {
+      return indicator.id;
     });
     return sourceIndicatorIds.includes(targetIndicatorId);
   }

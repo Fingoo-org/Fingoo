@@ -93,7 +93,7 @@ export class CustomForecastIndicatorPersistentAdapter
       let indicatorsTypeUrl: string = '';
       let weightsUrl: string = '';
       for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
+        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].id}&`;
       }
       for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
         indicatorsTypeUrl += `sourceIndicatorType=${customForecastIndicator.sourceIndicatorsInformation[i].indicatorType}&`;
@@ -227,7 +227,7 @@ export class CustomForecastIndicatorPersistentAdapter
         let indicatorsTypeUrl: string = '';
         let weightsUrl: string = '';
         for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-          indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
+          indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].id}&`;
         }
         for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
           indicatorsTypeUrl += `sourceIndicatorType=${customForecastIndicator.sourceIndicatorsInformation[i].indicatorType}&`;

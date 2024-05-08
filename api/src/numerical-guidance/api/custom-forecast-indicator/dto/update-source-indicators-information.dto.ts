@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray } from 'class-validator';
-import { SourceIndicatorInformation } from 'src/utils/type/type-definition';
+import { SourceIndicatorRequestInformation } from 'src/utils/type/type-definition';
 
 export class UpdateSourceIndicatorsInformationDto {
   @ApiProperty({
@@ -18,5 +18,5 @@ export class UpdateSourceIndicatorsInformationDto {
     ],
   })
   @IsArray()
-  sourceIndicatorsInformation: SourceIndicatorInformation[];
+  sourceIndicatorsRequestInformation: SourceIndicatorRequestInformation[];
 }

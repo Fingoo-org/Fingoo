@@ -1,11 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
-import {
-  IndicatorDtoType,
-  IndicatorType,
-  SourceIndicatorInformation,
-  Verification,
-} from 'src/utils/type/type-definition';
+import { IndicatorDtoType, IndicatorType, Verification } from 'src/utils/type/type-definition';
 import { MemberEntity } from 'src/auth/member.entity';
 
 @Entity({ name: 'CustomForecastIndicator' })
@@ -29,7 +24,7 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   cointJohansenVerification: Verification[];
 
   @Column('jsonb', { nullable: true })
-  sourceIndicatorsInformation: SourceIndicatorInformation[];
+  sourceIndicatorsInformation: any[];
 
   @ManyToOne(() => MemberEntity, { eager: false })
   member: MemberEntity;
@@ -40,7 +35,7 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
-    sourceIndicatorIdsAndWeights: SourceIndicatorInformation[],
+    sourceIndicatorIdsAndWeights: any[],
     member: MemberEntity,
     createdAt: Date,
     updatedAt: Date,
@@ -63,7 +58,7 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
-    sourceIndicatorIdsAndWeights: SourceIndicatorInformation[],
+    sourceIndicatorIdsAndWeights: any[],
     member: MemberEntity,
     createdAt: Date,
     updatedAt: Date,
