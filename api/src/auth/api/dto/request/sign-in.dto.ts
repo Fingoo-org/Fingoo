@@ -3,14 +3,14 @@ import { IsString } from 'class-validator';
 
 export class SignInDto {
   @ApiProperty({
-    example: 'gangho324@gmail.com',
+    example: 'testtest@gmail.com',
     description: '이메일',
   })
   @IsString()
   email: string;
 
   @ApiProperty({
-    example: 'pw',
+    example: '123456',
     description: 'password',
   })
   @IsString()

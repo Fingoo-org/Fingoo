@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import MSWComponent from './ui/components/util/msw-component';
-import { SWRProvider } from './ui/components/util/swr-provider';
 import { cn } from './utils/style';
 import localFont from 'next/font/local';
 
@@ -22,11 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="kr"
       className="scrollbar-track-gray-300 scrollbar-thumb-fingoo-main scrollbar-track-rounded-full scrollbar-thumb-rounded-full"
     >
-      <body className={cn(myFont.variable, 'font-pretendard')}>
-        <MSWComponent>
-          <SWRProvider>{children}</SWRProvider>
-        </MSWComponent>
-      </body>
+      <body className={cn(myFont.variable, 'font-pretendard')}>{children}</body>
     </html>
   );
 }

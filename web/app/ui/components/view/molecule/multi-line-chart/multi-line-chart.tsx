@@ -6,7 +6,7 @@ import { ChartTooltip } from './chart-tooltip';
 import {
   FormattedRowType,
   chartValueFormatterFactory,
-} from '@/app/business/services/chart/indicator-formatter.service';
+} from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
 import { cn } from '@/app/utils/style';
 
 type MultiLineChartProps = {

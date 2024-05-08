@@ -1,5 +1,5 @@
 import { mockDB } from '@/app/mocks/db';
-import { ActualIndicatorValue } from '@/app/business/services/view-model/indicator-value/actual-indicators-value-view-model.service';
+import { ActualIndicatorValue } from '@/app/business/services/numerical-guidance/view-model/indicator-value/actual-indicators-value-view-model.service';
 
 describe('ActualIndicatorValue', () => {
   it('should create an instance', () => {

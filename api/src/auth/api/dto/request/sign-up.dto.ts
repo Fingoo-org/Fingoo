@@ -3,7 +3,7 @@ import { IsString } from 'class-validator';
 
 export class SignUpDto {
   @ApiProperty({
-    example: 'gangho324@naver.com',
+    example: 'testtest@gmail.com',
     description: '이메일',
   })
   @IsString()

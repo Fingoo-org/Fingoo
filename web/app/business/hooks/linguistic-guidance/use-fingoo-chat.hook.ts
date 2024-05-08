@@ -1,12 +1,12 @@
 import { useChat } from 'ai/react';
 import { API_PATH } from '@/app/store/querys/api-path';
 import { indicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
-import { createIndicator } from '@/app/business/services/view-model/indicator-list/indicator-view-model.service';
+import { createIndicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 import {
   CreateCustomForecastIndicatorRequestBody,
   updateSourceIndicatorRequestBody,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
+import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import { generateId, type ChatRequest, type FunctionCallHandler, type ToolCallHandler } from 'ai';
 import { instance } from '@/app/utils/http';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';

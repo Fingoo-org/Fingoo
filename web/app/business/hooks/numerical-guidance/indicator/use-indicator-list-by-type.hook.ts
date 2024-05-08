@@ -1,7 +1,7 @@
 import { useFetchIndicatorListByType } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { IndicatorType, useIndicatorListStore } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { useMemo } from 'react';
-import { convertIndicatorViewModel } from '../../../services/view-model/indicator-list/indicator-view-model.service';
+import { convertIndicatorViewModel } from '../../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 
 type Options = {
   indicatorType?: IndicatorType;

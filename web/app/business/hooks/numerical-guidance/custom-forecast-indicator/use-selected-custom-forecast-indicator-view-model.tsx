@@ -4,7 +4,7 @@ import {
   useUpdateCustomForecastIndicatorName,
   useUpdateSourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { convertCustomForecastIndicatorViewModel } from '../../../services/view-model/custom-forecast-indicator-view-model.service';
+import { convertCustomForecastIndicatorViewModel } from '../../../services/numerical-guidance/view-model/custom-forecast-indicator-view-model.service';
 import { useEffect, useMemo } from 'react';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
