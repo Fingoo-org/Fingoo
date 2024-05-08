@@ -15,7 +15,7 @@ import { SaveIndicatorListDto } from '../../application/command/indicator/save-i
 import { Public } from '../../../auth/util/is-public.decorator';
 import { SearchIndicatorQuery } from 'src/numerical-guidance/application/query/indicator/search-indicator/search-indicator.query';
 import { SearchIndicatorDto } from './dto/search-indicator.dto';
-import { SearchTwelveSymbolDto } from '../../../../dist/numerical-guidance/api/indicator/dto/search-twelve-symbol.dto';
+import { SearchTwelveSymbolDto } from './dto/search-twelve-symbol.dto';
 
 @ApiTags('IndicatorController')
 @Controller('/api/numerical-guidance/indicator')
