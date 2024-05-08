@@ -2,16 +2,7 @@
 import React from 'react';
 import { cn } from '@/app/utils/style';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
-
-export const getInputColors = (isDisabled: boolean, hasError = false) => {
-  return cn(
-    isDisabled ? 'bg-gray-1' : 'bg-white',
-    !isDisabled && 'hover:bg-gray-50',
-    isDisabled && 'bg-gray-1',
-    hasError && 'text-etc-red',
-    hasError ? 'border-etc-red' : 'border-gray-2',
-  );
-};
+import { getInputColors } from '@/app/utils/style/helper';
 
 export interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   type?: 'text' | 'password' | 'number';
