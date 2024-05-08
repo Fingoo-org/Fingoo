@@ -4,6 +4,7 @@ import { FormState } from '@/app/ui/components/view/molecule/form/form-root';
 import { SignInFormSchema, SignInRequestBody } from './auth-validation.service';
 import { API_PATH } from '@/app/store/querys/api-path';
 import { HttpError } from '@/app/utils/http/http-error';
+import { redirect } from 'next/navigation';
 
 export async function authenticate(prevState: FormState, formData: FormData): Promise<FormState> {
   const validatedFields = SignInFormSchema.safeParse({
@@ -46,7 +47,7 @@ export async function authenticate(prevState: FormState, formData: FormData): Pr
       path: '/',
     });
 
-    // redirect('/my');
+    redirect('/workspace');
   } catch (error) {
     if (error instanceof HttpError && error.statusCode === 404) {
       // 잘못된 요청 처리 로직
