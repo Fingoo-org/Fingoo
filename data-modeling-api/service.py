@@ -313,4 +313,4 @@ def replaceNanAndInf(df: pd.DataFrame):
   df.fillna(method='ffill', inplace=True)
   df.replace([np.inf, -np.inf], np.nan, inplace=True)
   df.fillna(df.max(), inplace=True)
-  return dfwje
+  return 
