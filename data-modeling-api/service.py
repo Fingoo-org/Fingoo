@@ -258,6 +258,11 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
   for indicator, weight in zip(df_var, weights):
     weight = int(weight)
     df_var = verification.applyWeight(df_var, indicator, weight)
+            
+  # granger
+  grangerDf = verification.grangerVerification(df_var)
+  checkDf = verification.findSignificantValues(grangerDf)
+  grangerGroup = verification.findInfluentialGroups(checkDf)
 
   # granger
   try: 
@@ -267,7 +272,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     print(f'Var Group: {grangerGroup}')
     grangerVerificationResult:list[Verification] = []
     for varIndicator in varIndicators:
-      if varIndicator.id in grangerGroup:
+      if varIndicator.name in grangerGroup:
         ver: Verification = {"indicatorId": varIndicator.id, "verification": "True"}
       else:
         ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
@@ -277,6 +282,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
       "grangerGroup": ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.'],
       "cointJohansenVerification": ['공적분 결과 데이터간 연관성을 확인할 수 없습니다.']
     }
+    return sourceIndicatorsVerification
 
   # coint jojansen
   try:
@@ -284,7 +290,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     cointJohansenVerification = verification.cointJohansenVerification(df_var, grangerGroup)
     cointJohansenVerificationList = [str(item) for item in cointJohansenVerification]
     for varIndicator in varIndicators:
-      if varIndicator.id in cointJohansenVerificationList:
+      if varIndicator.name in cointJohansenVerificationList:
         ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'True'}
       else:
         ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'False'}
@@ -294,6 +300,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
       "grangerGroup": grangerVerificationResult,
       "cointJohansenVerification": ['공적분 결과 데이터간 연관성을 확인할 수 없습니다.']
     }
+    return sourceIndicatorsVerification
   
   # Source Indicators Verification Response 객체 생성
   sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
@@ -306,4 +313,4 @@ def replaceNanAndInf(df: pd.DataFrame):
   df.fillna(method='ffill', inplace=True)
   df.replace([np.inf, -np.inf], np.nan, inplace=True)
   df.fillna(df.max(), inplace=True)
-  return df
+  return dfwje
