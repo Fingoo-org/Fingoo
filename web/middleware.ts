@@ -25,14 +25,14 @@ function isAllowedGuestPath(path: string) {
 }
 
 export async function middleware(request: NextRequest) {
-  // const auth = await getAuth(request);
-  // console.log(request.nextUrl.pathname);
-  // if (request.nextUrl.pathname === '/mockServiceWorker.js') {
-  //   return;
-  // }
-  // if (auth.role === 'guest' && !isAllowedGuestPath(request.nextUrl.pathname)) {
-  //   return Response.redirect(new URL('/', request.url));
-  // }
+  const auth = await getAuth(request);
+  console.log(request.nextUrl.pathname);
+  if (request.nextUrl.pathname === '/mockServiceWorker.js') {
+    return;
+  }
+  if (auth.role === 'guest' && !isAllowedGuestPath(request.nextUrl.pathname)) {
+    return Response.redirect(new URL('/', request.url));
+  }
 }
 
 export const config = {
