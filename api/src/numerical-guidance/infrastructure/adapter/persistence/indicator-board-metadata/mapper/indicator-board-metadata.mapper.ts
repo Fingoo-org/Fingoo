@@ -1,6 +1,6 @@
 import { IndicatorBoardMetadataEntity } from '../entity/indicator-board-metadata.entity';
 import { IndicatorBoardMetadata } from '../../../../../domain/indicator-board-metadata';
-import { MemberEntity } from '../../../../../../auth/member.entity';
+import { MemberEntity } from '../../../../../../auth/entity/member.entity';
 
 export class IndicatorBoardMetadataMapper {
   static mapDomainToNewEntity(indicatorBoardMetaData: IndicatorBoardMetadata, member: MemberEntity) {

@@ -34,7 +34,7 @@ describe('GetCustomForecastIndicatorsByMemberId', () => {
 
   it('사용자 id를 가지고 예측지표 리스트를 가져온다.', async () => {
     // given
-    const testQuery = new GetCustomForecastIndicatorsByMemberIdQuery(1);
+    const testQuery = new GetCustomForecastIndicatorsByMemberIdQuery('1');
 
     // when
     const result = await getCustomForecastIndicatorsByMemberIdQueryHandler.execute(testQuery);

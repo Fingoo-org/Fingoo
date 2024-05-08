@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { MemberEntity } from '../../../../../../auth/member.entity';
+import { MemberEntity } from '../../../../../../auth/entity/member.entity';
 import { BaseEntity } from '../../base.entity';
 import { IndicatorInfo } from '../../../../../domain/indicator-board-metadata';
 

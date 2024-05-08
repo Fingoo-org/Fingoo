@@ -12,7 +12,7 @@ import { QueryFailedError, Repository, TypeORMError } from 'typeorm';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorMapper } from './mapper/custom-forecast-indicator.mapper';
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from 'src/auth/application/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
 import { UpdateSourceIndicatorsInformationPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-information.port';
 import { HttpService } from '@nestjs/axios';
@@ -138,7 +138,7 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async loadCustomForecastIndicatorsByMemberId(memberId: number): Promise<CustomForecastIndicator[]> {
+  async loadCustomForecastIndicatorsByMemberId(memberId: string): Promise<CustomForecastIndicator[]> {
     try {
       const member = await this.authService.findById(memberId);
       this.nullCheckForEntity(member);
@@ -171,7 +171,7 @@ export class CustomForecastIndicatorPersistentAdapter
 
   async createCustomForecastIndicator(
     customForecastIndicator: CustomForecastIndicator,
-    memberId: number,
+    memberId: string,
   ): Promise<string> {
     try {
       const member = await this.authService.findById(memberId);

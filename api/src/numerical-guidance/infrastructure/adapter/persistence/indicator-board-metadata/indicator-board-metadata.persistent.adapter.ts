@@ -12,7 +12,7 @@ import { IndicatorBoardMetadataEntity } from './entity/indicator-board-metadata.
 import { IndicatorBoardMetadataMapper } from './mapper/indicator-board-metadata.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
-import { AuthService } from '../../../../../auth/auth.service';
+import { AuthService } from '../../../../../auth/application/auth.service';
 import { LoadIndicatorBoardMetadataPort } from 'src/numerical-guidance/application/port/persistence/indicator-board-metadata/load-indiactor-board-metadata.port';
 import { InsertIndicatorIdPort } from '../../../../application/port/persistence/indicator-board-metadata/insert-indicator-id.port';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
@@ -47,7 +47,7 @@ export class IndicatorBoardMetadataPersistentAdapter
 
   async createIndicatorBoardMetadata(
     indicatorBoardMetadata: IndicatorBoardMetadata,
-    memberId: number,
+    memberId: string,
   ): Promise<string> {
     try {
       const member = await this.authService.findById(memberId);

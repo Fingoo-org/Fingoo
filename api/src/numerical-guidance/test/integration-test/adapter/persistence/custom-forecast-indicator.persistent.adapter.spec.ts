@@ -4,13 +4,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
-import { AuthService } from 'src/auth/auth.service';
-import { MemberEntity } from 'src/auth/member.entity';
+import { AuthService } from 'src/auth/application/auth.service';
+import { MemberEntity } from 'src/auth/entity/member.entity';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/custom-forecast-indicator.persistent.adapter';
 import { CustomForecastIndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/custom-forecast-indicator/entity/custom-forecast-indicator.entity';
 import { DataSource } from 'typeorm';
 import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indicator.entity';
+import { SupabaseService } from '../../../../../auth/supabase/supabase.service';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -22,7 +23,8 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
   let customForecastIndicatorPersistentAdapter: CustomForecastIndicatorPersistentAdapter;
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
-    await memberRepository.insert({ id: 10 });
+    await memberRepository.insert({ id: '1', email: 'test@gmail.com' });
+    const member = await memberRepository.findOneBy({ id: '1' });
 
     const customForecastIndicatorRepository = dataSource.getRepository(CustomForecastIndicatorEntity);
     await customForecastIndicatorRepository.insert({
@@ -38,6 +40,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorsInformation: [],
+      member: member,
     });
 
     await customForecastIndicatorRepository.insert({
@@ -53,6 +56,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorsInformation: [],
+      member: member,
     });
 
     await customForecastIndicatorRepository.insert({
@@ -68,6 +72,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorsInformation: [],
+      member: member,
     });
 
     const indicatorRepository = dataSource.getRepository(IndicatorEntity);
@@ -119,7 +124,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
           }),
         }),
       ],
-      providers: [CustomForecastIndicatorPersistentAdapter, AuthService],
+      providers: [CustomForecastIndicatorPersistentAdapter, SupabaseService, AuthService],
     }).compile();
     customForecastIndicatorPersistentAdapter = module.get(CustomForecastIndicatorPersistentAdapter);
     dataSource = module.get<DataSource>(DataSource);
@@ -139,7 +144,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       exchange: 'KOSPI',
       symbol: 'PPAL',
     });
-    const memberId = 10;
+    const memberId: string = '1';
 
     // when
     const resultId = await customForecastIndicatorPersistentAdapter.createCustomForecastIndicator(
@@ -164,7 +169,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       exchange: 'KOSPI',
       symbol: 'PPAL',
     });
-    const invalidMemberId = 100;
+    const invalidMemberId = '100';
 
     // when
     // then

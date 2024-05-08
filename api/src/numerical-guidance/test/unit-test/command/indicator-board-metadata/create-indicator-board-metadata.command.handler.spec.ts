@@ -36,7 +36,7 @@ describe('CreateIndicatorBoardMetadataCommandHandler', () => {
 
   it('지표보드 메타데이터를 생성한다.', async () => {
     //given
-    const command: CreateIndicatorBoardMetadataCommand = new CreateIndicatorBoardMetadataCommand('메타데이터', 1);
+    const command: CreateIndicatorBoardMetadataCommand = new CreateIndicatorBoardMetadataCommand('메타데이터', '1');
 
     //when
     const indicatorBoardMetaDataId: string = await createIndicatorBoardMetadataCommandHandler.execute(command);

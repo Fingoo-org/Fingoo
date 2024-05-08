@@ -4,7 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 import { HttpExceptionFilter } from './utils/exception-filter/http-exception-filter';
-import { AuthGuard } from './auth/auth.guard';
+import { CustomAuthGuard } from './auth/util/custom-auth.guard';
 
 async function bootstrap() {
   initializeTransactionalContext();
@@ -18,6 +18,16 @@ async function bootstrap() {
     .setTitle('FINGOO Documentation')
     .setDescription('FINGOO의 API 문서입니다.')
     .setVersion('0.0.0')
+    .addBearerAuth(
+      {
+        description: 'Enter token',
+        name: 'Authorization',
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'bearer',
+      },
+      'Authorization',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
@@ -44,9 +54,8 @@ async function bootstrap() {
     credentials: true,
   });
 
+  app.useGlobalGuards(new CustomAuthGuard());
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(8000);
-
-  app.useGlobalGuards(new AuthGuard());
 }
 bootstrap();

@@ -7,13 +7,12 @@ import { DataSource } from 'typeorm';
 import { TypeOrmConfigService } from './utils/config/typeorm.config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from '@nestjs-modules/ioredis';
-// import { MyRedisModule } from './redis/redis.module';
 import { NumericalGuidanceModule } from './numerical-guidance/numerical-guidance.module';
 import { RedisConfigService } from './utils/config/redis.config.service';
 import { AuthModule } from './auth/auth.module';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './auth/auth.guard';
+import { CustomAuthGuard } from './auth/util/custom-auth.guard';
 
 @Module({
   imports: [
@@ -44,7 +43,7 @@ import { AuthGuard } from './auth/auth.guard';
     AppService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: CustomAuthGuard,
     },
   ],
 })

@@ -76,7 +76,7 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
       '예측지표',
       '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
       'stocks',
-      1,
+      '1',
     );
 
     // when
