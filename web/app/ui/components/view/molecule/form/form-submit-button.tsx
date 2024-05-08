@@ -1,25 +1,22 @@
 import clsx from 'clsx';
-import Button from '../../atom/button/button';
 import { useContext } from 'react';
 import { FormContext } from './form.context';
 import { useFormStatus } from 'react-dom';
-import { ButtonVariant, Size } from '@/app/utils/style';
-import { Color } from '@tremor/react';
+import AchromaticButton, { buttonVariants } from '../../atom/button/achromatic-button';
+import { VariantProps } from 'class-variance-authority';
 
 interface FormSubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   position?: 'left' | 'right' | 'center';
-  variant?: ButtonVariant;
-  size?: Size;
-  color?: Color;
+  variant?: VariantProps<typeof buttonVariants>['variant'];
+  size?: VariantProps<typeof buttonVariants>['size'];
 }
 
 export function FormSubmitButton({
   label,
   position = 'right',
-  variant = 'primary',
-  size = 'md',
-  color,
+  variant = 'default',
+  size = 'default',
   ...props
 }: FormSubmitButtonProps) {
   const { formId } = useContext(FormContext);
@@ -27,27 +24,19 @@ export function FormSubmitButton({
 
   return (
     <div
-      className={clsx('flex', {
+      className={clsx('flex w-full', {
         'justify-start': position === 'left',
         'justify-center': position === 'center',
         'justify-end': position === 'right',
       })}
     >
-      <Button
-        aria-label="submit-button"
-        form={formId}
-        size={size}
-        variant={variant}
-        type="submit"
-        color={color}
-        {...props}
-      >
+      <AchromaticButton aria-label="submit-button" form={formId} size={size} variant={variant} type="submit" {...props}>
         {!pending ? (
           label
         ) : (
           <LoadingSpinner className="h-6 w-6 shrink-0 animate-spin" style={{ transition: `width 150ms` }} />
         )}
-      </Button>
+      </AchromaticButton>
     </div>
   );
 }
