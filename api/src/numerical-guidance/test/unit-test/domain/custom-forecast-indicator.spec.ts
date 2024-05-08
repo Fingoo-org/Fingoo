@@ -4,7 +4,7 @@ import { SourceIndicatorCountShouldNotExceedLimitRule } from 'src/numerical-guid
 import { SourceIndicatorsShouldNotDuplicateRule } from 'src/numerical-guidance/domain/rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule } from 'src/numerical-guidance/domain/rule/TargetIndicatorShouldNotBeIncludedInSourceIndicators.rule';
 import { BusinessRuleValidationException } from 'src/utils/domain/business-rule-validation.exception';
-import { IndicatorType, SourceIndicatorRequestInformation } from 'src/utils/type/type-definition';
+import { IndicatorType, SourceIndicatorDtoType } from 'src/utils/type/type-definition';
 
 describe('예측지표', () => {
   it('예측 지표 생성', () => {
@@ -192,11 +192,12 @@ describe('예측지표', () => {
           indicatorType: 'stocks',
           exchange: 'KOSPI',
           symbol: 'PPAL',
+          weight: 10,
         },
       ],
     );
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorRequestInformation[] = [];
+    const sourceIndicatorIdsAndWeights: SourceIndicatorDtoType[] = [];
 
     // when
     customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
@@ -302,6 +303,7 @@ describe('예측지표', () => {
           indicatorType: 'stocks',
           exchange: 'KOSPI',
           symbol: 'PPAL',
+          weight: 10,
         },
       ],
     );
@@ -318,6 +320,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
     ];
 
@@ -350,7 +353,7 @@ describe('예측지표', () => {
       symbol: 'PPAL',
     });
 
-    const sourceIndicatorIdsAndWeights: any[] = [
+    const sourceIndicatorIdsAndWeights: SourceIndicatorDtoType[] = [
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
         name: '재료지표',
@@ -362,6 +365,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
@@ -374,6 +378,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf3',
@@ -386,6 +391,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf4',
@@ -398,6 +404,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf5',
@@ -410,6 +417,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf6',
@@ -422,6 +430,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf7',
@@ -434,6 +443,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf8',
@@ -446,6 +456,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf9',
@@ -458,6 +469,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cfz',
@@ -470,6 +482,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
       {
         id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cfx',
@@ -482,6 +495,7 @@ describe('예측지표', () => {
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
+        weight: 10,
       },
     ];
 

@@ -6,6 +6,8 @@ import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-fo
 import { Transactional } from 'typeorm-transactional';
 import { LoadCustomForecastIndicatorPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
+import { SourceIndicatorDtoType } from 'src/utils/type/type-definition';
+import { IndicatorDtoToSourceIndicatorDtoMapper } from './mapper/indicator-dto-type-to-source-indicator-dto-type.mapper';
 
 @Injectable()
 @CommandHandler(UpdateSourceIndicatorsInformationCommand)
@@ -26,14 +28,20 @@ export class UpdateSourceIndicatorsInformationCommandHandler implements ICommand
     const customForecastIndicator: CustomForecastIndicator =
       await this.loadCustomForecastIndicatorPort.loadCustomForecastIndicator(customForecastIndicatorId);
 
-    const sourceIndicatorsInformation: any[] = [];
+    const sourceIndicatorsInformation: SourceIndicatorDtoType[] = [];
 
     for (const sourceIndicatorInformation of sourceIndicatorsRequestInformation) {
       const sourceIndicatorId = sourceIndicatorInformation.sourceIndicatorId;
       const sourceIndicatorType = sourceIndicatorInformation.indicatorType;
-      const sourceIndicator: any = await this.loadIndicatorPort.loadIndicator(sourceIndicatorId, sourceIndicatorType);
-      sourceIndicator.weight = sourceIndicatorInformation.weight;
-      sourceIndicatorsInformation.push(sourceIndicator);
+      const sourceIndicator = await this.loadIndicatorPort.loadIndicator(sourceIndicatorId, sourceIndicatorType);
+
+      const sourceIndicatorDtoType: SourceIndicatorDtoType =
+        IndicatorDtoToSourceIndicatorDtoMapper.mapIndicatorDtoTypeToSourceIndicatorDtoType(
+          sourceIndicator,
+          sourceIndicatorInformation.weight,
+        );
+
+      sourceIndicatorsInformation.push(sourceIndicatorDtoType);
     }
     console.log(sourceIndicatorsInformation);
     customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorsInformation);

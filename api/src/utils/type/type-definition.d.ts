@@ -12,6 +12,15 @@ import { IndicesDto } from '../../numerical-guidance/application/query/indicator
 import { StockDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/stock.dto';
 import { FundDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/fund.dto';
 import { BondsDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/bonds.dto';
+import {
+  SourceCryptoCurrenciesDto,
+  SourceETFDto,
+  SourceForexPairDto,
+  SourceIndicesDto,
+  SourceStockDto,
+  SourceFundDto,
+  SourceBondsDto,
+} from '../../numerical-guidance/application/command/custom-forecast-indicator/update-source-indicators-and-weights/dto/source-indicator.dto';
 
 export type Interval = 'day' | 'week' | 'month' | 'year';
 
@@ -36,12 +45,21 @@ export type LiveIndicatorDtoType =
 
 export type IndicatorDtoType = CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto;
 
+export type SourceIndicatorDtoType =
+  | SourceCryptoCurrenciesDto
+  | SourceETFDto
+  | SourceForexPairDto
+  | SourceIndicesDto
+  | SourceStockDto
+  | SourceFundDto
+  | SourceBondsDto;
+
 export type ForecastType = 'single' | 'multi';
 
 export type SourceIndicatorRequestInformation = {
   sourceIndicatorId: string;
   indicatorType: IndicatorType;
-  weight: float;
+  weight: number;
 };
 
 export type TargetIndicatorInformation = {

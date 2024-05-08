@@ -90,7 +90,7 @@ describe('UpdateSourceIndicatorsAndWeightsCommandHandler', () => {
         {
           sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
           indicatorType: 'stocks',
-          weight: '10',
+          weight: 10,
         },
       ],
     );

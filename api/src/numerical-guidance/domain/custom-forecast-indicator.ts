@@ -1,6 +1,6 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { CustomForecastIndicatorNameShouldNotEmptyRule } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
-import { IndicatorDtoType, IndicatorType, Verification } from 'src/utils/type/type-definition';
+import { IndicatorDtoType, IndicatorType, SourceIndicatorDtoType, Verification } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
 import { SourceIndicatorsShouldNotDuplicateRule } from './rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { SourceIndicatorCountShouldNotExceedLimitRule } from './rule/SourceIndicatorCountShouldNotBeExeedLimit.rule';
@@ -53,7 +53,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     example: [],
     description: '재료지표와 가중치',
   })
-  sourceIndicatorsInformation: any[];
+  sourceIndicatorsInformation: SourceIndicatorDtoType[];
 
   @ApiProperty({
     example: '2024-03-08T02:34:57.630Z',
@@ -74,7 +74,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
-    sourceIndicatorsInformation: any[],
+    sourceIndicatorsInformation: SourceIndicatorDtoType[],
   ) {
     super();
     this.checkRule(new CustomForecastIndicatorNameShouldNotEmptyRule(customForecastIndicatorName));
@@ -92,7 +92,7 @@ export class CustomForecastIndicator extends AggregateRoot {
   static createNew(customForecastIndicatorName: string, targetIndicator: IndicatorDtoType): CustomForecastIndicator {
     const grangerVerification: Verification[] = [];
     const cointJohansenVerification: Verification[] = [];
-    const sourceIndicatorsInformation: any[] = [];
+    const sourceIndicatorsInformation: SourceIndicatorDtoType[] = [];
     const type: IndicatorType = 'customForecastIndicator';
     return new CustomForecastIndicator(
       null,
@@ -105,7 +105,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     );
   }
 
-  public updateSourceIndicatorsInformation(updateSourceIndicatorsInformation: any[]) {
+  public updateSourceIndicatorsInformation(updateSourceIndicatorsInformation: SourceIndicatorDtoType[]) {
     this.checkRule(new SourceIndicatorsShouldNotDuplicateRule(updateSourceIndicatorsInformation));
     this.checkRule(new SourceIndicatorCountShouldNotExceedLimitRule(updateSourceIndicatorsInformation));
     this.checkRule(
