@@ -397,6 +397,7 @@ export class IndicatorPersistentAdapter
 
   private async clearIndicatorList() {
     await Promise.all([
+      // 각 엔티티의 데이터를 모두 삭제합니다.
       this.bondsEntityRepository.clear(),
       this.cryptoCurrenciesEntityRepository.clear(),
       this.etfEntityRepository.clear(),
@@ -404,6 +405,14 @@ export class IndicatorPersistentAdapter
       this.fundEntityRepository.clear(),
       this.indicesEntityRepository.clear(),
       this.stockEntityRepository.clear(),
+      // 시퀀스를 초기화합니다.
+      this.bondsEntityRepository.query('ALTER SEQUENCE bonds_index_seq RESTART WITH 1'),
+      this.cryptoCurrenciesEntityRepository.query('ALTER SEQUENCE cryptocurrencies_index_seq RESTART WITH 1'),
+      this.etfEntityRepository.query('ALTER SEQUENCE etf_index_seq RESTART WITH 1'),
+      this.forexPairEntityRepository.query('ALTER SEQUENCE forex_pairs_index_seq RESTART WITH 1'),
+      this.fundEntityRepository.query('ALTER SEQUENCE funds_index_seq RESTART WITH 1'),
+      this.indicesEntityRepository.query('ALTER SEQUENCE indices_index_seq RESTART WITH 1'),
+      this.stockEntityRepository.query('ALTER SEQUENCE stocks_index_seq RESTART WITH 1'),
     ]);
   }
 }
