@@ -1,11 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
-import {
-  IndicatorType,
-  SourceIndicatorInformation,
-  TargetIndicatorInformation,
-  Verification,
-} from 'src/utils/type/type-definition';
+import { IndicatorDtoType, IndicatorType, Verification } from 'src/utils/type/type-definition';
 import { MemberEntity } from 'src/auth/entity/member.entity';
 
 @Entity({ name: 'CustomForecastIndicator' })
