@@ -1,11 +1,9 @@
-import { ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
-import { AuthGuard } from '../../../auth/auth.guard';
 import { CreateCustomForecatIndicatorDto } from './dto/create-custom-forecast-indicator.dto';
-import { Member } from '../../../auth/get-member.decorator';
-import { MemberEntity } from '../../../auth/member.entity';
+import { LoginUser } from '../../../auth/util/get-login-user.decorator';
 import { CreateCustomForecastIndicatorCommand } from '../../application/command/custom-forecast-indicator/create-custom-forecast-indicator/create-custom-forecast-indicator.command';
 import { CustomForecastIndicator } from '../../domain/custom-forecast-indicator';
 import { GetCustomForecastIndicatorQuery } from '../../application/query/custom-forecast-indicator/get-custom-forecast-indicator/get-custom-forecast-indicator.query';
@@ -17,6 +15,7 @@ import { GetCustomForecastIndicatorValuesQuery } from '../../application/query/c
 import { DeleteCustomForecastIndicatorCommand } from 'src/numerical-guidance/application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command';
 import { UpdateCustomForecastIndicatorNameDto } from './dto/update-custom-forecast-indicator-name.dto';
 import { UpdateCustomForecastIndicatorNameCommand } from 'src/numerical-guidance/application/command/custom-forecast-indicator/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command';
+import { User } from '@supabase/supabase-js';
 
 @ApiTags('CustomForecastIndicatorController')
 @Controller('/api/numerical-guidance')
@@ -46,17 +45,17 @@ export class CustomForecastIndicatorController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 예측지표를 생성하는 중 예상치 못한 문제가 발생했습니다.`,
   )
-  @UseGuards(AuthGuard)
+  @ApiBearerAuth('Authorization')
   @Post('/custom-forecast-indicator')
   async createCustomForecastIndicator(
     @Body() createCustomForecastIndicatorDto: CreateCustomForecatIndicatorDto,
-    @Member() member: MemberEntity,
+    @LoginUser() user: User,
   ): Promise<string> {
     const command = new CreateCustomForecastIndicatorCommand(
       createCustomForecastIndicatorDto.customForecastIndicatorName,
       createCustomForecastIndicatorDto.targetIndicatorId,
       createCustomForecastIndicatorDto.targetIndicatorType,
-      member.id,
+      user.id,
     );
     return await this.commandBus.execute(command);
   }
@@ -83,6 +82,7 @@ export class CustomForecastIndicatorController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Get('/custom-forecast-indicator/:customForecastIndicatorId')
   async loadCustomForecastIndicator(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
@@ -103,10 +103,10 @@ export class CustomForecastIndicatorController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     `[ERROR] 예측지표를 불러오는 중 예상치 못한 문제가 발생했습니다.`,
   )
-  @UseGuards(AuthGuard)
+  @ApiBearerAuth('Authorization')
   @Get('/custom-forecast-indicator')
-  async loadCustomForecastIndicatorsByMemberId(@Member() member: MemberEntity): Promise<CustomForecastIndicator[]> {
-    const query = new GetCustomForecastIndicatorsByMemberIdQuery(member.id);
+  async loadCustomForecastIndicatorsByMemberId(@LoginUser() user: User): Promise<CustomForecastIndicator[]> {
+    const query = new GetCustomForecastIndicatorsByMemberIdQuery(user.id);
     return await this.queryBus.execute(query);
   }
 
@@ -127,6 +127,7 @@ export class CustomForecastIndicatorController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Patch('/custom-forecast-indicator/:customForecastIndicatorId')
   async updateSourceIndicatorsInformation(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
@@ -161,6 +162,7 @@ export class CustomForecastIndicatorController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Get('/custom-forecast-indicator/value/:customForecastIndicatorId')
   async loadCustomForecastIndicatorValues(
     @Param('customForecastIndicatorId') customForecastIndicatorId,
@@ -192,6 +194,7 @@ export class CustomForecastIndicatorController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Delete('/custom-forecast-indicator/:customForecastIndicatorId')
   async deleteCustomForecastIndicator(@Param('customForecastIndicatorId') customForecastIndicatorId): Promise<void> {
     const command = new DeleteCustomForecastIndicatorCommand(customForecastIndicatorId);
@@ -221,6 +224,7 @@ export class CustomForecastIndicatorController {
     example: '998e64d9-472b-44c3-b0c5-66ac04dfa594',
     required: true,
   })
+  @ApiBearerAuth('Authorization')
   @Patch('/custom-forecast-indicator/name/:customForecastIndicatorId')
   async updateCustomForecastIndicatorName(
     @Param('customForecastIndicatorId') customForecastIndicatorId,

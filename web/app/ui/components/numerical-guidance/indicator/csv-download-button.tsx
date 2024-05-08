@@ -1,6 +1,6 @@
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/indicator/use-live-indicators-value-view-model.hook';
-import { createIndicatorFormatter } from '@/app/business/services/chart/indicator-formatter.service';
+import { createIndicatorFormatter } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
 import { CSVLink } from 'react-csv';
 
 type CSVDownloadButtonProps = {

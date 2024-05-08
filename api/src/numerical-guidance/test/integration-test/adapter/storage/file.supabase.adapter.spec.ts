@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
-import { FileSupabaseAdapter } from '../../../../infrastructure/adapter/storage/file.supabase.adapter';
+import { FileSupabaseAdapter } from '../../../../infrastructure/adapter/storage/supabase/file.supabase.adapter';
 import * as fs from 'fs';
 import { ConfigModule } from '@nestjs/config';
 import { HttpStatus, NotFoundException } from '@nestjs/common';

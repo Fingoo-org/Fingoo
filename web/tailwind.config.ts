@@ -32,6 +32,21 @@ const config: Config = {
         'accordion-up': 'accordion-up 0.4s ease-out',
       },
       colors: {
+        'gray-1': '#F5F5F5',
+        'gray-2': '#e5e5e5',
+        'gray-3': '#cfcfcf',
+        'gray-4': '#c4c4c4',
+        'gray-5': '#acacac',
+        'gray-6': '#9F9F9F',
+        'black-1': '#353535',
+        'black-2': '#2F2F2F',
+        'black-3': '#262626',
+        'black-4': '#090909',
+        etc: {
+          yellow: '#FFF38B',
+          pink: '#FFC8C8',
+          red: '#FF6D6D',
+        },
         // light mode
         fingoo: {
           main: '#6ccabf',

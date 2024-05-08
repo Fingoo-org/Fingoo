@@ -13,6 +13,7 @@ import { SearchedIndicatorsDto } from '../../application/query/indicator/get-ind
 import { SearchSymbolDto } from './dto/search-symbol.dto';
 import { IndicatorDtoType } from '../../../utils/type/type-definition';
 import { SaveIndicatorListDto } from '../../application/command/indicator/save-indicator-list/dto/save-indicator-list.dto';
+import { Public } from '../../../auth/util/is-public.decorator';
 import { SearchIndicatorBySymbolQuery } from 'src/numerical-guidance/application/query/indicator/get-search-indicator-by-symbol/search-indicator-by-symbol.query';
 
 @ApiTags('IndicatorController')
@@ -24,6 +25,7 @@ export class IndicatorController {
   ) {}
 
   @ApiOperation({ summary: '지표 리스트를 저장합니다.' })
+  @Public()
   @Post('/list')
   async saveIndicatorList(@Query() saveIndicatorListDto: SaveIndicatorListDto): Promise<void> {
     const command = new SaveIndicatorListCommand(saveIndicatorListDto.count, saveIndicatorListDto.country);
@@ -47,6 +49,7 @@ export class IndicatorController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     '[ERROR] 지표 리스트를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
   )
+  @Public()
   @Get('/list')
   async getIndicatorList(@Query() getIndicatorListDto: GetIndicatorListDto): Promise<CursorPageDto<IndicatorDtoType>> {
     const query = new GetIndicatorListQuery(getIndicatorListDto.type, getIndicatorListDto.cursorToken);
@@ -70,6 +73,7 @@ export class IndicatorController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     '[ERROR] 지표를 검색하는 중 중에 예상치 못한 문제가 발생했습니다.',
   )
+  @Public()
   @Get('/search')
   async searchIndicator(@Query() searchSymbolDto: SearchSymbolDto): Promise<SearchedIndicatorsDto> {
     console.log(searchSymbolDto.symbol);

@@ -4,9 +4,9 @@ import { IndicatorBoardMetadataPersistentAdapter } from '../../../../infrastruct
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetadata } from '../../../../domain/indicator-board-metadata';
 import { IndicatorBoardMetadataEntity } from '../../../../infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
-import { MemberEntity } from '../../../../../auth/member.entity';
+import { MemberEntity } from '../../../../../auth/entity/member.entity';
 import { PostgreSqlContainer } from '@testcontainers/postgresql';
-import { AuthService } from '../../../../../auth/auth.service';
+import { AuthService } from '../../../../../auth/application/auth.service';
 import { DataSource } from 'typeorm';
 import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
 
@@ -20,10 +20,10 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
   let indicatorBoardMetadataPersistentAdapter: IndicatorBoardMetadataPersistentAdapter;
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
-    await memberRepository.insert({ id: 10 });
-    await memberRepository.insert({ id: 5 });
-    await memberRepository.insert({ id: 999 });
-    await memberRepository.insert({ id: 9999 });
+    await memberRepository.insert({ id: '10', email: 'test@gmail.com' });
+    await memberRepository.insert({ id: '5', email: 'test@gmail.com' });
+    await memberRepository.insert({ id: '999', email: 'test@gmail.com' });
+    await memberRepository.insert({ id: '9999', email: 'test@gmail.com' });
     memberRepository.save;
 
     const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
@@ -33,7 +33,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: 10 },
+      member: { id: '10', email: 'test@gmail.com' },
     });
 
     await indicatorBoardMetadataRepository.insert({
@@ -42,7 +42,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: 5 },
+      member: { id: '5', email: 'test@gmail.com' },
     });
 
     await indicatorBoardMetadataRepository.insert({
@@ -51,7 +51,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: 5 },
+      member: { id: '5', email: 'test@gmail.com' },
     });
 
     await indicatorBoardMetadataRepository.insert({
@@ -60,7 +60,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: 5 },
+      member: { id: '5', email: 'test@gmail.com' },
     });
 
     await indicatorBoardMetadataRepository.insert({
@@ -86,7 +86,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       sections: {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
-      member: { id: 999 },
+      member: { id: '999', email: 'test@gmail.com' },
     });
 
     await indicatorBoardMetadataRepository.insert({
@@ -112,7 +112,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       sections: {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
-      member: { id: 999 },
+      member: { id: '999', email: 'test@gmail.com' },
     });
 
     await indicatorBoardMetadataRepository.insert({
@@ -138,7 +138,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       sections: {
         section1: ['indicatorId1', 'indicatorId2', 'customForecastIndicatorId1', 'customForecastIndicatorId2'],
       },
-      member: { id: 999 },
+      member: { id: '999', email: 'test@gmail.com' },
     });
 
     await indicatorBoardMetadataRepository.insert({
@@ -147,7 +147,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
       indicatorInfos: [],
       customForecastIndicatorIds: [],
       sections: { section1: [] },
-      member: { id: 9999 },
+      member: { id: '9999', email: 'test@gmail.com' },
     });
 
     await indicatorBoardMetadataRepository.insert({
@@ -183,7 +183,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
           'customForecastIndicatorId3',
         ],
       },
-      member: { id: 9999 },
+      member: { id: '9999', email: 'test@gmail.com' },
     });
   };
 
@@ -226,7 +226,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
 
   it('지표보드 메타데이터 생성 확인', async () => {
     // given
-    const memberId = 10;
+    const memberId = '10';
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // when
@@ -242,7 +242,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
   });
 
   it('지표보드 메타데이터 생성 - 회원을 찾지 못한 경우', async () => {
-    const invalidMemberId = 11;
+    const invalidMemberId = '11';
     const indicatorBoardMetaData: IndicatorBoardMetadata = IndicatorBoardMetadata.createNew('메타 데이터');
 
     // when // then
@@ -268,7 +268,7 @@ describe('IndicatorBoardMetadataPersistentAdapter', () => {
     // when
     const resultId = await indicatorBoardMetadataPersistentAdapter.createIndicatorBoardMetadata(
       indicatorBoardMetaData,
-      10,
+      '10',
     );
     const result = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(resultId);
 

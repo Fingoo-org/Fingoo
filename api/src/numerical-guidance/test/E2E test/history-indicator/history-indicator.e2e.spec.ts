@@ -1,7 +1,7 @@
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { IndicatorEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indicator.entity';
-import { MemberEntity } from '../../../../auth/member.entity';
+import { MemberEntity } from '../../../../auth/entity/member.entity';
 import { HistoryIndicatorEntity } from '../../../infrastructure/adapter/persistence/history-indicator/entity/history-indicator.entity';
 import * as fs from 'fs';
 import { HistoryIndicatorValueEntity } from '../../../infrastructure/adapter/persistence/history-indicator-value/entity/history-indicator-value.entity';
@@ -14,9 +14,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
 import { HistoryIndicatorController } from '../../../api/history-indicator/history-indicator.controller';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
-import { AuthService } from '../../../../auth/auth.service';
+import { AuthService } from '../../../../auth/application/auth.service';
 import { GetHistoryIndicatorQueryHandler } from '../../../application/query/history-indicator/get-history-indicator/get-history-indicator.query.handler';
-import { AuthGuard } from '../../../../auth/auth.guard';
+import { CustomAuthGuard } from '../../../../auth/util/custom-auth.guard';
 import { of } from 'rxjs';
 import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exception-filter';
 import * as request from 'supertest';
@@ -33,7 +33,7 @@ describe('History Indicator E2E Test', () => {
 
   const seeding = async () => {
     const memberEntity = dataSource.getRepository(MemberEntity);
-    await memberEntity.insert({ id: 1 });
+    await memberEntity.insert({ id: '1', email: 'test@gmail.com' });
 
     const indicatorEntity = dataSource.getRepository(IndicatorEntity);
     await indicatorEntity.insert({
@@ -139,11 +139,11 @@ describe('History Indicator E2E Test', () => {
             useClass: AdjustIndicatorValue,
           },
           {
-            provide: AuthGuard,
+            provide: CustomAuthGuard,
             useValue: {
               canActivate: jest.fn().mockImplementation((context) => {
                 const request = context.switchToHttp().getRequest();
-                const member: MemberEntity = { id: 1 };
+                const member: MemberEntity = { id: '1', email: 'test@gmail.com' };
                 request.member = member;
                 return of(true);
               }),
@@ -164,7 +164,6 @@ describe('History Indicator E2E Test', () => {
       }),
     );
     app.useGlobalFilters(new HttpExceptionFilter());
-    app.useGlobalGuards(new AuthGuard());
     await app.init();
   }, 30000);
 

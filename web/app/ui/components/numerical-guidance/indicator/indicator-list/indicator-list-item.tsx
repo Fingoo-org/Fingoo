@@ -5,7 +5,7 @@ import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import IconButton from '../../../view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
-import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
+import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import { cn } from '@/app/utils/style';
 
 type IndicatorListItemProps = {

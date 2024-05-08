@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { storeResetFns } from '../reset-store';
-import { UnitType } from '@/app/business/services/chart/unit-calculator/unit-calculator-factory.service';
+import { UnitType } from '@/app/business/services/numerical-guidance/chart/unit-calculator/unit-calculator-factory.service';
 
 export type IndicatorInMetadataUnitTypes = {
   [metadataId: string]: {

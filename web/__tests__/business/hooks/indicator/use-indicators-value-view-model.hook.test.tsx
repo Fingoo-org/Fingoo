@@ -5,7 +5,7 @@ import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspa
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useLiveIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/indicator/use-live-indicators-value-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { ActualIndicatorsValue } from '@/app/business/services/view-model/indicator-value/actual-indicators-value-view-model.service';
+import { ActualIndicatorsValue } from '@/app/business/services/numerical-guidance/view-model/indicator-value/actual-indicators-value-view-model.service';
 
 const wrapper = SWRProviderWithoutCache;
 

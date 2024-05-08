@@ -7,8 +7,7 @@ import { CreateIndicatorBoardMetadataCommandHandler } from './application/comman
 import { IndicatorBoardMetadataPersistentAdapter } from './infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorBoardMetadataEntity } from './infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
-import { AuthService } from '../auth/auth.service';
-import { MemberEntity } from '../auth/member.entity';
+import { MemberEntity } from '../auth/entity/member.entity';
 import { GetIndicatorBoardMetadataQueryHandler } from './application/query/indicator-board-metadata/get-indicator-board-metadata/get-indicator-board-metadata.query.handler';
 import { InsertIndicatorIdCommandHandler } from './application/command/indicator/insert-indicator-id/insert-indicator-id.command.handler';
 import { GetIndicatorBoardMetadataListQueryHandler } from './application/query/indicator-board-metadata/get-indicator-board-metadata-list/get-indicator-board-metadata-list.query.handler';
@@ -38,7 +37,7 @@ import { LiveIndicatorController } from './api/live-indicator/live-indicator.con
 import { DeleteCustomForecastIndicatorIdCommandHandler } from './application/command/custom-forecast-indicator/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
 import { DeleteCustomForecastIndicatorCommandHandler } from './application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
 import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/command/custom-forecast-indicator/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
-import { FileSupabaseAdapter } from './infrastructure/adapter/storage/file.supabase.adapter';
+import { FileSupabaseAdapter } from './infrastructure/adapter/storage/supabase/file.supabase.adapter';
 import { UploadFileCommandHandler } from './application/command/indicator-board-metadata/upload-file/upload-file.command.handler';
 import { UpdateSectionsCommandHandler } from './application/command/indicator-board-metadata/update-sections/update-sections.command.handler';
 import { GetIndicatorListQueryHandler } from './application/query/indicator/get-indicator-list/get-indicator-list.query.handler';
@@ -53,6 +52,9 @@ import { FundEntity } from './infrastructure/adapter/persistence/indicator/entit
 import { IndicesEntity } from './infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from './infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { SearchIndicatorQueryHandler } from './application/query/indicator/get-indicator-search/search-indicator.query.handler';
+import { AuthService } from '../auth/application/auth.service';
+import { SupabaseStrategy } from '../auth/supabase/supabase.strategy';
+import { SupabaseService } from '../auth/supabase/supabase.service';
 import { SearchIndicatorBySymbolQueryHandler } from './application/query/indicator/get-search-indicator-by-symbol/search-indicator-by-symbol.query.handler';
 
 @Module({
@@ -88,8 +90,10 @@ import { SearchIndicatorBySymbolQueryHandler } from './application/query/indicat
     LiveIndicatorController,
   ],
   providers: [
-    AdjustIndicatorValue,
     AuthService,
+    SupabaseService,
+    SupabaseStrategy,
+    AdjustIndicatorValue,
     GetLiveIndicatorQueryHandler,
     GetHistoryIndicatorQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,

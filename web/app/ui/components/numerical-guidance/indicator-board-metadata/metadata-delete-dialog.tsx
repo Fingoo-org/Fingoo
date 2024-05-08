@@ -1,7 +1,7 @@
 'use client';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import AlertDialog from '../../view/molecule/alert-dialog';
-import { IndicatorBoardMetadata } from '@/app/business/services/view-model/indicator-board-metadata-view-model.service';
+import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata-view-model.service';
 import { useIndicatorBoardMetadataList } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 
 export default function MetadataDeleteDialog() {
