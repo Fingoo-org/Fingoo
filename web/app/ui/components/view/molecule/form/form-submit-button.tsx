@@ -34,7 +34,6 @@ export function FormSubmitButton({
       })}
     >
       <Button
-        // loading={pending}
         aria-label="submit-button"
         form={formId}
         size={size}
@@ -43,7 +42,11 @@ export function FormSubmitButton({
         color={color}
         {...props}
       >
-        {pending ? label : <LoadingSpinner className="h-6 w-6" style={{ transition: `width 150ms` }} />}
+        {!pending ? (
+          label
+        ) : (
+          <LoadingSpinner className="h-6 w-6 shrink-0 animate-spin" style={{ transition: `width 150ms` }} />
+        )}
       </Button>
     </div>
   );
