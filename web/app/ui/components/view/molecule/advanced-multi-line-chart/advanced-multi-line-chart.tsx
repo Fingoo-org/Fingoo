@@ -20,7 +20,7 @@ import {
   FormattedIndicatorValue,
   FormattedRowType,
   chartValueFormatterFactory,
-} from '@/app/business/services/chart/indicator-formatter.service';
+} from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
 
 const INDICATOR_COLORS = ['#a5b4fc', '#fecdd3', '#737373', '#6366f1', '#3b82f6'];
 

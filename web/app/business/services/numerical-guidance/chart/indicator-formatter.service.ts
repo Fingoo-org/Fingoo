@@ -1,7 +1,4 @@
-import {
-  FormattedItem,
-  IndicatorValue,
-} from '../numerical-guidance/view-model/indicator-value/indicator-value-view-model.service';
+import { FormattedItem, IndicatorValue } from '../view-model/indicator-value/indicator-value-view-model.service';
 import { UnitType } from './unit-calculator/unit-calculator-factory.service';
 import { addOneDay, formatDate } from '@/app/utils/date-formatter';
 import { getBigestDateInArray, getSmallestDateInArray } from '@/app/utils/date-formatter';
