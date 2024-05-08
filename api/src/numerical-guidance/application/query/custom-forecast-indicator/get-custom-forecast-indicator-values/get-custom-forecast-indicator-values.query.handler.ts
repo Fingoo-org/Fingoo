@@ -37,7 +37,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       await this.loadCustomForecastIndicatorPort.loadCustomForecastIndicator(customForecastIndicatorId);
 
     const targetIndicatorInformation = customForecastIndicator.targetIndicator;
-    const targetIndicatorId = targetIndicatorInformation.targetIndicatorId;
+    const targetIndicatorId = targetIndicatorInformation.id;
     const interval = 'day';
     const endDate = this.getEndDate();
     const startDate = this.getStartDate();

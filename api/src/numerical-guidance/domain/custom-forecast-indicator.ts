@@ -35,7 +35,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     },
     description: '타켓지표 정보',
   })
-  targetIndicator: any;
+  targetIndicator: IndicatorDtoType;
 
   @ApiProperty({
     example: [],
