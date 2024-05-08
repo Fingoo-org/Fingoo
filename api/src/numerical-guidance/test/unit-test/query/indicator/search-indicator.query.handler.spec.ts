@@ -1,64 +1,86 @@
 import { Test } from '@nestjs/testing';
-import { SearchIndicatorQueryHandler } from '../../../../application/query/indicator/get-indicator-search/search-indicator.query.handler';
-import { SearchIndicatorPort } from '../../../../application/port/persistence/indicator/search-indicator.port';
-import {
-  SearchedSymbolType,
-  SearchedIndicatorsDto,
-} from '../../../../application/query/indicator/get-indicator-search/dto/searched-indicators.dto';
-import { SearchIndicatorQuery } from '../../../../application/query/indicator/get-indicator-search/search-indicator.query';
+import { SearchIndicatorBySymbolPort } from 'src/numerical-guidance/application/port/persistence/indicator/search-indicator-by-symbol.port';
+import { SearchIndicatorQuery } from 'src/numerical-guidance/application/query/indicator/search-indicator/search-indicator.query';
+import { SearchIndicatorQueryHandler } from 'src/numerical-guidance/application/query/indicator/search-indicator/search-indicator.query.handler';
+import { SearchIndicatorByTypeAndSymbolPort } from '../../../../application/port/persistence/indicator/search-indicator-by-type-and-symbol.port';
+import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
 
 describe('SearchIndicatorQueryHandler', () => {
   let searchIndicatorQueryHandler: SearchIndicatorQueryHandler;
-  let searchIndicatorPort: SearchIndicatorPort;
+  let searchIndicatorBySymbolPort: SearchIndicatorBySymbolPort;
+  let searchIndicatorByTypeAndSymbolPort: SearchIndicatorByTypeAndSymbolPort;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
         SearchIndicatorQueryHandler,
         {
-          provide: 'SearchIndicatorPort',
+          provide: 'SearchIndicatorBySymbolPort',
           useValue: {
-            searchIndicator: jest.fn().mockImplementation(() => {
-              const searchSymbols: SearchedSymbolType[] = [
+            searchIndicatorBySymbol: jest.fn().mockImplementation(() => {
+              const indicator: StockDto = {
+                id: '34bcb58c-1ea6-44a5-bb6a-dcd8929ab2b6',
+                index: 1,
+                indicatorType: 'stocks',
+                symbol: '000020',
+                name: 'Dongwha Pharm.Co.,Ltd',
+                country: 'South Korea',
+                currency: 'KRW',
+                exchange: 'KRX',
+                mic_code: 'XKRX',
+                type: 'Common Stock',
+              };
+              return indicator;
+            }),
+          },
+        },
+        {
+          provide: 'SearchIndicatorByTypeAndSymbolPort',
+          useValue: {
+            searchIndicatorByTypeAndSymbol: jest.fn().mockImplementation(() => {
+              const indicator: StockDto[] = [
                 {
-                  symbol: 'AA',
-                  instrument_name: 'Alcoa Corp',
-                  exchange: 'NYSE',
-                  mic_code: 'XNYS',
-                  exchange_timezone: 'America/New_York',
-                  instrument_type: 'Common Stock',
-                  country: 'United States',
-                  currency: 'USD',
-                },
-                {
-                  symbol: 'AAPL',
-                  instrument_name: 'Apple Inc',
-                  exchange: 'NASDAQ',
-                  mic_code: 'XNGS',
-                  exchange_timezone: 'America/New_York',
-                  instrument_type: 'Common Stock',
-                  country: 'United States',
-                  currency: 'USD',
+                  id: '34bcb58c-1ea6-44a5-bb6a-dcd8929ab2b6',
+                  index: 1,
+                  indicatorType: 'stocks',
+                  symbol: '000020',
+                  name: 'Dongwha Pharm.Co.,Ltd',
+                  country: 'South Korea',
+                  currency: 'KRW',
+                  exchange: 'KRX',
+                  mic_code: 'XKRX',
+                  type: 'Common Stock',
                 },
               ];
-              return SearchedIndicatorsDto.create(searchSymbols);
+              return indicator;
             }),
           },
         },
       ],
     }).compile();
     searchIndicatorQueryHandler = module.get(SearchIndicatorQueryHandler);
-    searchIndicatorPort = module.get('SearchIndicatorPort');
+    searchIndicatorBySymbolPort = module.get('SearchIndicatorBySymbolPort');
+    searchIndicatorByTypeAndSymbolPort = module.get('SearchIndicatorByTypeAndSymbolPort');
   });
-
-  it('지표 리스트를 가져온다.', async () => {
+  it('symbol로 지표를 검색한다.', async () => {
     // given
-    const query: SearchIndicatorQuery = { symbol: 'AA' };
+    const query: SearchIndicatorQuery = { symbol: '000020', type: 'none' };
 
     // when
     await searchIndicatorQueryHandler.execute(query);
 
     // then
-    expect(searchIndicatorPort.searchIndicator).toHaveBeenCalledTimes(1);
+    expect(searchIndicatorBySymbolPort.searchIndicatorBySymbol).toHaveBeenCalledTimes(1);
+  });
+
+  it('type, symbol로 지표를 검색한다.', async () => {
+    // given
+    const query: SearchIndicatorQuery = { symbol: '000020', type: 'stocks' };
+
+    // when
+    await searchIndicatorQueryHandler.execute(query);
+
+    // then
+    expect(searchIndicatorByTypeAndSymbolPort.searchIndicatorByTypeAndSymbol).toHaveBeenCalledTimes(1);
   });
 });
