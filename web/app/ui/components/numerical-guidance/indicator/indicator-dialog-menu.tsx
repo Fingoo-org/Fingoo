@@ -7,7 +7,7 @@ import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/nu
 import { useDialog } from '../../view/hooks/use-dialog.hook';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useWorkspace } from '@/app/business/hooks/use-workspace.hook';
-import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
+import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 
 export default function IndicatorDialogMenu() {
   const payload = useDialog(DIALOG_KEY.INDICATOR_EDIT_MENU).payload as Indicator;

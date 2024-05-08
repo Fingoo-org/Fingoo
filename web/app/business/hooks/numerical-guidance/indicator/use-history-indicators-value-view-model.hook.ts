@@ -4,12 +4,12 @@ import {
   useFetchHistoryIndicatorValue,
 } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { useEffect, useMemo, useState } from 'react';
-import { convertHistoryIndicatorsValueViewModel } from '../../../services/view-model/indicator-value/actual-indicators-value-view-model.service';
+import { convertHistoryIndicatorsValueViewModel } from '../../../services/numerical-guidance/view-model/indicator-value/actual-indicators-value-view-model.service';
 import {
   CustomForecastIndicatorResponse,
   useFetchCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { convertCustomForecastHistoryIndicatorsValueViewModel } from '../../../services/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
+import { convertCustomForecastHistoryIndicatorsValueViewModel } from '../../../services/numerical-guidance/view-model/indicator-value/custom-forecast-indicator-value-view-model.service';
 import { useIndicatorBoard } from '../indicator-board/use-indicator-board.hook';
 import { useIndicatorBoardMetadataViewModel } from '../indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 

@@ -3,7 +3,7 @@ import SelectableItem from '../../view/atom/selectable-item';
 import ToolTip from '../../view/atom/tooltip';
 import Icon from '../../view/atom/icons/variant-icon';
 import { SparklesIcon } from '@heroicons/react/outline';
-import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
+import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 
 type SourceIndicatorSearchListItemProps = {
   item: Indicator;

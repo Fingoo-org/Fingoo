@@ -7,7 +7,7 @@ import SourceIndicatorSearchListItem from './source-indicator-search-list-item';
 import { useState } from 'react';
 import { useIndicatorSearchList } from '@/app/business/hooks/numerical-guidance/indicator/use-indicator-search-list.hooks';
 import { useIndicatorListByType } from '@/app/business/hooks/numerical-guidance/indicator/use-indicator-list-by-type.hook';
-import { Indicator } from '@/app/business/services/view-model/indicator-list/indicators/indicator.service';
+import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import IndicatorTypeToggleGroup from '../../view/molecule/indicator-type-toggle-group';
 

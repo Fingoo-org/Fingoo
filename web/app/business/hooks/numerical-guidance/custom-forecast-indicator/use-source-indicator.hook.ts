@@ -1,5 +1,5 @@
 import { useFetchCustomForecastIndicatorList } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { convertCustomForecastIndicatorViewModel } from '../../../services/view-model/custom-forecast-indicator-view-model.service';
+import { convertCustomForecastIndicatorViewModel } from '../../../services/numerical-guidance/view-model/custom-forecast-indicator-view-model.service';
 import { useMemo } from 'react';
 
 export const useSourceIndicator = (customForecastIndicatorId: string) => {

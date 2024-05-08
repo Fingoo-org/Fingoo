@@ -1,6 +1,6 @@
 import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
-import { FormattedIndicatorValue } from '../../chart/indicator-formatter.service';
-import { createUnitCalculator, UnitType } from '../../chart/unit-calculator/unit-calculator-factory.service';
+import { FormattedIndicatorValue } from '../../../chart/indicator-formatter.service';
+import { createUnitCalculator, UnitType } from '../../../chart/unit-calculator/unit-calculator-factory.service';
 import { getBigestDateInArray, getSmallestDateInArray } from '@/app/utils/date-formatter';
 
 export type FormattedItem = {

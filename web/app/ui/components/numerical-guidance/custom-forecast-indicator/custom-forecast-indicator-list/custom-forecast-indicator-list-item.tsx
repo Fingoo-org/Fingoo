@@ -1,4 +1,4 @@
-import { CustomForecastIndicator } from '@/app/business/services/view-model/custom-forecast-indicator-view-model.service';
+import { CustomForecastIndicator } from '@/app/business/services/numerical-guidance/view-model/custom-forecast-indicator-view-model.service';
 import ListItem from '../../../view/atom/list-item';
 import IconButton from '../../../view/atom/icons/icon-button';
 import SelectableItem from '../../../view/atom/selectable-item';
