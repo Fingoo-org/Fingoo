@@ -1,8 +1,8 @@
 'use client';
 import Link from 'next/link';
 import { CardContent, CardFooter, Card } from '@/app/ui/components/view/molecule/card/card';
-import Button from './ui/components/view/atom/button/button';
 import Form from './ui/components/view/molecule/form';
+import { authenticate } from './business/services/auth/sign-in.service';
 
 export default function Page() {
   return (
@@ -15,7 +15,7 @@ export default function Page() {
           </p>
         </div>
         <Card>
-          <Form id="sign-in" action={() => ({})}>
+          <Form id="sign-in" action={authenticate}>
             <CardContent className="space-y-4 pt-6">
               <div className="space-y-2">
                 <Form.TextInput label="Email" id="email" placeholder="m@example.com" />
