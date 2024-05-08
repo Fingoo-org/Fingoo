@@ -6,7 +6,7 @@ import { FormState } from './form-root';
 import { z } from 'zod';
 
 const meta = {
-  title: 'ui/view/molecule/Form',
+  title: 'view/molecule/Form',
   component: Form,
   decorators: [
     (Story) => (

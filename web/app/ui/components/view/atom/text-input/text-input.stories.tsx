@@ -4,7 +4,7 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import TextInput from './text-input';
 
 const meta = {
-  title: 'ui/view/atom/TextInput',
+  title: 'view/atom/TextInput',
   component: TextInput,
 } satisfies Meta<typeof TextInput>;
 
