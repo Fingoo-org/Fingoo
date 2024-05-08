@@ -1,5 +1,5 @@
 import { IQuery } from '@nestjs/cqrs';
 
-export class SearchIndicatorQuery implements IQuery {
+export class SearchTwelveIndicatorQuery implements IQuery {
   constructor(readonly symbol: string) {}
 }

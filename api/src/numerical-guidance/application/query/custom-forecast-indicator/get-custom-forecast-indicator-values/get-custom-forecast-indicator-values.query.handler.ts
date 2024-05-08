@@ -65,7 +65,6 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       customForecastIndicatorValues: customFroecastIndicatorValues.indicatorValues,
       targetIndicatorValues: targetIndicatorValues,
     };
-    console.log(customForecastIndicatorValuesResponse);
     return customForecastIndicatorValuesResponse;
   }
 
