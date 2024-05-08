@@ -258,11 +258,6 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
   for indicator, weight in zip(df_var, weights):
     weight = int(weight)
     df_var = verification.applyWeight(df_var, indicator, weight)
-            
-  # granger
-  grangerDf = verification.grangerVerification(df_var)
-  checkDf = verification.findSignificantValues(grangerDf)
-  grangerGroup = verification.findInfluentialGroups(checkDf)
 
   # granger
   try: 
@@ -286,6 +281,9 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
 
   # coint jojansen
   try:
+    grangerDf = verification.grangerVerification(df_var)
+    checkDf = verification.findSignificantValues(grangerDf)
+    grangerGroup = verification.findInfluentialGroups(checkDf)
     cointJohansenVerificationResult: list[Verification] = []
     cointJohansenVerification = verification.cointJohansenVerification(df_var, grangerGroup)
     cointJohansenVerificationList = [str(item) for item in cointJohansenVerification]
@@ -313,4 +311,4 @@ def replaceNanAndInf(df: pd.DataFrame):
   df.fillna(method='ffill', inplace=True)
   df.replace([np.inf, -np.inf], np.nan, inplace=True)
   df.fillna(df.max(), inplace=True)
-  return 
+  return df
