@@ -1,5 +1,5 @@
-import SplitScreenToggleGroup from '../ui/pages/workspace/split-screen/split-screen-toggle-group';
-import Workspace from '../ui/pages/workspace/workspace';
+import SplitScreenToggleGroup from '../../ui/pages/workspace/split-screen/split-screen-toggle-group';
+import Workspace from '../../ui/pages/workspace/workspace';
 
 export default function Page() {
   return (
