@@ -7,7 +7,7 @@ import { Transactional } from 'typeorm-transactional';
 import { LoadCustomForecastIndicatorPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
 import { SourceIndicatorDtoType } from 'src/utils/type/type-definition';
-import { IndicatorDtoToSourceIndicatorDtoMapper } from './mapper/indicator-dto-type-to-source-indicator-dto-type.mapper';
+import { SourceIndicatorMapper } from './mapper/source-indicator.mapper';
 
 @Injectable()
 @CommandHandler(UpdateSourceIndicatorsInformationCommand)
@@ -35,11 +35,10 @@ export class UpdateSourceIndicatorsInformationCommandHandler implements ICommand
       const sourceIndicatorType = sourceIndicatorInformation.indicatorType;
       const sourceIndicator = await this.loadIndicatorPort.loadIndicator(sourceIndicatorId, sourceIndicatorType);
 
-      const sourceIndicatorDtoType: SourceIndicatorDtoType =
-        IndicatorDtoToSourceIndicatorDtoMapper.mapIndicatorDtoTypeToSourceIndicatorDtoType(
-          sourceIndicator,
-          sourceIndicatorInformation.weight,
-        );
+      const sourceIndicatorDtoType: SourceIndicatorDtoType = SourceIndicatorMapper.createSourceIndicatorInformation(
+        sourceIndicator,
+        sourceIndicatorInformation.weight,
+      );
 
       sourceIndicatorsInformation.push(sourceIndicatorDtoType);
     }

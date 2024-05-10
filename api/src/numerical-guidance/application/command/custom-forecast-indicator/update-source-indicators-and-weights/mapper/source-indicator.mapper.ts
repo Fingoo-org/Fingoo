@@ -15,7 +15,7 @@ import { ETFDto } from 'src/numerical-guidance/application/query/indicator/get-i
 import { CryptoCurrenciesDto } from 'src/numerical-guidance/application/query/indicator/get-indicator-list/dto/crypto-currencies.dto';
 import { BondsDto } from 'src/numerical-guidance/application/query/indicator/get-indicator-list/dto/bonds.dto';
 
-export class IndicatorDtoToSourceIndicatorDtoMapper {
+export class SourceIndicatorMapper {
   public static mapStockDtoToSourceDto(stockDto: StockDto, weight: number) {
     const sourceDto = SourceStockDto.create({
       id: stockDto.id,
@@ -125,7 +125,7 @@ export class IndicatorDtoToSourceIndicatorDtoMapper {
     return sourceDto;
   }
 
-  public static mapIndicatorDtoTypeToSourceIndicatorDtoType(indicatorDtoType, weight: number) {
+  public static createSourceIndicatorInformation(indicatorDtoType, weight: number) {
     const type = indicatorDtoType.indicatorType;
     switch (type) {
       case 'stocks':
