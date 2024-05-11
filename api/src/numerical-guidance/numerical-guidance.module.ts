@@ -51,11 +51,11 @@ import { ForexPairEntity } from './infrastructure/adapter/persistence/indicator/
 import { FundEntity } from './infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from './infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from './infrastructure/adapter/persistence/indicator/entity/stock.entity';
-import { SearchIndicatorQueryHandler } from './application/query/indicator/get-indicator-search/search-indicator.query.handler';
+import { SearchTwelveIndicatorQueryHandler } from './application/query/indicator/search-twelve-indicator/search-twelve-indicator.query.handler';
 import { AuthService } from '../auth/application/auth.service';
 import { SupabaseStrategy } from '../auth/supabase/supabase.strategy';
 import { SupabaseService } from '../auth/supabase/supabase.service';
-import { SearchIndicatorBySymbolQueryHandler } from './application/query/indicator/get-search-indicator-by-symbol/search-indicator-by-symbol.query.handler';
+import { SearchIndicatorQueryHandler } from './application/query/indicator/search-indicator/search-indicator.query.handler';
 
 @Module({
   imports: [
@@ -116,8 +116,8 @@ import { SearchIndicatorBySymbolQueryHandler } from './application/query/indicat
     UpdateSectionsCommandHandler,
     GetIndicatorListQueryHandler,
     SaveIndicatorListCommandHandler,
+    SearchTwelveIndicatorQueryHandler,
     SearchIndicatorQueryHandler,
-    SearchIndicatorBySymbolQueryHandler,
     IndicatorTwelveAdapter,
     {
       provide: 'LoadCachedLiveIndicatorPort',
@@ -228,7 +228,11 @@ import { SearchIndicatorBySymbolQueryHandler } from './application/query/indicat
       useClass: IndicatorPersistentAdapter,
     },
     {
-      provide: 'SearchIndicatorPort',
+      provide: 'SearchIndicatorByTypeAndSymbolPort',
+      useClass: IndicatorPersistentAdapter,
+    },
+    {
+      provide: 'SearchTwelveIndicatorPort',
       useClass: IndicatorTwelveAdapter,
     },
     {

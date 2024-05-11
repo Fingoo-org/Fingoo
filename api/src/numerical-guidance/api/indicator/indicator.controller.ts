@@ -1,5 +1,5 @@
-import { ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Query } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiExceptionResponse } from '../../../utils/exception-filter/api-exception-response.decorator';
 import { GetIndicatorListQuery } from '../../application/query/indicator/get-indicator-list/get-indicator-list.query';
@@ -7,14 +7,15 @@ import { SaveIndicatorListCommand } from '../../application/command/indicator/sa
 import { ApiPaginatedResponseDecorator } from '../../../utils/pagination/api-paginated-response.decorator';
 import { StockDto } from '../../application/query/indicator/get-indicator-list/dto/stock.dto';
 import { GetIndicatorListDto } from './dto/get-indicator-list.dto';
-import { SearchIndicatorQuery } from '../../application/query/indicator/get-indicator-search/search-indicator.query';
+import { SearchTwelveIndicatorQuery } from '../../application/query/indicator/search-twelve-indicator/search-twelve-indicator.query';
 import { CursorPageDto } from '../../../utils/pagination/cursor-page.dto';
-import { SearchedIndicatorsDto } from '../../application/query/indicator/get-indicator-search/dto/searched-indicators.dto';
-import { SearchSymbolDto } from './dto/search-symbol.dto';
+import { SearchedIndicatorsDto } from '../../application/query/indicator/search-twelve-indicator/dto/searched-indicators.dto';
 import { IndicatorDtoType } from '../../../utils/type/type-definition';
 import { SaveIndicatorListDto } from '../../application/command/indicator/save-indicator-list/dto/save-indicator-list.dto';
 import { Public } from '../../../auth/util/is-public.decorator';
-import { SearchIndicatorBySymbolQuery } from 'src/numerical-guidance/application/query/indicator/get-search-indicator-by-symbol/search-indicator-by-symbol.query';
+import { SearchIndicatorQuery } from 'src/numerical-guidance/application/query/indicator/search-indicator/search-indicator.query';
+import { SearchIndicatorDto } from './dto/search-indicator.dto';
+import { SearchTwelveSymbolDto } from './dto/search-twelve-symbol.dto';
 
 @ApiTags('IndicatorController')
 @Controller('/api/numerical-guidance/indicator')
@@ -74,14 +75,13 @@ export class IndicatorController {
     '[ERROR] 지표를 검색하는 중 중에 예상치 못한 문제가 발생했습니다.',
   )
   @Public()
-  @Get('/search')
-  async searchIndicator(@Query() searchSymbolDto: SearchSymbolDto): Promise<SearchedIndicatorsDto> {
-    console.log(searchSymbolDto.symbol);
-    const query = new SearchIndicatorQuery(searchSymbolDto.symbol);
+  @Get('/twelve/search')
+  async searchTwelveIndicator(@Query() searchTwelveSymbolDto: SearchTwelveSymbolDto): Promise<SearchedIndicatorsDto> {
+    const query = new SearchTwelveIndicatorQuery(searchTwelveSymbolDto.symbol);
     return this.queryBus.execute(query);
   }
 
-  @ApiOperation({ summary: '지표 symbol로 지표 id를 검색합니다. - DB 활용' })
+  @ApiOperation({ summary: '지표 symbol로 지표를 검색합니다. - DB 활용' })
   @ApiOkResponse({ type: '53c422bd-083a-4732-8ebe-ec72f19135dd' })
   @ApiExceptionResponse(
     400,
@@ -98,14 +98,13 @@ export class IndicatorController {
     '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
     '[ERROR] 지표id를 불러오는 중에 예상치 못한 문제가 발생했습니다.',
   )
-  @ApiParam({
-    name: 'symbol',
-    example: 'AAPL',
-    required: true,
-  })
-  @Get('/search-by-symbol/:symbol')
-  async searchIndicatorIdBySymbol(@Param('symbol') symbol): Promise<string> {
-    const query = new SearchIndicatorBySymbolQuery(symbol);
+  @Public()
+  @Get('/search')
+  async searchIndicator(
+    @Query() searchIndicatorDto: SearchIndicatorDto,
+  ): Promise<IndicatorDtoType | IndicatorDtoType[]> {
+    const { symbol, type } = searchIndicatorDto;
+    const query = new SearchIndicatorQuery(symbol, type);
     return await this.queryBus.execute(query);
   }
 }

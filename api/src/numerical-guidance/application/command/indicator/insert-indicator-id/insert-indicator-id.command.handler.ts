@@ -34,7 +34,6 @@ export class InsertIndicatorIdCommandHandler implements ICommandHandler {
   }
 
   private getIndicatorInfo(indicatorDto: IndicatorDtoType): IndicatorInfo {
-    console.log('name', indicatorDto);
     return {
       id: indicatorDto.id,
       symbol: indicatorDto.symbol,

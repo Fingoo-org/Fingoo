@@ -21,6 +21,13 @@ import {
   SourceFundDto,
   SourceBondsDto,
 } from '../../numerical-guidance/application/command/custom-forecast-indicator/update-source-indicators-and-weights/dto/source-indicator.dto';
+import { CryptoCurrenciesEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
+import { ETFEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/etf.entity';
+import { ForexPairEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
+import { IndicesEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indices.entity';
+import { StockEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/stock.entity';
+import { FundEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/fund.entity';
+import { BondsEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 
 export type Interval = 'day' | 'week' | 'month' | 'year';
 
@@ -53,6 +60,16 @@ export type SourceIndicatorDtoType =
   | SourceStockDto
   | SourceFundDto
   | SourceBondsDto;
+
+export type IndicatorEntityType =
+  | CryptoCurrenciesEntity
+  | ETFEntity
+  | ForexPairEntity
+  | IndicesEntity
+  | StockEntity
+  | FundEntity
+  | BondsEntity;
+
 
 export type ForecastType = 'single' | 'multi';
 

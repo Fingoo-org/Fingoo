@@ -14,18 +14,18 @@ import {
   Interval,
   LiveIndicatorDtoType,
 } from '../../../../utils/type/type-definition';
-import { SearchIndicatorPort } from '../../../application/port/persistence/indicator/search-indicator.port';
+import { SearchTwelveIndicatorPort } from '../../../application/port/persistence/indicator/search-twelve-indicator.port';
 import {
   SearchedIndicatorsDto,
   SearchedSymbolType,
-} from '../../../application/query/indicator/get-indicator-search/dto/searched-indicators.dto';
+} from '../../../application/query/indicator/search-twelve-indicator/dto/searched-indicators.dto';
 import { TypeORMError } from 'typeorm/error/TypeORMError';
 import { IndicatorValueManager } from '../../../util/indicator-value-manager';
 import { LoadLiveIndicatorPort } from '../../../application/port/external/twelve/load-live-indicator.port';
 import { IndicatorTwelveMapper } from './mapper/indicator.twelve.mapper';
 
 @Injectable()
-export class IndicatorTwelveAdapter implements SearchIndicatorPort, LoadLiveIndicatorPort {
+export class IndicatorTwelveAdapter implements SearchTwelveIndicatorPort, LoadLiveIndicatorPort {
   private readonly logger = new Logger(IndicatorTwelveAdapter.name);
 
   constructor(
