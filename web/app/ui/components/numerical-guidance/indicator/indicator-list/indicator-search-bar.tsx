@@ -5,5 +5,17 @@ import { SearchIcon } from '@heroicons/react/solid';
 export default function IndicatorSearchBar() {
   const { searchTerm, setSearchTerm } = useSearchedIndicatorList();
 
-  return <TinyInput placeholder="Search..." className="h-7 bg-fingoo-gray-1.5" defaultValue="" icon={SearchIcon} />;
+  const handleSearchTermChange = (value: string) => {
+    setSearchTerm(value);
+  };
+
+  return (
+    <TinyInput
+      onValueChange={handleSearchTermChange}
+      placeholder="Search..."
+      className="h-7 bg-fingoo-gray-1.5"
+      defaultValue={searchTerm}
+      icon={SearchIcon}
+    />
+  );
 }

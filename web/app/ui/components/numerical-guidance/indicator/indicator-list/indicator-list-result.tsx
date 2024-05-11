@@ -6,8 +6,10 @@ import React from 'react';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import IndicatorListItem from './indicator-list-item';
 import { cn } from '@/app/utils/style';
+import { useSearchedIndicatorList } from '@/app/business/hooks/numerical-guidance/indicator/use-searched-indicator-list.hooks';
 
 export default function IndicatorListResult() {
+  const { searchedIndicatorList } = useSearchedIndicatorList();
   const { indicatorList, loadMoreIndicators } = useIndicatorListByType();
   const { selectedMetadata } = useSelectedIndicatorBoardMetadata();
 
@@ -32,7 +34,7 @@ export default function IndicatorListResult() {
       <WindowList
         loadMoreItems={loadMoreIndicators}
         maxVieweditemCount={4.5}
-        items={indicatorList || []}
+        items={searchedIndicatorList ? searchedIndicatorList : indicatorList || []}
         renderRow={render}
       />
     </div>
