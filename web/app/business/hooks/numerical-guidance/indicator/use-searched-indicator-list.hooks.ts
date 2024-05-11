@@ -8,7 +8,10 @@ export const useSearchedIndicatorList = () => {
   const setSearchTerm = useIndicatorListStore((state) => state.actions.setSearchTerm);
   const selectedIndicatorType = useIndicatorListStore((state) => state.selectedIndicatorType);
 
-  const { data: indicatorList } = useFetchSearchedIndicatorList(searchTerm.toLocaleUpperCase(), selectedIndicatorType);
+  const { data: indicatorList, isLoading } = useFetchSearchedIndicatorList(
+    searchTerm.toLocaleUpperCase(),
+    selectedIndicatorType,
+  );
 
   const convertedIndicatorList = useMemo(() => {
     if (!indicatorList) return undefined;
@@ -20,5 +23,6 @@ export const useSearchedIndicatorList = () => {
     searchTerm,
     setSearchTerm,
     searchedIndicatorList: convertedIndicatorList,
+    isLoading,
   };
 };

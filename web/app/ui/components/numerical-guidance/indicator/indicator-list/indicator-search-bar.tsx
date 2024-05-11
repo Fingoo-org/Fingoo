@@ -13,6 +13,7 @@ export default function IndicatorSearchBar() {
     <TinyInput
       onValueChange={handleSearchTermChange}
       placeholder="Search..."
+      withDebounce={700}
       className="h-7 bg-fingoo-gray-1.5"
       defaultValue={searchTerm}
       icon={SearchIcon}
