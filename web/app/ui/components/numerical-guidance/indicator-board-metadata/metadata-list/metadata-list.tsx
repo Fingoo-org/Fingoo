@@ -5,7 +5,7 @@ import { useIndicatorBoardMetadataList } from '@/app/business/hooks/numerical-gu
 import Button from '../../../view/atom/button/button';
 import Pending from '../../../view/molecule/pending';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import MetadataListItem from './metadata-list-item';
+import MetadataListItem from '../metadata-list-item/metadata-list-item';
 import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata-view-model.service';
 import { PlusIcon } from '@heroicons/react/solid';
 
