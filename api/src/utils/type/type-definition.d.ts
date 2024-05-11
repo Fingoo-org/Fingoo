@@ -12,6 +12,13 @@ import { IndicesDto } from '../../numerical-guidance/application/query/indicator
 import { StockDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/stock.dto';
 import { FundDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/fund.dto';
 import { BondsDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/bonds.dto';
+import { CryptoCurrenciesEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
+import { ETFEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/etf.entity';
+import { ForexPairEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
+import { IndicesEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indices.entity';
+import { StockEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/stock.entity';
+import { FundEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/fund.entity';
+import { BondsEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 
 export type Interval = 'day' | 'week' | 'month' | 'year';
 
@@ -35,6 +42,15 @@ export type LiveIndicatorDtoType =
   | LiveCryptoCurrenciesDto;
 
 export type IndicatorDtoType = CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto;
+
+export type IndicatorEntityType =
+  | CryptoCurrenciesEntity
+  | ETFEntity
+  | ForexPairEntity
+  | IndicesEntity
+  | StockEntity
+  | FundEntity
+  | BondsEntity;
 
 export type ForecastType = 'single' | 'multi';
 

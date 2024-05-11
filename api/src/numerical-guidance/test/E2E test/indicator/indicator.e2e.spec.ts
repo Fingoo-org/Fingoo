@@ -20,11 +20,11 @@ import { HttpExceptionFilter } from '../../../../utils/exception-filter/http-exc
 import * as request from 'supertest';
 import * as fs from 'fs';
 import { GetIndicatorListQueryHandler } from '../../../application/query/indicator/get-indicator-list/get-indicator-list.query.handler';
-import { SearchIndicatorQueryHandler } from '../../../application/query/indicator/get-indicator-search/search-indicator.query.handler';
+import { SearchTwelveIndicatorQueryHandler } from '../../../application/query/indicator/search-twelve-indicator/search-twelve-indicator.query.handler';
 import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
 import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
-import { SearchIndicatorBySymbolQueryHandler } from 'src/numerical-guidance/application/query/indicator/get-search-indicator-by-symbol/search-indicator-by-symbol.query.handler';
+import { SearchIndicatorQueryHandler } from 'src/numerical-guidance/application/query/indicator/search-indicator/search-indicator.query.handler';
 
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
@@ -49,6 +49,18 @@ describe('Indicator E2E Test', () => {
       currency: 'KRW',
       exchange: 'KRX',
       mic_code: 'XKRX',
+      type: 'Common Stock',
+    });
+    await stockEntityRepository.insert({
+      id: 'b812be36-bba7-4341-89e6-2e23617ba0b0',
+      index: 2,
+      indicatorType: 'stocks',
+      symbol: '000',
+      name: 'Greenvolt - Energias Renovaveis SA',
+      country: 'Germany',
+      currency: 'EUR',
+      exchange: 'XDUS',
+      mic_code: 'XDUS',
       type: 'Common Stock',
     });
   };
@@ -107,8 +119,8 @@ describe('Indicator E2E Test', () => {
         controllers: [IndicatorController],
         providers: [
           GetIndicatorListQueryHandler,
+          SearchTwelveIndicatorQueryHandler,
           SearchIndicatorQueryHandler,
-          SearchIndicatorBySymbolQueryHandler,
           TwelveApiUtil,
           {
             provide: 'LoadIndicatorPort',
@@ -127,7 +139,11 @@ describe('Indicator E2E Test', () => {
             useClass: IndicatorPersistentAdapter,
           },
           {
-            provide: 'SearchIndicatorPort',
+            provide: 'SearchIndicatorByTypeAndSymbolPort',
+            useClass: IndicatorPersistentAdapter,
+          },
+          {
+            provide: 'SearchTwelveIndicatorPort',
             useClass: IndicatorTwelveAdapter,
           },
           {
@@ -174,11 +190,11 @@ describe('Indicator E2E Test', () => {
       .expect(HttpStatus.OK);
   });
 
-  it('/get 지표 symbol을 검색한다.', async () => {
+  it('/get 지표 symbol을 검색한다. - twelve', async () => {
     return request(app.getHttpServer())
-      .get(`/api/numerical-guidance/indicator/search`)
+      .get(`/api/numerical-guidance/indicator/twelve/search`)
       .query({
-        symbol: 'AA',
+        symbol: '0',
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
@@ -186,14 +202,32 @@ describe('Indicator E2E Test', () => {
 
   it('/get symbol로 지표를 검색한다.', async () => {
     return request(app.getHttpServer())
-      .get('/api/numerical-guidance/indicator/search-by-symbol/validSymbol')
+      .get('/api/numerical-guidance/indicator/search')
+      .query({
+        symbol: '000',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/get type, symbol로 지표들을 검색한다.', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/indicator/search')
+      .query({
+        symbol: 'AA',
+        type: 'stocks',
+      })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
   });
 
   it('/get symbol로 지표를 검색한다. - symbol을 찾지 못한 경우', async () => {
     return request(app.getHttpServer())
-      .get('/api/numerical-guidance/indicator/search-by-symbol/invalidSymbol')
+      .get('/api/numerical-guidance/indicator/search')
+      .query({
+        symbol: 'AA',
+        type: 'invalidType',
+      })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.NOT_FOUND);
   });

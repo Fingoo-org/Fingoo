@@ -2,7 +2,7 @@ import { PostgreSqlContainer } from '@testcontainers/postgresql';
 import { Test } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { IndicatorTwelveAdapter } from '../../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
-import { SearchedIndicatorsDto } from '../../../../application/query/indicator/get-indicator-search/dto/searched-indicators.dto';
+import { SearchedIndicatorsDto } from '../../../../application/query/indicator/search-twelve-indicator/dto/searched-indicators.dto';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IndicatorEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/indicator.entity';
 import { BondsEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/bonds.entity';
