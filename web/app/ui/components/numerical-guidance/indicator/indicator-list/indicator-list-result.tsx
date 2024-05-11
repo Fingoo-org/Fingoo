@@ -28,7 +28,7 @@ export default function IndicatorListResult() {
   };
 
   return (
-    <div className={cn('h-[24vh] pt-2', { hidden: selectedMetadata === undefined })}>
+    <div className={cn('h-[24vh] pt-1', { hidden: selectedMetadata === undefined })}>
       <WindowList
         loadMoreItems={loadMoreIndicators}
         maxVieweditemCount={4.5}

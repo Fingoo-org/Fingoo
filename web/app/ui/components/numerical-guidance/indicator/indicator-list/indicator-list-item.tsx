@@ -43,7 +43,7 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
     );
   };
   return (
-    <div style={style} className="px-4">
+    <div style={style} className="px-1">
       <div className="flex h-full items-center justify-center">
         <ListItem hoverRender={hoverRender}>
           <SelectableItem
