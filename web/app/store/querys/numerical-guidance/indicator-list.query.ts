@@ -1,4 +1,5 @@
-import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
+
 import { API_PATH } from '../api-path';
 import { defaultFetcher } from '../fetcher';
 import useSWRInfinite from 'swr/infinite';
@@ -125,4 +126,12 @@ export const useFetchIndicatorListByType = (indicatorType: IndicatorType) => {
   return useSWRInfinite<IndicatorListResponse>(getKey, defaultFetcher);
 };
 
-export const useFetchIndicatorList = () => useSWR<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);
+export const useFetchIndicatorList = () =>
+  useSWRImmutable<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);
+
+export const useFetchSearchedIndicatorList = (search: string, indicatorType: IndicatorType) => {
+  return useSWRImmutable<IndicatorInfoResponse[]>(
+    `${API_PATH.indicatorList}/search?symbol=${search}&type=${indicatorType}`,
+    defaultFetcher,
+  );
+};
