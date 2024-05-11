@@ -72,6 +72,7 @@ describe('UpdateSourceIndicatorsAndWeightsCommandHandler', () => {
                 [],
                 [],
                 [],
+                [],
               );
             }),
           },
@@ -88,7 +89,7 @@ describe('UpdateSourceIndicatorsAndWeightsCommandHandler', () => {
       '160e5499-4925-4e38-bb00-8ea6d8056484',
       [
         {
-          sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
+          sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf5',
           indicatorType: 'stocks',
           weight: 10,
         },

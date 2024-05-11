@@ -98,6 +98,7 @@ describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
                 [],
                 [],
                 [],
+                [],
               );
               return customForecastIndicator;
             }),

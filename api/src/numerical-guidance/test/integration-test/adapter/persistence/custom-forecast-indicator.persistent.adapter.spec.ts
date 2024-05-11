@@ -46,6 +46,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorsInformation: [],
+      sourceIndicators: [],
       member: member,
     });
 
@@ -68,6 +69,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorsInformation: [],
+      sourceIndicators: [],
       member: member,
     });
 
@@ -90,6 +92,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       grangerVerification: [],
       cointJohansenVerification: [],
       sourceIndicatorsInformation: [],
+      sourceIndicators: [],
       member: member,
     });
 
@@ -310,6 +313,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
       [],
       [],
       [],
+      [],
     );
 
     // when
@@ -341,6 +345,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
+      [],
       [],
       [],
       [],
@@ -377,6 +382,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
+      [],
       [],
       [],
       [],

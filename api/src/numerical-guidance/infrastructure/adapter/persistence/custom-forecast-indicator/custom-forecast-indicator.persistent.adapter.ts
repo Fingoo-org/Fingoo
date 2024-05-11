@@ -93,7 +93,7 @@ export class CustomForecastIndicatorPersistentAdapter
       let indicatorsTypeUrl: string = '';
       let weightsUrl: string = '';
       for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].id}&`;
+        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
       }
       for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
         indicatorsTypeUrl += `sourceIndicatorType=${customForecastIndicator.sourceIndicatorsInformation[i].indicatorType}&`;
@@ -208,6 +208,7 @@ export class CustomForecastIndicatorPersistentAdapter
       this.nullCheckForEntity(customForecastIndicatorEntity);
 
       customForecastIndicatorEntity.sourceIndicatorsInformation = customForecastIndicator.sourceIndicatorsInformation;
+      customForecastIndicatorEntity.sourceIndicators = customForecastIndicator.sourceIndicators;
 
       if (customForecastIndicatorEntity.sourceIndicatorsInformation.length == 0) {
         const grangerGroup = [];
@@ -227,7 +228,7 @@ export class CustomForecastIndicatorPersistentAdapter
         let indicatorsTypeUrl: string = '';
         let weightsUrl: string = '';
         for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-          indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].id}&`;
+          indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
         }
         for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
           indicatorsTypeUrl += `sourceIndicatorType=${customForecastIndicator.sourceIndicatorsInformation[i].indicatorType}&`;

@@ -42,6 +42,7 @@ describe('CreateCustomForecastIndicatorCommandHandler', () => {
                 [],
                 [],
                 [],
+                [],
               );
               const testDataId = testData.id;
               return testDataId;

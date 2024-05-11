@@ -12,15 +12,6 @@ import { IndicesDto } from '../../numerical-guidance/application/query/indicator
 import { StockDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/stock.dto';
 import { FundDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/fund.dto';
 import { BondsDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/bonds.dto';
-import {
-  SourceCryptoCurrenciesDto,
-  SourceETFDto,
-  SourceForexPairDto,
-  SourceIndicesDto,
-  SourceStockDto,
-  SourceFundDto,
-  SourceBondsDto,
-} from '../../numerical-guidance/application/command/custom-forecast-indicator/update-source-indicators-and-weights/dto/source-indicator.dto';
 import { CryptoCurrenciesEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
 import { ETFEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/etf.entity';
 import { ForexPairEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/forex-pair.entity';
@@ -52,15 +43,6 @@ export type LiveIndicatorDtoType =
 
 export type IndicatorDtoType = CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto;
 
-export type SourceIndicatorDtoType =
-  | SourceCryptoCurrenciesDto
-  | SourceETFDto
-  | SourceForexPairDto
-  | SourceIndicesDto
-  | SourceStockDto
-  | SourceFundDto
-  | SourceBondsDto;
-
 export type IndicatorEntityType =
   | CryptoCurrenciesEntity
   | ETFEntity
@@ -70,10 +52,9 @@ export type IndicatorEntityType =
   | FundEntity
   | BondsEntity;
 
-
 export type ForecastType = 'single' | 'multi';
 
-export type SourceIndicatorRequestInformation = {
+export type SourceIndicatorInformation = {
   sourceIndicatorId: string;
   indicatorType: IndicatorType;
   weight: number;

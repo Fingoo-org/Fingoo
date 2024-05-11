@@ -1,9 +1,9 @@
-import { SourceIndicatorDtoType } from 'src/utils/type/type-definition';
+import { SourceIndicatorInformation } from 'src/utils/type/type-definition';
 import { BusinessRule } from '../../../utils/domain/business.rule';
 
 export class TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule implements BusinessRule {
   constructor(
-    private readonly sourceIndicatorInformation: SourceIndicatorDtoType[],
+    private readonly sourceIndicatorInformation: SourceIndicatorInformation[],
     private readonly targetIndicatorId: string,
   ) {}
 
@@ -15,11 +15,11 @@ export class TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule implements
   }
 
   private checkIsTargetIndicatorInSourceIndicators(
-    sourceIndicatorInformation: SourceIndicatorDtoType[],
+    sourceIndicatorInformation: SourceIndicatorInformation[],
     targetIndicatorId: string,
   ) {
     const sourceIndicatorIds: string[] = sourceIndicatorInformation.map((indicator) => {
-      return indicator.id;
+      return indicator.sourceIndicatorId;
     });
     return sourceIndicatorIds.includes(targetIndicatorId);
   }

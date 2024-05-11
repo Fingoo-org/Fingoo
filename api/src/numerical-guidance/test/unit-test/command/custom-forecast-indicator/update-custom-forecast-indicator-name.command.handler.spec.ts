@@ -50,6 +50,7 @@ describe('UpdateCustomForecastIndicatorNameCommandHandler', () => {
                 [],
                 [],
                 [],
+                [],
               );
             }),
           },

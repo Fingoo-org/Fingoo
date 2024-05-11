@@ -4,7 +4,7 @@ import { SourceIndicatorCountShouldNotExceedLimitRule } from 'src/numerical-guid
 import { SourceIndicatorsShouldNotDuplicateRule } from 'src/numerical-guidance/domain/rule/SourceIndicatorsShouldNotDuplicate.rule';
 import { TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule } from 'src/numerical-guidance/domain/rule/TargetIndicatorShouldNotBeIncludedInSourceIndicators.rule';
 import { BusinessRuleValidationException } from 'src/utils/domain/business-rule-validation.exception';
-import { IndicatorType, SourceIndicatorDtoType } from 'src/utils/type/type-definition';
+import { IndicatorType, SourceIndicatorInformation } from 'src/utils/type/type-definition';
 
 describe('예측지표', () => {
   it('예측 지표 생성', () => {
@@ -42,6 +42,7 @@ describe('예측지표', () => {
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
+      [],
       [],
       [],
       [],
@@ -115,38 +116,24 @@ describe('예측지표', () => {
       symbol: 'PPAL',
     });
 
-    const sourceIndicatorIdsAndWeights: any[] = [
+    const sourceIndicatorsInformation: SourceIndicatorInformation[] = [
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf3',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf3',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
+        weight: 20,
       },
     ];
 
     // when
-    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
+    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorsInformation);
 
     // then
-    const expected = sourceIndicatorIdsAndWeights;
+    const expected = sourceIndicatorsInformation;
     expect(customForecastIndicator.sourceIndicatorsInformation).toEqual(expected);
   });
 
@@ -182,6 +169,13 @@ describe('예측지표', () => {
       ],
       [
         {
+          sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
+          indicatorType: 'stocks',
+          weight: 20,
+        },
+      ],
+      [
+        {
           id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
           name: '재료지표',
           type: 'Common Stock',
@@ -192,15 +186,14 @@ describe('예측지표', () => {
           indicatorType: 'stocks',
           exchange: 'KOSPI',
           symbol: 'PPAL',
-          weight: 10,
         },
       ],
     );
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorDtoType[] = [];
+    const sourceIndicatorsInformation: SourceIndicatorInformation[] = [];
 
     // when
-    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
+    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorsInformation);
 
     // then
     const expected = [];
@@ -222,38 +215,24 @@ describe('예측지표', () => {
       symbol: 'PPAL',
     });
 
-    const sourceIndicatorIdsAndWeights: any = [
+    const sourceIndicatorInformation: SourceIndicatorInformation[] = [
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
+        weight: 20,
       },
     ];
 
     // when
     function updateSourceIndicatorsAndWeights() {
-      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
+      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorInformation);
     }
-    const rule = new SourceIndicatorsShouldNotDuplicateRule(sourceIndicatorIdsAndWeights);
+    const rule = new SourceIndicatorsShouldNotDuplicateRule(sourceIndicatorInformation);
 
     // then
     expect(updateSourceIndicatorsAndWeights).toThrow(BusinessRuleValidationException);
@@ -264,11 +243,11 @@ describe('예측지표', () => {
     // given
     const targetIndicatorId = '26929514-237c-11ed-861d-0242ac120012';
     const customForecastIndicator = new CustomForecastIndicator(
-      '26929514-237c-11ed-861d-0242ac120011',
+      '26929514-237c-11ed-861d-0242ac120012',
       'updatedCustomForecastIndicator',
       'customForecastIndicator',
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        id: '26929514-237c-11ed-861d-0242ac120012',
         name: '타켓지표',
         type: 'Common Stock',
         index: 1234,
@@ -281,19 +260,26 @@ describe('예측지표', () => {
       },
       [
         {
-          indicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+          indicatorId: '26929514-237c-11ed-861d-0242ac120012',
           verification: 'True',
         },
       ],
       [
         {
-          indicatorId: '26929514-237c-11ed-861d-0242ac120031',
+          indicatorId: '26929514-237c-11ed-861d-0242ac120012',
           verification: 'True',
         },
       ],
       [
         {
-          id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
+          sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
+          indicatorType: 'stocks',
+          weight: 20,
+        },
+      ],
+      [
+        {
+          id: '26929514-237c-11ed-861d-0242ac120012',
           name: '재료지표',
           type: 'Common Stock',
           index: 1234,
@@ -303,33 +289,24 @@ describe('예측지표', () => {
           indicatorType: 'stocks',
           exchange: 'KOSPI',
           symbol: 'PPAL',
-          weight: 10,
         },
       ],
     );
 
-    const sourceIndicatorIdsAndWeights: any = [
+    const sourceIndicatorInformation: SourceIndicatorInformation[] = [
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
         weight: 10,
       },
     ];
 
     // when
     function updateSourceIndicatorsAndWeights() {
-      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
+      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorInformation);
     }
     const rule = new TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule(
-      sourceIndicatorIdsAndWeights,
+      sourceIndicatorInformation,
       targetIndicatorId,
     );
 
@@ -353,149 +330,61 @@ describe('예측지표', () => {
       symbol: 'PPAL',
     });
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorDtoType[] = [
+    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120001',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120002',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf3',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120003',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf4',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120004',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf5',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120005',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf6',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120006',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf7',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120007',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf8',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120008',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf9',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120009',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cfz',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120010',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
       {
-        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cfx',
-        name: '재료지표',
-        type: 'Common Stock',
-        index: 1234,
-        country: 'KOREA',
-        currency: 'KRW',
-        mic_code: 'PINX',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
         indicatorType: 'stocks',
-        exchange: 'KOSPI',
-        symbol: 'PPAL',
-        weight: 10,
+        weight: 20,
       },
     ];
 
@@ -531,6 +420,7 @@ describe('예측지표', () => {
       [],
       [],
       [],
+      [],
     );
 
     // when
@@ -559,6 +449,7 @@ describe('예측지표', () => {
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
+      [],
       [],
       [],
       [],

@@ -1,6 +1,11 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
-import { IndicatorDtoType, IndicatorType, SourceIndicatorDtoType, Verification } from 'src/utils/type/type-definition';
+import {
+  IndicatorDtoType,
+  IndicatorType,
+  SourceIndicatorInformation,
+  Verification,
+} from 'src/utils/type/type-definition';
 import { MemberEntity } from 'src/auth/entity/member.entity';
 
 @Entity({ name: 'CustomForecastIndicator' })
@@ -24,7 +29,10 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   cointJohansenVerification: Verification[];
 
   @Column('jsonb', { nullable: true })
-  sourceIndicatorsInformation: SourceIndicatorDtoType[];
+  sourceIndicatorsInformation: SourceIndicatorInformation[];
+
+  @Column('jsonb', { nullable: true })
+  sourceIndicators: IndicatorDtoType[];
 
   @ManyToOne(() => MemberEntity, { eager: false })
   member: MemberEntity;
@@ -35,7 +43,8 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
-    sourceIndicatorIdsAndWeights: SourceIndicatorDtoType[],
+    sourceIndicatorsInformation: SourceIndicatorInformation[],
+    sourceIndicators: IndicatorDtoType[],
     member: MemberEntity,
     createdAt: Date,
     updatedAt: Date,
@@ -46,7 +55,8 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     this.targetIndicator = targetIndicator;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
-    this.sourceIndicatorsInformation = sourceIndicatorIdsAndWeights;
+    this.sourceIndicatorsInformation = sourceIndicatorsInformation;
+    this.sourceIndicators = sourceIndicators;
     this.member = member;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -58,7 +68,8 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
-    sourceIndicatorIdsAndWeights: SourceIndicatorDtoType[],
+    sourceIndicatorsInformation: SourceIndicatorInformation[],
+    sourceIndicators: IndicatorDtoType[],
     member: MemberEntity,
     createdAt: Date,
     updatedAt: Date,
@@ -69,7 +80,8 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
       targetIndicator,
       grangerVerification,
       cointJohansenVerification,
-      sourceIndicatorIdsAndWeights,
+      sourceIndicatorsInformation,
+      sourceIndicators,
       member,
       createdAt,
       updatedAt,

@@ -14,6 +14,7 @@ export class CustomForecastIndicatorMapper {
       customForecastIndicator.grangerVerification,
       customForecastIndicator.cointJohansenVerification,
       customForecastIndicator.sourceIndicatorsInformation,
+      customForecastIndicator.sourceIndicators,
       member,
       customForecastIndicator.createdAt,
       customForecastIndicator.updatedAt,
@@ -30,6 +31,7 @@ export class CustomForecastIndicatorMapper {
       entity.grangerVerification,
       entity.cointJohansenVerification,
       entity.sourceIndicatorsInformation,
+      entity.sourceIndicators,
     );
     return customForecastIndicator;
   }

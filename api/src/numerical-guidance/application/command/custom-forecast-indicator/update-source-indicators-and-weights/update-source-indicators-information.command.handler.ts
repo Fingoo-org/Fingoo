@@ -6,8 +6,7 @@ import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-fo
 import { Transactional } from 'typeorm-transactional';
 import { LoadCustomForecastIndicatorPort } from '../../../port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
-import { SourceIndicatorDtoType } from 'src/utils/type/type-definition';
-import { SourceIndicatorMapper } from './mapper/source-indicator.mapper';
+import { IndicatorDtoType } from 'src/utils/type/type-definition';
 
 @Injectable()
 @CommandHandler(UpdateSourceIndicatorsInformationCommand)
@@ -23,27 +22,22 @@ export class UpdateSourceIndicatorsInformationCommandHandler implements ICommand
 
   @Transactional()
   async execute(command: UpdateSourceIndicatorsInformationCommand): Promise<void> {
-    const { customForecastIndicatorId, sourceIndicatorsRequestInformation } = command;
+    const { customForecastIndicatorId, sourceIndicatorsInformation } = command;
 
     const customForecastIndicator: CustomForecastIndicator =
       await this.loadCustomForecastIndicatorPort.loadCustomForecastIndicator(customForecastIndicatorId);
 
-    const sourceIndicatorsInformation: SourceIndicatorDtoType[] = [];
+    const sourceIndicators: IndicatorDtoType[] = [];
 
-    for (const sourceIndicatorInformation of sourceIndicatorsRequestInformation) {
+    for (const sourceIndicatorInformation of sourceIndicatorsInformation) {
       const sourceIndicatorId = sourceIndicatorInformation.sourceIndicatorId;
       const sourceIndicatorType = sourceIndicatorInformation.indicatorType;
       const sourceIndicator = await this.loadIndicatorPort.loadIndicator(sourceIndicatorId, sourceIndicatorType);
 
-      const sourceIndicatorDtoType: SourceIndicatorDtoType = SourceIndicatorMapper.createSourceIndicatorInformation(
-        sourceIndicator,
-        sourceIndicatorInformation.weight,
-      );
-
-      sourceIndicatorsInformation.push(sourceIndicatorDtoType);
+      sourceIndicators.push(sourceIndicator);
     }
-    console.log(sourceIndicatorsInformation);
     customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorsInformation);
+    customForecastIndicator.updateSourceIndicators(sourceIndicators);
     await this.updateSourceIndicatorsInformationPort.updateSourceIndicatorsInformation(customForecastIndicator);
   }
 }
