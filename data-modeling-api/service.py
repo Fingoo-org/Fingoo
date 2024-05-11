@@ -82,14 +82,13 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
   for indicator, weight in zip(df_var, weights):
     weight = int(weight)
     df_var = verification.applyWeight(df_var, indicator, weight)
-            
-  # granger
-  grangerDf = verification.grangerVerification(df_var)
-  checkDf = verification.findSignificantValues(grangerDf)
-  grangerGroup = verification.findInfluentialGroups(checkDf)
 
   # var
-  try: 
+  try:
+    # granger
+    grangerDf = verification.grangerVerification(df_var)
+    checkDf = verification.findSignificantValues(grangerDf)
+    grangerGroup = verification.findInfluentialGroups(checkDf)
     if len(grangerGroup) >= 2:
       if targetIndicatorId in grangerGroup:
         print('Var')
