@@ -55,7 +55,7 @@ export default function TinyInput({
     <div
       className={cn(
         'flex items-center',
-        'has=[:focus]:ring-blue-200 flex w-full rounded-lg text-sm duration-100 has-[:focus]:ring-2 ',
+        'flex w-full rounded-lg text-sm duration-100 has-[:focus]:ring-1 has-[:focus]:ring-fingoo-main',
         getColorClassNames(color, 100).bgColor,
         className,
       )}
