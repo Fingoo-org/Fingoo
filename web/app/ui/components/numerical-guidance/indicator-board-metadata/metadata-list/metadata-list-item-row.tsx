@@ -34,7 +34,7 @@ export default function MetadataListItemRow({
         >
           <div className="w-40 truncate">{indicatorText}</div>
         </DraggableItem>
-        {activeDragItemId !== indicatorInfo.id ? (
+        {!activeDragItemId ? (
           <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center">
             <div className="mr-1">
               <IndicatorUnitSelector
