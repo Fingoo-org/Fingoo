@@ -3,6 +3,7 @@ import MetadataDeleteDialog from '../../components/numerical-guidance/indicator-
 import MetadataDialogMenu from '../../components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
 import Toaster from '../../components/view/molecule/toast/toaster';
 import CustomForecastIndicatorDialogMenu from '../../components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-dialog-menu/custom-forecast-indicator-dialog-menu';
+import MetadataListItemRowDialogMenu from '../../components/numerical-guidance/indicator-board-metadata/metadata-list-item/metadata-list-item-row-dialog-menu';
 
 export default function FloatingComponentContainer() {
   return (
@@ -11,6 +12,7 @@ export default function FloatingComponentContainer() {
       <MetadataDeleteDialog />
       <IndicatorDialogMenu />
       <CustomForecastIndicatorDialogMenu />
+      <MetadataListItemRowDialogMenu />
       <Toaster />
     </>
   );

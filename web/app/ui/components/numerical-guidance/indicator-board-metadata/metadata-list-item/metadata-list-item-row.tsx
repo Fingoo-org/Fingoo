@@ -5,6 +5,8 @@ import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numeric
 import IconButton from '../../../view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { MouseEventHandler } from 'react';
+import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
+import { useDialog } from '../../../view/hooks/use-dialog.hook';
 
 type MetadataListItemRowProps = {
   indicatorId: string;
@@ -17,12 +19,18 @@ export default function MetadataListItemRow({
   activeDragItemId,
   indicatorBoardMetadataId,
 }: MetadataListItemRowProps) {
+  const { dialogPositionRef, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_ROW_EDIT_MENU);
+
   const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
   const indicatorInfo = indicatorBoardMetadata?.getIndicatorInfo(indicatorId);
   const indicatorText = `${indicatorInfo?.symbol}(${indicatorInfo?.name})`;
 
   const handleIconButton: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
+    openDialogWithPayload({
+      indicatorId: indicatorInfo?.id,
+      metadataId: indicatorBoardMetadataId,
+    });
   };
   return (
     indicatorInfo && (
@@ -44,7 +52,7 @@ export default function MetadataListItemRow({
             </div>
             <IconButton
               aria-label="metadata-item-row-edit-button"
-              // ref={iconButtonRef}
+              ref={dialogPositionRef}
               onClick={handleIconButton}
               icon={DotsHorizontalIcon}
               color={'gray'}
