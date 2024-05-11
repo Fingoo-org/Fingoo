@@ -15,10 +15,12 @@ export type IndicatorType = (typeof indicatorTypes)[number];
 
 type IndicatorListState = {
   selectedIndicatorType: IndicatorType;
+  searchTerm: string;
 };
 
 type IndicatorListAction = {
   selectIndicatorType: (indicatorType: IndicatorType) => void;
+  setSearchTerm: (searchTerm: string) => void;
 };
 
 type IndicatorListStore = IndicatorListState & {
@@ -27,6 +29,7 @@ type IndicatorListStore = IndicatorListState & {
 
 const initialIndicatorListState: IndicatorListState = {
   selectedIndicatorType: 'stocks',
+  searchTerm: '',
 };
 
 export const useIndicatorListStore = create<IndicatorListStore>((set) => {
@@ -35,6 +38,7 @@ export const useIndicatorListStore = create<IndicatorListStore>((set) => {
     ...initialIndicatorListState,
     actions: {
       selectIndicatorType: (indicatorType) => set({ selectedIndicatorType: indicatorType }),
+      setSearchTerm: (searchTerm) => set({ searchTerm }),
     },
   };
 });

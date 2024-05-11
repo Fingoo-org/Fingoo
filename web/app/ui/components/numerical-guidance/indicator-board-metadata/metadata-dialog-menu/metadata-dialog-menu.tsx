@@ -8,7 +8,8 @@ import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numeric
 import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata-view-model.service';
 
 export default function MetadataDialogMenu() {
-  const { payload, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_DELETE);
+  const { payload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
+  const { openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_DELETE);
   const {
     indicatorBoardMetadata,
     updateIndicatorBoardMetadata,
@@ -18,7 +19,11 @@ export default function MetadataDialogMenu() {
     typeof payload !== 'undefined' ? (payload as IndicatorBoardMetadata).id : undefined,
   );
 
-  const handleMetadataUpdate = (name: string) => {
+  const handleMetadataDeleteButtonClick = () => {
+    openDialogWithPayload(payload);
+  };
+
+  const handleMetadataNameUpdate = (name: string) => {
     updateIndicatorBoardMetadata({ name });
   };
 
@@ -40,10 +45,10 @@ export default function MetadataDialogMenu() {
           withResetButton={true}
           withDebounce={500}
           color={'white'}
-          onValueChange={handleMetadataUpdate}
+          onValueChange={handleMetadataNameUpdate}
         />
       </DialogMenu.Header>
-      <DialogMenu.Item aria-label="Delete" onClick={openDialogWithPayload} icon={TrashIcon}>
+      <DialogMenu.Item aria-label="Delete metadata" onClick={handleMetadataDeleteButtonClick} icon={TrashIcon}>
         Delete
       </DialogMenu.Item>
       <DialogMenu.Item aria-label="Add section" onClick={handleSectionAdd} icon={PlusIcon}>

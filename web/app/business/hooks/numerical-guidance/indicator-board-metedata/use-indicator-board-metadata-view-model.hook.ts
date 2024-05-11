@@ -1,5 +1,6 @@
 import {
   IndicatorBoardMetadataResponse,
+  useDeleteIndicatorFromMetadata,
   useFetchIndicatorBoardMetadataList,
   useUpdateIndicatorBoardMetadata,
   useUpdateIndicatorIdsWithsectionIds,
@@ -11,6 +12,8 @@ import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-gui
 
 export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefined) => {
   const { data: indicatorBoardMetadataList } = useFetchIndicatorBoardMetadataList();
+
+  const { trigger: deleteIndicatorTrigger } = useDeleteIndicatorFromMetadata(metadataId);
   const { trigger: updateIndicatorBoardMetadataTrigger } = useUpdateIndicatorBoardMetadata(metadataId);
   const { trigger: updateIndicatorIdsWithsectionIdsTrigger } = useUpdateIndicatorIdsWithsectionIds(metadataId);
   const { trigger: uploadIndicatorBoardMetadataImageTrigger } = useUploadIndicatorBoardMetadataImage();
@@ -94,6 +97,25 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     );
   };
 
+  const deleteIndicatorFromMetadata = (indicatorId: string) => {
+    if (!indicatorBoardMetadata) {
+      return;
+    }
+
+    deleteIndicatorTrigger(
+      {
+        indicatorId,
+      },
+      {
+        optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
+          convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(metadataId, indicatorId);
+          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+        },
+        revalidate: false,
+      },
+    );
+  };
+
   const uploadIndicatorBoardMetadataImage = async (imageBlod: Blob) => {
     const formData = new FormData();
     formData.append('fileName', imageBlod);
@@ -108,6 +130,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     addsectionToIndicatorBoardMetadata,
     deleteSectionFromIndicatorBoardMetadata,
     uploadIndicatorBoardMetadataImage,
+    deleteIndicatorFromMetadata,
     updateUnitType,
   };
 };

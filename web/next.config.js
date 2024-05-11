@@ -9,6 +9,7 @@ const nextConfig = {
         'localhost:3000',
         'supreme-space-yodel-wgw5pxjj6j535vw5-3000.app.github.dev',
         'fingoo-web-beta.vercel.app',
+        'redesigned-enigma-j97vjxgqv9fjg7r-3000.app.github.dev'
       ],
     },
   },
