@@ -12,6 +12,8 @@ type TinyInputProps = {
   withDebounce?: number;
   icon?: React.ElementType;
   color?: Color;
+  placeholder?: string;
+  className?: string;
   onValueChange?: (value: string) => void;
 };
 
@@ -21,6 +23,8 @@ export default function TinyInput({
   withDebounce = 0,
   icon,
   color = 'gray',
+  className,
+  placeholder,
   onValueChange,
 }: TinyInputProps) {
   const [value, setValue] = useState(defaultValue);
@@ -50,18 +54,22 @@ export default function TinyInput({
   return (
     <div
       className={cn(
+        'flex items-center',
         'has=[:focus]:ring-blue-200 flex w-full rounded-lg text-sm duration-100 has-[:focus]:ring-2 ',
         getColorClassNames(color, 100).bgColor,
+        className,
       )}
     >
       {icon ? <Icon icon={icon} size={'xs'} color={'gray'} /> : null}
       <input
         value={value}
         onChange={handleChange}
+        placeholder={placeholder}
         className={cn(
-          'w-full rounded-lg border-none p-0 py-0.5 pl-2 text-custom-inherit focus:outline-none focus:ring-0 focus:ring-offset-0',
+          'w-full rounded-lg border-none p-0 py-0.5 pl-2 text-custom-inherit placeholder:text-fingoo-gray-4 focus:outline-none focus:ring-0 focus:ring-offset-0',
           icon ? 'pl-0' : 'pl-2',
           getColorClassNames(color, 100).bgColor,
+          className,
         )}
       />
       {withResetButton ? <IconButton color={'gray'} icon={XCircleIcon} size={'xs'} onClick={handleReset} /> : null}
