@@ -13,7 +13,12 @@ import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicat
 import { useCustomForecastIndicatorListViewModel } from '../numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 
 async function getIndicatorIdBySymbol(symbol: string): Promise<indicatorByTypeResponse> {
-  const { data } = await instance.get(`${API_PATH.indicatorList}/search-by-symbol/${symbol}`);
+  const { data } = await instance.get(`${API_PATH.indicatorList}/search`, {
+    params: {
+      symbol,
+      type: 'none',
+    },
+  });
   return data;
 }
 
