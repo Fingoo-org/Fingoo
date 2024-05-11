@@ -39,7 +39,7 @@ describe('MetadataDeleteDialog', () => {
     );
 
     // when
-    await user.click(await screen.findByRole('menuitem', { name: 'Delete' }));
+    await user.click(await screen.findByRole('menuitem', { name: 'Delete metadata' }));
 
     // then
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
@@ -63,7 +63,7 @@ describe('MetadataDeleteDialog', () => {
         })
       )[0],
     );
-    await user.click(await screen.findByRole('menuitem', { name: 'Delete' }));
+    await user.click(await screen.findByRole('menuitem', { name: 'Delete metadata' }));
 
     // when
     expect(screen.queryByRole('dialog')).not.toBeNull();
@@ -91,7 +91,7 @@ describe('MetadataDeleteDialog', () => {
         })
       )[0],
     );
-    await user.click(await screen.findByRole('menuitem', { name: 'Delete' }));
+    await user.click(await screen.findByRole('menuitem', { name: 'Delete metadata' }));
 
     // when
     expect(screen.queryByRole('dialog')).not.toBeNull();
@@ -119,7 +119,7 @@ describe('MetadataDeleteDialog', () => {
         })
       )[0],
     );
-    await user.click(await screen.findByRole('menuitem', { name: 'Delete' }));
+    await user.click(await screen.findByRole('menuitem', { name: 'Delete metadata' }));
 
     // when
     await user.click(await screen.findByRole('button', { name: 'Confirm' }));

@@ -48,7 +48,7 @@ export default function MetadataDialogMenu() {
           onValueChange={handleMetadataNameUpdate}
         />
       </DialogMenu.Header>
-      <DialogMenu.Item aria-label="Delete" onClick={handleMetadataDeleteButtonClick} icon={TrashIcon}>
+      <DialogMenu.Item aria-label="Delete metadata" onClick={handleMetadataDeleteButtonClick} icon={TrashIcon}>
         Delete
       </DialogMenu.Item>
       <DialogMenu.Item aria-label="Add section" onClick={handleSectionAdd} icon={PlusIcon}>
