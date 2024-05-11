@@ -130,8 +130,8 @@ export const useFetchIndicatorList = () =>
   useSWRImmutable<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);
 
 export const useFetchSearchedIndicatorList = (search: string, indicatorType: IndicatorType) => {
-  return useSWRImmutable<IndicatorInfoResponse[]>(
-    `${API_PATH.indicatorList}/search?symbol=${search}&type=${indicatorType}`,
+  return useSWRImmutable<indicatorByTypeResponse[]>(
+    search.length > 1 ? `${API_PATH.indicatorList}/search?symbol=${search}&type=${indicatorType}` : null,
     defaultFetcher,
   );
 };

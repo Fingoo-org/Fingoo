@@ -1,27 +1,24 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
-import { useFetchIndicatorList } from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import { useFetchSearchedIndicatorList } from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import { useIndicatorListStore } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import { convertIndicatorViewModel } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 
-export const useIndicatorSearchList = (searchTerm: string) => {
-  const { data: indicatorList } = useFetchIndicatorList();
-  const upperSearchTerm = searchTerm.toLocaleUpperCase();
+export const useIndicatorSearchList = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const selectedIndicatorType = useIndicatorListStore((state) => state.selectedIndicatorType);
 
-  const isIndicatorInclude = useCallback(
-    (indicator: IndicatorInfoResponse) => {
-      const isNameIncludes = indicator.name.toLocaleUpperCase().includes(upperSearchTerm);
-      const isTickerIncludes = indicator.ticker.toLocaleUpperCase().includes(upperSearchTerm);
+  const { data: indicatorList } = useFetchSearchedIndicatorList(searchTerm.toLocaleUpperCase(), selectedIndicatorType);
 
-      return isNameIncludes || isTickerIncludes;
-    },
-    [upperSearchTerm],
-  );
-
-  const filteredIndicatorList = useMemo(() => {
+  const convertedIndicatorList = useMemo(() => {
     if (!indicatorList) return undefined;
-    if (searchTerm === '') return indicatorList;
 
-    return indicatorList.filter((indicator) => isIndicatorInclude(indicator));
-  }, [indicatorList, searchTerm, isIndicatorInclude]);
+    return convertIndicatorViewModel(indicatorList);
+  }, [indicatorList]);
 
-  return filteredIndicatorList;
+  return {
+    searchTerm,
+    setSearchTerm,
+    searchedIndicatorList: convertedIndicatorList,
+  };
 };
