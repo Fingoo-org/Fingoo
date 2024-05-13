@@ -1,0 +1,6 @@
+predict_economic_indicator:
+  id: predict_economic_indicator.v1
+  description: "경제지표 예측간 심볼 전달값 평가"
+  class: scripts.predict_economic_indicator_eval:EconomicIndicatorEval
+  args:
+    data_jsonl: ../dataset/test_data.jsonl
