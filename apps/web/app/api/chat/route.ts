@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import OpenAI from 'openai/index.mjs';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import type { ChatCompletionTool } from 'openai/resources/index.mjs';
 
