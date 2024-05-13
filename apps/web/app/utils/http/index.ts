@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { httpErrorHandler } from './http-error-handler';
-import Cookies from '@/node_modules/@types/js-cookie';
+import Cookies from 'js-cookie';
 
 export const instance = axios.create({
   withCredentials: true,
