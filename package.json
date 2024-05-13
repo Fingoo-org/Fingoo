@@ -9,6 +9,7 @@
     "turbo": "^1.13.3"
   },
   "scripts": {
+    "test": "turbo run test",
     "build:api": "turbo run build:api",
     "build:web": "turbo run build:web",
     "start:web": "turbo run start:web",
