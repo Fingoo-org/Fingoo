@@ -1,6 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "build:api": {
+      "dependsOn": ["api#build"],
+      "outputs": ["dist/**"]
+    },
     "build:web": {
       "dependsOn": ["web#build"],
       "outputs": [".next/**", "!.next/cache/**"]
