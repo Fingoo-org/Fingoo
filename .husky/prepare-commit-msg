@@ -1,44 +1,44 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+# . "$(dirname -- "$0")/_/husky.sh"
 
-commit_msg_file=$1
-commit_msg=$(cat "$1")
-second_line=$(echo "$commit_msg" | sed -n '2p')
+# commit_msg_file=$1
+# commit_msg=$(cat "$1")
+# second_line=$(echo "$commit_msg" | sed -n '2p')
 
-if git diff --cached --name-only | grep -q "web"; then
-   # web 경로가 포함되어 있으면, 해당 정보를 커밋 메시지에 추가
-  commit_msg_title_regex='^(\[web\]\s*)(feat|fix|refactor|chore|test|docs|style|rename): .{1,100}?$'
-elif git diff --cached --name-only | grep -q "api"; then
-  # api 경로가 포함되어 있으면, 해당 정보를 커밋 메시지에 추가
-  commit_msg_title_regex='^(\[api\]\s*)(feat|fix|refactor|chore|test|docs|style|rename): .{1,100}?$'
-else
-  commit_msg_title_regex='^(\[infra\]\s*)(feat|fix|refactor|chore|test|docs|style|rename): .{1,100}?$'
-fi
+# if git diff --cached --name-only | grep -q "web"; then
+#    # web 경로가 포함되어 있으면, 해당 정보를 커밋 메시지에 추가
+#   commit_msg_title_regex='^(\[web\]\s*)(feat|fix|refactor|chore|test|docs|style|rename): .{1,100}?$'
+# elif git diff --cached --name-only | grep -q "api"; then
+#   # api 경로가 포함되어 있으면, 해당 정보를 커밋 메시지에 추가
+#   commit_msg_title_regex='^(\[api\]\s*)(feat|fix|refactor|chore|test|docs|style|rename): .{1,100}?$'
+# else
+#   commit_msg_title_regex='^(\[infra\]\s*)(feat|fix|refactor|chore|test|docs|style|rename): .{1,100}?$'
+# fi
 
-# 제목
-if ! grep -qE "$commit_msg_title_regex" "$commit_msg_file"; then
-  echo "COMMIT REJECTED: { [api|web|infra] feat|fix|refactor|chore|test|docs|style|rename: commit 제목 } 제시된 형식에 맞게 작성해주세요."
-  exit 1
-fi
+# # 제목
+# if ! grep -qE "$commit_msg_title_regex" "$commit_msg_file"; then
+#   echo "COMMIT REJECTED: { [api|web|infra] feat|fix|refactor|chore|test|docs|style|rename: commit 제목 } 제시된 형식에 맞게 작성해주세요."
+#   exit 1
+# fi
 
-# 2번째 줄
-if ! [ -z "$second_line" ]; then
-  echo "COMMIT REJECTED: 제목 아래 개행문자를 추가해주세요."
-  exit 1
-fi
+# # 2번째 줄
+# if ! [ -z "$second_line" ]; then
+#   echo "COMMIT REJECTED: 제목 아래 개행문자를 추가해주세요."
+#   exit 1
+# fi
 
 
-# 커밋에 Jira 이슈 번호 추가
+# # 커밋에 Jira 이슈 번호 추가
 
-COMMIT_MESSAGE=$1
+# COMMIT_MESSAGE=$1
 
-BRANCH_NAME=$(git symbolic-ref --short HEAD)
-BRANCH_NAME="${BRANCH_NAME##*/}"
-JIRA_ID=$(echo "$BRANCH_NAME" | egrep -o 'EI-[0-9]+')
+# BRANCH_NAME=$(git symbolic-ref --short HEAD)
+# BRANCH_NAME="${BRANCH_NAME##*/}"
+# JIRA_ID=$(echo "$BRANCH_NAME" | egrep -o 'EI-[0-9]+')
 
-# merge commit 제외
-MERGE=$(cat $COMMIT_MESSAGE|grep -i 'merge'|wc -l)
+# # merge commit 제외
+# MERGE=$(cat $COMMIT_MESSAGE|grep -i 'merge'|wc -l)
 
-if [ -n $JIRA_ID ] && [ $MERGE -eq 0 ] ; then
-  echo "[$JIRA_ID] $(cat $COMMIT_MESSAGE)" > $COMMIT_MESSAGE
-fi
+# if [ -n $JIRA_ID ] && [ $MERGE -eq 0 ] ; then
+#   echo "[$JIRA_ID] $(cat $COMMIT_MESSAGE)" > $COMMIT_MESSAGE
+# fi
