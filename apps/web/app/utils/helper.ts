@@ -1,5 +1,6 @@
 import { utcFormat } from 'd3-time-format';
 import React from 'react';
+import { add } from '@fingoo/helpers'
 
 const formatTime = utcFormat('%Y-%m-%d');
 
