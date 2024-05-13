@@ -1,9 +1,9 @@
 import { AggregateRoot } from 'src/utils/domain/aggregate-root';
 import { CustomForecastIndicatorNameShouldNotEmptyRule } from './rule/CustomForecastIndicatorNameShouldNotEmpty.rule';
 import {
+  IndicatorDtoType,
   IndicatorType,
   SourceIndicatorInformation,
-  TargetIndicatorInformation,
   Verification,
 } from 'src/utils/type/type-definition';
 import { ApiProperty } from '@nestjs/swagger';
@@ -40,7 +40,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     },
     description: '타켓지표 정보',
   })
-  targetIndicatorInformation: TargetIndicatorInformation;
+  targetIndicator: IndicatorDtoType;
 
   @ApiProperty({
     example: [],
@@ -56,9 +56,15 @@ export class CustomForecastIndicator extends AggregateRoot {
 
   @ApiProperty({
     example: [],
-    description: '재료지표와 가중치',
+    description: '재료지표 id, type 가중치',
   })
   sourceIndicatorsInformation: SourceIndicatorInformation[];
+
+  @ApiProperty({
+    example: [],
+    description: '재료지표 리스트',
+  })
+  sourceIndicators: IndicatorDtoType[];
 
   @ApiProperty({
     example: '2024-03-08T02:34:57.630Z',
@@ -76,40 +82,42 @@ export class CustomForecastIndicator extends AggregateRoot {
     id: string,
     customForecastIndicatorName: string,
     type: IndicatorType,
-    targetIndicatorInformation: TargetIndicatorInformation,
+    targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
     sourceIndicatorsInformation: SourceIndicatorInformation[],
+    sourceIndicators: IndicatorDtoType[],
   ) {
     super();
     this.checkRule(new CustomForecastIndicatorNameShouldNotEmptyRule(customForecastIndicatorName));
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.type = type;
-    this.targetIndicatorInformation = targetIndicatorInformation;
+    this.targetIndicator = targetIndicator;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
     this.sourceIndicatorsInformation = sourceIndicatorsInformation;
+    this.sourceIndicators = sourceIndicators;
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }
 
-  static createNew(
-    customForecastIndicatorName: string,
-    targetIndicatorInformation: TargetIndicatorInformation,
-  ): CustomForecastIndicator {
+  static createNew(customForecastIndicatorName: string, targetIndicator: IndicatorDtoType): CustomForecastIndicator {
     const grangerVerification: Verification[] = [];
     const cointJohansenVerification: Verification[] = [];
     const sourceIndicatorsInformation: SourceIndicatorInformation[] = [];
+    const sourceIndicators: IndicatorDtoType[] = [];
+
     const type: IndicatorType = 'customForecastIndicator';
     return new CustomForecastIndicator(
       null,
       customForecastIndicatorName,
       type,
-      targetIndicatorInformation,
+      targetIndicator,
       grangerVerification,
       cointJohansenVerification,
       sourceIndicatorsInformation,
+      sourceIndicators,
     );
   }
 
@@ -119,7 +127,7 @@ export class CustomForecastIndicator extends AggregateRoot {
     this.checkRule(
       new TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule(
         updateSourceIndicatorsInformation,
-        this.targetIndicatorInformation.targetIndicatorId,
+        this.targetIndicator.id,
       ),
     );
 
@@ -129,6 +137,14 @@ export class CustomForecastIndicator extends AggregateRoot {
       this.sourceIndicatorsInformation = updateSourceIndicatorsInformation.slice();
     }
     this.updatedAt = new Date();
+  }
+
+  public updateSourceIndicators(updateSourceIndicators: IndicatorDtoType[]) {
+    if (updateSourceIndicators.length == 0) {
+      this.sourceIndicators = [];
+    } else {
+      this.sourceIndicators = updateSourceIndicators.slice();
+    }
   }
 
   public updateCustomForecastIndicatorName(name: string) {

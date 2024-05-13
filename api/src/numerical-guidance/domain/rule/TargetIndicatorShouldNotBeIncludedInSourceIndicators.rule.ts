@@ -1,5 +1,5 @@
-import { BusinessRule } from '../../../utils/domain/business.rule';
 import { SourceIndicatorInformation } from 'src/utils/type/type-definition';
+import { BusinessRule } from '../../../utils/domain/business.rule';
 
 export class TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule implements BusinessRule {
   constructor(
@@ -18,8 +18,8 @@ export class TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule implements
     sourceIndicatorInformation: SourceIndicatorInformation[],
     targetIndicatorId: string,
   ) {
-    const sourceIndicatorIds: string[] = sourceIndicatorInformation.map((indicatorId) => {
-      return indicatorId.sourceIndicatorId;
+    const sourceIndicatorIds: string[] = sourceIndicatorInformation.map((indicator) => {
+      return indicator.sourceIndicatorId;
     });
     return sourceIndicatorIds.includes(targetIndicatorId);
   }

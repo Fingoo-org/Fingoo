@@ -16,8 +16,13 @@ describe('GetCustomForecastIndicatorsByMemberId', () => {
             loadCustomForecastIndicatorsByMemberId: jest.fn().mockImplementation(() => {
               const dataList = [
                 CustomForecastIndicator.createNew('예측지표', {
-                  targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-                  targetIndicatorName: '예측지표',
+                  id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+                  name: '타켓지표',
+                  type: 'Common Stock',
+                  index: 1234,
+                  country: 'KOREA',
+                  currency: 'KRW',
+                  mic_code: 'PINX',
                   indicatorType: 'stocks',
                   exchange: 'KOSPI',
                   symbol: 'PPAL',
@@ -42,8 +47,13 @@ describe('GetCustomForecastIndicatorsByMemberId', () => {
     // then
     const expected = [
       CustomForecastIndicator.createNew('예측지표', {
-        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        targetIndicatorName: '예측지표',
+        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        name: '타켓지표',
+        type: 'Common Stock',
+        index: 1234,
+        country: 'KOREA',
+        currency: 'KRW',
+        mic_code: 'PINX',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',

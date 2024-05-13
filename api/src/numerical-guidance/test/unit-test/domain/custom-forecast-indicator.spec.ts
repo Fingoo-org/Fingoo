@@ -12,8 +12,13 @@ describe('예측지표', () => {
 
     // when
     const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
-      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-      targetIndicatorName: '예측지표',
+      id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      name: '타켓지표',
+      type: 'Common Stock',
+      index: 1234,
+      country: 'KOREA',
+      currency: 'KRW',
+      mic_code: 'PINX',
       indicatorType: 'stocks',
       exchange: 'KOSPI',
       symbol: 'PPAL',
@@ -26,8 +31,13 @@ describe('예측지표', () => {
       '예측지표 이름',
       type,
       {
-        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        targetIndicatorName: '예측지표',
+        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        name: '타켓지표',
+        type: 'Common Stock',
+        index: 1234,
+        country: 'KOREA',
+        currency: 'KRW',
+        mic_code: 'PINX',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
@@ -35,9 +45,10 @@ describe('예측지표', () => {
       [],
       [],
       [],
+      [],
     );
     expect(expected.customForecastIndicatorName).toEqual(customForecastIndicator.customForecastIndicatorName);
-    expect(expected.targetIndicatorInformation).toEqual(customForecastIndicator.targetIndicatorInformation);
+    expect(expected.targetIndicator).toEqual(customForecastIndicator.targetIndicator);
   });
 
   it('예측지표 생성-지표이름이 빈 값일 경우 - 빈 문자열일 경우', () => {
@@ -46,8 +57,13 @@ describe('예측지표', () => {
     // when
     function createNewCustomForecastIndicator() {
       CustomForecastIndicator.createNew(content, {
-        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        targetIndicatorName: '예측지표',
+        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        name: '타켓지표',
+        type: 'Common Stock',
+        index: 1234,
+        country: 'KOREA',
+        currency: 'KRW',
+        mic_code: 'PINX',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
@@ -66,8 +82,13 @@ describe('예측지표', () => {
     // when
     function createNewCustomForecastIndicator() {
       CustomForecastIndicator.createNew(content, {
-        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        targetIndicatorName: '예측지표',
+        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        name: '타켓지표',
+        type: 'Common Stock',
+        index: 1234,
+        country: 'KOREA',
+        currency: 'KRW',
+        mic_code: 'PINX',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
@@ -83,31 +104,36 @@ describe('예측지표', () => {
   it('예측지표 업데이트', () => {
     // given
     const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
-      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-      targetIndicatorName: '예측지표',
+      id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      name: '타켓지표',
+      type: 'Common Stock',
+      index: 1234,
+      country: 'KOREA',
+      currency: 'KRW',
+      mic_code: 'PINX',
       indicatorType: 'stocks',
       exchange: 'KOSPI',
       symbol: 'PPAL',
     });
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
+    const sourceIndicatorsInformation: SourceIndicatorInformation[] = [
       {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
+        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
         indicatorType: 'stocks',
-        weight: 'none',
+        weight: 20,
       },
       {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf3',
         indicatorType: 'stocks',
-        weight: 'none',
+        weight: 20,
       },
     ];
 
     // when
-    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
+    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorsInformation);
 
     // then
-    const expected = sourceIndicatorIdsAndWeights;
+    const expected = sourceIndicatorsInformation;
     expect(customForecastIndicator.sourceIndicatorsInformation).toEqual(expected);
   });
 
@@ -118,8 +144,13 @@ describe('예측지표', () => {
       'updatedCustomForecastIndicator',
       'customForecastIndicator',
       {
-        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        targetIndicatorName: '예측지표',
+        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        name: '타켓지표',
+        type: 'Common Stock',
+        index: 1234,
+        country: 'KOREA',
+        currency: 'KRW',
+        mic_code: 'PINX',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
@@ -138,17 +169,31 @@ describe('예측지표', () => {
       ],
       [
         {
-          weight: 50,
+          sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
           indicatorType: 'stocks',
-          sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120013',
+          weight: 20,
+        },
+      ],
+      [
+        {
+          id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
+          name: '재료지표',
+          type: 'Common Stock',
+          index: 1234,
+          country: 'KOREA',
+          currency: 'KRW',
+          mic_code: 'PINX',
+          indicatorType: 'stocks',
+          exchange: 'KOSPI',
+          symbol: 'PPAL',
         },
       ],
     );
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [];
+    const sourceIndicatorsInformation: SourceIndicatorInformation[] = [];
 
     // when
-    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
+    customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorsInformation);
 
     // then
     const expected = [];
@@ -158,31 +203,36 @@ describe('예측지표', () => {
   it('예측지표 업데이트 - 재료 지표가 중복될 때', () => {
     // given
     const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
-      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-      targetIndicatorName: '예측지표',
+      id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+      name: '타켓지표',
+      type: 'Common Stock',
+      index: 1234,
+      country: 'KOREA',
+      currency: 'KRW',
+      mic_code: 'PINX',
       indicatorType: 'stocks',
       exchange: 'KOSPI',
       symbol: 'PPAL',
     });
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
+    const sourceIndicatorInformation: SourceIndicatorInformation[] = [
       {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
         indicatorType: 'stocks',
-        weight: 'none',
+        weight: 20,
       },
       {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
+        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf2',
         indicatorType: 'stocks',
-        weight: 'none',
+        weight: 20,
       },
     ];
 
     // when
     function updateSourceIndicatorsAndWeights() {
-      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
+      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorInformation);
     }
-    const rule = new SourceIndicatorsShouldNotDuplicateRule(sourceIndicatorIdsAndWeights);
+    const rule = new SourceIndicatorsShouldNotDuplicateRule(sourceIndicatorInformation);
 
     // then
     expect(updateSourceIndicatorsAndWeights).toThrow(BusinessRuleValidationException);
@@ -193,51 +243,70 @@ describe('예측지표', () => {
     // given
     const targetIndicatorId = '26929514-237c-11ed-861d-0242ac120012';
     const customForecastIndicator = new CustomForecastIndicator(
-      '26929514-237c-11ed-861d-0242ac120011',
+      '26929514-237c-11ed-861d-0242ac120012',
       'updatedCustomForecastIndicator',
       'customForecastIndicator',
       {
-        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        targetIndicatorName: '예측지표',
+        id: '26929514-237c-11ed-861d-0242ac120012',
+        name: '타켓지표',
+        type: 'Common Stock',
+        index: 1234,
+        country: 'KOREA',
+        currency: 'KRW',
+        mic_code: 'PINX',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
       [
         {
-          indicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+          indicatorId: '26929514-237c-11ed-861d-0242ac120012',
           verification: 'True',
         },
       ],
       [
         {
-          indicatorId: '26929514-237c-11ed-861d-0242ac120031',
+          indicatorId: '26929514-237c-11ed-861d-0242ac120012',
           verification: 'True',
         },
       ],
       [
         {
-          weight: 50,
+          sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
           indicatorType: 'stocks',
-          sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120032',
+          weight: 20,
+        },
+      ],
+      [
+        {
+          id: '26929514-237c-11ed-861d-0242ac120012',
+          name: '재료지표',
+          type: 'Common Stock',
+          index: 1234,
+          country: 'KOREA',
+          currency: 'KRW',
+          mic_code: 'PINX',
+          indicatorType: 'stocks',
+          exchange: 'KOSPI',
+          symbol: 'PPAL',
         },
       ],
     );
 
-    const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
+    const sourceIndicatorInformation: SourceIndicatorInformation[] = [
       {
-        sourceIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
         indicatorType: 'stocks',
-        weight: 0,
+        weight: 10,
       },
     ];
 
     // when
     function updateSourceIndicatorsAndWeights() {
-      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorIdsAndWeights);
+      customForecastIndicator.updateSourceIndicatorsInformation(sourceIndicatorInformation);
     }
     const rule = new TargetIndicatorShouldNotBeIncludedInSourceIndicatorsRule(
-      sourceIndicatorIdsAndWeights,
+      sourceIndicatorInformation,
       targetIndicatorId,
     );
 
@@ -249,8 +318,13 @@ describe('예측지표', () => {
   it('예측지표 업데이트 - 재료 지표가 10개가 넘어갈 경우', () => {
     // given
     const customForecastIndicator = CustomForecastIndicator.createNew('예측지표 이름', {
-      targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-      targetIndicatorName: '예측지표',
+      id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf0',
+      name: '타켓지표',
+      type: 'Common Stock',
+      index: 1234,
+      country: 'KOREA',
+      currency: 'KRW',
+      mic_code: 'PINX',
       indicatorType: 'stocks',
       exchange: 'KOSPI',
       symbol: 'PPAL',
@@ -258,59 +332,59 @@ describe('예측지표', () => {
 
     const sourceIndicatorIdsAndWeights: SourceIndicatorInformation[] = [
       {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120001',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120002',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120003',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120004',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120005',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120006',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120007',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120008',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120009',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
+        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120010',
+        indicatorType: 'stocks',
+        weight: 20,
+      },
+      {
         sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120011',
         indicatorType: 'stocks',
-        weight: 0,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120021',
-        indicatorType: 'stocks',
-        weight: 10,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120031',
-        indicatorType: 'stocks',
-        weight: 10,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120041',
-        indicatorType: 'stocks',
-        weight: 0,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120051',
-        indicatorType: 'stocks',
-        weight: 0,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120061',
-        indicatorType: 'stocks',
-        weight: 0,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120071',
-        indicatorType: 'stocks',
-        weight: 0,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120081',
-        indicatorType: 'stocks',
-        weight: 0,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120091',
-        indicatorType: 'stocks',
-        weight: 0,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120012',
-        indicatorType: 'stocks',
-        weight: 0,
-      },
-      {
-        sourceIndicatorId: '26929514-237c-11ed-861d-0242ac120022',
-        indicatorType: 'stocks',
-        weight: 0,
+        weight: 20,
       },
     ];
 
@@ -332,12 +406,18 @@ describe('예측지표', () => {
       '예측지표',
       'customForecastIndicator',
       {
-        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        targetIndicatorName: '예측지표',
+        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        name: '타켓지표',
+        type: 'Common Stock',
+        index: 1234,
+        country: 'KOREA',
+        currency: 'KRW',
+        mic_code: 'PINX',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
+      [],
       [],
       [],
       [],
@@ -358,12 +438,18 @@ describe('예측지표', () => {
       '예측지표',
       'customForecastIndicator',
       {
-        targetIndicatorId: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
-        targetIndicatorName: '예측지표',
+        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        name: '타켓지표',
+        type: 'Common Stock',
+        index: 1234,
+        country: 'KOREA',
+        currency: 'KRW',
+        mic_code: 'PINX',
         indicatorType: 'stocks',
         exchange: 'KOSPI',
         symbol: 'PPAL',
       },
+      [],
       [],
       [],
       [],

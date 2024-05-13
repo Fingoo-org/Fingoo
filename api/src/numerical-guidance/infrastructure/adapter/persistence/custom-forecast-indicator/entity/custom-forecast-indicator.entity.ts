@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
 import {
+  IndicatorDtoType,
   IndicatorType,
   SourceIndicatorInformation,
-  TargetIndicatorInformation,
   Verification,
 } from 'src/utils/type/type-definition';
 import { MemberEntity } from 'src/auth/entity/member.entity';
@@ -20,7 +20,7 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   type: IndicatorType;
 
   @Column('jsonb', { nullable: true })
-  targetIndicatorInformation: TargetIndicatorInformation;
+  targetIndicator: IndicatorDtoType;
 
   @Column('jsonb', { nullable: true })
   grangerVerification: Verification[];
@@ -31,16 +31,20 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   @Column('jsonb', { nullable: true })
   sourceIndicatorsInformation: SourceIndicatorInformation[];
 
+  @Column('jsonb', { nullable: true })
+  sourceIndicators: IndicatorDtoType[];
+
   @ManyToOne(() => MemberEntity, { eager: false })
   member: MemberEntity;
 
   constructor(
     customForecastIndicatorName: string,
     type: IndicatorType,
-    targetIndicatorInformation: TargetIndicatorInformation,
+    targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
-    sourceIndicatorIdsAndWeights: SourceIndicatorInformation[],
+    sourceIndicatorsInformation: SourceIndicatorInformation[],
+    sourceIndicators: IndicatorDtoType[],
     member: MemberEntity,
     createdAt: Date,
     updatedAt: Date,
@@ -48,10 +52,11 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     super();
     this.customForecastIndicatorName = customForecastIndicatorName;
     this.type = type;
-    this.targetIndicatorInformation = targetIndicatorInformation;
+    this.targetIndicator = targetIndicator;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
-    this.sourceIndicatorsInformation = sourceIndicatorIdsAndWeights;
+    this.sourceIndicatorsInformation = sourceIndicatorsInformation;
+    this.sourceIndicators = sourceIndicators;
     this.member = member;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
@@ -60,10 +65,11 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
   static createNew(
     customForecastIndicatorName: string,
     type: IndicatorType,
-    targetIndicatorInformation: TargetIndicatorInformation,
+    targetIndicator: IndicatorDtoType,
     grangerVerification: Verification[],
     cointJohansenVerification: Verification[],
-    sourceIndicatorIdsAndWeights: SourceIndicatorInformation[],
+    sourceIndicatorsInformation: SourceIndicatorInformation[],
+    sourceIndicators: IndicatorDtoType[],
     member: MemberEntity,
     createdAt: Date,
     updatedAt: Date,
@@ -71,10 +77,11 @@ export class CustomForecastIndicatorEntity extends BaseEntity {
     return new CustomForecastIndicatorEntity(
       customForecastIndicatorName,
       type,
-      targetIndicatorInformation,
+      targetIndicator,
       grangerVerification,
       cointJohansenVerification,
-      sourceIndicatorIdsAndWeights,
+      sourceIndicatorsInformation,
+      sourceIndicators,
       member,
       createdAt,
       updatedAt,

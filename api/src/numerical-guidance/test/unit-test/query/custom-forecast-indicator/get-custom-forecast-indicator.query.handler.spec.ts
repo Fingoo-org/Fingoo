@@ -15,8 +15,13 @@ describe('GetCustomForecastIndicatorQueryHandler', () => {
           useValue: {
             loadCustomForecastIndicator: jest.fn().mockImplementation(() => {
               const data = CustomForecastIndicator.createNew('예측지표', {
-                targetIndicatorId: '목표지표 uuid',
-                targetIndicatorName: '예측지표',
+                id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+                name: '타켓지표',
+                type: 'Common Stock',
+                index: 1234,
+                country: 'KOREA',
+                currency: 'KRW',
+                mic_code: 'PINX',
                 indicatorType: 'stocks',
                 exchange: 'KOSPI',
                 symbol: 'PPAL',
@@ -39,8 +44,8 @@ describe('GetCustomForecastIndicatorQueryHandler', () => {
 
     // then
     const expectedName = '예측지표';
-    const expectedTargetIndicatorId = '목표지표 uuid';
+    const expectedTargetIndicatorId = '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1';
     expect(result.customForecastIndicatorName).toEqual(expectedName);
-    expect(result.targetIndicatorInformation.targetIndicatorId).toEqual(expectedTargetIndicatorId);
+    expect(result.targetIndicator.id).toEqual(expectedTargetIndicatorId);
   });
 });

@@ -57,7 +57,7 @@ export type ForecastType = 'single' | 'multi';
 export type SourceIndicatorInformation = {
   sourceIndicatorId: string;
   indicatorType: IndicatorType;
-  weight: float;
+  weight: number;
 };
 
 export type TargetIndicatorInformation = {

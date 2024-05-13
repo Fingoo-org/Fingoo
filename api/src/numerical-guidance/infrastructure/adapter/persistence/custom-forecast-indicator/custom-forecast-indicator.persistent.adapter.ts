@@ -85,9 +85,9 @@ export class CustomForecastIndicatorPersistentAdapter
       const url: string =
         process.env.FASTAPI_URL +
         'api/var-api/custom-forecast-indicator?targetIndicatorId=' +
-        customForecastIndicator.targetIndicatorInformation.targetIndicatorId +
+        customForecastIndicator.targetIndicator.id +
         '&targetIndicatorType=' +
-        customForecastIndicator.targetIndicatorInformation.indicatorType +
+        customForecastIndicator.targetIndicator.indicatorType +
         '&';
       let indicatorsUrl: string = '';
       let indicatorsTypeUrl: string = '';
@@ -208,6 +208,7 @@ export class CustomForecastIndicatorPersistentAdapter
       this.nullCheckForEntity(customForecastIndicatorEntity);
 
       customForecastIndicatorEntity.sourceIndicatorsInformation = customForecastIndicator.sourceIndicatorsInformation;
+      customForecastIndicatorEntity.sourceIndicators = customForecastIndicator.sourceIndicators;
 
       if (customForecastIndicatorEntity.sourceIndicatorsInformation.length == 0) {
         const grangerGroup = [];
@@ -219,9 +220,9 @@ export class CustomForecastIndicatorPersistentAdapter
         const url: string =
           process.env.FASTAPI_URL +
           'api/var-api/source-indicators-verification?targetIndicatorId=' +
-          customForecastIndicator.targetIndicatorInformation.targetIndicatorId +
+          customForecastIndicator.targetIndicator.id +
           '&targetIndicatorType=' +
-          customForecastIndicator.targetIndicatorInformation.indicatorType +
+          customForecastIndicator.targetIndicator.indicatorType +
           '&';
         let indicatorsUrl: string = '';
         let indicatorsTypeUrl: string = '';
