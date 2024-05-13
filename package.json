@@ -7,5 +7,11 @@
   ],
   "devDependencies": {
     "turbo": "^1.13.3"
+  },
+  "scripts": {
+    "start:web": "turbo run start:web",
+    "start:api": "turbo run start:api",
+    "start:dev": "turbo run start:dev",
+    "infra": "turbo run infra"
   }
 }

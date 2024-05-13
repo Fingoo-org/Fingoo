@@ -1,0 +1,20 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "start:dev": {
+      "dependsOn": ["api#infra"],
+      "cache": false
+    },
+    "start:web": {
+      "dependsOn": ["web#start:dev"],
+      "cache": false
+    },
+    "start:api": {
+      "dependsOn": ["api#start:dev"],
+      "cache": false
+    },
+    "infra": {
+      "cache": false
+    }
+  }
+}
