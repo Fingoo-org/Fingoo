@@ -1,0 +1,5 @@
+{"input": "S&P500 지수 예측해줘", "output": "predict_economic_indicator(target_symbol='GSPC', source_symbols=['DJI', 'IXIC'])", "expected_target_symbol": "GSPC"}
+{"input": "NASDAQ 지수 예측해줘", "output": "predict_economic_indicator(target_symbol='IXIC', source_symbols=['GSPC', 'DJI'])", "expected_target_symbol": "IXIC"}
+{"input": "원화를 예측해줘", "output": "predict_economic_indicator(target_symbol='KRW/USD', source_symbols=['EUR/USD', 'GBP/USD'])", "expected_target_symbol": "KRW/USD"}
+{"input": "애플 주가 예측해줘", "output": "predict_economic_indicator(target_symbol='AAPL', source_symbols=['MSFT', 'GOOGL', 'AMZN'])", "expected_target_symbol": "AAPL"}
+{"input": "SPY etf를 예측해줘", "output": "predict_economic_indicator(target_symbol='SPY', source_symbols=['VIX', 'MDY', 'IVV'])", "expected_target_symbol": "SPY"}
