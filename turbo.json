@@ -3,7 +3,8 @@
   "pipeline": {
     "test": {},
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "start:dev": {
       "dependsOn": ["api#infra"],
