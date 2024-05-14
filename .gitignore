@@ -1,2 +1,2 @@
-.env
-mysql
+node_modules
+.turbo

@@ -1,11 +1,10 @@
 import { useIndicatorBoardMetadataList } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
-import { renderHook, waitFor } from '@testing-library/react';
+import { act,renderHook, waitFor } from '@testing-library/react';
 import { server } from '@/app/mocks/server.mock';
 import { HttpResponse, http } from 'msw';
 import { API_PATH } from '@/app/store/querys/api-path';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import { act } from 'react-dom/test-utils';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata-view-model.service';
