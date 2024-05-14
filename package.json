@@ -11,11 +11,11 @@
   },
   "scripts": {
     "test": "turbo run test",
-    "build:api": "turbo run build:api",
-    "build:web": "turbo run build:web",
-    "start:web": "turbo run start:web",
-    "start:api": "turbo run start:api",
-    "start:dev": "turbo run start:dev",
+    "build:api": "turbo run build --filter=api",
+    "build:web": "turbo run build --filter=web",
+    "dev:web": "turbo run start:dev --filter=web",
+    "dev:api": "turbo run start:dev --filter=api",
+    "dev": "turbo run start:dev",
     "infra": "turbo run infra",
     "prepare": "husky install"
   }
