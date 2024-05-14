@@ -5,5 +5,5 @@ if git diff --cached --name-only | grep -q "web"; then
   cd apps/web && npm run test
 elif git diff --cached --name-only | grep -q "api"; then
   npx lint-staged
-  cd apps/api && npm run test -- --testPathIgnorePatterns 'test/integration-test-test|test/E2E'
+  cd apps/api && npm run test -- --testPathIgnorePatterns 'test/integration-test|test/E2E'
 fi
