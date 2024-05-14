@@ -6,7 +6,8 @@
     "packages/*"
   ],
   "devDependencies": {
-    "turbo": "^1.13.3"
+    "turbo": "^1.13.3",
+    "husky": "8.0.3"
   },
   "scripts": {
     "test": "turbo run test",
@@ -15,6 +16,7 @@
     "start:web": "turbo run start:web",
     "start:api": "turbo run start:api",
     "start:dev": "turbo run start:dev",
-    "infra": "turbo run infra"
+    "infra": "turbo run infra",
+    "prepare": "husky install"
   }
 }
