@@ -1,0 +1,158 @@
+name: CI/CD
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  inspection:
+    name: inspection
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_REMOTE_ONLY: true
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setting .env
+        run: |
+          echo "SERVICE_KEY=${{ secrets.KRX_SERVICE_KEY }}" >> .env
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+          echo "SUPABASE_BUCKET_NAME=${{ secrets.SUPABASE_BUCKET_NAME }}" >> .env
+          echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
+          echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
+        working-directory: apps/api
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Send discord message if fail
+        if: ${{ failure() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: error
+          text: 'CI Pipeline fail'
+
+      - name: Send discord message if success
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: info
+          text: 'CI Pipeline success'
+
+  build-api:
+    needs: inspection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3.0.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build Docker image
+        run: |
+          docker build -f apps/api/Dockerfile . --build-arg TURBO_TEAM=${{ secrets.TURBO_TEAM }} --build-arg TURBO_TOKEN=${{ secrets.TURBO_TOKEN }} --no-cache --tag=${{ secrets.DOCKERHUB_USERNAME }}/api:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/api:latest
+      - name: Send discord message if fail
+        if: ${{ failure() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: error
+          text: 'api package failed to build'
+      - name: Send discord message if success
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: info
+          text: 'api package was successfully built'
+
+  build-modeling-api:
+    runs-on: ubuntu-latest
+    needs: inspection
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3.0.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: modeling-api build and push
+        uses: docker/build-push-action@v5.1.0
+        with:
+          context: ./data-modeling-api
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi:latest
+      - name: Send discord message if fail
+        if: ${{ failure() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: error
+          text: 'modeling-api package failed to build'
+      - name: Send discord message if success
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: info
+          text: 'modeling-api was successfully built'
+
+  deploy-api-server:
+    runs-on: ubuntu-latest
+    needs: [build-api, build-modeling-api]
+    steps:
+      - name: deploy api server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            sudo docker rm -f $(docker ps -qa)
+            sudo docker-compose pull api data-modeling-api
+            docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
+            docker image prune -f
+      - name: Send discord message if fail
+        if: ${{ failure() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: error
+          text: 'api server failed to deploy'
+      - name: Send discord message if success
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          severity: info
+          text: 'api server was successfully deploy'
