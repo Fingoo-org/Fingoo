@@ -18,6 +18,6 @@
     "dev:api": "turbo run start:dev --filter=api",
     "dev": "turbo run start:dev",
     "infra": "turbo run infra",
-    "prepare": "husky install"
+    "prepare": "husky install || true"
   }
 }
