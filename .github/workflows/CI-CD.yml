@@ -24,10 +24,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Dependencies
+        # 이전의 cache가 없다면 의존성을 설치합니다.
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
 
       - name: Setting .env
         run: |
