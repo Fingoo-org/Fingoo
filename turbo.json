@@ -9,7 +9,6 @@
     },
     "web#build": {
       "dependsOn": ["^build"],
-      "env": ["OPENAI_API_KEY"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "start:dev": {
