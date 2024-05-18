@@ -170,7 +170,7 @@ jobs:
 
       - name: Install Dependencies
         # 이전의 cache가 없다면 의존성을 설치합니다.
-        # if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
         
       - name: Install Vercel CLI
