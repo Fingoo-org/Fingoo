@@ -39,7 +39,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: Setting .env
+      - name: Setting api .env
         run: |
           echo "SERVICE_KEY=${{ secrets.KRX_SERVICE_KEY }}" >> .env
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
@@ -47,6 +47,11 @@ jobs:
           echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
           echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
         working-directory: apps/api
+
+      - name: Setting web .env
+        run: |
+          echo "OPEN_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+        working-directory: apps/web
 
       - name: Test
         run: npm run test
