@@ -8,7 +8,7 @@ const openai = new OpenAI({
 });
 
 function sleep(ms: number) {
-  console.log('a')
+  console.log('b')
   return new Promise((r) => setTimeout(r, ms));
 }
 
