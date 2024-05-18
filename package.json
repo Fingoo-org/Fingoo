@@ -10,10 +10,11 @@
     "husky": "8.0.3"
   },
   "scripts": {
+    "start:web": "turbo run start --filter=web",
     "test": "turbo run test",
     "build": "turbo run build",
     "build:api": "turbo run build --filter=api",
-    "build:web": "turbo run build --filter=web",
+    "build:web": "turbo run web#build",
     "dev:web": "turbo run start:dev --filter=web",
     "dev:api": "turbo run start:dev --filter=api",
     "dev": "turbo run start:dev",
