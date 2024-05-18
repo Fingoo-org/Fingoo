@@ -162,7 +162,7 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Install
-        run: npm install
+        run: npm ci
       - name: Vercel link
         run: vercel link --yes --token=${{ secrets.VERCEL_ACCESS_TOKEN }} --project=${{ secrets.FINGOO_PROJECT_NAME }}
       - name: Pull Vercel Environment Information
