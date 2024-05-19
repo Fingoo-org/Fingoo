@@ -47,7 +47,8 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
 
     // then
     expect(result.current.sourceIndicatorList).toHaveLength(2);
-    // expect(result.current.sourceIndicatorList?.[0].ticker).toBe('AAPL');
+    expect(result.current.selectedCustomForecastIndicator?.sourceIndicators[0].symbol).toBe('AAPL');
+    expect(result.current.selectedCustomForecastIndicator?.sourceIndicators[1].symbol).toBe('GOOG');
   });
 
   it('예측 지표 이름을 변경하면, 변경된 이름이 적용된다', async () => {
