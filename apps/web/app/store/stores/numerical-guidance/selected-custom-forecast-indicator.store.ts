@@ -30,7 +30,7 @@ const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState 
   selectedCustomForecastIndicator: {
     id: '',
     customForecastIndicatorName: '',
-    targetIndicatorInformation: {
+    targetIndicator: {
       symbol: '',
       targetIndicatorId: '',
       indicatorType: 'stocks',

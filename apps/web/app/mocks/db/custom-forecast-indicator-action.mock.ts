@@ -28,7 +28,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     const id = Math.random().toString(36);
     const newCustomForecastIndicator = {
       customForecastIndicatorName: data.customForecastIndicatorName,
-      targetIndicatorInformation: {
+      targetIndicator: {
         symbol: 'Mock',
         targetIndicatorId: data.targetIndicatorId,
         indicatorType: 'stocks',
@@ -79,7 +79,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     if (!customForecastIndicator) return;
 
     const targetIndicator = mockDatabaseStore.indicatorList.find(
-      (indicator) => indicator.id === customForecastIndicator.targetIndicatorInformation.targetIndicatorId,
+      (indicator) => indicator.id === customForecastIndicator.targetIndicator.targetIndicatorId,
     );
 
     if (!targetIndicator) return;

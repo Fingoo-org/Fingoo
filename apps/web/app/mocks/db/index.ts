@@ -88,7 +88,7 @@ const initialState: MockDatabase = {
     {
       id: '11',
       customForecastIndicatorName: 'customForecastIndicator1',
-      targetIndicatorInformation: {
+      targetIndicator: {
         symbol: 'AAPL',
         targetIndicatorId: '1',
         indicatorType: 'stocks',
@@ -125,7 +125,7 @@ const initialState: MockDatabase = {
     {
       id: '12',
       customForecastIndicatorName: 'customForecastIndicator2',
-      targetIndicatorInformation: {
+      targetIndicator: {
         symbol: 'MSFT',
         targetIndicatorId: '2',
         indicatorType: 'stocks',
@@ -175,7 +175,7 @@ const initialState: MockDatabase = {
     {
       id: '13',
       customForecastIndicatorName: 'customForecastIndicator3',
-      targetIndicatorInformation: {
+      targetIndicator: {
         symbol: 'GOOG',
         targetIndicatorId: '3',
         indicatorType: 'stocks',
@@ -225,7 +225,7 @@ const initialState: MockDatabase = {
     {
       id: '14',
       customForecastIndicatorName: '삼성전자 예측 지표',
-      targetIndicatorInformation: {
+      targetIndicator: {
         symbol: '삼성전자',
         targetIndicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
         indicatorType: 'stocks',

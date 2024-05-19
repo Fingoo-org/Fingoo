@@ -10,7 +10,7 @@ import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-l
 export class CustomForecastIndicator {
   readonly id: string;
   readonly customForecastIndicatorName: string;
-  readonly targetIndicatorInformation: TargetIndicatorInfo;
+  readonly targetIndicator: TargetIndicatorInfo;
   readonly sourceIndicatorsInformation: sourceIndicator[];
   readonly type: IndicatorType;
   readonly grangerVerification: VerificationType[];
@@ -18,7 +18,7 @@ export class CustomForecastIndicator {
   constructor({
     id,
     customForecastIndicatorName,
-    targetIndicatorInformation,
+    targetIndicator,
     sourceIndicatorsInformation,
     type,
     grangerVerification,
@@ -26,7 +26,7 @@ export class CustomForecastIndicator {
   }: CustomForecastIndicatorResponse) {
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
-    this.targetIndicatorInformation = targetIndicatorInformation;
+    this.targetIndicator = targetIndicator;
     this.sourceIndicatorsInformation = sourceIndicatorsInformation;
     this.type = type;
     this.grangerVerification = grangerVerification;
@@ -38,7 +38,7 @@ export class CustomForecastIndicator {
   }
 
   get targetIndicatorId() {
-    return this.targetIndicatorInformation.targetIndicatorId;
+    return this.targetIndicator.targetIndicatorId;
   }
 
   get name() {
@@ -66,7 +66,7 @@ export class CustomForecastIndicator {
     return {
       id: this.id,
       customForecastIndicatorName: this.customForecastIndicatorName,
-      targetIndicatorInformation: this.targetIndicatorInformation,
+      targetIndicator: this.targetIndicator,
       sourceIndicatorsInformation: this.sourceIndicatorsInformation,
       type: this.type,
       grangerVerification: this.grangerVerification,

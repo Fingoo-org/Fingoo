@@ -32,7 +32,7 @@ export type CustomForecastIndicatorResponse = {
   id: string;
   customForecastIndicatorName: string;
   type: IndicatorType;
-  targetIndicatorInformation: TargetIndicatorInfo;
+  targetIndicator: TargetIndicatorInfo;
   grangerVerification: VerificationType[];
   cointJohansenVerification: VerificationType[];
   sourceIndicatorsInformation: sourceIndicator[];
