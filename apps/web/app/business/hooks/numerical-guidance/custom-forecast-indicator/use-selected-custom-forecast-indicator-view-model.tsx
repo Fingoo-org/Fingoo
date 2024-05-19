@@ -10,6 +10,7 @@ import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspa
 import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
 import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
@@ -44,6 +45,7 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     return convertCustomForecastIndicatorViewModel({
       ...foundCustomForecastIndicator,
       sourceIndicatorsInformation: selectedCustomForecastIndicator.sourceIndicatorsInformation,
+      sourceIndicators: selectedCustomForecastIndicator.sourceIndicators,
     });
   }, [foundCustomForecastIndicator, selectedCustomForecastIndicator]);
 
@@ -61,8 +63,8 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     });
   }, [convertedSelectedCustomForecastIndicator]);
 
-  const addSourceIndicator = (indicatorId: string, indicatorType: IndicatorType) => {
-    selectedCustomerForecastIndicatorActions.addSourceIndicator(indicatorId, indicatorType);
+  const addSourceIndicator = (indicator: Indicator) => {
+    selectedCustomerForecastIndicatorActions.addSourceIndicator(indicator.formattedIndicator);
   };
 
   const deleteSourceIndicator = (indicatorId: string) => {

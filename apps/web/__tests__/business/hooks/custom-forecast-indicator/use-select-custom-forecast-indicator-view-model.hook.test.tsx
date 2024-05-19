@@ -1,8 +1,9 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
-import { resetMockDB } from '@/app/mocks/db';
+import { mockDB, resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';
+import { createIndicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 
 const wrapper = SWRProviderWithoutCache;
 
@@ -79,11 +80,13 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
       });
       await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
       act(() => {
-        result.current.addSourceIndicator('2', 'stocks');
+        result.current.addSourceIndicator(createIndicator(mockDB.getIndicator('2')!));
       });
 
       // then
-      expect(result.current.sourceIndicatorList).toHaveLength(2);
+      expect(result.current.selectedCustomForecastIndicator?.sourceIndicators).toHaveLength(2);
+      expect(result.current.selectedCustomForecastIndicator?.sourceIndicators[0].symbol).toBe('GOOG');
+      expect(result.current.selectedCustomForecastIndicator?.sourceIndicators[1].symbol).toBe('MSFT');
     });
 
     it('재료 지표를 삭제하면, 재료 지표 리스트에서 삭제된다', async () => {

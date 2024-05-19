@@ -23,7 +23,7 @@ export default function SourceIndicatorSearchListItem({ item, style }: SourceInd
 
   const handleSourceIndicatorAdd = () => {
     // Risk: mock 상태
-    addSourceIndicator(indicator.id, item.indicatorType);
+    addSourceIndicator(indicator);
   };
 
   const handleSourceIndicatorDelete = () => {

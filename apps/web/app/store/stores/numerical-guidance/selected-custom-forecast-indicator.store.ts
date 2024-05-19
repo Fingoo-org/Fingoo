@@ -3,10 +3,11 @@ import { storeResetFns } from '../reset-store';
 import { CustomForecastIndicatorResponse } from '../../querys/numerical-guidance/custom-forecast-indicator.query';
 import { deepEqual } from '@/app/utils/helper';
 import { IndicatorType } from './indicator-list.store';
+import { IndicatorByTypeResponse } from '../../querys/numerical-guidance/indicator-list.query';
 
 type SourceIndicatorOfCustomForecastIndicatorResponse = Pick<
   CustomForecastIndicatorResponse,
-  'id' | 'sourceIndicatorsInformation'
+  'id' | 'sourceIndicatorsInformation' | 'sourceIndicators'
 >;
 
 type SelectedCustomForecastIndicatorState = {
@@ -21,7 +22,7 @@ type SelectedCustomForecastIndicatorAction = {
       state: SelectedCustomForecastIndicatorStore,
     ) => SelectedCustomForecastIndicatorStore | Partial<SelectedCustomForecastIndicatorStore>,
   ) => void;
-  addSourceIndicator: (indicatorId: string, indicatorType: IndicatorType) => void;
+  addSourceIndicator: (indicatorByType: IndicatorByTypeResponse) => void;
   deleteSourceIndicator: (indicatorId: string) => void;
   updateSourceIndicatorWeight: (indicatorId: string, weight: number) => void;
   initialize: () => void;
@@ -35,6 +36,7 @@ const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState 
   selectedCustomForecastIndicator: {
     id: '',
     sourceIndicatorsInformation: [],
+    sourceIndicators: [],
   },
   isUpdated: false,
 };
@@ -72,15 +74,17 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
           };
         });
       },
-      addSourceIndicator: (indicatorId, indicatorType) => {
+      addSourceIndicator: (indicatorByType: IndicatorByTypeResponse) => {
+        console.log(indicatorByType);
         get().actions.update((state) => ({
           ...state,
           selectedCustomForecastIndicator: {
             ...state.selectedCustomForecastIndicator,
             sourceIndicatorsInformation: [
               ...state.selectedCustomForecastIndicator.sourceIndicatorsInformation,
-              { sourceIndicatorId: indicatorId, weight: 0, indicatorType },
+              { sourceIndicatorId: indicatorByType.id, weight: 0, indicatorType: indicatorByType.indicatorType },
             ],
+            sourceIndicators: [...state.selectedCustomForecastIndicator.sourceIndicators, indicatorByType],
           },
         }));
       },

@@ -1,5 +1,8 @@
 import { IndicatorValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
-import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import {
+  IndicatorByTypeResponse,
+  IndicatorInfoResponse,
+} from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { IndicatorBoardMetadataResponse } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from '../mock-data/indicators-value.mock';
 import { CustomForecastIndicatorListResponse } from '../../store/querys/numerical-guidance/custom-forecast-indicator.query';
@@ -17,6 +20,7 @@ import {
 type MockDatabase = {
   metadataList: IndicatorBoardMetadataResponse[];
   indicatorList: IndicatorInfoResponse[];
+  indicators: IndicatorByTypeResponse[];
   indicatorsValue: IndicatorValueResponse[];
   historyIndicatorsValue: historyIndicatorsValueMockData;
   customForecastIndicatorList: CustomForecastIndicatorListResponse;
@@ -58,6 +62,52 @@ const initialState: MockDatabase = {
       sections: {
         section1: [],
       },
+    },
+  ],
+  indicators: [
+    {
+      symbol: 'AAPL',
+      id: '1',
+      indicatorType: 'stocks',
+      name: '애플',
+      country: 'United States',
+      currency: 'USD',
+      exchange: 'NYSE',
+      mic_code: 'XNYS',
+      type: 'Common Stock',
+    },
+    {
+      symbol: 'MSFT',
+      id: '2',
+      indicatorType: 'stocks',
+      name: '마이크로소프트',
+      country: 'United States',
+      currency: 'USD',
+      exchange: 'NYSE',
+      mic_code: 'XNYS',
+      type: 'Common Stock',
+    },
+    {
+      symbol: 'GOOG',
+      id: '3',
+      indicatorType: 'stocks',
+      name: '구글',
+      country: 'United States',
+      currency: 'USD',
+      exchange: 'NYSE',
+      mic_code: 'XNYS',
+      type: 'Common Stock',
+    },
+    {
+      symbol: '삼성전자',
+      id: '9785ba85-c924-4269-8238-e1f10b404177',
+      indicatorType: 'stocks',
+      name: '삼성전자',
+      country: 'United States',
+      currency: 'USD',
+      exchange: 'NYSE',
+      mic_code: 'XNYS',
+      type: 'Common Stock',
     },
   ],
   indicatorList: [
@@ -137,7 +187,6 @@ const initialState: MockDatabase = {
           currency: 'USD',
           exchange: 'NYSE',
           mic_code: 'XNYS',
-
           type: 'Common Stock',
         },
       ],
