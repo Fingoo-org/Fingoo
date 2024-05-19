@@ -6,7 +6,7 @@ import { FundIndicator } from './indicators/fund-indicator.service';
 import { BondIndicator } from './indicators/bond-indicator.service';
 import { EtfIndicator } from './indicators/etf-indicator.service';
 import {
-  indicatorByTypeResponse,
+  IndicatorByTypeResponse,
   StocksIndicatorResponse,
   ForexPairsIndicatorResponse,
   CryptocurrenciesIndicatorResponse,
@@ -17,7 +17,7 @@ import {
 } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { Indicator } from './indicators/indicator.service';
 
-export function createIndicator(data: indicatorByTypeResponse): Indicator {
+export function createIndicator(data: IndicatorByTypeResponse): Indicator {
   const { indicatorType } = data;
   switch (indicatorType) {
     case 'stocks':
@@ -39,6 +39,6 @@ export function createIndicator(data: indicatorByTypeResponse): Indicator {
   }
 }
 
-export function convertIndicatorViewModel(data: indicatorByTypeResponse[]): Indicator[] {
+export function convertIndicatorViewModel(data: IndicatorByTypeResponse[]): Indicator[] {
   return data.map((indicator) => createIndicator(indicator));
 }

@@ -18,4 +18,17 @@ export class IndexIndicator extends Indicator {
     this.exchange = exchange;
     this.mic_code = mic_code;
   }
+
+  get formattedIndicator(): IndicesIndicatorResponse {
+    return {
+      id: this.id,
+      indicatorType: 'indices',
+      symbol: this.symbol,
+      name: this.name,
+      country: this.country,
+      currency: this.currency,
+      exchange: this.exchange,
+      mic_code: this.mic_code,
+    };
+  }
 }

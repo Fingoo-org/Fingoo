@@ -1,6 +1,7 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import useSWRImmutable from 'swr/immutable';
+import { mutate } from 'swr';
 
 import { API_PATH } from '../api-path';
 import {
@@ -11,6 +12,7 @@ import {
   postFetcher,
 } from '../fetcher';
 import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
+import { IndicatorByTypeResponse } from './indicator-list.query';
 
 export type sourceIndicator = {
   sourceIndicatorId: string;
@@ -32,10 +34,11 @@ export type CustomForecastIndicatorResponse = {
   id: string;
   customForecastIndicatorName: string;
   type: IndicatorType;
-  targetIndicatorInformation: TargetIndicatorInfo;
+  targetIndicator: IndicatorByTypeResponse;
   grangerVerification: VerificationType[];
   cointJohansenVerification: VerificationType[];
   sourceIndicatorsInformation: sourceIndicator[];
+  sourceIndicators: IndicatorByTypeResponse[];
 };
 
 export type CustomForecastIndicatorListResponse = CustomForecastIndicatorResponse[];
@@ -122,4 +125,10 @@ export const useUpdateCustomForecastIndicatorName = (customForecastIndicatorId: 
       });
     },
   );
+};
+
+export const useRevalidateCustomForecastIndicatorList = () => {
+  return () => {
+    mutate(API_PATH.customForecastIndicator);
+  };
 };

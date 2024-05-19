@@ -38,7 +38,9 @@ export default function CustomForecastIndicatorDialogMenu() {
 
   const handleCustomForecastIndicatorDelete = () => {
     closeDialog();
-    deleteCustomForecastIndicator(selectedCustomForecastIndicator.id);
+    if (selectedCustomForecastIndicator) {
+      deleteCustomForecastIndicator(selectedCustomForecastIndicator.id);
+    }
   };
 
   return (

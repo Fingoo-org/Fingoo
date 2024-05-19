@@ -13,7 +13,6 @@ export type IndicatorInfoResponse = {
 
 export type StocksIndicatorResponse = {
   id: string;
-  index: number;
   indicatorType: 'stocks';
   symbol: string;
   name: string;
@@ -26,7 +25,6 @@ export type StocksIndicatorResponse = {
 
 export type ForexPairsIndicatorResponse = {
   id: string;
-  index: number;
   indicatorType: 'forex_pairs';
   symbol: string;
   currency_group: string;
@@ -36,7 +34,6 @@ export type ForexPairsIndicatorResponse = {
 
 export type CryptocurrenciesIndicatorResponse = {
   id: string;
-  index: number;
   indicatorType: 'cryptocurrencies';
   symbol: string;
   available_exchanges: string[];
@@ -46,7 +43,6 @@ export type CryptocurrenciesIndicatorResponse = {
 
 export type EtfIndicatorResponse = {
   id: string;
-  index: number;
   indicatorType: 'etf';
   symbol: string;
   name: string;
@@ -57,7 +53,6 @@ export type EtfIndicatorResponse = {
 
 export type IndicesIndicatorResponse = {
   id: string;
-  index: number;
   indicatorType: 'indices';
   symbol: string;
   name: string;
@@ -69,7 +64,6 @@ export type IndicesIndicatorResponse = {
 
 export type FundsIndicatorResponse = {
   id: string;
-  index: number;
   indicatorType: 'funds';
   symbol: string;
   name: string;
@@ -81,7 +75,6 @@ export type FundsIndicatorResponse = {
 
 export type BondsIndicatorResponse = {
   id: string;
-  index: number;
   indicatorType: 'bonds';
   symbol: string;
   name: string;
@@ -97,7 +90,7 @@ type PaginationMeta = {
   cursor: number;
 };
 
-export type indicatorByTypeResponse =
+export type IndicatorByTypeResponse =
   | StocksIndicatorResponse
   | ForexPairsIndicatorResponse
   | CryptocurrenciesIndicatorResponse
@@ -107,7 +100,7 @@ export type indicatorByTypeResponse =
   | BondsIndicatorResponse;
 
 export type IndicatorListResponse = {
-  data: indicatorByTypeResponse[];
+  data: IndicatorByTypeResponse[];
   meta: PaginationMeta;
 };
 
@@ -130,7 +123,7 @@ export const useFetchIndicatorList = () =>
   useSWRImmutable<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);
 
 export const useFetchSearchedIndicatorList = (search: string, indicatorType: IndicatorType) => {
-  return useSWRImmutable<indicatorByTypeResponse[]>(
+  return useSWRImmutable<IndicatorByTypeResponse[]>(
     search.length > 1 ? `${API_PATH.indicatorList}/search?symbol=${search}&type=${indicatorType}` : null,
     defaultFetcher,
   );

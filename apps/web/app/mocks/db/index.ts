@@ -1,5 +1,8 @@
 import { IndicatorValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
-import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import {
+  IndicatorByTypeResponse,
+  IndicatorInfoResponse,
+} from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { IndicatorBoardMetadataResponse } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from '../mock-data/indicators-value.mock';
 import { CustomForecastIndicatorListResponse } from '../../store/querys/numerical-guidance/custom-forecast-indicator.query';
@@ -17,6 +20,7 @@ import {
 type MockDatabase = {
   metadataList: IndicatorBoardMetadataResponse[];
   indicatorList: IndicatorInfoResponse[];
+  indicators: IndicatorByTypeResponse[];
   indicatorsValue: IndicatorValueResponse[];
   historyIndicatorsValue: historyIndicatorsValueMockData;
   customForecastIndicatorList: CustomForecastIndicatorListResponse;
@@ -60,6 +64,52 @@ const initialState: MockDatabase = {
       },
     },
   ],
+  indicators: [
+    {
+      symbol: 'AAPL',
+      id: '1',
+      indicatorType: 'stocks',
+      name: '애플',
+      country: 'United States',
+      currency: 'USD',
+      exchange: 'NYSE',
+      mic_code: 'XNYS',
+      type: 'Common Stock',
+    },
+    {
+      symbol: 'MSFT',
+      id: '2',
+      indicatorType: 'stocks',
+      name: '마이크로소프트',
+      country: 'United States',
+      currency: 'USD',
+      exchange: 'NYSE',
+      mic_code: 'XNYS',
+      type: 'Common Stock',
+    },
+    {
+      symbol: 'GOOG',
+      id: '3',
+      indicatorType: 'stocks',
+      name: '구글',
+      country: 'United States',
+      currency: 'USD',
+      exchange: 'NYSE',
+      mic_code: 'XNYS',
+      type: 'Common Stock',
+    },
+    {
+      symbol: '삼성전자',
+      id: '9785ba85-c924-4269-8238-e1f10b404177',
+      indicatorType: 'stocks',
+      name: '삼성전자',
+      country: 'United States',
+      currency: 'USD',
+      exchange: 'NYSE',
+      mic_code: 'XNYS',
+      type: 'Common Stock',
+    },
+  ],
   indicatorList: [
     {
       id: '1',
@@ -88,10 +138,16 @@ const initialState: MockDatabase = {
     {
       id: '11',
       customForecastIndicatorName: 'customForecastIndicator1',
-      targetIndicatorInformation: {
+      targetIndicator: {
         symbol: 'AAPL',
-        targetIndicatorId: '1',
+        id: '1',
         indicatorType: 'stocks',
+        name: '애플',
+        country: 'United States',
+        currency: 'USD',
+        exchange: 'NYSE',
+        mic_code: 'XNYS',
+        type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
         {
@@ -121,14 +177,33 @@ const initialState: MockDatabase = {
           verification: 'True',
         },
       ],
+      sourceIndicators: [
+        {
+          symbol: 'GOOG',
+          id: '3',
+          indicatorType: 'stocks',
+          name: '구글',
+          country: 'United States',
+          currency: 'USD',
+          exchange: 'NYSE',
+          mic_code: 'XNYS',
+          type: 'Common Stock',
+        },
+      ],
     },
     {
       id: '12',
       customForecastIndicatorName: 'customForecastIndicator2',
-      targetIndicatorInformation: {
+      targetIndicator: {
         symbol: 'MSFT',
-        targetIndicatorId: '2',
+        id: '2',
         indicatorType: 'stocks',
+        name: '마이크로소프트',
+        country: 'United States',
+        currency: 'USD',
+        exchange: 'NYSE',
+        mic_code: 'XNYS',
+        type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
         {
@@ -171,14 +246,45 @@ const initialState: MockDatabase = {
           verification: 'True',
         },
       ],
+      sourceIndicators: [
+        {
+          symbol: 'AAPL',
+          id: '1',
+          indicatorType: 'stocks',
+          name: '애플',
+          country: 'United States',
+          currency: 'USD',
+          exchange: 'NYSE',
+          mic_code: 'XNYS',
+          type: 'Common Stock',
+        },
+        {
+          symbol: 'GOOG',
+          id: '3',
+          indicatorType: 'stocks',
+          name: '구글',
+          country: 'United States',
+          currency: 'USD',
+          exchange: 'NYSE',
+          mic_code: 'XNYS',
+
+          type: 'Common Stock',
+        },
+      ],
     },
     {
       id: '13',
       customForecastIndicatorName: 'customForecastIndicator3',
-      targetIndicatorInformation: {
+      targetIndicator: {
         symbol: 'GOOG',
-        targetIndicatorId: '3',
+        id: '3',
         indicatorType: 'stocks',
+        name: '구글',
+        country: 'United States',
+        currency: 'USD',
+        exchange: 'NYSE',
+        mic_code: 'XNYS',
+        type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
         {
@@ -221,14 +327,45 @@ const initialState: MockDatabase = {
           verification: 'True',
         },
       ],
+      sourceIndicators: [
+        {
+          symbol: 'AAPL',
+          id: '1',
+          indicatorType: 'stocks',
+          name: '애플',
+          country: 'United States',
+          currency: 'USD',
+          exchange: 'NYSE',
+          mic_code: 'XNYS',
+
+          type: 'Common Stock',
+        },
+        {
+          symbol: 'MSFT',
+          id: '2',
+          indicatorType: 'stocks',
+          name: '마이크로소프트',
+          country: 'United States',
+          currency: 'USD',
+          exchange: 'NYSE',
+          mic_code: 'XNYS',
+          type: 'Common Stock',
+        },
+      ],
     },
     {
       id: '14',
       customForecastIndicatorName: '삼성전자 예측 지표',
-      targetIndicatorInformation: {
+      targetIndicator: {
         symbol: '삼성전자',
-        targetIndicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
+        id: '9785ba85-c924-4269-8238-e1f10b404177',
         indicatorType: 'stocks',
+        name: '삼성전자',
+        country: 'United States',
+        currency: 'USD',
+        exchange: 'NYSE',
+        mic_code: 'XNYS',
+        type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
         {
@@ -256,6 +393,19 @@ const initialState: MockDatabase = {
         {
           indicatorId: '1',
           verification: 'True',
+        },
+      ],
+      sourceIndicators: [
+        {
+          symbol: 'AAPL',
+          id: '1',
+          indicatorType: 'stocks',
+          name: '애플',
+          country: 'United States',
+          currency: 'USD',
+          exchange: 'NYSE',
+          mic_code: 'XNYS',
+          type: 'Common Stock',
         },
       ],
     },

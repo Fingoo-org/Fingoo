@@ -80,8 +80,7 @@ export const convertCustomForecastHistoryIndicatorsValueViewModel = (
   let memorizedCustomForecastIndicators = [...selectedCustomForeacastIndicators];
   return customForecastHistoryIndicatorsValue.reduce<CustomForecastIndicatorValue[]>((acc, item) => {
     const index = memorizedCustomForecastIndicators.findIndex(
-      (customForecastIndicator) =>
-        customForecastIndicator.targetIndicatorInformation.targetIndicatorId === item.indicator.id,
+      (customForecastIndicator) => customForecastIndicator.targetIndicator.id === item.indicator.id,
     );
 
     if (index === -1) return acc;
@@ -92,7 +91,7 @@ export const convertCustomForecastHistoryIndicatorsValueViewModel = (
       ...acc,
       new CustomForecastIndicatorValue({
         customForecastIndicatorId: customForecastIndicator.id,
-        targetIndicatorId: customForecastIndicator.targetIndicatorInformation.targetIndicatorId,
+        targetIndicatorId: customForecastIndicator.targetIndicator.id,
         ticker: item.indicator.symbol,
         type: item.indicator.type,
         customForecastIndicatorName: customForecastIndicator.customForecastIndicatorName,

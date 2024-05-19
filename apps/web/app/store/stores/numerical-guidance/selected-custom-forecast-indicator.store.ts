@@ -3,20 +3,26 @@ import { storeResetFns } from '../reset-store';
 import { CustomForecastIndicatorResponse } from '../../querys/numerical-guidance/custom-forecast-indicator.query';
 import { deepEqual } from '@/app/utils/helper';
 import { IndicatorType } from './indicator-list.store';
+import { IndicatorByTypeResponse } from '../../querys/numerical-guidance/indicator-list.query';
+
+type SourceIndicatorOfCustomForecastIndicatorResponse = Pick<
+  CustomForecastIndicatorResponse,
+  'id' | 'sourceIndicatorsInformation' | 'sourceIndicators'
+>;
 
 type SelectedCustomForecastIndicatorState = {
-  selectedCustomForecastIndicator: CustomForecastIndicatorResponse;
+  selectedCustomForecastIndicator: SourceIndicatorOfCustomForecastIndicatorResponse;
   isUpdated: boolean;
 };
 
 type SelectedCustomForecastIndicatorAction = {
-  enroll: (customForecastIndicator: CustomForecastIndicatorResponse) => void;
+  enroll: (customForecastIndicator: SourceIndicatorOfCustomForecastIndicatorResponse) => void;
   update: (
     fn: (
       state: SelectedCustomForecastIndicatorStore,
     ) => SelectedCustomForecastIndicatorStore | Partial<SelectedCustomForecastIndicatorStore>,
   ) => void;
-  addSourceIndicator: (indicatorId: string, indicatorType: IndicatorType) => void;
+  addSourceIndicator: (indicatorByType: IndicatorByTypeResponse) => void;
   deleteSourceIndicator: (indicatorId: string) => void;
   updateSourceIndicatorWeight: (indicatorId: string, weight: number) => void;
   initialize: () => void;
@@ -29,22 +35,14 @@ type SelectedCustomForecastIndicatorStore = SelectedCustomForecastIndicatorState
 const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState = {
   selectedCustomForecastIndicator: {
     id: '',
-    customForecastIndicatorName: '',
-    targetIndicatorInformation: {
-      symbol: '',
-      targetIndicatorId: '',
-      indicatorType: 'stocks',
-    },
     sourceIndicatorsInformation: [],
-    grangerVerification: [],
-    cointJohansenVerification: [],
-    type: 'customForecastIndicator',
+    sourceIndicators: [],
   },
   isUpdated: false,
 };
 
 export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomForecastIndicatorStore>((set, get) => {
-  let MemorizedCustomForecastIndicator: CustomForecastIndicatorResponse;
+  let MemorizedCustomForecastIndicator: SourceIndicatorOfCustomForecastIndicatorResponse;
   storeResetFns.add(() => set(initialCustomForecastIndicatorState));
   return {
     ...initialCustomForecastIndicatorState,
@@ -76,15 +74,17 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
           };
         });
       },
-      addSourceIndicator: (indicatorId, indicatorType) => {
+      addSourceIndicator: (indicatorByType: IndicatorByTypeResponse) => {
+        console.log(indicatorByType);
         get().actions.update((state) => ({
           ...state,
           selectedCustomForecastIndicator: {
             ...state.selectedCustomForecastIndicator,
             sourceIndicatorsInformation: [
               ...state.selectedCustomForecastIndicator.sourceIndicatorsInformation,
-              { sourceIndicatorId: indicatorId, weight: 0, indicatorType },
+              { sourceIndicatorId: indicatorByType.id, weight: 0, indicatorType: indicatorByType.indicatorType },
             ],
+            sourceIndicators: [...state.selectedCustomForecastIndicator.sourceIndicators, indicatorByType],
           },
         }));
       },
@@ -96,6 +96,9 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
             sourceIndicatorsInformation: state.selectedCustomForecastIndicator.sourceIndicatorsInformation.filter(
               (sourceIndicator) => sourceIndicator.sourceIndicatorId !== indicatorId,
             ),
+            sourceIndicators: state.selectedCustomForecastIndicator.sourceIndicators.filter((indicator) => {
+              return indicator.id !== indicatorId;
+            }),
           },
         }));
       },

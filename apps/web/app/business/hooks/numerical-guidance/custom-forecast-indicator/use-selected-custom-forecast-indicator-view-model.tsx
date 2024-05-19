@@ -9,7 +9,7 @@ import { useEffect, useMemo } from 'react';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
 import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
-import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 
 export const useSelectedCustomForecastIndicatorViewModel = () => {
   const selectedCustomForecastIndicatorId = useWorkspaceStore((state) => state.selectedCustomForecastIndicatorId);
@@ -39,33 +39,39 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     selectedCustomerForecastIndicatorActions.enroll(foundCustomForecastIndicator);
   }, [foundCustomForecastIndicator]);
 
-  const convertedSelectedCustomForecastIndicator = useMemo(
-    () =>
-      convertCustomForecastIndicatorViewModel({
-        ...selectedCustomForecastIndicator,
-        customForecastIndicatorName: foundCustomForecastIndicator?.customForecastIndicatorName ?? '',
-        grangerVerification: foundCustomForecastIndicator?.grangerVerification ?? [],
-        cointJohansenVerification: foundCustomForecastIndicator?.cointJohansenVerification ?? [],
-      }),
-    [foundCustomForecastIndicator, selectedCustomForecastIndicator],
-  );
+  const convertedSelectedCustomForecastIndicator = useMemo(() => {
+    if (!foundCustomForecastIndicator) return;
+    return convertCustomForecastIndicatorViewModel({
+      ...foundCustomForecastIndicator,
+      sourceIndicatorsInformation: selectedCustomForecastIndicator.sourceIndicatorsInformation,
+      sourceIndicators: selectedCustomForecastIndicator.sourceIndicators,
+    });
+  }, [foundCustomForecastIndicator, selectedCustomForecastIndicator]);
 
   const sourceIndicatorList = useMemo(() => {
     if (!convertedSelectedCustomForecastIndicator) return [];
 
     return convertedSelectedCustomForecastIndicator.sourceIndicatorsInformation.map((sourceIndicator) => {
+      const sourceIndicatorInfo = convertedSelectedCustomForecastIndicator.sourceIndicatorsInfo.find(
+        (indicator) => indicator.id === sourceIndicator.sourceIndicatorId,
+      );
+
       return {
-        ...sourceIndicator,
         id: sourceIndicator.sourceIndicatorId,
         disabled: !convertedSelectedCustomForecastIndicator.checkGrantedVerificationBySourceIndicatorId(
           sourceIndicator.sourceIndicatorId,
         ),
+        weight: sourceIndicator.weight,
+        name: sourceIndicatorInfo?.name ?? '',
+        symbol: sourceIndicatorInfo?.symbol ?? '',
+        exchange: sourceIndicatorInfo?.exchange ?? '',
+        indicatorType: sourceIndicatorInfo?.indicatorType ?? 'stocks',
       };
     });
   }, [convertedSelectedCustomForecastIndicator]);
 
-  const addSourceIndicator = (indicatorId: string, indicatorType: IndicatorType) => {
-    selectedCustomerForecastIndicatorActions.addSourceIndicator(indicatorId, indicatorType);
+  const addSourceIndicator = (indicator: Indicator) => {
+    selectedCustomerForecastIndicatorActions.addSourceIndicator(indicator.formattedIndicator);
   };
 
   const deleteSourceIndicator = (indicatorId: string) => {
@@ -77,6 +83,8 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   };
 
   const applyUpdatedSourceIndicator = async () => {
+    if (!convertedSelectedCustomForecastIndicator) return;
+
     await updateSourceIndicatorTrigger(
       {
         sourceIndicatorsInformation: convertedSelectedCustomForecastIndicator.sourceIndicatorsInformation,

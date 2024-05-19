@@ -7,13 +7,28 @@ export class FundIndicator extends Indicator {
   readonly country: string;
   readonly currency: string;
   readonly exchange: string;
+  readonly type: string;
 
-  constructor({ id, indicatorType, symbol, name, country, currency, exchange }: FundsIndicatorResponse) {
+  constructor({ id, indicatorType, symbol, name, country, currency, exchange, type }: FundsIndicatorResponse) {
     super(id, indicatorType);
     this.symbol = symbol;
     this.name = name;
     this.country = country;
     this.currency = currency;
     this.exchange = exchange;
+    this.type = type;
+  }
+
+  get formattedIndicator(): FundsIndicatorResponse {
+    return {
+      id: this.id,
+      indicatorType: 'funds',
+      symbol: this.symbol,
+      name: this.name,
+      country: this.country,
+      currency: this.currency,
+      exchange: this.exchange,
+      type: this.type,
+    };
   }
 }

@@ -5,32 +5,37 @@ import {
   VerificationType,
   sourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
+import { IndicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import { convertIndicatorViewModel, createIndicator } from './indicator-list/indicator-view-model.service';
 
 export class CustomForecastIndicator {
   readonly id: string;
   readonly customForecastIndicatorName: string;
-  readonly targetIndicatorInformation: TargetIndicatorInfo;
+  readonly targetIndicator: IndicatorByTypeResponse;
   readonly sourceIndicatorsInformation: sourceIndicator[];
   readonly type: IndicatorType;
   readonly grangerVerification: VerificationType[];
   readonly cointJohansenVerification: VerificationType[];
+  readonly sourceIndicators: IndicatorByTypeResponse[];
   constructor({
     id,
     customForecastIndicatorName,
-    targetIndicatorInformation,
+    targetIndicator,
     sourceIndicatorsInformation,
     type,
     grangerVerification,
     cointJohansenVerification,
+    sourceIndicators,
   }: CustomForecastIndicatorResponse) {
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
-    this.targetIndicatorInformation = targetIndicatorInformation;
+    this.targetIndicator = targetIndicator;
     this.sourceIndicatorsInformation = sourceIndicatorsInformation;
     this.type = type;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
+    this.sourceIndicators = sourceIndicators;
   }
 
   get sourceIndicatorIds() {
@@ -38,11 +43,19 @@ export class CustomForecastIndicator {
   }
 
   get targetIndicatorId() {
-    return this.targetIndicatorInformation.targetIndicatorId;
+    return this.targetIndicator.id;
   }
 
   get name() {
     return this.customForecastIndicatorName;
+  }
+
+  get targetIndicatorInfo() {
+    return createIndicator(this.targetIndicator);
+  }
+
+  get sourceIndicatorsInfo() {
+    return convertIndicatorViewModel(this.sourceIndicators);
   }
 
   getSourceIndicatorWeight(sourceIndicatorId: string) {
@@ -66,11 +79,12 @@ export class CustomForecastIndicator {
     return {
       id: this.id,
       customForecastIndicatorName: this.customForecastIndicatorName,
-      targetIndicatorInformation: this.targetIndicatorInformation,
+      targetIndicator: this.targetIndicator,
       sourceIndicatorsInformation: this.sourceIndicatorsInformation,
       type: this.type,
       grangerVerification: this.grangerVerification,
       cointJohansenVerification: this.cointJohansenVerification,
+      sourceIndicators: this.sourceIndicators,
     };
   }
 }
