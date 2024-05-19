@@ -7,6 +7,7 @@ import {
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { indicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import { createIndicator } from './indicator-list/indicator-view-model.service';
 
 export class CustomForecastIndicator {
   readonly id: string;
@@ -44,6 +45,10 @@ export class CustomForecastIndicator {
 
   get name() {
     return this.customForecastIndicatorName;
+  }
+
+  get targetIndicatorInfo() {
+    return createIndicator(this.targetIndicator);
   }
 
   getSourceIndicatorWeight(sourceIndicatorId: string) {
