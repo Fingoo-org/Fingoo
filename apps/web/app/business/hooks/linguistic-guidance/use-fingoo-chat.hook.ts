@@ -3,10 +3,9 @@ import { API_PATH } from '@/app/store/querys/api-path';
 import { IndicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { createIndicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 import {
-  CreateCustomForecastIndicatorRequestBody,
   updateSourceIndicatorRequestBody,
+  useRevalidateCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import { generateId, type ChatRequest, type FunctionCallHandler, type ToolCallHandler } from 'ai';
 import { instance } from '@/app/utils/http';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
@@ -36,6 +35,7 @@ function formatSymbol(symbol: string) {
 }
 
 export const useFingooChat = () => {
+  const revalidateCustomForecastIndicatorList = useRevalidateCustomForecastIndicatorList();
   const { addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
   const { createCustomForecastIndicator } = useCustomForecastIndicatorListViewModel();
   const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
@@ -87,6 +87,7 @@ export const useFingooChat = () => {
         })),
       };
       await instance.patch(`${API_PATH.customForecastIndicator}/${custonforecastIndicatorId}`, body);
+      revalidateCustomForecastIndicatorList();
 
       addCustomForecastIndicatorToMetadata(custonforecastIndicatorId);
       // 4: 예측 지표 값을 가져온다.

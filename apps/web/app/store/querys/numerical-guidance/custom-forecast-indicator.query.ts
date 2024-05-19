@@ -1,6 +1,7 @@
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import useSWRImmutable from 'swr/immutable';
+import { mutate } from 'swr';
 
 import { API_PATH } from '../api-path';
 import {
@@ -124,4 +125,10 @@ export const useUpdateCustomForecastIndicatorName = (customForecastIndicatorId: 
       });
     },
   );
+};
+
+export const useRevalidateCustomForecastIndicatorList = () => {
+  return () => {
+    mutate(API_PATH.customForecastIndicator);
+  };
 };
