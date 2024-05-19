@@ -11,7 +11,7 @@ import {
   postFetcher,
 } from '../fetcher';
 import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
-import { indicatorByTypeResponse } from './indicator-list.query';
+import { IndicatorByTypeResponse } from './indicator-list.query';
 
 export type sourceIndicator = {
   sourceIndicatorId: string;
@@ -33,7 +33,7 @@ export type CustomForecastIndicatorResponse = {
   id: string;
   customForecastIndicatorName: string;
   type: IndicatorType;
-  targetIndicator: indicatorByTypeResponse;
+  targetIndicator: IndicatorByTypeResponse;
   grangerVerification: VerificationType[];
   cointJohansenVerification: VerificationType[];
   sourceIndicatorsInformation: sourceIndicator[];

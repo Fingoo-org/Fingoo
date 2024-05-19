@@ -1,6 +1,6 @@
 import { useChat } from 'ai/react';
 import { API_PATH } from '@/app/store/querys/api-path';
-import { indicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import { IndicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { createIndicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 import {
   CreateCustomForecastIndicatorRequestBody,
@@ -12,7 +12,7 @@ import { instance } from '@/app/utils/http';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useCustomForecastIndicatorListViewModel } from '../numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 
-async function getIndicatorIdBySymbol(symbol: string): Promise<indicatorByTypeResponse> {
+async function getIndicatorIdBySymbol(symbol: string): Promise<IndicatorByTypeResponse> {
   const { data } = await instance.get(`${API_PATH.indicatorList}/search`, {
     params: {
       symbol,
