@@ -16,4 +16,16 @@ export class EtfIndicator extends Indicator {
     this.currency = currency;
     this.exchange = exchange;
   }
+
+  get formattedIndicator(): EtfIndicatorResponse {
+    return {
+      id: this.id,
+      indicatorType: 'etf',
+      symbol: this.symbol,
+      name: this.name,
+      country: this.country,
+      currency: this.currency,
+      exchange: this.exchange,
+    };
+  }
 }

@@ -30,4 +30,15 @@ export class ForexPairIndicator extends Indicator {
   get exchange(): string {
     return this.currency_group;
   }
+
+  get formattedIndicator(): ForexPairsIndicatorResponse {
+    return {
+      id: this.id,
+      indicatorType: 'forex_pairs',
+      symbol: this.symbol,
+      currency_group: this.currency_group,
+      currency_base: this.currency_base,
+      currency_quote: this.currency_quote,
+    };
+  }
 }

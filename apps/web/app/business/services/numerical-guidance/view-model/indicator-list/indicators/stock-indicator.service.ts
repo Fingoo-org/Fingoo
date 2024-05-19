@@ -1,6 +1,8 @@
 import { Indicator } from './indicator.service';
 
-import { StocksIndicatorResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import {
+  StocksIndicatorResponse,
+} from '@/app/store/querys/numerical-guidance/indicator-list.query';
 
 export class StockIndicator extends Indicator {
   readonly symbol: string;
@@ -30,5 +32,19 @@ export class StockIndicator extends Indicator {
     this.exchange = exchange;
     this.mic_code = mic_code;
     this.type = type;
+  }
+
+  get formattedIndicator(): StocksIndicatorResponse {
+    return {
+      id: this.id,
+      indicatorType: 'stocks',
+      symbol: this.symbol,
+      name: this.name,
+      country: this.country,
+      currency: this.currency,
+      exchange: this.exchange,
+      mic_code: this.mic_code,
+      type: this.type,
+    };
   }
 }

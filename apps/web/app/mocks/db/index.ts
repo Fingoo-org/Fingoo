@@ -97,7 +97,6 @@ const initialState: MockDatabase = {
         currency: 'USD',
         exchange: 'NYSE',
         mic_code: 'XNYS',
-        index: 1,
         type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
@@ -138,7 +137,7 @@ const initialState: MockDatabase = {
           currency: 'USD',
           exchange: 'NYSE',
           mic_code: 'XNYS',
-          index: 1,
+
           type: 'Common Stock',
         },
       ],
@@ -155,7 +154,6 @@ const initialState: MockDatabase = {
         currency: 'USD',
         exchange: 'NYSE',
         mic_code: 'XNYS',
-        index: 1,
         type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
@@ -209,7 +207,6 @@ const initialState: MockDatabase = {
           currency: 'USD',
           exchange: 'NYSE',
           mic_code: 'XNYS',
-          index: 1,
           type: 'Common Stock',
         },
         {
@@ -221,7 +218,7 @@ const initialState: MockDatabase = {
           currency: 'USD',
           exchange: 'NYSE',
           mic_code: 'XNYS',
-          index: 1,
+
           type: 'Common Stock',
         },
       ],
@@ -238,7 +235,6 @@ const initialState: MockDatabase = {
         currency: 'USD',
         exchange: 'NYSE',
         mic_code: 'XNYS',
-        index: 1,
         type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
@@ -292,7 +288,7 @@ const initialState: MockDatabase = {
           currency: 'USD',
           exchange: 'NYSE',
           mic_code: 'XNYS',
-          index: 1,
+
           type: 'Common Stock',
         },
         {
@@ -304,7 +300,6 @@ const initialState: MockDatabase = {
           currency: 'USD',
           exchange: 'NYSE',
           mic_code: 'XNYS',
-          index: 1,
           type: 'Common Stock',
         },
       ],
@@ -321,7 +316,6 @@ const initialState: MockDatabase = {
         currency: 'USD',
         exchange: 'NYSE',
         mic_code: 'XNYS',
-        index: 1,
         type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
@@ -362,7 +356,6 @@ const initialState: MockDatabase = {
           currency: 'USD',
           exchange: 'NYSE',
           mic_code: 'XNYS',
-          index: 1,
           type: 'Common Stock',
         },
       ],
