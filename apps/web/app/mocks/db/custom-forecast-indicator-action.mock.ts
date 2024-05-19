@@ -45,6 +45,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
       grangerVerification: [],
       cointJohansenVerification: [],
       type: 'customForecastIndicator',
+      sourceIndicators: [],
     } as CustomForecastIndicatorResponse;
 
     mockDatabaseStore.customForecastIndicatorList = [

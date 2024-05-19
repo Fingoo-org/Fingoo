@@ -17,6 +17,7 @@ export class CustomForecastIndicator {
   readonly type: IndicatorType;
   readonly grangerVerification: VerificationType[];
   readonly cointJohansenVerification: VerificationType[];
+  readonly sourceIndicators: IndicatorByTypeResponse[];
   constructor({
     id,
     customForecastIndicatorName,
@@ -25,6 +26,7 @@ export class CustomForecastIndicator {
     type,
     grangerVerification,
     cointJohansenVerification,
+    sourceIndicators,
   }: CustomForecastIndicatorResponse) {
     this.id = id;
     this.customForecastIndicatorName = customForecastIndicatorName;
@@ -33,6 +35,7 @@ export class CustomForecastIndicator {
     this.type = type;
     this.grangerVerification = grangerVerification;
     this.cointJohansenVerification = cointJohansenVerification;
+    this.sourceIndicators = sourceIndicators;
   }
 
   get sourceIndicatorIds() {
@@ -77,6 +80,7 @@ export class CustomForecastIndicator {
       type: this.type,
       grangerVerification: this.grangerVerification,
       cointJohansenVerification: this.cointJohansenVerification,
+      sourceIndicators: this.sourceIndicators,
     };
   }
 }

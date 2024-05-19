@@ -37,6 +37,7 @@ export type CustomForecastIndicatorResponse = {
   grangerVerification: VerificationType[];
   cointJohansenVerification: VerificationType[];
   sourceIndicatorsInformation: sourceIndicator[];
+  sourceIndicators: IndicatorByTypeResponse[];
 };
 
 export type CustomForecastIndicatorListResponse = CustomForecastIndicatorResponse[];
