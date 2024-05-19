@@ -90,8 +90,15 @@ const initialState: MockDatabase = {
       customForecastIndicatorName: 'customForecastIndicator1',
       targetIndicator: {
         symbol: 'AAPL',
-        targetIndicatorId: '1',
+        id: '1',
         indicatorType: 'stocks',
+        name: '애플',
+        country: 'United States',
+        currency: 'USD',
+        exchange: 'NYSE',
+        mic_code: 'XNYS',
+        index: 1,
+        type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
         {
@@ -127,8 +134,15 @@ const initialState: MockDatabase = {
       customForecastIndicatorName: 'customForecastIndicator2',
       targetIndicator: {
         symbol: 'MSFT',
-        targetIndicatorId: '2',
+        id: '2',
         indicatorType: 'stocks',
+        name: '마이크로소프트',
+        country: 'United States',
+        currency: 'USD',
+        exchange: 'NYSE',
+        mic_code: 'XNYS',
+        index: 1,
+        type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
         {
@@ -177,8 +191,15 @@ const initialState: MockDatabase = {
       customForecastIndicatorName: 'customForecastIndicator3',
       targetIndicator: {
         symbol: 'GOOG',
-        targetIndicatorId: '3',
+        id: '3',
         indicatorType: 'stocks',
+        name: '구글',
+        country: 'United States',
+        currency: 'USD',
+        exchange: 'NYSE',
+        mic_code: 'XNYS',
+        index: 1,
+        type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
         {
@@ -227,8 +248,15 @@ const initialState: MockDatabase = {
       customForecastIndicatorName: '삼성전자 예측 지표',
       targetIndicator: {
         symbol: '삼성전자',
-        targetIndicatorId: '9785ba85-c924-4269-8238-e1f10b404177',
+        id: '9785ba85-c924-4269-8238-e1f10b404177',
         indicatorType: 'stocks',
+        name: '삼성전자',
+        country: 'United States',
+        currency: 'USD',
+        exchange: 'NYSE',
+        mic_code: 'XNYS',
+        index: 1,
+        type: 'Common Stock',
       },
       sourceIndicatorsInformation: [
         {

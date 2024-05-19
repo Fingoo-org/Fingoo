@@ -5,12 +5,13 @@ import {
   VerificationType,
   sourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
+import { indicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 export class CustomForecastIndicator {
   readonly id: string;
   readonly customForecastIndicatorName: string;
-  readonly targetIndicator: TargetIndicatorInfo;
+  readonly targetIndicator: indicatorByTypeResponse;
   readonly sourceIndicatorsInformation: sourceIndicator[];
   readonly type: IndicatorType;
   readonly grangerVerification: VerificationType[];
@@ -38,7 +39,7 @@ export class CustomForecastIndicator {
   }
 
   get targetIndicatorId() {
-    return this.targetIndicator.targetIndicatorId;
+    return this.targetIndicator.id;
   }
 
   get name() {

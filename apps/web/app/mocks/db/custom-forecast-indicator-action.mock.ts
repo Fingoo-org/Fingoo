@@ -30,8 +30,15 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
       customForecastIndicatorName: data.customForecastIndicatorName,
       targetIndicator: {
         symbol: 'Mock',
-        targetIndicatorId: data.targetIndicatorId,
+        id: data.targetIndicatorId,
         indicatorType: 'stocks',
+        name: '가짜 주식',
+        country: 'United States',
+        currency: 'USD',
+        exchange: 'NYSE',
+        mic_code: 'XNYS',
+        index: 1,
+        type: 'Common Stock',
       },
       id,
       sourceIndicatorsInformation: [],
@@ -79,7 +86,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     if (!customForecastIndicator) return;
 
     const targetIndicator = mockDatabaseStore.indicatorList.find(
-      (indicator) => indicator.id === customForecastIndicator.targetIndicator.targetIndicatorId,
+      (indicator) => indicator.id === customForecastIndicator.targetIndicator.id,
     );
 
     if (!targetIndicator) return;

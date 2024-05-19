@@ -24,7 +24,7 @@ export const useCustomForecastIndicatorListInMetadata = (indicatorBoardMetadataI
 
   const targetIndicatorInfo = customForecastIndicatorListInMetadata?.map((customForecastIndicator) => {
     return {
-      id: customForecastIndicator.targetIndicator.targetIndicatorId,
+      id: customForecastIndicator.targetIndicator.id,
       indicatorType: customForecastIndicator.targetIndicator.indicatorType,
     };
   });
