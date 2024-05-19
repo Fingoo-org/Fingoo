@@ -52,12 +52,20 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     if (!convertedSelectedCustomForecastIndicator) return [];
 
     return convertedSelectedCustomForecastIndicator.sourceIndicatorsInformation.map((sourceIndicator) => {
+      const sourceIndicatorInfo = convertedSelectedCustomForecastIndicator.sourceIndicatorsInfo.find(
+        (indicator) => indicator.id === sourceIndicator.sourceIndicatorId,
+      );
+
       return {
-        ...sourceIndicator,
         id: sourceIndicator.sourceIndicatorId,
         disabled: !convertedSelectedCustomForecastIndicator.checkGrantedVerificationBySourceIndicatorId(
           sourceIndicator.sourceIndicatorId,
         ),
+        weight: sourceIndicator.weight,
+        name: sourceIndicatorInfo?.name ?? '',
+        symbol: sourceIndicatorInfo?.symbol ?? '',
+        exchange: sourceIndicatorInfo?.exchange ?? '',
+        indicatorType: sourceIndicatorInfo?.indicatorType ?? 'stocks',
       };
     });
   }, [convertedSelectedCustomForecastIndicator]);
