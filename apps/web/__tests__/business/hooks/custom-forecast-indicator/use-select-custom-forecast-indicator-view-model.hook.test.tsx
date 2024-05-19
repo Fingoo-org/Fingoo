@@ -18,8 +18,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
 
     // when
     // then
-    expect(result.current.selectedCustomForecastIndicator.id).toBe('');
-    expect(result.current.selectedCustomForecastIndicator.targetIndicatorId).toBe('');
+    expect(result.current.selectedCustomForecastIndicator).toBeUndefined();
   });
 
   it('예측 지표를 선택하면, 선택한 예측 지표를 가져온다', async () => {
@@ -30,7 +29,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
     act(() => {
       result.current.selectCustomForecastIndicatorById('12');
     });
-    await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+    await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
 
     // then
     expect(result.current.selectedCustomForecastIndicator?.id).toBe('12');
@@ -44,7 +43,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
     act(() => {
       result.current.selectCustomForecastIndicatorById('12');
     });
-    await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+    await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
 
     // then
     expect(result.current.sourceIndicatorList).toHaveLength(2);
@@ -59,13 +58,13 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
     act(() => {
       result.current.selectCustomForecastIndicatorById('12');
     });
-    await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+    await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
     act(() => {
       result.current.updateCustomForecastIndicatorName('테스트');
     });
 
     // then
-    await waitFor(() => expect(result.current.selectedCustomForecastIndicator.name).toBe('테스트'));
+    await waitFor(() => expect(result.current.selectedCustomForecastIndicator?.name).toBe('테스트'));
   });
 
   describe('sourceIndicator', () => {
@@ -77,7 +76,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
       act(() => {
         result.current.selectCustomForecastIndicatorById('11');
       });
-      await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+      await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
       act(() => {
         result.current.addSourceIndicator('2', 'stocks');
       });
@@ -94,7 +93,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
       act(() => {
         result.current.selectCustomForecastIndicatorById('12');
       });
-      await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+      await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
       act(() => {
         result.current.deleteSourceIndicator('1');
       });
@@ -111,7 +110,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
       act(() => {
         result.current.selectCustomForecastIndicatorById('11');
       });
-      await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+      await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
       act(() => {
         result.current.updateSourceIndicatorWeight('3', 50);
       });
@@ -128,7 +127,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
       act(() => {
         result.current.selectCustomForecastIndicatorById('11');
       });
-      await waitFor(() => expect(result.current.selectedCustomForecastIndicator.id).not.toBe(''));
+      await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
       act(() => {
         result.current.updateSourceIndicatorWeight('3', 50);
       });

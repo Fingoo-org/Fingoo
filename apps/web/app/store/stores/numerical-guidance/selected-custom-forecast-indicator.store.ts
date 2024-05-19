@@ -4,13 +4,18 @@ import { CustomForecastIndicatorResponse } from '../../querys/numerical-guidance
 import { deepEqual } from '@/app/utils/helper';
 import { IndicatorType } from './indicator-list.store';
 
+type SourceIndicatorOfCustomForecastIndicatorResponse = Pick<
+  CustomForecastIndicatorResponse,
+  'id' | 'sourceIndicatorsInformation'
+>;
+
 type SelectedCustomForecastIndicatorState = {
-  selectedCustomForecastIndicator: CustomForecastIndicatorResponse;
+  selectedCustomForecastIndicator: SourceIndicatorOfCustomForecastIndicatorResponse;
   isUpdated: boolean;
 };
 
 type SelectedCustomForecastIndicatorAction = {
-  enroll: (customForecastIndicator: CustomForecastIndicatorResponse) => void;
+  enroll: (customForecastIndicator: SourceIndicatorOfCustomForecastIndicatorResponse) => void;
   update: (
     fn: (
       state: SelectedCustomForecastIndicatorStore,
@@ -29,22 +34,13 @@ type SelectedCustomForecastIndicatorStore = SelectedCustomForecastIndicatorState
 const initialCustomForecastIndicatorState: SelectedCustomForecastIndicatorState = {
   selectedCustomForecastIndicator: {
     id: '',
-    customForecastIndicatorName: '',
-    targetIndicator: {
-      symbol: '',
-      targetIndicatorId: '',
-      indicatorType: 'stocks',
-    },
     sourceIndicatorsInformation: [],
-    grangerVerification: [],
-    cointJohansenVerification: [],
-    type: 'customForecastIndicator',
   },
   isUpdated: false,
 };
 
 export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomForecastIndicatorStore>((set, get) => {
-  let MemorizedCustomForecastIndicator: CustomForecastIndicatorResponse;
+  let MemorizedCustomForecastIndicator: SourceIndicatorOfCustomForecastIndicatorResponse;
   storeResetFns.add(() => set(initialCustomForecastIndicatorState));
   return {
     ...initialCustomForecastIndicatorState,

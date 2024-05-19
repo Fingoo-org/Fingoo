@@ -39,16 +39,13 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
     selectedCustomerForecastIndicatorActions.enroll(foundCustomForecastIndicator);
   }, [foundCustomForecastIndicator]);
 
-  const convertedSelectedCustomForecastIndicator = useMemo(
-    () =>
-      convertCustomForecastIndicatorViewModel({
-        ...selectedCustomForecastIndicator,
-        customForecastIndicatorName: foundCustomForecastIndicator?.customForecastIndicatorName ?? '',
-        grangerVerification: foundCustomForecastIndicator?.grangerVerification ?? [],
-        cointJohansenVerification: foundCustomForecastIndicator?.cointJohansenVerification ?? [],
-      }),
-    [foundCustomForecastIndicator, selectedCustomForecastIndicator],
-  );
+  const convertedSelectedCustomForecastIndicator = useMemo(() => {
+    if (!foundCustomForecastIndicator) return;
+    return convertCustomForecastIndicatorViewModel({
+      ...foundCustomForecastIndicator,
+      sourceIndicatorsInformation: selectedCustomForecastIndicator.sourceIndicatorsInformation,
+    });
+  }, [foundCustomForecastIndicator, selectedCustomForecastIndicator]);
 
   const sourceIndicatorList = useMemo(() => {
     if (!convertedSelectedCustomForecastIndicator) return [];
@@ -77,6 +74,8 @@ export const useSelectedCustomForecastIndicatorViewModel = () => {
   };
 
   const applyUpdatedSourceIndicator = async () => {
+    if (!convertedSelectedCustomForecastIndicator) return;
+
     await updateSourceIndicatorTrigger(
       {
         sourceIndicatorsInformation: convertedSelectedCustomForecastIndicator.sourceIndicatorsInformation,

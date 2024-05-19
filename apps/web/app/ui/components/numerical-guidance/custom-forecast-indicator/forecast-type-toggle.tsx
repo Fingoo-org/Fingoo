@@ -8,7 +8,7 @@ export default function ForecastTypeToggle() {
   const { customForecastTypes } = useCustomForecastIndicatorsValueByMetadata();
 
   const forecastType = customForecastTypes?.find(
-    (item) => item.customForecastIndicatorId === selectedCustomForecastIndicator.id,
+    (item) => item.customForecastIndicatorId === selectedCustomForecastIndicator?.id,
   )?.forecastType;
 
   return (
