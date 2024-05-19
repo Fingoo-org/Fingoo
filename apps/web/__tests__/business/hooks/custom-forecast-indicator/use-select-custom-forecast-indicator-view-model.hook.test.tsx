@@ -46,7 +46,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
     await waitFor(() => expect(result.current.selectedCustomForecastIndicator).not.toBeUndefined());
 
     // then
-    expect(result.current.sourceIndicatorList).toHaveLength(2);
+    expect(result.current.selectedCustomForecastIndicator?.sourceIndicators).toHaveLength(2);
     expect(result.current.selectedCustomForecastIndicator?.sourceIndicators[0].symbol).toBe('AAPL');
     expect(result.current.selectedCustomForecastIndicator?.sourceIndicators[1].symbol).toBe('GOOG');
   });
