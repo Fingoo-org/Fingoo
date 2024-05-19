@@ -103,7 +103,7 @@ describe('useSelectedCustomForecastIndicatorViewModel', () => {
       });
 
       // then
-      expect(result.current.sourceIndicatorList).toHaveLength(1);
+      expect(result.current.selectedCustomForecastIndicator?.sourceIndicators).toHaveLength(1);
     });
 
     it('재료 지표의 가중치를 변경하면, 재료 지표 리스트의 가중치가 변경된다', async () => {

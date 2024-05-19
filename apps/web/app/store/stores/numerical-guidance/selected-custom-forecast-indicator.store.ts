@@ -96,6 +96,9 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
             sourceIndicatorsInformation: state.selectedCustomForecastIndicator.sourceIndicatorsInformation.filter(
               (sourceIndicator) => sourceIndicator.sourceIndicatorId !== indicatorId,
             ),
+            sourceIndicators: state.selectedCustomForecastIndicator.sourceIndicators.filter((indicator) => {
+              return indicator.id !== indicatorId;
+            }),
           },
         }));
       },
