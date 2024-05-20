@@ -99,7 +99,7 @@ const initialState: MockDatabase = {
       type: 'Common Stock',
     },
     {
-      symbol: '삼성전자',
+      symbol: '005930',
       id: '9785ba85-c924-4269-8238-e1f10b404177',
       indicatorType: 'stocks',
       name: '삼성전자',

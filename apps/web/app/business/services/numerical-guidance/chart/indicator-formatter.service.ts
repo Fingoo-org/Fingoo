@@ -69,8 +69,6 @@ export class IndicatorFormatter {
     const biggestDate = getBigestDateInArray(this.indicatorsValue.map((indicator) => indicator.lastDate));
     const smallestDate = getSmallestDateInArray(this.indicatorsValue.map((indicator) => indicator.startDate));
 
-    console.log('biggestDate', biggestDate);
-    console.log('smallestDate', smallestDate);
     let currentDate = smallestDate;
     let result = [];
     while (currentDate <= biggestDate) {
