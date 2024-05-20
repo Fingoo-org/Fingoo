@@ -218,4 +218,38 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1'][0]).toBe('11');
     });
   });
+
+  describe('deleteCustomForecastIndicatorFromMetadata', () => {
+    it('메타데이터를 선택하고 선택한 메타데이터에 예측 지표를 추가했을 때, 추가한 예측 지표를 삭제하면, 메타데이터 값에 선택한 예측 지표가 삭제된다.', async () => {
+      // given
+      const { result } = renderHook(() => {
+        return {
+          ...useSelectedIndicatorBoardMetadata(),
+          ...useIndicatorBoardMetadataList(),
+          ...useWorkspaceStore(),
+        };
+      });
+      await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
+      act(() => {
+        if (result.current.metadataList?.[0]) {
+          result.current.actions.selectMetadata(result.current.metadataList?.[0].id);
+        }
+      });
+      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+      act(() => {
+        result.current.addCustomForecastIndicatorToMetadata('11');
+      });
+      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+
+      // when
+      act(() => {
+        result.current.deleteCustomForecastIndicatorFromMetadata('11');
+      });
+      await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
+
+      // then
+      expect(result.current.selectedMetadata?.customForecastIndicatorIds).toEqual([]);
+      expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1']).toEqual([]);
+    });
+  });
 });
