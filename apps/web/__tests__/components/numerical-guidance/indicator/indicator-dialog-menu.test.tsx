@@ -2,11 +2,11 @@ import { act, render, renderHook, screen } from '@testing-library/react';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import userEvent from '@testing-library/user-event';
 import IndicatorDialogMenu from '@/app/ui/components/numerical-guidance/indicator/indicator-dialog-menu';
 import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
+import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-result';
 
 describe('IndicatorDialogMenu', () => {
   beforeEach(() => {
@@ -25,14 +25,14 @@ describe('IndicatorDialogMenu', () => {
     render(
       <SWRProviderWithoutCache>
         <IndicatorDialogMenu />
-        <IndicatorList />
+        <IndicatorListResult />
       </SWRProviderWithoutCache>,
     );
 
     expect(screen.queryByRole('dialog')).toBeNull();
 
     // when
-    await user.hover(await screen.findByText(/Apple Inc./i));
+    await user.hover(await screen.findByText(/AAPL/i));
     await user.click(
       (
         await screen.findAllByRole('button', {
@@ -52,12 +52,12 @@ describe('IndicatorDialogMenu', () => {
     render(
       <SWRProviderWithoutCache>
         <IndicatorDialogMenu />
-        <IndicatorList />
+        <IndicatorListResult />
         <CustomForecastIndicatorList />
       </SWRProviderWithoutCache>,
     );
 
-    await user.hover(await screen.findByText(/Apple Inc./i));
+    await user.hover(await screen.findByText(/AAPL/i));
     await user.click(
       (
         await screen.findAllByRole('button', {
