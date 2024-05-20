@@ -86,7 +86,7 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     );
     if (!customForecastIndicator) return;
 
-    const targetIndicator = mockDatabaseStore.indicatorList.find(
+    const targetIndicator = mockDatabaseStore.indicators.find(
       (indicator) => indicator.id === customForecastIndicator.targetIndicator.id,
     );
 
@@ -103,8 +103,8 @@ export const mockCustomForecastIndicatorAction: MockCustomForecastIndicatorActio
     return {
       customForecastIndicatorId: customForecastIndicator.id,
       targetIndicatorId: targetIndicator.id,
-      name: targetIndicator.name,
-      ticker: targetIndicator.ticker,
+      name: targetIndicator.symbol,
+      ticker: targetIndicator.symbol,
       market: 'KOSPI',
       type: 'customForecastIndicator',
       forecastType: 'multi',

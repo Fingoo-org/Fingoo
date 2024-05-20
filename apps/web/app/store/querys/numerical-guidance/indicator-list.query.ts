@@ -5,12 +5,6 @@ import { defaultFetcher } from '../fetcher';
 import useSWRInfinite from 'swr/infinite';
 import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
 
-export type IndicatorInfoResponse = {
-  id: string;
-  ticker: string;
-  name: string;
-};
-
 export type StocksIndicatorResponse = {
   id: string;
   indicatorType: 'stocks';
@@ -118,9 +112,6 @@ export const useFetchIndicatorListByType = (indicatorType: IndicatorType) => {
 
   return useSWRInfinite<IndicatorListResponse>(getKey, defaultFetcher);
 };
-
-export const useFetchIndicatorList = () =>
-  useSWRImmutable<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);
 
 export const useFetchSearchedIndicatorList = (search: string, indicatorType: IndicatorType) => {
   return useSWRImmutable<IndicatorByTypeResponse[]>(

@@ -1,18 +1,16 @@
-import { act, findByText, getByText, render, renderHook, screen, waitFor } from '@testing-library/react';
+import { act, findByText, getByText, queryByText, render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import IndicatorsChart from '@/app/ui/components/numerical-guidance/indicator/indicators-chart';
-import IndicatorList from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list';
 import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
 import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
-import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
-import { useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
+import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-result';
+import IndicatorBoard from '@/app/ui/components/numerical-guidance/indicator-board/indicator-board';
 
-describe('IndicatorsChart', () => {
+describe('IndicatorBoard', () => {
   beforeEach(() => {
     resetMockDB();
     resetAllStore();
@@ -22,7 +20,7 @@ describe('IndicatorsChart', () => {
     // given
     render(
       <SWRProviderWithoutCache>
-        <IndicatorsChart />
+        <IndicatorBoard />
       </SWRProviderWithoutCache>,
     );
 
@@ -36,8 +34,8 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart indicatorBoardMetadataId="1" />
-          <IndicatorList />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
+          <IndicatorListResult />
         </SWRProviderWithoutCache>,
       );
       const { result: store } = renderHook(() => useWorkspaceStore());
@@ -50,16 +48,17 @@ describe('IndicatorsChart', () => {
       await userEvent.click(await screen.findByText(/Apple Inc./i));
 
       // then
+      const indicatorsChart = await screen.findByTestId('indicators-chart');
       expect(await screen.findByDisplayValue('metadata1')).toBeInTheDocument();
-      expect(await screen.findByText(/AAPL/i)).toBeInTheDocument();
+      expect(await findByText(indicatorsChart, /AAPL/i)).toBeInTheDocument();
     });
 
     it('선택한 메타데이터가 있을 때, 지표를 선택하고 다시 선택하면, 차트를 숨긴다.', async () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart indicatorBoardMetadataId="1" />
-          <IndicatorList />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
+          <IndicatorListResult />
         </SWRProviderWithoutCache>,
       );
       const { result: store } = renderHook(() => useWorkspaceStore());
@@ -74,7 +73,8 @@ describe('IndicatorsChart', () => {
 
       // then
       expect(await screen.findByText(/선택한 지표가 없습니다. 지표를 선택해주세요/i)).toBeInTheDocument();
-      expect(screen.queryByText(/AAPL/i)).not.toBeInTheDocument();
+      const indicatorsChart = await screen.findByTestId('indicators-chart');
+      expect(queryByText(indicatorsChart, /AAPL/i)).not.toBeInTheDocument();
     });
 
     //   it('선택한 메타데이터가 있을 때, 지표를 선택하고 토글 버튼을 클릭하면, 자세한 차트를 보여준다', async () => {
@@ -112,7 +112,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart indicatorBoardMetadataId="1" />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
           <CustomForecastIndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -128,6 +128,7 @@ describe('IndicatorsChart', () => {
       // then
       const indicatorsChart = await screen.findByTestId('indicators-chart');
       expect(await screen.findByDisplayValue('metadata1')).toBeInTheDocument();
+      expect(await screen.findByText(/안정성이 검증된 예측 지표입니다./i)).toBeInTheDocument();
       expect(await findByText(indicatorsChart, /삼성전자 예측 지표/i)).toBeInTheDocument();
     });
 
@@ -135,7 +136,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart indicatorBoardMetadataId="1" />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
           <CustomForecastIndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -194,8 +195,8 @@ describe('IndicatorsChart', () => {
         <SWRProviderWithoutCache>
           <MetadataList />
           <MetadataDialogMenu />
-          <IndicatorList />
-          <IndicatorsChart indicatorBoardMetadataId="1" />
+          <IndicatorListResult />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
         </SWRProviderWithoutCache>,
       );
       await user.click(await screen.findByText(/metadata1/i));

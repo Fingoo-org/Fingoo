@@ -1,7 +1,6 @@
 import { IndicatorValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
 import {
   IndicatorByTypeResponse,
-  IndicatorInfoResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { IndicatorBoardMetadataResponse } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from '../mock-data/indicators-value.mock';
@@ -19,7 +18,6 @@ import {
 
 type MockDatabase = {
   metadataList: IndicatorBoardMetadataResponse[];
-  indicatorList: IndicatorInfoResponse[];
   indicators: IndicatorByTypeResponse[];
   indicatorsValue: IndicatorValueResponse[];
   historyIndicatorsValue: historyIndicatorsValueMockData;
@@ -69,7 +67,7 @@ const initialState: MockDatabase = {
       symbol: 'AAPL',
       id: '1',
       indicatorType: 'stocks',
-      name: '애플',
+      name: 'Apple Inc.',
       country: 'United States',
       currency: 'USD',
       exchange: 'NYSE',
@@ -80,7 +78,7 @@ const initialState: MockDatabase = {
       symbol: 'MSFT',
       id: '2',
       indicatorType: 'stocks',
-      name: '마이크로소프트',
+      name: 'Microsoft Corporation',
       country: 'United States',
       currency: 'USD',
       exchange: 'NYSE',
@@ -91,7 +89,7 @@ const initialState: MockDatabase = {
       symbol: 'GOOG',
       id: '3',
       indicatorType: 'stocks',
-      name: '구글',
+      name: 'Alphabet Inc.',
       country: 'United States',
       currency: 'USD',
       exchange: 'NYSE',
@@ -99,7 +97,7 @@ const initialState: MockDatabase = {
       type: 'Common Stock',
     },
     {
-      symbol: '삼성전자',
+      symbol: '005930',
       id: '9785ba85-c924-4269-8238-e1f10b404177',
       indicatorType: 'stocks',
       name: '삼성전자',
@@ -108,28 +106,6 @@ const initialState: MockDatabase = {
       exchange: 'NYSE',
       mic_code: 'XNYS',
       type: 'Common Stock',
-    },
-  ],
-  indicatorList: [
-    {
-      id: '1',
-      ticker: 'AAPL',
-      name: 'Apple Inc.',
-    },
-    {
-      id: '2',
-      ticker: 'MSFT',
-      name: 'Microsoft Corporation',
-    },
-    {
-      id: '3',
-      ticker: 'GOOG',
-      name: 'Alphabet Inc.',
-    },
-    {
-      id: '9785ba85-c924-4269-8238-e1f10b404177',
-      name: '삼성전자',
-      ticker: '005930',
     },
   ],
   indicatorsValue: indicatorsValueMockData,

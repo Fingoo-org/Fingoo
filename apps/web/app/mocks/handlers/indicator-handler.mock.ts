@@ -5,9 +5,16 @@ import { mockDB } from '../db';
 
 //db 연동 완료
 export const indicatorHandlers = [
-  http.get(API_PATH.indicatorList, async () => {
+  http.get(`${API_PATH.indicatorList}/list`, async () => {
     await delayForDevelopment();
-    return HttpResponse.json(mockDB.getIndicatorList());
+    return HttpResponse.json(mockDB.getIndicators());
+  }),
+  http.get(`${API_PATH.indicatorList}/search`, async ({ request }) => {
+    const url = new URL(request.url);
+    const symbol = url.searchParams.get('symbol');
+    await delayForDevelopment();
+
+    return HttpResponse.json(mockDB.getIndicatorBySymbol(symbol ?? ''));
   }),
   http.get(API_PATH.historyIndicatorsValue, async ({ request }) => {
     const url = new URL(request.url);

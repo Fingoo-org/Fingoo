@@ -8,8 +8,8 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerica
 
 const wrapper = SWRProviderWithoutCache;
 
-const findIndicatorByName = (indicatorName: string) => {
-  return mockDB.getIndicatorList().find((indicator) => indicator.name === indicatorName);
+const findIndicatorBySymbol = (symbol: string) => {
+  return mockDB.getIndicators().data.find((indicator) => indicator.symbol === symbol);
 };
 
 describe('useHistoryIndicatorsValueViewModel', () => {
@@ -41,12 +41,12 @@ describe('useHistoryIndicatorsValueViewModel', () => {
     await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
     // when
-    const indicator = findIndicatorByName('삼성전자');
+    const indicator = findIndicatorBySymbol('005930');
     act(() => {
       result.current.addIndicatorToMetadata({
         id: indicator?.id ?? '',
-        symbol: indicator?.ticker ?? '',
-        name: indicator?.name ?? '',
+        symbol: indicator?.symbol ?? '',
+        name: '삼성전자' ?? '',
         exchange: 'KRX',
         indicatorType: 'stocks',
       });

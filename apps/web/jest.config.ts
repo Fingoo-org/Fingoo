@@ -33,16 +33,17 @@ const config: Config = {
     '!app/**/*.stories.{ts,tsx}',
     '!app/mocks/**/*',
     '!app/ui/components/view/**/*',
+    '!app/ui/components/util/**/*',
     '!app/ui/pages/**/*',
+    '!app/utils/**/*',
   ],
 
   // The directory where Jest should output its coverage files
   // coverageDirectory: "coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  // gpt test는 eval package에서 진행함으로 제외
+  coveragePathIgnorePatterns: ['use-fingoo-chat.hook'],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'v8',

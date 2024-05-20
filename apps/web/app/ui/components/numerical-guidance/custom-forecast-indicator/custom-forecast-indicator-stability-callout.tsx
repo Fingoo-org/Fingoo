@@ -19,9 +19,7 @@ export default function CustomForecastIndicatorStabilityCallout({
   const isStability = customForecastIndicatorInMetadata?.every((customForecastIndicator) => {
     if (!customForecastIndicator) return true;
 
-    return customForecastIndicator.grangerVerification.every((grangerVerification) => {
-      return grangerVerification.verification === 'True';
-    });
+    return customForecastIndicator.isStability;
   });
 
   if (!customForecastIndicatorInMetadata || customForecastIndicatorInMetadata.length === 0) return null;
@@ -29,9 +27,7 @@ export default function CustomForecastIndicatorStabilityCallout({
   return (
     <Callout
       variant={isStability ? 'default' : 'warning'}
-      content={
-        isStability ? 'All custom forecast indicators are stable' : 'Some custom forecast indicators are not stable'
-      }
+      content={isStability ? '안정성이 검증된 예측 지표입니다.' : '안정성이 검증되지 않은 예측 지표입니다.'}
     />
   );
 }

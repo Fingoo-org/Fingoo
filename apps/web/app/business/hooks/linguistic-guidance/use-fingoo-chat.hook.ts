@@ -6,7 +6,7 @@ import {
   updateSourceIndicatorRequestBody,
   useRevalidateCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { generateId, type ChatRequest, type FunctionCallHandler, type ToolCallHandler } from 'ai';
+import { generateId, type ChatRequest, type ToolCallHandler } from 'ai';
 import { instance } from '@/app/utils/http';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useCustomForecastIndicatorListViewModel } from '../numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
@@ -38,6 +38,7 @@ export const useFingooChat = () => {
   const revalidateCustomForecastIndicatorList = useRevalidateCustomForecastIndicatorList();
   const { addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
   const { createCustomForecastIndicator } = useCustomForecastIndicatorListViewModel();
+  
   const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
     console.log('client');
     console.log('chatMessages:', chatMessages);

@@ -1,11 +1,15 @@
 import { HistoryIndicatorValueCursorPaginationResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
-import { IndicatorByTypeResponse, IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import {
+  IndicatorByTypeResponse,
+  IndicatorListResponse,
+} from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { mockDatabaseStore } from '.';
 
 export type MockIndicatorAction = {
+  getIndicators: () => IndicatorListResponse;
   getIndicator: (id: string) => IndicatorByTypeResponse | undefined;
-  getIndicatorList: () => IndicatorInfoResponse[];
+  getIndicatorBySymbol: (symbol: string) => IndicatorByTypeResponse[];
   getIndicatorValue: (id: string) => IndicatorValueResponse | undefined;
   getHistoryIndicatorValue: (
     id: string,
@@ -15,11 +19,21 @@ export type MockIndicatorAction = {
 };
 
 export const mockIndicatorAction: MockIndicatorAction = {
+  getIndicators: () => {
+    return {
+      data: mockDatabaseStore.indicators,
+      meta: {
+        total: mockDatabaseStore.indicators.length,
+        hasNextData: false,
+        cursor: 1,
+      },
+    };
+  },
+  getIndicatorBySymbol: (symbol) => {
+    return mockDatabaseStore.indicators.filter((indicator) => indicator.symbol.indexOf(symbol) > -1);
+  },
   getIndicator: (id) => {
     return mockDatabaseStore.indicators.find((indicator) => indicator.id === id);
-  },
-  getIndicatorList: () => {
-    return mockDatabaseStore.indicatorList;
   },
   getIndicatorValue: (id) => {
     return mockDatabaseStore.indicatorsValue.find((indicator) => indicator.indicatorId === id);

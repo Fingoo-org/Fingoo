@@ -57,6 +57,9 @@ export class CustomForecastIndicator {
   get sourceIndicatorsInfo() {
     return convertIndicatorViewModel(this.sourceIndicators);
   }
+  get isStability() {
+    return this.grangerVerification.every((grangerVerification) => grangerVerification.verification === 'True');
+  }
 
   getSourceIndicatorWeight(sourceIndicatorId: string) {
     const sourceIndicator = this.sourceIndicatorsInformation.find(
@@ -64,6 +67,7 @@ export class CustomForecastIndicator {
     );
     return sourceIndicator?.weight;
   }
+
 
   checkGrantedVerificationBySourceIndicatorId(sourceIndicatorId: string) {
     const grangerVerification = this.grangerVerification.find((item) => {
