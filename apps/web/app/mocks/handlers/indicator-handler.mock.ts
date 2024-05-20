@@ -9,6 +9,13 @@ export const indicatorHandlers = [
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getIndicators());
   }),
+  http.get(`${API_PATH.indicatorList}/search`, async ({ request }) => {
+    const url = new URL(request.url);
+    const symbol = url.searchParams.get('symbol');
+    await delayForDevelopment();
+
+    return HttpResponse.json(mockDB.getIndicatorBySymbol(symbol ?? ''));
+  }),
   http.get(API_PATH.historyIndicatorsValue, async ({ request }) => {
     const url = new URL(request.url);
     const indicatorId = url.searchParams.get('indicatorId');

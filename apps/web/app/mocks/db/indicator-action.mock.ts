@@ -9,6 +9,7 @@ import { mockDatabaseStore } from '.';
 export type MockIndicatorAction = {
   getIndicators: () => IndicatorListResponse;
   getIndicator: (id: string) => IndicatorByTypeResponse | undefined;
+  getIndicatorBySymbol: (symbol: string) => IndicatorByTypeResponse[];
   getIndicatorValue: (id: string) => IndicatorValueResponse | undefined;
   getHistoryIndicatorValue: (
     id: string,
@@ -27,6 +28,9 @@ export const mockIndicatorAction: MockIndicatorAction = {
         cursor: 1,
       },
     };
+  },
+  getIndicatorBySymbol: (symbol) => {
+    return mockDatabaseStore.indicators.filter((indicator) => indicator.symbol.indexOf(symbol) > -1);
   },
   getIndicator: (id) => {
     return mockDatabaseStore.indicators.find((indicator) => indicator.id === id);
