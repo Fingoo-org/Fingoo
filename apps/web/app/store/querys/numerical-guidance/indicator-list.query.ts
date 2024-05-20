@@ -119,9 +119,6 @@ export const useFetchIndicatorListByType = (indicatorType: IndicatorType) => {
   return useSWRInfinite<IndicatorListResponse>(getKey, defaultFetcher);
 };
 
-export const useFetchIndicatorList = () =>
-  useSWRImmutable<IndicatorInfoResponse[]>(API_PATH.indicatorList, defaultFetcher);
-
 export const useFetchSearchedIndicatorList = (search: string, indicatorType: IndicatorType) => {
   return useSWRImmutable<IndicatorByTypeResponse[]>(
     search.length > 1 ? `${API_PATH.indicatorList}/search?symbol=${search}&type=${indicatorType}` : null,
