@@ -5,11 +5,9 @@ import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspa
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useIndicatorBoardMetadataList } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
-import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 
 const wrapper = SWRProviderWithoutCache;
 
-// refactor: renderhook 사용법 변경해야함
 describe('useSelectedIndicatorBoardMetadata', () => {
   beforeEach(() => {
     resetAllStore();
@@ -199,11 +197,9 @@ describe('useSelectedIndicatorBoardMetadata', () => {
           ...useSelectedIndicatorBoardMetadata(),
           ...useIndicatorBoardMetadataList(),
           ...useWorkspaceStore(),
-          ...useCustomForecastIndicatorListViewModel(),
         };
       });
       await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
-      await waitFor(() => expect(result.current.customForecastIndicatorList).not.toBeUndefined());
       act(() => {
         if (result.current.metadataList?.[0]) {
           result.current.actions.selectMetadata(result.current.metadataList?.[0].id);
@@ -213,19 +209,13 @@ describe('useSelectedIndicatorBoardMetadata', () => {
 
       // when
       act(() => {
-        if (result.current.customForecastIndicatorList?.customForecastIndicatorList[0]) {
-          result.current.addCustomForecastIndicatorToMetadata('11');
-        }
+        result.current.addCustomForecastIndicatorToMetadata('11');
       });
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
       // then
-      expect(result.current.selectedMetadata?.customForecastIndicatorIds[0]).toBe(
-        result.current.customForecastIndicatorList?.customForecastIndicatorList[0].id,
-      );
-      expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1'][0]).toBe(
-        result.current.customForecastIndicatorList?.customForecastIndicatorList[0].id,
-      );
+      expect(result.current.selectedMetadata?.customForecastIndicatorIds[0]).toBe('11');
+      expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1'][0]).toBe('11');
     });
   });
 });
