@@ -1,4 +1,4 @@
-import { findByText, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { findByText, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
