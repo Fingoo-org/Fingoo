@@ -5,6 +5,10 @@ import { mockDB } from '../db';
 
 //db 연동 완료
 export const indicatorHandlers = [
+  http.get(`${API_PATH.indicatorList}/list`, async () => {
+    await delayForDevelopment();
+    return HttpResponse.json(mockDB.getIndicators());
+  }),
   http.get(API_PATH.indicatorList, async () => {
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getIndicatorList());
