@@ -5,7 +5,6 @@ import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspa
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useIndicatorBoardMetadataList } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
-import { useIndicatorList } from '@/app/business/hooks/numerical-guidance/indicator/use-indicator-list.hook';
 import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 
 const wrapper = SWRProviderWithoutCache;
@@ -124,11 +123,9 @@ describe('useSelectedIndicatorBoardMetadata', () => {
           ...useSelectedIndicatorBoardMetadata(),
           ...useIndicatorBoardMetadataList(),
           ...useWorkspaceStore(),
-          ...useIndicatorList(),
         };
       });
       await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
-      await waitFor(() => expect(result.current.indicatorList).not.toBeUndefined());
       act(() => {
         if (result.current.metadataList?.[0]) {
           result.current.actions.selectMetadata(result.current.metadataList?.[0].id);
@@ -138,23 +135,19 @@ describe('useSelectedIndicatorBoardMetadata', () => {
 
       // when
       act(() => {
-        if (result.current.indicatorList?.[0]) {
-          result.current.addIndicatorToMetadata({
-            id: '1',
-            symbol: 'AAPL',
-            name: 'Apple Inc.',
-            exchange: 'US',
-            indicatorType: 'stocks',
-          });
-        }
+        result.current.addIndicatorToMetadata({
+          id: '1',
+          symbol: 'AAPL',
+          name: 'Apple Inc.',
+          exchange: 'US',
+          indicatorType: 'stocks',
+        });
       });
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
       // then
-      expect(result.current.selectedMetadata?.indicatorIds[0]).toBe(result.current.indicatorList?.[0].id);
-      expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1'][0]).toBe(
-        result.current.indicatorList?.[0].id,
-      );
+      expect(result.current.selectedMetadata?.indicatorIds[0]).toBe('1');
+      expect(result.current.selectedMetadata?.indicatorIdsWithSectionIds['section1'][0]).toBe('1');
     });
   });
 
@@ -166,11 +159,9 @@ describe('useSelectedIndicatorBoardMetadata', () => {
           ...useSelectedIndicatorBoardMetadata(),
           ...useIndicatorBoardMetadataList(),
           ...useWorkspaceStore(),
-          ...useIndicatorList(),
         };
       });
       await waitFor(() => expect(result.current.metadataList).not.toBeUndefined());
-      await waitFor(() => expect(result.current.indicatorList).not.toBeUndefined());
       act(() => {
         if (result.current.metadataList?.[0]) {
           result.current.actions.selectMetadata(result.current.metadataList?.[0].id);
@@ -178,23 +169,19 @@ describe('useSelectedIndicatorBoardMetadata', () => {
       });
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
       act(() => {
-        if (result.current.indicatorList?.[0]) {
-          result.current.addIndicatorToMetadata({
-            id: '1',
-            symbol: 'AAPL',
-            name: 'Apple Inc.',
-            exchange: 'US',
-            indicatorType: 'stocks',
-          });
-        }
+        result.current.addIndicatorToMetadata({
+          id: '1',
+          symbol: 'AAPL',
+          name: 'Apple Inc.',
+          exchange: 'US',
+          indicatorType: 'stocks',
+        });
       });
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 
       // when
       act(() => {
-        if (result.current.indicatorList?.[0]) {
-          result.current.deleteIndicatorFromMetadata(result.current.indicatorList?.[0].id);
-        }
+        result.current.deleteIndicatorFromMetadata('1');
       });
       await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
 

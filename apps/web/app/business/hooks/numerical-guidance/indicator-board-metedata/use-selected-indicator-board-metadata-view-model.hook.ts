@@ -34,7 +34,6 @@ export const useSelectedIndicatorBoardMetadata = () => {
     return convertedIndicatorBoardMetadataList?.findIndicatorBoardMetadataById(selectedMetadataId);
   }, [selectedMetadataId, convertedIndicatorBoardMetadataList]);
 
-  // Refactor: 컴포넌트는 AddIndicatorToMetadataRequestBody를 몰라도 된다.
   const addIndicatorToMetadata = (indicatorInfo: IndicatorInfoResponse) => {
     if (!selectedMetadata) {
       return;
