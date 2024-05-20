@@ -38,7 +38,7 @@ const MetadataList = React.memo(function MetadataList() {
           메타데이터 추가
         </Button>
       </div>
-      <div className=" h-[26vh] overflow-y-auto px-3 pt-1 scrollbar-thin">
+      <div data-testid='metadata-list' className=" h-[26vh] overflow-y-auto px-3 pt-1 scrollbar-thin">
         {metadataList ? <List list={metadataList} render={renderItem} /> : null}
       </div>
     </Pending>

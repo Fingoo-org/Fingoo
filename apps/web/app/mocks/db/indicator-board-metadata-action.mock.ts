@@ -48,16 +48,14 @@ export const mockIndicatorBoardMetadataAction: MockIndicatorBoardMetadataAction 
   postIndicatorToMetadata: (id, data) => {
     const index = mockDatabaseStore.metadataList.findIndex((metadata) => metadata.id === id);
     const lastsectionId = Object.keys(mockDatabaseStore.metadataList[index].sections).length;
+    const indicator = mockDatabaseStore.indicators.find((indicator) => indicator.id === data.indicatorId);
     const newMetadata = {
       ...mockDatabaseStore.metadataList[index],
       indicatorInfos: [
         ...mockDatabaseStore.metadataList[index].indicatorInfos,
         {
           id: data.indicatorId,
-          name: 'mock',
-          symbol: 'mock',
-          exchange: 'mock',
-          indicatorType: 'stocks',
+          ...indicator,
         } as IndicatorInfoResponse,
       ],
       sections: {

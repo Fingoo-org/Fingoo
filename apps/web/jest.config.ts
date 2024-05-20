@@ -33,7 +33,9 @@ const config: Config = {
     '!app/**/*.stories.{ts,tsx}',
     '!app/mocks/**/*',
     '!app/ui/components/view/**/*',
+    '!app/ui/components/util/**/*',
     '!app/ui/pages/**/*',
+    '!app/utils/**/*',
   ],
 
   // The directory where Jest should output its coverage files
