@@ -40,9 +40,8 @@ const config: Config = {
   // coverageDirectory: "coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  // gpt test는 eval package에서 진행함으로 제외
+  coveragePathIgnorePatterns: ['use-fingoo-chat.hook'],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'v8',
