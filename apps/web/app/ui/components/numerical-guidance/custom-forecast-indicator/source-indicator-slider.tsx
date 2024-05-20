@@ -1,4 +1,3 @@
-import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { Card } from '@tremor/react';
 import Slider from '../../view/atom/slider/slider';
 import { useSelectedCustomForecastIndicatorViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-selected-custom-forecast-indicator-view-model';

@@ -2,7 +2,6 @@ import { HistoryIndicatorValueCursorPaginationResponse } from '@/app/store/query
 import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
 import {
   IndicatorByTypeResponse,
-  IndicatorInfoResponse,
   IndicatorListResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { mockDatabaseStore } from '.';
@@ -10,7 +9,6 @@ import { mockDatabaseStore } from '.';
 export type MockIndicatorAction = {
   getIndicators: () => IndicatorListResponse;
   getIndicator: (id: string) => IndicatorByTypeResponse | undefined;
-  getIndicatorList: () => IndicatorInfoResponse[];
   getIndicatorValue: (id: string) => IndicatorValueResponse | undefined;
   getHistoryIndicatorValue: (
     id: string,
@@ -32,9 +30,6 @@ export const mockIndicatorAction: MockIndicatorAction = {
   },
   getIndicator: (id) => {
     return mockDatabaseStore.indicators.find((indicator) => indicator.id === id);
-  },
-  getIndicatorList: () => {
-    return mockDatabaseStore.indicatorList;
   },
   getIndicatorValue: (id) => {
     return mockDatabaseStore.indicatorsValue.find((indicator) => indicator.indicatorId === id);

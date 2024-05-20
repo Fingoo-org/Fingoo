@@ -9,10 +9,6 @@ export const indicatorHandlers = [
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getIndicators());
   }),
-  http.get(API_PATH.indicatorList, async () => {
-    await delayForDevelopment();
-    return HttpResponse.json(mockDB.getIndicatorList());
-  }),
   http.get(API_PATH.historyIndicatorsValue, async ({ request }) => {
     const url = new URL(request.url);
     const indicatorId = url.searchParams.get('indicatorId');

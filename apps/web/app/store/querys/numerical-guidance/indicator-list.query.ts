@@ -5,12 +5,6 @@ import { defaultFetcher } from '../fetcher';
 import useSWRInfinite from 'swr/infinite';
 import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
 
-export type IndicatorInfoResponse = {
-  id: string;
-  ticker: string;
-  name: string;
-};
-
 export type StocksIndicatorResponse = {
   id: string;
   indicatorType: 'stocks';
