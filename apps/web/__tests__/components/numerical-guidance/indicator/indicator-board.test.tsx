@@ -128,6 +128,7 @@ describe('IndicatorBoard', () => {
       // then
       const indicatorsChart = await screen.findByTestId('indicators-chart');
       expect(await screen.findByDisplayValue('metadata1')).toBeInTheDocument();
+      expect(await screen.findByText(/안정성이 검증된 예측 지표입니다./i)).toBeInTheDocument();
       expect(await findByText(indicatorsChart, /삼성전자 예측 지표/i)).toBeInTheDocument();
     });
 

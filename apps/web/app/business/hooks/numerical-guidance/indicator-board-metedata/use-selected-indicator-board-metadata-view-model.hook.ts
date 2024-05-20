@@ -56,8 +56,6 @@ export const useSelectedIndicatorBoardMetadata = () => {
       return;
     }
 
-    console.log('호출!');
-
     addCustomForecastIndicatorTrigger(
       {
         customForecastIndicatorId,
