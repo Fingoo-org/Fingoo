@@ -4,13 +4,13 @@ import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import IndicatorsChart from '@/app/ui/components/numerical-guidance/indicator/indicators-chart';
 import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
 import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
 import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-result';
+import IndicatorBoard from '@/app/ui/components/numerical-guidance/indicator-board/indicator-board';
 
-describe('IndicatorsChart', () => {
+describe('IndicatorBoard', () => {
   beforeEach(() => {
     resetMockDB();
     resetAllStore();
@@ -20,7 +20,7 @@ describe('IndicatorsChart', () => {
     // given
     render(
       <SWRProviderWithoutCache>
-        <IndicatorsChart />
+        <IndicatorBoard />
       </SWRProviderWithoutCache>,
     );
 
@@ -34,7 +34,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart indicatorBoardMetadataId="1" />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
           <IndicatorListResult />
         </SWRProviderWithoutCache>,
       );
@@ -57,7 +57,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart indicatorBoardMetadataId="1" />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
           <IndicatorListResult />
         </SWRProviderWithoutCache>,
       );
@@ -112,7 +112,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart indicatorBoardMetadataId="1" />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
           <CustomForecastIndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -135,7 +135,7 @@ describe('IndicatorsChart', () => {
       // given
       render(
         <SWRProviderWithoutCache>
-          <IndicatorsChart indicatorBoardMetadataId="1" />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
           <CustomForecastIndicatorList />
         </SWRProviderWithoutCache>,
       );
@@ -195,7 +195,7 @@ describe('IndicatorsChart', () => {
           <MetadataList />
           <MetadataDialogMenu />
           <IndicatorListResult />
-          <IndicatorsChart indicatorBoardMetadataId="1" />
+          <IndicatorBoard indicatorBoardMetadataId="1" />
         </SWRProviderWithoutCache>,
       );
       await user.click(await screen.findByText(/metadata1/i));
