@@ -6,7 +6,7 @@ import {
   useUpdateIndicatorIdsWithsectionIds,
   useUploadIndicatorBoardMetadataImage,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
-import { convertIndcatorBoardMetadataList } from '../../../services/numerical-guidance/view-model/indicator-board-metadata-view-model.service';
+import { convertIndcatorBoardMetadataList } from '../../../services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-view-model.service';
 import { useMemo } from 'react';
 import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
 
