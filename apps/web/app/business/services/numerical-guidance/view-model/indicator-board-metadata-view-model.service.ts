@@ -121,7 +121,10 @@ export class IndicatorBoardMetadata {
   }
 
   updateIndicatorIdsWithsectionIds(sections: { [key: string]: string[] }) {
-    this._sections = sections;
+    return IndicatorBoardMetadata.createNew({
+      ...this.formattedIndicatorBoardMetadata,
+      sections: sections,
+    });
   }
 
   addsection() {
@@ -237,10 +240,13 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
   }
 
   updateIndicatorIdsWithsectionIds(metadataId: string | undefined, sections: { [key: string]: string[] }) {
-    const metadata = this.find((metadata) => metadata.id === metadataId);
-    if (!metadata) return;
+    return this.iterate((metadata) => {
+      if (metadata.id === metadataId) {
+        return metadata.updateIndicatorIdsWithsectionIds(sections);
+      }
 
-    metadata.updateIndicatorIdsWithsectionIds(sections);
+      return metadata;
+    });
   }
 
   get formattedIndicatorBoardMetadataList() {

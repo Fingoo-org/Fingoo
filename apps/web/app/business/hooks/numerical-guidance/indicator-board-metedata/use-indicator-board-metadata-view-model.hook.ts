@@ -56,8 +56,11 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.updateIndicatorIdsWithsectionIds(metadataId, data);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList = convertedIndicatorBoardMetadataList?.updateIndicatorIdsWithsectionIds(
+            metadataId,
+            data,
+          );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
@@ -109,7 +112,10 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          const newIndicatorBoardMetadataList = convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(metadataId, indicatorId);
+          const newIndicatorBoardMetadataList = convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(
+            metadataId,
+            indicatorId,
+          );
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
