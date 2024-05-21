@@ -108,13 +108,16 @@ export class IndicatorBoardMetadata {
   }
 
   deleteIndicator(indicatorId: string) {
-    this.indicatorInfos = this.indicatorInfos.filter((indicatorInfo) => indicatorInfo.id !== indicatorId);
-    this._sections = Object.entries(this._sections).reduce<{
-      [key: string]: string[];
-    }>((acc, [key, value]) => {
-      acc[key] = value.filter((id) => id !== indicatorId);
-      return acc;
-    }, {});
+    return IndicatorBoardMetadata.createNew({
+      ...this.formattedIndicatorBoardMetadata,
+      indicatorInfos: this.indicatorInfos.filter((indicatorInfo) => indicatorInfo.id !== indicatorId),
+      sections: Object.entries(this._sections).reduce<{
+        [key: string]: string[];
+      }>((acc, [key, value]) => {
+        acc[key] = value.filter((id) => id !== indicatorId);
+        return acc;
+      }, {}),
+    });
   }
 
   updateIndicatorIdsWithsectionIds(sections: { [key: string]: string[] }) {
@@ -224,10 +227,13 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
   }
 
   deleteIndicatorFromMetadataById(metadataId: string | undefined, indicatorId: string) {
-    const metadata = this.find((metadata) => metadata.id === metadataId);
-    if (!metadata) return;
+    return this.iterate((metadata) => {
+      if (metadata.id === metadataId) {
+        return metadata.deleteIndicator(indicatorId);
+      }
 
-    metadata.deleteIndicator(indicatorId);
+      return metadata;
+    });
   }
 
   updateIndicatorIdsWithsectionIds(metadataId: string | undefined, sections: { [key: string]: string[] }) {
