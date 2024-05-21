@@ -38,8 +38,20 @@ export abstract class IndicatorValue {
     this.values = values;
   }
 
+  abstract formatItemsByDate(options?: FormatOptions): FormattedItem;
+
+  abstract get identifier(): string;
+
   set unitType(unitType: UnitType) {
     this._unitType = unitType;
+  }
+
+  get lastDate() {
+    return getBigestDateInArray([this.values[0].date, this.values[this.values.length - 1].date]);
+  }
+
+  get startDate() {
+    return getSmallestDateInArray([this.values[0].date, this.values[this.values.length - 1].date]);
   }
 
   caculateItemsValue(isValueWithIndexUnit: boolean): CaculatedItem[] {
@@ -57,17 +69,5 @@ export abstract class IndicatorValue {
         displayValue: item.value,
       };
     });
-  }
-
-  abstract formatItemsByDate(options?: FormatOptions): FormattedItem;
-
-  abstract get identifier(): string;
-
-  get lastDate() {
-    return getBigestDateInArray([this.values[0].date, this.values[this.values.length - 1].date]);
-  }
-
-  get startDate() {
-    return getSmallestDateInArray([this.values[0].date, this.values[this.values.length - 1].date]);
   }
 }
