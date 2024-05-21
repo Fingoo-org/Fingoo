@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import {
-  AddIndicatorToMetadataRequestBody,
   IndicatorBoardMetadataResponse,
   IndicatorInfoResponse,
   useAddCustomForecastIndicatorToMetadata,
@@ -10,7 +9,7 @@ import {
   useFetchIndicatorBoardMetadataList,
 } from '../../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useWorkspaceStore } from '../../../../store/stores/numerical-guidance/workspace.store';
-import { convertIndcatorBoardMetadataList } from '../../../services/numerical-guidance/view-model/indicator-board-metadata-view-model.service';
+import { convertIndcatorBoardMetadataList } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-list-view-model.service';
 
 export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useWorkspaceStore((state) => state.selectedMetadataId);
@@ -43,8 +42,11 @@ export const useSelectedIndicatorBoardMetadata = () => {
       { indicatorId: indicatorInfo.id, indicatorType: indicatorInfo.indicatorType },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, indicatorInfo);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList = convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(
+            selectedMetadataId,
+            indicatorInfo,
+          );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
@@ -62,11 +64,12 @@ export const useSelectedIndicatorBoardMetadata = () => {
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.addCustomForecastIndicatorToMetadataById(
-            selectedMetadataId,
-            customForecastIndicatorId,
-          );
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList =
+            convertedIndicatorBoardMetadataList?.addCustomForecastIndicatorToMetadataById(
+              selectedMetadataId,
+              customForecastIndicatorId,
+            );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
@@ -84,8 +87,11 @@ export const useSelectedIndicatorBoardMetadata = () => {
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(selectedMetadataId, indicatorId);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList = convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(
+            selectedMetadataId,
+            indicatorId,
+          );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
@@ -103,11 +109,12 @@ export const useSelectedIndicatorBoardMetadata = () => {
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.deleteCustomForecastIndicatorFromMetadataById(
-            selectedMetadataId,
-            customForecastIndicatorId,
-          );
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList =
+            convertedIndicatorBoardMetadataList?.deleteCustomForecastIndicatorFromMetadataById(
+              selectedMetadataId,
+              customForecastIndicatorId,
+            );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },

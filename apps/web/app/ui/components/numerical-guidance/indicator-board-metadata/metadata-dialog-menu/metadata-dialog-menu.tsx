@@ -5,7 +5,7 @@ import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import TinyInput from '../../../view/atom/tiny-input/tiny-input';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
-import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata-view-model.service';
+import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-view-model.service';
 
 export default function MetadataDialogMenu() {
   const { payload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);

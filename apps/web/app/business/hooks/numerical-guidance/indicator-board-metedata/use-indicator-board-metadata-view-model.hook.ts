@@ -6,7 +6,7 @@ import {
   useUpdateIndicatorIdsWithsectionIds,
   useUploadIndicatorBoardMetadataImage,
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
-import { convertIndcatorBoardMetadataList } from '../../../services/numerical-guidance/view-model/indicator-board-metadata-view-model.service';
+import { convertIndcatorBoardMetadataList } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-list-view-model.service';
 import { useMemo } from 'react';
 import { useIndicatorBoardMetadataStore } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
 
@@ -40,8 +40,9 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(metadataId, newData.name);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList =
+            convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(metadataId, newData.name);
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
@@ -55,8 +56,11 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.updateIndicatorIdsWithsectionIds(metadataId, data);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList = convertedIndicatorBoardMetadataList?.updateIndicatorIdsWithsectionIds(
+            metadataId,
+            data,
+          );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
@@ -66,14 +70,15 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   const addsectionToIndicatorBoardMetadata = () => {
     if (!indicatorBoardMetadata) return;
 
-    indicatorBoardMetadata?.addsection();
     updateIndicatorIdsWithsectionIdsTrigger(
       {
         sections: indicatorBoardMetadata?.indicatorIdsWithSectionIds,
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList =
+            convertedIndicatorBoardMetadataList?.addSectionToIndicatorBoardMetadata(metadataId);
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
@@ -83,14 +88,16 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   const deleteSectionFromIndicatorBoardMetadata = (sectionId: number) => {
     if (!indicatorBoardMetadata) return;
 
-    indicatorBoardMetadata?.deletesection(sectionId);
     updateIndicatorIdsWithsectionIdsTrigger(
       {
         sections: indicatorBoardMetadata?.indicatorIdsWithSectionIds,
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList =
+            convertedIndicatorBoardMetadataList?.deleteSectionFromIndicatorBoardMetadata(metadataId, sectionId);
+
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
@@ -108,8 +115,11 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(metadataId, indicatorId);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList = convertedIndicatorBoardMetadataList?.deleteIndicatorFromMetadataById(
+            metadataId,
+            indicatorId,
+          );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },

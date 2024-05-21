@@ -60,6 +60,6 @@ describe('useHistoryIndicatorsValueViewModel', () => {
     await waitFor(() => expect(result.current.actualHistoryIndicatorsValue).not.toBeUndefined());
 
     // then
-    expect(result.current.actualHistoryIndicatorsValue?.tickerList[0]).toBe('005930');
+    expect(result.current.actualHistoryIndicatorsValue?.symbolList[0]).toBe('005930');
   });
 });

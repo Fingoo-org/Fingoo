@@ -47,6 +47,10 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
     this.forecastType = forecastType;
   }
 
+  get identifier() {
+    return this.customForecastIndicatorName;
+  }
+
   formatItemsByDate(options?: FormatOptions): FormattedItem {
     const { isValueWithIndexUnit } = options || { isValueWithIndexUnit: false };
     return this.caculateItemsValue(isValueWithIndexUnit ?? false).reduce<FormattedItem>((acc, item) => {
@@ -60,10 +64,6 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
         },
       };
     }, {});
-  }
-
-  get identifier() {
-    return this.customForecastIndicatorName;
   }
 }
 
