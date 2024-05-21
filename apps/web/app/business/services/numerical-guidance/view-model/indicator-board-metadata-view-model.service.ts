@@ -23,6 +23,10 @@ export class IndicatorBoardMetadata {
     this.customForecastIndicatorIds = customForecastIndicatorIds;
   }
 
+  static createNew({ ...args }: IndicatorBoardMetadataResponse) {
+    return new IndicatorBoardMetadata(args);
+  }
+
   get sections() {
     return this._sections;
   }
@@ -62,7 +66,7 @@ export class IndicatorBoardMetadata {
   }
 
   addIndicator(newIndicatorInfo: IndicatorInfoResponse) {
-    return new IndicatorBoardMetadata({
+    return IndicatorBoardMetadata.createNew({
       ...this.formattedIndicatorBoardMetadata,
       indicatorInfos: [...this.indicatorInfos, newIndicatorInfo],
       sections: {
@@ -73,12 +77,14 @@ export class IndicatorBoardMetadata {
   }
 
   addCustomForecastIndicator(customForecastIndicatorId: string) {
-    this.customForecastIndicatorIds = [...this.customForecastIndicatorIds, customForecastIndicatorId];
-
-    this._sections = {
-      ...this._sections,
-      [this.lastsectionId]: [...this._sections[this.lastsectionId], customForecastIndicatorId],
-    };
+    return IndicatorBoardMetadata.createNew({
+      ...this.formattedIndicatorBoardMetadata,
+      customForecastIndicatorIds: [...this.customForecastIndicatorIds, customForecastIndicatorId],
+      sections: {
+        ...this._sections,
+        [this.lastsectionId]: [...this._sections[this.lastsectionId], customForecastIndicatorId],
+      },
+    });
   }
 
   deleteCustomForecastIndicator(customForecastIndicatorId: string) {
@@ -140,10 +146,8 @@ export class IndicatorBoardMetadata {
 }
 
 export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
-  private _metadataList: IndicatorBoardMetadataResponse[];
   constructor(metadataList: IndicatorBoardMetadataResponse[]) {
     super();
-    this._metadataList = metadataList;
     metadataList.forEach((metadata) => {
       this.push(new IndicatorBoardMetadata(metadata));
     });
@@ -178,10 +182,15 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
   }
 
   addCustomForecastIndicatorToMetadataById(metadataId: string | undefined, customForecastIndicatorId: string) {
-    const metadata = this.find((metadata) => metadata.id === metadataId);
-    if (!metadata) return;
+    return IndicatorBoardMetadataList.createNew(
+      this.map((metadata) => {
+        if (metadata.id === metadataId) {
+          return metadata.addCustomForecastIndicator(customForecastIndicatorId);
+        }
 
-    metadata.addCustomForecastIndicator(customForecastIndicatorId);
+        return metadata;
+      }),
+    );
   }
 
   deleteCustomForecastIndicatorFromMetadataById(metadataId: string | undefined, customForecastIndicatorId: string) {

@@ -65,11 +65,12 @@ export const useSelectedIndicatorBoardMetadata = () => {
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.addCustomForecastIndicatorToMetadataById(
-            selectedMetadataId,
-            customForecastIndicatorId,
-          );
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList =
+            convertedIndicatorBoardMetadataList?.addCustomForecastIndicatorToMetadataById(
+              selectedMetadataId,
+              customForecastIndicatorId,
+            );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
