@@ -40,8 +40,9 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(metadataId, newData.name);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList =
+            convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(metadataId, newData.name);
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },

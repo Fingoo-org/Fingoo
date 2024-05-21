@@ -100,6 +100,13 @@ export class IndicatorBoardMetadata {
     });
   }
 
+  updateName(indicatorBoardMetadataName: string) {
+    return IndicatorBoardMetadata.createNew({
+      ...this.formattedIndicatorBoardMetadata,
+      indicatorBoardMetadataName,
+    });
+  }
+
   deleteIndicator(indicatorId: string) {
     this.indicatorInfos = this.indicatorInfos.filter((indicatorInfo) => indicatorInfo.id !== indicatorId);
     this._sections = Object.entries(this._sections).reduce<{
@@ -207,14 +214,12 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
   }
 
   updateIndicatorBoardMetadataNameById(metadataId: string | undefined, indicatorBoardMetadataName: string) {
-    const index = this.findIndex((metadata) => metadata.id === metadataId);
-    if (index === -1) return;
+    return this.iterate((metadata) => {
+      if (metadata.id === metadataId) {
+        return metadata.updateName(indicatorBoardMetadataName);
+      }
 
-    const metadata = this[index];
-
-    this[index] = new IndicatorBoardMetadata({
-      ...metadata.formattedIndicatorBoardMetadata,
-      indicatorBoardMetadataName,
+      return metadata;
     });
   }
 
