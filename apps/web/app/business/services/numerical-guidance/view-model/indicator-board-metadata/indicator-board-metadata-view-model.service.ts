@@ -23,13 +23,6 @@ export class IndicatorBoardMetadata {
     this.customForecastIndicatorIds = customForecastIndicatorIds;
   }
 
-  private createStateDump({ ...rest }: Partial<IndicatorBoardMetadataResponse>) {
-    return convertIndicatorBoardMetadata({
-      ...this.formattedIndicatorBoardMetadata,
-      ...rest,
-    });
-  }
-
   get sections() {
     return this._sections;
   }
@@ -64,6 +57,22 @@ export class IndicatorBoardMetadata {
     return this.indicatorInfos.length === 0 && this.customForecastIndicatorIds.length === 0;
   }
 
+  private createStateDump({ ...rest }: Partial<IndicatorBoardMetadataResponse>) {
+    return convertIndicatorBoardMetadata({
+      ...this.formattedIndicatorBoardMetadata,
+      ...rest,
+    });
+  }
+
+  private deleteIndicatorFromSection(indicatorId: string) {
+    return Object.entries(this._sections).reduce<{
+      [key: string]: string[];
+    }>((acc, [key, value]) => {
+      acc[key] = value.filter((id) => id !== indicatorId);
+      return acc;
+    }, {});
+  }
+
   getIndicatorInfo(indicatorId: string) {
     return this.indicatorInfos.find((indicatorInfo) => indicatorInfo.id === indicatorId);
   }
@@ -90,12 +99,7 @@ export class IndicatorBoardMetadata {
 
   deleteCustomForecastIndicator(customForecastIndicatorId: string) {
     return this.createStateDump({
-      sections: Object.entries(this._sections).reduce<{
-        [key: string]: string[];
-      }>((acc, [key, value]) => {
-        acc[key] = value.filter((id) => id !== customForecastIndicatorId);
-        return acc;
-      }, {}),
+      sections: this.deleteIndicatorFromSection(customForecastIndicatorId),
       customForecastIndicatorIds: this.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId),
     });
   }
@@ -109,12 +113,7 @@ export class IndicatorBoardMetadata {
   deleteIndicator(indicatorId: string) {
     return this.createStateDump({
       indicatorInfos: this.indicatorInfos.filter((indicatorInfo) => indicatorInfo.id !== indicatorId),
-      sections: Object.entries(this._sections).reduce<{
-        [key: string]: string[];
-      }>((acc, [key, value]) => {
-        acc[key] = value.filter((id) => id !== indicatorId);
-        return acc;
-      }, {}),
+      sections: this.deleteIndicatorFromSection(indicatorId),
     });
   }
 
@@ -160,6 +159,7 @@ export class IndicatorBoardMetadata {
 
       return acc;
     }, {});
+
     return this.createStateDump({
       sections: newSections,
     });
