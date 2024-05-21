@@ -17,6 +17,10 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     return Array;
   }
 
+  get formattedIndicatorBoardMetadataList() {
+    return this.map((metadata) => metadata.formattedIndicatorBoardMetadata);
+  }
+
   iterate(callback: (metadata: IndicatorBoardMetadata) => IndicatorBoardMetadata): IndicatorBoardMetadataList {
     return convertIndcatorBoardMetadataList(this.map(callback));
   }
@@ -107,10 +111,6 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
 
       return metadata;
     });
-  }
-
-  get formattedIndicatorBoardMetadataList() {
-    return this.map((metadata) => metadata.formattedIndicatorBoardMetadata);
   }
 }
 export const convertIndcatorBoardMetadataList = (response: IndicatorBoardMetadataResponse[]) => {

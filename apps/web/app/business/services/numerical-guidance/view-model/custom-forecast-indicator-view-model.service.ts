@@ -1,7 +1,6 @@
 import {
   CustomForecastIndicatorListResponse,
   CustomForecastIndicatorResponse,
-  TargetIndicatorInfo,
   VerificationType,
   sourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
@@ -62,6 +61,19 @@ export class CustomForecastIndicator {
     return this.grangerVerification.every((grangerVerification) => grangerVerification.verification === 'True');
   }
 
+  get formattedCustomForecastIndicator(): CustomForecastIndicatorResponse {
+    return {
+      id: this.id,
+      customForecastIndicatorName: this.customForecastIndicatorName,
+      targetIndicator: this.targetIndicator,
+      sourceIndicatorsInformation: this.sourceIndicatorsInformation,
+      type: this.type,
+      grangerVerification: this.grangerVerification,
+      cointJohansenVerification: this.cointJohansenVerification,
+      sourceIndicators: this.sourceIndicators,
+    };
+  }
+
   getSourceIndicatorWeight(sourceIndicatorId: string) {
     const sourceIndicator = this.sourceIndicatorsInformation.find(
       (sourceIndicator) => sourceIndicator.sourceIndicatorId === sourceIndicatorId,
@@ -78,19 +90,6 @@ export class CustomForecastIndicator {
 
     return grangerVerification.verification === 'True';
   }
-
-  get formattedCustomForecastIndicator(): CustomForecastIndicatorResponse {
-    return {
-      id: this.id,
-      customForecastIndicatorName: this.customForecastIndicatorName,
-      targetIndicator: this.targetIndicator,
-      sourceIndicatorsInformation: this.sourceIndicatorsInformation,
-      type: this.type,
-      grangerVerification: this.grangerVerification,
-      cointJohansenVerification: this.cointJohansenVerification,
-      sourceIndicators: this.sourceIndicators,
-    };
-  }
 }
 
 export class CustomForecastIndicators {
@@ -101,12 +100,14 @@ export class CustomForecastIndicators {
     );
   }
 
-  static createNew(customForecastIndicatorList: CustomForecastIndicatorListResponse) {
-    return new CustomForecastIndicators(customForecastIndicatorList);
-  }
-
   get length() {
     return this.customForecastIndicatorList.length;
+  }
+
+  get formattedCustomForecastIndicatorList() {
+    return this.customForecastIndicatorList.map(
+      (customForecastIndicator) => customForecastIndicator.formattedCustomForecastIndicator,
+    );
   }
 
   findCustomForecastIndicatorById(id: string) {
@@ -118,14 +119,8 @@ export class CustomForecastIndicators {
   }
 
   deleteCustomForecastIndicatorById(id: string) {
-    return CustomForecastIndicators.createNew(
+    return convertCustomForecastIndicatorsViewModel(
       this.customForecastIndicatorList.filter((customForecastIndicator) => customForecastIndicator.id !== id),
-    );
-  }
-
-  get formattedCustomForecastIndicatorList() {
-    return this.customForecastIndicatorList.map(
-      (customForecastIndicator) => customForecastIndicator.formattedCustomForecastIndicator,
     );
   }
 }
