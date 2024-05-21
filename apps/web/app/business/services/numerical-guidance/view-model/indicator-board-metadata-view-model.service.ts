@@ -88,13 +88,16 @@ export class IndicatorBoardMetadata {
   }
 
   deleteCustomForecastIndicator(customForecastIndicatorId: string) {
-    this.customForecastIndicatorIds = this.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId);
-    this._sections = Object.entries(this._sections).reduce<{
-      [key: string]: string[];
-    }>((acc, [key, value]) => {
-      acc[key] = value.filter((id) => id !== customForecastIndicatorId);
-      return acc;
-    }, {});
+    return IndicatorBoardMetadata.createNew({
+      ...this.formattedIndicatorBoardMetadata,
+      sections: Object.entries(this._sections).reduce<{
+        [key: string]: string[];
+      }>((acc, [key, value]) => {
+        acc[key] = value.filter((id) => id !== customForecastIndicatorId);
+        return acc;
+      }, {}),
+      customForecastIndicatorIds: this.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId),
+    });
   }
 
   deleteIndicator(indicatorId: string) {
@@ -194,10 +197,13 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
   }
 
   deleteCustomForecastIndicatorFromMetadataById(metadataId: string | undefined, customForecastIndicatorId: string) {
-    const metadata = this.find((metadata) => metadata.id === metadataId);
-    if (!metadata) return;
+    return this.iterate((metadata) => {
+      if (metadata.id === metadataId) {
+        return metadata.deleteCustomForecastIndicator(customForecastIndicatorId);
+      }
 
-    metadata.deleteCustomForecastIndicator(customForecastIndicatorId);
+      return metadata;
+    });
   }
 
   updateIndicatorBoardMetadataNameById(metadataId: string | undefined, indicatorBoardMetadataName: string) {

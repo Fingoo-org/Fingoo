@@ -107,11 +107,12 @@ export const useSelectedIndicatorBoardMetadata = () => {
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.deleteCustomForecastIndicatorFromMetadataById(
-            selectedMetadataId,
-            customForecastIndicatorId,
-          );
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList =
+            convertedIndicatorBoardMetadataList?.deleteCustomForecastIndicatorFromMetadataById(
+              selectedMetadataId,
+              customForecastIndicatorId,
+            );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
