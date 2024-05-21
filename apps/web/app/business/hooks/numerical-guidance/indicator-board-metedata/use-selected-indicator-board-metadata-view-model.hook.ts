@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import {
-  AddIndicatorToMetadataRequestBody,
   IndicatorBoardMetadataResponse,
   IndicatorInfoResponse,
   useAddCustomForecastIndicatorToMetadata,
