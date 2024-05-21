@@ -103,6 +103,16 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     });
   }
 
+  deleteSectionFromIndicatorBoardMetadata(metadataId: string | undefined, sectionId: number) {
+    return this.iterate((metadata) => {
+      if (metadata.id === metadataId) {
+        return metadata.deleteSection(sectionId);
+      }
+
+      return metadata;
+    });
+  }
+
   get formattedIndicatorBoardMetadataList() {
     return this.map((metadata) => metadata.formattedIndicatorBoardMetadata);
   }

@@ -150,22 +150,23 @@ export class IndicatorBoardMetadata {
     });
   }
 
-  deletesection(sectionId: number) {
-    const newData = Object.keys(this._sections).reduce<{
+  deleteSection(sectionId: number) {
+    const newSections = Object.keys(this._sections).reduce<{
       [key: string]: string[];
     }>((acc, key, index) => {
       if (index === sectionId) {
         acc[`section${index}`] = [...acc[`section${index}`], ...this._sections[`section${index + 1}`]];
       } else if (index < sectionId) {
-        acc[`section${index + 1}`] = this._sections[`section${index + 1}`];
+        acc[`section${index + 1}`] = [...this._sections[`section${index + 1}`]];
       } else {
-        acc[`section${index}`] = this._sections[`section${index + 1}`];
+        acc[`section${index}`] = [...this._sections[`section${index + 1}`]];
       }
 
       return acc;
     }, {});
-
-    this._sections = newData;
+    return this.createStateDump({
+      sections: newSections,
+    });
   }
 }
 
