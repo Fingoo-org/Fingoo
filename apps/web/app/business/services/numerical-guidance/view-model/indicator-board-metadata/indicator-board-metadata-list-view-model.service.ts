@@ -17,12 +17,8 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     return Array;
   }
 
-  static createNew(metadataList: IndicatorBoardMetadataResponse[]) {
-    return new IndicatorBoardMetadataList(metadataList);
-  }
-
   iterate(callback: (metadata: IndicatorBoardMetadata) => IndicatorBoardMetadata): IndicatorBoardMetadataList {
-    return IndicatorBoardMetadataList.createNew(this.map(callback));
+    return convertIndcatorBoardMetadataList(this.map(callback));
   }
 
   findIndicatorBoardMetadataById(metadataId: string) {
@@ -30,7 +26,7 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
   }
 
   deleteIndicatorBoardMetadata(metadataId: string) {
-    return IndicatorBoardMetadataList.createNew(this.filter((metadata) => metadata.id !== metadataId));
+    return convertIndcatorBoardMetadataList(this.filter((metadata) => metadata.id !== metadataId));
   }
 
   addIndicatorToMetadataById(metadataId: string | undefined, indicatorInfo: IndicatorInfoResponse) {

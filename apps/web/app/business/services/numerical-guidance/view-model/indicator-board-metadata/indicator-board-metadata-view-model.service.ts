@@ -23,12 +23,8 @@ export class IndicatorBoardMetadata {
     this.customForecastIndicatorIds = customForecastIndicatorIds;
   }
 
-  static createNew({ ...args }: IndicatorBoardMetadataResponse) {
-    return new IndicatorBoardMetadata(args);
-  }
-
   private createStateDump({ ...rest }: Partial<IndicatorBoardMetadataResponse>) {
-    return IndicatorBoardMetadata.createNew({
+    return convertIndicatorBoardMetadata({
       ...this.formattedIndicatorBoardMetadata,
       ...rest,
     });
