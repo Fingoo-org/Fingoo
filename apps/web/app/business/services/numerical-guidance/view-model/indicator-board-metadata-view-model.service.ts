@@ -4,15 +4,11 @@ import {
 } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 
 export class IndicatorBoardMetadata {
-  // 여기는 response와 같아야함
-  // 변경된 부분은 private으로 client에서 못사용하게
-  // 변경된 부분은 getter, setter로 변경에서 전처럼 사용하도록
   readonly id: string;
   readonly indicatorBoardMetadataName: string;
-  // private name: string;
   public customForecastIndicatorIds: string[];
   public indicatorInfos: IndicatorInfoResponse[];
-  private sections: { [key: string]: string[] };
+  private _sections: { [key: string]: string[] };
   constructor({
     id,
     indicatorBoardMetadataName,
@@ -22,9 +18,13 @@ export class IndicatorBoardMetadata {
   }: IndicatorBoardMetadataResponse) {
     this.id = id;
     this.indicatorBoardMetadataName = indicatorBoardMetadataName;
-    this.sections = sections;
+    this._sections = sections;
     this.indicatorInfos = indicatorInfos;
     this.customForecastIndicatorIds = customForecastIndicatorIds;
+  }
+
+  get sections() {
+    return this._sections;
   }
 
   get name() {
@@ -32,11 +32,11 @@ export class IndicatorBoardMetadata {
   }
 
   get indicatorIdsWithSectionIds() {
-    return this.sections;
+    return this._sections;
   }
 
   get lastsectionId() {
-    return `section${Object.keys(this.sections).length}`;
+    return `section${Object.keys(this._sections).length}`;
   }
 
   get indicatorIds() {
@@ -49,7 +49,7 @@ export class IndicatorBoardMetadata {
       indicatorBoardMetadataName: this.name,
       indicatorInfos: this.indicatorInfos,
       customForecastIndicatorIds: this.customForecastIndicatorIds,
-      sections: this.sections,
+      sections: this._sections,
     };
   }
 
@@ -62,25 +62,28 @@ export class IndicatorBoardMetadata {
   }
 
   addIndicator(newIndicatorInfo: IndicatorInfoResponse) {
-    this.indicatorInfos = [...this.indicatorInfos, newIndicatorInfo];
-    this.sections = {
-      ...this.sections,
-      [this.lastsectionId]: [...this.sections[this.lastsectionId], newIndicatorInfo.id],
-    };
+    return new IndicatorBoardMetadata({
+      ...this.formattedIndicatorBoardMetadata,
+      indicatorInfos: [...this.indicatorInfos, newIndicatorInfo],
+      sections: {
+        ...this._sections,
+        [this.lastsectionId]: [...this._sections[this.lastsectionId], newIndicatorInfo.id],
+      },
+    });
   }
 
   addCustomForecastIndicator(customForecastIndicatorId: string) {
     this.customForecastIndicatorIds = [...this.customForecastIndicatorIds, customForecastIndicatorId];
 
-    this.sections = {
-      ...this.sections,
-      [this.lastsectionId]: [...this.sections[this.lastsectionId], customForecastIndicatorId],
+    this._sections = {
+      ...this._sections,
+      [this.lastsectionId]: [...this._sections[this.lastsectionId], customForecastIndicatorId],
     };
   }
 
   deleteCustomForecastIndicator(customForecastIndicatorId: string) {
     this.customForecastIndicatorIds = this.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId);
-    this.sections = Object.entries(this.sections).reduce<{
+    this._sections = Object.entries(this._sections).reduce<{
       [key: string]: string[];
     }>((acc, [key, value]) => {
       acc[key] = value.filter((id) => id !== customForecastIndicatorId);
@@ -90,7 +93,7 @@ export class IndicatorBoardMetadata {
 
   deleteIndicator(indicatorId: string) {
     this.indicatorInfos = this.indicatorInfos.filter((indicatorInfo) => indicatorInfo.id !== indicatorId);
-    this.sections = Object.entries(this.sections).reduce<{
+    this._sections = Object.entries(this._sections).reduce<{
       [key: string]: string[];
     }>((acc, [key, value]) => {
       acc[key] = value.filter((id) => id !== indicatorId);
@@ -99,46 +102,48 @@ export class IndicatorBoardMetadata {
   }
 
   updateIndicatorIdsWithsectionIds(sections: { [key: string]: string[] }) {
-    this.sections = sections;
+    this._sections = sections;
   }
 
   addsection() {
-    const element = this.sections['section1'].shift();
+    const element = this._sections['section1'].shift();
 
-    const newData = Object.keys(this.sections).reduce<{
+    const newData = Object.keys(this._sections).reduce<{
       [key: string]: string[];
     }>((acc, _, index) => {
-      acc[`section${index + 2}`] = this.sections[`section${index + 1}`];
+      acc[`section${index + 2}`] = this._sections[`section${index + 1}`];
       return acc;
     }, {});
 
     newData['section1'] = element ? [element] : [];
 
-    this.sections = newData;
+    this._sections = newData;
   }
 
   deletesection(sectionId: number) {
-    const newData = Object.keys(this.sections).reduce<{
+    const newData = Object.keys(this._sections).reduce<{
       [key: string]: string[];
     }>((acc, key, index) => {
       if (index === sectionId) {
-        acc[`section${index}`] = [...acc[`section${index}`], ...this.sections[`section${index + 1}`]];
+        acc[`section${index}`] = [...acc[`section${index}`], ...this._sections[`section${index + 1}`]];
       } else if (index < sectionId) {
-        acc[`section${index + 1}`] = this.sections[`section${index + 1}`];
+        acc[`section${index + 1}`] = this._sections[`section${index + 1}`];
       } else {
-        acc[`section${index}`] = this.sections[`section${index + 1}`];
+        acc[`section${index}`] = this._sections[`section${index + 1}`];
       }
 
       return acc;
     }, {});
 
-    this.sections = newData;
+    this._sections = newData;
   }
 }
 
 export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
+  private _metadataList: IndicatorBoardMetadataResponse[];
   constructor(metadataList: IndicatorBoardMetadataResponse[]) {
     super();
+    this._metadataList = metadataList;
     metadataList.forEach((metadata) => {
       this.push(new IndicatorBoardMetadata(metadata));
     });
@@ -146,6 +151,14 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
 
   static get [Symbol.species]() {
     return Array;
+  }
+
+  static createNew(metadataList: IndicatorBoardMetadataResponse[]) {
+    return new IndicatorBoardMetadataList(metadataList);
+  }
+
+  copy() {
+    return IndicatorBoardMetadataList.createNew(this._metadataList);
   }
 
   findIndicatorBoardMetadataById(metadataId: string) {
@@ -160,10 +173,15 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
   }
 
   addIndicatorToMetadataById(metadataId: string | undefined, indicatorInfo: IndicatorInfoResponse) {
-    const metadata = this.find((metadata) => metadata.id === metadataId);
-    if (!metadata) return;
+    return IndicatorBoardMetadataList.createNew(
+      this.map((metadata) => {
+        if (metadata.id === metadataId) {
+          return metadata.addIndicator(indicatorInfo);
+        }
 
-    metadata.addIndicator(indicatorInfo);
+        return metadata;
+      }),
+    );
   }
 
   addCustomForecastIndicatorToMetadataById(metadataId: string | undefined, customForecastIndicatorId: string) {

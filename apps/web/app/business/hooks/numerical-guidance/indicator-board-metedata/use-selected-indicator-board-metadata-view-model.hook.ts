@@ -43,8 +43,11 @@ export const useSelectedIndicatorBoardMetadata = () => {
       { indicatorId: indicatorInfo.id, indicatorType: indicatorInfo.indicatorType },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(selectedMetadataId, indicatorInfo);
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList = convertedIndicatorBoardMetadataList?.addIndicatorToMetadataById(
+            selectedMetadataId,
+            indicatorInfo,
+          );
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },
