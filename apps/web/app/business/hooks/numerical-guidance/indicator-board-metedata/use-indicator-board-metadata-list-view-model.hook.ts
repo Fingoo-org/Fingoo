@@ -59,8 +59,9 @@ export const useIndicatorBoardMetadataList = () => {
   const deleteIndicatorBoardMetadata = async (metadataId: string) => {
     deleteIndicatorBoardMetadataTrigger(metadataId, {
       optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-        convertedIndicatorBoardMetadataList?.deleteIndicatorBoardMetadata(metadataId);
-        return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+        const newIndicatorBoardMetadataList =
+          convertedIndicatorBoardMetadataList?.deleteIndicatorBoardMetadata(metadataId);
+        return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
       },
       revalidate: false,
     });

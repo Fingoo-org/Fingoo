@@ -157,19 +157,12 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     return new IndicatorBoardMetadataList(metadataList);
   }
 
-  copy() {
-    return IndicatorBoardMetadataList.createNew(this._metadataList);
-  }
-
   findIndicatorBoardMetadataById(metadataId: string) {
     return this.find((metadata) => metadata.id === metadataId);
   }
 
   deleteIndicatorBoardMetadata(metadataId: string) {
-    const index = this.findIndex((metadata) => metadata.id === metadataId);
-    if (index === -1) return;
-
-    this.splice(index, 1);
+    return IndicatorBoardMetadataList.createNew(this.filter((metadata) => metadata.id !== metadataId));
   }
 
   addIndicatorToMetadataById(metadataId: string | undefined, indicatorInfo: IndicatorInfoResponse) {
