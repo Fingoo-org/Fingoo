@@ -27,6 +27,13 @@ export class IndicatorBoardMetadata {
     return new IndicatorBoardMetadata(args);
   }
 
+  private createStateDump({ ...rest }: Partial<IndicatorBoardMetadataResponse>) {
+    return IndicatorBoardMetadata.createNew({
+      ...this.formattedIndicatorBoardMetadata,
+      ...rest,
+    });
+  }
+
   get sections() {
     return this._sections;
   }
@@ -66,8 +73,7 @@ export class IndicatorBoardMetadata {
   }
 
   addIndicator(newIndicatorInfo: IndicatorInfoResponse) {
-    return IndicatorBoardMetadata.createNew({
-      ...this.formattedIndicatorBoardMetadata,
+    return this.createStateDump({
       indicatorInfos: [...this.indicatorInfos, newIndicatorInfo],
       sections: {
         ...this._sections,
@@ -77,8 +83,7 @@ export class IndicatorBoardMetadata {
   }
 
   addCustomForecastIndicator(customForecastIndicatorId: string) {
-    return IndicatorBoardMetadata.createNew({
-      ...this.formattedIndicatorBoardMetadata,
+    return this.createStateDump({
       customForecastIndicatorIds: [...this.customForecastIndicatorIds, customForecastIndicatorId],
       sections: {
         ...this._sections,
@@ -88,8 +93,7 @@ export class IndicatorBoardMetadata {
   }
 
   deleteCustomForecastIndicator(customForecastIndicatorId: string) {
-    return IndicatorBoardMetadata.createNew({
-      ...this.formattedIndicatorBoardMetadata,
+    return this.createStateDump({
       sections: Object.entries(this._sections).reduce<{
         [key: string]: string[];
       }>((acc, [key, value]) => {
@@ -101,15 +105,13 @@ export class IndicatorBoardMetadata {
   }
 
   updateName(indicatorBoardMetadataName: string) {
-    return IndicatorBoardMetadata.createNew({
-      ...this.formattedIndicatorBoardMetadata,
+    return this.createStateDump({
       indicatorBoardMetadataName,
     });
   }
 
   deleteIndicator(indicatorId: string) {
-    return IndicatorBoardMetadata.createNew({
-      ...this.formattedIndicatorBoardMetadata,
+    return this.createStateDump({
       indicatorInfos: this.indicatorInfos.filter((indicatorInfo) => indicatorInfo.id !== indicatorId),
       sections: Object.entries(this._sections).reduce<{
         [key: string]: string[];
@@ -121,25 +123,31 @@ export class IndicatorBoardMetadata {
   }
 
   updateIndicatorIdsWithsectionIds(sections: { [key: string]: string[] }) {
-    return IndicatorBoardMetadata.createNew({
-      ...this.formattedIndicatorBoardMetadata,
+    return this.createStateDump({
       sections: sections,
     });
   }
 
-  addsection() {
-    const element = this._sections['section1'].shift();
+  addSection() {
+    const copySection1 = [...this._sections['section1']];
+    const element = copySection1.shift();
 
-    const newData = Object.keys(this._sections).reduce<{
+    const newSections = Object.keys(this._sections).reduce<{
       [key: string]: string[];
     }>((acc, _, index) => {
-      acc[`section${index + 2}`] = this._sections[`section${index + 1}`];
+      if (index === 0) {
+        acc[`section2`] = copySection1;
+        return acc;
+      }
+      acc[`section${index + 2}`] = [...this._sections[`section${index + 1}`]];
       return acc;
     }, {});
 
-    newData['section1'] = element ? [element] : [];
+    newSections['section1'] = element ? [element] : [];
 
-    this._sections = newData;
+    return this.createStateDump({
+      sections: newSections,
+    });
   }
 
   deletesection(sectionId: number) {

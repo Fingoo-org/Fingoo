@@ -70,14 +70,15 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   const addsectionToIndicatorBoardMetadata = () => {
     if (!indicatorBoardMetadata) return;
 
-    indicatorBoardMetadata?.addsection();
     updateIndicatorIdsWithsectionIdsTrigger(
       {
         sections: indicatorBoardMetadata?.indicatorIdsWithSectionIds,
       },
       {
         optimisticData: (): IndicatorBoardMetadataResponse[] | undefined => {
-          return convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
+          const newIndicatorBoardMetadataList =
+            convertedIndicatorBoardMetadataList?.addSectionToIndicatorBoardMetadata(metadataId);
+          return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
         revalidate: false,
       },

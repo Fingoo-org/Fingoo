@@ -93,6 +93,16 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     });
   }
 
+  addSectionToIndicatorBoardMetadata(metadataId: string | undefined) {
+    return this.iterate((metadata) => {
+      if (metadata.id === metadataId) {
+        return metadata.addSection();
+      }
+
+      return metadata;
+    });
+  }
+
   get formattedIndicatorBoardMetadataList() {
     return this.map((metadata) => metadata.formattedIndicatorBoardMetadata);
   }
