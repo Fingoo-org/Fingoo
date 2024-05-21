@@ -20,6 +20,10 @@ export class ActualIndicatorValue extends IndicatorValue {
     this.type = type;
   }
 
+  get identifier() {
+    return this.symbol;
+  }
+
   formatItemsByDate(options?: FormatOptions): FormattedItem {
     const { isValueWithIndexUnit } = options || { isValueWithIndexUnit: false };
     return this.caculateItemsValue(isValueWithIndexUnit ?? false).reduce<FormattedItem>((acc, item) => {
@@ -34,10 +38,6 @@ export class ActualIndicatorValue extends IndicatorValue {
       };
     }, {});
   }
-
-  get identifier() {
-    return this.symbol;
-  }
 }
 
 export class ActualIndicatorsValue {
@@ -50,7 +50,7 @@ export class ActualIndicatorsValue {
     return this.indicatorsValue.length;
   }
 
-  get tickerList() {
+  get symbolList() {
     return this.indicatorsValue.map((indicator) => indicator.symbol);
   }
 }
