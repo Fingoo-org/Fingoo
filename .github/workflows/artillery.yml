@@ -42,16 +42,12 @@ jobs:
           echo "SUPABASE_BUCKET_NAME=${{ secrets.SUPABASE_BUCKET_NAME }}" >> .env
           echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
           echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
-        working-directory: apps/api
-
-      - name: Create reports directory if not exists
-        run: mkdir -p apps/api/reports
-        working-directory: apps/api
 
       - name: Run Artillery Test
-        uses: artilleryio/action-cli@v1
-        with:
-          command: run artillery/load-test.json
+        run: npx artillery run artillery/load-test.json
+
+      - name: Generate Artillery Report
+        run: npx artillery report artillery-report
 
       - name: Publish Artillery Report to PR
         id: comment
@@ -69,7 +65,7 @@ jobs:
             const repo = context.payload.repository.name;
             const prNumber = context.payload.pull_request.number;
 
-            const reportPath = path.join(process.env.GITHUB_WORKSPACE, 'apps/api/reports/report.html');
+            const reportPath = path.join(process.env.GITHUB_WORKSPACE, 'artillery-report.html');
             const reportContent = fs.readFileSync(reportPath, 'utf8');
 
             github.rest.issues.createComment({
