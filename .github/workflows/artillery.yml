@@ -34,7 +34,6 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: apps/api
 
       - name: Setting api .env
         run: |
@@ -45,23 +44,14 @@ jobs:
           echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
         working-directory: apps/api
 
-      - name: Run Artillery Test
-        uses: artilleryio/action-cli@v1
-        with:
-          command: run apps/api/artillery/load-test.json --output apps/api/reports/report.json
-
-      - name: Generate Artillery Report
-        run: |
-          mkdir -p apps/api/reports
-          npx artillery report -o apps/api/reports/report.html apps/api/reports/report.json
+      - name: Create reports directory if not exists
+        run: mkdir -p apps/api/reports
         working-directory: apps/api
 
-      - name: Check if report exists
+      - name: Run Artillery Test
         run: |
-          if [ ! -f apps/api/reports/report.html ]; then
-            echo "Report file not found!"
-            exit 1
-          fi
+          npx artillery run -o reports/report.json artillery/load-test.json
+          npx artillery report -o reports/report.html reports/report.json
         working-directory: apps/api
 
       - name: Publish Artillery Report to PR
