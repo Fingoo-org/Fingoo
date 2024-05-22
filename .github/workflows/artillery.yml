@@ -1,4 +1,4 @@
-name: Artillery Test
+name: 'Artillery Test'
 
 on:
   pull_request:
@@ -53,4 +53,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          message: '🚀Artillery Test Report:' + process.env.ARTILLERY_REPORT_URL
+          message: '🚀Artillery Test Report: ' + process.env.ARTILLERY_REPORT_URL
