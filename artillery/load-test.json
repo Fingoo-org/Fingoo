@@ -3,7 +3,7 @@
     "target": "http://localhost:8000",
     "phases": [
       {
-        "duration": 600,
+        "duration": 60,
         "arrivalRate": 50
       }
     ],
