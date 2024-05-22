@@ -46,11 +46,10 @@ jobs:
       - name: Run Artillery Test
         run: |
           npx artillery run --output artillery-report.json --record --key ${{ secrets.ARTILLERY_KEY }} artillery/load-test.json
-          ARTILLERY_REPORT_URL=$(npx artillery report artillery-report.json --url)
 
       - name: Publish Artillery Report to PR
         uses: thollander/actions-comment-pull-request@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          message: '🚀 Artillery Test Report: ${{ env.ARTILLERY_REPORT_URL }}'
+          message: '🚀 Artillery Test Report: https://app.artillery.io/load-tests/t34zz_dw5bpe3twxq473cpxd954k8n7zmdk_9x8d'
