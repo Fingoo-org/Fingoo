@@ -46,6 +46,7 @@ jobs:
 
       - name: Run Artillery Test
         run: |
+          cd ..
           npx artillery run -o artillery-report.json artillery/load-test.json
           npx artillery report -o artillery-report.html artillery-report.json
         working-directory: apps/api
