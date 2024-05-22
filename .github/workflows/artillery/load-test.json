@@ -1,0 +1,43 @@
+{
+  "config": {
+    "target": "http://localhost:8000",
+    "phases": [
+      {
+        "duration": 600,
+        "arrivalRate": 50
+      }
+    ],
+    "ensure": [
+      {
+        "maxErrorRate": 1,
+        "max": 500
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "name": "Artillery Init Test",
+      "flow": [
+        {
+          "get": {
+            "url": "/"
+          }
+        },
+        {
+          "post": {
+            "url": "api/auth/signIn",
+            "json": {
+              "email": "artillery@test.com",
+              "password": "123456"
+            }
+          }
+        },
+        {
+          "get": {
+            "url": "/hashtag?hashtag=test"
+          }
+        }
+      ]
+    }
+  ]
+}

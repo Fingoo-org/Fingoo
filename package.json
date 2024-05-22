@@ -6,8 +6,9 @@
     "packages/*"
   ],
   "devDependencies": {
-    "turbo": "^1.13.3",
-    "husky": "8.0.3"
+    "artillery": "^2.0.12",
+    "husky": "8.0.3",
+    "turbo": "^1.13.3"
   },
   "scripts": {
     "start:web": "turbo run start --filter=web",
