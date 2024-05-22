@@ -44,33 +44,14 @@ jobs:
           echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
 
       - name: Run Artillery Test
-        run: npx artillery run artillery/load-test.json
+        run: npx artillery run -o artillery-report.json artillery/load-test.json
 
       - name: Generate Artillery Report
-        run: npx artillery report artillery-report
+        run: ARTILLERY_REPORT_URL=$(npx artillery run artillery/load-test.json --record --key ${{ secrets.ARTILLERY_KEY }})
 
       - name: Publish Artillery Report to PR
-        id: comment
-        uses: actions/github-script@v4
+        uses: thollander/actions-comment-pull-request@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-            const github = require('@actions/github');
-            const context = github.context;
-            const owner = context.payload.repository.owner.login;
-            const repo = context.payload.repository.name;
-            const prNumber = context.payload.pull_request.number;
-
-            const reportPath = path.join(process.env.GITHUB_WORKSPACE, 'artillery-report.html');
-            const reportContent = fs.readFileSync(reportPath, 'utf8');
-
-            github.rest.issues.createComment({
-              owner: owner,
-              repo: repo,
-              issue_number: prNumber,
-              body: '🚀artillery-report: \n\n' + reportContent
-            });
+          message: '🚀Artillery Test Report:' + process.env.ARTILLERY_REPORT_URL

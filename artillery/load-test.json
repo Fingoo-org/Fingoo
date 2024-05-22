@@ -31,11 +31,6 @@
               "password": "123456"
             }
           }
-        },
-        {
-          "get": {
-            "url": "/hashtag?hashtag=test"
-          }
         }
       ]
     }
