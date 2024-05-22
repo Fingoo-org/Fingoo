@@ -44,10 +44,9 @@ jobs:
           echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
 
       - name: Run Artillery Test
-        run: npx artillery run -o artillery-report.json artillery/load-test.json
-
-      - name: Generate Artillery Report
-        run: ARTILLERY_REPORT_URL=$(npx artillery run artillery/load-test.json --record --key ${{ secrets.ARTILLERY_KEY }})
+        run: | 
+          npx artillery run -o artillery-report.json artillery/load-test.json
+          ARTILLERY_REPORT_URL=$(npx artillery run artillery/load-test.json --record --key ${{ secrets.ARTILLERY_KEY }})
 
       - name: Publish Artillery Report to PR
         uses: thollander/actions-comment-pull-request@v1
