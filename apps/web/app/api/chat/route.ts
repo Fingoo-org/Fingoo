@@ -8,14 +8,13 @@ const openai = new OpenAI({
 });
 
 function sleep(ms: number) {
-  console.log('b')
   return new Promise((r) => setTimeout(r, ms));
 }
 
 // Set the runtime to edge for best performance
 export const runtime = 'edge';
 
-const functions: Array<ChatCompletionTool> = [
+const tools: Array<ChatCompletionTool> = [
   {
     type: 'function',
     function: {
@@ -88,7 +87,7 @@ export async function POST(req: Request) {
       },
       ...messages,
     ],
-    tools: functions,
+    tools: tools,
   });
 
   // Convert the response into a friendly text-stream
