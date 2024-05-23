@@ -1,0 +1,22 @@
+[
+  {
+    "user_prompt": "S&P500 지수 예측해줘",
+    "expected_target_symbol": "GSPC"
+  },
+  {
+    "user_prompt": "NASDAQ지수 예측해줘",
+    "expected_target_symbol": "IXIC"
+  },
+  {
+    "user_prompt": "원화 환율을 예측해줘",
+    "expected_target_symbol": "KRW/USD"
+  },
+  {
+    "user_prompt": "애플 주가 예측해줘",
+    "expected_target_symbol": "AAPL"
+  },
+  {
+    "user_prompt": "SPY etf를 예측해줘",
+    "expected_target_symbol": "SPY"
+  }
+]
