@@ -58,7 +58,7 @@ export const tools: Array<ChatCompletionTool> = [
             description: '사용자가 질문한 경제 지표',
           },
         },
-        required: ['symbol', ],
+        required: ['symbol'],
       },
     },
   },
@@ -72,11 +72,11 @@ export const tools: Array<ChatCompletionTool> = [
         properties: {
           message: {
             type: 'string',
-            description: ` 사용자에게 전달할 메세지 입니다. 사용자의 질문 타입에 따라 출력 필드를 생성합니다.
+            description: ` 사용자에게 전달할 메세지 입니다. 사용자의 질문 타입에 따라 출력 필드를 구분하여 메시지를 제공합니다.
             - predict: 
-            필드 1: 목표 및 재료 지표 
+            필드 1: 목표 및 재료 지표에 대한 설명
             필드 2: 예측 결과 값 
-            필드 3: 예측에 대한 해석
+            필드 3: 예측 결과에 대한 해석
             - explain:
             필드 1: 경제 지표에 대한 설명
             필드 2: 관련된 지표에 대한 설명
