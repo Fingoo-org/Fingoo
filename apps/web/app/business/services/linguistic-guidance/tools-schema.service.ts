@@ -62,6 +62,7 @@ export const tools: Array<ChatCompletionTool> = [
             필드 3: 예측에 대한 해석
             - explain:
             필드 1: 경제 지표에 대한 설명
+            필드 2: 연관된 경제 지표들에 대한 설명
             .
             `,
           },
