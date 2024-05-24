@@ -29,7 +29,7 @@ export const tools: Array<ChatCompletionTool> = [
     type: 'function',
     function: {
       name: 'speak_to_user',
-      description: '도구 응답 지시사항을 준수하여 사용자의 질문에 대답합니다. 대답은 한글로 작성합니다',
+      description: '도구 응답 지시사항을 준수하여 사용자의 질문에 대답합니다. 대답은 한글로 작성합니다. ',
       parameters: {
         type: 'object',
         properties: {
