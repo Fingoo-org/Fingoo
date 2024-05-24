@@ -28,7 +28,7 @@ export const tools: Array<ChatCompletionTool> = [
   {
     type: 'function',
     function: {
-      name: 'retrive_economic_indicators',
+      name: 'analyze_economic_indicators',
       description: '경제를 분석하기 위한 지표들에 대한 값을 가져온다.',
       parameters: {
         type: 'object',
@@ -60,6 +60,8 @@ export const tools: Array<ChatCompletionTool> = [
             필드 1: 목표 및 재료 지표 
             필드 2: 예측 결과 값 
             필드 3: 예측에 대한 해석
+            - explain:
+            필드 1: 경제 지표에 대한 설명
             .
             `,
           },
@@ -78,10 +80,11 @@ export const tools: Array<ChatCompletionTool> = [
         properties: {
           query: {
             type: 'string',
-            enum: ['predict', 'analyze'],
+            enum: ['predict', 'analyze', 'explain'],
             description: `""사용자가 하는 질문의 타입은 다음 중 하나가 될 수 있다:
             - predict: 경제 지표 예측과 해석을 요청하는 질문.""
             - analyze: 경제 현황에 대한 분석을 요청하는 질문.
+            - explain: 경제 지표에 대한 설명을 요청하는 질문 (예시: AAPL에 대해 설명해줘).
             `,
           },
         },

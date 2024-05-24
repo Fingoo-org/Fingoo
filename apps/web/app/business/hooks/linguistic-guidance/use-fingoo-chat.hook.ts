@@ -62,7 +62,14 @@ const instructions = [
     type: 'analyze',
     instruction: `
     경제 분석에 필요한 지표들을 가져온 후 이를 토대로 경제 분석을 수행합니다.  
-    지표는 FRED(Federal Reserve Economic Data) API를 통해 제공되며, FRED의 심볼을 기준으로 제공합니다.
+    - 지표는 FRED(Federal Reserve Economic Data) API를 통해 제공되며, FRED의 심볼을 기준으로 제공합니다. 
+    `,
+  },
+  {
+    type: 'explain',
+    instruction: `
+    사용자가 질문한 경제 지표에 대헌 설명을 즉시 사용자에게 제공합니다. 5살짜리도 이해할 수 있도록 쉽고 자세히 설명합니다.
+    - speak_to_user 함수를 호출하여 바로 사용자에게 설명을 제공합니다.
     `,
   },
 ];
