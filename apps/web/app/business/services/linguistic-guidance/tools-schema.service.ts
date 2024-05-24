@@ -28,6 +28,26 @@ export const tools: Array<ChatCompletionTool> = [
   {
     type: 'function',
     function: {
+      name: 'retrive_economic_indicators',
+      description: '경제를 분석하기 위한 지표들에 대한 값을 가져온다.',
+      parameters: {
+        type: 'object',
+        properties: {
+          symbols: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            description: '경제 분석에 필요한 지표들의 심볼 리스트',
+          },
+        },
+        required: ['symbols'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'speak_to_user',
       description: '도구 응답 지시사항을 준수하여 사용자의 질문에 대답합니다. 대답은 한글로 작성합니다. ',
       parameters: {
@@ -58,10 +78,10 @@ export const tools: Array<ChatCompletionTool> = [
         properties: {
           query: {
             type: 'string',
-            enum: ['predict', 'analysis'],
+            enum: ['predict', 'analyze'],
             description: `""사용자가 하는 질문의 타입은 다음 중 하나가 될 수 있다:
             - predict: 경제 지표 예측과 해석을 요청하는 질문.""
-            - analysis: 경제 현황에 대한 분석을 요청하는 질문.
+            - analyze: 경제 현황에 대한 분석을 요청하는 질문.
             `,
           },
         },

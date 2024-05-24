@@ -48,9 +48,21 @@ const instructions = [
     - 목표 지표는 재료 지표가 될 수 없습니다. 
     - 반드시 지표의 심볼만 함수의 인자 값으로 전달해야 합니다.(예시: 005930, EUR/USD, BTC/USD, SPY, IXIC, 0P00000AMG 등) 
     - 심볼에는 '.'d이나 '^' 와 같은 접미사나 접두사를 붙이지 않습니다(예시: GSPC). - 크립토와 환율의 심볼은 '/'를 사용합니다(예시: EUR/USD, BTC/USD 등). 
-    - 함수의 결과로 예측 결과 값이 제공되면, 예측 결과에 대한 해석을 추가하여 사용자에게 전달해야 합니다. 가이드라인: - 목표 지표와 재료 지표가 무엇인지 명확히 설명해야 합니다. 
-    - 예측 결과 값을 제공해야 합니다. - 해석에는 목표 지표와 재료 지표의 연관성에 대한 지식을 설명해야 합니다. - 예측 결과 값을 기반으로 해당 지표가 상승하는지 하락하는지에 대한 해석을 제공 합니다. 
-    - 예측 결과 값을 기반으로 GPT가 알고 있는 지식을 활용하여 해석을 제공 합니다. - 예측 결과 값이 부정확할 수 있음을 설명해야 합니다.
+    - 함수의 결과로 예측 결과 값이 제공되면, 예측 결과에 대한 해석을 추가하여 사용자에게 전달해야 합니다. 
+    
+    가이드라인: - 목표 지표와 재료 지표가 무엇인지 명확히 설명해야 합니다. 
+    - 예측 결과 값을 제공해야 합니다. 
+    - 해석에는 목표 지표와 재료 지표의 연관성에 대한 지식을 설명해야 합니다. 
+    - 예측 결과 값을 기반으로 해당 지표가 상승하는지 하락하는지에 대한 해석을 제공 합니다. 
+    - 예측 결과 값을 기반으로 GPT가 알고 있는 지식을 활용하여 해석을 제공 합니다. 
+    - 예측 결과 값이 부정확할 수 있음을 설명해야 합니다.
+    `,
+  },
+  {
+    type: 'analyze',
+    instruction: `
+    경제 분석에 필요한 지표들을 가져온 후 이를 토대로 경제 분석을 수행합니다.  
+    지표는 FRED(Federal Reserve Economic Data) API를 통해 제공되며, FRED의 심볼을 기준으로 제공합니다.
     `,
   },
 ];
@@ -89,6 +101,23 @@ export const useFingooChat = () => {
         ],
       };
       return functionResponse;
+    }
+
+    if (functionCall.name === 'retrive_economic_indicators') {
+      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
+
+      console.log('retrive_economic_indicators', parsedFunctionCallArguments);
+
+      const { symbols } = parsedFunctionCallArguments as {
+        symbols: string[];
+      };
+
+      // 1. symbol을 이용하여 indicatorId를 가져온다(동적 저장소)
+      // 2. 메타데이터 생성
+      // 3. 메타데이터에 지표 추가
+      // 4. 지표 값 가져오기(cache로 데이터 가져오기?)
+      // 5. 분석 값 넣기
+      // 6. 분석에 대한 해석 제공
     }
 
     if (functionCall.name === 'predict_economic_indicator') {
