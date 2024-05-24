@@ -29,7 +29,7 @@ export const tools: Array<ChatCompletionTool> = [
     type: 'function',
     function: {
       name: 'analyze_economic_indicators',
-      description: '경제를 분석하기 위한 지표들에 대한 값을 가져온다.',
+      description: '경제 현황을 분석하기 위한 지표들에 대한 값을 가져온다.',
       parameters: {
         type: 'object',
         properties: {
@@ -38,7 +38,7 @@ export const tools: Array<ChatCompletionTool> = [
             items: {
               type: 'string',
             },
-            description: '경제 분석에 필요한 지표들의 심볼 리스트',
+            description: '경제 현황 분석에 필요한 지표들의 심볼 리스트',
           },
         },
         required: ['symbols'],
@@ -48,8 +48,25 @@ export const tools: Array<ChatCompletionTool> = [
   {
     type: 'function',
     function: {
+      name: 'explain_economic_indicator',
+      description: '사용자가 질문한 경제 지표에 대한 설명을 사용자에게 제공한다.',
+      parameters: {
+        type: 'object',
+        properties: {
+          symbol: {
+            type: 'string',
+            description: '사용자가 질문한 경제 지표',
+          },
+        },
+        required: ['symbol', ],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'speak_to_user',
-      description: '도구 응답 지시사항을 준수하여 사용자의 질문에 대답합니다. 대답은 한글로 작성합니다. ',
+      description: '도구 응답 지시사항을 준수하여 사용자의 질문에 대답합니다.',
       parameters: {
         type: 'object',
         properties: {
@@ -62,7 +79,8 @@ export const tools: Array<ChatCompletionTool> = [
             필드 3: 예측에 대한 해석
             - explain:
             필드 1: 경제 지표에 대한 설명
-            필드 2: 연관된 경제 지표들에 대한 설명
+            필드 2: 관련된 지표에 대한 설명
+            필드 3: 경제 지표의 의미와 중요성
             .
             `,
           },
@@ -84,8 +102,8 @@ export const tools: Array<ChatCompletionTool> = [
             enum: ['predict', 'analyze', 'explain'],
             description: `""사용자가 하는 질문의 타입은 다음 중 하나가 될 수 있다:
             - predict: 경제 지표 예측과 해석을 요청하는 질문.""
-            - analyze: 경제 현황에 대한 분석을 요청하는 질문.
-            - explain: 경제 지표에 대한 설명을 요청하는 질문 (예시: AAPL에 대해 설명해줘).
+            - analyze: 경제 현황에 대한 분석을 요청하는 질문. (예시: 현 시장 상황이 어떻게 되나요?)
+            - explain: 경제 지표에 대한 설명 및 정보를 요청하는 질문 (예시: AAPL가 뭐야?).
             `,
           },
         },

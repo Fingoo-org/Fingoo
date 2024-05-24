@@ -23,7 +23,7 @@ const SYSTEM_PROMPT = `
 - 하나의 메시지에서 도구를 한 번만 호출합니다.
 
 출력 지시사항:
-- 출력 필드를 준수하여 사용자의 질문에 대답합니다.
+- 출력 필드를 준수하여 사용자의 질문에 대답해야 합니다.
 `;
 
 export async function POST(req: Request) {

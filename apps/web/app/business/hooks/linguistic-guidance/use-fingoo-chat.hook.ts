@@ -68,9 +68,9 @@ const instructions = [
   {
     type: 'explain',
     instruction: `
-    사용자가 질문한 경제 지표에 대한 설명을 즉시 사용자에게 제공합니다. 5살짜리도 이해할 수 있도록 쉽고 자세히 설명합니다.
-    - speak_to_user 함수를 호출하여 바로 사용자에게 설명을 제공합니다.
-    - 사용자가 질문한 경제 지표와 연관된 다른 경제 지표에 대한 심볼과 설명을 제공합니다.
+    사용자가 질문한 경제 지표에 대한 정보를 사용자에게 설명합니다.
+    
+    - 사용자가 질문한 지표에 대한 정보를 제공합니다.
     `,
   },
 ];
@@ -126,6 +126,38 @@ export const useFingooChat = () => {
       // 4. 지표 값 가져오기(cache로 데이터 가져오기?)
       // 5. 분석 값 넣기
       // 6. 분석에 대한 해석 제공
+    }
+
+    if (functionCall.name === 'explain_economic_indicator') {
+      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
+
+      console.log('explain_economic_indicator', parsedFunctionCallArguments);
+
+      const { symbol } = parsedFunctionCallArguments as {
+        symbol: string;
+      };
+
+      const functionResponse: ChatRequest = {
+        messages: [
+          ...chatMessages,
+          {
+            id: generateId(),
+            tool_call_id: toolCalls[0].id,
+            name: 'get_instructions',
+            role: 'tool' as const,
+            content: JSON.stringify(
+              `
+              ${symbol}에 대한 정보를 설명합니다.
+
+              - 5살짜리도 이해할 수 있도록 쉽고 자세히 설명해야 합니다.
+              - 지표의 의미와 중요성을 설명해야 합니다.
+              - 지표의 특징과 활용 방법을 설명해야 합니다.
+              `,
+            ),
+          },
+        ],
+      };
+      return functionResponse;
     }
 
     if (functionCall.name === 'predict_economic_indicator') {
