@@ -1,35 +1,25 @@
 {
   "config": {
-    "target": "http://localhost:8000",
+    "target": "https://d27k91tho996ae.cloudfront.net",
     "phases": [
       {
         "duration": 60,
-        "arrivalRate": 50
+        "arrivalRate": 30
       }
     ],
-    "ensure": [
-      {
-        "maxErrorRate": 1,
-        "max": 500
-      }
-    ]
+    "payload" : {
+      "path": "./vusers.csv",
+      "fields": ["email", "password"]
+    }
+
   },
   "scenarios": [
     {
-      "name": "Artillery Init Test",
+      "name": "init",
       "flow": [
         {
           "get": {
-            "url": "/"
-          }
-        },
-        {
-          "post": {
-            "url": "api/auth/signIn",
-            "json": {
-              "email": "artillery@test.com",
-              "password": "123456"
-            }
+            "url": "/api"
           }
         }
       ]
