@@ -58,9 +58,11 @@ export const tools: Array<ChatCompletionTool> = [
         properties: {
           query: {
             type: 'string',
-            enum: ['predict'],
+            enum: ['predict', 'analysis'],
             description: `""사용자가 하는 질문의 타입은 다음 중 하나가 될 수 있다:
-            - predict: 경제 지표 예측과 해석을 요청하는 질문.""`,
+            - predict: 경제 지표 예측과 해석을 요청하는 질문.""
+            - analysis: 경제 현황에 대한 분석을 요청하는 질문.
+            `,
           },
         },
         required: ['query'],
