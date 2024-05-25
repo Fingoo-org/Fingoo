@@ -14,6 +14,7 @@ import { cn } from '@/app/utils/style';
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import MetadataListItemRow from './metadata-list-item-row';
 import { useLogging } from '@/app/logging/logging-context';
+import { sendGAEvent } from '@next/third-parties/google';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -49,6 +50,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   const handleSelect = () => {
+    sendGAEvent({ event: 'buttonClicked', value: 'xyz' });
     logger.track('workspace:metadata_list_item_select', {
       value: item.id,
       testValue: 'hi',
