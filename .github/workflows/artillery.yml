@@ -1,0 +1,55 @@
+name: Artillery Test
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  artillery_test:
+    name: artillery_test
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_REMOTE_ONLY: true
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Setting api .env
+        run: |
+          echo "SERVICE_KEY=${{ secrets.KRX_SERVICE_KEY }}" >> .env
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+          echo "SUPABASE_BUCKET_NAME=${{ secrets.SUPABASE_BUCKET_NAME }}" >> .env
+          echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
+          echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
+
+      - name: Run Artillery Test
+        run: |
+          npx artillery run --output artillery-report.json --record --key ${{ secrets.ARTILLERY_KEY }} artillery/load-test.json
+
+      - name: Publish Artillery Report to PR
+        uses: thollander/actions-comment-pull-request@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          message: '🚀 Artillery Test Report: https://app.artillery.io/load-tests/t34zz_dw5bpe3twxq473cpxd954k8n7zmdk_9x8d'
