@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 export type UserEvent = 'home:product-tour-button:click' | 'home:apply-button:click';
 
@@ -8,6 +8,10 @@ export type UserTracker = {
 
 export const LoggingContext = createContext<UserTracker | null>(null);
 
-export default function LoggingProvider({ children }: { children: React.ReactNode }) {
-  return <LoggingContext.Provider value={null}>{children}</LoggingContext.Provider>;
-}
+export const useLogging = (): UserTracker => {
+  const logger = useContext(LoggingContext);
+  if (!logger) {
+    throw new Error('useLogging must be used within a LoggingProvider');
+  }
+  return logger;
+};

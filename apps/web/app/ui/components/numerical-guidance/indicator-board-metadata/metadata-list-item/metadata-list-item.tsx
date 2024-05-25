@@ -12,8 +12,6 @@ import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numeric
 import { useEffect, useState } from 'react';
 import { cn } from '@/app/utils/style';
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
-import IndicatorUnitSelector from './indicator-unit-selector';
-import ListItem from '../../../view/atom/list-item';
 import MetadataListItemRow from './metadata-list-item-row';
 
 type MetadataListItemProps = {
