@@ -1,3 +1,4 @@
+'use client';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { LoggingContext, type UserTracker } from '../logging-context';
 import { sendGAEvent } from '@next/third-parties/google';
