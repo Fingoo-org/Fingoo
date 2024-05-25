@@ -17,7 +17,6 @@ export default function GoogleAnalyticsProvider({ children }: { children: React.
   return (
     <>
       <LoggingContext.Provider value={userTracker}>{children}</LoggingContext.Provider>
-      <GoogleAnalytics gaId="G-N8X0FGQ27D" />
     </>
   );
 }
