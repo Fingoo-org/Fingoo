@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/app/utils/style';
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import MetadataListItemRow from './metadata-list-item-row';
+import { useLogging } from '@/app/logging/logging-context';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -20,6 +21,8 @@ type MetadataListItemProps = {
 
 // refactoring의 교본으로 삼으면 좋지 않을까...?
 export default function MetadataListItem({ item }: MetadataListItemProps) {
+  const logger = useLogging();
+
   const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
   const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
@@ -46,6 +49,10 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   const handleSelect = () => {
+    logger.track('workspace:metadata_list_item_select', {
+      value: item.id,
+      testValue: 'hi',
+    });
     const isSuccess = addMetadataToIndicatorBoard(item.id);
     if (isSuccess) {
       selectMetadataById(item.id);
