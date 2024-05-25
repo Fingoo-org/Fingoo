@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from './utils/style';
 import localFont from 'next/font/local';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const myFont = localFont({
   src: './PretendardVariable.woff2',
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className="scrollbar-track-gray-300 scrollbar-thumb-fingoo-main scrollbar-track-rounded-full scrollbar-thumb-rounded-full"
     >
       <body className={cn(myFont.variable, 'font-pretendard')}>{children}</body>
+      <GoogleAnalytics gaId="G-N8X0FGQ27D" />
     </html>
   );
 }
