@@ -50,7 +50,6 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   const handleSelect = () => {
-    sendGAEvent({ event: 'buttonClicked', value: 'xyz' });
     logger.track('workspace:metadata_list_item_select', {
       value: item.id,
       testValue: 'hi',

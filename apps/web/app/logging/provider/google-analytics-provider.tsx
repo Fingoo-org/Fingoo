@@ -6,9 +6,7 @@ import { sendGAEvent } from '@next/third-parties/google';
 export default function GoogleAnalyticsProvider({ children }: { children: React.ReactNode }) {
   const userTracker: UserTracker = {
     track(event, properties) {
-      console.log('click');
-      sendGAEvent({
-        event,
+      sendGAEvent('event', event, {
         ...properties,
       });
     },
@@ -17,6 +15,7 @@ export default function GoogleAnalyticsProvider({ children }: { children: React.
   return (
     <>
       <LoggingContext.Provider value={userTracker}>{children}</LoggingContext.Provider>
+      <GoogleAnalytics gaId="G-N8X0FGQ27D" />
     </>
   );
 }
