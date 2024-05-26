@@ -1,7 +1,8 @@
-from fastapi import HTTPException, Query
+from fastapi import Depends, Query
 from fastapi import FastAPI
 from service import predict, sourceIndicatorsVerification, predictWithoutTargetIndicator
 from database import engine, Base, get_db
+from sqlalchemy.orm import Session
 
 Base.metadata.create_all(bind=engine) 
 
@@ -11,18 +12,20 @@ def hello() :
 	return "Hello, Fingoo!"
 
 @app.get("/api/var-api/custom-forecast-indicator/")
-def loadPredictedIndicator(
+def loadIndicatorValue(
     targetIndicatorId: str = Query(...),
     targetIndicatorType: str = Query(...),
     sourceIndicatorId: list[str] = Query(default = None),
     sourceIndicatorType: list[str] = Query(default = None),
     weight: list[int] = Query(default = None),
+    validIndicatorId: list[str] = Query(default = None),
+    db: Session = Depends(get_db)
     ):
 	
     if not sourceIndicatorId and not weight:
-        prediction = predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, get_db())
+        prediction = predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, db)
     else:
-        prediction = predict(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, get_db())
+        prediction = predict(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, validIndicatorId, db)
 
     return prediction
 
@@ -33,6 +36,7 @@ def loadSourceIndicatorsVerification(
     sourceIndicatorId: list[str] = Query(default = None),
     sourceIndicatorType: list[str] = Query(default = None),
     weight: list[int] = Query(default = None),
+    db: Session = Depends(get_db)
     ):
-	verificaion = sourceIndicatorsVerification(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, get_db())
+	verificaion = sourceIndicatorsVerification(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, db)
 	return verificaion

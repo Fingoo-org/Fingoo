@@ -16,7 +16,7 @@ load_dotenv()
 
 BASE_URL = os.getenv("FAST_BASE_URL")
 
-def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[int], db: Session) -> ForecastIndicatorDto:
+def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[int], validIndicatorId: list[str], db: Session) -> ForecastIndicatorDto:
 # 데이터베이스로부터 Indicator 정보 가져오기
   varIndicators: list[IndicatorDto] = []
 
@@ -43,11 +43,6 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
   for varIndicator in varIndicators:
     nameList.append(varIndicator.name)
 
-  for varIndicator in varIndicators:
-    if varIndicator.id == targetIndicatorId:
-      targetIndicatorName = varIndicator.name
-
-  # sourceIndicator live값을 가져와야 함
   APIList = []
   session = requests.Session()
   retry = Retry(connect=10, backoff_factor=1)
@@ -67,7 +62,6 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
     df['value'] = df['value'].astype(float)
     APIList.append(df)
 
-  # 여기서부터 name to id 작업
   sourceDataFrames = {}
   for sourceIndicatorId, df in zip(sourceIndicatorIds, APIList):
     sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
@@ -83,17 +77,13 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
     weight = int(weight)
     df_var = verification.applyWeight(df_var, indicator, weight)
 
-  # var
   try:
-    # granger
-    grangerDf = verification.grangerVerification(df_var)
-    checkDf = verification.findSignificantValues(grangerDf)
-    grangerGroup = verification.findInfluentialGroups(checkDf)
-    if len(grangerGroup) >= 2:
-      if targetIndicatorId in grangerGroup:
+    if len(validIndicatorId) >= 2:
+      if targetIndicatorId in validIndicatorId:
         print('Var')
-        customForecastIndicator = forecast.runVar(df_var, grangerGroup, int(len(df_var)/2))
-        for id in grangerGroup:
+        # df_var을 유효성 검증으로 바꿔야함
+        customForecastIndicator = forecast.runVar(df_var, validIndicatorId, int(len(df_var)/2))
+        for id in validIndicatorId:
           if id == targetIndicatorId:
             forecastdata = customForecastIndicator[id].to_dict()
             forecastValuesWithoutDates = list(forecastdata.values())
@@ -111,7 +101,7 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
               "values": values
               }
         return result
-      elif targetIndicatorId not in grangerGroup:
+      elif targetIndicatorId not in validIndicatorId:
         return predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, db)
     else:
       return predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, db)
@@ -222,7 +212,6 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     if varIndicator.id == targetIndicatorId:
       targetIndicatorName = varIndicator.name
 
-  # sourceIndicator live값을 가져와야 함
   APIList = []
   session = requests.Session()
   retry = Retry(connect=10, backoff_factor=1)
@@ -242,7 +231,6 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     df['value'] = df['value'].astype(float)
     APIList.append(df)
 
-  # 여기서부터 name to id 작업
   sourceDataFrames = {}
   for sourceIndicatorId, df in zip(sourceIndicatorIds, APIList):
     sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']

@@ -16,7 +16,7 @@ import { AuthService } from 'src/auth/application/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
 import { UpdateSourceIndicatorsInformationPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-information.port';
 import { HttpService } from '@nestjs/axios';
-import { ForecastApiResponse } from 'src/utils/type/type-definition';
+import { ForecastApiResponse, SourceIndicatorInformation } from 'src/utils/type/type-definition';
 import { UpdateCustomForecastIndicatorNamePort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-custom-forecast-indicator-name.port';
 import { DeleteCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/delete-custom-forecast-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
@@ -82,6 +82,10 @@ export class CustomForecastIndicatorPersistentAdapter
       this.nullCheckForEntity(customForecastIndicatorEntity);
 
       const customForecastIndicator = CustomForecastIndicatorMapper.mapEntityToDomain(customForecastIndicatorEntity);
+
+      const validIndicators = this.getValidIndicators(customForecastIndicator);
+      const validIndicatorIds = validIndicators.map((indicator) => indicator.sourceIndicatorId);
+
       const url: string =
         process.env.FASTAPI_URL +
         'api/var-api/custom-forecast-indicator?targetIndicatorId=' +
@@ -92,16 +96,21 @@ export class CustomForecastIndicatorPersistentAdapter
       let indicatorsUrl: string = '';
       let indicatorsTypeUrl: string = '';
       let weightsUrl: string = '';
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
+      let validIndicatorIdsUrl: string = '';
+      for (let i = 0; i < validIndicators.length - 1; i++) {
+        indicatorsUrl += `sourceIndicatorId=${validIndicators[i].sourceIndicatorId}&`;
       }
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-        indicatorsTypeUrl += `sourceIndicatorType=${customForecastIndicator.sourceIndicatorsInformation[i].indicatorType}&`;
+      for (let i = 0; i < validIndicators.length - 1; i++) {
+        indicatorsTypeUrl += `sourceIndicatorType=${validIndicators[i].indicatorType}&`;
       }
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-        weightsUrl += `weight=${customForecastIndicator.sourceIndicatorsInformation[i].weight}&`;
+      for (let i = 0; i < validIndicators.length - 1; i++) {
+        weightsUrl += `weight=${validIndicators[i].weight}&`;
       }
-      const requestUrl = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl;
+      for (let i = 0; i < validIndicatorIds.length; i++) {
+        validIndicatorIdsUrl += `validIndicatorId=${validIndicatorIds[i]}&`;
+      }
+
+      const requestUrl: string = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl + validIndicatorIdsUrl;
 
       const res = await this.api.axiosRef.get(requestUrl);
       const resultValues = res.data.values;
@@ -330,5 +339,19 @@ export class CustomForecastIndicatorPersistentAdapter
   }
   private nullCheckForEntity(entity) {
     if (entity == null) throw new NotFoundException();
+  }
+
+  private getValidIndicators(customForecastIndicator: CustomForecastIndicator): SourceIndicatorInformation[] {
+    const allIndicatorsInformation = customForecastIndicator.sourceIndicatorsInformation;
+    allIndicatorsInformation.push({
+      sourceIndicatorId: customForecastIndicator.targetIndicator.id,
+      indicatorType: customForecastIndicator.targetIndicator.indicatorType,
+      weight: null,
+    });
+    const validIndicators = allIndicatorsInformation.filter(
+      (_SourceIndicatorInformation, index) =>
+        customForecastIndicator.grangerVerification[index].verification === 'True',
+    );
+    return validIndicators;
   }
 }
