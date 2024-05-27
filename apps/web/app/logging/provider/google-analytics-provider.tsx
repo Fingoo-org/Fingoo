@@ -7,6 +7,7 @@ export default function GoogleAnalyticsProvider({ children }: { children: React.
   const userTracker: UserTracker = {
     track(event, properties) {
       sendGAEvent('event', event, {
+        path: location.pathname,
         ...properties,
       });
     },
