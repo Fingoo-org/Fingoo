@@ -50,9 +50,8 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
   };
 
   const handleSelect = () => {
-    logger.track('workspace:metadata_list_item_select', {
+    logger.track('click_metadata_item', {
       value: item.id,
-      testValue: 'hi',
     });
     const isSuccess = addMetadataToIndicatorBoard(item.id);
     if (isSuccess) {

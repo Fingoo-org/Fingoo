@@ -1,9 +1,6 @@
 import { createContext, useContext } from 'react';
 
-export type UserEvent =
-  | 'home:product-tour-button:click'
-  | 'home:apply-button:click'
-  | 'workspace:metadata_list_item_select';
+export type UserEvent = 'click_metadata_item';
 
 export type UserTracker = {
   track(event: UserEvent, properties?: Record<string, unknown>): void;
