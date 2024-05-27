@@ -5,7 +5,10 @@ export type UserEvent =
   | 'click_metadata_create_button'
   | 'click_screen_split_toggle'
   | 'click_axis_create_button'
-  | 'click_axis_delete_button';
+  | 'click_axis_delete_button'
+  | 'click_sidebar_toggle'
+  | 'submit_gpt_form'
+  | 'toast_error';
 
 export type UserTracker = {
   track(event: UserEvent, properties?: Record<string, unknown>): void;

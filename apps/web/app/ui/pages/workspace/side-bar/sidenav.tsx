@@ -4,13 +4,15 @@ import IndicatorBoardToolbar from './indicator-board-toolbar';
 import { Sidebar } from 'react-pro-sidebar';
 import { ChevronDoubleLeftIcon } from '@heroicons/react/solid';
 import IconButton from '../../../components/view/atom/icons/icon-button';
-import ChatCard from '@/app/ui/components/view/molecule/chat-card';
 import Chat from '@/app/ui/components/linguistic-guidance/chat';
+import { useLogger } from '@/app/logging/logging-context';
 
 export default function SideNav() {
+  const logger = useLogger();
   const [collapsed, setCollapsed] = useState(false);
 
   const handleCollapse = () => {
+    logger.track('click_sidebar_toggle', { sidebar_state: collapsed ? 'close' : 'open', date: new Date() });
     setCollapsed(!collapsed);
   };
 
