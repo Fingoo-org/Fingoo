@@ -2,6 +2,7 @@ import { useIndicatorBoardMetadataList } from '@/app/business/hooks/numerical-gu
 import Button from '../../../view/atom/button/button';
 import { PlusIcon } from '@heroicons/react/solid';
 import { Loader2 } from 'lucide-react';
+import { useLogger } from '@/app/logging/logging-context';
 
 export default function MetadataCreateButton() {
   const { createIndicatorBoardMetadata, isCreateIndicatorMetadataMutating } = useIndicatorBoardMetadataList();

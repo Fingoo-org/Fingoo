@@ -8,7 +8,7 @@ export type UserTracker = {
 
 export const LoggingContext = createContext<UserTracker | null>(null);
 
-export const useLogging = (): UserTracker => {
+export const useLogger = (): UserTracker => {
   const logger = useContext(LoggingContext);
   if (!logger) {
     if (process.env.NODE_ENV === 'test') {
