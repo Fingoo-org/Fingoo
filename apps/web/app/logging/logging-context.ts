@@ -1,6 +1,10 @@
 import { createContext, useContext } from 'react';
 
-export type UserEvent = 'click_metadata_item' | 'click_metadata_create_button' | 'click_screen_split_toggle';
+export type UserEvent =
+  | 'click_metadata_item'
+  | 'click_metadata_create_button'
+  | 'click_screen_split_toggle'
+  | 'click_axis_create_button';
 
 export type UserTracker = {
   track(event: UserEvent, properties?: Record<string, unknown>): void;

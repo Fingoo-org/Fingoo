@@ -6,8 +6,11 @@ import { useDialog } from '../../../view/hooks/use-dialog.hook';
 import TinyInput from '../../../view/atom/tiny-input/tiny-input';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-view-model.service';
+import { useLogger } from '@/app/logging/logging-context';
 
 export default function MetadataDialogMenu() {
+  const logger = useLogger();
+
   const { payload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
   const { openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_DELETE);
   const {
@@ -19,6 +22,8 @@ export default function MetadataDialogMenu() {
     typeof payload !== 'undefined' ? (payload as IndicatorBoardMetadata).id : undefined,
   );
 
+  const sections = Object.keys(indicatorBoardMetadata?.indicatorIdsWithSectionIds ?? {});
+
   const handleMetadataDeleteButtonClick = () => {
     openDialogWithPayload(payload);
   };
@@ -28,14 +33,15 @@ export default function MetadataDialogMenu() {
   };
 
   const handleSectionAdd = () => {
+    logger.track('click_axis_create_button', {
+      axis_count: sections.length,
+    });
     addsectionToIndicatorBoardMetadata();
   };
 
   const handleSectionDelete = (sectionId: number) => {
     deleteSectionFromIndicatorBoardMetadata(sectionId);
   };
-
-  const sections = Object.keys(indicatorBoardMetadata?.indicatorIdsWithSectionIds ?? {});
 
   return (
     <DialogMenu color={'gray'} size={'md'} dialogKey={DIALOG_KEY.METADATA_EDIT_MENU}>
