@@ -4,6 +4,7 @@
 import * as React from 'react';
 
 import type { ToastActionElement, ToastProps } from '@/app/ui/components/view/molecule/toast/toast';
+import { useLogger, UserTracker } from '@/app/logging/logging-context';
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
@@ -137,8 +138,12 @@ function dispatch(action: Action) {
 
 export type Toast = Omit<ToasterToast, 'id'>;
 
-function toast({ ...props }: Toast) {
+function toast(logger: UserTracker, { ...props }: Toast) {
   const id = genId();
+
+  if (props.variant === 'destructive') {
+    logger.track('toast_error', { description: props.description });
+  }
 
   const update = (props: ToasterToast) =>
     dispatch({
@@ -168,6 +173,7 @@ function toast({ ...props }: Toast) {
 
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState);
+  const logger = useLogger();
 
   React.useEffect(() => {
     listeners.push(setState);
@@ -181,7 +187,7 @@ function useToast() {
 
   return {
     ...state,
-    toast,
+    toast: toast.bind(null, logger),
     dismiss: (toastId?: string) => dispatch({ type: 'DISMISS_TOAST', toastId }),
   };
 }
