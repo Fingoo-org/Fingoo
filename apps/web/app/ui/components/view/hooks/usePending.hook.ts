@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 
+// RISK: critical bug deprecated
 export function usePending(isValidating: boolean, isMutating: boolean) {
   const isTriggeredMutation = useRef(false);
   const isPending = useRef(false);
