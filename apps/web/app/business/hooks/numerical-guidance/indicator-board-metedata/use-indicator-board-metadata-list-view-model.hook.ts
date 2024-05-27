@@ -50,8 +50,12 @@ export const useIndicatorBoardMetadataList = () => {
     }
   }, [convertedIndicatorBoardMetadataList]);
 
-  const createIndicatorBoardMetadata = async (data: CreateIndicatorMetadataRequestBody) => {
-    const indicatorBoardMetadataId = await createIndicatorBoardMetadataTrigger(data);
+  const createIndicatorBoardMetadata = async () => {
+    const metadata = {
+      indicatorBoardMetadataName: 'metadata1',
+    };
+
+    const indicatorBoardMetadataId = await createIndicatorBoardMetadataTrigger(metadata);
     return indicatorBoardMetadataId;
   };
 

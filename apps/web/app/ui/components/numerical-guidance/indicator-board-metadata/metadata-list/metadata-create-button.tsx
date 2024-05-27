@@ -7,11 +7,7 @@ export default function MetadataCreateButton() {
   const { createIndicatorBoardMetadata, isCreateIndicatorMetadataMutating } = useIndicatorBoardMetadataList();
 
   const handleMetadataCreateAndSelect = async () => {
-    const metadata = {
-      indicatorBoardMetadataName: 'metadata1',
-    };
-
-    const indicatorBoardMetadataId = await createIndicatorBoardMetadata(metadata);
+    const indicatorBoardMetadataId = await createIndicatorBoardMetadata();
   };
 
   return (
