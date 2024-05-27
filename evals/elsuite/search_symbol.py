@@ -68,10 +68,10 @@ class SearchSymbol(evals.Eval):
                 출력 지시사항: 목표지표 심볼값
                 """
             },
-            {"role": "user", "content": test_sample["problem"]}
+            {"role": "user", "content": test_sample["input"]}
         ]
 
         result = self.completion_fn(prompt=prompt, temperature=0.0, max_tokens=10)
         sampled = result.get_completions()[0].strip()
 
-        evals.record_and_check_match(prompt=prompt, sampled=sampled, expected=test_sample["answer"])
+        evals.record_and_check_match(prompt=prompt, sampled=sampled, expected=test_sample["expected_target_symbol"])
