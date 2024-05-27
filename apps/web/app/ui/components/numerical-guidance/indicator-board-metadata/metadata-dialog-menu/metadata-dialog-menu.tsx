@@ -40,6 +40,9 @@ export default function MetadataDialogMenu() {
   };
 
   const handleSectionDelete = (sectionId: number) => {
+    logger.track('click_axis_delete_button', {
+      axis_count: sections.length,
+    });
     deleteSectionFromIndicatorBoardMetadata(sectionId);
   };
 
