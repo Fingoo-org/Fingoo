@@ -34,7 +34,9 @@ export type AddIndicatorToMetadataRequestBody = {
 };
 
 export const useFetchIndicatorBoardMetadataList = () =>
-  useSWR<IndicatorBoardMetadataResponse[]>(API_PATH.indicatorBoardMetadata, defaultFetcher);
+  useSWR<IndicatorBoardMetadataResponse[]>(API_PATH.indicatorBoardMetadata, defaultFetcher, {
+    revalidateIfStale: false,
+  });
 
 export const useCreateIndicatorMetadata = () =>
   useSWRMutation(
