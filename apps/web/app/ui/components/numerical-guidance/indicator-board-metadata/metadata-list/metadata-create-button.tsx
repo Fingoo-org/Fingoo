@@ -5,9 +5,15 @@ import { Loader2 } from 'lucide-react';
 import { useLogger } from '@/app/logging/logging-context';
 
 export default function MetadataCreateButton() {
-  const { createIndicatorBoardMetadata, isCreateIndicatorMetadataMutating } = useIndicatorBoardMetadataList();
+  const logger = useLogger();
+  const { metadataList, createIndicatorBoardMetadata, isCreateIndicatorMetadataMutating } =
+    useIndicatorBoardMetadataList();
 
   const handleMetadataCreateAndSelect = async () => {
+    logger.track('click_metadata_create_button', {
+      metadata_item_count: metadataList?.length ?? -1,
+    });
+
     const indicatorBoardMetadataId = await createIndicatorBoardMetadata();
   };
 

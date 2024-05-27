@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-export type UserEvent = 'click_metadata_item';
+export type UserEvent = 'click_metadata_item' | 'click_metadata_create_button';
 
 export type UserTracker = {
   track(event: UserEvent, properties?: Record<string, unknown>): void;
