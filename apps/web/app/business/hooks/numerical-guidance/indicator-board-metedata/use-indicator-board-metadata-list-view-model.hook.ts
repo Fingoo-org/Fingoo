@@ -7,7 +7,6 @@ import {
 import { useFetchIndicatorBoardMetadataList } from '../../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useEffect, useMemo } from 'react';
 import { convertIndcatorBoardMetadataList } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-list-view-model.service';
-import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
 import {
   IndicatorInMetadataUnitTypes,
   useIndicatorBoardMetadataStore,
@@ -16,9 +15,9 @@ import {
 export const useIndicatorBoardMetadataList = () => {
   const { data: indicatorBoardMetadataList, isValidating } = useFetchIndicatorBoardMetadataList();
   const { trigger: deleteIndicatorBoardMetadataTrigger } = useDeleteIndicatorBoardMetadata();
-  const { trigger: createIndicatorBoardMetadataTrigger, isMutating: isCreateIndicatorMetadataMutationg } =
+  const { trigger: createIndicatorBoardMetadataTrigger, isMutating: isCreateIndicatorMetadataMutating } =
     useCreateIndicatorMetadata();
-  const { isPending } = usePending(isValidating, isCreateIndicatorMetadataMutationg);
+
   const { initIndicatorsInMetadataUnitType, updateIndicatorsInMetadataUnitType } = useIndicatorBoardMetadataStore(
     (state) => state.actions,
   );
@@ -51,8 +50,12 @@ export const useIndicatorBoardMetadataList = () => {
     }
   }, [convertedIndicatorBoardMetadataList]);
 
-  const createIndicatorBoardMetadata = async (data: CreateIndicatorMetadataRequestBody) => {
-    const indicatorBoardMetadataId = await createIndicatorBoardMetadataTrigger(data);
+  const createIndicatorBoardMetadata = async () => {
+    const metadata = {
+      indicatorBoardMetadataName: 'metadata1',
+    };
+
+    const indicatorBoardMetadataId = await createIndicatorBoardMetadataTrigger(metadata);
     return indicatorBoardMetadataId;
   };
 
@@ -69,7 +72,8 @@ export const useIndicatorBoardMetadataList = () => {
 
   return {
     metadataList: convertedIndicatorBoardMetadataList,
-    isPending,
+    isCreateIndicatorMetadataMutating,
+    isPending: isValidating,
     createIndicatorBoardMetadata,
     deleteIndicatorBoardMetadata,
   };

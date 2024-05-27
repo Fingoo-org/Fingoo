@@ -1,9 +1,14 @@
 import { createContext, useContext } from 'react';
 
 export type UserEvent =
-  | 'home:product-tour-button:click'
-  | 'home:apply-button:click'
-  | 'workspace:metadata_list_item_select';
+  | 'click_metadata_item'
+  | 'click_metadata_create_button'
+  | 'click_screen_split_toggle'
+  | 'click_axis_create_button'
+  | 'click_axis_delete_button'
+  | 'click_sidebar_toggle'
+  | 'submit_gpt_form'
+  | 'toast_error';
 
 export type UserTracker = {
   track(event: UserEvent, properties?: Record<string, unknown>): void;
@@ -11,7 +16,7 @@ export type UserTracker = {
 
 export const LoggingContext = createContext<UserTracker | null>(null);
 
-export const useLogging = (): UserTracker => {
+export const useLogger = (): UserTracker => {
   const logger = useContext(LoggingContext);
   if (!logger) {
     if (process.env.NODE_ENV === 'test') {

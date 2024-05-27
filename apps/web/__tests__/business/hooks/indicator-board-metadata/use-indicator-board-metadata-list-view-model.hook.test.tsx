@@ -1,13 +1,8 @@
 import { useIndicatorBoardMetadataList } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { server } from '@/app/mocks/server.mock';
-import { HttpResponse, http } from 'msw';
-import { API_PATH } from '@/app/store/querys/api-path';
-import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
-import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-view-model.service';
 
 const wrapper = SWRProviderWithoutCache;
 
@@ -35,12 +30,11 @@ describe('useIndicatorBoardMetadataList', () => {
 
     // when
     await act(() => {
-      result.current.createIndicatorBoardMetadata({ indicatorBoardMetadataName: 'metadata4' });
+      result.current.createIndicatorBoardMetadata();
     });
 
     // then
     await waitFor(() => expect(result.current.metadataList).toHaveLength(4));
-    expect(result.current.metadataList?.[3].indicatorBoardMetadataName).toBe('metadata4');
   });
 
   it('메타데이터를 삭제하면, 삭제한 메타데이터를 포함하지 않는 메타데이터 리스트를 가져온다.', async () => {
