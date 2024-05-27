@@ -65,13 +65,17 @@ class SearchSymbol(evals.Eval):
                 - 예측 결과 값이 부정확할 수 있음을 설명해야 합니다.
                 - 심볼이 무엇인지 물어본경우 GPT가 알고있는 지식을 활용해 심볼을 제공합니다.
                 
-                출력 지시사항: 목표지표 심볼값
+                출력 지시사항:
+                    - 출력필드:
+                    필드 1: 목표 및 재료 지표
+                    필드 2: 예측 결과 값
+                    필드 3: 예측에 대한 해석
                 """
             },
             {"role": "user", "content": test_sample["input"]}
         ]
 
-        result = self.completion_fn(prompt=prompt, temperature=0.0, max_tokens=10)
+        result = self.completion_fn(prompt=prompt, temperature=0.0)
         sampled = result.get_completions()[0].strip()
 
         evals.record_and_check_match(prompt=prompt, sampled=sampled, expected=test_sample["expected_target_symbol"])
