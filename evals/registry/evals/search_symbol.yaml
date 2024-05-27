@@ -1,0 +1,9 @@
+search_symbol:
+  id: search_symbol.dev.v1
+  description: "Search for symbol based on description"
+  metrics: [accuracy]
+
+search_symbol.dev.v1:
+  class: evals.elsuite.search_symbol:SearchSymbol
+  args:
+    test_jsonl: /tmp/test.jsonl
