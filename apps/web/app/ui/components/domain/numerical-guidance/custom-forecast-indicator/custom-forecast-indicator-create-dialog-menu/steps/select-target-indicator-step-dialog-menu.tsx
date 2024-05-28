@@ -5,8 +5,13 @@ import { Indicator } from '@/app/business/services/numerical-guidance/view-model
 import SelectableItem from '@/app/ui/components/view/atom/selectable-item';
 import { ListChildComponentProps } from 'react-window';
 import { useCreatingCustomForecastIndicator } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-creating-custom-forecast-indicator.hook';
+import Button from '@/app/ui/components/view/atom/button/button';
 
-export default function SelectTargetIndicatorStepDialogMenu() {
+type SelectTargetIndicatorStepDialogMenuProps = {
+  nextStep: () => void;
+};
+
+export default function SelectTargetIndicatorStepDialogMenu({ nextStep }: SelectTargetIndicatorStepDialogMenuProps) {
   const { targetIndicatorId, selectTargetIndicator, deselectTargetIndicator } = useCreatingCustomForecastIndicator();
 
   const render = ({ index, style, data }: ListChildComponentProps<Indicator[]>) => {
@@ -41,6 +46,9 @@ export default function SelectTargetIndicatorStepDialogMenu() {
         <Card className="p-1.5">
           <DialogIndicatorList render={render} />
         </Card>
+        <Button onClick={() => nextStep()} color={'black'} size={'xs'}>
+          다음
+        </Button>
       </DialogMenu.Content>
     </>
   );
