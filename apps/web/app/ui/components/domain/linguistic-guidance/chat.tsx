@@ -1,7 +1,7 @@
 'use client';
 import { ChatRequestOptions } from 'ai';
-import ChatCard from '../view/molecule/chat-card';
-import PromptForm from '../view/molecule/prompt-form/prompt-form';
+import ChatCard from '../../view/molecule/chat-card';
+import PromptForm from '../../view/molecule/prompt-form/prompt-form';
 import { useFingooChat } from '@/app/business/hooks/linguistic-guidance/use-fingoo-chat.hook';
 import { useLogger } from '@/app/logging/logging-context';
 
