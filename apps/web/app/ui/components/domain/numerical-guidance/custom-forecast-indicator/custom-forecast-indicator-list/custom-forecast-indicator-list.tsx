@@ -6,6 +6,7 @@ import { CustomForecastIndicator } from '@/app/business/services/numerical-guida
 import CustomForecastIndicatorListItem from './custom-forecast-indicator-list-item';
 import Pending from '../../../../view/molecule/pending';
 import { cn } from '@/app/utils/style';
+import CustomForecastIndicatorCreateButton from './custom-forecast-indicator-create-button';
 
 const CustomForecastIndicatorList = React.memo(function CustomForecastIndicatorList() {
   const { customForecastIndicatorList, isPending } = useCustomForecastIndicatorListViewModel();
@@ -17,6 +18,9 @@ const CustomForecastIndicatorList = React.memo(function CustomForecastIndicatorL
 
   return (
     <Pending isPending={isPending}>
+      <div className="flex justify-end py-2 pb-3 pr-2">
+        <CustomForecastIndicatorCreateButton />
+      </div>
       <div
         data-testid="custom-forecast-indicator-list"
         role="tablist"
