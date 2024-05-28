@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { storeResetFns } from '../../reset-store';
 import { CustomForecastIndicatorResponse } from '../../../querys/numerical-guidance/custom-forecast-indicator.query';
 import { deepEqual } from '@/app/utils/helper';
-import { IndicatorType } from '../indicator-list.store';
 import { IndicatorByTypeResponse } from '../../../querys/numerical-guidance/indicator-list.query';
 
 type SourceIndicatorOfCustomForecastIndicatorResponse = Pick<
