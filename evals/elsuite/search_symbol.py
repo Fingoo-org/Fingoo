@@ -8,31 +8,41 @@ class SearchSymbol(evals.Eval):
         self.test_jsonl = test_jsonl
 
     def run(self, recorder):
-        """
-        Called by the `oaieval` CLI to run the eval. The `eval_all_samples` method calls `eval_sample`.
-        """
         test_samples = evals.get_jsonl(self.test_jsonl)
         self.eval_all_samples(recorder, test_samples)
 
-        # Record overall metrics
         return {
             "accuracy": evals.metrics.get_accuracy(recorder.get_events("match")),
         }
 
     def eval_sample(self, test_sample, rng: random.Random):
-        """
-        Called by the `eval_all_samples` method to evaluate a single sample.
-
-        ARGS
-        ====
-        `test_sample`: a line from the JSONL test file
-        `rng`: should be used for any randomness that is needed during evaluation
-
-        This method does the following:
-        1. Generate a prompt that contains the task statement and the test question.
-        2. Generate a completion from the model.
-        3. Check if the generated answer is correct.
-        """
+        tools = [
+            {
+                "type": "function",
+                "function": {
+                    "name": "predict_economic_indicator",
+                    "description": "time series 형태의 경제 지표 예측 결과 값을 가져온다",
+                    "parameters": {
+                        "type": 'object',
+                        "properties": {
+                            "target_symbol": {
+                                "type": 'string',
+                                "description": '예측할 목표 경제 지표의 심볼(예시: 005930, EUR/USD, BTC/USD, SPY, IXIC, 0P00000AMG 등)',
+                            },
+                            "source_symbols": {
+                                "type": 'array',
+                                "items": {
+                                    "type": 'string',
+                                },
+                                "description": '재료 지표의 심볼 리스트(예시: [005930, EUR/USD, BTC/USD, SPY, IXIC, 0P00000AMG])',
+                            },
+                        },
+                        "required": ['target_symbol', 'source_symbols'],
+                    },
+                },
+            }
+        ]
+        
         prompt = [
             {
                 "role": "system",
@@ -72,10 +82,15 @@ class SearchSymbol(evals.Eval):
                     필드 3: 예측에 대한 해석
                 """
             },
-            {"role": "user", "content": test_sample["input"]}
+            {"role": "user", "content": test_sample["input"]},
         ]
 
-        result = self.completion_fn(prompt=prompt, temperature=0.0)
-        sampled = result.get_completions()[0].strip()
+        result = self.completion_fn(prompt=prompt, tools=tools, tool_choice="auto", temperature=0.0)
+        
+        if result.get_completions():
+            sampled = result.get_completions()[0].strip()
+        else:
+            sampled = ""  # 빈 응답 처리
 
         evals.record_and_check_match(prompt=prompt, sampled=sampled, expected=test_sample["expected_target_symbol"])
+
