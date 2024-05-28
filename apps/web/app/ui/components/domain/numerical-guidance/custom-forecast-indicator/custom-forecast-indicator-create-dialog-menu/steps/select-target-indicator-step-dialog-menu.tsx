@@ -4,27 +4,20 @@ import { Card } from '@/app/ui/components/view/molecule/card/card';
 import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import SelectableItem from '@/app/ui/components/view/atom/selectable-item';
 import { ListChildComponentProps } from 'react-window';
-import { useCreateCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/custom-forecast-indicator/create-custom-foreacst-indicator.store';
+import { useCreatingCustomForecastIndicator } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-creating-custom-forecast-indicator.hook';
 
 export default function SelectTargetIndicatorStepDialogMenu() {
-  const targetIndicatorId = useCreateCustomForecastIndicatorStore((state) => state.targetIndicatorId);
-  const { setState } = useCreateCustomForecastIndicatorStore((state) => state.actions);
+  const { targetIndicatorId, selectTargetIndicator, deselectTargetIndicator } = useCreatingCustomForecastIndicator();
 
   const render = ({ index, style, data }: ListChildComponentProps<Indicator[]>) => {
     const indicator = data[index];
 
     const handleItemSelected = () => {
-      setState({
-        targetIndicatorId: indicator.id,
-        targetIndicatorType: indicator.indicatorType,
-      });
+      selectTargetIndicator(indicator);
     };
 
     const handleItemDeSelected = () => {
-      setState({
-        targetIndicatorId: undefined,
-        targetIndicatorType: undefined,
-      });
+      deselectTargetIndicator();
     };
 
     return (
