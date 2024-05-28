@@ -4,24 +4,20 @@ import { IndicatorType } from '../indicator-list.store';
 import { sourceIndicator } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 
 type CreateCustomForecastIndicatorState = {
-  targetIndicatorId: string;
-  targetIndicatorType: IndicatorType;
+  targetIndicatorId?: string;
+  targetIndicatorType?: IndicatorType;
   indicatorName: string;
   sourceIndicators: sourceIndicator[];
 };
 
 type CreateCustomForecastIndicatorAction = {
-  update: (
-    fn: (
-      state: CreateCustomForecastIndicatorState,
-    ) => CreateCustomForecastIndicatorState | Partial<CreateCustomForecastIndicatorState>,
-  ) => void;
+  setState: (state: Partial<CreateCustomForecastIndicatorState>) => void;
   reset: () => void;
 };
 
 const initialCustomForecastIndicatorState: CreateCustomForecastIndicatorState = {
-  targetIndicatorId: '',
-  targetIndicatorType: 'stocks',
+  targetIndicatorId: undefined,
+  targetIndicatorType: undefined,
   indicatorName: '',
   sourceIndicators: [],
 };
@@ -35,7 +31,7 @@ export const useCreateCustomForecastIndicatorStore = create<CreateCustomForecast
   return {
     ...initialCustomForecastIndicatorState,
     actions: {
-      update: (fn) => set(fn),
+      setState: (state) => set(state),
       reset: () => set(initialCustomForecastIndicatorState),
     },
   };

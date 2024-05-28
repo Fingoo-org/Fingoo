@@ -4,27 +4,34 @@ import { Card } from '@/app/ui/components/view/molecule/card/card';
 import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import SelectableItem from '@/app/ui/components/view/atom/selectable-item';
 import { ListChildComponentProps } from 'react-window';
-import { useState } from 'react';
+import { useCreateCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/custom-forecast-indicator/create-custom-foreacst-indicator.store';
 
 export default function SelectTargetIndicatorStepDialogMenu() {
-  const [selectedIndicatorId, setSelectedIndicatorId] = useState<string | null>(null);
+  const targetIndicatorId = useCreateCustomForecastIndicatorStore((state) => state.targetIndicatorId);
+  const { setState } = useCreateCustomForecastIndicatorStore((state) => state.actions);
 
   const render = ({ index, style, data }: ListChildComponentProps<Indicator[]>) => {
     const indicator = data[index];
 
     const handleItemSelected = () => {
-      setSelectedIndicatorId(indicator.id);
+      setState({
+        targetIndicatorId: indicator.id,
+        targetIndicatorType: indicator.indicatorType,
+      });
     };
 
     const handleItemDeSelected = () => {
-      setSelectedIndicatorId(null);
+      setState({
+        targetIndicatorId: undefined,
+        targetIndicatorType: undefined,
+      });
     };
 
     return (
       <SelectableItem
         onDeSelect={handleItemDeSelected}
         onSelect={handleItemSelected}
-        selected={indicator.id === selectedIndicatorId}
+        selected={indicator.id === targetIndicatorId}
         style={style}
       >
         <div className="flex h-full w-full items-center text-xs font-normal">
