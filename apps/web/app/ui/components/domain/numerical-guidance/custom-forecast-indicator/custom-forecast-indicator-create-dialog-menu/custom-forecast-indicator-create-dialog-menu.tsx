@@ -6,11 +6,9 @@ export default function CustomForecastIndicatorCreateDialogMenu() {
   return (
     <DialogMenu color={'gray'} size={'xl'} dialogKey={DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_CREATE_MENU}>
       <DialogMenu.Header>
-        <h2>Custom Forecast Indicator Create</h2>
+        <div className="py-1 text-xs font-bold">1. 예측하고 싶은 지표를 선택하세요.</div>
       </DialogMenu.Header>
-      <DialogMenu.Content>
-        <p>Custom Forecast Indicator Create</p>
-      </DialogMenu.Content>
+      <DialogMenu.Content></DialogMenu.Content>
     </DialogMenu>
   );
 }
