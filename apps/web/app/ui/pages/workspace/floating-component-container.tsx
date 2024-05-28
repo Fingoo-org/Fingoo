@@ -1,9 +1,9 @@
-import IndicatorDialogMenu from '../../components/numerical-guidance/indicator/indicator-dialog-menu';
-import MetadataDeleteDialog from '../../components/numerical-guidance/indicator-board-metadata/metadata-delete-dialog';
-import MetadataDialogMenu from '../../components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
+import IndicatorDialogMenu from '../../components/domain/numerical-guidance/indicator/indicator-dialog-menu';
+import MetadataDeleteDialog from '../../components/domain/numerical-guidance/indicator-board-metadata/metadata-delete-dialog';
+import MetadataDialogMenu from '../../components/domain/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
 import Toaster from '../../components/view/molecule/toast/toaster';
-import CustomForecastIndicatorDialogMenu from '../../components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-dialog-menu/custom-forecast-indicator-dialog-menu';
-import MetadataListItemRowDialogMenu from '../../components/numerical-guidance/indicator-board-metadata/metadata-list-item/metadata-list-item-row-dialog-menu';
+import CustomForecastIndicatorDialogMenu from '../../components/domain/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-dialog-menu/custom-forecast-indicator-dialog-menu';
+import MetadataListItemRowDialogMenu from '../../components/domain/numerical-guidance/indicator-board-metadata/metadata-list-item/metadata-list-item-row-dialog-menu';
 
 export default function FloatingComponentContainer() {
   return (

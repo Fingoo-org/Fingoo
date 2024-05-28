@@ -4,7 +4,7 @@ import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import userEvent from '@testing-library/user-event';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
-import SourceIndicatorSearchList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/source-indicator-search-list';
+import SourceIndicatorSearchList from '@/app/ui/components/domain/numerical-guidance/custom-forecast-indicator/source-indicator-search-list';
 
 describe('SourceIndicatorSearchList', () => {
   beforeEach(() => {

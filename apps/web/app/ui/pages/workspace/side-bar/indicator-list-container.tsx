@@ -1,6 +1,6 @@
-import IndicatorListTypeToggleGroup from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-type-toggle-group';
-import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-result';
-import IndicatorSearchBar from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-search-bar';
+import IndicatorListTypeToggleGroup from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-list/indicator-list-type-toggle-group';
+import IndicatorListResult from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-list/indicator-list-result';
+import IndicatorSearchBar from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-list/indicator-search-bar';
 
 export default function IndicatorListContainer() {
   return (

@@ -3,8 +3,8 @@ import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import userEvent from '@testing-library/user-event';
-import CustomForecastIndicatorDialogMenu from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-dialog-menu/custom-forecast-indicator-dialog-menu';
-import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
+import CustomForecastIndicatorDialogMenu from '@/app/ui/components/domain/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-dialog-menu/custom-forecast-indicator-dialog-menu';
+import CustomForecastIndicatorList from '@/app/ui/components/domain/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({

@@ -1,5 +1,5 @@
-import EditableMetadataTittle from '@/app/ui/components/numerical-guidance/indicator-board-metadata/editable-metadata-title';
-import IndicatorBoard from '@/app/ui/components/numerical-guidance/indicator-board/indicator-board';
+import EditableMetadataTittle from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/editable-metadata-title';
+import IndicatorBoard from '@/app/ui/components/domain/numerical-guidance/indicator-board/indicator-board';
 import DraggableContext from '@/app/ui/components/util/draggable-context';
 import Draggable from '@/app/ui/components/view/atom/draggable/draggable';
 import ResizablePanelGroup from '@/app/ui/components/view/molecule/resizable-panel-group';
