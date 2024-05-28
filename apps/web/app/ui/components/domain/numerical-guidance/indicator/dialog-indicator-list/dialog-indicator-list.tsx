@@ -33,7 +33,7 @@ export default function DialogIndicatorList({ render }: DialogIndicatorListProps
       <div className="py-2">
         <IndicatorTypeToggleGroup value={indicatorType} onValueChange={setIndicatorType} size={'narrow'} />
       </div>
-      <div className="h-40">
+      <div className="h-28">
         <WindowList
           loadMoreItems={loadMoreIndicators}
           maxVieweditemCount={4.5}

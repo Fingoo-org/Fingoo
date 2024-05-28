@@ -29,7 +29,7 @@ export default function CustomForecastIndicatorCreateDialogMenu() {
         selected={indicator.id === selectedIndicatorId}
         style={style}
       >
-        <div className="flex text-xs font-normal">
+        <div className="flex h-full w-full items-center text-xs font-normal">
           <span>{indicator.symbol}</span>
           <span className="truncate">({indicator.name})</span>
         </div>
