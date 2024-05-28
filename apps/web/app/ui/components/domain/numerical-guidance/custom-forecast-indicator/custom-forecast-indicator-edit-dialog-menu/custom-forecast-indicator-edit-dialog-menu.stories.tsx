@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import CustomForecastIndicatorDialogMenu from './custom-forecast-indicator-dialog-menu';
+import CustomForecastIndicatorEditDialogMenu from './custom-forecast-indicator-edit-dialog-menu';
 
 import { useDialog } from '../../../../view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useEffect } from 'react';
 
 const meta = {
-  title: 'numerical-guidance/molecule/CustomForecastIndicatorDialogMenu',
-  component: CustomForecastIndicatorDialogMenu,
-} satisfies Meta<typeof CustomForecastIndicatorDialogMenu>;
+  title: 'numerical-guidance/molecule/CustomForecastIndicatorEditDialogMenu',
+  component: CustomForecastIndicatorEditDialogMenu,
+} satisfies Meta<typeof CustomForecastIndicatorEditDialogMenu>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -25,6 +25,6 @@ export const Default: Story = {
       });
     }, []);
 
-    return <CustomForecastIndicatorDialogMenu />;
+    return <CustomForecastIndicatorEditDialogMenu />;
   },
 };

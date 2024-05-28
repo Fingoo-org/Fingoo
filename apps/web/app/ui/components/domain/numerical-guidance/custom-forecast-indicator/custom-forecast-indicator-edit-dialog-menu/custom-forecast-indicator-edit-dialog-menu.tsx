@@ -14,7 +14,7 @@ import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/nu
 import ForecastTypeToggle from '../forecast-type-toggle';
 import { useCustomForecastIndicatorsValueByMetadata } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-value-by-metadata.hook';
 
-export default function CustomForecastIndicatorDialogMenu() {
+export default function CustomForecastIndicatorEditDialogMenu() {
   const {
     selectedCustomForecastIndicator,
     isUpdated,
