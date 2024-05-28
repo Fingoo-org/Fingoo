@@ -1,14 +1,19 @@
 import { Loader2, PlusIcon } from 'lucide-react';
 import Button from '../atom/button/button';
+import React from 'react';
 
 interface CreateButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading: boolean;
   label: string;
 }
 
-export default function CreateButton({ label, isLoading, ...props }: CreateButtonProps) {
+const CreateButton = React.forwardRef<HTMLButtonElement, CreateButtonProps>(function CreateButton(
+  { label, isLoading, ...props }: CreateButtonProps,
+  ref,
+) {
   return (
     <Button
+      ref={ref}
       {...props}
       color={'slate'}
       variant={'light'}
@@ -22,4 +27,6 @@ export default function CreateButton({ label, isLoading, ...props }: CreateButto
       {label}
     </Button>
   );
-}
+});
+
+export default CreateButton;
