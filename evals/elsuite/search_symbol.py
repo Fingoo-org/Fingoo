@@ -3,13 +3,19 @@ import evals
 import evals.metrics
 
 class SearchSymbol(evals.Eval):
-    def __init__(self, test_jsonl, **kwargs):
+    def __init__(self, test_jsonl, train_jsonl=None, **kwargs):
         super().__init__(**kwargs)
         self.test_jsonl = test_jsonl
+        self.train_jsonl = train_jsonl
 
     def run(self, recorder):
         test_samples = evals.get_jsonl(self.test_jsonl)
-        self.eval_all_samples(recorder, test_samples)
+        if self.train_jsonl:
+            train_samples = evals.get_jsonl(self.train_jsonl)
+            all_samples = test_samples + train_samples
+        else:
+            all_samples = test_samples
+        self.eval_all_samples(recorder, all_samples)
 
         return {
             "accuracy": evals.metrics.get_accuracy(recorder.get_events("match")),
@@ -67,19 +73,15 @@ class SearchSymbol(evals.Eval):
                 - 함수의 결과로 예측 결과 값이 제공되면, 예측 결과에 대한 해석을 추가하여 사용자에게 전달해야 합니다.
                 
                 가이드라인:
-                - 목표 지표와 재료 지표가 무엇인지 명확히 설명해야 합니다.
-                - 예측 결과 값을 제공해야 합니다.
-                - 해석에는 목표 지표와 재료 지표의 연관성에 대한 지식을 설명해야 합니다.
-                - 예측 결과 값을 기반으로 해당 지표가 상승하는지 하락하는지에 대한 해석을 제공 합니다.
-                - 예측 결과 값을 기반으로 GPT가 알고 있는 지식을 활용하여 해석을 제공 합니다.
+                - 목표 지표와 목표지표와 관련된 예측지표의 심볼만을 제공합니다.
                 - 예측 결과 값이 부정확할 수 있음을 설명해야 합니다.
                 - 심볼이 무엇인지 물어본경우 GPT가 알고있는 지식을 활용해 심볼을 제공합니다.
                 
                 출력 지시사항:
                     - 출력필드:
-                    필드 1: 목표 및 재료 지표
-                    필드 2: 예측 결과 값
-                    필드 3: 예측에 대한 해석
+                    필드 1: 사용한 tool_name
+                    필드 2: ['target_symbol']
+                    필드 3: ['source_symbol']
                 """
             },
             {"role": "user", "content": test_sample["input"]},
@@ -91,6 +93,11 @@ class SearchSymbol(evals.Eval):
             sampled = result.get_completions()[0].strip()
         else:
             sampled = ""  # 빈 응답 처리
-
-        evals.record_and_check_match(prompt=prompt, sampled=sampled, expected=test_sample["expected_target_symbol"])
-
+        
+        # Check if sampled matches expected target symbol
+        is_correct = sampled == test_sample["expected_target_symbol"]
+        
+        # Create options for matching
+        options = [test_sample["expected_target_symbol"]]
+        
+        evals.record_and_check_match(prompt=prompt, sampled=sampled, expected=test_sample["expected_target_symbol"], options=options)
