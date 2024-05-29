@@ -1,5 +1,8 @@
 import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
-import { useCreateCustomForecastIndicator } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
+import {
+  useCreateCustomForecastIndicator,
+  useUpdateSourceIndicator,
+} from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useCreateCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/custom-forecast-indicator/create-custom-foreacst-indicator.store';
 
 export const useCreatingCustomForecastIndicator = () => {
@@ -7,7 +10,8 @@ export const useCreatingCustomForecastIndicator = () => {
   const sourceIndicators = useCreateCustomForecastIndicatorStore((state) => state.sourceIndicators);
   const { setState } = useCreateCustomForecastIndicatorStore((state) => state.actions);
 
-  const { trigger: CreateCustomForecastIndicatorTrigger } = useCreateCustomForecastIndicator();
+  const { trigger: createCustomForecastIndicatorTrigger } = useCreateCustomForecastIndicator();
+  const { trigger: updateSourceIndicatorTrigger } = useUpdateSourceIndicator();
 
   const selectTargetIndicator = (indicator: Indicator) => {
     setState({
@@ -60,15 +64,20 @@ export const useCreatingCustomForecastIndicator = () => {
     });
   };
 
-  const craeteCustomForecastIndicator = () => {
-    if (targetIndicatorInfo === undefined) {
-      return;
-    }
+  const craeteCustomForecastIndicator = async () => {
+    if (targetIndicatorInfo === undefined) return;
 
-    CreateCustomForecastIndicatorTrigger({
+    const id = await createCustomForecastIndicatorTrigger({
       customForecastIndicatorName: `${targetIndicatorInfo.symbol} 예측 지표`,
       targetIndicatorId: targetIndicatorInfo.id,
       targetIndicatorType: targetIndicatorInfo.indicatorType,
+    });
+
+    if (sourceIndicators.length === 0) return;
+
+    await updateSourceIndicatorTrigger({
+      sourceIndicatorsInformation: sourceIndicators,
+      customForecastIndicatorId: id,
     });
   };
 
@@ -81,5 +90,6 @@ export const useCreatingCustomForecastIndicator = () => {
     deleteSourceIndicator,
     includeSourceIndicator,
     updateSourceIndicatorWeight,
+    craeteCustomForecastIndicator,
   };
 };

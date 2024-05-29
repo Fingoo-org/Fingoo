@@ -93,13 +93,21 @@ export const useCreateCustomForecastIndicator = () => {
 export type updateSourceIndicatorRequestBody = {
   sourceIndicatorsInformation: sourceIndicator[];
 };
-export const useUpdateSourceIndicator = (customForecastIndicatorId: string | undefined) => {
+
+export const useUpdateSourceIndicator = (customForecastIndicatorId?: string) => {
   return useSWRMutation(
     API_PATH.customForecastIndicator,
-    async (url: string, { arg }: { arg: updateSourceIndicatorRequestBody }) => {
-      if (!customForecastIndicatorId) return;
-      await patchFetcher<updateSourceIndicatorRequestBody>([url, customForecastIndicatorId], {
-        arg,
+    async (
+      url: string,
+      { arg }: { arg: updateSourceIndicatorRequestBody & { customForecastIndicatorId?: string } },
+    ) => {
+      if (!customForecastIndicatorId && !arg.customForecastIndicatorId) return;
+
+      const id = (arg.customForecastIndicatorId || customForecastIndicatorId)!;
+      await patchFetcher<updateSourceIndicatorRequestBody>([url, id], {
+        arg: {
+          sourceIndicatorsInformation: arg.sourceIndicatorsInformation,
+        },
       });
     },
   );
