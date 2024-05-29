@@ -3,6 +3,7 @@ import { useCreateCustomForecastIndicatorStore } from '@/app/store/stores/numeri
 
 export const useCreatingCustomForecastIndicator = () => {
   const targetIndicatorId = useCreateCustomForecastIndicatorStore((state) => state.targetIndicatorId);
+  const sourceIndicators = useCreateCustomForecastIndicatorStore((state) => state.sourceIndicators);
   const { setState } = useCreateCustomForecastIndicatorStore((state) => state.actions);
 
   const selectTargetIndicator = (indicator: Indicator) => {
@@ -19,9 +20,36 @@ export const useCreatingCustomForecastIndicator = () => {
     });
   };
 
+  const addSourceIndicator = (indicator: Indicator) => {
+    setState({
+      sourceIndicators: [
+        ...sourceIndicators,
+        {
+          sourceIndicatorId: indicator.id,
+          indicatorType: indicator.indicatorType,
+          weight: 0,
+        },
+      ],
+    });
+  };
+
+  const deleteSourceIndicator = (indicatorId: string) => {
+    setState({
+      sourceIndicators: sourceIndicators.filter((indicator) => indicator.sourceIndicatorId !== indicatorId),
+    });
+  };
+
+  const includeSourceIndicator = (indicatorId: string) => {
+    return sourceIndicators.some((indicator) => indicator.sourceIndicatorId === indicatorId);
+  }
+
   return {
     targetIndicatorId,
+    sourceIndicators,
     selectTargetIndicator,
     deselectTargetIndicator,
+    addSourceIndicator,
+    deleteSourceIndicator,
+    includeSourceIndicator
   };
 };
