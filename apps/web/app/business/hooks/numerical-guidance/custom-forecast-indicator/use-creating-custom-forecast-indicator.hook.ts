@@ -41,7 +41,22 @@ export const useCreatingCustomForecastIndicator = () => {
 
   const includeSourceIndicator = (indicatorId: string) => {
     return sourceIndicators.some((indicator) => indicator.sourceIndicatorId === indicatorId);
-  }
+  };
+
+  const updateSourceIndicatorWeight = (indicatorId: string, weight: number) => {
+    setState({
+      sourceIndicators: sourceIndicators.map((indicator) => {
+        if (indicator.sourceIndicatorId === indicatorId) {
+          return {
+            ...indicator,
+            weight,
+          };
+        }
+
+        return indicator;
+      }),
+    });
+  };
 
   return {
     targetIndicatorId,
@@ -50,6 +65,7 @@ export const useCreatingCustomForecastIndicator = () => {
     deselectTargetIndicator,
     addSourceIndicator,
     deleteSourceIndicator,
-    includeSourceIndicator
+    includeSourceIndicator,
+    updateSourceIndicatorWeight,
   };
 };

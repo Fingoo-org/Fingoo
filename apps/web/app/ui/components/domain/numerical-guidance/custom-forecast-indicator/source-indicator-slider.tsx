@@ -1,12 +1,12 @@
-import { Card } from '@tremor/react';
 import Slider from '../../../view/atom/slider/slider';
 import IconButton from '../../../view/atom/icons/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import { Card } from '../../../view/molecule/card/card';
 
 export type SourceIndicatorInfo = {
   weight: number;
-  disabled: boolean;
+  disabled?: boolean;
   id: string;
   indicatorType: IndicatorType;
 };
