@@ -13,8 +13,13 @@ type SelectSourceIndicatorStepDialogMenuProps = {
 };
 
 export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: SelectSourceIndicatorStepDialogMenuProps) {
-  const { addSourceIndicator, deleteSourceIndicator, includeSourceIndicator, craeteCustomForecastIndicator } =
-    useCreatingCustomForecastIndicator();
+  const {
+    targetIndicatorId,
+    addSourceIndicator,
+    deleteSourceIndicator,
+    includeSourceIndicator,
+    craeteCustomForecastIndicator,
+  } = useCreatingCustomForecastIndicator();
 
   const handleCustomForecastIndicatorCreate = async () => {
     await craeteCustomForecastIndicator();
@@ -63,7 +68,12 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
           <Button onClick={() => prevStep()} color={'gray'} size={'xs'}>
             이전
           </Button>
-          <Button onClick={handleCustomForecastIndicatorCreate} color={'black'} size={'xs'}>
+          <Button
+            disabled={targetIndicatorId === undefined ? true : false}
+            onClick={handleCustomForecastIndicatorCreate}
+            color={'black'}
+            size={'xs'}
+          >
             생성
           </Button>
         </div>
