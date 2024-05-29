@@ -27,6 +27,7 @@ export default function SourceIndicatorCreateSliderGroup() {
       {sourceIndicators.map((sourceIndicator) => {
         return (
           <SourceIndicatorSlider
+            key={sourceIndicator.sourceIndicatorId}
             item={{
               id: sourceIndicator.sourceIndicatorId,
               ...sourceIndicator,
