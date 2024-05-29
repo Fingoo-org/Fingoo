@@ -4,7 +4,7 @@ import IndicatorBoardToolbar from './indicator-board-toolbar';
 import { Sidebar } from 'react-pro-sidebar';
 import { ChevronDoubleLeftIcon } from '@heroicons/react/solid';
 import IconButton from '../../../components/view/atom/icons/icon-button';
-import Chat from '@/app/ui/components/linguistic-guidance/chat';
+import Chat from '@/app/ui/components/domain/linguistic-guidance/chat';
 import { useLogger } from '@/app/logging/logging-context';
 
 export default function SideNav() {

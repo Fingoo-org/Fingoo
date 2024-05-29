@@ -7,7 +7,7 @@ import {
 import { convertCustomForecastIndicatorViewModel } from '../../../services/numerical-guidance/view-model/custom-forecast-indicator-view-model.service';
 import { useEffect, useMemo } from 'react';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
-import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/selected-custom-forecast-indicator.store';
+import { useSelectedCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/custom-forecast-indicator/selected-custom-forecast-indicator.store';
 import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
 import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 

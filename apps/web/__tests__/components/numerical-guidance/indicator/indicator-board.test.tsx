@@ -4,11 +4,11 @@ import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
-import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
-import MetadataDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
-import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-result';
-import IndicatorBoard from '@/app/ui/components/numerical-guidance/indicator-board/indicator-board';
+import CustomForecastIndicatorList from '@/app/ui/components/domain/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
+import MetadataList from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
+import MetadataDialogMenu from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
+import IndicatorListResult from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-list/indicator-list-result';
+import IndicatorBoard from '@/app/ui/components/domain/numerical-guidance/indicator-board/indicator-board';
 
 describe('IndicatorBoard', () => {
   beforeEach(() => {

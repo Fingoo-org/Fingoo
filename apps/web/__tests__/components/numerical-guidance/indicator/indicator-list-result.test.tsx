@@ -4,8 +4,8 @@ import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-result';
-import IndicatorSearchBar from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-search-bar';
+import IndicatorListResult from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-list/indicator-list-result';
+import IndicatorSearchBar from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-list/indicator-search-bar';
 
 describe('IndicatorListResult', () => {
   beforeEach(() => {

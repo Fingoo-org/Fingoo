@@ -1,6 +1,6 @@
 import { SWRConfig } from 'swr';
 import ClientDataSuspense from '../../../components/util/client-data-suspense';
-import CustomForecastIndicatorList from '../../../components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
+import CustomForecastIndicatorList from '../../../components/domain/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
 
 export default function CustomForecastIndicatorListContainer() {
   return (

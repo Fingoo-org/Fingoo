@@ -4,9 +4,9 @@ import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
 import userEvent from '@testing-library/user-event';
-import IndicatorDialogMenu from '@/app/ui/components/numerical-guidance/indicator/indicator-dialog-menu';
-import CustomForecastIndicatorList from '@/app/ui/components/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
-import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-result';
+import IndicatorDialogMenu from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-dialog-menu';
+import CustomForecastIndicatorList from '@/app/ui/components/domain/numerical-guidance/custom-forecast-indicator/custom-forecast-indicator-list/custom-forecast-indicator-list';
+import IndicatorListResult from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-list/indicator-list-result';
 
 describe('IndicatorDialogMenu', () => {
   beforeEach(() => {

@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import EditableMetadataTittle from '@/app/ui/components/numerical-guidance/indicator-board-metadata/editable-metadata-title';
-import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
+import EditableMetadataTittle from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/editable-metadata-title';
+import MetadataList from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 
 describe('EditableMetadataTittle', () => {
   beforeEach(() => {
