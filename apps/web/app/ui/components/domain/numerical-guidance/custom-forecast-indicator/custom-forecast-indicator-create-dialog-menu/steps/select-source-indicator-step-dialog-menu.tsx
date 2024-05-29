@@ -9,6 +9,8 @@ import SourceIndicatorCreateSliderGroup from '../source-indicator-create-slider-
 import Button from '@/app/ui/components/view/atom/button/button';
 import { useDialog } from '@/app/ui/components/view/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
+import Tooltip from '@/app/ui/components/view/atom/tooltip';
+import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 
 type SelectSourceIndicatorStepDialogMenuProps = {
   prevStep: () => void;
@@ -64,13 +66,17 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
   return (
     <>
       <DialogMenu.Content>
-        <div className="py-1 text-xs font-bold">재료 지표 선택</div>
+        <div className="flex items-center py-1 text-xs font-bold">
+          <div>2. 재료 지표 선택해주세요.</div>
+          <Tooltip message="뭐요">
+            <QuestionMarkCircledIcon className="ml-1 h-3.5 w-3.5 text-fingoo-gray-6" />
+          </Tooltip>
+        </div>
         <Card className="p-1.5">
           <DialogIndicatorList render={render} />
         </Card>
       </DialogMenu.Content>
       <DialogMenu.Content>
-        <div className="py-1 text-xs font-bold">가중치</div>
         <SourceIndicatorCreateSliderGroup />
       </DialogMenu.Content>
       <DialogMenu.Content>

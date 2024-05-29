@@ -14,6 +14,7 @@ export default function SourceIndicatorCreateSliderGroup() {
 
   return (
     <>
+      {sourceIndicators.length !== 0 ? <div className="py-1 text-xs font-bold">3. 가중치를 조정해주세요.</div> : null}
       {sourceIndicators.map((sourceIndicator) => {
         return (
           <SourceIndicatorSlider
