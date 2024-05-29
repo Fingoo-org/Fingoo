@@ -56,8 +56,17 @@ import { AuthService } from '../auth/application/auth.service';
 import { SupabaseStrategy } from '../auth/supabase/supabase.strategy';
 import { SupabaseService } from '../auth/supabase/supabase.service';
 import { SearchIndicatorQueryHandler } from './application/query/indicator/search-indicator/search-indicator.query.handler';
+import { FredApiUtil } from './infrastructure/adapter/fred/util/fred-api.util';
+import { EconomyEntity } from './infrastructure/adapter/persistence/indicator/entity/economy.entity';
 
 @Module({
+  controllers: [
+    CustomForecastIndicatorController,
+    HistoryIndicatorController,
+    IndicatorController,
+    IndicatorBoardMetadataController,
+    LiveIndicatorController,
+  ],
   imports: [
     CqrsModule,
     HttpModule.registerAsync({
@@ -80,14 +89,8 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/searc
       FundEntity,
       IndicesEntity,
       StockEntity,
+      EconomyEntity,
     ]),
-  ],
-  controllers: [
-    CustomForecastIndicatorController,
-    HistoryIndicatorController,
-    IndicatorController,
-    IndicatorBoardMetadataController,
-    LiveIndicatorController,
   ],
   providers: [
     AuthService,
@@ -232,6 +235,10 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/searc
       useClass: IndicatorPersistentAdapter,
     },
     {
+      provide: 'SearchEconomyIndicatorPort',
+      useClass: IndicatorPersistentAdapter,
+    },
+    {
       provide: 'SearchTwelveIndicatorPort',
       useClass: IndicatorTwelveAdapter,
     },
@@ -240,6 +247,7 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/searc
       useClass: IndicatorTwelveAdapter,
     },
     TwelveApiUtil,
+    FredApiUtil,
   ],
 })
 export class NumericalGuidanceModule {}
