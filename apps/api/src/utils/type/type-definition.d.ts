@@ -19,6 +19,8 @@ import { IndicesEntity } from '../../numerical-guidance/infrastructure/adapter/p
 import { StockEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { FundEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { BondsEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/bonds.entity';
+import { EconomyEntity } from '../../numerical-guidance/infrastructure/adapter/persistence/indicator/entity/economy.entity';
+import { EconomyDto } from '../../numerical-guidance/application/query/indicator/get-indicator-list/dto/economy.dto';
 
 export type Interval = 'day' | 'week' | 'month' | 'year';
 
@@ -30,7 +32,8 @@ export type IndicatorType =
   | 'indices'
   | 'customForecastIndicator'
   | 'funds'
-  | 'bonds';
+  | 'bonds'
+  | 'economy';
 
 export type LiveIndicatorDtoType =
   | LiveStockDto
@@ -41,7 +44,15 @@ export type LiveIndicatorDtoType =
   | LiveFundDto
   | LiveCryptoCurrenciesDto;
 
-export type IndicatorDtoType = CryptoCurrenciesDto | ETFDto | ForexPairDto | IndicesDto | StockDto | FundDto | BondsDto;
+export type IndicatorDtoType =
+  | CryptoCurrenciesDto
+  | ETFDto
+  | ForexPairDto
+  | IndicesDto
+  | StockDto
+  | FundDto
+  | BondsDto
+  | EconomyDto;
 
 export type IndicatorEntityType =
   | CryptoCurrenciesEntity
@@ -50,7 +61,8 @@ export type IndicatorEntityType =
   | IndicesEntity
   | StockEntity
   | FundEntity
-  | BondsEntity;
+  | BondsEntity
+  | EconomyEntity;
 
 export type ForecastType = 'single' | 'multi';
 

@@ -16,7 +16,8 @@ export class SearchIndicatorDto {
   readonly symbol: string;
 
   @ApiProperty({
-    example: 'none | stocks',
+    example:
+      'none | stocks | forex_pairs | cryptocurrencies | etf | indices | customForecastIndicator | funds | bonds | economy',
     description: '지표 type',
     required: false,
   })
