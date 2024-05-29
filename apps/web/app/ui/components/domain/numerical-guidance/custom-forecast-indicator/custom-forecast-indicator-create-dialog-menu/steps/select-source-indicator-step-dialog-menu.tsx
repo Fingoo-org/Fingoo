@@ -16,6 +16,9 @@ type SelectSourceIndicatorStepDialogMenuProps = {
   prevStep: () => void;
 };
 
+const TOOLTIP_MESSAGE = `재료 지표는 원하는 지표를 예측하는데 사용됩니다.
+예측 지표와 재료 지표 사이의 상관성이 높을수록 예측의 정확성이 향상됩니다.`;
+
 export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: SelectSourceIndicatorStepDialogMenuProps) {
   const {
     targetIndicatorId,
@@ -68,7 +71,7 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
       <DialogMenu.Content>
         <div className="flex items-center py-1 text-xs font-bold">
           <div>2. 재료 지표 선택해주세요.</div>
-          <Tooltip message="뭐요">
+          <Tooltip message={TOOLTIP_MESSAGE}>
             <QuestionMarkCircledIcon className="ml-1 h-3.5 w-3.5 text-fingoo-gray-6" />
           </Tooltip>
         </div>
