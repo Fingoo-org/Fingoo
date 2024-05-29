@@ -51,6 +51,7 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
         onSelect={handleItemSelected}
         selected={includeSourceIndicator(indicator.id)}
         style={style}
+        disabled={indicator.id === targetIndicatorId}
       >
         <div className="flex h-full w-full items-center text-xs font-normal">
           <span>{indicator.symbol}</span>
