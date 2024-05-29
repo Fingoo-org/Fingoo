@@ -1,22 +1,23 @@
 import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
+import { useCreateCustomForecastIndicator } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useCreateCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/custom-forecast-indicator/create-custom-foreacst-indicator.store';
 
 export const useCreatingCustomForecastIndicator = () => {
-  const targetIndicatorId = useCreateCustomForecastIndicatorStore((state) => state.targetIndicatorId);
+  const targetIndicatorInfo = useCreateCustomForecastIndicatorStore((state) => state.targetIndicatorInfo);
   const sourceIndicators = useCreateCustomForecastIndicatorStore((state) => state.sourceIndicators);
   const { setState } = useCreateCustomForecastIndicatorStore((state) => state.actions);
 
+  const { trigger: CreateCustomForecastIndicatorTrigger } = useCreateCustomForecastIndicator();
+
   const selectTargetIndicator = (indicator: Indicator) => {
     setState({
-      targetIndicatorId: indicator.id,
-      targetIndicatorType: indicator.indicatorType,
+      targetIndicatorInfo: indicator,
     });
   };
 
   const deselectTargetIndicator = () => {
     setState({
-      targetIndicatorId: undefined,
-      targetIndicatorType: undefined,
+      targetIndicatorInfo: undefined,
     });
   };
 
@@ -59,8 +60,20 @@ export const useCreatingCustomForecastIndicator = () => {
     });
   };
 
+  const craeteCustomForecastIndicator = () => {
+    if (targetIndicatorInfo === undefined) {
+      return;
+    }
+
+    CreateCustomForecastIndicatorTrigger({
+      customForecastIndicatorName: `${targetIndicatorInfo.symbol} 예측 지표`,
+      targetIndicatorId: targetIndicatorInfo.id,
+      targetIndicatorType: targetIndicatorInfo.indicatorType,
+    });
+  };
+
   return {
-    targetIndicatorId,
+    targetIndicatorId: targetIndicatorInfo?.id,
     sourceIndicators,
     selectTargetIndicator,
     deselectTargetIndicator,

@@ -2,14 +2,14 @@ import { create } from 'zustand';
 import { storeResetFns } from '../../reset-store';
 import { IndicatorType } from '../indicator-list.store';
 import { sourceIndicator } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
+import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 
 type CreateCustomForecastIndicatorState = {
-  targetIndicatorId?: string;
-  targetIndicatorType?: IndicatorType;
+  targetIndicatorInfo?: Indicator;
   indicatorName: string;
   sourceIndicators: (sourceIndicator & {
     symbol: string;
-  } )[];
+  })[];
 };
 
 type CreateCustomForecastIndicatorAction = {
@@ -18,8 +18,7 @@ type CreateCustomForecastIndicatorAction = {
 };
 
 const initialCustomForecastIndicatorState: CreateCustomForecastIndicatorState = {
-  targetIndicatorId: undefined,
-  targetIndicatorType: undefined,
+  targetIndicatorInfo: undefined,
   indicatorName: '',
   sourceIndicators: [],
 };
