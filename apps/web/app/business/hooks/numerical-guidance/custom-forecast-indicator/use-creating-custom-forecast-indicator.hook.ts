@@ -28,6 +28,7 @@ export const useCreatingCustomForecastIndicator = () => {
           sourceIndicatorId: indicator.id,
           indicatorType: indicator.indicatorType,
           weight: 0,
+          symbol: indicator.symbol,
         },
       ],
     });

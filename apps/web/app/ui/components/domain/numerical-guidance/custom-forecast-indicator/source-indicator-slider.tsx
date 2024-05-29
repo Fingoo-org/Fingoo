@@ -9,6 +9,7 @@ export type SourceIndicatorInfo = {
   disabled?: boolean;
   id: string;
   indicatorType: IndicatorType;
+  symbol: string;
 };
 
 type SourceIndicatorSliderProps = {
@@ -32,7 +33,7 @@ export default function SourceIndicatorSlider({
 
   return (
     <Card className="flex items-center rounded-lg px-1 py-1">
-      <div className="mr-2 block w-16 truncate text-xs">{item.id}</div>
+      <div className="mr-2 block w-16 truncate text-xs">{item.symbol}</div>
       {item.disabled ? (
         <div className="grow">Disabled</div>
       ) : (

@@ -7,7 +7,9 @@ type CreateCustomForecastIndicatorState = {
   targetIndicatorId?: string;
   targetIndicatorType?: IndicatorType;
   indicatorName: string;
-  sourceIndicators: sourceIndicator[];
+  sourceIndicators: (sourceIndicator & {
+    symbol: string;
+  } )[];
 };
 
 type CreateCustomForecastIndicatorAction = {
