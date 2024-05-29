@@ -4,11 +4,13 @@ import {
   useUpdateSourceIndicator,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useCreateCustomForecastIndicatorStore } from '@/app/store/stores/numerical-guidance/custom-forecast-indicator/create-custom-foreacst-indicator.store';
+import { useState } from 'react';
 
 export const useCreatingCustomForecastIndicator = () => {
+  const [isCreating, setIsCreating] = useState(false);
   const targetIndicatorInfo = useCreateCustomForecastIndicatorStore((state) => state.targetIndicatorInfo);
   const sourceIndicators = useCreateCustomForecastIndicatorStore((state) => state.sourceIndicators);
-  const { setState } = useCreateCustomForecastIndicatorStore((state) => state.actions);
+  const { setState, reset } = useCreateCustomForecastIndicatorStore((state) => state.actions);
 
   const { trigger: createCustomForecastIndicatorTrigger } = useCreateCustomForecastIndicator();
   const { trigger: updateSourceIndicatorTrigger } = useUpdateSourceIndicator();
@@ -67,23 +69,33 @@ export const useCreatingCustomForecastIndicator = () => {
   const craeteCustomForecastIndicator = async () => {
     if (targetIndicatorInfo === undefined) return;
 
+    setIsCreating(true);
     const id = await createCustomForecastIndicatorTrigger({
       customForecastIndicatorName: `${targetIndicatorInfo.symbol} 예측 지표`,
       targetIndicatorId: targetIndicatorInfo.id,
       targetIndicatorType: targetIndicatorInfo.indicatorType,
     });
 
-    if (sourceIndicators.length === 0) return;
+    if (sourceIndicators.length === 0) {
+      setIsCreating(false);
+      return;
+    }
 
     await updateSourceIndicatorTrigger({
       sourceIndicatorsInformation: sourceIndicators,
       customForecastIndicatorId: id,
     });
+    setIsCreating(false);
+  };
+
+  const initialize = () => {
+    reset();
   };
 
   return {
     targetIndicatorId: targetIndicatorInfo?.id,
     sourceIndicators,
+    isCreating,
     selectTargetIndicator,
     deselectTargetIndicator,
     addSourceIndicator,
@@ -91,5 +103,6 @@ export const useCreatingCustomForecastIndicator = () => {
     includeSourceIndicator,
     updateSourceIndicatorWeight,
     craeteCustomForecastIndicator,
+    initialize,
   };
 };

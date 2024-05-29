@@ -7,6 +7,8 @@ import SelectableItem from '@/app/ui/components/view/atom/selectable-item';
 import { useCreatingCustomForecastIndicator } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-creating-custom-forecast-indicator.hook';
 import SourceIndicatorCreateSliderGroup from '../source-indicator-create-slider-group';
 import Button from '@/app/ui/components/view/atom/button/button';
+import { useDialog } from '@/app/ui/components/view/hooks/use-dialog.hook';
+import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 
 type SelectSourceIndicatorStepDialogMenuProps = {
   prevStep: () => void;
@@ -15,14 +17,21 @@ type SelectSourceIndicatorStepDialogMenuProps = {
 export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: SelectSourceIndicatorStepDialogMenuProps) {
   const {
     targetIndicatorId,
+    isCreating,
     addSourceIndicator,
     deleteSourceIndicator,
     includeSourceIndicator,
     craeteCustomForecastIndicator,
+    initialize,
   } = useCreatingCustomForecastIndicator();
+
+  const { closeDialog } = useDialog(DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_CREATE_MENU);
 
   const handleCustomForecastIndicatorCreate = async () => {
     await craeteCustomForecastIndicator();
+    closeDialog();
+    initialize();
+    prevStep();
   };
 
   const render = ({ index, style, data }: ListChildComponentProps<Indicator[]>) => {
@@ -73,6 +82,7 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
             onClick={handleCustomForecastIndicatorCreate}
             color={'black'}
             size={'xs'}
+            isLoading={isCreating}
           >
             생성
           </Button>
