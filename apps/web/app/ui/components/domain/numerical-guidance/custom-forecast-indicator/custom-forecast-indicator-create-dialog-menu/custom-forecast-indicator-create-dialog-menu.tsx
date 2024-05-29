@@ -6,7 +6,7 @@ import { useStepper } from '@/app/ui/components/view/hooks/use-stepper.hook';
 import SelectSourceIndicatorStepDialogMenu from './steps/select-source-indicator-step-dialog-menu';
 
 export default function CustomForecastIndicatorCreateDialogMenu() {
-  const { Stepper, nextStep } = useStepper();
+  const { Stepper, nextStep, prevStep } = useStepper();
 
   return (
     <DialogMenu color={'gray'} size={'xl'} dialogKey={DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_CREATE_MENU}>
@@ -15,7 +15,7 @@ export default function CustomForecastIndicatorCreateDialogMenu() {
           <SelectTargetIndicatorStepDialogMenu nextStep={nextStep} />
         </Stepper.Step>
         <Stepper.Step step={1}>
-          <SelectSourceIndicatorStepDialogMenu />
+          <SelectSourceIndicatorStepDialogMenu prevStep={prevStep} />
         </Stepper.Step>
       </Stepper>
     </DialogMenu>

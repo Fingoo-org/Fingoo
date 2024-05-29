@@ -6,8 +6,13 @@ import { Indicator } from '@/app/business/services/numerical-guidance/view-model
 import SelectableItem from '@/app/ui/components/view/atom/selectable-item';
 import { useCreatingCustomForecastIndicator } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-creating-custom-forecast-indicator.hook';
 import SourceIndicatorCreateSliderGroup from '../source-indicator-create-slider-group';
+import Button from '@/app/ui/components/view/atom/button/button';
 
-export default function SelectSourceIndicatorStepDialogMenu() {
+type SelectSourceIndicatorStepDialogMenuProps = {
+  prevStep: () => void;
+};
+
+export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: SelectSourceIndicatorStepDialogMenuProps) {
   const { addSourceIndicator, deleteSourceIndicator, includeSourceIndicator } = useCreatingCustomForecastIndicator();
 
   const render = ({ index, style, data }: ListChildComponentProps<Indicator[]>) => {
@@ -47,6 +52,16 @@ export default function SelectSourceIndicatorStepDialogMenu() {
       <DialogMenu.Content>
         <div className="py-1 text-xs font-bold">가중치</div>
         <SourceIndicatorCreateSliderGroup />
+      </DialogMenu.Content>
+      <DialogMenu.Content>
+        <div className="flex items-center justify-end space-x-1">
+          <Button onClick={() => prevStep()} color={'gray'} size={'xs'}>
+            이전
+          </Button>
+          <Button color={'black'} size={'xs'}>
+            생성
+          </Button>
+        </div>
       </DialogMenu.Content>
     </>
   );
