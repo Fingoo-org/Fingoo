@@ -42,13 +42,20 @@ export default function SelectTargetIndicatorStepDialogMenu({ nextStep }: Select
   return (
     <>
       <DialogMenu.Content>
-        <div className="py-1 text-xs font-bold">1. 예측하고 싶은 지표를 선택하세요.</div>
+        <div className="mb-3 p-1 text-xs font-bold">1. 예측하고 싶은 지표를 선택하세요.</div>
         <Card className="p-1.5">
           <DialogIndicatorList render={render} />
         </Card>
-        <Button onClick={() => nextStep()} color={'black'} size={'xs'}>
-          다음
-        </Button>
+        <div className="flex items-center justify-end pt-3">
+          <Button
+            disabled={targetIndicatorId === undefined ? true : false}
+            onClick={() => nextStep()}
+            color={'black'}
+            size={'xs'}
+          >
+            다음
+          </Button>
+        </div>
       </DialogMenu.Content>
     </>
   );
