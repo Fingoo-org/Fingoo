@@ -261,8 +261,8 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
       grangerVerificationResult.append(ver)
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
-      "grangerGroup": ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.'],
-      "cointJohansenVerification": ['공적분 결과 데이터간 연관성을 확인할 수 없습니다.']
+      "grangerGroup": ['False' for _ in range(len(sourceIndicatorIds))],
+      "cointJohansenVerification": ['False' for _ in range(len(sourceIndicatorIds))]
     }
     return sourceIndicatorsVerification
 
@@ -283,7 +283,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
       "grangerGroup": grangerVerificationResult,
-      "cointJohansenVerification": ['공적분 결과 데이터간 연관성을 확인할 수 없습니다.']
+      "cointJohansenVerification": ['False' for _ in range(len(sourceIndicatorIds))]
     }
     return sourceIndicatorsVerification
   
