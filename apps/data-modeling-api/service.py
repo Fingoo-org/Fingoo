@@ -246,6 +246,11 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     weight = int(weight)
     df_var = verification.applyWeight(df_var, indicator, weight)
 
+  falseResult:list[Verification] = []
+  for varIndicator in varIndicators:
+    ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
+    falseResult.append(ver)
+
   # granger
   try: 
     grangerDf = verification.grangerVerification(df_var)
@@ -261,8 +266,8 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
       grangerVerificationResult.append(ver)
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
-      "grangerGroup": ['False' for _ in range(len(sourceIndicatorIds))],
-      "cointJohansenVerification": ['False' for _ in range(len(sourceIndicatorIds))]
+      "grangerGroup": falseResult,
+      "cointJohansenVerification": falseResult
     }
     return sourceIndicatorsVerification
 
@@ -283,7 +288,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
       "grangerGroup": grangerVerificationResult,
-      "cointJohansenVerification": ['False' for _ in range(len(sourceIndicatorIds))]
+      "cointJohansenVerification": falseResult
     }
     return sourceIndicatorsVerification
   
