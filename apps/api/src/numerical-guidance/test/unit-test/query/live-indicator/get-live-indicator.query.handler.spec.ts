@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { CachingLiveIndicatorPort } from '../../../../application/port/cache/caching-live-indicator.port';
 import { LoadCachedLiveIndicatorPort } from '../../../../application/port/cache/load-cached-live-indicator.port';
-import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
+import { liveIndicatorTestData } from '../../../data/liveIndicatorTestData';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { LiveStockDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
@@ -10,6 +10,8 @@ import { LoadLiveIndicatorPort } from '../../../../application/port/external/twe
 import { GetLiveIndicatorQuery } from '../../../../application/query/live-indicator/get-live-indicator/get-live-indicator.query';
 import { LoadIndicatorPort } from '../../../../application/port/persistence/indicator/load-indicator.port';
 import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
+import { EconomyDto } from '../../../../application/query/indicator/get-indicator-list/dto/economy.dto';
+import { LoadLiveEconomyIndicatorPort } from '../../../../application/port/external/fred/load-live-economy-indicator.port';
 
 const testData = liveIndicatorTestData;
 const testIndicator: StockDto = {
@@ -25,12 +27,28 @@ const testIndicator: StockDto = {
   type: 'Common Stock',
 };
 
+const testEconomyIndicator: EconomyDto = {
+  id: '9493336a-2a81-473d-98e4-a7a682cf176f',
+  index: 16,
+  indicatorType: 'economy',
+  symbol: 'GNPCA',
+  name: 'Real Gross National Product',
+  frequency: 'Annual',
+  frequency_short: 'A',
+  units: 'Billions of Chained 2017 Dollars',
+  units_short: 'Bil. of Chn. 2017 $',
+  seasonal_adjustment: 'Not Seasonally Adjusted',
+  seasonal_adjustment_short: 'NSA',
+  notes: 'BEA Account Code: A001RX',
+};
+
 describe('GetLiveIndicatorQueryHandler', () => {
   let getLiveIndicatorQueryHandler: GetLiveIndicatorQueryHandler;
   let loadCachedLiveIndicatorPort: LoadCachedLiveIndicatorPort;
   let loadLiveIndicatorPort: LoadLiveIndicatorPort;
   let loadIndicatorPort: LoadIndicatorPort;
   let cachingLiveIndicatorPort: CachingLiveIndicatorPort;
+  let loadLiveEconomyIndicatorPort: LoadLiveEconomyIndicatorPort;
 
   beforeEach(async () => {
     const testRedis = new Map<string, string>();
@@ -70,6 +88,14 @@ describe('GetLiveIndicatorQueryHandler', () => {
             }),
           },
         },
+        {
+          provide: 'LoadLiveEconomyIndicatorPort',
+          useValue: {
+            loadLiveIndicator: jest.fn().mockImplementation(() => {
+              return testEconomyIndicator;
+            }),
+          },
+        },
       ],
     }).compile();
 
@@ -78,9 +104,10 @@ describe('GetLiveIndicatorQueryHandler', () => {
     loadIndicatorPort = module.get('LoadIndicatorPort');
     loadLiveIndicatorPort = module.get('LoadLiveIndicatorPort');
     cachingLiveIndicatorPort = module.get('CachingLiveIndicatorPort');
+    loadLiveEconomyIndicatorPort = module.get('LoadLiveEconomyIndicatorPort');
   }, 10000);
 
-  it('변동지표를 불러온다.', async () => {
+  it('Live 지표를 불러온다.', async () => {
     //given
     const getLiveIndicatorQuery: GetLiveIndicatorQuery = new GetLiveIndicatorQuery(
       '160e5499-4925-4e38-bb00-8ea6d8056484',
@@ -98,7 +125,7 @@ describe('GetLiveIndicatorQueryHandler', () => {
     expect(cachingLiveIndicatorPort.cachingLiveIndicator).toHaveBeenCalledTimes(1);
   });
 
-  it('변동지표가 redis에서 불러와진다.', async () => {
+  it('Live 지표가 redis에서 불러와진다.', async () => {
     //given
     const getLiveIndicatorQuery: GetLiveIndicatorQuery = new GetLiveIndicatorQuery(
       '160e5499-4925-4e38-bb00-8ea6d8056484',
@@ -116,5 +143,25 @@ describe('GetLiveIndicatorQueryHandler', () => {
     expect(cachingLiveIndicatorPort.cachingLiveIndicator).toHaveBeenCalledTimes(1);
     expect(loadIndicatorPort.loadIndicator).toHaveBeenCalledTimes(2);
     expect(loadLiveIndicatorPort.loadLiveIndicator).toHaveBeenCalledTimes(1);
+  });
+
+  it('Live 경제 지표를 불어온다.', async () => {
+    //given
+    const getLiveIndicatorQuery: GetLiveIndicatorQuery = new GetLiveIndicatorQuery(
+      '9493336a-2a81-473d-98e4-a7a682cf176f',
+      'none',
+      '2010-02-11',
+      'economy',
+    );
+
+    //when
+    await getLiveIndicatorQueryHandler.execute(getLiveIndicatorQuery);
+    await getLiveIndicatorQueryHandler.execute(getLiveIndicatorQuery);
+
+    //then
+    expect(loadCachedLiveIndicatorPort.loadCachedLiveIndicator).toHaveBeenCalledTimes(2);
+    expect(cachingLiveIndicatorPort.cachingLiveIndicator).toHaveBeenCalledTimes(1);
+    expect(loadIndicatorPort.loadIndicator).toHaveBeenCalledTimes(2);
+    expect(loadLiveEconomyIndicatorPort.loadLiveIndicator).toHaveBeenCalledTimes(1);
   });
 });

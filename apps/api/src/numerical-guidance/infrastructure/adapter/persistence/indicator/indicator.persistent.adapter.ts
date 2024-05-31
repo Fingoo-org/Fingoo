@@ -29,7 +29,7 @@ import { SearchIndicatorBySymbolPort } from 'src/numerical-guidance/application/
 import { SearchIndicatorByTypeAndSymbolPort } from '../../../../application/port/persistence/indicator/search-indicator-by-type-and-symbol.port';
 import { EconomyEntity } from './entity/economy.entity';
 import { FredApiUtil } from '../../fred/util/fred-api.util';
-import { IndicatorFredMapper } from '../../fred/mapper/indicator.fred.mapper';
+import { EconomyMapper } from './mapper/economy.mapper';
 import { EconomyDto } from '../../../../application/query/indicator/get-indicator-list/dto/economy.dto';
 
 const ORDER_TYPE: string = 'ASC';
@@ -185,7 +185,7 @@ export class IndicatorPersistentAdapter
         const economyData: undefined[] = await this.fredApiUtil.searchIndicator(symbol);
         await Promise.all(
           economyData.map(async (data) => {
-            const economyEntity: EconomyEntity = IndicatorFredMapper.mapDataToEntity(data);
+            const economyEntity: EconomyEntity = EconomyMapper.mapDataToEntity(data);
             await this.economyEntityRepository.save(economyEntity);
             return economyEntity;
           }),
@@ -199,7 +199,7 @@ export class IndicatorPersistentAdapter
       });
 
       return economyEntities.map((economyEntity: EconomyEntity) => {
-        return IndicatorFredMapper.mapEntityToDto(economyEntity);
+        return EconomyMapper.mapEntityToDto(economyEntity);
       });
     } catch (error) {
       if (error instanceof BadRequestException) {
@@ -316,6 +316,7 @@ export class IndicatorPersistentAdapter
       funds: Repository<FundEntity>;
       cryptocurrencies: Repository<CryptoCurrenciesEntity>;
       stocks: Repository<StockEntity>;
+      economy: Repository<EconomyEntity>;
     } = {
       cryptocurrencies: this.cryptoCurrenciesEntityRepository,
       etf: this.etfEntityRepository,
@@ -324,6 +325,7 @@ export class IndicatorPersistentAdapter
       stocks: this.stockEntityRepository,
       funds: this.fundEntityRepository,
       bonds: this.bondsEntityRepository,
+      economy: this.economyEntityRepository,
     };
 
     return entityRepositories[type];

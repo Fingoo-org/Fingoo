@@ -12,6 +12,9 @@ import { ForexPairMapper } from './forex-pair.mapper';
 import { StockMapper } from './stock.mapper';
 import { FundMapper } from './fund.mapper';
 import { IndicesMapper } from './indices.mapper';
+import { ETFMapper } from './etf.mapper';
+import { EconomyMapper } from './economy.mapper';
+import { EconomyDto } from '../../../../../application/query/indicator/get-indicator-list/dto/economy.dto';
 
 export class IndicatorMapper {
   static mapEntitiesToDtosByType(
@@ -22,7 +25,7 @@ export class IndicatorMapper {
       case 'cryptocurrencies':
         return CryptoCurrenciesMapper.mapEntitiesToDtos(indicatorEntities);
       case 'etf':
-        return BondsMapper.mapEntitiesToDtos(indicatorEntities);
+        return ETFMapper.mapEntitiesToDtos(indicatorEntities);
       case 'forex_pairs':
         return ForexPairMapper.mapEntitiesToDtos(indicatorEntities);
       case 'indices':
@@ -41,7 +44,7 @@ export class IndicatorMapper {
       case 'cryptocurrencies':
         return CryptoCurrenciesMapper.mapEntityToDto(indicatorEntity);
       case 'etf':
-        return BondsMapper.mapEntityToDto(indicatorEntity);
+        return ETFMapper.mapEntityToDto(indicatorEntity);
       case 'forex_pairs':
         return ForexPairMapper.mapEntityToDto(indicatorEntity);
       case 'indices':
@@ -52,6 +55,8 @@ export class IndicatorMapper {
         return FundMapper.mapEntityToDto(indicatorEntity);
       case 'bonds':
         return BondsMapper.mapEntityToDto(indicatorEntity);
+      case 'economy':
+        return EconomyMapper.mapEntityToDto(indicatorEntity);
     }
   }
 
@@ -64,6 +69,7 @@ export class IndicatorMapper {
       stocks: StockDto,
       funds: FundDto,
       bonds: BondsDto,
+      economy: EconomyDto,
     };
 
     return dtos[type];
