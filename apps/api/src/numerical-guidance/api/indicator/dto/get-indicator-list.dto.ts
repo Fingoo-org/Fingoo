@@ -2,6 +2,7 @@ import { IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IndicatorType } from '../../../../utils/type/type-definition';
 import { Type } from 'class-transformer';
+import { IsIndicatorType } from '../../../../utils/validation/is.indicator-type.validation';
 
 export class GetIndicatorListDto {
   @ApiProperty({
@@ -9,6 +10,7 @@ export class GetIndicatorListDto {
     description: '지표 type',
   })
   @IsString()
+  @IsIndicatorType()
   readonly type: IndicatorType;
 
   @ApiProperty({

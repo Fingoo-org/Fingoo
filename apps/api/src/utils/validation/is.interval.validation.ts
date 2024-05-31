@@ -10,11 +10,11 @@ export function IsInterval(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: string) {
-          const validValues = ['day', 'week', 'month', 'year'];
+          const validValues = ['day', 'week', 'month', 'year', 'none'];
           return validValues.includes(value);
         },
         defaultMessage() {
-          return "올바른 interval 을 입력해주세요. ('day', 'week', 'month', 'year')";
+          return "올바른 interval 을 입력해주세요. ('day', 'week', 'month', 'year', 'none')";
         },
       },
     });

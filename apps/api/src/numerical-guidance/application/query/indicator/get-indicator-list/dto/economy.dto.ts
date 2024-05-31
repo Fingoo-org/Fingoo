@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IndicatorType } from '../../../../../../utils/type/type-definition';
+import { FredFrequency, IndicatorType } from '../../../../../../utils/type/type-definition';
 
 export class EconomyDto {
   @ApiProperty({
@@ -36,7 +36,7 @@ export class EconomyDto {
     example: 'Quarterly',
     description: '빈도',
   })
-  frequency: string;
+  frequency: FredFrequency;
 
   @ApiProperty({
     example: 'Q',
@@ -80,7 +80,7 @@ export class EconomyDto {
     indicatorType: IndicatorType,
     symbol: string,
     name: string,
-    frequency: string,
+    frequency: FredFrequency,
     frequency_short: string,
     units: string,
     units_short: string,
