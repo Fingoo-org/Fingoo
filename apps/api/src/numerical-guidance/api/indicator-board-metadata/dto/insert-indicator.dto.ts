@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsUUID } from 'class-validator';
 import { IndicatorType } from '../../../../utils/type/type-definition';
 import { Type } from 'class-transformer';
+import { IsIndicatorType } from '../../../../utils/validation/is.indicator-type.validation';
 
 export class InsertIndicatorDto {
   @ApiProperty({
@@ -19,5 +20,6 @@ export class InsertIndicatorDto {
   })
   @Type(() => String)
   @IsString()
+  @IsIndicatorType()
   readonly indicatorType: IndicatorType;
 }
