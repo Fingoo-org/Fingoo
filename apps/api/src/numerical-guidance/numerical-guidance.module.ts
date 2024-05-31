@@ -58,6 +58,7 @@ import { SupabaseService } from '../auth/supabase/supabase.service';
 import { SearchIndicatorQueryHandler } from './application/query/indicator/search-indicator/search-indicator.query.handler';
 import { FredApiUtil } from './infrastructure/adapter/fred/util/fred-api.util';
 import { EconomyEntity } from './infrastructure/adapter/persistence/indicator/entity/economy.entity';
+import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fred.adapter';
 
 @Module({
   controllers: [
@@ -245,6 +246,10 @@ import { EconomyEntity } from './infrastructure/adapter/persistence/indicator/en
     {
       provide: 'LoadLiveIndicatorPort',
       useClass: IndicatorTwelveAdapter,
+    },
+    {
+      provide: 'LoadLiveEconomyIndicatorPort',
+      useClass: IndicatorFredAdapter,
     },
     TwelveApiUtil,
     FredApiUtil,
