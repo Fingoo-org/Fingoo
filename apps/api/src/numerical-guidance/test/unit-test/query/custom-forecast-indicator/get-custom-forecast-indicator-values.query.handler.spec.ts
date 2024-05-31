@@ -3,7 +3,7 @@ import { GetCustomForecastIndicatorValuesQuery } from 'src/numerical-guidance/ap
 import { GetCustomForecastIndicatorValuesQueryHandler } from 'src/numerical-guidance/application/query/custom-forecast-indicator/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query.handler';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorValuesResponse } from 'src/utils/type/type-definition';
-import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
+import { liveIndicatorTestData } from '../../../data/liveIndicatorTestData';
 import { LiveStockDto } from 'src/numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
 import { LoadLiveIndicatorPort } from 'src/numerical-guidance/application/port/external/twelve/load-live-indicator.port';

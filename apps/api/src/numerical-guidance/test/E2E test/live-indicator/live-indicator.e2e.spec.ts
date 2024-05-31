@@ -25,6 +25,9 @@ import { StockEntity } from '../../../infrastructure/adapter/persistence/indicat
 import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
 import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
 import * as request from 'supertest';
+import { EconomyEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/economy.entity';
+import { IndicatorFredAdapter } from '../../../infrastructure/adapter/fred/indicator.fred.adapter';
+import { FredApiUtil } from '../../../infrastructure/adapter/fred/util/fred-api.util';
 
 describe('Live Indicator E2E Test', () => {
   let app: INestApplication;
@@ -47,6 +50,22 @@ describe('Live Indicator E2E Test', () => {
       country: 'United States',
       type: 'Common Stock',
     });
+
+    const entityRepository = dataSource.getRepository(EconomyEntity);
+    await entityRepository.insert({
+      id: '9493336a-2a81-473d-98e4-a7a682cf176f',
+      index: 16,
+      indicatorType: 'economy',
+      symbol: 'GNPCA',
+      name: 'Real Gross National Product',
+      frequency: 'Annual',
+      frequency_short: 'A',
+      units: 'Billions of Chained 2017 Dollars',
+      units_short: 'Bil. of Chn. 2017 $',
+      seasonal_adjustment: 'Not Seasonally Adjusted',
+      seasonal_adjustment_short: 'NSA',
+      notes: 'BEA Account Code: A001RX\n\n',
+    });
   };
 
   beforeAll(async () => {
@@ -68,6 +87,7 @@ describe('Live Indicator E2E Test', () => {
             FundEntity,
             IndicesEntity,
             StockEntity,
+            EconomyEntity,
           ]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
@@ -90,6 +110,7 @@ describe('Live Indicator E2E Test', () => {
                 FundEntity,
                 IndicesEntity,
                 StockEntity,
+                EconomyEntity,
               ],
               synchronize: true,
             }),
@@ -113,6 +134,7 @@ describe('Live Indicator E2E Test', () => {
           AdjustIndicatorValue,
           GetLiveIndicatorQueryHandler,
           LiveIndicatorRedisAdapter,
+          IndicatorFredAdapter,
           {
             provide: 'LoadCachedLiveIndicatorPort',
             useClass: LiveIndicatorRedisAdapter,
@@ -135,9 +157,14 @@ describe('Live Indicator E2E Test', () => {
           },
           IndicatorTwelveAdapter,
           TwelveApiUtil,
+          FredApiUtil,
           {
             provide: 'IndicatorValueManager',
             useClass: AdjustIndicatorValue,
+          },
+          {
+            provide: 'LoadLiveEconomyIndicatorPort',
+            useClass: IndicatorFredAdapter,
           },
         ],
       }).compile(),
@@ -176,5 +203,44 @@ describe('Live Indicator E2E Test', () => {
       })
       .set('Content-Type', 'application/json')
       .expect(HttpStatus.OK);
+  });
+
+  it('/get live 지표 값을 불러온다. - economy', async () => {
+    return request(app.getHttpServer())
+      .get(`/api/numerical-guidance/indicators/live`)
+      .query({
+        indicatorId: '9493336a-2a81-473d-98e4-a7a682cf176f',
+        interval: 'none',
+        indicatorType: 'economy',
+        startDate: '2001-02-11',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/get live 지표 값을 불러온다. - economy', async () => {
+    return request(app.getHttpServer())
+      .get(`/api/numerical-guidance/indicators/live`)
+      .query({
+        indicatorId: '9493336a-2a81-473d-98e4-a7a682cf176f',
+        interval: 'none',
+        indicatorType: 'economy',
+        startDate: '2001-02-11',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
+  it('/get live 지표 값을 불러온다. - 잘못된 startDate를 입력', async () => {
+    return request(app.getHttpServer())
+      .get(`/api/numerical-guidance/indicators/live`)
+      .query({
+        indicatorId: '9493336a-2a81-473d-98e4-a7a682cf176f',
+        interval: 'none',
+        indicatorType: 'economy',
+        startDate: '01-02-11',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.BAD_REQUEST);
   });
 });

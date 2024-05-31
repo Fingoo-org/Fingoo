@@ -38,6 +38,8 @@ import { SupabaseService } from '../../../../auth/supabase/supabase.service';
 import { SupabaseStrategy } from '../../../../auth/supabase/supabase.strategy';
 import { MockAuthGuard, mockAuthorization, mockUser } from '../../../../auth/test/data/mock-auth.guard';
 import { of } from 'rxjs';
+import { EconomyEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/economy.entity';
+import { FredApiUtil } from '../../../infrastructure/adapter/fred/util/fred-api.util';
 
 initializeTransactionalContext();
 
@@ -174,6 +176,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
             CryptoCurrenciesEntity,
             BondsEntity,
             IndicatorEntity,
+            EconomyEntity,
           ]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
@@ -199,6 +202,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
                 CryptoCurrenciesEntity,
                 BondsEntity,
                 IndicatorEntity,
+                EconomyEntity,
               ],
               synchronize: true,
             }),
@@ -213,6 +217,7 @@ describe('Customer Forecast Indicator E2E Test', () => {
         controllers: [CustomForecastIndicatorController],
         providers: [
           TwelveApiUtil,
+          FredApiUtil,
           AdjustIndicatorValue,
           AuthService,
           SupabaseService,
