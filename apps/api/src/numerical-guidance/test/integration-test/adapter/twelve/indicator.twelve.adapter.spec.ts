@@ -12,12 +12,12 @@ import { ForexPairEntity } from '../../../../infrastructure/adapter/persistence/
 import { FundEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
-import { TwelveApiUtil } from '../../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import { TwelveApiManager } from '../../../../infrastructure/adapter/twelve/util/twelve-api.manager';
 import { HttpModule } from '@nestjs/axios';
 import { AdjustIndicatorValue } from '../../../../util/adjust-indicator-value';
 import { LiveStockDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { DataSource } from 'typeorm';
-import { liveIndicatorTestData } from '../../../data/liveIndicatorTestData';
+import { liveIndicatorTestData } from '../../../data/live-indicator-test-data';
 import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
 import { LiveIndicatorDtoType } from '../../../../../utils/type/type-definition';
 
@@ -97,7 +97,7 @@ describe('IndicatorTwelveAdapter', () => {
       ],
       providers: [
         IndicatorTwelveAdapter,
-        TwelveApiUtil,
+        TwelveApiManager,
         {
           provide: 'IndicatorValueManager',
           useClass: AdjustIndicatorValue,

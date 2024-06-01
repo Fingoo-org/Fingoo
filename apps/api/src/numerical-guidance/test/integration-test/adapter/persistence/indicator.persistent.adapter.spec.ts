@@ -17,9 +17,9 @@ import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/comm
 import { GetIndicatorListQuery } from '../../../../application/query/indicator/get-indicator-list/get-indicator-list.query';
 import * as fs from 'fs';
 import { IndicatorDtoType } from '../../../../../utils/type/type-definition';
-import { TwelveApiUtil } from '../../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import { TwelveApiManager } from '../../../../infrastructure/adapter/twelve/util/twelve-api.manager';
 import { HttpModule } from '@nestjs/axios';
-import { FredApiUtil } from '../../../../infrastructure/adapter/fred/util/fred-api.util';
+import { FredApiManager } from '../../../../infrastructure/adapter/fred/util/fred-api.manager';
 import { EconomyEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/economy.entity';
 
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
@@ -97,7 +97,7 @@ describe('IndicatorPersistentAdapter', () => {
           }),
         }),
       ],
-      providers: [IndicatorPersistentAdapter, TwelveApiUtil, FredApiUtil],
+      providers: [IndicatorPersistentAdapter, TwelveApiManager, FredApiManager],
     }).compile();
     indicatorPersistentAdapter = module.get(IndicatorPersistentAdapter);
     dataSource = module.get<DataSource>(DataSource);

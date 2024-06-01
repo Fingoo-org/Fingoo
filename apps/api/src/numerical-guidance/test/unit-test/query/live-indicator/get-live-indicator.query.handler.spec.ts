@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { CachingLiveIndicatorPort } from '../../../../application/port/cache/caching-live-indicator.port';
 import { LoadCachedLiveIndicatorPort } from '../../../../application/port/cache/load-cached-live-indicator.port';
-import { liveIndicatorTestData } from '../../../data/liveIndicatorTestData';
+import { liveIndicatorTestData } from '../../../data/live-indicator-test-data';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ConfigModule } from '@nestjs/config';
 import { LiveStockDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';

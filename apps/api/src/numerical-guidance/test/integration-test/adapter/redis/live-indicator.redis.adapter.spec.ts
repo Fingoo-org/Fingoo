@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { LiveStockDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { LiveIndicatorRedisAdapter } from '../../../../infrastructure/adapter/redis/live-indicator.redis.adapter';
 import { RedisModule } from '@nestjs-modules/ioredis';
-import { liveIndicatorTestData } from '../../../data/liveIndicatorTestData';
+import { liveIndicatorTestData } from '../../../data/live-indicator-test-data';
 import { ConfigModule } from '@nestjs/config';
 import { RedisContainer } from '@testcontainers/redis';
 

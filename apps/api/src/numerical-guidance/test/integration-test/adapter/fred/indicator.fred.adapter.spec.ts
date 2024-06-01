@@ -15,10 +15,10 @@ import { DataSource } from 'typeorm';
 import { LiveIndicatorDtoType } from '../../../../../utils/type/type-definition';
 import { EconomyEntity } from '../../../../infrastructure/adapter/persistence/indicator/entity/economy.entity';
 import { IndicatorFredAdapter } from '../../../../infrastructure/adapter/fred/indicator.fred.adapter';
-import { FredApiUtil } from '../../../../infrastructure/adapter/fred/util/fred-api.util';
+import { FredApiManager } from '../../../../infrastructure/adapter/fred/util/fred-api.manager';
 import { EconomyDto } from '../../../../application/query/indicator/get-indicator-list/dto/economy.dto';
 import { LiveEconomyDto } from '../../../../application/query/live-indicator/get-live-indicator/dto/live-ecnomy.dto';
-import { liveEconomyIndicatorTestData } from '../../../data/liveEconomyIndicatorTestData';
+import { liveEconomyIndicatorTestData } from '../../../data/live-economy-indicator-test-data';
 
 const testData = liveEconomyIndicatorTestData;
 
@@ -98,7 +98,7 @@ describe('IndicatorFredAdapter', () => {
           }),
         }),
       ],
-      providers: [IndicatorFredAdapter, FredApiUtil],
+      providers: [IndicatorFredAdapter, FredApiManager],
     }).compile();
     indicatorFredAdapter = module.get(IndicatorFredAdapter);
     dataSource = module.get<DataSource>(DataSource);

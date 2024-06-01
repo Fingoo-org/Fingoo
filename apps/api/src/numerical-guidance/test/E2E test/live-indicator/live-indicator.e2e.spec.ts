@@ -23,11 +23,11 @@ import { FundEntity } from '../../../infrastructure/adapter/persistence/indicato
 import { IndicesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
 import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
-import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import { TwelveApiManager } from '../../../infrastructure/adapter/twelve/util/twelve-api.manager';
 import * as request from 'supertest';
 import { EconomyEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/economy.entity';
 import { IndicatorFredAdapter } from '../../../infrastructure/adapter/fred/indicator.fred.adapter';
-import { FredApiUtil } from '../../../infrastructure/adapter/fred/util/fred-api.util';
+import { FredApiManager } from '../../../infrastructure/adapter/fred/util/fred-api.manager';
 
 describe('Live Indicator E2E Test', () => {
   let app: INestApplication;
@@ -156,8 +156,8 @@ describe('Live Indicator E2E Test', () => {
             useClass: IndicatorPersistentAdapter,
           },
           IndicatorTwelveAdapter,
-          TwelveApiUtil,
-          FredApiUtil,
+          TwelveApiManager,
+          FredApiManager,
           {
             provide: 'IndicatorValueManager',
             useClass: AdjustIndicatorValue,
