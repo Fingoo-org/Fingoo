@@ -16,7 +16,7 @@ export class ETFMapper {
     });
   }
 
-  static mapEntitiesToDto(etfEntities: ETFEntity[]): ETFDto[] {
+  static mapEntitiesToDtos(etfEntities: ETFEntity[]): ETFDto[] {
     return etfEntities.map((etfEntity) => {
       return ETFMapper.mapEntityToDto(etfEntity);
     });

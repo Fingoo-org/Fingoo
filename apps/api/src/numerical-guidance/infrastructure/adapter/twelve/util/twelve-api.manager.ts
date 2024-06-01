@@ -6,7 +6,7 @@ import * as process from 'process';
 const BASE_URL = 'https://api.twelvedata.com';
 
 @Injectable()
-export class TwelveApiUtil {
+export class TwelveApiManager {
   constructor(private readonly api: HttpService) {}
 
   async getReferenceData(type: IndicatorType, country: string) {
