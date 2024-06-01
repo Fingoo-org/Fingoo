@@ -5,7 +5,7 @@ import { Interval } from '../../../../../utils/type/type-definition';
 const BASE_URL = 'https://api.stlouisfed.org/fred';
 
 @Injectable()
-export class FredApiUtil {
+export class FredApiManager {
   constructor(private readonly api: HttpService) {}
 
   async searchIndicator(symbol: string): Promise<undefined[]> {

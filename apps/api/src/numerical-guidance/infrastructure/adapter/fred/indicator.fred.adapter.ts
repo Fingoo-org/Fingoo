@@ -1,6 +1,6 @@
 import { BadRequestException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { LoadLiveEconomyIndicatorPort } from '../../../application/port/external/fred/load-live-economy-indicator.port';
-import { FredApiUtil } from './util/fred-api.util';
+import { FredApiManager } from './util/fred-api.manager';
 import {
   IndicatorDtoType,
   IndicatorValue,
@@ -13,7 +13,7 @@ import { IndicatorFredMapper } from './mapper/indicator.fred.mapper';
 export class IndicatorFredAdapter implements LoadLiveEconomyIndicatorPort {
   private readonly logger = new Logger(IndicatorFredAdapter.name);
 
-  constructor(private readonly fredApiUtil: FredApiUtil) {}
+  constructor(private readonly fredApiUtil: FredApiManager) {}
 
   async loadLiveIndicator(
     indicatorDto: IndicatorDtoType,

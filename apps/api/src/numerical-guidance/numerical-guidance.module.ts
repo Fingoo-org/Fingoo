@@ -41,7 +41,7 @@ import { FileSupabaseAdapter } from './infrastructure/adapter/storage/supabase/f
 import { UploadFileCommandHandler } from './application/command/indicator-board-metadata/upload-file/upload-file.command.handler';
 import { UpdateSectionsCommandHandler } from './application/command/indicator-board-metadata/update-sections/update-sections.command.handler';
 import { GetIndicatorListQueryHandler } from './application/query/indicator/get-indicator-list/get-indicator-list.query.handler';
-import { TwelveApiUtil } from './infrastructure/adapter/twelve/util/twelve-api.util';
+import { TwelveApiManager } from './infrastructure/adapter/twelve/util/twelve-api.manager';
 import { BondsEntity } from './infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 import { IndicatorTwelveAdapter } from './infrastructure/adapter/twelve/indicator.twelve.adapter';
 import { SaveIndicatorListCommandHandler } from './application/command/indicator/save-indicator-list/save-indicator-list.command.handler';
@@ -56,7 +56,7 @@ import { AuthService } from '../auth/application/auth.service';
 import { SupabaseStrategy } from '../auth/supabase/supabase.strategy';
 import { SupabaseService } from '../auth/supabase/supabase.service';
 import { SearchIndicatorQueryHandler } from './application/query/indicator/search-indicator/search-indicator.query.handler';
-import { FredApiUtil } from './infrastructure/adapter/fred/util/fred-api.util';
+import { FredApiManager } from './infrastructure/adapter/fred/util/fred-api.manager';
 import { EconomyEntity } from './infrastructure/adapter/persistence/indicator/entity/economy.entity';
 import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fred.adapter';
 
@@ -251,8 +251,8 @@ import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fr
       provide: 'LoadLiveEconomyIndicatorPort',
       useClass: IndicatorFredAdapter,
     },
-    TwelveApiUtil,
-    FredApiUtil,
+    TwelveApiManager,
+    FredApiManager,
   ],
 })
 export class NumericalGuidanceModule {}

@@ -23,7 +23,7 @@ import { DeleteCustomForecastIndicatorCommandHandler } from 'src/numerical-guida
 import { UpdateCustomForecastIndicatorNameCommandHandler } from 'src/numerical-guidance/application/command/custom-forecast-indicator/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
 import { IndicatorPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
 import { StockEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/stock.entity';
-import { TwelveApiUtil } from 'src/numerical-guidance/infrastructure/adapter/twelve/util/twelve-api.util';
+import { TwelveApiManager } from 'src/numerical-guidance/infrastructure/adapter/twelve/util/twelve-api.manager';
 import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indicator.entity';
 import { BondsEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/bonds.entity';
 import { CryptoCurrenciesEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/crypto-currencies.entity';
@@ -39,7 +39,7 @@ import { SupabaseStrategy } from '../../../../auth/supabase/supabase.strategy';
 import { MockAuthGuard, mockAuthorization, mockUser } from '../../../../auth/test/data/mock-auth.guard';
 import { of } from 'rxjs';
 import { EconomyEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/economy.entity';
-import { FredApiUtil } from '../../../infrastructure/adapter/fred/util/fred-api.util';
+import { FredApiManager } from '../../../infrastructure/adapter/fred/util/fred-api.manager';
 
 initializeTransactionalContext();
 
@@ -216,8 +216,8 @@ describe('Customer Forecast Indicator E2E Test', () => {
         ],
         controllers: [CustomForecastIndicatorController],
         providers: [
-          TwelveApiUtil,
-          FredApiUtil,
+          TwelveApiManager,
+          FredApiManager,
           AdjustIndicatorValue,
           AuthService,
           SupabaseService,

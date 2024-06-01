@@ -23,12 +23,12 @@ import { CursorPageMetaDto } from '../../../../../utils/pagination/cursor-page.m
 import { CursorPageDto } from '../../../../../utils/pagination/cursor-page.dto';
 import { SaveIndicatorListPort } from '../../../../application/port/external/twelve/save-indicator-list.port';
 import { Propagation, Transactional } from 'typeorm-transactional';
-import { TwelveApiUtil } from '../../twelve/util/twelve-api.util';
+import { TwelveApiManager } from '../../twelve/util/twelve-api.manager';
 import { IndicatorMapper } from './mapper/indicator.mapper';
 import { SearchIndicatorBySymbolPort } from 'src/numerical-guidance/application/port/persistence/indicator/search-indicator-by-symbol.port';
 import { SearchIndicatorByTypeAndSymbolPort } from '../../../../application/port/persistence/indicator/search-indicator-by-type-and-symbol.port';
 import { EconomyEntity } from './entity/economy.entity';
-import { FredApiUtil } from '../../fred/util/fred-api.util';
+import { FredApiManager } from '../../fred/util/fred-api.manager';
 import { EconomyMapper } from './mapper/economy.mapper';
 import { EconomyDto } from '../../../../application/query/indicator/get-indicator-list/dto/economy.dto';
 
@@ -58,8 +58,8 @@ export class IndicatorPersistentAdapter
   private readonly logger = new Logger(IndicatorPersistentAdapter.name);
 
   constructor(
-    private readonly twelveApiUtil: TwelveApiUtil,
-    private readonly fredApiUtil: FredApiUtil,
+    private readonly twelveApiUtil: TwelveApiManager,
+    private readonly fredApiUtil: FredApiManager,
     @InjectRepository(BondsEntity)
     private readonly bondsEntityRepository: Repository<BondsEntity>,
     @InjectRepository(CryptoCurrenciesEntity)
