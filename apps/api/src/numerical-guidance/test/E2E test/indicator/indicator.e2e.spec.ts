@@ -249,6 +249,6 @@ describe('Indicator E2E Test', () => {
         type: 'invalidType',
       })
       .set('Content-Type', 'application/json')
-      .expect(HttpStatus.NOT_FOUND);
+      .expect(HttpStatus.BAD_REQUEST);
   });
 });
