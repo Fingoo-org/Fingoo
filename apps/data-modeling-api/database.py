@@ -10,8 +10,9 @@ DB_HOST = os.getenv("FAST_DB_HOST")
 DB_PORT = os.getenv("FAST_DB_PORT")
 POSTGRES_USER = os.getenv("FAST_POSTGRES_USER")
 POSTGRES_PASSWORD = os.getenv("FAST_POSTGRES_PASSWORD")
+POSTGRES_DATABASE_NAME = os.getenv("FAST_POSTGRES_DATABASE_NAME")
 
-DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:{DB_PORT}/test"
+DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:{DB_PORT}/{POSTGRES_DATABASE_NAME}"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
