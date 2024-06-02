@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
+
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
@@ -46,6 +46,7 @@ jobs:
           echo "SUPABASE_BUCKET_NAME=${{ secrets.SUPABASE_BUCKET_NAME }}" >> .env
           echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
           echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
+          echo "FRED_KEY=${{ secrets.FRED_KEY }}" >> .env
         working-directory: apps/api
 
       - name: Setting web .env
@@ -141,7 +142,7 @@ jobs:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: info
           text: 'modeling-api was successfully built'
-          
+
   deploy-web:
     runs-on: ubuntu-latest
     needs: inspection
@@ -158,7 +159,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Install Turborepo CLI
