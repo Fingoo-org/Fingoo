@@ -246,6 +246,11 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     weight = int(weight)
     df_var = verification.applyWeight(df_var, indicator, weight)
 
+  falseResult:list[Verification] = []
+  for varIndicator in varIndicators:
+    ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
+    falseResult.append(ver)
+
   # granger
   try: 
     grangerDf = verification.grangerVerification(df_var)
@@ -261,8 +266,8 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
       grangerVerificationResult.append(ver)
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
-      "grangerGroup": ['granger 검정 결과 데이터간 연관성을 확인할 수 없습니다.'],
-      "cointJohansenVerification": ['공적분 결과 데이터간 연관성을 확인할 수 없습니다.']
+      "grangerGroup": falseResult,
+      "cointJohansenVerification": falseResult
     }
     return sourceIndicatorsVerification
 
@@ -283,7 +288,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
       "grangerGroup": grangerVerificationResult,
-      "cointJohansenVerification": ['공적분 결과 데이터간 연관성을 확인할 수 없습니다.']
+      "cointJohansenVerification": falseResult
     }
     return sourceIndicatorsVerification
   
