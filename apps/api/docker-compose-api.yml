@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - api-net
-    
+
   redis:
     image: redis:latest
     ports:
@@ -34,6 +34,7 @@ services:
       - FAST_DB_HOST=${FAST_DB_HOST}
       - FAST_DB_PORT=${FAST_DB_PORT}
       - FAST_POSTGRES_USER=${FAST_POSTGRES_USER}
+      - FAST_POSTGRES_DATABASE_NAME=${FAST_POSTGRES_DATABASE_NAME}
       - FAST_POSTGRES_PASSWORD=${FAST_POSTGRES_PASSWORD}
       - FAST_SERVICE_KEY=${FAST_SERVICE_KEY}
       - FAST_BASE_URL=${FAST_BASE_URL}
