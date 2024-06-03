@@ -341,7 +341,6 @@ export class CustomForecastIndicatorPersistentAdapter
     if (entity == null) throw new NotFoundException();
   }
 
-  // ToDo: 리스트가 비어있을 경우 Arima만 가도록 ...
   private getValidIndicators(customForecastIndicator: CustomForecastIndicator): SourceIndicatorInformation[] {
     const allIndicatorsInformation = customForecastIndicator.sourceIndicatorsInformation;
     allIndicatorsInformation.push({
