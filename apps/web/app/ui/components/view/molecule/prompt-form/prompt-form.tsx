@@ -38,7 +38,7 @@ const PromptForm = ({ value, onValueChange, disable, formAction }: PromptFormPro
         onChange={onValueChange}
         placeholder="내용을 입력하세요"
         value={value}
-        onKeyDown={onKeyDown}
+        // onKeyDown={onKeyDown}
         disabled={disable}
       />
       <IconButton color="black" size="md" icon={PaperPlaneIcon} type="submit" disabled={disable} />
