@@ -1,9 +1,7 @@
 import { useIndicatorBoardMetadataList } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
-import { useLogger } from '@/app/logging/logging-context';
 import CreateButton from '@/app/ui/components/view/molecule/create-button';
 import { LogClick } from '@/app/logging/component/log-click';
 export default function MetadataCreateButton() {
-  const logger = useLogger();
   const { metadataList, createIndicatorBoardMetadata, isCreateIndicatorMetadataMutating } =
     useIndicatorBoardMetadataList();
 
