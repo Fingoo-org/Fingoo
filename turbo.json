@@ -15,6 +15,9 @@
       "dependsOn": ["api#infra"],
       "cache": false
     },
+    "web#start:dev": {
+      "cache": false
+    },
     "infra": {
       "cache": false
     }
