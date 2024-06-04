@@ -8,10 +8,6 @@ export default function MetadataCreateButton() {
     useIndicatorBoardMetadataList();
 
   const handleMetadataCreateAndSelect = async () => {
-    logger.track('click_metadata_create_button', {
-      metadata_item_count: metadataList?.length ?? -1,
-    });
-
     const indicatorBoardMetadataId = await createIndicatorBoardMetadata();
   };
 
