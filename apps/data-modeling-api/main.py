@@ -1,4 +1,4 @@
-from fastapi import Depends, Query
+from fastapi import Depends, HTTPException, Query
 from fastapi import FastAPI
 from service import predict, sourceIndicatorsVerification, predictWithoutTargetIndicator
 from database import engine, Base, get_db
@@ -21,13 +21,15 @@ def loadIndicatorValue(
     validIndicatorId: list[str] = Query(default = None),
     db: Session = Depends(get_db)
     ):
-	
-    if not sourceIndicatorId and not weight:
-        prediction = predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, db)
-    else:
-        prediction = predict(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, validIndicatorId, db)
+      try:
+        if not sourceIndicatorId and not weight:
+          prediction = predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, db)
+        else:
+          prediction = predict(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, validIndicatorId, db)
 
-    return prediction
+        return prediction
+      except Exception as error:
+          raise HTTPException(status_code=500, detail=f"{str(error)}")
 
 @app.get("/api/var-api/source-indicators-verification/")
 def loadSourceIndicatorsVerification(
@@ -38,5 +40,8 @@ def loadSourceIndicatorsVerification(
     weight: list[int] = Query(default = None),
     db: Session = Depends(get_db)
     ):
-	verificaion = sourceIndicatorsVerification(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, db)
-	return verificaion
+      try:
+        verificaion = sourceIndicatorsVerification(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, db)
+        return verificaion
+      except Exception as error:
+        raise HTTPException(status_code=500, detail=f"{str(error)}")

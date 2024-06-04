@@ -220,11 +220,11 @@ export class CustomForecastIndicatorPersistentAdapter
       customForecastIndicatorEntity.sourceIndicators = customForecastIndicator.sourceIndicators;
 
       if (customForecastIndicatorEntity.sourceIndicatorsInformation.length == 0) {
-        const grangerGroup = [];
-        const cointJohansenVerification = [];
+        const emptyGrangerGroup = [];
+        const emptyCointJohansenVerification = [];
 
-        customForecastIndicatorEntity.grangerVerification = grangerGroup;
-        customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
+        customForecastIndicatorEntity.grangerVerification = emptyGrangerGroup;
+        customForecastIndicatorEntity.cointJohansenVerification = emptyCointJohansenVerification;
       } else {
         const url: string =
           process.env.FASTAPI_URL +
@@ -348,10 +348,16 @@ export class CustomForecastIndicatorPersistentAdapter
       indicatorType: customForecastIndicator.targetIndicator.indicatorType,
       weight: null,
     });
-    const validIndicators = allIndicatorsInformation.filter(
-      (_SourceIndicatorInformation, index) =>
-        customForecastIndicator.grangerVerification[index].verification === 'True',
-    );
-    return validIndicators;
+
+    switch (allIndicatorsInformation.length) {
+      case 1:
+        return [];
+      default:
+        const validIndicators = allIndicatorsInformation.filter(
+          (_SourceIndicatorInformation, index) =>
+            customForecastIndicator.grangerVerification[index].verification === 'True',
+        );
+        return validIndicators;
+    }
   }
 }

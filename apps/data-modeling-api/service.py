@@ -81,7 +81,6 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
     if len(validIndicatorId) >= 2:
       if targetIndicatorId in validIndicatorId:
         print('Var')
-        # df_var을 유효성 검증으로 바꿔야함
         customForecastIndicator = forecast.runVar(df_var, validIndicatorId, int(len(df_var)/2))
         for id in validIndicatorId:
           if id == targetIndicatorId:
