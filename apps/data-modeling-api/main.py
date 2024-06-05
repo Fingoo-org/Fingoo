@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from service import predict, sourceIndicatorsVerification, predictWithoutTargetIndicator
 from database import engine, Base, get_db
 from sqlalchemy.orm import Session
+from mangum import Mangum
 
 Base.metadata.create_all(bind=engine) 
 
@@ -45,3 +46,5 @@ def loadSourceIndicatorsVerification(
         return verificaion
       except Exception as error:
         raise HTTPException(status_code=500, detail=f"{str(error)}")
+
+handler = Mangum(app)
