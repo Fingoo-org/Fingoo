@@ -10,9 +10,13 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 @app.get("/")
 def hello() :
-	return "Hello, Fingoo!"
+	return "Hello, Fingoo! v3"
 
-@app.get("/api/var-api/custom-forecast-indicator/")
+@app.get("/test")
+def hello() :
+	return "Hello, Fingoo test!"
+
+@app.get("/api/var-api/custom-forecast-indicator")
 def loadIndicatorValue(
     targetIndicatorId: str = Query(...),
     targetIndicatorType: str = Query(...),
@@ -32,7 +36,7 @@ def loadIndicatorValue(
       except Exception as error:
           raise HTTPException(status_code=500, detail=f"{str(error)}")
 
-@app.get("/api/var-api/source-indicators-verification/")
+@app.get("/api/var-api/source-indicators-verification")
 def loadSourceIndicatorsVerification(
     targetIndicatorId: str = Query(...),
     targetIndicatorType: str = Query(...),
