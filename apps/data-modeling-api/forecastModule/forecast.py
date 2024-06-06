@@ -27,28 +27,11 @@ def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
   return dfVarDnorm
 
 def runArima(df: pd.DataFrame, target: str, period: int) -> pd.DataFrame:
-  df = df.bfill()
-  
-  order = optimizationArima(df, target)
-  p = int(order[0])
-  q = int(order[1])
-  d = int(order[2])
-
-  model = ARIMA(df[target], order=(p, q, d))
-  fitted_model = model.fit()
-
-  forecast = fitted_model.forecast(steps=period)
-  forecast_df = pd.DataFrame({target: forecast})
-
-  return forecast_df
-
-def optimizationArima(df: pd.DataFrame, target: str) -> str:
-  df = df.bfill()
-    
   auto_model = pm.auto_arima(df[target], seasonal=False, trace=True,
     error_action='ignore', suppress_warnings=True,
     stepwise=True, n_jobs=-1)
 
-  best_order = auto_model.order
+  forecast = auto_model.predict(n_periods=period)
+  forecast_df = pd.DataFrame({target: forecast})
 
-  return best_order
+  return forecast_df
