@@ -111,7 +111,7 @@ jobs:
           severity: info
           text: 'api package was successfully built'
 
-  build-modeling-api:
+  deploy-modeling-api:
     runs-on: ubuntu-latest
     needs: inspection
     steps:
@@ -137,6 +137,17 @@ jobs:
           docker build --platform linux/amd64 -t $REGISTRY/$REPOSITORY:$IMAGE_TAG . -f dockerfile-lambda
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
         working-directory: apps/data-modeling-api
+        
+      - name: Deploy image to lambda
+        env:
+          FUNCTION_NAME: data-modeling
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: data-modeling-api
+          IMAGE_TAG: latest
+        run: |
+          aws lambda update-function-code \
+              --function-name $FUNCTION_NAME \
+              --image-uri $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Send discord message if fail
         if: ${{ failure() }}
@@ -144,14 +155,14 @@ jobs:
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: error
-          text: 'modeling-api package failed to build'
+          text: 'modeling-api package failed to deploy'
       - name: Send discord message if success
         if: ${{ success() }}
         uses: rjstone/discord-webhook-notify@v1.0.4
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: info
-          text: 'modeling-api was successfully built'
+          text: 'modeling-api was successfully deployed'
 
   deploy-web:
     runs-on: ubuntu-latest
