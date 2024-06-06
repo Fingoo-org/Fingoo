@@ -10,7 +10,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 @app.get("/")
 def hello() :
-	return "Hello, Fingoo! v3"
+	return "Hello, Fingoo! v4"
 
 @app.get("/test")
 def hello() :
