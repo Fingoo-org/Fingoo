@@ -258,7 +258,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     print(f'Var Group: {grangerGroup}')
     grangerVerificationResult:list[Verification] = []
     for varIndicator in varIndicators:
-      if varIndicator.name in grangerGroup:
+      if varIndicator.id in grangerGroup:
         ver: Verification = {"indicatorId": varIndicator.id, "verification": "True"}
       else:
         ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
@@ -279,7 +279,7 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     cointJohansenVerification = verification.cointJohansenVerification(df_var, grangerGroup)
     cointJohansenVerificationList = [str(item) for item in cointJohansenVerification]
     for varIndicator in varIndicators:
-      if varIndicator.name in cointJohansenVerificationList:
+      if varIndicator.id in cointJohansenVerificationList:
         ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'True'}
       else:
         ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'False'}
