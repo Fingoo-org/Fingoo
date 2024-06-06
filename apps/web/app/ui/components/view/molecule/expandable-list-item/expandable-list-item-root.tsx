@@ -1,18 +1,18 @@
 import ListItem from '../../atom/list-item';
 import Accordion from '../accordion';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { cn } from '@/app/utils/style';
 import { filterChildrenByType } from '@/app/utils/helper';
 import { ExpandableListItemExpandedContent } from './expandable-list-item-expanded-content';
 import { ExpandableListItemTitle } from './expandable-list-item-title';
 
-type ExpandableListItemProps = {
+interface ExpandableListItemProps extends React.HTMLAttributes<HTMLDivElement> {
   selected: boolean;
   className?: string;
   onSelect: () => void;
   onDeSelect?: () => void;
   hoverRender?: () => JSX.Element;
-};
+}
 
 function getExpandedContent(children: React.ReactNode) {
   return filterChildrenByType(children, ExpandableListItemExpandedContent);
@@ -29,6 +29,7 @@ export function ExpandableListItemRoot({
   onDeSelect,
   hoverRender,
   children,
+  ...props
 }: React.PropsWithChildren<ExpandableListItemProps>) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -79,6 +80,7 @@ export function ExpandableListItemRoot({
           hoverRender={hoverRender}
         >
           <div
+            {...props}
             onClick={handleClick}
             className={cn(
               'h-full w-full rounded-lg bg-white text-fingoo-gray-5 ring-1 ring-fingoo-gray-3',

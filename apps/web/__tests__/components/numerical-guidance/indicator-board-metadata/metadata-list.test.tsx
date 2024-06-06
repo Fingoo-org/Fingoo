@@ -41,7 +41,8 @@ describe('MetadataList', () => {
     await user.click(screen.getByRole('button', { name: /메타데이터 추가/i }));
 
     // then
-    expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(4);
+    expect(await screen.findAllByTestId('metadata-list-item')).toHaveLength(4);
+    expect(await screen.findAllByText('메타데이터'));
   });
 
   it('사용자가 생성 버튼을 두번 클릭하면, 생성한 메타데이터가 2개 추가된 메타데이터 리스트를 보여준다.', async () => {
@@ -59,7 +60,9 @@ describe('MetadataList', () => {
     await user.click(screen.getByRole('button', { name: /메타데이터 추가/i }));
 
     // then
-    expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(5);
+    expect(await screen.findAllByTestId('metadata-list-item')).toHaveLength(5);
+    expect(await screen.findAllByText('메타데이터'));
+    expect(await screen.findAllByText('메타데이터(1)'));
   });
 
   it('사용자가 메타데이터를 클릭하면, 메타데이터가 선택된다.', async () => {

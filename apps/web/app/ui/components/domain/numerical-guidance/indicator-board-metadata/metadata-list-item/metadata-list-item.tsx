@@ -125,6 +125,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       selected={isMetadataInIndicatorBoard}
       onSelect={handleSelect}
       hoverRender={hoverRender}
+      data-testid="metadata-list-item"
       className={cn({
         'border-2 border-fingoo-main bg-fingoo-sub text-fingoo-gray-6 shadow-lg': isSelected,
       })}

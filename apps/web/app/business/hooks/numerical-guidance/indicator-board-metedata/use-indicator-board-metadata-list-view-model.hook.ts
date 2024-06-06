@@ -11,6 +11,7 @@ import {
   IndicatorInMetadataUnitTypes,
   useIndicatorBoardMetadataStore,
 } from '@/app/store/stores/numerical-guidance/indicator-board-metadata.store';
+import { createNotDuplicatedName } from '@/app/utils/helper';
 
 export const useIndicatorBoardMetadataList = () => {
   const { data: indicatorBoardMetadataList, isValidating } = useFetchIndicatorBoardMetadataList();
@@ -52,7 +53,10 @@ export const useIndicatorBoardMetadataList = () => {
 
   const createIndicatorBoardMetadata = async () => {
     const metadata = {
-      indicatorBoardMetadataName: 'metadata1',
+      indicatorBoardMetadataName: createNotDuplicatedName(
+        '메타데이터',
+        convertedIndicatorBoardMetadataList?.names ?? [],
+      ),
     };
 
     const indicatorBoardMetadataId = await createIndicatorBoardMetadataTrigger(metadata);
