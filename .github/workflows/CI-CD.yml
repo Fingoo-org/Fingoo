@@ -134,8 +134,9 @@ jobs:
           REPOSITORY: data-modeling-api
           IMAGE_TAG: latest
         run: |
-          docker build --platform linux/amd64 -t $REGISTRY/$REPOSITORY:$IMAGE_TAG . -f ./apps/data-modeling-api/dockerfile-lambda
+          docker build --platform linux/amd64 -t $REGISTRY/$REPOSITORY:$IMAGE_TAG . -f dockerfile-lambda
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        working-directory: apps/data-modeling-api
 
       - name: Send discord message if fail
         if: ${{ failure() }}
