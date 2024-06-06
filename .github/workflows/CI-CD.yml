@@ -173,7 +173,7 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Install Turborepo CLI
-        run: npm install --global turbo
+        run: npm install turbo@1.13.4 --global
       - name: Vercel link
         run: vercel link --yes --token=${{ secrets.VERCEL_ACCESS_TOKEN }} --project=${{ secrets.FINGOO_PROJECT_NAME }}
       - name: Pull Vercel Environment Information
