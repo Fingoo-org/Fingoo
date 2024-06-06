@@ -21,6 +21,10 @@ export class IndicatorBoardMetadataList extends Array<IndicatorBoardMetadata> {
     return this.map((metadata) => metadata.formattedIndicatorBoardMetadata);
   }
 
+  get names() {
+    return this.map((metadata) => metadata.name);
+  }
+
   iterate(callback: (metadata: IndicatorBoardMetadata) => IndicatorBoardMetadata): IndicatorBoardMetadataList {
     return convertIndcatorBoardMetadataList(this.map(callback));
   }

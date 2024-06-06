@@ -110,6 +110,10 @@ export class CustomForecastIndicators {
     );
   }
 
+  get names() {
+    return this.customForecastIndicatorList.map((customForecastIndicator) => customForecastIndicator.name);
+  }
+
   findCustomForecastIndicatorById(id: string) {
     return this.customForecastIndicatorList.find((customForecastIndicator) => customForecastIndicator.id === id);
   }

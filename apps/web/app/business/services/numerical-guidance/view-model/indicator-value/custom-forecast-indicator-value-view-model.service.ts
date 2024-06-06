@@ -48,7 +48,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
   }
 
   get identifier() {
-    return this.customForecastIndicatorName;
+    return `${this.customForecastIndicatorName}-${this.id.slice(0, 4)}`;
   }
 
   formatItemsByDate(options?: FormatOptions): FormattedItem {
@@ -57,7 +57,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
       return {
         ...acc,
         [formatDate(item.date)]: {
-          [this.customForecastIndicatorName]: {
+          [this.identifier]: {
             value: item.value,
             displayValue: item.displayValue,
           },
