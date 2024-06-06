@@ -38,10 +38,10 @@ export class IndicatorFormatter {
 
       return {
         date,
-        ...formmatedItems.reduce<FormattedRowType>((acc, items) => {
+        ...formmatedItems.reduce<FormattedRowType>((acc, item) => {
           return {
             ...acc,
-            ...items[date],
+            ...item[date],
           };
         }, {}),
       };
