@@ -151,3 +151,24 @@ export const useRevalidateCustomForecastIndicatorList = () => {
     mutate(API_PATH.customForecastIndicator);
   };
 };
+
+export const useRevalidateCustomForecastIndicatorValue = () => {
+  return {
+    trigger: async (customForecastIndicatorId: string) => {
+      const newKey = [`${API_PATH.customForecastIndicator}/value`, customForecastIndicatorId];
+      const newData = (await fetchCustomForecastIndicatorsValue(newKey))[0];
+
+      mutate(
+        (key: any) => Array.isArray(key) && key.find((k) => k === customForecastIndicatorId),
+        async (data) => {
+          return data.map((d: any) => {
+            if (d.customForecastIndicatorId === customForecastIndicatorId) {
+              return newData;
+            }
+            return d;
+          });
+        },
+      );
+    },
+  };
+};
