@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import useSWRMutation from 'swr/mutation';
 import useSWRImmutable from 'swr/immutable';
 import { mutate } from 'swr';
@@ -13,6 +13,7 @@ import {
 } from '../fetcher';
 import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
 import { IndicatorByTypeResponse } from './indicator-list.query';
+import { unstable_serialize } from 'swr';
 
 export type sourceIndicator = {
   sourceIndicatorId: string;
@@ -73,14 +74,24 @@ export type CustomForecastIndicatorValueResponse = {
 };
 
 export const useFetchCustomForecastIndicatorsValue = (customForecastIndicatorIds: string[] | undefined) => {
+  const { cache } = useSWRConfig();
+
+  // 삭제를 위한 key 순서 맞춰보기
   const key = customForecastIndicatorIds
     ? [`${API_PATH.customForecastIndicator}/value`, ...customForecastIndicatorIds]
     : null;
 
-  return useSWRImmutable<CustomForecastIndicatorValueResponse[], any, string[] | null>(
-    key,
-    fetchCustomForecastIndicatorsValue,
-  );
+  return useSWRImmutable<CustomForecastIndicatorValueResponse[], any, string[] | null>(key, async (key) => {
+    const previousKey = key.slice(0, -1);
+    const previousData = cache.get(unstable_serialize(previousKey))?.data;
+    if (previousData) {
+      const newKey = [key[0], key[key.length - 1]];
+      const newData = await fetchCustomForecastIndicatorsValue(newKey);
+      return [...previousData, ...newData];
+    }
+
+    return await fetchCustomForecastIndicatorsValue(key);
+  });
 };
 
 export const useCreateCustomForecastIndicator = () => {
