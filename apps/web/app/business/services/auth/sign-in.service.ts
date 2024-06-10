@@ -61,11 +61,4 @@ export async function authenticate(prevState: FormState, formData: FormData): Pr
       throw error;
     }
   }
-
-  return {
-    isSuccess: true,
-    isFailure: false,
-    validationError: {},
-    message: '로그인 성공',
-  };
 }
