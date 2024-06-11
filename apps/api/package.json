@@ -17,6 +17,7 @@
     "infra": "docker compose -f docker-compose-api.yml pull fastapi && docker compose -f docker-compose-api.yml up -d",
     "test": "jest",
     "test:watch": "jest --watch",
+    "type": "tsc --noEmit",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "docker compose -f ../docker-compose.yml -f ../docker-compose-local.yml up --abort-on-container-exit",

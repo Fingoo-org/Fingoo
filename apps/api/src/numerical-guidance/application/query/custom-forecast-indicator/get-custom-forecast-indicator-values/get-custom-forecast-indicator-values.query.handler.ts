@@ -45,6 +45,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
 
     const indicatorDto = await this.loadIndicatorPort.loadIndicator(targetIndicatorId, tempType);
 
+    // 니놈이 문제구나
     const targetIndicator: LiveIndicatorDtoType = await this.loadLiveIndicatorPort.loadLiveIndicator(
       indicatorDto,
       interval,
