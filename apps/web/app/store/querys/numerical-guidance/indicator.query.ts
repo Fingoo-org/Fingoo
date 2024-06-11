@@ -39,33 +39,43 @@ export const useFetchLiveIndicatorsValueByType = (
   // fix: id마다 indicator Type 찾을 수 있도록 변경할 필요 있음 indicatorType은 다행이 key에 들어갈 필요는 없음
   const key = ids ? [`${API_PATH.liveIndicatorValue}`, interval, startDate, ...ids] : null;
 
-  return useSWRImmutable<IndicatorsValueResponse, any, string[] | null>(key, async (key) => {
-    if (process.env.NODE_ENV === 'test') {
-      return await fetchLiveIndicatorsValue(key, indicatorInfos);
-    }
-    
+  function getCachedData(key: string[]) {
     const candidateKey = getMatchedAndExcludedKeyList([API_PATH.liveIndicatorValue, interval, startDate], key);
+    const indicatorIds = key?.slice(3);
 
-    const ids = key?.slice(3);
-
-    const cachedIds = ids.filter((id) => {
+    const cachedIds = indicatorIds.filter((id) => {
       return candidateKey.some((k) => k.includes(id));
     });
 
     const cachedData = cachedIds
       .map((id) => {
         const data = getPreviousCachedIncluded<IndicatorsValueResponse>(id);
-        console.log(data);
         return data?.indicatorsValue.find((indicator) => indicator.indicatorId === id);
       })
       .filter((data) => !!data);
 
-    const notCachedIds = ids.filter((id) => {
+    return cachedData;
+  }
+
+  function createNewKey(key: string[]) {
+    const candidateKey = getMatchedAndExcludedKeyList([API_PATH.liveIndicatorValue, interval, startDate], key);
+    const indicatorIds = key?.slice(3);
+
+    const notCachedIds = indicatorIds.filter((id) => {
       return !candidateKey.some((k) => k.includes(id));
     });
 
-    const newKey =
-      notCachedIds.length > 0 ? [`${API_PATH.liveIndicatorValue}`, interval, startDate, ...notCachedIds] : null;
+    return notCachedIds.length > 0 ? [`${API_PATH.liveIndicatorValue}`, interval, startDate, ...notCachedIds] : null;
+  }
+
+  return useSWRImmutable<IndicatorsValueResponse, any, string[] | null>(key, async (key) => {
+    if (process.env.NODE_ENV === 'test') {
+      return await fetchLiveIndicatorsValue(key, indicatorInfos);
+    }
+
+    const cachedData = getCachedData(key);
+
+    const newKey = createNewKey(key);
 
     if (!newKey) {
       return { indicatorsValue: cachedData };
@@ -73,12 +83,33 @@ export const useFetchLiveIndicatorsValueByType = (
 
     const { indicatorsValue } = await fetchLiveIndicatorsValue(newKey, indicatorInfos);
 
-    // function getCachedData = () => {
-
-    // }
-
     return {
       indicatorsValue: [...cachedData, ...indicatorsValue],
     };
   });
 };
+// [API_PATH.liveIndicatorValue, interval, startDate]
+
+const useCachedLiveData = () => {
+  const { getPreviousCachedIncluded, getMatchedAndExcludedKeyList } = useSWRCache();
+
+  function getCachedData(key: string[], matchStrs: string[]) {
+    const candidateKey = getMatchedAndExcludedKeyList(matchStrs, key);
+    const indicatorIds = key?.slice(3);
+
+    const cachedIds = indicatorIds.filter((id) => {
+      return candidateKey.some((k) => k.includes(id));
+    });
+
+    const cachedData = cachedIds
+      .map((id) => {
+        const data = getPreviousCachedIncluded<IndicatorsValueResponse>(id);
+        return data?.indicatorsValue.find((indicator) => indicator.indicatorId === id);
+      })
+      .filter((data) => !!data);
+
+    return cachedData;
+  }
+
+  return { getCachedData };
+}
