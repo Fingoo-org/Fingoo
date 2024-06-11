@@ -108,5 +108,4 @@ export type CustomForecastIndicatorValuesResponse = {
   exchange: string;
   forecastType: ForecastType;
   customForecastIndicatorValues: IndicatorValue[];
-  targetIndicatorValues: IndicatorValue[];
 };
