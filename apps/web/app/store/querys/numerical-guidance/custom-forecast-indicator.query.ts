@@ -70,7 +70,6 @@ export type CustomForecastIndicatorValueResponse = {
   ticker: string;
   forecastType: ForecastType;
   customForecastIndicatorValues: CustomForecastIndicatorValueItem[];
-  targetIndicatorValues: CustomForecastIndicatorValueItem[];
 };
 
 export const useFetchCustomForecastIndicatorsValue = (customForecastIndicatorIds: string[] | undefined) => {
