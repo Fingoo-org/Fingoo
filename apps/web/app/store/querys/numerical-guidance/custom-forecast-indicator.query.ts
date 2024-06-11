@@ -81,9 +81,8 @@ export const useFetchCustomForecastIndicatorsValue = (customForecastIndicatorIds
     : null;
 
   return useSWRImmutable<CustomForecastIndicatorValueResponse[], any, string[] | null>(key, async (key) => {
-    const previousData = getPreviousCachedData(key);
+    const previousData = getPreviousCachedData<CustomForecastIndicatorValueResponse[]>(key);
 
-    console.log('previousData', previousData);
     if (previousData) {
       const newKey = [key[0], key[key.length - 1]];
       const newData = await fetchCustomForecastIndicatorsValue(newKey);
