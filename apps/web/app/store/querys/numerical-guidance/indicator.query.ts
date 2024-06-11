@@ -53,6 +53,7 @@ export const useFetchLiveIndicatorsValueByType = (
       return { indicatorsValue: cachedData };
     }
 
+    console.log('newKey', newKey);
     const { indicatorsValue } = await fetchLiveIndicatorsValue(newKey, indicatorInfos);
 
     return {

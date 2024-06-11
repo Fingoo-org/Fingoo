@@ -13,12 +13,8 @@ export const useSWRCache = () => {
   };
 
   const getPreviousCachedIncluded = <T>(partialKey: string) => {
-    console.log(cache);
     for (const key of cache.keys()) {
-      console.log(key, partialKey);
-      console.log(key.includes(partialKey));
       if (key.includes(partialKey)) {
-        console.log(cache.get(key));
         return cache.get(key)?.data as T | undefined;
       }
     }
