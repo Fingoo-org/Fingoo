@@ -34,28 +34,12 @@ export const useFetchLiveIndicatorsValueByType = (
   params: LiveIndicatorRequestParams,
   indicatorInfos: IndicatorInfo[],
 ) => {
-  const { getPreviousCachedIncluded, getMatchedAndExcludedKeyList } = useSWRCache();
+  const { getCachedData } = useCachedLiveData();
+  const { getMatchedAndExcludedKeyList } = useSWRCache();
+  
   const { startDate, interval, ids } = params;
   // fix: id마다 indicator Type 찾을 수 있도록 변경할 필요 있음 indicatorType은 다행이 key에 들어갈 필요는 없음
   const key = ids ? [`${API_PATH.liveIndicatorValue}`, interval, startDate, ...ids] : null;
-
-  function getCachedData(key: string[]) {
-    const candidateKey = getMatchedAndExcludedKeyList([API_PATH.liveIndicatorValue, interval, startDate], key);
-    const indicatorIds = key?.slice(3);
-
-    const cachedIds = indicatorIds.filter((id) => {
-      return candidateKey.some((k) => k.includes(id));
-    });
-
-    const cachedData = cachedIds
-      .map((id) => {
-        const data = getPreviousCachedIncluded<IndicatorsValueResponse>(id);
-        return data?.indicatorsValue.find((indicator) => indicator.indicatorId === id);
-      })
-      .filter((data) => !!data);
-
-    return cachedData;
-  }
 
   function createNewKey(key: string[]) {
     const candidateKey = getMatchedAndExcludedKeyList([API_PATH.liveIndicatorValue, interval, startDate], key);
@@ -73,7 +57,7 @@ export const useFetchLiveIndicatorsValueByType = (
       return await fetchLiveIndicatorsValue(key, indicatorInfos);
     }
 
-    const cachedData = getCachedData(key);
+    const cachedData = getCachedData(key, [API_PATH.liveIndicatorValue, interval, startDate]);
 
     const newKey = createNewKey(key);
 
@@ -88,7 +72,6 @@ export const useFetchLiveIndicatorsValueByType = (
     };
   });
 };
-// [API_PATH.liveIndicatorValue, interval, startDate]
 
 const useCachedLiveData = () => {
   const { getPreviousCachedIncluded, getMatchedAndExcludedKeyList } = useSWRCache();
@@ -112,4 +95,4 @@ const useCachedLiveData = () => {
   }
 
   return { getCachedData };
-}
+};
