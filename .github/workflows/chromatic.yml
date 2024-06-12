@@ -23,14 +23,14 @@ jobs:
       - name: depedency install
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: web
+        working-directory: apps/web
 
       - name: Publish to Chromatic
         id: chromatic
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          workingDir: web
+          workingDir: apps/web
 
       - name: comment PR
         uses: thollander/actions-comment-pull-request@v1
