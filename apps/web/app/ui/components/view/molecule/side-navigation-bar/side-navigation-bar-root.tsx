@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { DashboardIcon } from '@radix-ui/react-icons';
 import { cn } from '@/app/utils/style';
 
-export default function SideNavigationBar() {
+export default function SideNavigationBarRoot() {
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState<string | undefined>('dashboard');
 

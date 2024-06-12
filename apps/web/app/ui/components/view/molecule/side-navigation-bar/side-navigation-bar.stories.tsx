@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SideNavigationBar from './side-navigation-bar';
+import SideNavigationBar from './side-navigation-bar-root';
 
 const meta: Meta<typeof SideNavigationBar> = {
   title: 'view/molecule/SideNavigationBar',
