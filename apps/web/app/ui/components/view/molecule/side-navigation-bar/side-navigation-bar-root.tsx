@@ -6,10 +6,25 @@ import FingooLogoImage from '@/public/assets/images/fingoo-logo.png';
 import Image from 'next/image';
 import { DashboardIcon } from '@radix-ui/react-icons';
 import { cn } from '@/app/utils/style';
+import SideNavigationBarContent from './side-navigation-bar-content';
+import { filterChildrenByType } from '@/app/utils/helper';
+import React from 'react';
 
-export default function SideNavigationBarRoot() {
+type SideNavigationBarRootProps = {};
+
+const getSideNavigationBarContent = (children: React.ReactNode) => {
+  return filterChildrenByType(children, SideNavigationBarContent);
+};
+
+export default function SideNavigationBarRoot({ children }: React.PropsWithChildren<SideNavigationBarRootProps>) {
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState<string | undefined>('dashboard');
+
+  const navigationBarContents = getSideNavigationBarContent(children);
+
+  const selectedNavigationBarContent = navigationBarContents.find(
+    (c) => React.isValidElement(c) && c.props.value === selected,
+  );
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
@@ -44,7 +59,7 @@ export default function SideNavigationBarRoot() {
         className="h-screen "
       >
         <CloseButton collapsed={collapsed} onCollapse={handleCollapse} />
-        <div className="flex h-screen flex-col"></div>
+        <div className="flex h-screen flex-col">{selectedNavigationBarContent}</div>
       </Sidebar>
     </div>
   );
