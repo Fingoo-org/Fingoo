@@ -4,8 +4,6 @@ import { Sidebar } from 'react-pro-sidebar';
 import { useState } from 'react';
 import FingooLogoImage from '@/public/assets/images/fingoo-logo.png';
 import Image from 'next/image';
-import { DashboardIcon } from '@radix-ui/react-icons';
-import { cn } from '@/app/utils/style';
 import { SideNavigationBarContent } from './side-navigation-bar-content';
 import { filterChildrenByType } from '@/app/utils/helper';
 import React from 'react';
@@ -25,14 +23,6 @@ export function SideNavigationBarRoot({ children }: React.PropsWithChildren<Side
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState<string | undefined>('dashboard');
 
-  const navigationBarContents = getSideNavigationBarContent(children);
-
-  const navigationBarMenus = getSideNavigationBarMenu(children);
-
-  const selectedNavigationBarContent = navigationBarContents.find(
-    (c) => React.isValidElement(c) && c.props.value === selected,
-  );
-
   const handleCollapse = () => {
     setCollapsed(!collapsed);
     if (!collapsed === true) {
@@ -47,6 +37,23 @@ export function SideNavigationBarRoot({ children }: React.PropsWithChildren<Side
     setSelected(value);
   };
 
+  const navigationBarContents = getSideNavigationBarContent(children);
+
+  const selectedNavigationBarContent = navigationBarContents.find(
+    (c) => React.isValidElement(c) && c.props.value === selected,
+  );
+
+  const navigationBarMenus = getSideNavigationBarMenu(children).map((menu) => {
+    if (!React.isValidElement(menu)) {
+      return;
+    }
+
+    return React.cloneElement(menu as React.ReactElement, {
+      onClick: handleMenuSelect,
+      selected: selected === menu.props.value,
+    });
+  });
+
   return (
     <div className="flex h-screen bg-white">
       <div id="navigator" className="h-screen w-20 bg-fingoo-gray-6">
@@ -54,16 +61,7 @@ export function SideNavigationBarRoot({ children }: React.PropsWithChildren<Side
           <Image src={FingooLogoImage} alt="Fingoo Logo" width={50} height={50} />
         </div>
         <div id="menu" className="my-20 ml-3 flex flex-col space-y-6">
-          {navigationBarMenus.map((menu) => {
-            if (!React.isValidElement(menu)) {
-              return;
-            }
-
-            return React.cloneElement(menu as React.ReactElement, {
-              onClick: handleMenuSelect,
-              selected: selected === menu.props.value,
-            });
-          })}
+          {navigationBarMenus}
         </div>
       </div>
       <Sidebar
@@ -94,39 +92,5 @@ function CloseButton({ collapsed, onCollapse }: { collapsed: boolean; onCollapse
         />
       </div>
     </div>
-  );
-}
-
-type MenuIcon = {
-  value: string;
-  selected: boolean;
-  icon: React.ElementType;
-  onClick?: (value: string) => void;
-};
-
-function MenuIcon({ value, selected, icon, onClick }: MenuIcon) {
-  const Icon = icon;
-
-  const handleClick = () => {
-    onClick?.(value);
-  };
-
-  return (
-    <button
-      onClick={handleClick}
-      className={cn(
-        'h-14 w-14  transition-all duration-200 ease-in-out	',
-        selected ? 'w-full rounded-l-lg rounded-r-none bg-white ' : '',
-      )}
-    >
-      <div
-        className={cn(
-          'transition-color flex h-14 w-14 items-center rounded-full ease-in-out ',
-          selected ? 'hover:bg-transparent' : ' hover:bg-[#575757]',
-        )}
-      >
-        <Icon className={cn('ml-3 h-8 w-8 ', selected ? 'text-black' : 'text-white')} />
-      </div>
-    </button>
   );
 }
