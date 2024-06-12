@@ -27,13 +27,12 @@ export default function SideNavigationBar() {
 
   return (
     <div className="flex h-screen bg-white">
-      <div className="h-screen w-20 bg-fingoo-gray-6">
+      <div id="navigator" className="h-screen w-20 bg-fingoo-gray-6">
         <div id="logo" className="my-8 flex justify-center">
           <Image src={FingooLogoImage} alt="Fingoo Logo" width={50} height={50} />
         </div>
         <div id="menu" className="my-20 ml-3 flex flex-col space-y-6">
           <MenuIcon onClick={handleMenuSelect} value="dashboard" selected={selected === 'dashboard'} />
-          <MenuIcon onClick={handleMenuSelect} value="name" selected={selected === 'name'} />
         </div>
       </div>
       <Sidebar
