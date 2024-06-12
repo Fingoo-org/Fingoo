@@ -2,6 +2,8 @@ import { ChevronDoubleLeftIcon } from '@heroicons/react/solid';
 import IconButton from '../../atom/icons/icon-button';
 import { Sidebar } from 'react-pro-sidebar';
 import { useState } from 'react';
+import FingooLogoImage from '@/public/assets/images/fingoo-logo.png';
+import Image from 'next/image';
 
 export default function SideNavigationBar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -12,7 +14,11 @@ export default function SideNavigationBar() {
 
   return (
     <div className="flex h-screen bg-white">
-      <div className="h-screen w-20 bg-fingoo-gray-6"></div>
+      <div className="h-screen w-20 bg-fingoo-gray-6">
+        <div id="logo" className="my-8 flex justify-center">
+          <Image src={FingooLogoImage} alt="Fingoo Logo" width={50} height={50} />
+        </div>
+      </div>
       <Sidebar collapsedWidth="10px" width="350px" collapsed={collapsed} className="h-screen">
         <div className="relative">
           <div className="absolute right-0">
