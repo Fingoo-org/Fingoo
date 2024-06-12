@@ -5,6 +5,7 @@ import { useState } from 'react';
 import FingooLogoImage from '@/public/assets/images/fingoo-logo.png';
 import Image from 'next/image';
 import { DashboardIcon } from '@radix-ui/react-icons';
+import { cn } from '@/app/utils/style';
 
 export default function SideNavigationBar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -24,9 +25,9 @@ export default function SideNavigationBar() {
         <div id="logo" className="my-8 flex justify-center">
           <Image src={FingooLogoImage} alt="Fingoo Logo" width={50} height={50} />
         </div>
-        <div id="menu" className="my-20 flex flex-col items-center">
-          <MenuIcon onClick={handleMenuSelect} value="dashboard" active={selected === 'dashboard'} />
-          <MenuIcon onClick={handleMenuSelect} value="name" active={selected === 'name'} />
+        <div id="menu" className="my-20 ml-3 flex flex-col">
+          <MenuIcon onClick={handleMenuSelect} value="dashboard" selected={selected === 'dashboard'} />
+          <MenuIcon onClick={handleMenuSelect} value="name" selected={selected === 'name'} />
         </div>
       </div>
       <Sidebar collapsedWidth="10px" width="350px" collapsed={collapsed} className="h-screen">
@@ -60,11 +61,11 @@ function SideNavHeader() {
 
 type MenuIcon = {
   value: string;
-  active: boolean;
+  selected: boolean;
   onClick?: (value: string) => void;
 };
 
-function MenuIcon({ value, active, onClick }: MenuIcon) {
+function MenuIcon({ value, selected, onClick }: MenuIcon) {
   const handleClick = () => {
     onClick?.(value);
   };
@@ -72,9 +73,19 @@ function MenuIcon({ value, active, onClick }: MenuIcon) {
   return (
     <button
       onClick={handleClick}
-      className="flex h-16 w-16 items-center justify-center rounded-full transition-colors ease-in-out hover:bg-[#575757]"
+      className={cn(
+        'h-14 w-14   transition-all duration-200 ease-in-out	',
+        selected ? 'w-full rounded-l-lg rounded-r-none bg-white ' : '',
+      )}
     >
-      <DashboardIcon className="h-8 w-8 text-white" />
+      <div
+        className={cn(
+          'transition-color flex h-14 w-14 items-center rounded-full ease-in-out ',
+          selected ? 'hover:bg-transparent' : ' hover:bg-[#575757]',
+        )}
+      >
+        <DashboardIcon className={cn('ml-3 h-8 w-8 ', selected ? 'text-black' : 'text-white')} />
+      </div>
     </button>
   );
 }
