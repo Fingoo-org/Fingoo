@@ -9,13 +9,19 @@ import { cn } from '@/app/utils/style';
 
 export default function SideNavigationBar() {
   const [collapsed, setCollapsed] = useState(false);
-  const [selected, setSelected] = useState('dashboard');
+  const [selected, setSelected] = useState<string | undefined>('dashboard');
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
+    if (!collapsed === true) {
+      setSelected(undefined);
+    }
   };
 
   const handleMenuSelect = (value: string) => {
+    if (collapsed === true) {
+      setCollapsed(false);
+    }
     setSelected(value);
   };
 
