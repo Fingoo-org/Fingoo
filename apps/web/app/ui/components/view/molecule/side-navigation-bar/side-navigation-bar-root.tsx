@@ -56,7 +56,7 @@ export function SideNavigationBarRoot({ children }: React.PropsWithChildren<Side
 
   return (
     <div className="flex h-screen bg-white">
-      <div id="navigator" className="h-screen w-20 bg-fingoo-gray-6">
+      <div id="navigation" className="h-screen w-20 bg-fingoo-gray-6">
         <div id="logo" className="my-8 flex justify-center">
           <Image src={FingooLogoImage} alt="Fingoo Logo" width={50} height={50} />
         </div>
