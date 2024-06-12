@@ -11,8 +11,9 @@ export default function SideNavigationBar() {
   };
 
   return (
-    <div className="h-screen bg-white">
-      <Sidebar collapsedWidth="120px" width="400px" collapsed={collapsed} className="h-screen">
+    <div className="flex h-screen bg-white">
+      <div className="h-screen w-20 bg-fingoo-gray-6"></div>
+      <Sidebar collapsedWidth="10px" width="350px" collapsed={collapsed} className="h-screen">
         <div className="relative">
           <div className="absolute right-0">
             <IconButton
