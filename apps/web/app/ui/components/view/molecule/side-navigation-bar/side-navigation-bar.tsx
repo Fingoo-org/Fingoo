@@ -4,6 +4,7 @@ import { Sidebar } from 'react-pro-sidebar';
 import { useState } from 'react';
 import FingooLogoImage from '@/public/assets/images/fingoo-logo.png';
 import Image from 'next/image';
+import { DashboardIcon } from '@radix-ui/react-icons';
 
 export default function SideNavigationBar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -17,6 +18,11 @@ export default function SideNavigationBar() {
       <div className="h-screen w-20 bg-fingoo-gray-6">
         <div id="logo" className="my-8 flex justify-center">
           <Image src={FingooLogoImage} alt="Fingoo Logo" width={50} height={50} />
+        </div>
+        <div id="menu" className="my-20 flex flex-col items-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full transition-colors ease-in-out hover:bg-[#575757]">
+            <DashboardIcon className="h-8 w-8 text-white" />
+          </div>
         </div>
       </div>
       <Sidebar collapsedWidth="10px" width="350px" collapsed={collapsed} className="h-screen">
