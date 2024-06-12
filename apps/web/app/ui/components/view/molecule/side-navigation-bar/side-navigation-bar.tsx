@@ -8,9 +8,14 @@ import { DashboardIcon } from '@radix-ui/react-icons';
 
 export default function SideNavigationBar() {
   const [collapsed, setCollapsed] = useState(false);
+  const [selected, setSelected] = useState('dashboard');
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
+  };
+
+  const handleMenuSelect = (value: string) => {
+    setSelected(value);
   };
 
   return (
@@ -20,9 +25,8 @@ export default function SideNavigationBar() {
           <Image src={FingooLogoImage} alt="Fingoo Logo" width={50} height={50} />
         </div>
         <div id="menu" className="my-20 flex flex-col items-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full transition-colors ease-in-out hover:bg-[#575757]">
-            <DashboardIcon className="h-8 w-8 text-white" />
-          </div>
+          <MenuIcon onClick={handleMenuSelect} value="dashboard" active={selected === 'dashboard'} />
+          <MenuIcon onClick={handleMenuSelect} value="name" active={selected === 'name'} />
         </div>
       </div>
       <Sidebar collapsedWidth="10px" width="350px" collapsed={collapsed} className="h-screen">
@@ -51,5 +55,26 @@ function SideNavHeader() {
       <div className="mr-8 h-14 w-14 min-w-14 rounded-lg bg-gray-300"></div>
       <p className="truncate text-xl">Fingoo</p>
     </div>
+  );
+}
+
+type MenuIcon = {
+  value: string;
+  active: boolean;
+  onClick?: (value: string) => void;
+};
+
+function MenuIcon({ value, active, onClick }: MenuIcon) {
+  const handleClick = () => {
+    onClick?.(value);
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      className="flex h-16 w-16 items-center justify-center rounded-full transition-colors ease-in-out hover:bg-[#575757]"
+    >
+      <DashboardIcon className="h-8 w-8 text-white" />
+    </button>
   );
 }
