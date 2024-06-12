@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SideNavigationBar from './side-navigation-bar-root';
+import { SideNavigationBarRoot } from './side-navigation-bar-root';
 
-const meta: Meta<typeof SideNavigationBar> = {
+const meta: Meta<typeof SideNavigationBarRoot> = {
   title: 'view/molecule/SideNavigationBar',
-  component: SideNavigationBar,
+  component: SideNavigationBarRoot,
   decorators: [
     (Story) => (
       <div className="h-screen w-[1000px] bg-white">
@@ -12,7 +12,7 @@ const meta: Meta<typeof SideNavigationBar> = {
       </div>
     ),
   ],
-} satisfies Meta<typeof SideNavigationBar>;
+} satisfies Meta<typeof SideNavigationBarRoot>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

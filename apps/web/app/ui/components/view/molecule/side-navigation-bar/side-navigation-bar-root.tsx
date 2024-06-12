@@ -6,7 +6,7 @@ import FingooLogoImage from '@/public/assets/images/fingoo-logo.png';
 import Image from 'next/image';
 import { DashboardIcon } from '@radix-ui/react-icons';
 import { cn } from '@/app/utils/style';
-import SideNavigationBarContent from './side-navigation-bar-content';
+import { SideNavigationBarContent } from './side-navigation-bar-content';
 import { filterChildrenByType } from '@/app/utils/helper';
 import React from 'react';
 
@@ -16,7 +16,7 @@ const getSideNavigationBarContent = (children: React.ReactNode) => {
   return filterChildrenByType(children, SideNavigationBarContent);
 };
 
-export default function SideNavigationBarRoot({ children }: React.PropsWithChildren<SideNavigationBarRootProps>) {
+export function SideNavigationBarRoot({ children }: React.PropsWithChildren<SideNavigationBarRootProps>) {
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState<string | undefined>('dashboard');
 
