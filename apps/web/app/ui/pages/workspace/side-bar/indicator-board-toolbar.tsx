@@ -13,7 +13,7 @@ export default function IndicatorBoardToolbar() {
 
   return (
     <div>
-      <Tabs className="w-full" value={tabIndex} onValueChange={handleTabValueChange}>
+      <Tabs className="w-full mt-10" value={tabIndex} onValueChange={handleTabValueChange}>
         <Tabs.List className="grid h-10 w-full grid-cols-2">
           <Tabs.Trigger value="0">지표 추가</Tabs.Trigger>
           <Tabs.Trigger value="1">예측 지표</Tabs.Trigger>
