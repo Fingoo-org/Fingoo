@@ -11,6 +11,7 @@ import { SideNavigationBarMenu } from './side-navigation-bar-menu';
 
 type SideNavigationBarRootProps = {
   defaultValue?: string;
+  onCollapsed?: (collapsed: boolean) => void;
 };
 
 const getSideNavigationBarContent = (children: React.ReactNode) => {
@@ -21,15 +22,22 @@ const getSideNavigationBarMenu = (children: React.ReactNode) => {
   return filterChildrenByType(children, SideNavigationBarMenu);
 };
 
-export function SideNavigationBarRoot({ defaultValue, children }: React.PropsWithChildren<SideNavigationBarRootProps>) {
+export function SideNavigationBarRoot({
+  defaultValue,
+  children,
+  onCollapsed,
+}: React.PropsWithChildren<SideNavigationBarRootProps>) {
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState<string | undefined>(defaultValue);
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
+
     if (!collapsed === true) {
       setSelected(undefined);
     }
+
+    onCollapsed?.(!collapsed);
   };
 
   const handleMenuSelect = (value: string) => {
