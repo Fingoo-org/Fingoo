@@ -17,7 +17,7 @@ type MetadataListItemRowProps = {
   indicatorBoardMetadataId: string;
 };
 
-function createIndicatorTitle(
+export function createIndicatorTitle(
   indicatorInfo: IndicatorInfoResponse | undefined,
   customForecastIndicatorInfo: CustomForecastIndicator | undefined,
 ) {
@@ -46,8 +46,6 @@ export default function MetadataListItemRow({
     customForecastIndicatorListInMetadata?.findCustomForecastIndicatorById(indicatorId);
 
   const indicatorTitle = createIndicatorTitle(indicatorInfo, customForecastIndicatorInfo);
-
-  console.log(indicatorInfo);
 
   const handleIconButton: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
