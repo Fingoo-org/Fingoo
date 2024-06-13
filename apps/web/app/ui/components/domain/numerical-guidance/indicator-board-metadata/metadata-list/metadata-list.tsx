@@ -14,10 +14,11 @@ const MetadataList = React.memo(function MetadataList() {
 
   return (
     <Pending isPending={isPending}>
-      <div className="flex justify-end py-2 pb-3">
+      <div className="flex items-center justify-between px-0.5 py-2">
+        <h1 className="text-xl font-bold">메타데이터</h1>
         <MetadataCreateButton />
       </div>
-      <div data-testid="metadata-list" className=" h-[26vh] overflow-y-auto scrollbar-thin">
+      <div data-testid="metadata-list" className=" h-[26vh] overflow-y-auto px-0.5 pt-3 scrollbar-thin">
         {metadataList ? <List list={metadataList} render={renderItem} /> : null}
       </div>
     </Pending>
