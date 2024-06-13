@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 const render = () => {
   return (
-    <SideNavigationBar>
+    <SideNavigationBar defaultValue="dashboard">
       <SideNavigationBar.Menu value="dashboard" icon={DashboardIcon} />
       <SideNavigationBar.Menu value="test" icon={DashboardIcon} />
       <SideNavigationBar.Content value="dashboard">

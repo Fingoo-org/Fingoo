@@ -9,7 +9,9 @@ import { filterChildrenByType } from '@/app/utils/helper';
 import React from 'react';
 import { SideNavigationBarMenu } from './side-navigation-bar-menu';
 
-type SideNavigationBarRootProps = {};
+type SideNavigationBarRootProps = {
+  defaultValue?: string;
+};
 
 const getSideNavigationBarContent = (children: React.ReactNode) => {
   return filterChildrenByType(children, SideNavigationBarContent);
@@ -19,9 +21,9 @@ const getSideNavigationBarMenu = (children: React.ReactNode) => {
   return filterChildrenByType(children, SideNavigationBarMenu);
 };
 
-export function SideNavigationBarRoot({ children }: React.PropsWithChildren<SideNavigationBarRootProps>) {
+export function SideNavigationBarRoot({ defaultValue, children }: React.PropsWithChildren<SideNavigationBarRootProps>) {
   const [collapsed, setCollapsed] = useState(false);
-  const [selected, setSelected] = useState<string | undefined>('dashboard');
+  const [selected, setSelected] = useState<string | undefined>(defaultValue);
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
