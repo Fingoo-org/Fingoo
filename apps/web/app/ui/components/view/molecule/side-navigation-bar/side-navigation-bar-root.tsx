@@ -83,7 +83,7 @@ export function SideNavigationBarRoot({
         className="h-screen "
       >
         <CloseButton collapsed={collapsed} onCollapse={handleCollapse} />
-        <div className="flex h-screen flex-col">{selectedNavigationBarContent}</div>
+        <div className="flex h-[93vh] flex-col">{selectedNavigationBarContent}</div>
       </Sidebar>
     </div>
   );
@@ -91,16 +91,14 @@ export function SideNavigationBarRoot({
 
 function CloseButton({ collapsed, onCollapse }: { collapsed: boolean; onCollapse: () => void }) {
   return (
-    <div className="relative">
-      <div className="absolute right-0">
-        <IconButton
-          data-collapsed={collapsed}
-          className="transition-transform duration-200 data-[collapsed=true]:rotate-180"
-          color={'gray'}
-          icon={ChevronDoubleLeftIcon}
-          onClick={onCollapse}
-        />
-      </div>
+    <div className="mr-6 flex h-[7vh] flex-col items-end justify-center">
+      <IconButton
+        data-collapsed={collapsed}
+        className="transition-transform duration-200 data-[collapsed=true]:rotate-180"
+        color={'gray'}
+        icon={ChevronDoubleLeftIcon}
+        onClick={onCollapse}
+      />
     </div>
   );
 }
