@@ -14,7 +14,7 @@ export default function IndicatorSearchBar() {
       onValueChange={handleSearchTermChange}
       placeholder="Search..."
       withDebounce={700}
-      className="h-7 bg-fingoo-gray-1.5"
+      className="h-8 bg-fingoo-gray-1.5"
       defaultValue={searchTerm}
       icon={SearchIcon}
     />
