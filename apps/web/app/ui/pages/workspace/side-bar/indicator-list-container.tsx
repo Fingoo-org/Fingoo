@@ -4,7 +4,7 @@ import IndicatorSearchBar from '@/app/ui/components/domain/numerical-guidance/in
 
 export default function IndicatorListContainer() {
   return (
-    <div className="flex h-full flex-col px-3">
+    <div className="flex h-full flex-col">
       <div className="mb-2 mt-2">
         <IndicatorSearchBar />
       </div>

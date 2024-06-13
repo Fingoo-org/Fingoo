@@ -16,7 +16,7 @@ export default function SideNav() {
     <SideNavigationBar defaultValue="dashboard" onCollapsed={handleCollapsed}>
       <SideNavigationBar.Menu value="dashboard" icon={DashboardIcon} />
       <SideNavigationBar.Content value="dashboard">
-        <div className="flex h-screen flex-col">
+        <div className="mx-6 flex h-screen flex-col">
           <div className="grid h-full grid-rows-[5fr_7fr]">
             <MetadataListContainer />
             <IndicatorBoardToolbar />

@@ -24,7 +24,7 @@ const CustomForecastIndicatorList = React.memo(function CustomForecastIndicatorL
       <div
         data-testid="custom-forecast-indicator-list"
         role="tablist"
-        className={cn('h-[26vh] overflow-y-auto px-3 pt-4 scrollbar-thin', { hidden: selectedMetadata === undefined })}
+        className={cn('h-[26vh] overflow-y-auto scrollbar-thin', { hidden: selectedMetadata === undefined })}
       >
         {customForecastIndicatorList ? (
           <List list={customForecastIndicatorList.customForecastIndicatorList} render={renderItem} />
