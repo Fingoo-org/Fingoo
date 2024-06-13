@@ -9,7 +9,10 @@ import { filterChildrenByType } from '@/app/utils/helper';
 import React from 'react';
 import { SideNavigationBarMenu } from './side-navigation-bar-menu';
 
-type SideNavigationBarRootProps = {};
+type SideNavigationBarRootProps = {
+  defaultValue?: string;
+  onCollapsed?: (collapsed: boolean) => void;
+};
 
 const getSideNavigationBarContent = (children: React.ReactNode) => {
   return filterChildrenByType(children, SideNavigationBarContent);
@@ -19,15 +22,22 @@ const getSideNavigationBarMenu = (children: React.ReactNode) => {
   return filterChildrenByType(children, SideNavigationBarMenu);
 };
 
-export function SideNavigationBarRoot({ children }: React.PropsWithChildren<SideNavigationBarRootProps>) {
+export function SideNavigationBarRoot({
+  defaultValue,
+  children,
+  onCollapsed,
+}: React.PropsWithChildren<SideNavigationBarRootProps>) {
   const [collapsed, setCollapsed] = useState(false);
-  const [selected, setSelected] = useState<string | undefined>('dashboard');
+  const [selected, setSelected] = useState<string | undefined>(defaultValue);
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
+
     if (!collapsed === true) {
       setSelected(undefined);
     }
+
+    onCollapsed?.(!collapsed);
   };
 
   const handleMenuSelect = (value: string) => {
@@ -56,7 +66,7 @@ export function SideNavigationBarRoot({ children }: React.PropsWithChildren<Side
 
   return (
     <div className="flex h-screen bg-white">
-      <div id="navigator" className="h-screen w-20 bg-fingoo-gray-6">
+      <div id="navigation" className="h-screen w-20 bg-fingoo-gray-6">
         <div id="logo" className="my-8 flex justify-center">
           <Image src={FingooLogoImage} alt="Fingoo Logo" width={50} height={50} />
         </div>
@@ -73,7 +83,7 @@ export function SideNavigationBarRoot({ children }: React.PropsWithChildren<Side
         className="h-screen "
       >
         <CloseButton collapsed={collapsed} onCollapse={handleCollapse} />
-        <div className="flex h-screen flex-col">{selectedNavigationBarContent}</div>
+        <div className="flex h-[93vh] flex-col">{selectedNavigationBarContent}</div>
       </Sidebar>
     </div>
   );
@@ -81,16 +91,14 @@ export function SideNavigationBarRoot({ children }: React.PropsWithChildren<Side
 
 function CloseButton({ collapsed, onCollapse }: { collapsed: boolean; onCollapse: () => void }) {
   return (
-    <div className="relative">
-      <div className="absolute right-0">
-        <IconButton
-          data-collapsed={collapsed}
-          className="transition-transform duration-200 data-[collapsed=true]:rotate-180"
-          color={'gray'}
-          icon={ChevronDoubleLeftIcon}
-          onClick={onCollapse}
-        />
-      </div>
+    <div className="mr-6 flex h-[7vh] flex-col items-end justify-center">
+      <IconButton
+        data-collapsed={collapsed}
+        className="transition-transform duration-200 data-[collapsed=true]:rotate-180"
+        color={'gray'}
+        icon={ChevronDoubleLeftIcon}
+        onClick={onCollapse}
+      />
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indic
 import MetadataListItemRow from './metadata-list-item-row';
 import { useLogger } from '@/app/logging/logging-context';
 import { sendGAEvent } from '@next/third-parties/google';
+import MetadataListItemDraggableRow from './metadata-list-item-draggable-row';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -119,6 +120,8 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       </SortableContext>
     ));
 
+  console.log(indicatorIdsWithSectionIds);
+
   return (
     <ExpandableListItem
       onDeSelect={handleDeSelect}
@@ -140,13 +143,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
           onDragEnd={handleIndicatorsectionChange}
           values={indicatorIdsWithSectionIds ?? {}}
           dragOverlayItem={({ activeId }) => {
-            const indicatorInfo = indicatorBoardMetadata?.getIndicatorInfo(activeId);
-            const indicatorText = `${indicatorInfo?.symbol}(${indicatorInfo?.name})`;
-            return (
-              <Item className="flex h-9 items-center rounded-lg bg-white shadow-lg before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-fingoo-sub">
-                {indicatorText}
-              </Item>
-            );
+            return <MetadataListItemDraggableRow indicatorBoardMetadataId={item.id} indicatorId={activeId} />;
           }}
         >
           <div

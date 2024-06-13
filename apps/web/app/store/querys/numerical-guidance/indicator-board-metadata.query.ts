@@ -3,6 +3,7 @@ import { API_PATH } from '../api-path';
 import { defaultFetcher, deleteFetcher, patchFetcher, postFetcher } from '../fetcher';
 import useSWRMutation from 'swr/mutation';
 import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
+import useSWRImmutable from 'swr/immutable';
 
 export type IndicatorInfoResponse = {
   id: string;
@@ -34,9 +35,7 @@ export type AddIndicatorToMetadataRequestBody = {
 };
 
 export const useFetchIndicatorBoardMetadataList = () =>
-  useSWR<IndicatorBoardMetadataResponse[]>(API_PATH.indicatorBoardMetadata, defaultFetcher, {
-    revalidateIfStale: false,
-  });
+  useSWRImmutable<IndicatorBoardMetadataResponse[]>(API_PATH.indicatorBoardMetadata, defaultFetcher);
 
 export const useCreateIndicatorMetadata = () =>
   useSWRMutation(

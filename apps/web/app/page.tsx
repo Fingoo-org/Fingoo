@@ -36,6 +36,7 @@ export default function Page() {
           </Link>
         </div>
       </div>
+      <div className="mr-1.5 hidden"></div>
     </div>
   );
 }

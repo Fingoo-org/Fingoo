@@ -31,11 +31,11 @@ export default function IndicatorListResult() {
   };
 
   return (
-    <div className={cn('h-[24vh] pt-1', { hidden: selectedMetadata === undefined })}>
+    <div className={cn('h-[40vh] pt-2', { hidden: selectedMetadata === undefined })}>
       <Pending isPending={isLoading}>
         <WindowList
           loadMoreItems={loadMoreIndicators}
-          maxVieweditemCount={4.5}
+          maxVieweditemCount={7.5}
           items={searchedIndicatorList ? searchedIndicatorList : indicatorList || []}
           renderRow={render}
         />
