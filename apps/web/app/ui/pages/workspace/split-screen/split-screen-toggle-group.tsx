@@ -20,18 +20,15 @@ export default function SplitScreenToggleGroup() {
   };
 
   return (
-    <ToggleGroup onValueChange={handleSplitScreenChange} value={splitScreen} type="single" variant={'outline'}>
+    <ToggleGroup onValueChange={handleSplitScreenChange} value={splitScreen} type="single" variant={'default'}>
       <ToggleGroup.Item value="full">
         <MaximizeIcon className="h-4 w-4" />
-        <span className="ml-2 text-sm font-medium">Full</span>
       </ToggleGroup.Item>
       <ToggleGroup.Item value="vertical">
         <SplitSquareVerticalIcon className="h-4 w-4 rotate-90 transform" />
-        <span className="ml-2 text-sm font-medium">2-split</span>
       </ToggleGroup.Item>
       <ToggleGroup.Item disabled={true} value="square">
         <LayoutGridIcon className="h-4 w-4" />
-        <span className="ml-2 text-sm font-medium">4-split</span>
       </ToggleGroup.Item>
     </ToggleGroup>
   );
