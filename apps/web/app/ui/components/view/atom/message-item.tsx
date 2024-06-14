@@ -19,7 +19,7 @@ export const MessageItem = ({ role, content }: MessageProps) => {
           'justify-start bg-[#f1f1f1] text-black': role !== 'user',
         })}
       >
-        <div className="flex font-pretendard text-xs font-semibold">{content}</div>
+        <div className="flex font-pretendard text-sm font-semibold">{content}</div>
       </div>
     </div>
   );
