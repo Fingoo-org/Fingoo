@@ -69,10 +69,10 @@ export default function Chat() {
   return (
     <div className="flex h-full items-end">
       <div className=" w-full">
-        <div className="max-h-[70vh] overflow-y-auto">
+        <div className="max-h-[70vh] overflow-y-auto px-6 scrollbar-thin">
           <Messages messages={mockMessage} isLoading={isLoading} />
         </div>
-        <div className="pb-4 pt-6">
+        <div className="px-6 pb-4 pt-6">
           <PromptForm value={input} onValueChange={handleInputChange} formAction={handlePromptSubmit} />
         </div>
       </div>

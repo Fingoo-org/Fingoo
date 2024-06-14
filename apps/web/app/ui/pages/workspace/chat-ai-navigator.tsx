@@ -8,7 +8,7 @@ export default function ChatAiNavigator() {
       <div className="">
         <div className="h-[13vh] w-full bg-gray-300"></div>
         <div className="h-[3vh] w-full border"></div>
-        <div className="h-[84vh] px-6">
+        <div className="h-[84vh]">
           <Chat />
         </div>
       </div>
