@@ -51,6 +51,12 @@ const mockMessage: Message[] = [
   },
 ];
 
+const defaultMessages: Message = {
+  id: 'custom',
+  content: '안녕? 나는 너희들의 친구 Fingoo라고 해. 무엇을 도와줄까?',
+  role: 'assistant',
+};
+
 export default function Chat() {
   const logger = useLogger();
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useFingooChat();
@@ -63,11 +69,13 @@ export default function Chat() {
     handleSubmit(e, chatRequestOptions);
   };
 
+  const messagesWithGreeting = [defaultMessages, ...messages];
+
   return (
     <div className="flex h-full items-end">
       <div className=" w-full">
         <div className="max-h-[73vh] overflow-y-auto px-6 scrollbar-thin">
-          <Messages messages={messages} isLoading={isLoading} />
+          <Messages messages={messagesWithGreeting} isLoading={isLoading} />
         </div>
         <div className="px-6 pb-4 pt-6">
           <PromptForm value={input} onValueChange={handleInputChange} formAction={handlePromptSubmit} />
