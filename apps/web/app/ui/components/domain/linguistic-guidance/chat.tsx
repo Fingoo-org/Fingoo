@@ -95,7 +95,7 @@ function Messages({ messages = [], isLoading }: MessagesProps) {
   }, [lastMessageContent]);
 
   return (
-    <div className="flex h-full flex-col justify-end space-y-5   p-3">
+    <div className="flex h-full flex-col justify-end space-y-5  p-3">
       {messages.map((message) =>
         message.role === 'user' || message.role === 'assistant' ? (
           <MessageItem key={message.id} role={message.role} content={message.content} />
