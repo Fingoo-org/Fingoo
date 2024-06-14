@@ -80,7 +80,7 @@ export function SideNavigationBarRoot({
         width="350px"
         collapsed={collapsed}
         backgroundColor={'#fff'}
-        className="h-screen "
+        className="h-screen shadow-sm"
       >
         <CloseButton collapsed={collapsed} onCollapse={handleCollapse} />
         <div className="flex h-[93vh] flex-col">{selectedNavigationBarContent}</div>
