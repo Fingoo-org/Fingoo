@@ -88,9 +88,11 @@ type MessagesProps = {
 function Messages({ messages = [], isLoading }: MessagesProps) {
   const Chatref = useRef<HTMLDivElement | null>(null);
 
+  const lastMessageContent = messages[messages.length - 1]?.content;
+
   useEffect(() => {
     Chatref.current?.scrollIntoView({ behavior: 'auto' });
-  }, []);
+  }, [lastMessageContent]);
 
   return (
     <div className="flex h-full flex-col justify-end space-y-5   p-3">
