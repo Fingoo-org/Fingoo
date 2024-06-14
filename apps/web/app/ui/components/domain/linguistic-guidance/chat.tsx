@@ -69,7 +69,7 @@ export default function Chat() {
   return (
     <div className="flex h-full items-end">
       <div className=" w-full">
-        <div className="max-h-[70vh] overflow-y-auto px-6 scrollbar-thin">
+        <div className="max-h-[73vh] overflow-y-auto px-6 scrollbar-thin">
           <Messages messages={mockMessage} isLoading={isLoading} />
         </div>
         <div className="px-6 pb-4 pt-6">
