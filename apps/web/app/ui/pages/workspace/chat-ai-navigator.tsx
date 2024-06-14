@@ -1,6 +1,6 @@
 'use client';
 import { Sidebar } from 'react-pro-sidebar';
-import - from '../../components/domain/linguistic-guidance/chat';
+import Chat from '../../components/domain/linguistic-guidance/chat';
 
 export default function ChatAiNavigator() {
   return (
