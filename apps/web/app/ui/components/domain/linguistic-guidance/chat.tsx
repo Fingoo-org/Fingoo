@@ -70,7 +70,7 @@ export default function Chat() {
     <div className="flex h-full items-end">
       <div className=" w-full">
         <div className="max-h-[73vh] overflow-y-auto px-6 scrollbar-thin">
-          <Messages messages={mockMessage} isLoading={isLoading} />
+          <Messages messages={messages} isLoading={isLoading} />
         </div>
         <div className="px-6 pb-4 pt-6">
           <PromptForm value={input} onValueChange={handleInputChange} formAction={handlePromptSubmit} />
@@ -93,7 +93,7 @@ function Messages({ messages = [], isLoading }: MessagesProps) {
   }, []);
 
   return (
-    <div className="flex h-full flex-col justify-end space-y-3   p-3">
+    <div className="flex h-full flex-col justify-end space-y-5   p-3">
       {messages.map((message) =>
         message.role === 'user' || message.role === 'assistant' ? (
           <MessageItem key={message.id} role={message.role} content={message.content} />
