@@ -1,5 +1,4 @@
 'use client';
-import { Card } from '@tremor/react';
 import IndicatorsChart from '../indicator/indicators-chart';
 import IntervalToggleGroup from './interval-toggle-group';
 import { SWRConfig } from 'swr';
@@ -8,6 +7,7 @@ import CustomForecastIndicatorStabilityCallout from '../custom-forecast-indicato
 import React from 'react';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { cn } from '@/app/utils/style';
+import { Card } from '../../../view/molecule/card/card';
 
 type IndicatorBoardProps = {
   indicatorBoardMetadataId?: string;
@@ -27,7 +27,7 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
   return (
     <Card
       onDoubleClick={handleMetadataSelect}
-      className={cn('min-h-[32.5rem] w-full rounded-lg bg-white', {
+      className={cn('min-h-[32.5rem] w-full rounded-lg bg-white px-4 py-5', {
         'border-4 border-fingoo-main': isSelected,
       })}
     >
