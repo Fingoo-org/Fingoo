@@ -14,10 +14,13 @@ export const MessageItem = ({ role, content }: MessageProps) => {
       })}
     >
       <div
-        className={cn('flex w-auto max-w-64 rounded-lg	 bg-white p-2 text-black drop-shadow-md		', {
-          'justify-end  text-right ': role === 'user',
-          'justify-start ': role !== 'user',
-        })}
+        className={cn(
+          'flex w-auto max-w-64 rounded-lg bg-white px-5 py-3 text-black drop-shadow-[0_0_3px_rgba(0,0,0,0.2)]		',
+          {
+            'justify-end  text-right ': role === 'user',
+            'justify-start ': role !== 'user',
+          },
+        )}
       >
         <div className="flex font-pretendard text-sm font-semibold">{content}</div>
       </div>
