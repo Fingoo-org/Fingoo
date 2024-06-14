@@ -1,13 +1,10 @@
 'use client';
 import { ChatRequestOptions } from 'ai';
-import ChatCard from '../../view/molecule/chat-card';
 import PromptForm from '../../view/molecule/prompt-form/prompt-form';
 import { useFingooChat } from '@/app/business/hooks/linguistic-guidance/use-fingoo-chat.hook';
 import { useLogger } from '@/app/logging/logging-context';
 import type { Message } from 'ai';
-import { MessageItem } from '../../view/atom/message-item';
-import { useEffect, useRef } from 'react';
-import DotSpinner from '../../view/atom/dot-spinner';
+import { Messages } from '../../view/molecule/messages';
 
 const mockMessage: Message[] = [
   {
@@ -76,33 +73,6 @@ export default function Chat() {
           <PromptForm value={input} onValueChange={handleInputChange} formAction={handlePromptSubmit} />
         </div>
       </div>
-    </div>
-  );
-}
-
-type MessagesProps = {
-  messages?: Message[];
-  isLoading?: boolean;
-};
-
-function Messages({ messages = [], isLoading }: MessagesProps) {
-  const Chatref = useRef<HTMLDivElement | null>(null);
-
-  const lastMessageContent = messages[messages.length - 1]?.content;
-
-  useEffect(() => {
-    Chatref.current?.scrollIntoView({ behavior: 'auto' });
-  }, [lastMessageContent]);
-
-  return (
-    <div className="flex h-full flex-col justify-end space-y-5  p-3">
-      {messages.map((message) =>
-        message.role === 'user' || message.role === 'assistant' ? (
-          <MessageItem key={message.id} role={message.role} content={message.content} />
-        ) : undefined,
-      )}
-      {isLoading ? <MessageItem role="assistant" content={<DotSpinner />} /> : null}
-      <div ref={Chatref}></div>
     </div>
   );
 }
