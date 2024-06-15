@@ -25,7 +25,11 @@ const getDialogMenuHeader = (children: React.ReactNode) => {
 };
 
 const getCoordinate = (side: Side, position: Position) => {
-  const viewportHeight = window.innerHeight;
+  let viewportHeight = 0;
+
+  if (typeof window !== 'undefined') {
+    viewportHeight = window.innerHeight;
+  }
 
   return side === 'bottom'
     ? {
