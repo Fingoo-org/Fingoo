@@ -72,7 +72,7 @@ import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fr
     CqrsModule,
     HttpModule.registerAsync({
       useFactory: () => ({
-        timeout: 10000,
+        timeout: 20000,
         maxRedirects: 5,
       }),
     }),
