@@ -137,7 +137,7 @@ jobs:
           docker build --platform linux/amd64 -t $REGISTRY/$REPOSITORY:$IMAGE_TAG . -f dockerfile-lambda
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
         working-directory: apps/data-modeling-api
-        
+
       - name: Deploy image to lambda
         env:
           FUNCTION_NAME: data-modeling
@@ -220,7 +220,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             sudo docker rm -f $(docker ps -qa)
-            sudo docker-compose pull api data-modeling-api
+            sudo docker-compose pull api
             docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
             docker image prune -f
       - name: Send discord message if fail
