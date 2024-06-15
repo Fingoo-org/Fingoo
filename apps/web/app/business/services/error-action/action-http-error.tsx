@@ -27,7 +27,9 @@ export const onActionHttpError = (toast: (props: Toast) => any, error: unknown) 
         action: (
           <ToastAction
             onClick={() => {
-              window.location.href = '/';
+              if (typeof window !== 'undefined') {
+                window.location.href = '/';
+              }
             }}
             altText="to Login"
           >

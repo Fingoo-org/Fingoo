@@ -14,7 +14,9 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
         <div>로그인이 필요합니다</div>
         <button
           onClick={() => {
-            window.location.href = '/';
+            if (typeof window !== 'undefined') {
+              window.location.href = '/';
+            }
           }}
         >
           to Login
