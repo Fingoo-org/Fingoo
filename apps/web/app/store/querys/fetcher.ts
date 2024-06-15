@@ -1,7 +1,7 @@
 import { type Fetcher } from 'swr';
 import { instance } from '@/app/utils/http';
 import { AxiosRequestConfig } from 'axios';
-import { IndicatorInfo } from './numerical-guidance/indicator.query';
+import { IndicatorInfo } from './numerical-guidance/indicator-value.query';
 
 // Refactor: fetcher 정리 필요, 각 요청별로 나누기
 export const defaultFetcher: Fetcher<any, string> = (url) => instance.get(url).then((res) => res.data);

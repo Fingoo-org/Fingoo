@@ -46,7 +46,7 @@ export default function CustomForecastIndicatorEditDialogMenu() {
   };
 
   return (
-    <DialogMenu color={'gray'} size={'xl'} dialogKey={DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU}>
+    <DialogMenu side={'top'} color={'gray'} size={'xl'} dialogKey={DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_EDIT_MENU}>
       <DialogMenu.Header>
         <TinyInput
           defaultValue={selectedCustomForecastIndicator ? selectedCustomForecastIndicator.name : ''}

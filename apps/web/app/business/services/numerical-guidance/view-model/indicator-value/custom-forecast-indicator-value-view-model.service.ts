@@ -6,7 +6,7 @@ import {
 import { FormatOptions, FormattedItem, IndicatorValue, IndicatorValueItem } from './indicator-value-view-model.service';
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { formatDate } from '@/app/utils/date-formatter';
-import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator-value.query';
 
 type CustomForecastIndicator = {
   customForecastIndicatorName: string;
