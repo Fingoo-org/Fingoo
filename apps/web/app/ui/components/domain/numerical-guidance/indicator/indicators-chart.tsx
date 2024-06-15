@@ -15,7 +15,7 @@ import CSVDownloadButton from './csv-download-button';
 import DateRangeNavigator from './date-range-navigator';
 
 const BASE_URL =
-  'https://mlvbynpnwpxewztngrrz.supabase.co/storage/v1/object/public/fingoo_bucket/indicatorBoardMetadata';
+  'https://ubxtslkqovlqrxvvxqea.supabase.co/storage/v1/object/public/fingoo_bucket/indicatorBoardMetadata';
 
 type IndicatorsChartProps = {
   indicatorBoardMetadataId?: string;
