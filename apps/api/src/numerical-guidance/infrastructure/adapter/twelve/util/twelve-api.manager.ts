@@ -25,6 +25,7 @@ export class TwelveApiManager {
     try {
       const twelveInterval = this.convertIntervalToTwelveInterval(interval);
       const requestUrl: string = `${BASE_URL}/time_series/?symbol=${symbol}&interval=${twelveInterval}&start_date=${startDate}&end_date=${endDate}&apikey=${process.env.TWELVE_KEY}`;
+      console.log(requestUrl);
       const response = await this.api.axiosRef.get(requestUrl);
       this.checkTwelveException(response.data.code);
       return response.data;
