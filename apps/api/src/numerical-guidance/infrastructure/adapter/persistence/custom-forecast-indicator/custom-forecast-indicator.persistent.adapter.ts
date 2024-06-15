@@ -112,6 +112,7 @@ export class CustomForecastIndicatorPersistentAdapter
 
       const requestUrl: string = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl + validIndicatorIdsUrl;
 
+      console.log(requestUrl);
       const res = await this.api.axiosRef.get(requestUrl);
       const resultValues = res.data.values;
       const resultForecastType = res.data.type;
@@ -246,7 +247,7 @@ export class CustomForecastIndicatorPersistentAdapter
           weightsUrl += `weight=${customForecastIndicator.sourceIndicatorsInformation[i].weight}&`;
         }
         const requestUrl = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl;
-
+        console.log(requestUrl);
         const res = await this.api.axiosRef.get(requestUrl);
         const grangerGroup = res.data.grangerGroup;
         const cointJohansenVerification = res.data.cointJohansenVerification;
