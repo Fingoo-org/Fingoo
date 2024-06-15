@@ -49,6 +49,7 @@ export async function authenticate(prevState: FormState, formData: FormData): Pr
 
     redirect('/workspace');
   } catch (error) {
+    console.log(error);
     if (error instanceof HttpError && error.statusCode === 404) {
       // 잘못된 요청 처리 로직
       return {
