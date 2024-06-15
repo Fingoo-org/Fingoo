@@ -2,7 +2,7 @@ import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guid
 import {
   IndicatorValueResponse,
   IndicatorsValueResponse,
-} from '../../../../../store/querys/numerical-guidance/indicator-value.query';
+} from '../../../../../store/querys/numerical-guidance/indicator.query';
 import { IndicatorValueItem, IndicatorValue, FormattedItem, FormatOptions } from './indicator-value-view-model.service';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 

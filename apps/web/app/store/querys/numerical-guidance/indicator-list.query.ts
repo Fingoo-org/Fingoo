@@ -98,8 +98,8 @@ export type IndicatorListResponse = {
   meta: PaginationMeta;
 };
 
-export const createKeyMakerIndicatorListInfiite = (indicatorType: IndicatorType) => {
-  return (pageIndex: number, previousPageData: IndicatorListResponse) => {
+export const useFetchIndicatorListByType = (indicatorType: IndicatorType) => {
+  const getKey = (pageIndex: number, previousPageData: IndicatorListResponse) => {
     // 끝에 도달
     if (previousPageData && !previousPageData.meta.hasNextData) return null;
 
@@ -109,10 +109,8 @@ export const createKeyMakerIndicatorListInfiite = (indicatorType: IndicatorType)
     // API의 엔드포인트에 커서를 추가
     return `${API_PATH.indicatorList}/list?type=${indicatorType}&cursorToken=${previousPageData.meta.cursor}`;
   };
-};
 
-export const useFetchIndicatorListByType = (indicatorType: IndicatorType) => {
-  return useSWRInfinite<IndicatorListResponse>(createKeyMakerIndicatorListInfiite(indicatorType), defaultFetcher);
+  return useSWRInfinite<IndicatorListResponse>(getKey, defaultFetcher);
 };
 
 export const useFetchSearchedIndicatorList = (search: string, indicatorType: IndicatorType) => {

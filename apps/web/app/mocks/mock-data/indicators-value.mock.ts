@@ -1,4 +1,4 @@
-import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator-value.query';
+import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
 
 export const indicatorsValueMockData: IndicatorValueResponse[] = [
   {

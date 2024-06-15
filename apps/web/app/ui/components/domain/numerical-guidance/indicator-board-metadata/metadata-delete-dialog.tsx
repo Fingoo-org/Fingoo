@@ -12,10 +12,10 @@ export default function MetadataDeleteDialog() {
 
   return (
     <AlertDialog dialogKey={DIALOG_KEY.METADATA_DELETE}>
-      <AlertDialog.Title>메타데이터 삭제</AlertDialog.Title>
-      <AlertDialog.Body>메타데이터를 삭제하시겠습니까?</AlertDialog.Body>
+      <AlertDialog.Title>Delete Metadata</AlertDialog.Title>
+      <AlertDialog.Body>Are you sure you want to delete this metadata?</AlertDialog.Body>
       <AlertDialog.NegativeButton>Cancel</AlertDialog.NegativeButton>
-      <AlertDialog.PositiveButton variant={'destructive'} onClick={handleClick}>
+      <AlertDialog.PositiveButton onClick={handleClick} color={'red'}>
         Delete
       </AlertDialog.PositiveButton>
     </AlertDialog>

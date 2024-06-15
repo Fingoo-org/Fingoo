@@ -2,16 +2,21 @@ import React, { useContext } from 'react';
 import { AlertDialogContext } from './alert-dialog-context';
 import { useDialog } from '../../hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
-import AchromaticButton from '../../atom/button/achromatic-button';
+import Button from '../../atom/button/button';
+import { ButtonVariant, Color } from '@/app/utils/style';
 
 type NativeButtonType = Omit<React.ComponentPropsWithoutRef<'button'>, 'onClick'>;
 
 type AlertDialogNegativeButtonProps = {
+  color?: Color;
+  variant?: ButtonVariant;
   onClick?: () => void;
 } & NativeButtonType;
 
 export function AlertDialogNegativeButton({
   children,
+  color = 'blue',
+  variant = 'secondary',
   onClick,
   ...props
 }: React.PropsWithChildren<AlertDialogNegativeButtonProps>) {
@@ -26,8 +31,8 @@ export function AlertDialogNegativeButton({
   };
 
   return (
-    <AchromaticButton {...props} variant={'ghost'} onClick={handleClick} type="button" aria-label="Cancel">
+    <Button {...props} color={color} variant={variant} onClick={handleClick} type="button" aria-label="Cancel">
       {children}
-    </AchromaticButton>
+    </Button>
   );
 }

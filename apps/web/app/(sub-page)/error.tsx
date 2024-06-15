@@ -12,13 +12,7 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
     return (
       <div className="flex min-h-[100dvh] items-center justify-center bg-gray-100 px-4 dark:bg-gray-950">
         <div>로그인이 필요합니다</div>
-        <button
-          onClick={() => {
-            window.location.href = '/';
-          }}
-        >
-          to Login
-        </button>
+        <Link href="/">to Login</Link>
       </div>
     );
   }

@@ -46,6 +46,8 @@ export async function authenticate(prevState: FormState, formData: FormData): Pr
       secure: true,
       path: '/',
     });
+
+    redirect('/workspace');
   } catch (error) {
     console.log(error);
     if (error instanceof HttpError && error.statusCode === 404) {
@@ -59,7 +61,5 @@ export async function authenticate(prevState: FormState, formData: FormData): Pr
     } else {
       throw error;
     }
-  } finally {
-    redirect('/workspace');
   }
 }

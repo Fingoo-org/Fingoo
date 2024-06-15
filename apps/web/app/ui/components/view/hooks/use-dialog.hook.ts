@@ -14,7 +14,11 @@ export function useDialog(key: DialogKey) {
       const position = dialogPositionRef.current?.getBoundingClientRect();
 
       if (position) {
-        action.setPosition(position);
+        const newPosition = {
+          x: position.left,
+          y: position.top + position.height / 2,
+        };
+        action.setPosition(newPosition);
       }
     }
 

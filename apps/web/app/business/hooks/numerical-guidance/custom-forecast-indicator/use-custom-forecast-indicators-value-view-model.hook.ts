@@ -9,7 +9,7 @@ import { useIndicatorBoard } from '../indicator-board/use-indicator-board.hook';
 import {
   LiveIndicatorRequestParams,
   useFetchLiveIndicatorsValueByType,
-} from '@/app/store/querys/numerical-guidance/indicator-value.query';
+} from '@/app/store/querys/numerical-guidance/indicator.query';
 import { getStartDate } from '@/app/utils/date-formatter';
 
 export const useCustomForecastIndicatorsValueViewModel = (indicatorBoardMetadataId?: string) => {
