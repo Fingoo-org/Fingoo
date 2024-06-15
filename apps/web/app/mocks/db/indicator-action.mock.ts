@@ -1,5 +1,5 @@
 import { HistoryIndicatorValueCursorPaginationResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
-import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator-value.query';
 import {
   IndicatorByTypeResponse,
   IndicatorListResponse,
