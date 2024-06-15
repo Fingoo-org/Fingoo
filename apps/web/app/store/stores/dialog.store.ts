@@ -1,7 +1,13 @@
 import { create } from 'zustand';
 import { storeResetFns } from './reset-store';
 
-type Position = {
+export type Position = {
+  left: number;
+  top: number;
+  bottom: number;
+  right: number;
+  height: number;
+  width: number;
   x: number;
   y: number;
 };
@@ -27,7 +33,16 @@ type DialogStore = DialogState & {
 
 const initialDialogState: DialogState = {
   isOpen: {},
-  position: { x: 0, y: 0 },
+  position: {
+    left: 0,
+    top: 0,
+    bottom: 0,
+    right: 0,
+    height: 0,
+    width: 0,
+    x: 0,
+    y: 0,
+  },
   payload: undefined,
 };
 
