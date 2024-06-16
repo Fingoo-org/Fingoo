@@ -325,9 +325,9 @@ export class CustomForecastIndicatorPersistentAdapter
           indicatorBoardMetadataEntity.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId);
 
         for (const section in indicatorBoardMetadataEntity.sections) {
-          let sectionsArray = this.convertRecordValueToArray(indicatorBoardMetadataEntity.sections[section]);
-          sectionsArray = sectionsArray.filter((id) => id !== customForecastIndicatorId);
-          indicatorBoardMetadataEntity.sections[section] = sectionsArray;
+          const sectionsArray = this.convertRecordValueToArray(indicatorBoardMetadataEntity.sections[section]);
+          const updatedDectionsArray = sectionsArray.filter((id) => id !== customForecastIndicatorId);
+          indicatorBoardMetadataEntity.sections[section] = updatedDectionsArray;
         }
       }
       await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntities);
