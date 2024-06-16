@@ -17,8 +17,6 @@ export default function ChatAiNavigator() {
 
   const sidebarWidth = isBigScreen ? 400 : 300;
 
-  const closeIconRight = collpase ? 'right-[8px]' : `right-[${sidebarWidth - 12}px]`;
-
   return (
     <div className="relatvie">
       <IconButton
@@ -26,7 +24,7 @@ export default function ChatAiNavigator() {
         data-collapsed={collpase}
         className={cn(
           'absolute top-[3vh] z-10 rounded-full bg-fingoo-gray-1.5 drop-shadow-fingoo transition-transform duration-200 data-[collapsed=true]:rotate-180',
-          closeIconRight,
+          collpase ? 'right-[8px]' : isBigScreen ? 'right-[388px]' : 'right-[288px]',
         )}
         color={'gray'}
         onClick={handleCollpase}
