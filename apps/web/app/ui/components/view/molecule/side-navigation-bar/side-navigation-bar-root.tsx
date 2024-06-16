@@ -8,6 +8,7 @@ import { SideNavigationBarContent } from './side-navigation-bar-content';
 import { filterChildrenByType } from '@/app/utils/helper';
 import React from 'react';
 import { SideNavigationBarMenu } from './side-navigation-bar-menu';
+import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
 
 type SideNavigationBarRootProps = {
   defaultValue?: string;
@@ -29,6 +30,10 @@ export function SideNavigationBarRoot({
 }: React.PropsWithChildren<SideNavigationBarRootProps>) {
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState<string | undefined>(defaultValue);
+
+  const { isBigScreen } = useResponsive();
+
+  const sideNavWidth = isBigScreen ? '350px' : '300px';
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
@@ -77,7 +82,7 @@ export function SideNavigationBarRoot({
       <Sidebar
         transitionDuration={500}
         collapsedWidth="0"
-        width="350px"
+        width={sideNavWidth}
         collapsed={collapsed}
         backgroundColor={'#fff'}
         className="h-screen shadow-sm"
