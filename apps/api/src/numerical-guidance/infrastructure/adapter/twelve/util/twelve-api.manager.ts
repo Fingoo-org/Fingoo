@@ -34,6 +34,7 @@ export class TwelveApiManager {
       const requestUrl: string = `${BASE_URL}/time_series/?symbol=${symbol}&interval=${twelveInterval}&start_date=${startDate}&end_date=${endDate}&apikey=${process.env.TWELVE_KEY}`;
       const response = await this.api.axiosRef.get(requestUrl);
       const resultResponse = this.checkTwelveException(response.data);
+      console.log(resultResponse);
       return resultResponse;
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -58,12 +59,14 @@ export class TwelveApiManager {
       return '1week';
     }
   }
-  private checkTwelveException(responseData: any): unknown {
+  private checkTwelveException(responseData: any): { values: [] } {
     if (responseData.code == 400) {
-      return { values: [] };
+      const result: { values: [] } = { values: [] };
+      return result;
     }
     if (responseData.code == 404) {
       throw new NotFoundException();
     }
+    return responseData;
   }
 }
