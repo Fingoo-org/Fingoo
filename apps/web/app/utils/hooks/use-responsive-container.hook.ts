@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export function useResponsive() {
+export function useResponsiveContainer() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [sizes, setSizes] = useState<{
