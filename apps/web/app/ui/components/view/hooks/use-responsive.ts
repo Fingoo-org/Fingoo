@@ -24,7 +24,7 @@ export function useResponsive() {
   }, []);
 
   useEffect(() => {
-    if (typeof ResizeObserver === 'undefined') {
+    if (process.env.NODE_ENV === 'test') {
       setContainerSize(200, 200);
       return;
     }

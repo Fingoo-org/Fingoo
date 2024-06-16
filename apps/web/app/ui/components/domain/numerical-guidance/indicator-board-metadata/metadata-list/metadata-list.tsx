@@ -6,6 +6,7 @@ import Pending from '../../../../view/molecule/pending';
 import MetadataListItem from '../metadata-list-item/metadata-list-item';
 import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-view-model.service';
 import MetadataCreateButton from './metadata-create-button';
+import ScrollArea from '@/app/ui/components/view/atom/scroll-area';
 
 const MetadataList = React.memo(function MetadataList() {
   const { metadataList, isPending } = useIndicatorBoardMetadataList();
@@ -14,13 +15,13 @@ const MetadataList = React.memo(function MetadataList() {
 
   return (
     <Pending isPending={isPending}>
-      <div className="flex items-center justify-between px-0.5 py-2">
+      <div className="flex items-center justify-between px-2.5 py-2">
         <h1 className="text-xl font-bold">메타데이터</h1>
         <MetadataCreateButton />
       </div>
-      <div data-testid="metadata-list" className=" h-[26vh] overflow-y-auto px-0.5 pt-3 scrollbar-thin">
-        {metadataList ? <List list={metadataList} render={renderItem} /> : null}
-      </div>
+      <ScrollArea data-testid="metadata-list" className="h-[26vh] pt-3 ">
+        <div className="h-[26vh] px-2.5">{metadataList ? <List list={metadataList} render={renderItem} /> : null}</div>
+      </ScrollArea>
     </Pending>
   );
 });
