@@ -66,17 +66,21 @@ export const tools: Array<ChatCompletionTool> = [
     type: 'function',
     function: {
       name: 'speak_to_user',
-      description: '도구 응답 지시사항을 준수하여 사용자의 질문에 대답합니다.',
+      // description: '도구 응답 지시사항을 준수하여 사용자의 질문에 대답합니다.',
+      description: 'properties의 message description에 명시된 출력 필드를 반드시 구분하여 사용자의 질문에 대답합니다.',
       parameters: {
         type: 'object',
         properties: {
           message: {
             type: 'string',
-            description: ` 사용자에게 전달할 메세지 입니다. 사용자의 질문 타입에 따라 출력 필드를 구분하여 메시지를 제공합니다.
-            - predict: 
-            필드 1: 목표 및 재료 지표에 대한 설명
-            필드 2: 예측 결과 값 
-            필드 3: 예측 결과에 대한 해석
+            description: ` 사용자에게 전달할 메세지 입니다. 사용자의 질문 타입에 따라 출력 필드를 구분하여 메시지를 제공합니다. 
+            - predict 출력 필드: 
+            출력 필드 1: 목표지표에 대해 설명(예시: (목표지표-AMZN: nasdaq에 상장된 IT기업 아마존))
+            출력 필드 2: 재료지표 이름(심볼명) (예시: 재료지표: Apple주식(AAPL), 비트코인/달러환율(BTC/USD))
+            출력 필드 3: 예측 결과 현재날짜 기준 +10일까지 범위의 일 단위 값 표현  (예시: 2024년 06월 01일: 600 \n2024년 06월 02일: 700)
+            출력 필드 4: 사용한 재료 지표에 대해 각각 설명(예시: ([s&p500, AAPL] - s&p500: 미국에 상장된 시가총액 상위 500개의 주식을 모아 지수로 묶은 것, AAPL: 미국의 IT기업 애플의 주식입니다.))
+            출력 필드 5: 목표지표 예측에 해당 재료지표를 사용한 이유 설명
+            출력 필드 6: 예측 결과에 대한 해석
             - explain:
             필드 1: 경제 지표에 대한 설명
             필드 2: 관련된 지표에 대한 설명
@@ -103,7 +107,8 @@ export const tools: Array<ChatCompletionTool> = [
             description: `""사용자가 하는 질문의 타입은 다음 중 하나가 될 수 있다:
             - predict: 경제 지표 예측과 해석을 요청하는 질문.""
             - analyze: 경제 현황에 대한 분석을 요청하는 질문. (예시: 현 시장 상황이 어떻게 되나요?)
-            - explain: 경제 지표에 대한 설명 및 정보를 요청하는 질문 (예시: AAPL가 뭐야?).
+            - explain: 경제 지표에 대한 설명 및 정보를 요청하는 질문 (예시: AAPL가 뭐야?, WMT는 현재 어때?).
+            - recommand: 경제 지표를 추천받는 질문 (예시: 현재 은행관련 괜찮은 주식이 있을까?)
             `,
           },
         },

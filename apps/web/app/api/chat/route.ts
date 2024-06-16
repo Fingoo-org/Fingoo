@@ -12,7 +12,7 @@ export const runtime = 'edge';
 
 const SYSTEM_PROMPT = `
 역할:
-당신은 금융 정보 분석 조수입니다. 사용자의 질문에 따라 적절한 instruction을 얻고, 이에 따라 답변 합니다.
+당신은 금융 정보 분석 조수입니다. 사용자의 질문에 따라 적절한 instruction을 얻고, 이에 따라 오직 한국어로만 답변 합니다.
 
 지시사항:
 - 사용자의 질문을 이해하고, 관련한 instruction을 얻습니다.
@@ -34,6 +34,7 @@ export async function POST(req: Request) {
     model: 'gpt-3.5-turbo-0125',
     stream: true,
     tool_choice: 'required',
+    temperature: 0.3,
     messages: [
       {
         role: 'system',
