@@ -63,6 +63,7 @@
     "react-financial-charts": "^2.0.1",
     "react-pro-sidebar": "^1.1.0",
     "react-resizable-panels": "^2.0.17",
+    "react-responsive": "^10.0.0",
     "react-textarea-autosize": "^8.5.3",
     "react-window": "^1.8.10",
     "react-window-infinite-loader": "^1.0.9",

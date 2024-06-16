@@ -5,13 +5,23 @@ import { useState } from 'react';
 import { cn } from '@/app/utils/style';
 import IconButton from '../../components/view/atom/icons/icon-button';
 import { ChevronRightIcon } from '@heroicons/react/solid';
+import { getViewport } from '@/app/utils/helper';
+
+const getSidebarWidth = () => {
+  const { viewportWeight } = getViewport();
+
+  return viewportWeight > 1536 ? 400 : 300;
+};
 
 export default function ChatAiNavigator() {
   const [collpase, setCollpase] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(getSidebarWidth());
 
   const handleCollpase = () => {
     setCollpase(!collpase);
   };
+
+  const closeIconRight = collpase ? 'right-[8px]' : `right-[${sidebarWidth - 12}px]`;
 
   return (
     <div className="relatvie">
@@ -19,8 +29,8 @@ export default function ChatAiNavigator() {
         size={'xs'}
         data-collapsed={collpase}
         className={cn(
-          'drop-shadow-fingoo absolute top-[3vh] z-10 rounded-full bg-fingoo-gray-1.5 transition-transform duration-200 data-[collapsed=true]:rotate-180',
-          collpase ? 'right-[8px]' : 'right-[388px]',
+          'absolute top-[3vh] z-10 rounded-full bg-fingoo-gray-1.5 drop-shadow-fingoo transition-transform duration-200 data-[collapsed=true]:rotate-180',
+          closeIconRight,
         )}
         color={'gray'}
         onClick={handleCollpase}
@@ -30,7 +40,7 @@ export default function ChatAiNavigator() {
         collapsed={collpase}
         transitionDuration={0}
         collapsedWidth="20px"
-        width="400px"
+        width={`${sidebarWidth}px`}
         backgroundColor={'#fff'}
         className="h-full shadow-sm"
       >
