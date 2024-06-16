@@ -42,3 +42,17 @@ export function createNotDuplicatedName(baseName: string, names: string[]) {
 
   return newName;
 }
+
+export function getViewport() {
+  if (typeof window !== 'undefined') {
+    return {
+      viewportWeight: window.innerWidth,
+      viewportHeight: window.innerHeight,
+    };
+  }
+
+  return {
+    viewportWeight: 0,
+    viewportHeight: 0,
+  };
+}
