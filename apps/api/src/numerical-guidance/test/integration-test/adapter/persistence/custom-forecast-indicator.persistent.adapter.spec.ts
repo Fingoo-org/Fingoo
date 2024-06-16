@@ -13,6 +13,7 @@ import { DataSource } from 'typeorm';
 import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indicator.entity';
 import { SupabaseService } from '../../../../../auth/supabase/supabase.service';
 import { IndicatorBoardMetadataEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
+import { IndicatorBoardMetadataPersistentAdapter } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata/indicator-board-metadata.persistent.adapter';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -22,12 +23,47 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
   let environment;
   let dataSource: DataSource;
   let customForecastIndicatorPersistentAdapter: CustomForecastIndicatorPersistentAdapter;
+  let indicatorBoardMetadataPersistentAdapter: IndicatorBoardMetadataPersistentAdapter;
   const seeding = async () => {
     const memberRepository = dataSource.getRepository(MemberEntity);
     await memberRepository.insert({ id: '1', email: 'test@gmail.com' });
     const member = await memberRepository.findOneBy({ id: '1' });
 
     const customForecastIndicatorRepository = dataSource.getRepository(CustomForecastIndicatorEntity);
+    const indicatorBoardMetadataRepository = dataSource.getRepository(IndicatorBoardMetadataEntity);
+
+    await customForecastIndicatorRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba94',
+      customForecastIndicatorName: '메타데이터 내 지표삭제 테스트',
+      type: 'customForecastIndicator',
+      targetIndicator: {
+        id: '008628f5-4dbd-4c3b-b793-ca0fa22b3cf1',
+        name: '타켓지표',
+        type: 'Common Stock',
+        index: 1234,
+        country: 'KOREA',
+        currency: 'KRW',
+        mic_code: 'PINX',
+        indicatorType: 'stocks',
+        exchange: 'KOSPI',
+        symbol: 'PPAL',
+      },
+      grangerVerification: [],
+      cointJohansenVerification: [],
+      sourceIndicatorsInformation: [],
+      sourceIndicators: [],
+      member: member,
+    });
+
+    await indicatorBoardMetadataRepository.insert({
+      id: '0d73cea1-35a5-432f-bcd1-27ae3541ba84',
+      indicatorBoardMetadataName: '지표보드메타데이터',
+      indicatorInfos: [],
+      customForecastIndicatorIds: ['0d73cea1-35a5-432f-bcd1-27ae3541ba94'],
+      sections: { section1: ['0d73cea1-35a5-432f-bcd1-27ae3541ba94'] },
+      member: member,
+    });
+
     await customForecastIndicatorRepository.insert({
       id: '0d73cea1-35a5-432f-bcd1-27ae3541ba73',
       customForecastIndicatorName: '예측지표',
@@ -151,9 +187,15 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
           }),
         }),
       ],
-      providers: [CustomForecastIndicatorPersistentAdapter, SupabaseService, AuthService],
+      providers: [
+        CustomForecastIndicatorPersistentAdapter,
+        SupabaseService,
+        AuthService,
+        IndicatorBoardMetadataPersistentAdapter,
+      ],
     }).compile();
     customForecastIndicatorPersistentAdapter = module.get(CustomForecastIndicatorPersistentAdapter);
+    indicatorBoardMetadataPersistentAdapter = module.get(IndicatorBoardMetadataPersistentAdapter);
     dataSource = module.get<DataSource>(DataSource);
     await seeding();
   }, 100000);
@@ -243,7 +285,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
     );
   });
 
-  it('예측지표 삭제하기', async () => {
+  it('예측지표 삭제하기 - 예측지표 객체 삭제 확인', async () => {
     // given
     const customForecastIndicatorId: string = '0d73cea1-35a5-432f-bcd1-27ae3541ba74';
 
@@ -261,6 +303,22 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
         cause: Error,
       }),
     );
+  });
+
+  it('예측지표 삭제하기 - 지표보드메타데이터 내 예측지표 삭제 확인', async () => {
+    // given
+    const customForecastIndicatorId: string = '0d73cea1-35a5-432f-bcd1-27ae3541ba94';
+
+    // when
+    await customForecastIndicatorPersistentAdapter.deleteCustomForecastIndicator(customForecastIndicatorId);
+    const indicatorBoardMetadata = await indicatorBoardMetadataPersistentAdapter.loadIndicatorBoardMetadata(
+      '0d73cea1-35a5-432f-bcd1-27ae3541ba84',
+    );
+
+    // then
+    console.log(indicatorBoardMetadata.customForecastIndicatorIds);
+    expect(indicatorBoardMetadata.customForecastIndicatorIds.length).toEqual(0);
+    expect(indicatorBoardMetadata.sections['section1'].length).toEqual(0);
   });
 
   it('예측지표 삭제하기 - DB에 삭제할 데이터가 없는 경우', async () => {

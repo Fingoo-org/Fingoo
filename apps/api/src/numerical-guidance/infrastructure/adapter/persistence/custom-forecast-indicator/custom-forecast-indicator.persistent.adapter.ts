@@ -37,7 +37,7 @@ export class CustomForecastIndicatorPersistentAdapter
     @InjectRepository(CustomForecastIndicatorEntity)
     private readonly customForecastIndicatorRepository: Repository<CustomForecastIndicatorEntity>,
     @InjectRepository(IndicatorBoardMetadataEntity)
-    private readonly indicatorBoardMetaDataRepository: Repository<IndicatorBoardMetadataEntity>,
+    private readonly indicatorBoardMetadataRepository: Repository<IndicatorBoardMetadataEntity>,
     private readonly authService: AuthService,
     private readonly api: HttpService,
   ) {}
@@ -315,22 +315,22 @@ export class CustomForecastIndicatorPersistentAdapter
       this.nullCheckForEntity(customForecastIndicatorEntity);
       await this.customForecastIndicatorRepository.remove(customForecastIndicatorEntity);
 
-      const indicatorBoardMetaDataEntities: IndicatorBoardMetadataEntity[] = await this.indicatorBoardMetaDataRepository
-        .createQueryBuilder('indicatorBordMetaData')
-        .where('indicatorBordMetaData.customForecastIndicatorIds @> :id', { id: `"${customForecastIndicatorId}"` })
+      const indicatorBoardMetadataEntities: IndicatorBoardMetadataEntity[] = await this.indicatorBoardMetadataRepository
+        .createQueryBuilder('indicatorBordMetadata')
+        .where('indicatorBordMetadata.customForecastIndicatorIds @> :id', { id: `"${customForecastIndicatorId}"` })
         .getMany();
-      for (const indicatorBoardMetadataEntity of indicatorBoardMetaDataEntities) {
+
+      for (const indicatorBoardMetadataEntity of indicatorBoardMetadataEntities) {
         indicatorBoardMetadataEntity.customForecastIndicatorIds =
           indicatorBoardMetadataEntity.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId);
 
         for (const section in indicatorBoardMetadataEntity.sections) {
-          const sectionsStr: string = `${indicatorBoardMetadataEntity.sections[section]}`;
-          let sectionsList = this.stringToList(sectionsStr);
-          sectionsList = sectionsList.filter((id) => id !== customForecastIndicatorId);
-          indicatorBoardMetadataEntity.sections[section] = sectionsList;
+          let sectionsArray = this.convertRecordValueToArray(indicatorBoardMetadataEntity.sections[section]);
+          sectionsArray = sectionsArray.filter((id) => id !== customForecastIndicatorId);
+          indicatorBoardMetadataEntity.sections[section] = sectionsArray;
         }
       }
-      await this.indicatorBoardMetaDataRepository.save(indicatorBoardMetaDataEntities);
+      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntities);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
@@ -361,7 +361,8 @@ export class CustomForecastIndicatorPersistentAdapter
     if (entity == null) throw new NotFoundException();
   }
 
-  private stringToList(str: string): string[] {
+  private convertRecordValueToArray(stringList: string[]): string[] {
+    const str: string = `${stringList}`;
     const list: string[] = str.split(',');
     return list;
   }
