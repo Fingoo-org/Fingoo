@@ -19,8 +19,10 @@ const MetadataList = React.memo(function MetadataList() {
         <h1 className="text-xl font-bold">메타데이터</h1>
         <MetadataCreateButton />
       </div>
-      <ScrollArea data-testid="metadata-list" className="h-[26vh] pt-3 ">
-        <div className="h-[26vh] px-2.5">{metadataList ? <List list={metadataList} render={renderItem} /> : null}</div>
+      <ScrollArea data-testid="metadata-list" className="h-[26vh]  ">
+        <div className="px-2.5 pb-0.5 pt-3">
+          {metadataList ? <List list={metadataList} render={renderItem} /> : null}
+        </div>
       </ScrollArea>
     </Pending>
   );
