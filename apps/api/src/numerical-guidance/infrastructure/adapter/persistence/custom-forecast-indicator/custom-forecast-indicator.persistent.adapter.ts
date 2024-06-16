@@ -20,6 +20,7 @@ import { ForecastApiResponse, SourceIndicatorInformation } from 'src/utils/type/
 import { UpdateCustomForecastIndicatorNamePort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-custom-forecast-indicator-name.port';
 import { DeleteCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/delete-custom-forecast-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
+import { IndicatorBoardMetadataEntity } from '../indicator-board-metadata/entity/indicator-board-metadata.entity';
 
 @Injectable()
 export class CustomForecastIndicatorPersistentAdapter
@@ -35,6 +36,8 @@ export class CustomForecastIndicatorPersistentAdapter
   constructor(
     @InjectRepository(CustomForecastIndicatorEntity)
     private readonly customForecastIndicatorRepository: Repository<CustomForecastIndicatorEntity>,
+    @InjectRepository(IndicatorBoardMetadataEntity)
+    private readonly indicatorBoardMetaDataRepository: Repository<IndicatorBoardMetadataEntity>,
     private readonly authService: AuthService,
     private readonly api: HttpService,
   ) {}
@@ -305,18 +308,34 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async deleteCustomForecastIndicator(id: string) {
+  async deleteCustomForecastIndicator(customForecastIndicatorId: string) {
     try {
       const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
-        await this.customForecastIndicatorRepository.findOneBy({ id });
+        await this.customForecastIndicatorRepository.findOneBy({ id: customForecastIndicatorId });
       this.nullCheckForEntity(customForecastIndicatorEntity);
-
       await this.customForecastIndicatorRepository.remove(customForecastIndicatorEntity);
+
+      const indicatorBoardMetaDataEntities: IndicatorBoardMetadataEntity[] = await this.indicatorBoardMetaDataRepository
+        .createQueryBuilder('indicatorBordMetaData')
+        .where('indicatorBordMetaData.customForecastIndicatorIds @> :id', { id: `"${customForecastIndicatorId}"` })
+        .getMany();
+      for (const indicatorBoardMetadataEntity of indicatorBoardMetaDataEntities) {
+        indicatorBoardMetadataEntity.customForecastIndicatorIds =
+          indicatorBoardMetadataEntity.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId);
+
+        for (const section in indicatorBoardMetadataEntity.sections) {
+          const sectionsStr: string = `${indicatorBoardMetadataEntity.sections[section]}`;
+          let sectionsList = this.stringToList(sectionsStr);
+          sectionsList = sectionsList.filter((id) => id !== customForecastIndicatorId);
+          indicatorBoardMetadataEntity.sections[section] = sectionsList;
+        }
+      }
+      await this.indicatorBoardMetaDataRepository.save(indicatorBoardMetaDataEntities);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
           HttpStatus: HttpStatus.NOT_FOUND,
-          error: `[ERROR] customForecastIndicatorId: ${id} 해당 예측지표를 찾을 수 없습니다.`,
+          error: `[ERROR] customForecastIndicatorId: ${customForecastIndicatorId} 해당 예측지표를 찾을 수 없습니다.`,
           message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
           cause: error,
         });
@@ -340,6 +359,11 @@ export class CustomForecastIndicatorPersistentAdapter
   }
   private nullCheckForEntity(entity) {
     if (entity == null) throw new NotFoundException();
+  }
+
+  private stringToList(str: string): string[] {
+    const list: string[] = str.split(',');
+    return list;
   }
 
   private getValidIndicators(customForecastIndicator: CustomForecastIndicator): SourceIndicatorInformation[] {

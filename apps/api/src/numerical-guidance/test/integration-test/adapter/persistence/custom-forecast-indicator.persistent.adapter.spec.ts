@@ -12,6 +12,7 @@ import { CustomForecastIndicatorEntity } from 'src/numerical-guidance/infrastruc
 import { DataSource } from 'typeorm';
 import { IndicatorEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator/entity/indicator.entity';
 import { SupabaseService } from '../../../../../auth/supabase/supabase.service';
+import { IndicatorBoardMetadataEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
 
 jest.mock('typeorm-transactional', () => ({
   Transactional: () => () => ({}),
@@ -127,7 +128,12 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
             maxRedirects: 5,
           }),
         }),
-        TypeOrmModule.forFeature([CustomForecastIndicatorEntity, MemberEntity, IndicatorEntity]),
+        TypeOrmModule.forFeature([
+          CustomForecastIndicatorEntity,
+          MemberEntity,
+          IndicatorEntity,
+          IndicatorBoardMetadataEntity,
+        ]),
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           inject: [ConfigService],
@@ -140,7 +146,7 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
             username: environment.getUsername(),
             password: environment.getPassword(),
             database: environment.getDatabase(),
-            entities: [CustomForecastIndicatorEntity, MemberEntity, IndicatorEntity],
+            entities: [CustomForecastIndicatorEntity, MemberEntity, IndicatorEntity, IndicatorBoardMetadataEntity],
             synchronize: true,
           }),
         }),
