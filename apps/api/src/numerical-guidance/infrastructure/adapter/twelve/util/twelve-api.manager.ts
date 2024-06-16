@@ -10,7 +10,14 @@ export class TwelveApiManager {
   constructor(private readonly api: HttpService) {}
 
   async getReferenceData(type: IndicatorType, country: string) {
-    const requestUrl: string = `${BASE_URL}/${type}?country=${country}`;
+    // TODO: 베타 이후 삭제 예정
+    let requestUrl: string;
+    if (type == 'funds') {
+      requestUrl = `${BASE_URL}/${type}?country=${country}&exchange=NASDAQ`;
+      const response = await this.api.axiosRef.get(requestUrl);
+      return response.data;
+    }
+    requestUrl = `${BASE_URL}/${type}?country=${country}`;
     const response = await this.api.axiosRef.get(requestUrl);
     return response.data;
   }
