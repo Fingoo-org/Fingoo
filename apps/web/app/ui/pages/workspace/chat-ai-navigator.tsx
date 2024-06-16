@@ -32,15 +32,17 @@ export default function ChatAiNavigator() {
         collapsedWidth="20px"
         width="400px"
         backgroundColor={'#fff'}
-        className="shadow-sm"
+        className="h-full shadow-sm"
       >
-        <div>
-          <div className="h-[13vh] w-full bg-gray-300"></div>
-          <div className="h-[3vh] w-full border"></div>
-          <div className="h-[84vh]">
-            <Chat />
-          </div>
-        </div>
+        {!collpase ? (
+          <>
+            <div className="h-[13vh] w-full bg-gray-300"></div>
+            <div className="h-[3vh] w-full border"></div>
+            <div className="h-[84vh]">
+              <Chat />
+            </div>
+          </>
+        ) : null}
       </Sidebar>
     </div>
   );
