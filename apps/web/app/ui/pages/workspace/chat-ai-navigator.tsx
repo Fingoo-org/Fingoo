@@ -5,21 +5,17 @@ import { useState } from 'react';
 import { cn } from '@/app/utils/style';
 import IconButton from '../../components/view/atom/icons/icon-button';
 import { ChevronRightIcon } from '@heroicons/react/solid';
-import { getViewport } from '@/app/utils/helper';
-
-const getSidebarWidth = () => {
-  const { viewportWeight } = getViewport();
-
-  return viewportWeight > 1536 ? 400 : 300;
-};
+import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
 
 export default function ChatAiNavigator() {
   const [collpase, setCollpase] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState(getSidebarWidth());
+  const { isBigScreen } = useResponsive();
 
   const handleCollpase = () => {
     setCollpase(!collpase);
   };
+
+  const sidebarWidth = isBigScreen ? 400 : 300;
 
   const closeIconRight = collpase ? 'right-[8px]' : `right-[${sidebarWidth - 12}px]`;
 
