@@ -18,7 +18,6 @@ export default function WindowList<T>({ items, maxVieweditemCount, renderRow, lo
   const { containerRef, sizes } = useResponsive();
 
   const itemHeight = Math.floor(sizes.containerHeight / maxVieweditemCount);
-
   return (
     <div role="tablist" ref={containerRef} className="h-full max-h-full w-full	">
       <InfiniteLoader
@@ -32,18 +31,19 @@ export default function WindowList<T>({ items, maxVieweditemCount, renderRow, lo
         threshold={1}
       >
         {({ onItemsRendered, ref }) => (
-          <List
-            ref={ref}
-            onItemsRendered={onItemsRendered}
-            height={sizes.containerHeight}
-            itemData={items}
-            itemCount={items.length}
-            itemSize={itemHeight}
-            width="100%"
-            className="scrollbar-thin"
-          >
-            {renderRow}
-          </List>
+            <List
+              data-radix-scroll-area-viewport
+              ref={ref}
+              onItemsRendered={onItemsRendered}
+              height={sizes.containerHeight}
+              itemData={items}
+              itemCount={items.length}
+              itemSize={itemHeight}
+              width="100%"
+              className="scrollbar"
+            >
+              {renderRow}
+            </List>
         )}
       </InfiniteLoader>
     </div>
