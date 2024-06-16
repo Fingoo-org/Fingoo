@@ -71,15 +71,12 @@ export class IndicatorTwelveAdapter implements SearchTwelveIndicatorPort, LoadLi
     rowStartDate: string,
     rowEndDate: string,
   ): Promise<LiveIndicatorDtoType> {
-    console.log('loadLiveIndicator', indicatorDto, interval, rowStartDate, rowEndDate);
     const responseData = await this.twelveApiUtil.getTimeSeries(
       indicatorDto.symbol,
       interval,
       rowStartDate,
       rowEndDate,
     );
-
-    console.log(responseData);
 
     const values: IndicatorValue[] = this.convertRowDataToIndicatorValue(responseData);
     return await this.generateIndicatorDto(interval, indicatorDto, responseData, values);

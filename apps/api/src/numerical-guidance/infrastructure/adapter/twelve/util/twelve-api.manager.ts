@@ -1,4 +1,4 @@
-import { BadRequestException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { IndicatorType, Interval } from '../../../../../utils/type/type-definition';
 import * as process from 'process';
@@ -32,22 +32,14 @@ export class TwelveApiManager {
     try {
       const twelveInterval = this.convertIntervalToTwelveInterval(interval);
       const requestUrl: string = `${BASE_URL}/time_series/?symbol=${symbol}&interval=${twelveInterval}&start_date=${startDate}&end_date=${endDate}&apikey=${process.env.TWELVE_KEY}`;
-      console.log(requestUrl);
       const response = await this.api.axiosRef.get(requestUrl);
-      this.checkTwelveException(response.data.code);
-      return response.data;
+      const resultResponse = this.checkTwelveException(response.data);
+      return resultResponse;
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
           HttpStatus: HttpStatus.NOT_FOUND,
           error: `[ERROR] Twelve API response 값을 찾을 수 없습니다. (해당 지표는 현재 plan에서 사용할 수 없습니다.)`,
-          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
-          cause: error,
-        });
-      } else if (error instanceof BadRequestException) {
-        throw new BadRequestException({
-          HttpStatus: HttpStatus.BAD_REQUEST,
-          error: `[ERROR] 현재 startDate에 해당하는 데이터가 존재하지 않습니다. 1901년 01월 01일 이후의 날짜를 입력해주세요.`,
           message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
           cause: error,
         });
@@ -66,11 +58,11 @@ export class TwelveApiManager {
       return '1week';
     }
   }
-  private checkTwelveException(errorCode: number) {
-    if (errorCode == 400) {
-      throw new BadRequestException();
+  private checkTwelveException(responseData: any): unknown {
+    if (responseData.code == 400) {
+      return { values: [] };
     }
-    if (errorCode == 404) {
+    if (responseData.code == 404) {
       throw new NotFoundException();
     }
   }
