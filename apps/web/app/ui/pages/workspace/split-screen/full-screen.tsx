@@ -8,7 +8,7 @@ export default function FullScreen() {
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanelGroup.Panel defaultSize={100}>
         <div className="flex h-full items-center justify-center">
-          <div className="w-[55rem]">
+          <div className="w-full xl:px-10 2xl:px-20">
             {indicatorBoardInfos.length === 0 ? (
               <IndicatorBoard />
             ) : (
