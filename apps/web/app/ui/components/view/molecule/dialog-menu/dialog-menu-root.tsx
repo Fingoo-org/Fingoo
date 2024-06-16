@@ -3,7 +3,7 @@ import React from 'react';
 import { Transition } from '@headlessui/react';
 import { DialogMenuContext } from './dialog-menu.context';
 import { DialogMenuHeader } from './dialog-menu-header';
-import { useDialog } from '../../hooks/use-dialog.hook';
+import { useDialog } from '../../../../../utils/hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { filterChildrenByType, getViewport } from '@/app/utils/helper';
 import { Size, cn, getColorClassNames } from '@/app/utils/style';

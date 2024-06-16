@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSubmit } from '../../hooks/use-submit.hooks';
+import { useSubmit } from '../../../../../utils/hooks/use-submit.hooks';
 import TextAreaAutoSize from 'react-textarea-autosize';
 import IconButton from '../../atom/icons/icon-button';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';

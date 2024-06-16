@@ -7,7 +7,7 @@ import SelectableItem from '@/app/ui/components/view/atom/selectable-item';
 import { useCreatingCustomForecastIndicator } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-creating-custom-forecast-indicator.hook';
 import SourceIndicatorCreateSliderGroup from '../source-indicator-create-slider-group';
 import Button from '@/app/ui/components/view/atom/button/button';
-import { useDialog } from '@/app/ui/components/view/hooks/use-dialog.hook';
+import { useDialog } from '@/app/utils/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import Tooltip from '@/app/ui/components/view/atom/tooltip';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';

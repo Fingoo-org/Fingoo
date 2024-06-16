@@ -1,4 +1,4 @@
-import { useDialog } from '@/app/ui/components/view/hooks/use-dialog.hook';
+import { useDialog } from '@/app/utils/hooks/use-dialog.hook';
 import CreateButton from '@/app/ui/components/view/molecule/create-button';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 

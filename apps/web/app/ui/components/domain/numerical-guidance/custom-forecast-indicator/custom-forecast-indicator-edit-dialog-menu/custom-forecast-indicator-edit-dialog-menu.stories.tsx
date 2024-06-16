@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import CustomForecastIndicatorEditDialogMenu from './custom-forecast-indicator-edit-dialog-menu';
 
-import { useDialog } from '../../../../view/hooks/use-dialog.hook';
+import { useDialog } from '../../../../../../utils/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import { useEffect } from 'react';
 

@@ -6,7 +6,7 @@ import {
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { convertCustomForecastIndicatorsViewModel } from '../../../services/numerical-guidance/view-model/custom-forecast-indicator-view-model.service';
 import { useMemo } from 'react';
-import { usePending } from '@/app/ui/components/view/hooks/usePending.hook';
+import { usePending } from '@/app/utils/hooks/usePending.hook';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { createNotDuplicatedName } from '@/app/utils/helper';
 

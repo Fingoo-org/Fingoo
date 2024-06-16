@@ -1,4 +1,4 @@
-import { Toast } from '@/app/ui/components/view/hooks/use-toast';
+import { Toast } from '@/app/utils/hooks/use-toast';
 import {
   NetworkError,
   TimeoutError,

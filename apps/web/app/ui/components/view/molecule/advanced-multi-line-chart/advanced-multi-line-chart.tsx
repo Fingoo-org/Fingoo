@@ -15,7 +15,7 @@ import {
 } from 'react-financial-charts';
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
-import { useResponsive } from '../../hooks/use-responsive';
+import { useResponsive } from '../../../../../utils/hooks/use-responsive';
 import {
   FormattedIndicatorValue,
   FormattedRowType,
