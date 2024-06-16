@@ -6,7 +6,7 @@ import IconButton from '../../../../view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { MouseEventHandler } from 'react';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import { useDialog } from '../../../../view/hooks/use-dialog.hook';
+import { useDialog } from '../../../../../../utils/hooks/use-dialog.hook';
 import { useCustomForecastIndicatorListInMetadata } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-in-metadata.hook';
 import { CustomForecastIndicator } from '@/app/business/services/numerical-guidance/view-model/custom-forecast-indicator-view-model.service';
 import { IndicatorInfoResponse } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';

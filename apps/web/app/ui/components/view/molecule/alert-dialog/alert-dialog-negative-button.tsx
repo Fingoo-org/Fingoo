@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { AlertDialogContext } from './alert-dialog-context';
-import { useDialog } from '../../hooks/use-dialog.hook';
+import { useDialog } from '../../../../../utils/hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import AchromaticButton from '../../atom/button/achromatic-button';
 

@@ -1,5 +1,5 @@
 import { ClipboardIcon, ClipboardCheckIcon } from '@heroicons/react/solid';
-import { useToast } from '../../hooks/use-toast';
+import { useToast } from '../../../../../utils/hooks/use-toast';
 import { useState } from 'react';
 import AchromaticButton from '../../atom/button/achromatic-button';
 import { Link2Icon } from '@radix-ui/react-icons';

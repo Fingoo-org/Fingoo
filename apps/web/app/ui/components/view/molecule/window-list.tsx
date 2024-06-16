@@ -1,6 +1,6 @@
 import { FixedSizeList as List, areEqual } from 'react-window';
 import { ListChildComponentProps } from 'react-window';
-import { useResponsive } from '../hooks/use-responsive';
+import { useResponsiveContainer } from '../../../../utils/hooks/use-responsive-container.hook';
 import InfiniteLoader from 'react-window-infinite-loader';
 
 type WindowListProps<T> = {
@@ -15,10 +15,9 @@ type RowProps = {
 };
 
 export default function WindowList<T>({ items, maxVieweditemCount, renderRow, loadMoreItems }: WindowListProps<T>) {
-  const { containerRef, sizes } = useResponsive();
+  const { containerRef, sizes } = useResponsiveContainer();
 
   const itemHeight = Math.floor(sizes.containerHeight / maxVieweditemCount);
-
   return (
     <div role="tablist" ref={containerRef} className="h-full max-h-full w-full	">
       <InfiniteLoader
@@ -33,6 +32,7 @@ export default function WindowList<T>({ items, maxVieweditemCount, renderRow, lo
       >
         {({ onItemsRendered, ref }) => (
           <List
+            data-radix-scroll-area-viewport
             ref={ref}
             onItemsRendered={onItemsRendered}
             height={sizes.containerHeight}
@@ -40,7 +40,7 @@ export default function WindowList<T>({ items, maxVieweditemCount, renderRow, lo
             itemCount={items.length}
             itemSize={itemHeight}
             width="100%"
-            className="scrollbar-thin"
+            className="scrollbar"
           >
             {renderRow}
           </List>

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { DialogMenuContext } from './dialog-menu.context';
-import { useDialog } from '../../hooks/use-dialog.hook';
+import { useDialog } from '../../../../../utils/hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 
 type DialogMenuContentProps = {};

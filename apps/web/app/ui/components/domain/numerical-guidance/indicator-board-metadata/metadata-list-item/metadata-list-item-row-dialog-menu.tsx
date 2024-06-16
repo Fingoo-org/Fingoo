@@ -1,6 +1,6 @@
 'use client';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
-import { useDialog } from '../../../../view/hooks/use-dialog.hook';
+import { useDialog } from '../../../../../../utils/hooks/use-dialog.hook';
 import DialogMenu from '../../../../view/molecule/dialog-menu';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { TrashIcon } from '@heroicons/react/solid';

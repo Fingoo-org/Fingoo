@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export function useResponsive() {
+export function useResponsiveContainer() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [sizes, setSizes] = useState<{
@@ -24,7 +24,7 @@ export function useResponsive() {
   }, []);
 
   useEffect(() => {
-    if (typeof ResizeObserver === 'undefined') {
+    if (process.env.NODE_ENV === 'test') {
       setContainerSize(200, 200);
       return;
     }
