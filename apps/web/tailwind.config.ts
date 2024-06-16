@@ -17,6 +17,9 @@ const config: Config = {
     transparent: 'transparent',
     current: 'currentColor',
     extend: {
+      dropShadow: {
+        fingoo: '0 0 3px rgba(0, 0, 0, 0.2)',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },

@@ -19,10 +19,10 @@ export default function ChatAiNavigator() {
         size={'xs'}
         data-collapsed={collpase}
         className={cn(
-          'absolute top-[3vh] z-10 rounded-full bg-fingoo-gray-1.5 shadow-md transition-transform duration-200 data-[collapsed=true]:rotate-180',
+          'drop-shadow-fingoo absolute top-[3vh] z-10 rounded-full bg-fingoo-gray-1.5 transition-transform duration-200 data-[collapsed=true]:rotate-180',
           collpase ? 'right-[8px]' : 'right-[388px]',
         )}
-        color={'gray'} 
+        color={'gray'}
         onClick={handleCollpase}
         icon={ChevronRightIcon}
       />
