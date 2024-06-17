@@ -65,6 +65,26 @@ export const tools: Array<ChatCompletionTool> = [
   {
     type: 'function',
     function: {
+      name: 'recommend_economic_indicator',
+      description: '사용자에게 경제 지표를 추천한다.',
+      parameters: {
+        type: 'object',
+        properties: {
+          symbols: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            description: '사용자에게 추천하는 경제 지표 리스트',
+          },
+        },
+        required: ['symbols'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'speak_to_user',
       // description: '도구 응답 지시사항을 준수하여 사용자의 질문에 대답합니다.',
       description: 'properties의 message description에 명시된 출력 필드를 반드시 구분하여 사용자의 질문에 대답합니다.',
@@ -103,12 +123,12 @@ export const tools: Array<ChatCompletionTool> = [
         properties: {
           query: {
             type: 'string',
-            enum: ['predict', 'analyze', 'explain', 'recommand'],
+            enum: ['predict', 'analyze', 'explain', 'recommend'],
             description: `""사용자가 하는 질문의 타입은 다음 중 하나가 될 수 있다:
             - predict: 경제 지표 예측과 해석을 요청하는 질문.""
             - analyze: 시장 상황이나 지수와 같은 종합적인 경제 상황에 대한 분석을 요청하는 질문(예시: IT시장 상황을 분석해줘)
             - explain: 특정 단일 지표에 대한 설명이나 분석을 요청하는 질문 (예시: 월마트의 현재 상황을 분석해줘)
-            - recommand: 유망한 경제 지표를 추천받는 질문 (예시: 현재 은행관련 괜찮은 주식이 있을까?)
+            - recommend: 유망한 경제 지표를 추천받는 질문 (예시: 현재 은행관련 괜찮은 주식이 있을까?)
             `,
           },
         },

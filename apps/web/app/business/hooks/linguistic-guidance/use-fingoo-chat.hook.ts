@@ -40,7 +40,7 @@ const instructions = [
     type: 'predict',
     instruction: `
     경제 지표에 대한 예측을 수행한 후 결과에 대한 해석을 제공합니다. 
-         
+
     지시사항: 
     - 가능한 경제 지표 분류에는 주식, 환율, 크립토, ETF, 지수, 펀드, 채권이 포함됩니다. 
     - 경제 지표 예측에는 예측하고 싶은 목표 지표와 해당 지표를 예측하기 위한 재료 지표들이 필요합니다. 
@@ -72,6 +72,12 @@ const instructions = [
     
     - 사용자가 질문한 지표에 대한 정보를 제공합니다.
     `,
+  },
+  {
+    type: 'recommend',
+    instruction: `
+    사용자에게 현재 상황에 맞는 경제 지표를 추천합니다.
+        `,
   },
 ];
 
@@ -160,6 +166,37 @@ export const useFingooChat = () => {
       return functionResponse;
     }
 
+    if(functionCall.name === 'analyze_economic_indicators') {
+      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
+
+      const { symbols } = parsedFunctionCallArguments as {
+        symbols: string[];
+      }
+
+      const functionResponse: ChatRequest = {
+        messages: [
+          ...chatMessages,
+          {
+            id: generateId(),
+            tool_call_id: toolCalls[0].id,
+            name: 'analyze_economic_indicator',
+            role: 'tool' as const,
+            content: JSON.stringify(
+              `
+                관련 분석 심볼: ${symbols}
+                
+                - 관련있는 지표를 왜 해당 지표가 질문과 관련있는지 설명해야합니다.
+                - 지표를 중심으로 전체적인 흐름과 상황을 분석해주어야합니다.
+                
+              `
+            )
+          }
+        ]
+      }
+      return functionResponse;
+    }
+    
+
     if (functionCall.name === 'predict_economic_indicator') {
       const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
 
@@ -224,7 +261,7 @@ export const useFingooChat = () => {
               `
               에측 결과 값: ${JSON.stringify(predictedEconomicIndicatorValues)}
 
-              아래와 같은 지시사항을 따라 사용자아게 예측 결과값에 대한 해석을 제공합니다.
+              아래와 같은 지시사항을 따라 사용자에게 예측 결과값에 대한 해석을 제공합니다.
               - 목표 지표와 재료 지표가 무엇인지 명확히 설명해야 합니다. 
               - 예측 결과 값을 제공해야 합니다. 
               - 해석에는 목표 지표와 재료 지표의 연관성에 대한 지식을 설명해야 합니다. 
@@ -239,7 +276,38 @@ export const useFingooChat = () => {
       console.log(functionResponse);
       return functionResponse;
     }
+
+    if(functionCall.name === 'recommend_economic_indicator') {
+      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
+
+      const { symbols } = parsedFunctionCallArguments as {
+        symbols: string[];
+      }
+
+      const functionResponse: ChatRequest = {
+        messages: [
+          ...chatMessages,
+          {
+            id: generateId(),
+            tool_call_id: toolCalls[0].id,
+            name: 'analyze_economic_indicator',
+            role: 'tool' as const,
+            content: JSON.stringify(
+              `
+                추천 심볼 리스트: ${symbols}
+                
+                - 왜 해당 심볼을 추천하는지에 대한 이유를 설명해야합니다.
+                
+              `
+            )
+          }
+        ]
+      }
+      return functionResponse;
+    }
   };
+
+  
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
     experimental_onToolCall: toolCallHandler,
