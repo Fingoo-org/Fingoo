@@ -1,7 +1,7 @@
 import { SWRConfig } from 'swr';
 import MetadataList from '../../../components/domain/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 import ClientDataSuspense from '../../../components/util/client-data-suspense';
-import ListSkeleton from '@/app/ui/components/view/skeletons';
+import { ListSkeleton } from '@/app/ui/components/view/skeletons';
 import MetadataCreateButton from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/metadata-list/metadata-create-button';
 
 export default function MetadataListContainer() {

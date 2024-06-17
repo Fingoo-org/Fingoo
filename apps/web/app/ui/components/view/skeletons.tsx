@@ -1,6 +1,6 @@
 import Skeleton from './atom/skeleton';
 
-export default function ListSkeleton() {
+export function ListSkeleton() {
   return (
     <div className="space-y-2">
       <div className="flex w-full">
@@ -14,3 +14,4 @@ export default function ListSkeleton() {
     </div>
   );
 }
+
