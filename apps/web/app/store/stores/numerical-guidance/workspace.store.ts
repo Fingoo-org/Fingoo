@@ -9,7 +9,7 @@ type WorkspaceState = {
 };
 
 type WorkspaceAction = {
-  selectMetadata: (MetadataId: string | undefined) => void;
+  selectMetadata: (metadataId: string | undefined) => void;
   setTabIndex: (tabIndex: string) => void;
   selectCustomForecastIndicatorById: (customForecastIndicatorId: string | undefined) => void;
 };
@@ -20,7 +20,7 @@ type WorkspaceStore = WorkspaceState & {
 
 const initialWorkspaceState: WorkspaceState = {
   selectedMetadataId: undefined,
-  tabIndex: '2',
+  tabIndex: '0',
   selectedCustomForecastIndicatorId: undefined,
 };
 

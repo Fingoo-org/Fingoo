@@ -10,11 +10,13 @@ import {
 } from '../../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useWorkspaceStore } from '../../../../store/stores/numerical-guidance/workspace.store';
 import { convertIndcatorBoardMetadataList } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-list-view-model.service';
+import { useWorkspace } from '../../use-workspace.hook';
 
 export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useWorkspaceStore((state) => state.selectedMetadataId);
   const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
   const { data: indicatorBoardMetadataList } = useFetchIndicatorBoardMetadataList();
+  const { tabIndex, setTabIndex } = useWorkspace();
 
   const { trigger: addIndicatorTrigger } = useAddIndicatorToMetadata(selectedMetadataId);
   const { trigger: deleteIndicatorTrigger } = useDeleteIndicatorFromMetadata(selectedMetadataId);
@@ -121,13 +123,22 @@ export const useSelectedIndicatorBoardMetadata = () => {
     );
   };
 
+  const selectMetadataById = (metadataId: string | undefined) => {
+    selectMetadata(metadataId);
+
+    console.log(tabIndex);
+    if (tabIndex === undefined) {
+      setTabIndex('0');
+    }
+  };
+
   return {
     selectedMetadataId,
     selectedMetadata,
     addIndicatorToMetadata,
     deleteIndicatorFromMetadata,
     addCustomForecastIndicatorToMetadata,
-    selectMetadataById: selectMetadata,
+    selectMetadataById: selectMetadataById,
     deleteCustomForecastIndicatorFromMetadata,
   };
 };
