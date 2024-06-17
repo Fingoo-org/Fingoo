@@ -8,6 +8,7 @@ import IndicatorListItem from './indicator-list-item';
 import { cn } from '@/app/utils/style';
 import { useSearchedIndicatorList } from '@/app/business/hooks/numerical-guidance/indicator/use-searched-indicator-list.hooks';
 import Pending from '../../../../view/molecule/pending';
+import Blank from '@/app/ui/components/view/molecule/blank';
 
 export default function IndicatorListResult() {
   const { searchedIndicatorList, isLoading } = useSearchedIndicatorList();
@@ -31,15 +32,17 @@ export default function IndicatorListResult() {
   };
 
   return (
-    <div className={cn('h-[40vh] pt-2', { hidden: selectedMetadata === undefined })}>
-      <Pending isPending={isLoading}>
-        <WindowList
-          loadMoreItems={loadMoreIndicators}
-          maxVieweditemCount={7.5}
-          items={searchedIndicatorList ? searchedIndicatorList : indicatorList || []}
-          renderRow={render}
-        />
-      </Pending>
+    <div className={cn('h-[40vh] pt-2')}>
+      <Blank isBlank={selectedMetadata === undefined} blankFallback={<div>메타데이터를 선택해주세요</div>}>
+        <Pending isPending={isLoading}>
+          <WindowList
+            loadMoreItems={loadMoreIndicators}
+            maxVieweditemCount={7.5}
+            items={searchedIndicatorList ? searchedIndicatorList : indicatorList || []}
+            renderRow={render}
+          />
+        </Pending>
+      </Blank>
     </div>
   );
 }
