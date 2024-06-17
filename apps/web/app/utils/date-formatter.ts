@@ -18,10 +18,16 @@ export function parseDate(date: string | dayjs.Dayjs): dayjs.Dayjs {
 }
 
 function getBiggestDate(date1: string, date2: string) {
+  if (date1 === '') return date2;
+  if (date2 === '') return date1;
+
   return parseDate(date1).isAfter(parseDate(date2)) ? date1 : date2;
 }
 
 function getSmallestDate(date1: string, date2: string) {
+  if (date1 === '') return date2;
+  if (date2 === '') return date1;
+
   return parseDate(date1).isBefore(parseDate(date2)) ? date1 : date2;
 }
 
