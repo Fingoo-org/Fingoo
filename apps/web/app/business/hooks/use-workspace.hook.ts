@@ -8,9 +8,16 @@ export const useWorkspace = () => {
     setTabIndex('1');
   };
 
+  const activeTab = () => {
+    if (tabIndex === '2') {
+      return setTabIndex('0');
+    }
+  };
+
   return {
     tabIndex,
     setTabIndex,
     transitionToCustomForecastTab,
+    activeTab,
   };
 };

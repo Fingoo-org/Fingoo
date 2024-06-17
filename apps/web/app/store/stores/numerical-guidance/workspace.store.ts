@@ -20,7 +20,7 @@ type WorkspaceStore = WorkspaceState & {
 
 const initialWorkspaceState: WorkspaceState = {
   selectedMetadataId: undefined,
-  tabIndex: '0',
+  tabIndex: '2',
   selectedCustomForecastIndicatorId: undefined,
 };
 

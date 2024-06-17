@@ -16,7 +16,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useWorkspaceStore((state) => state.selectedMetadataId);
   const selectMetadata = useWorkspaceStore((state) => state.actions.selectMetadata);
   const { data: indicatorBoardMetadataList } = useFetchIndicatorBoardMetadataList();
-  const { tabIndex, setTabIndex } = useWorkspace();
+  const { activeTab } = useWorkspace();
 
   const { trigger: addIndicatorTrigger } = useAddIndicatorToMetadata(selectedMetadataId);
   const { trigger: deleteIndicatorTrigger } = useDeleteIndicatorFromMetadata(selectedMetadataId);
@@ -126,10 +126,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
   const selectMetadataById = (metadataId: string | undefined) => {
     selectMetadata(metadataId);
 
-    console.log(tabIndex);
-    if (tabIndex === undefined) {
-      setTabIndex('0');
-    }
+    activeTab();
   };
 
   return {
