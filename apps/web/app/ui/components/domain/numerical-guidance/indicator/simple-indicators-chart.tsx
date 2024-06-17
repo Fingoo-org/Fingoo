@@ -30,15 +30,14 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
             .getIdentifiersByIds(indicatorIds)
             .map((indicator) => indicator.identifier);
 
+          console.log(categories);
           return (
             <MultiLineChart
               data-testid={`simple-indicators-chart-section${index + 1}`}
               key={sectionId}
               data={indicatorBoardMetadata ? formattedIndicatorsRows : []}
               categories={categories}
-              noDataText={
-                indicatorBoardMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'
-              }
+              noDataText={getNoDataText(categories)}
               syncId={indicatorBoardMetadataId}
               className="h-80"
             />
@@ -56,4 +55,14 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
       )}
     </>
   );
+
+  function getNoDataText(categories: string[]) {
+    if (indicatorBoardMetadata) {
+      return categories.length === 0
+        ? '선택한 지표가 없습니다. 지표를 선택해주세요'
+        : '지표에 해당하는 날짜에 대한 데이터가 없습니다.';
+    }
+
+    return '메타데이터를 선택해주세요';
+  }
 }

@@ -8,6 +8,7 @@ import React from 'react';
 import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { cn } from '@/app/utils/style';
 import { Card } from '../../../view/molecule/card/card';
+import { CardSkeleton } from '../../../view/skeletons';
 
 type IndicatorBoardProps = {
   indicatorBoardMetadataId?: string;
@@ -31,7 +32,13 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
         'border-4 border-fingoo-main': isSelected,
       })}
     >
-      <ClientDataSuspense fallback={<div>loading...</div>}>
+      <ClientDataSuspense
+        fallback={
+          <div className="pt-10">
+            <CardSkeleton />
+          </div>
+        }
+      >
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
           <IndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
           <div className="py-6">
