@@ -103,12 +103,12 @@ export const tools: Array<ChatCompletionTool> = [
         properties: {
           query: {
             type: 'string',
-            enum: ['predict', 'analyze', 'explain'],
+            enum: ['predict', 'analyze', 'explain', 'recommand'],
             description: `""사용자가 하는 질문의 타입은 다음 중 하나가 될 수 있다:
             - predict: 경제 지표 예측과 해석을 요청하는 질문.""
-            - analyze: 경제 현황에 대한 분석을 요청하는 질문. (예시: 현 시장 상황이 어떻게 되나요?)
-            - explain: 경제 지표에 대한 설명 및 정보를 요청하는 질문 (예시: AAPL가 뭐야?, WMT는 현재 어때?).
-            - recommand: 경제 지표를 추천받는 질문 (예시: 현재 은행관련 괜찮은 주식이 있을까?)
+            - analyze: 시장 상황이나 지수와 같은 종합적인 경제 상황에 대한 분석을 요청하는 질문(예시: IT시장 상황을 분석해줘)
+            - explain: 특정 단일 지표에 대한 설명이나 분석을 요청하는 질문 (예시: 월마트의 현재 상황을 분석해줘)
+            - recommand: 유망한 경제 지표를 추천받는 질문 (예시: 현재 은행관련 괜찮은 주식이 있을까?)
             `,
           },
         },
