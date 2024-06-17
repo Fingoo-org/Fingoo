@@ -117,33 +117,32 @@ export const useFingooChat = () => {
       return functionResponse;
     }
 
-    if (functionCall.name === 'retrive_economic_indicators') {
-      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
+    // if (functionCall.name === 'retrive_economic_indicators') {
+    //   const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
 
-      console.log('retrive_economic_indicators', parsedFunctionCallArguments);
+    //   console.log('retrive_economic_indicators', parsedFunctionCallArguments);
 
-      const { symbols } = parsedFunctionCallArguments as {
-        symbols: string[];
-      };
+    //   const { symbols } = parsedFunctionCallArguments as {
+    //     symbols: string[];
+    //   };
 
-      // 1. symbol을 이용하여 indicatorId를 가져온다(동적 저장소)
-      // 2. 메타데이터 생성
-      // 3. 메타데이터에 지표 추가
-      // 4. 지표 값 가져오기(cache로 데이터 가져오기?)
-      // 5. 분석 값 넣기
-      // 6. 분석에 대한 해석 제공
-    }
+    //   // 1. symbol을 이용하여 indicatorId를 가져온다(동적 저장소)
+    //   // 2. 메타데이터 생성
+    //   // 3. 메타데이터에 지표 추가
+    //   // 4. 지표 값 가져오기(cache로 데이터 가져오기?)
+    //   // 5. 분석 값 넣기
+    //   // 6. 분석에 대한 해석 제공
+    // }
 
     if (functionCall.name === 'explain_economic_indicator') {
       const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
 
-      console.log('explain_economic_indicator', parsedFunctionCallArguments);
 
       const { symbol } = parsedFunctionCallArguments as {
         symbol: string;
       };
 
-      const functionResponse: ChatRequest = {
+      const functionResponse: ChatRequest = {  
         messages: [
           ...chatMessages,
           {
