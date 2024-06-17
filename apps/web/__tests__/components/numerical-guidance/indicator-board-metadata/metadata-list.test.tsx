@@ -6,6 +6,7 @@ import { resetMockDB } from '@/app/mocks/db';
 import IndicatorListResult from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-list/indicator-list-result';
 import { resetAllStore } from '@/app/store/stores/reset-store';
 import MetadataListItemRowDialogMenu from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/metadata-list-item/metadata-list-item-row-dialog-menu';
+import MetadataCreateButton from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/metadata-list/metadata-create-button';
 
 describe('MetadataList', () => {
   beforeEach(() => {
@@ -32,6 +33,7 @@ describe('MetadataList', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
+        <MetadataCreateButton />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -50,6 +52,7 @@ describe('MetadataList', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
+        <MetadataCreateButton />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
