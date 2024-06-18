@@ -45,14 +45,11 @@ export default function useAnalyzeEconomy() {
         return await getIndicatorValue(indicator);
       }),
     );
-    // -- 트릭
-    console.log(values);
 
     // 5. 메타데이터 선택
     displayIndicatorBoardMetadata(metadataId);
 
     // 6. GPT에 분석 요청
-
     return undefined;
   };
 

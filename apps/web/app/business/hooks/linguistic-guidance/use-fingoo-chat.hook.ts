@@ -1,6 +1,6 @@
 import { useChat } from 'ai/react';
 import { generateId, type ChatRequest, type ToolCallHandler } from 'ai';
-import usePredictIndicator from './use-prdict-indicator.hook';
+import usePredictIndicator from './use-predict-indicator.hook';
 import useInstruction from './use-instruction.hook';
 import useAnalyzeEconomy from './use-analyze-economy.hook';
 
