@@ -35,6 +35,7 @@ export default function usePredictIndicator() {
   async function predictEconomicIndicatorHandler({ target_symbol, source_symbols }: Props) {
     const target_indicator_response = await getIndicatorIdBySymbol(formatSymbol(target_symbol));
 
+    console.log(target_indicator_response);
     if (!target_indicator_response) return '타겟 지표를 찾을 수 없습니다.';
 
     const target_indicator = createIndicator(target_indicator_response);
