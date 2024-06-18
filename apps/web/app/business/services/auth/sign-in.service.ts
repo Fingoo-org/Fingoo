@@ -46,9 +46,8 @@ export async function authenticate(prevState: FormState, formData: FormData): Pr
       secure: true,
       path: '/',
     });
-
-    redirect('/workspace');
   } catch (error) {
+    console.log(error);
     if (error instanceof HttpError && error.statusCode === 404) {
       // 잘못된 요청 처리 로직
       return {
@@ -60,12 +59,7 @@ export async function authenticate(prevState: FormState, formData: FormData): Pr
     } else {
       throw error;
     }
+  } finally {
+    redirect('/workspace');
   }
-
-  return {
-    isSuccess: true,
-    isFailure: false,
-    validationError: {},
-    message: '로그인 성공',
-  };
 }

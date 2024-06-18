@@ -3,21 +3,39 @@ import React from 'react';
 import { Transition } from '@headlessui/react';
 import { DialogMenuContext } from './dialog-menu.context';
 import { DialogMenuHeader } from './dialog-menu-header';
-import { useDialog } from '../../hooks/use-dialog.hook';
+import { useDialog } from '../../../../../utils/hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
-import { filterChildrenByType } from '@/app/utils/helper';
+import { filterChildrenByType, getViewport } from '@/app/utils/helper';
 import { Size, cn, getColorClassNames } from '@/app/utils/style';
 import { DialogMenuSize } from './dialog-menu.style';
 import { Color, colorPalette } from '@/app/utils/style';
+import { Position } from '@/app/store/stores/dialog.store';
+
+type Side = 'top' | 'bottom';
 
 type DialogMenuProps = {
   dialogKey: DialogKey;
   size?: Size;
   color?: Color;
+  side?: Side;
 };
 
 const getDialogMenuHeader = (children: React.ReactNode) => {
   return filterChildrenByType(children, DialogMenuHeader);
+};
+
+const getCoordinate = (side: Side, position: Position) => {
+  const { viewportHeight } = getViewport();
+
+  return side === 'bottom'
+    ? {
+        left: position.x,
+        top: position.y,
+      }
+    : {
+        left: position.x,
+        bottom: viewportHeight - position.y,
+      };
 };
 
 export function DialogMenuRoot({
@@ -25,6 +43,7 @@ export function DialogMenuRoot({
   children,
   dialogKey,
   size = 'xs',
+  side = 'bottom',
 }: React.PropsWithChildren<DialogMenuProps>) {
   const { isOpen, position, closeDialog } = useDialog(dialogKey);
   const dialogMenuHeader = getDialogMenuHeader(children);
@@ -34,6 +53,8 @@ export function DialogMenuRoot({
   });
 
   const dialogSize = DialogMenuSize[size];
+
+  const coordinate = getCoordinate(side, position);
 
   const handleOnClick = () => {
     closeDialog();
@@ -45,7 +66,7 @@ export function DialogMenuRoot({
         <Transition as={React.Fragment} show={isOpen || false}>
           <div className="pointer-events-auto relative z-0">
             <div onClick={handleOnClick} className="fixed left-0 top-0 h-screen w-screen" />
-            <div role="dialog" style={{ left: position.x, top: position.y }} className="fixed">
+            <div role="dialog" style={coordinate} className="fixed">
               <Transition.Child
                 as={React.Fragment}
                 enter="transition ease-out duration-100"

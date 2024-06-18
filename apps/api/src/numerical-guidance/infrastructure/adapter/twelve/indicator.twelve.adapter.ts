@@ -7,7 +7,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { TwelveApiUtil } from './util/twelve-api.util';
+import { TwelveApiManager } from './util/twelve-api.manager';
 import {
   IndicatorDtoType,
   IndicatorValue,
@@ -29,7 +29,7 @@ export class IndicatorTwelveAdapter implements SearchTwelveIndicatorPort, LoadLi
   private readonly logger = new Logger(IndicatorTwelveAdapter.name);
 
   constructor(
-    private readonly twelveApiUtil: TwelveApiUtil,
+    private readonly twelveApiUtil: TwelveApiManager,
     @Inject('IndicatorValueManager')
     private readonly indicatorValueManager: IndicatorValueManager<IndicatorValue>,
   ) {}

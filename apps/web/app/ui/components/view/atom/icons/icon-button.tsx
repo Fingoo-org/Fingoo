@@ -22,7 +22,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(function
   return (
     <button
       className={cn(
-        'rounded-md border-0 outline-none ring-0',
+        'h-auto rounded-md border-0 outline-none ring-0',
         buttonColorStyle.bgColor,
         buttonColorStyle.hoverBgColor,
         className,

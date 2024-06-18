@@ -6,6 +6,7 @@ import { ApiExceptionResponse } from '../../../utils/exception-filter/api-except
 import { GetLiveIndicatorDto } from './dto/get-live-indicator.dto';
 import { GetLiveIndicatorQuery } from '../../application/query/live-indicator/get-live-indicator/get-live-indicator.query';
 import { Public } from 'src/auth/util/is-public.decorator';
+import { LiveIndicatorDtoType } from '../../../utils/type/type-definition';
 
 @ApiTags('LiveIndicatorController')
 @Controller('/api/numerical-guidance')
@@ -26,7 +27,7 @@ export class LiveIndicatorController {
   )
   @Public()
   @Get('/indicators/live')
-  async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<LiveStockDto> {
+  async getLiveIndicator(@Query() getLiveIndicatorDto: GetLiveIndicatorDto): Promise<LiveIndicatorDtoType> {
     const { indicatorId, interval, indicatorType, startDate } = getLiveIndicatorDto;
     const query = new GetLiveIndicatorQuery(indicatorId, interval, startDate, indicatorType);
     return this.queryBus.execute(query);

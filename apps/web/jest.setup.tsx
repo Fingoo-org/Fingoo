@@ -24,4 +24,29 @@ jest.mock('recharts', () => {
   };
 });
 
+const observeSpy = jest.fn();
+const height = 200;
+const width = 200;
+global.ResizeObserver = class MockedResizeObserver {
+  constructor(cb: ResizeObserverCallback) {
+    setTimeout(() => {
+      cb(
+        [
+          {
+            contentRect: {
+              height,
+              width,
+            },
+          },
+        ] as ResizeObserverEntry[],
+        this,
+      );
+    }, 150);
+  }
+
+  observe = observeSpy;
+  unobserve = jest.fn();
+  disconnect = jest.fn();
+};
+
 global.structuredClone = jest.fn((x) => JSON.parse(JSON.stringify(x)));

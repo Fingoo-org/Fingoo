@@ -1,6 +1,6 @@
 import { utcFormat } from 'd3-time-format';
 import React from 'react';
-import { add } from '@fingoo/helpers'
+import { add } from '@fingoo/helpers';
 
 const formatTime = utcFormat('%Y-%m-%d');
 
@@ -29,4 +29,30 @@ export function deepEqual(obj1: any, obj2: any) {
 export function caculateNowDate() {
   const now = new Date();
   return formatTime(now);
+}
+
+export function createNotDuplicatedName(baseName: string, names: string[]) {
+  let newName = baseName;
+  let count = 1;
+
+  while (names.includes(newName)) {
+    newName = `${baseName}(${count})`;
+    count++;
+  }
+
+  return newName;
+}
+
+export function getViewport() {
+  if (typeof window !== 'undefined') {
+    return {
+      viewportWeight: window.innerWidth,
+      viewportHeight: window.innerHeight,
+    };
+  }
+
+  return {
+    viewportWeight: 0,
+    viewportHeight: 0,
+  };
 }

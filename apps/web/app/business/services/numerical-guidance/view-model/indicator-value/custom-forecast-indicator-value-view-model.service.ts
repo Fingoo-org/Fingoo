@@ -6,9 +6,11 @@ import {
 import { FormatOptions, FormattedItem, IndicatorValue, IndicatorValueItem } from './indicator-value-view-model.service';
 import { HistoryIndicatorValueResponse } from '@/app/store/querys/numerical-guidance/history-indicator.query';
 import { formatDate } from '@/app/utils/date-formatter';
+import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator-value.query';
 
 type CustomForecastIndicator = {
   customForecastIndicatorName: string;
+  targetIndicatorValues: IndicatorValueItemResponse[];
 };
 
 export class CustomForecastIndicatorValue extends IndicatorValue {
@@ -48,7 +50,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
   }
 
   get identifier() {
-    return this.customForecastIndicatorName;
+    return `${this.customForecastIndicatorName}-${this.id.slice(0, 4)}`;
   }
 
   formatItemsByDate(options?: FormatOptions): FormattedItem {
@@ -57,7 +59,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
       return {
         ...acc,
         [formatDate(item.date)]: {
-          [this.customForecastIndicatorName]: {
+          [this.identifier]: {
             value: item.value,
             displayValue: item.displayValue,
           },
@@ -68,7 +70,7 @@ export class CustomForecastIndicatorValue extends IndicatorValue {
 }
 
 export const convertCustomForecastIndicatorsValue = (
-  customForecastIndicatorsValue: (CustomForecastIndicatorValueResponse & { customForecastIndicatorName: string })[],
+  customForecastIndicatorsValue: (CustomForecastIndicatorValueResponse & CustomForecastIndicator)[],
 ) => {
   return customForecastIndicatorsValue.map((item) => new CustomForecastIndicatorValue(item));
 };

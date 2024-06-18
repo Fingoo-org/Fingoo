@@ -6,6 +6,7 @@ type SelectableListItemProps = {
   selected: boolean;
   style?: React.CSSProperties;
   className?: string;
+  disabled?: boolean;
   onSelect: () => void;
   onDeSelect?: () => void;
 };
@@ -14,6 +15,7 @@ export default function SelectableItem({
   children,
   selected,
   style,
+  disabled,
   className,
   onSelect,
   onDeSelect,
@@ -24,11 +26,13 @@ export default function SelectableItem({
       className={cn(
         'h-full w-full bg-white px-4 py-2 ring-1 ring-fingoo-sub',
         ' hover:opacity-60',
+        disabled && 'cursor-not-allowed opacity-50',
         {
           'bg-fingoo-main text-white': selected,
         },
         className,
       )}
+      disabled={disabled}
       role="tab"
       aria-selected={`${selected}`}
       onClick={handleClick}

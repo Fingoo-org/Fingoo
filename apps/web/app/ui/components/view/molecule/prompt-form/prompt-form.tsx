@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSubmit } from '../../hooks/use-submit.hooks';
+import { useSubmit } from '../../../../../utils/hooks/use-submit.hooks';
 import TextAreaAutoSize from 'react-textarea-autosize';
 import IconButton from '../../atom/icons/icon-button';
 import { PaperPlaneIcon } from '@radix-ui/react-icons';
@@ -38,7 +38,7 @@ const PromptForm = ({ value, onValueChange, disable, formAction }: PromptFormPro
         onChange={onValueChange}
         placeholder="내용을 입력하세요"
         value={value}
-        onKeyDown={onKeyDown}
+        // onKeyDown={onKeyDown}
         disabled={disable}
       />
       <IconButton color="black" size="md" icon={PaperPlaneIcon} type="submit" disabled={disable} />

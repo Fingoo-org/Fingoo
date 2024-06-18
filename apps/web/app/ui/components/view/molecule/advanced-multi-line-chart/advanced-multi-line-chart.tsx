@@ -15,7 +15,7 @@ import {
 } from 'react-financial-charts';
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
-import { useResponsive } from '../../hooks/use-responsive';
+import { useResponsiveContainer } from '../../../../../utils/hooks/use-responsive-container.hook';
 import {
   FormattedIndicatorValue,
   FormattedRowType,
@@ -84,7 +84,7 @@ export default function AdvancedMultiLineChart<T extends Record<string, any>>({
   categoriesList,
   onLoadData,
 }: AdvancedMultiLineChartProps<T>) {
-  const { containerRef, sizes } = useResponsive();
+  const { containerRef, sizes } = useResponsiveContainer();
   // fix: 애 위로 올려야함
 
   const indexCalculator = discontinuousTimeScaleProviderBuilder()

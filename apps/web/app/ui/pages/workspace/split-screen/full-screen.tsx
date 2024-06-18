@@ -1,5 +1,5 @@
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
-import IndicatorBoard from '@/app/ui/components/numerical-guidance/indicator-board/indicator-board';
+import IndicatorBoard from '@/app/ui/components/domain/numerical-guidance/indicator-board/indicator-board';
 import ResizablePanelGroup from '@/app/ui/components/view/molecule/resizable-panel-group';
 
 export default function FullScreen() {
@@ -8,7 +8,7 @@ export default function FullScreen() {
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanelGroup.Panel defaultSize={100}>
         <div className="flex h-full items-center justify-center">
-          <div className="w-[55rem]">
+          <div className="w-full xl:px-10 2xl:px-20">
             {indicatorBoardInfos.length === 0 ? (
               <IndicatorBoard />
             ) : (

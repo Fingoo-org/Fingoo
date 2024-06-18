@@ -2,33 +2,33 @@
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import ToggleGroup from '../../../components/view/molecule/toggle-group';
 import { type SplitScreen, splitScreens } from '@/app/store/stores/numerical-guidance/indicator-board.store';
+import { useLogger } from '@/app/logging/logging-context';
 
 function isSplitScreen(value: string): value is SplitScreen {
   return splitScreens.includes(value as SplitScreen);
 }
 
 export default function SplitScreenToggleGroup() {
+  const logger = useLogger();
   const { splitScreen, transitionSplitScreen } = useIndicatorBoard();
 
   const handleSplitScreenChange = (value: string) => {
     if (isSplitScreen(value)) {
+      logger.track('click_screen_split_toggle', { toggle_type: value });
       transitionSplitScreen(value as SplitScreen);
     }
   };
 
   return (
-    <ToggleGroup onValueChange={handleSplitScreenChange} value={splitScreen} type="single" variant={'outline'}>
+    <ToggleGroup onValueChange={handleSplitScreenChange} value={splitScreen} type="single" variant={'default'}>
       <ToggleGroup.Item value="full">
         <MaximizeIcon className="h-4 w-4" />
-        <span className="ml-2 text-sm font-medium">Full</span>
       </ToggleGroup.Item>
       <ToggleGroup.Item value="vertical">
         <SplitSquareVerticalIcon className="h-4 w-4 rotate-90 transform" />
-        <span className="ml-2 text-sm font-medium">2-split</span>
       </ToggleGroup.Item>
       <ToggleGroup.Item disabled={true} value="square">
         <LayoutGridIcon className="h-4 w-4" />
-        <span className="ml-2 text-sm font-medium">4-split</span>
       </ToggleGroup.Item>
     </ToggleGroup>
   );

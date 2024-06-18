@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import Toaster from './toaster';
-import { useToast } from '../../hooks/use-toast';
+import { useToast } from '../../../../../utils/hooks/use-toast';
 import { useEffect } from 'react';
-import type { Toast as ToastType } from '../../hooks/use-toast';
+import type { Toast as ToastType } from '../../../../../utils/hooks/use-toast';
 import { ToastAction } from './toast';
 
 const meta = {

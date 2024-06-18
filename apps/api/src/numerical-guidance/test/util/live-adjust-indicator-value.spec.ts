@@ -4,7 +4,7 @@ import { AdjustIndicatorValue } from '../../util/adjust-indicator-value';
 import { IndicatorValue } from '../../../utils/type/type-definition';
 import { StockDto } from '../../application/query/indicator/get-indicator-list/dto/stock.dto';
 
-const filePath = './src/numerical-guidance/test/data/liveIndicatorTestDataPerMonth.json';
+const filePath = './src/numerical-guidance/test/data/live-indicator-test-data-per-month.json';
 
 const data = fs.readFileSync(filePath, 'utf8');
 const jsonData = JSON.parse(data);

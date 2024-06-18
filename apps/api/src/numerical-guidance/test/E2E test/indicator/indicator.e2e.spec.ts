@@ -22,9 +22,11 @@ import * as fs from 'fs';
 import { GetIndicatorListQueryHandler } from '../../../application/query/indicator/get-indicator-list/get-indicator-list.query.handler';
 import { SearchTwelveIndicatorQueryHandler } from '../../../application/query/indicator/search-twelve-indicator/search-twelve-indicator.query.handler';
 import { IndicatorTwelveAdapter } from '../../../infrastructure/adapter/twelve/indicator.twelve.adapter';
-import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import { TwelveApiManager } from '../../../infrastructure/adapter/twelve/util/twelve-api.manager';
 import { AdjustIndicatorValue } from '../../../util/adjust-indicator-value';
 import { SearchIndicatorQueryHandler } from 'src/numerical-guidance/application/query/indicator/search-indicator/search-indicator.query.handler';
+import { EconomyEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/economy.entity';
+import { FredApiManager } from '../../../infrastructure/adapter/fred/util/fred-api.manager';
 
 const filePath = './src/numerical-guidance/test/data/indicator-list-stocks.json';
 const data = fs.readFileSync(filePath, 'utf8');
@@ -83,6 +85,7 @@ describe('Indicator E2E Test', () => {
             FundEntity,
             IndicesEntity,
             StockEntity,
+            EconomyEntity,
           ]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
@@ -105,6 +108,7 @@ describe('Indicator E2E Test', () => {
                 FundEntity,
                 IndicesEntity,
                 StockEntity,
+                EconomyEntity,
               ],
               synchronize: true,
             }),
@@ -121,7 +125,8 @@ describe('Indicator E2E Test', () => {
           GetIndicatorListQueryHandler,
           SearchTwelveIndicatorQueryHandler,
           SearchIndicatorQueryHandler,
-          TwelveApiUtil,
+          TwelveApiManager,
+          FredApiManager,
           {
             provide: 'LoadIndicatorPort',
             useClass: IndicatorPersistentAdapter,
@@ -151,6 +156,10 @@ describe('Indicator E2E Test', () => {
             useValue: {
               saveIndicatorList: jest.fn().mockImplementation(() => {}),
             },
+          },
+          {
+            provide: 'SearchEconomyIndicatorPort',
+            useClass: IndicatorPersistentAdapter,
           },
           {
             provide: 'IndicatorValueManager',
@@ -221,6 +230,17 @@ describe('Indicator E2E Test', () => {
       .expect(HttpStatus.OK);
   });
 
+  it('/get type, symbol로 지표들을 검색한다. - economy', async () => {
+    return request(app.getHttpServer())
+      .get('/api/numerical-guidance/indicator/search')
+      .query({
+        symbol: 'BOPBCA',
+        type: 'economy',
+      })
+      .set('Content-Type', 'application/json')
+      .expect(HttpStatus.OK);
+  });
+
   it('/get symbol로 지표를 검색한다. - symbol을 찾지 못한 경우', async () => {
     return request(app.getHttpServer())
       .get('/api/numerical-guidance/indicator/search')
@@ -229,6 +249,6 @@ describe('Indicator E2E Test', () => {
         type: 'invalidType',
       })
       .set('Content-Type', 'application/json')
-      .expect(HttpStatus.NOT_FOUND);
+      .expect(HttpStatus.BAD_REQUEST);
   });
 });

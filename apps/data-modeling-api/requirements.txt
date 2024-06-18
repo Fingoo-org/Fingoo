@@ -9,3 +9,5 @@ SQLAlchemy==2.0.28
 statsmodels==0.14.1
 python-dotenv==1.0.0
 urllib3==2.2.1
+pmdarima==2.0.4
+mangum==0.17.0

@@ -1,22 +1,19 @@
 import React, { useContext } from 'react';
 import { AlertDialogContext } from './alert-dialog-context';
-import { useDialog } from '../../hooks/use-dialog.hook';
+import { useDialog } from '../../../../../utils/hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
-import Button from '../../atom/button/button';
-import { ButtonVariant, Color } from '@/app/utils/style';
+import AchromaticButton from '../../atom/button/achromatic-button';
 
 type NativeButtonType = Omit<React.ComponentPropsWithoutRef<'button'>, 'onClick'>;
 
 type AlertDialogPositiveButtonProps = {
-  color?: Color;
-  variant?: ButtonVariant;
+  variant?: 'default' | 'destructive';
   onClick?: (payload: unknown) => void;
 } & NativeButtonType;
 
 export function AlertDialogPositiveButton({
   children,
-  color = 'blue',
-  variant = 'primary',
+  variant = 'default',
   onClick,
   ...props
 }: React.PropsWithChildren<AlertDialogPositiveButtonProps>) {
@@ -31,8 +28,8 @@ export function AlertDialogPositiveButton({
   };
 
   return (
-    <Button {...props} color={color} variant={variant} onClick={handleClick} aria-label="Confirm" type="button">
+    <AchromaticButton {...props} variant={variant} onClick={handleClick} aria-label="Confirm" type="button">
       {children}
-    </Button>
+    </AchromaticButton>
   );
 }

@@ -1,11 +1,12 @@
 import { findByText, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import MetadataList from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
+import MetadataList from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/metadata-list/metadata-list';
 import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
 import { resetMockDB } from '@/app/mocks/db';
-import IndicatorListResult from '@/app/ui/components/numerical-guidance/indicator/indicator-list/indicator-list-result';
+import IndicatorListResult from '@/app/ui/components/domain/numerical-guidance/indicator/indicator-list/indicator-list-result';
 import { resetAllStore } from '@/app/store/stores/reset-store';
-import MetadataListItemRowDialogMenu from '@/app/ui/components/numerical-guidance/indicator-board-metadata/metadata-list-item/metadata-list-item-row-dialog-menu';
+import MetadataListItemRowDialogMenu from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/metadata-list-item/metadata-list-item-row-dialog-menu';
+import MetadataCreateButton from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/metadata-list/metadata-create-button';
 
 describe('MetadataList', () => {
   beforeEach(() => {
@@ -32,6 +33,7 @@ describe('MetadataList', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
+        <MetadataCreateButton />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -41,7 +43,8 @@ describe('MetadataList', () => {
     await user.click(screen.getByRole('button', { name: /메타데이터 추가/i }));
 
     // then
-    expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(4);
+    expect(await screen.findAllByTestId('metadata-list-item')).toHaveLength(4);
+    expect(await screen.findAllByText('메타데이터'));
   });
 
   it('사용자가 생성 버튼을 두번 클릭하면, 생성한 메타데이터가 2개 추가된 메타데이터 리스트를 보여준다.', async () => {
@@ -49,6 +52,7 @@ describe('MetadataList', () => {
     const user = userEvent.setup();
     render(
       <SWRProviderWithoutCache>
+        <MetadataCreateButton />
         <MetadataList />
       </SWRProviderWithoutCache>,
     );
@@ -59,7 +63,9 @@ describe('MetadataList', () => {
     await user.click(screen.getByRole('button', { name: /메타데이터 추가/i }));
 
     // then
-    expect(await screen.findAllByText(/metadata[0-9]/i)).toHaveLength(5);
+    expect(await screen.findAllByTestId('metadata-list-item')).toHaveLength(5);
+    expect(await screen.findAllByText('메타데이터'));
+    expect(await screen.findAllByText('메타데이터(1)'));
   });
 
   it('사용자가 메타데이터를 클릭하면, 메타데이터가 선택된다.', async () => {

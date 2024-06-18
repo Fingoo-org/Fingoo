@@ -1,7 +1,5 @@
-import { IndicatorValueResponse } from '../../store/querys/numerical-guidance/indicator.query';
-import {
-  IndicatorByTypeResponse,
-} from '@/app/store/querys/numerical-guidance/indicator-list.query';
+import { IndicatorValueResponse } from '../../store/querys/numerical-guidance/indicator-value.query';
+import { IndicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { IndicatorBoardMetadataResponse } from '../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { indicatorsValueMockData } from '../mock-data/indicators-value.mock';
 import { CustomForecastIndicatorListResponse } from '../../store/querys/numerical-guidance/custom-forecast-indicator.query';

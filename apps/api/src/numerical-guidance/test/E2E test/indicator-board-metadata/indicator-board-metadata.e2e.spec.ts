@@ -35,9 +35,11 @@ import { ForexPairEntity } from '../../../infrastructure/adapter/persistence/ind
 import { FundEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/fund.entity';
 import { IndicesEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/indices.entity';
 import { StockEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/stock.entity';
-import { TwelveApiUtil } from '../../../infrastructure/adapter/twelve/util/twelve-api.util';
+import { TwelveApiManager } from '../../../infrastructure/adapter/twelve/util/twelve-api.manager';
 import { addTransactionalDataSource, initializeTransactionalContext } from 'typeorm-transactional';
 import { MockAuthGuard, mockAuthorization, mockUser } from '../../../../auth/test/data/mock-auth.guard';
+import { EconomyEntity } from '../../../infrastructure/adapter/persistence/indicator/entity/economy.entity';
+import { FredApiManager } from '../../../infrastructure/adapter/fred/util/fred-api.manager';
 
 initializeTransactionalContext();
 
@@ -132,6 +134,7 @@ describe('Indicator Board Metadata E2E Test', () => {
             FundEntity,
             IndicesEntity,
             StockEntity,
+            EconomyEntity,
           ]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
@@ -156,6 +159,7 @@ describe('Indicator Board Metadata E2E Test', () => {
                 FundEntity,
                 IndicesEntity,
                 StockEntity,
+                EconomyEntity,
               ],
               synchronize: true,
             }),
@@ -169,7 +173,8 @@ describe('Indicator Board Metadata E2E Test', () => {
         ],
         controllers: [IndicatorBoardMetadataController],
         providers: [
-          TwelveApiUtil,
+          TwelveApiManager,
+          FredApiManager,
           AdjustIndicatorValue,
           AuthService,
           GetIndicatorBoardMetadataQueryHandler,

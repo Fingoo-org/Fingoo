@@ -38,10 +38,10 @@ export class IndicatorFormatter {
 
       return {
         date,
-        ...formmatedItems.reduce<FormattedRowType>((acc, items) => {
+        ...formmatedItems.reduce<FormattedRowType>((acc, item) => {
           return {
             ...acc,
-            ...items[date],
+            ...item[date],
           };
         }, {}),
       };
@@ -68,6 +68,10 @@ export class IndicatorFormatter {
   iterateSmallestToBiggestDate(callback: (date: string) => FormattedRowType | undefined): FormattedRowType[] {
     const biggestDate = getBigestDateInArray(this.indicatorsValue.map((indicator) => indicator.lastDate));
     const smallestDate = getSmallestDateInArray(this.indicatorsValue.map((indicator) => indicator.startDate));
+
+    if (biggestDate === 'Invalid Date' || smallestDate === 'Invalid Date') {
+      return [];
+    }
 
     let currentDate = smallestDate;
     let result = [];

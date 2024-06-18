@@ -1,7 +1,7 @@
 'use client';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { Dialog, Transition } from '@headlessui/react';
-import { useDialog } from '../../hooks/use-dialog.hook';
+import { useDialog } from '../../../../../utils/hooks/use-dialog.hook';
 import React from 'react';
 import { AlertDialogTitle } from './alert-dialog-title';
 import { filterChildrenByType } from '@/app/utils/helper';

@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
+
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
@@ -46,6 +46,7 @@ jobs:
           echo "SUPABASE_BUCKET_NAME=${{ secrets.SUPABASE_BUCKET_NAME }}" >> .env
           echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
           echo "TWELVE_KEY=${{ secrets.TWELVE_KEY }}" >> .env
+          echo "FRED_KEY=${{ secrets.FRED_KEY }}" >> .env
         working-directory: apps/api
 
       - name: Setting web .env
@@ -110,38 +111,59 @@ jobs:
           severity: info
           text: 'api package was successfully built'
 
-  build-modeling-api:
+  deploy-modeling-api:
     runs-on: ubuntu-latest
     needs: inspection
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3.0.0
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: modeling-api build and push
-        uses: docker/build-push-action@v5.1.0
-        with:
-          context: ./apps/data-modeling-api
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi:latest
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: data-modeling-api
+          IMAGE_TAG: latest
+        run: |
+          docker build --platform linux/amd64 -t $REGISTRY/$REPOSITORY:$IMAGE_TAG . -f dockerfile-lambda
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        working-directory: apps/data-modeling-api
+
+      - name: Deploy image to lambda
+        env:
+          FUNCTION_NAME: data-modeling
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: data-modeling-api
+          IMAGE_TAG: latest
+        run: |
+          aws lambda update-function-code \
+              --function-name $FUNCTION_NAME \
+              --image-uri $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
       - name: Send discord message if fail
         if: ${{ failure() }}
         uses: rjstone/discord-webhook-notify@v1.0.4
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: error
-          text: 'modeling-api package failed to build'
+          text: 'modeling-api package failed to deploy'
       - name: Send discord message if success
         if: ${{ success() }}
         uses: rjstone/discord-webhook-notify@v1.0.4
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: info
-          text: 'modeling-api was successfully built'
-          
+          text: 'modeling-api was successfully deployed'
+
   deploy-web:
     runs-on: ubuntu-latest
     needs: inspection
@@ -158,11 +180,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Install Turborepo CLI
-        run: npm install --global turbo
+        run: npm install turbo@1.13.4 --global
       - name: Vercel link
         run: vercel link --yes --token=${{ secrets.VERCEL_ACCESS_TOKEN }} --project=${{ secrets.FINGOO_PROJECT_NAME }}
       - name: Pull Vercel Environment Information
@@ -188,7 +210,7 @@ jobs:
 
   deploy-api-server:
     runs-on: ubuntu-latest
-    needs: [build-api, build-modeling-api]
+    needs: [build-api]
     steps:
       - name: deploy api server
         uses: appleboy/ssh-action@v1.0.3
@@ -198,7 +220,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             sudo docker rm -f $(docker ps -qa)
-            sudo docker-compose pull api data-modeling-api
+            sudo docker-compose pull api
             docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
             docker image prune -f
       - name: Send discord message if fail

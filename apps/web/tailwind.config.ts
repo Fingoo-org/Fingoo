@@ -17,6 +17,9 @@ const config: Config = {
     transparent: 'transparent',
     current: 'currentColor',
     extend: {
+      dropShadow: {
+        fingoo: '0 0 3px rgba(0, 0, 0, 0.2)',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
@@ -177,6 +180,6 @@ const config: Config = {
         /^(fill-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|100|200|300|400|500|600|700|800|900|950))$/,
     },
   ],
-  plugins: [headlessui, forms, animate, scrollbar({ nocompatible: true })],
+  plugins: [headlessui, forms, animate, scrollbar({ nocompatible: true, preferredStrategy: 'pseudoelements' })],
 };
 export default config;

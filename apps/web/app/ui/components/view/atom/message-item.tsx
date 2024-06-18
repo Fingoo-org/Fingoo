@@ -8,18 +8,18 @@ export type MessageProps = {
 export const MessageItem = ({ role, content }: MessageProps) => {
   return (
     <div
-      className={cn('flex h-auto flex-col-reverse whitespace-pre-wrap', {
+      className={cn('flex h-auto flex-col-reverse whitespace-pre-wrap ', {
         'items-end justify-end': role === 'user',
         'items-start justify-start': role !== 'user',
       })}
     >
       <div
-        className={cn('flex w-auto max-w-64 rounded-lg p-2', {
-          'justify-end bg-[#333333] text-right text-white': role === 'user',
-          'justify-start bg-[#f1f1f1] text-black': role !== 'user',
+        className={cn('flex w-auto max-w-64 rounded-lg bg-white px-5 py-3 text-black 		', {
+          'justify-end bg-black text-right text-white ': role === 'user',
+          'drop-shadow-fingoo justify-start': role !== 'user',
         })}
       >
-        <div className="flex font-pretendard text-xs font-semibold">{content}</div>
+        <div className="flex font-pretendard text-sm font-semibold">{content}</div>
       </div>
     </div>
   );

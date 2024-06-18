@@ -3,10 +3,7 @@ import { GetCustomForecastIndicatorValuesQuery } from 'src/numerical-guidance/ap
 import { GetCustomForecastIndicatorValuesQueryHandler } from 'src/numerical-guidance/application/query/custom-forecast-indicator/get-custom-forecast-indicator-values/get-custom-forecast-indicator-values.query.handler';
 import { CustomForecastIndicator } from 'src/numerical-guidance/domain/custom-forecast-indicator';
 import { CustomForecastIndicatorValuesResponse } from 'src/utils/type/type-definition';
-import { liveIndicatorTestData } from '../../../data/liveIndicator.test.data';
-import { LiveStockDto } from 'src/numerical-guidance/application/query/live-indicator/get-live-indicator/dto/live-stock.dto';
 import { LoadIndicatorPort } from 'src/numerical-guidance/application/port/persistence/indicator/load-indicator.port';
-import { LoadLiveIndicatorPort } from 'src/numerical-guidance/application/port/external/twelve/load-live-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
 import { LoadCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator.port';
 import { StockDto } from '../../../../application/query/indicator/get-indicator-list/dto/stock.dto';
@@ -25,15 +22,7 @@ const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
       date: '20230101',
     },
   ],
-  targetIndicatorValues: [
-    {
-      value: '50328.124',
-      date: '20230101',
-    },
-  ],
 };
-
-const testData = liveIndicatorTestData;
 
 const indicatorDto: StockDto = {
   id: '5776afe3-6a3f-42e9-83ec-cb634b76f958',
@@ -52,7 +41,6 @@ describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
   let getCustomForecastIndicatorValuesQueryHandler: GetCustomForecastIndicatorValuesQueryHandler;
   let loadCustomForecastIndicatorValuesPort: LoadCustomForecastIndicatorValuesPort;
   let loadCustomForecastIndicatorPort: LoadCustomForecastIndicatorPort;
-  let loadLiveIndicatorPort: LoadLiveIndicatorPort;
   let loadIndicatorPort: LoadIndicatorPort;
 
   beforeEach(async () => {
@@ -64,14 +52,6 @@ describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
           useValue: {
             loadIndicator: jest.fn().mockImplementation(() => {
               return indicatorDto;
-            }),
-          },
-        },
-        {
-          provide: 'LoadLiveIndicatorPort',
-          useValue: {
-            loadLiveIndicator: jest.fn().mockImplementation(() => {
-              return LiveStockDto.create({ indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484', ...testData });
             }),
           },
         },
@@ -119,7 +99,6 @@ describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
     loadCustomForecastIndicatorValuesPort = module.get('LoadCustomForecastIndicatorValuesPort');
     loadCustomForecastIndicatorPort = module.get('LoadCustomForecastIndicatorPort');
     loadIndicatorPort = module.get('LoadIndicatorPort');
-    loadLiveIndicatorPort = module.get('LoadLiveIndicatorPort');
   }, 10000);
 
   it('예측지표 id를 가지고 예측지표의 예측값을 불러온다.', async () => {
@@ -132,7 +111,6 @@ describe('GetCustomForecastIndicatorValuesQueryHandler', () => {
     //then
     expect(loadCustomForecastIndicatorPort.loadCustomForecastIndicator).toHaveBeenCalledTimes(1);
     expect(loadCustomForecastIndicatorValuesPort.loadCustomForecastIndicatorValues).toHaveBeenCalledTimes(1);
-    expect(loadLiveIndicatorPort.loadLiveIndicator).toHaveBeenCalledTimes(1);
     expect(loadIndicatorPort.loadIndicator).toHaveBeenCalledTimes(1);
   });
 });

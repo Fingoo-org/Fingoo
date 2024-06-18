@@ -13,6 +13,7 @@ import {
 } from '../fetcher';
 import { IndicatorType } from '../../stores/numerical-guidance/indicator-list.store';
 import { IndicatorByTypeResponse } from './indicator-list.query';
+import { useSWRCache } from '../use-swr-cache.hook';
 
 export type sourceIndicator = {
   sourceIndicatorId: string;
@@ -69,18 +70,27 @@ export type CustomForecastIndicatorValueResponse = {
   ticker: string;
   forecastType: ForecastType;
   customForecastIndicatorValues: CustomForecastIndicatorValueItem[];
-  targetIndicatorValues: CustomForecastIndicatorValueItem[];
 };
 
 export const useFetchCustomForecastIndicatorsValue = (customForecastIndicatorIds: string[] | undefined) => {
+  const { getPreviousCachedData } = useSWRCache();
+
+  // 삭제를 위한 key 순서 맞춰보기
   const key = customForecastIndicatorIds
     ? [`${API_PATH.customForecastIndicator}/value`, ...customForecastIndicatorIds]
     : null;
 
-  return useSWRImmutable<CustomForecastIndicatorValueResponse[], any, string[] | null>(
-    key,
-    fetchCustomForecastIndicatorsValue,
-  );
+  return useSWRImmutable<CustomForecastIndicatorValueResponse[], any, string[] | null>(key, async (key) => {
+    const previousData = getPreviousCachedData<CustomForecastIndicatorValueResponse[]>(key);
+
+    if (previousData) {
+      const newKey = [key[0], key[key.length - 1]];
+      const newData = await fetchCustomForecastIndicatorsValue(newKey);
+      return [...previousData, ...newData];
+    }
+
+    return await fetchCustomForecastIndicatorsValue(key);
+  });
 };
 
 export const useCreateCustomForecastIndicator = () => {
@@ -93,13 +103,21 @@ export const useCreateCustomForecastIndicator = () => {
 export type updateSourceIndicatorRequestBody = {
   sourceIndicatorsInformation: sourceIndicator[];
 };
-export const useUpdateSourceIndicator = (customForecastIndicatorId: string | undefined) => {
+
+export const useUpdateSourceIndicator = (customForecastIndicatorId?: string) => {
   return useSWRMutation(
     API_PATH.customForecastIndicator,
-    async (url: string, { arg }: { arg: updateSourceIndicatorRequestBody }) => {
-      if (!customForecastIndicatorId) return;
-      await patchFetcher<updateSourceIndicatorRequestBody>([url, customForecastIndicatorId], {
-        arg,
+    async (
+      url: string,
+      { arg }: { arg: updateSourceIndicatorRequestBody & { customForecastIndicatorId?: string } },
+    ) => {
+      if (!customForecastIndicatorId && !arg.customForecastIndicatorId) return;
+
+      const id = (arg.customForecastIndicatorId || customForecastIndicatorId)!;
+      await patchFetcher<updateSourceIndicatorRequestBody>([url, id], {
+        arg: {
+          sourceIndicatorsInformation: arg.sourceIndicatorsInformation,
+        },
       });
     },
   );
@@ -130,5 +148,26 @@ export const useUpdateCustomForecastIndicatorName = (customForecastIndicatorId: 
 export const useRevalidateCustomForecastIndicatorList = () => {
   return () => {
     mutate(API_PATH.customForecastIndicator);
+  };
+};
+
+export const useRevalidateCustomForecastIndicatorValue = () => {
+  return {
+    trigger: async (customForecastIndicatorId: string) => {
+      const newKey = [`${API_PATH.customForecastIndicator}/value`, customForecastIndicatorId];
+      const newData = (await fetchCustomForecastIndicatorsValue(newKey))[0];
+
+      mutate(
+        (key: any) => Array.isArray(key) && key.find((k) => k === customForecastIndicatorId),
+        async (data) => {
+          return data.map((d: any) => {
+            if (d.customForecastIndicatorId === customForecastIndicatorId) {
+              return newData;
+            }
+            return d;
+          });
+        },
+      );
+    },
   };
 };

@@ -16,10 +16,11 @@ import { AuthService } from 'src/auth/application/auth.service';
 import { LoadCustomForecastIndicatorsByMemberIdPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicators-by-member-id.port';
 import { UpdateSourceIndicatorsInformationPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-source-indicators-information.port';
 import { HttpService } from '@nestjs/axios';
-import { ForecastApiResponse } from 'src/utils/type/type-definition';
+import { ForecastApiResponse, SourceIndicatorInformation } from 'src/utils/type/type-definition';
 import { UpdateCustomForecastIndicatorNamePort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/update-custom-forecast-indicator-name.port';
 import { DeleteCustomForecastIndicatorPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/delete-custom-forecast-indicator.port';
 import { LoadCustomForecastIndicatorValuesPort } from 'src/numerical-guidance/application/port/persistence/custom-forecast-indicator/load-custom-forecast-indicator-values.port';
+import { IndicatorBoardMetadataEntity } from '../indicator-board-metadata/entity/indicator-board-metadata.entity';
 
 @Injectable()
 export class CustomForecastIndicatorPersistentAdapter
@@ -35,6 +36,8 @@ export class CustomForecastIndicatorPersistentAdapter
   constructor(
     @InjectRepository(CustomForecastIndicatorEntity)
     private readonly customForecastIndicatorRepository: Repository<CustomForecastIndicatorEntity>,
+    @InjectRepository(IndicatorBoardMetadataEntity)
+    private readonly indicatorBoardMetadataRepository: Repository<IndicatorBoardMetadataEntity>,
     private readonly authService: AuthService,
     private readonly api: HttpService,
   ) {}
@@ -82,6 +85,10 @@ export class CustomForecastIndicatorPersistentAdapter
       this.nullCheckForEntity(customForecastIndicatorEntity);
 
       const customForecastIndicator = CustomForecastIndicatorMapper.mapEntityToDomain(customForecastIndicatorEntity);
+
+      const validIndicators = this.getValidIndicators(customForecastIndicator);
+      const validIndicatorIds = validIndicators.map((indicator) => indicator.sourceIndicatorId);
+
       const url: string =
         process.env.FASTAPI_URL +
         'api/var-api/custom-forecast-indicator?targetIndicatorId=' +
@@ -92,17 +99,23 @@ export class CustomForecastIndicatorPersistentAdapter
       let indicatorsUrl: string = '';
       let indicatorsTypeUrl: string = '';
       let weightsUrl: string = '';
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-        indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
+      let validIndicatorIdsUrl: string = '';
+      for (let i = 0; i < validIndicators.length - 1; i++) {
+        indicatorsUrl += `sourceIndicatorId=${validIndicators[i].sourceIndicatorId}&`;
       }
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-        indicatorsTypeUrl += `sourceIndicatorType=${customForecastIndicator.sourceIndicatorsInformation[i].indicatorType}&`;
+      for (let i = 0; i < validIndicators.length - 1; i++) {
+        indicatorsTypeUrl += `sourceIndicatorType=${validIndicators[i].indicatorType}&`;
       }
-      for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-        weightsUrl += `weight=${customForecastIndicator.sourceIndicatorsInformation[i].weight}&`;
+      for (let i = 0; i < validIndicators.length - 1; i++) {
+        weightsUrl += `weight=${validIndicators[i].weight}&`;
       }
-      const requestUrl = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl;
+      for (let i = 0; i < validIndicatorIds.length; i++) {
+        validIndicatorIdsUrl += `validIndicatorId=${validIndicatorIds[i]}&`;
+      }
 
+      const requestUrl: string = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl + validIndicatorIdsUrl;
+
+      console.log(requestUrl);
       const res = await this.api.axiosRef.get(requestUrl);
       const resultValues = res.data.values;
       const resultForecastType = res.data.type;
@@ -211,11 +224,11 @@ export class CustomForecastIndicatorPersistentAdapter
       customForecastIndicatorEntity.sourceIndicators = customForecastIndicator.sourceIndicators;
 
       if (customForecastIndicatorEntity.sourceIndicatorsInformation.length == 0) {
-        const grangerGroup = [];
-        const cointJohansenVerification = [];
+        const emptyGrangerGroup = [];
+        const emptyCointJohansenVerification = [];
 
-        customForecastIndicatorEntity.grangerVerification = grangerGroup;
-        customForecastIndicatorEntity.cointJohansenVerification = cointJohansenVerification;
+        customForecastIndicatorEntity.grangerVerification = emptyGrangerGroup;
+        customForecastIndicatorEntity.cointJohansenVerification = emptyCointJohansenVerification;
       } else {
         const url: string =
           process.env.FASTAPI_URL +
@@ -237,7 +250,7 @@ export class CustomForecastIndicatorPersistentAdapter
           weightsUrl += `weight=${customForecastIndicator.sourceIndicatorsInformation[i].weight}&`;
         }
         const requestUrl = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl;
-
+        console.log(requestUrl);
         const res = await this.api.axiosRef.get(requestUrl);
         const grangerGroup = res.data.grangerGroup;
         const cointJohansenVerification = res.data.cointJohansenVerification;
@@ -295,18 +308,42 @@ export class CustomForecastIndicatorPersistentAdapter
     }
   }
 
-  async deleteCustomForecastIndicator(id: string) {
+  async deleteCustomForecastIndicator(customForecastIndicatorId: string) {
     try {
       const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
-        await this.customForecastIndicatorRepository.findOneBy({ id });
+        await this.customForecastIndicatorRepository.findOne({
+          where: { id: customForecastIndicatorId },
+          relations: ['member'],
+        });
       this.nullCheckForEntity(customForecastIndicatorEntity);
 
+      const memberId = customForecastIndicatorEntity.member.id;
+
+      const indicatorBoardMetadataEntities: IndicatorBoardMetadataEntity[] = await this.indicatorBoardMetadataRepository
+        .createQueryBuilder('indicatorBordMetadata')
+        .leftJoin('indicatorBordMetadata.member', 'member')
+        .where('indicatorBordMetadata.customForecastIndicatorIds @> :id', { id: `"${customForecastIndicatorId}"` })
+        .andWhere('member.id = :memberId', { memberId })
+        .getMany();
+
       await this.customForecastIndicatorRepository.remove(customForecastIndicatorEntity);
+
+      for (const indicatorBoardMetadataEntity of indicatorBoardMetadataEntities) {
+        indicatorBoardMetadataEntity.customForecastIndicatorIds =
+          indicatorBoardMetadataEntity.customForecastIndicatorIds.filter((id) => id !== customForecastIndicatorId);
+
+        for (const section in indicatorBoardMetadataEntity.sections) {
+          const sectionsArray = this.convertRecordValueToArray(indicatorBoardMetadataEntity.sections[section]);
+          const updatedDectionsArray = sectionsArray.filter((id) => id !== customForecastIndicatorId);
+          indicatorBoardMetadataEntity.sections[section] = updatedDectionsArray;
+        }
+      }
+      await this.indicatorBoardMetadataRepository.save(indicatorBoardMetadataEntities);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({
           HttpStatus: HttpStatus.NOT_FOUND,
-          error: `[ERROR] customForecastIndicatorId: ${id} 해당 예측지표를 찾을 수 없습니다.`,
+          error: `[ERROR] customForecastIndicatorId: ${customForecastIndicatorId} 해당 예측지표를 찾을 수 없습니다.`,
           message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
           cause: error,
         });
@@ -330,5 +367,31 @@ export class CustomForecastIndicatorPersistentAdapter
   }
   private nullCheckForEntity(entity) {
     if (entity == null) throw new NotFoundException();
+  }
+
+  private convertRecordValueToArray(stringList: string[]): string[] {
+    const str: string = `${stringList}`;
+    const list: string[] = str.split(',');
+    return list;
+  }
+
+  private getValidIndicators(customForecastIndicator: CustomForecastIndicator): SourceIndicatorInformation[] {
+    const allIndicatorsInformation = customForecastIndicator.sourceIndicatorsInformation;
+    allIndicatorsInformation.push({
+      sourceIndicatorId: customForecastIndicator.targetIndicator.id,
+      indicatorType: customForecastIndicator.targetIndicator.indicatorType,
+      weight: null,
+    });
+
+    switch (allIndicatorsInformation.length) {
+      case 1:
+        return [];
+      default:
+        const validIndicators = allIndicatorsInformation.filter(
+          (_SourceIndicatorInformation, index) =>
+            customForecastIndicator.grangerVerification[index].verification === 'True',
+        );
+        return validIndicators;
+    }
   }
 }

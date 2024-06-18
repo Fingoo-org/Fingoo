@@ -1,4 +1,4 @@
-import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator.query';
+import { IndicatorValueItemResponse } from '@/app/store/querys/numerical-guidance/indicator-value.query';
 import { FormattedIndicatorValue } from '../../chart/indicator-formatter.service';
 import { createUnitCalculator, UnitType } from '../../chart/unit-calculator/unit-calculator-factory.service';
 import { getBigestDateInArray, getSmallestDateInArray } from '@/app/utils/date-formatter';
@@ -47,10 +47,18 @@ export abstract class IndicatorValue {
   }
 
   get lastDate() {
+    if (this.values.length === 0) {
+      return '';
+    }
+
     return getBigestDateInArray([this.values[0].date, this.values[this.values.length - 1].date]);
   }
 
   get startDate() {
+    if (this.values.length === 0) {
+      return '';
+    }
+
     return getSmallestDateInArray([this.values[0].date, this.values[this.values.length - 1].date]);
   }
 
