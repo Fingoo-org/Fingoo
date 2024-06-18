@@ -41,92 +41,50 @@ export const useFingooChat = () => {
     }
 
     if (functionCall.name === 'explain_economic_indicator') {
-      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
-
       const { symbol } = parsedFunctionCallArguments as {
         symbol: string;
       };
 
-      const functionResponse: ChatRequest = {
-        messages: [
-          ...chatMessages,
-          {
-            id: generateId(),
-            tool_call_id: toolCalls[0].id,
-            name: 'get_instructions',
-            role: 'tool' as const,
-            content: JSON.stringify(
-              `
-              ${symbol}에 대한 정보를 설명합니다.
+      content = JSON.stringify(
+        `
+        ${symbol}에 대한 정보를 설명합니다.
 
-              - 5살짜리도 이해할 수 있도록 쉽고 자세히 설명해야 합니다.
-              - 지표의 의미와 중요성을 설명해야 합니다.
-              - 지표의 특징과 활용 방법을 설명해야 합니다.
-              `,
-            ),
-          },
-        ],
-      };
-      return functionResponse;
+        - 5살짜리도 이해할 수 있도록 쉽고 자세히 설명해야 합니다.
+        - 지표의 의미와 중요성을 설명해야 합니다.
+        - 지표의 특징과 활용 방법을 설명해야 합니다.
+        `,
+      );
     }
 
     if (functionCall.name === 'analyze_economic_indicators') {
-      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
-
       const { symbols } = parsedFunctionCallArguments as {
         symbols: string[];
       };
 
-      const functionResponse: ChatRequest = {
-        messages: [
-          ...chatMessages,
-          {
-            id: generateId(),
-            tool_call_id: toolCalls[0].id,
-            name: 'analyze_economic_indicator',
-            role: 'tool' as const,
-            content: JSON.stringify(
-              `
-                관련 분석 심볼: ${symbols}
-                
-                - 관련있는 지표를 왜 해당 지표가 질문과 관련있는지 설명해야합니다.
-                - 지표를 중심으로 전체적인 흐름과 상황을 분석해주어야합니다.
-                
-              `,
-            ),
-          },
-        ],
-      };
-      return functionResponse;
+      content = JSON.stringify(
+        `
+          관련 분석 심볼: ${symbols}
+          
+          - 관련있는 지표를 왜 해당 지표가 질문과 관련있는지 설명해야합니다.
+          - 지표를 중심으로 전체적인 흐름과 상황을 분석해주어야합니다.
+          
+        `,
+      );
     }
 
     if (functionCall.name === 'recommend_economic_indicator') {
-      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
-
       const { symbols } = parsedFunctionCallArguments as {
         symbols: string[];
       };
 
-      const functionResponse: ChatRequest = {
-        messages: [
-          ...chatMessages,
-          {
-            id: generateId(),
-            tool_call_id: toolCalls[0].id,
-            name: 'analyze_economic_indicator',
-            role: 'tool' as const,
-            content: JSON.stringify(
-              `
-                추천 심볼 리스트: ${symbols}
-                
-                - 왜 해당 심볼을 추천하는지에 대한 이유를 설명해야합니다.
-                
-              `,
-            ),
-          },
-        ],
-      };
-      return functionResponse;
+      content = JSON.stringify(
+        `
+          추천 심볼 리스트: ${symbols}
+          
+          - 왜 해당 심볼을 추천하는지에 대한 이유를 설명해야합니다.
+          
+        `,
+      );
     }
 
     const functionResponse: ChatRequest = {
