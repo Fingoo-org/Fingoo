@@ -1,39 +1,6 @@
 import { useChat } from 'ai/react';
-import { API_PATH } from '@/app/store/querys/api-path';
-import { IndicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
-import { createIndicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
-import {
-  updateSourceIndicatorRequestBody,
-  useRevalidateCustomForecastIndicatorList,
-} from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { generateId, type ChatRequest, type ToolCallHandler } from 'ai';
-import { instance } from '@/app/utils/http';
-import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { useCustomForecastIndicatorListViewModel } from '../numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
-import { customForecastIndicatorMockData } from '@/app/mocks/mock-data/custom-indicator-value.mock';
-
-async function getIndicatorIdBySymbol(symbol: string): Promise<IndicatorByTypeResponse> {
-  const { data } = await instance.get(`${API_PATH.indicatorList}/search`, {
-    params: {
-      symbol,
-      type: 'none',
-    },
-  });
-  return data;
-}
-
-function formatSymbol(symbol: string) {
-  if (symbol.includes(':')) {
-    return symbol.split(':')[1];
-  }
-  if (symbol.includes('^')) {
-    return symbol.split('^')[1];
-  }
-  if (symbol.includes('.')) {
-    return symbol.split('.')[0];
-  }
-  return symbol;
-}
+import usePredictIndicator from './use-prdict-indicator.hook';
 
 const instructions = [
   {
@@ -82,15 +49,15 @@ const instructions = [
 ];
 
 export const useFingooChat = () => {
-  const revalidateCustomForecastIndicatorList = useRevalidateCustomForecastIndicatorList();
-  const { addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
-  const { createCustomForecastIndicator } = useCustomForecastIndicatorListViewModel();
+  const { predictEconomicIndicatorHandler } = usePredictIndicator();
 
   const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
     console.log('client');
     console.log('chatMessages:', chatMessages);
     console.log('toolCalls:', toolCalls);
     const functionCall = toolCalls[0].function;
+
+    let content: string | undefined;
 
     if (functionCall.name === 'get_instructions') {
       const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
@@ -137,12 +104,11 @@ export const useFingooChat = () => {
     if (functionCall.name === 'explain_economic_indicator') {
       const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
 
-
       const { symbol } = parsedFunctionCallArguments as {
         symbol: string;
       };
 
-      const functionResponse: ChatRequest = {  
+      const functionResponse: ChatRequest = {
         messages: [
           ...chatMessages,
           {
@@ -165,12 +131,12 @@ export const useFingooChat = () => {
       return functionResponse;
     }
 
-    if(functionCall.name === 'analyze_economic_indicators') {
+    if (functionCall.name === 'analyze_economic_indicators') {
       const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
 
       const { symbols } = parsedFunctionCallArguments as {
         symbols: string[];
-      }
+      };
 
       const functionResponse: ChatRequest = {
         messages: [
@@ -187,101 +153,29 @@ export const useFingooChat = () => {
                 - 관련있는 지표를 왜 해당 지표가 질문과 관련있는지 설명해야합니다.
                 - 지표를 중심으로 전체적인 흐름과 상황을 분석해주어야합니다.
                 
-              `
-            )
-          }
-        ]
-      }
-      return functionResponse;
-    }
-    
-
-    if (functionCall.name === 'predict_economic_indicator') {
-      const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
-
-      const { target_symbol, source_symbols } = parsedFunctionCallArguments as {
-        target_symbol: string;
-        source_symbols: string[];
-      };
-      console.log(target_symbol, source_symbols);
-
-      // // 1: id랑 type을 가져온다.
-      // const target_indicator = createIndicator(await getIndicatorIdBySymbol(formatSymbol(target_symbol)));
-
-      // const source_indicators = (
-      //   await Promise.all(
-      //     source_symbols.map(async (source_symbol) => {
-      //       try {
-      //         return createIndicator(await getIndicatorIdBySymbol(formatSymbol(source_symbol)));
-      //       } catch {
-      //         return;
-      //       }
-      //     }),
-      //   )
-      // ).filter((indicator) => indicator !== undefined);
-
-      // console.log('target_indicator:', target_indicator);
-      // console.log('source_indicators:', source_indicators);
-
-      // // 2: 예측지표를 생성한다
-      // const custonforecastIndicatorId = await createCustomForecastIndicator({
-      //   targetIndicatorId: target_indicator.id,
-      //   indicatorType: target_indicator.indicatorType,
-      //   customForecastIndicatorName: `GPT가 생성한 예측지표(${target_indicator.symbol})`,
-      // });
-
-      // // 3: 예측 지표의 재료 지표를 업데이트 한다.
-      // const body: updateSourceIndicatorRequestBody = {
-      //   sourceIndicatorsInformation: source_indicators.map((indicator) => ({
-      //     sourceIndicatorId: indicator!.id,
-      //     weight: 0,
-      //     indicatorType: indicator!.indicatorType,
-      //   })),
-      // };
-      // await instance.patch(`${API_PATH.customForecastIndicator}/${custonforecastIndicatorId}`, body);
-      // revalidateCustomForecastIndicatorList();
-
-      // addCustomForecastIndicatorToMetadata(custonforecastIndicatorId);
-      // // 4: 예측 지표 값을 가져온다.
-      // const { data } = await instance.get(`${API_PATH.customForecastIndicator}/value/${custonforecastIndicatorId}`);
-
-      // const predictedEconomicIndicatorValues = data.customForecastIndicatorValues;
-      const predictedEconomicIndicatorValues = customForecastIndicatorMockData[0].values;
-      // console.log('predictedEconomicIndicatorValues:', predictedEconomicIndicatorValues);
-      const functionResponse: ChatRequest = {
-        messages: [
-          ...chatMessages,
-          {
-            id: generateId(),
-            tool_call_id: toolCalls[0].id,
-            name: 'predict_economic_indicator',
-            role: 'tool' as const,
-            content: JSON.stringify(
-              `
-              에측 결과 값: ${JSON.stringify(predictedEconomicIndicatorValues)}
-
-              아래와 같은 지시사항을 따라 사용자에게 예측 결과값에 대한 해석을 제공합니다.
-              - 목표 지표와 재료 지표가 무엇인지 명확히 설명해야 합니다. 
-              - 예측 결과 값을 제공해야 합니다. 
-              - 해석에는 목표 지표와 재료 지표의 연관성에 대한 지식을 설명해야 합니다. 
-              - 예측 결과 값을 기반으로 해당 지표가 상승하는지 하락하는지에 대한 해석을 제공 합니다. 
-              - 예측 결과 값을 기반으로 GPT가 알고 있는 지식을 활용하여 해석을 제공 합니다. 
-              - 예측 결과 값이 부정확할 수 있음을 설명해야 합니다.
               `,
             ),
           },
         ],
       };
-      console.log(functionResponse);
       return functionResponse;
     }
 
-    if(functionCall.name === 'recommend_economic_indicator') {
+    if (functionCall.name === 'predict_economic_indicator') {
+      content = await predictEconomicIndicatorHandler(
+        JSON.parse(functionCall.arguments) as {
+          target_symbol: string;
+          source_symbols: string[];
+        },
+      );
+    }
+
+    if (functionCall.name === 'recommend_economic_indicator') {
       const parsedFunctionCallArguments = JSON.parse(functionCall.arguments);
 
       const { symbols } = parsedFunctionCallArguments as {
         symbols: string[];
-      }
+      };
 
       const functionResponse: ChatRequest = {
         messages: [
@@ -297,16 +191,28 @@ export const useFingooChat = () => {
                 
                 - 왜 해당 심볼을 추천하는지에 대한 이유를 설명해야합니다.
                 
-              `
-            )
-          }
-        ]
-      }
+              `,
+            ),
+          },
+        ],
+      };
       return functionResponse;
     }
-  };
 
-  
+    const functionResponse: ChatRequest = {
+      messages: [
+        ...chatMessages,
+        {
+          id: generateId(),
+          tool_call_id: toolCalls[0].id,
+          name: functionCall.name,
+          role: 'tool' as const,
+          content: content ?? '기능이 구현되지 않았습니다.',
+        },
+      ],
+    };
+    return functionResponse;
+  };
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
     experimental_onToolCall: toolCallHandler,
