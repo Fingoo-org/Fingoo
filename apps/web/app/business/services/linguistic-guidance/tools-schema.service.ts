@@ -1,5 +1,13 @@
 import type { ChatCompletionTool } from 'openai/resources/index.mjs';
 
+export type FunctionName =
+  | 'predict_economic_indicator'
+  | 'analyze_economic_indicators'
+  | 'explain_economic_indicator'
+  | 'recommend_economic_indicator'
+  | 'speak_to_user'
+  | 'get_instructions';
+
 export const tools: Array<ChatCompletionTool> = [
   {
     type: 'function',
