@@ -26,6 +26,7 @@ const instructions = [
     instruction: `
     경제 분석에 필요한 지표들을 가져온 후 이를 토대로 경제 분석을 수행합니다.  
     - 지표는 FRED(Federal Reserve Economic Data) API를 통해 제공되며, FRED의 심볼을 기준으로 제공합니다. 
+    - 심볼은 실제로 존재해야 합니다.
     `,
   },
   {

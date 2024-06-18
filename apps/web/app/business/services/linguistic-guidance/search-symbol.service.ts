@@ -11,7 +11,17 @@ export async function getIndicatorIdBySymbolToFred(symbol: string): Promise<Indi
   return await getIndicator(symbol, 'economy');
 }
 
-// export async function getIndicator
+export async function getIndicatorBySymbol(symbol: string): Promise<IndicatorByTypeResponse | undefined> {
+  const indicatorFromFred = await getIndicatorIdBySymbolToFred(symbol);
+
+  if (indicatorFromFred) {
+    return indicatorFromFred;
+  }
+
+  const indicatorFromAPI = await getIndicatorIdBySymbolToAPI(symbol);
+
+  return indicatorFromAPI;
+}
 
 async function getIndicator(symbol: string, type: string): Promise<IndicatorByTypeResponse | undefined> {
   try {
