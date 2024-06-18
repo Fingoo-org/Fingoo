@@ -1,6 +1,5 @@
 import { instance } from '@/app/utils/http';
 import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
-import { IndicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { API_PATH } from '@/app/store/querys/api-path';
 import { useCustomForecastIndicatorListViewModel } from '../numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 import {
@@ -8,16 +7,7 @@ import {
   useRevalidateCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-
-async function getIndicatorIdBySymbol(symbol: string): Promise<IndicatorByTypeResponse> {
-  const { data } = await instance.get(`${API_PATH.indicatorList}/search`, {
-    params: {
-      symbol,
-      type: 'none',
-    },
-  });
-  return data;
-}
+import { getIndicatorIdBySymbol } from '../../services/linguistic-guidance/search-symbol.service';
 
 function formatSymbol(symbol: string) {
   if (symbol.includes(':')) {
@@ -43,16 +33,20 @@ export default function usePredictIndicator() {
   const { addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
 
   async function predictEconomicIndicatorHandler({ target_symbol, source_symbols }: Props) {
-    const target_indicator = createIndicator(await getIndicatorIdBySymbol(formatSymbol(target_symbol)));
+    const target_indicator_response = await getIndicatorIdBySymbol(formatSymbol(target_symbol));
+
+    if (!target_indicator_response) return '타겟 지표를 찾을 수 없습니다.';
+
+    const target_indicator = createIndicator(target_indicator_response);
 
     const source_indicators = (
       await Promise.all(
         source_symbols.map(async (source_symbol) => {
-          try {
-            return createIndicator(await getIndicatorIdBySymbol(formatSymbol(source_symbol)));
-          } catch {
-            return;
-          }
+          const source_indicator_response = await getIndicatorIdBySymbol(formatSymbol(source_symbol));
+
+          if (!source_indicator_response) return;
+
+          return createIndicator(source_indicator_response);
         }),
       )
     ).filter((indicator) => indicator !== undefined);
