@@ -48,16 +48,6 @@ export const useFingooChat = () => {
       };
 
       content = await analyzeEconomicHandler(symbols);
-
-      content = JSON.stringify(
-        `
-          관련 분석 심볼: ${symbols}
-          
-          - 관련있는 지표를 왜 해당 지표가 질문과 관련있는지 설명해야합니다.
-          - 지표를 중심으로 전체적인 흐름과 상황을 분석해주어야합니다.
-          
-        `,
-      );
     }
 
     if (functionCall.name === 'explain_economic_indicator') {

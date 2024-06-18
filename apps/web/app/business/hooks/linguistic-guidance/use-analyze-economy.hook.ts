@@ -55,6 +55,8 @@ export default function useAnalyzeEconomy() {
 
     분석 지표들 값: ${indicatorsValue.map((indicatorValue) => indicatorValue.values).join(', ')}
 
+    - 관련있는 지표를 왜 해당 지표가 질문과 관련있는지 설명해야합니다.
+    - 지표를 중심으로 전체적인 흐름과 상황을 분석해주어야합니다.
     `;
   };
 
