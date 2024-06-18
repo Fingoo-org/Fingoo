@@ -7,7 +7,7 @@ import {
   useRevalidateCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { getIndicatorIdBySymbol } from '../../services/linguistic-guidance/search-symbol.service';
+import { getIndicatorIdBySymbolToAPI } from '../../services/linguistic-guidance/search-symbol.service';
 
 function formatSymbol(symbol: string) {
   if (symbol.includes(':')) {
@@ -33,7 +33,7 @@ export default function usePredictIndicator() {
   const { addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
 
   async function predictEconomicIndicatorHandler({ target_symbol, source_symbols }: Props) {
-    const target_indicator_response = await getIndicatorIdBySymbol(formatSymbol(target_symbol));
+    const target_indicator_response = await getIndicatorIdBySymbolToAPI(formatSymbol(target_symbol));
 
     console.log(target_indicator_response);
     if (!target_indicator_response) return '타겟 지표를 찾을 수 없습니다.';
@@ -43,7 +43,7 @@ export default function usePredictIndicator() {
     const source_indicators = (
       await Promise.all(
         source_symbols.map(async (source_symbol) => {
-          const source_indicator_response = await getIndicatorIdBySymbol(formatSymbol(source_symbol));
+          const source_indicator_response = await getIndicatorIdBySymbolToAPI(formatSymbol(source_symbol));
 
           if (!source_indicator_response) return;
 

@@ -3,13 +3,15 @@ import { IndicatorByTypeResponse } from '@/app/store/querys/numerical-guidance/i
 import { instance } from '@/app/utils/http';
 import { NotFoundError } from '@/app/utils/http/http-error';
 
-export async function getIndicatorIdBySymbol(symbol: string): Promise<IndicatorByTypeResponse | undefined> {
+export async function getIndicatorIdBySymbolToAPI(symbol: string): Promise<IndicatorByTypeResponse | undefined> {
   return await getIndicator(symbol, 'none');
 }
 
 export async function getIndicatorIdBySymbolToFred(symbol: string): Promise<IndicatorByTypeResponse | undefined> {
   return await getIndicator(symbol, 'economy');
 }
+
+// export async function getIndicator
 
 async function getIndicator(symbol: string, type: string): Promise<IndicatorByTypeResponse | undefined> {
   try {
