@@ -59,7 +59,7 @@ export default function usePredictIndicator() {
     const custonforecastIndicatorId = await createCustomForecastIndicator({
       targetIndicatorId: target_indicator.id,
       indicatorType: target_indicator.indicatorType,
-      customForecastIndicatorName: `GPT가 생성한 예측지표(${target_indicator.symbol})`,
+      customForecastIndicatorName: `Fingoo가 생성한 예측지표(${target_indicator.symbol})`,
     });
 
     // 3: 예측 지표의 재료 지표를 업데이트 한다.

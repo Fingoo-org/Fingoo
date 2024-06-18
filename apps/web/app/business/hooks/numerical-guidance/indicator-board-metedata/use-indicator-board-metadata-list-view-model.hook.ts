@@ -51,10 +51,10 @@ export const useIndicatorBoardMetadataList = () => {
     }
   }, [convertedIndicatorBoardMetadataList]);
 
-  const createIndicatorBoardMetadata = async () => {
+  const createIndicatorBoardMetadata = async (name?: string) => {
     const metadata = {
       indicatorBoardMetadataName: createNotDuplicatedName(
-        '메타데이터',
+        name ?? '메타데이터',
         convertedIndicatorBoardMetadataList?.names ?? [],
       ),
     };
