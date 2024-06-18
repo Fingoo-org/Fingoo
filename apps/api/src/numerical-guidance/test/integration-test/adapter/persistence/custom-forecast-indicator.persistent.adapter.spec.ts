@@ -316,7 +316,6 @@ describe('CustomForecastIndicatorPersistentAdapter', () => {
     );
 
     // then
-    console.log(indicatorBoardMetadata.customForecastIndicatorIds);
     expect(indicatorBoardMetadata.customForecastIndicatorIds.length).toEqual(0);
     expect(indicatorBoardMetadata.sections['section1'].length).toEqual(0);
   });
