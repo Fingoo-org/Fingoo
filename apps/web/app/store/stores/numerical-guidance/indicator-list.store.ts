@@ -10,6 +10,7 @@ export const indicatorTypes = [
   'customForecastIndicator',
   'funds',
   'bonds',
+  'economy',
 ] as const;
 export type IndicatorType = (typeof indicatorTypes)[number];
 

@@ -14,8 +14,10 @@ import {
   IndicesIndicatorResponse,
   FundsIndicatorResponse,
   BondsIndicatorResponse,
+  EconomyIndicatorResponse,
 } from '@/app/store/querys/numerical-guidance/indicator-list.query';
 import { Indicator } from './indicators/indicator.service';
+import { EconomyIndicator } from './indicators/economy-indicator.service';
 
 export function createIndicator(data: IndicatorByTypeResponse): Indicator {
   const { indicatorType } = data;
@@ -34,6 +36,8 @@ export function createIndicator(data: IndicatorByTypeResponse): Indicator {
       return new FundIndicator(data as FundsIndicatorResponse);
     case 'bonds':
       return new BondIndicator(data as BondsIndicatorResponse);
+    case 'economy':
+      return new EconomyIndicator(data as EconomyIndicatorResponse);
     default:
       throw new Error('Invalid indicator type');
   }
