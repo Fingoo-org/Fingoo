@@ -2,6 +2,7 @@ import { API_PATH } from '@/app/store/querys/api-path';
 import { AddIndicatorToMetadataRequestBody } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator-value.query';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import { getStartDate } from '@/app/utils/date-formatter';
 import { instance } from '@/app/utils/http';
 
 export async function getIndicatorValue({
@@ -15,7 +16,7 @@ export async function getIndicatorValue({
     params: {
       interval: 'week',
       indicatorType,
-      startDate: '2024-02-27',
+      startDate: getStartDate('default', 'week'),
       indicatorId: id,
     },
   });
