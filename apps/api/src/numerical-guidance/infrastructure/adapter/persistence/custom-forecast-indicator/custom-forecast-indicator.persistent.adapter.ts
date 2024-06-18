@@ -311,14 +311,22 @@ export class CustomForecastIndicatorPersistentAdapter
   async deleteCustomForecastIndicator(customForecastIndicatorId: string) {
     try {
       const customForecastIndicatorEntity: CustomForecastIndicatorEntity =
-        await this.customForecastIndicatorRepository.findOneBy({ id: customForecastIndicatorId });
+        await this.customForecastIndicatorRepository.findOne({
+          where: { id: customForecastIndicatorId },
+          relations: ['member'],
+        });
       this.nullCheckForEntity(customForecastIndicatorEntity);
-      await this.customForecastIndicatorRepository.remove(customForecastIndicatorEntity);
+
+      const memberId = customForecastIndicatorEntity.member.id;
 
       const indicatorBoardMetadataEntities: IndicatorBoardMetadataEntity[] = await this.indicatorBoardMetadataRepository
         .createQueryBuilder('indicatorBordMetadata')
+        .leftJoin('indicatorBordMetadata.member', 'member')
         .where('indicatorBordMetadata.customForecastIndicatorIds @> :id', { id: `"${customForecastIndicatorId}"` })
+        .andWhere('member.id = :memberId', { memberId })
         .getMany();
+
+      await this.customForecastIndicatorRepository.remove(customForecastIndicatorEntity);
 
       for (const indicatorBoardMetadataEntity of indicatorBoardMetadataEntities) {
         indicatorBoardMetadataEntity.customForecastIndicatorIds =
