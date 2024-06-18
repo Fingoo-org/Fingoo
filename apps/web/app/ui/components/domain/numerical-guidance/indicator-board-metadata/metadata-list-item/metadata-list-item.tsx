@@ -120,8 +120,6 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       </SortableContext>
     ));
 
-  console.log(indicatorIdsWithSectionIds);
-
   return (
     <ExpandableListItem
       onDeSelect={handleDeSelect}

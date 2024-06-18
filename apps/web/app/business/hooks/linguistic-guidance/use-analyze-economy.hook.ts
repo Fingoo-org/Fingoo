@@ -40,7 +40,7 @@ export default function useAnalyzeEconomy() {
     await revalidateIndicatorBoardMetadataList();
 
     // 4. 값 가져오기
-    const values = await Promise.all(
+    const indicatorsValue = await Promise.all(
       indicators.map(async (indicator) => {
         return await getIndicatorValue(indicator);
       }),
@@ -50,7 +50,12 @@ export default function useAnalyzeEconomy() {
     displayIndicatorBoardMetadata(metadataId);
 
     // 6. GPT에 분석 요청
-    return undefined;
+    return `
+    분석한 지표들: ${symbols.join(', ')}
+
+    분석 지표들 값: ${indicatorsValue.map((indicatorValue) => indicatorValue.values).join(', ')}
+
+    `;
   };
 
   return {
