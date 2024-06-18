@@ -74,7 +74,6 @@ export const useSelectedCustomForecastIndicatorStore = create<SelectedCustomFore
         });
       },
       addSourceIndicator: (indicatorByType: IndicatorByTypeResponse) => {
-        console.log(indicatorByType);
         get().actions.update((state) => ({
           ...state,
           selectedCustomForecastIndicator: {

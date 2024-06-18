@@ -13,7 +13,6 @@ import { ToastAction } from '@/app/ui/components/view/molecule/toast/toast';
 import Link from 'next/link';
 
 export const onActionHttpError = (toast: (props: Toast) => any, error: unknown) => {
-  console.log(error);
   if (error instanceof NotFoundError || error instanceof ForbiddenError) {
     // 해당 에러는 여기서 처리하지 않음
     return;

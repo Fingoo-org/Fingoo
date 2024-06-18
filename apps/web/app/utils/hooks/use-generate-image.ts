@@ -30,7 +30,6 @@ export function useGenerateImage<T extends HTMLElement = HTMLDivElement>({
           backgroundColor: 'white',
         })
         .then((blob) => {
-          console.log(blob);
           setIsLoading(false);
           return blob;
         });
@@ -47,7 +46,6 @@ export function useGenerateImage<T extends HTMLElement = HTMLDivElement>({
   const generateImageFile = async () => {
     const blob = await generateImageBlob();
     if (blob) {
-      console.log(new File([blob], `${imageName}.png`, { type: 'image/png' }));
       return new File([blob], `${imageName}.png`, { type: 'image/png' });
     }
   };
