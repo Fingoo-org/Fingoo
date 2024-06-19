@@ -21,7 +21,6 @@ export default function IndicatorUnitSelector({ indicatorBoardMetadataId, indica
     unitType: 'default',
   };
 
-  console.log(indicatorsUnitType);
   const handleUnitTypeChange = (unitType: string) => {
     if (isUnitType(unitType)) {
       updateUnitType(indicatorBoardMetadataId, indicatorId, unitType);

@@ -2,6 +2,9 @@ import '@testing-library/jest-dom';
 import 'jest-canvas-mock';
 import { server } from './app/mocks/server.mock';
 import { createElement } from 'react';
+import { TransformStream } from 'web-streams-polyfill';
+// import { TransformStream } from 'web-streams-polyfill/ponyfill/es2018';
+// import { TransformStream}
 
 beforeAll(() => server.listen());
 
@@ -50,3 +53,5 @@ global.ResizeObserver = class MockedResizeObserver {
 };
 
 global.structuredClone = jest.fn((x) => JSON.parse(JSON.stringify(x)));
+
+global.TransformStream = TransformStream;

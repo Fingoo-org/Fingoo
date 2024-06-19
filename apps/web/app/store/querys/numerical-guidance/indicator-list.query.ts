@@ -84,6 +84,19 @@ type PaginationMeta = {
   cursor: number;
 };
 
+export type EconomyIndicatorResponse = {
+  id: string;
+  indicatorType: 'economy';
+  symbol: string;
+  name: string;
+  frequency: string;
+  frequency_short: string;
+  units: string;
+  units_short: string;
+  seasonal_adjustment: string;
+  seasonal_adjustment_short: string;
+  notes: string;
+};
 export type IndicatorByTypeResponse =
   | StocksIndicatorResponse
   | ForexPairsIndicatorResponse
@@ -91,7 +104,8 @@ export type IndicatorByTypeResponse =
   | EtfIndicatorResponse
   | IndicesIndicatorResponse
   | FundsIndicatorResponse
-  | BondsIndicatorResponse;
+  | BondsIndicatorResponse
+  | EconomyIndicatorResponse;
 
 export type IndicatorListResponse = {
   data: IndicatorByTypeResponse[];

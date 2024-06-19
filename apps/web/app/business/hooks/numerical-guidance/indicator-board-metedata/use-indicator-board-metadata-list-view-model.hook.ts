@@ -14,7 +14,11 @@ import {
 import { createNotDuplicatedName } from '@/app/utils/helper';
 
 export const useIndicatorBoardMetadataList = () => {
-  const { data: indicatorBoardMetadataList, isValidating } = useFetchIndicatorBoardMetadataList();
+  const {
+    data: indicatorBoardMetadataList,
+    isValidating,
+    mutate: revalidateIndicatorBoardMetadataList,
+  } = useFetchIndicatorBoardMetadataList();
   const { trigger: deleteIndicatorBoardMetadataTrigger } = useDeleteIndicatorBoardMetadata();
   const { trigger: createIndicatorBoardMetadataTrigger, isMutating: isCreateIndicatorMetadataMutating } =
     useCreateIndicatorMetadata();
@@ -51,10 +55,10 @@ export const useIndicatorBoardMetadataList = () => {
     }
   }, [convertedIndicatorBoardMetadataList]);
 
-  const createIndicatorBoardMetadata = async () => {
+  const createIndicatorBoardMetadata = async (name?: string) => {
     const metadata = {
       indicatorBoardMetadataName: createNotDuplicatedName(
-        '메타데이터',
+        name ?? '메타데이터',
         convertedIndicatorBoardMetadataList?.names ?? [],
       ),
     };
@@ -80,5 +84,6 @@ export const useIndicatorBoardMetadataList = () => {
     isPending: isValidating,
     createIndicatorBoardMetadata,
     deleteIndicatorBoardMetadata,
+    revalidateIndicatorBoardMetadataList,
   };
 };

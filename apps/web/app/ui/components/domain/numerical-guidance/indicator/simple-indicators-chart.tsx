@@ -30,7 +30,6 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
             .getIdentifiersByIds(indicatorIds)
             .map((indicator) => indicator.identifier);
 
-          console.log(categories);
           return (
             <MultiLineChart
               data-testid={`simple-indicators-chart-section${index + 1}`}

@@ -1,8 +1,8 @@
 'use client';
-import { useFingooChat } from '@/app/business/hooks/linguistic-guidance/use-fingoo-chat.hook';
+import { useChat } from '@/app/business/hooks/linguistic-guidance/use-chat.hook';
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useFingooChat();
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
 
   return (
     <div className="stretch mx-auto flex w-full max-w-md flex-col py-24">

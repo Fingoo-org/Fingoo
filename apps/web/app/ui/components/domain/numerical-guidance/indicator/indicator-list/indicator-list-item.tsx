@@ -4,9 +4,11 @@ import ListItem from '../../../../view/atom/list-item';
 import { useDialog } from '../../../../../../utils/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import IconButton from '../../../../view/atom/icons/icon-button';
-import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import { cn } from '@/app/utils/style';
+import { useChat } from '@/app/business/hooks/linguistic-guidance/use-chat.hook';
+import { generateId } from 'ai';
+import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 
 type IndicatorListItemProps = {
   item: Indicator;
@@ -14,7 +16,8 @@ type IndicatorListItemProps = {
 };
 
 export default function IndicatorListItem({ item, style }: IndicatorListItemProps) {
-  const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.INDICATOR_EDIT_MENU);
+  const { append } = useChat();
+
   const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } = useSelectedIndicatorBoardMetadata();
   const isSelected = selectedMetadata?.indicatorIds?.some((id) => id === item.id) || false;
   const handleItemSelect = () =>
@@ -28,17 +31,22 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
   const handleItemDeSelect = () => deleteIndicatorFromMetadata(item.id);
 
   const handleIconButton = () => {
-    openDialogWithPayload(item);
+    append({
+      id: generateId(),
+      content: `${item.symbol}(${item.name})에 대해 설명해줘`,
+      role: 'user',
+    });
   };
 
   const hoverRender = () => {
     return (
       <IconButton
-        aria-label="edit"
-        ref={iconButtonRef}
+        size={'xs'}
+        aria-label="question"
         onClick={handleIconButton}
-        icon={DotsHorizontalIcon}
+        icon={QuestionMarkCircledIcon}
         color={'emerald'}
+        className="rounded-full"
       />
     );
   };
