@@ -7,9 +7,8 @@ import IconButton from '../../../../view/atom/icons/icon-button';
 import { DotsHorizontalIcon } from '@heroicons/react/solid';
 import { Indicator } from '@/app/business/services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import { cn } from '@/app/utils/style';
-import { useChat } from 'ai/react';
+// import { useChat } from '@/app/business/hooks/linguistic-guidance/use-chat.hook';
 import { generateId } from 'ai';
-import { useFingooChat } from '@/app/business/hooks/linguistic-guidance/use-fingoo-chat.hook';
 
 type IndicatorListItemProps = {
   item: Indicator;
@@ -17,7 +16,7 @@ type IndicatorListItemProps = {
 };
 
 export default function IndicatorListItem({ item, style }: IndicatorListItemProps) {
-  const { append } = useFingooChat();
+  // const { append } = useChat();
 
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.INDICATOR_EDIT_MENU);
   const { selectedMetadata, addIndicatorToMetadata, deleteIndicatorFromMetadata } = useSelectedIndicatorBoardMetadata();
@@ -36,7 +35,7 @@ export default function IndicatorListItem({ item, style }: IndicatorListItemProp
     openDialogWithPayload(item);
     // append({
     //   id: generateId(),
-    //   content: 'AAPL 설명해줘',
+    //   content: 'AAPL에 대해 설명해줘',
     //   role: 'user',
     // });
   };

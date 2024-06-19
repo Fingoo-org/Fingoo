@@ -1,11 +1,11 @@
 'use client';
 import { ChatRequestOptions } from 'ai';
 import PromptForm from '../../view/molecule/prompt-form/prompt-form';
-import { useFingooChat } from '@/app/business/hooks/linguistic-guidance/use-fingoo-chat.hook';
 import { useLogger } from '@/app/logging/logging-context';
 import type { Message } from 'ai';
 import { Messages } from '../../view/molecule/messages';
 import PromptPreset from './prompt-preset';
+import { useChat } from '@/app/business/hooks/linguistic-guidance/use-chat.hook';
 
 const defaultMessages: Message = {
   id: 'custom',
@@ -15,7 +15,7 @@ const defaultMessages: Message = {
 
 export default function Chat() {
   const logger = useLogger();
-  const { messages, input, handleInputChange, setInput, handleSubmit, isLoading } = useFingooChat();
+  const { messages, input, handleInputChange, setInput, handleSubmit, isLoading } = useChat();
 
   const handlePromptSubmit = (
     e: React.FormEvent<HTMLFormElement>,
