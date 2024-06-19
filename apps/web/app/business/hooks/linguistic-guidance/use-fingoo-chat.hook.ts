@@ -96,7 +96,7 @@ export const useFingooChat = () => {
     return functionResponse;
   };
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+  const { messages, input,  handleInputChange, setInput, handleSubmit,  isLoading } = useChat({
     experimental_onToolCall: toolCallHandler,
     onFinish: (message) => {
       console.log('finished', message);
@@ -112,5 +112,6 @@ export const useFingooChat = () => {
     isLoading,
     handleInputChange,
     handleSubmit,
+    setInput,
   };
 };

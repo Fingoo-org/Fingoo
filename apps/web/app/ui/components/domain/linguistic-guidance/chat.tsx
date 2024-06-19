@@ -5,6 +5,7 @@ import { useFingooChat } from '@/app/business/hooks/linguistic-guidance/use-fing
 import { useLogger } from '@/app/logging/logging-context';
 import type { Message } from 'ai';
 import { Messages } from '../../view/molecule/messages';
+import PromptPreset from './prompt-preset';
 
 const mockMessage: Message[] = [
   {
@@ -59,7 +60,7 @@ const defaultMessages: Message = {
 
 export default function Chat() {
   const logger = useLogger();
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useFingooChat();
+  const { messages, input, handleInputChange, setInput, handleSubmit, isLoading } = useFingooChat();
 
   const handlePromptSubmit = (
     e: React.FormEvent<HTMLFormElement>,
@@ -77,19 +78,11 @@ export default function Chat() {
         <div className="max-h-[73vh] overflow-y-auto px-6 scrollbar-thin">
           <Messages messages={messagesWithGreeting} isLoading={isLoading} />
         </div>
-        {/* <div className="flex flex-wrap gap-2 px-6	">
-          <Chip />
-        </div> */}
+        <PromptPreset value={input} formAction={handlePromptSubmit} setInput={setInput} />
         <div className="px-6 pb-4 pt-6">
           <PromptForm value={input} onValueChange={handleInputChange} formAction={handlePromptSubmit} />
         </div>
       </div>
     </div>
   );
-}
-
-const prompts = ['S&P 500 예측해줘'];
-
-function Chip() {
-  return <div className="rounded-md bg-fingoo-gray-1.5 px-4 py-2 text-xs font-bold">안녕하세요</div>;
 }
