@@ -98,31 +98,81 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
     return indicatorDto == null;
   }
 
-  private createLiveIndicatorKey(indicatorDto: IndicatorDtoType, interval: string, formattedStartDate: string) {
-    const endDate = this.getEndDate();
-    if (interval === 'none') {
-      const economicInterval: string = (indicatorDto as EconomyDto).frequency;
-      return {
-        key: `${indicatorDto.indicatorType}/live${indicatorDto.symbol}${economicInterval}${formattedStartDate}${endDate}`,
-        endDate: endDate,
-      };
+  private createLiveIndicatorKey(indicatorDto: IndicatorDtoType, interval: Interval, startDate: string) {
+    const nowEndDate = this.getEndDate();
+    const endDate = this.formatDayToString(nowEndDate);
+    const keyInterval = this.getKeyInterval(interval, indicatorDto);
+    const redisExpiredKey = this.getRedisExpiredKey(nowEndDate, interval);
+
+    const key = `${indicatorDto.indicatorType}/live-${indicatorDto.symbol}-interval:${keyInterval}-startDate:${startDate}-redisExpiredKey:${redisExpiredKey}`;
+    return { key, endDate };
+  }
+
+  getEndDate(): Date {
+    return new Date();
+  }
+
+  private getRedisExpiredKey(currentDate: Date, interval: string): string {
+    switch (interval) {
+      case 'day':
+        return this.formatDayToString(currentDate);
+      case 'week':
+        return this.formatWeekToString(currentDate);
+      case 'month':
+        return this.formatMonthToString(currentDate);
+      case 'year':
+        return this.formatYearToString(currentDate);
+      default:
+        return this.formatDayToString(currentDate);
     }
-    return {
-      key: `${indicatorDto.indicatorType}/live${indicatorDto.symbol}${interval}${formattedStartDate}${endDate}`,
-      endDate: endDate,
-    };
   }
 
-  private getEndDate(): string {
-    const currentDate = new Date();
-    return this.formatDateToString(currentDate);
+  private getKeyInterval(interval: Interval, indicatorDto: IndicatorDtoType): string {
+    if (interval === 'none') {
+      return (indicatorDto as EconomyDto).frequency || '';
+    }
+    return interval;
   }
 
-  private formatDateToString(date: Date): string {
+  private formatDayToString(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-
     return `${year}-${month}-${day}`;
+  }
+
+  private formatWeekToString(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const week = this.getISOWeekNumber(date);
+    return `${year}-${month}-W${week}`;
+  }
+
+  private formatMonthToString(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    return `${year}-${month}`;
+  }
+
+  private formatYearToString(date: Date): string {
+    return String(date.getFullYear());
+  }
+
+  // 해당 날짜(년도별) ISO 식 주차 구하는 함수
+  private getISOWeekNumber(date: Date): number {
+    const dayOfWeek = date.getDay(); // 0 (일요일) ~ 6 (토요일)
+    const jan1 = new Date(date.getFullYear(), 0, 1); // 해당 년도의 1월 1일
+    const firstWeekStart = jan1.getDate() - jan1.getDay() + (jan1.getDay() === 0 ? -6 : 1);
+    const currentWeekStart = date.getDate() - dayOfWeek;
+
+    if (firstWeekStart <= currentWeekStart) {
+      return Math.ceil((currentWeekStart - firstWeekStart) / 7) + 1;
+    } else {
+      const prevYearStart = new Date(date.getFullYear() - 1, 0, 1);
+      const prevYearFirstWeekStart =
+        prevYearStart.getDate() - prevYearStart.getDay() + (prevYearStart.getDay() === 0 ? -6 : 1);
+      const prevYearWeeks = Math.ceil((prevYearStart.getTime() - prevYearFirstWeekStart) / (7 * 24 * 3600 * 1000));
+      return prevYearWeeks + Math.ceil((date.getTime() - firstWeekStart) / (7 * 24 * 3600 * 1000)) + 1;
+    }
   }
 }
