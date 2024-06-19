@@ -28,8 +28,8 @@ export default function PromptPreset({ value, setInput, formAction }: PromptPres
       {PROMPTS.map((prompt) => (
         <Chip onClick={handleClick} key={prompt} text={prompt} />
       ))}
-      <form ref={formRef} onSubmit={formAction}>
-        <TextInput ref={inputRef} value={value} disabled={true} />
+      <form className="invisible h-0 w-0" ref={formRef} onSubmit={formAction}>
+        <TextInput className="h-0 w-0" ref={inputRef} value={value} disabled={true} />
       </form>
     </div>
   );
@@ -43,12 +43,15 @@ type ChipProps = {
 
 function Chip({ text, value, onClick }: ChipProps) {
   const handleClick = () => {
-    () => onClick?.(value ?? text);
+    onClick?.(value ?? text);
   };
 
   return (
-    <div onClick={handleClick} className="rounded-md bg-fingoo-gray-1.5 px-4 py-2 text-xs font-bold">
-      {text}
+    <div
+      onClick={handleClick}
+      className="flex animate-pulse  items-center rounded-md bg-fingoo-gray-1.5 px-4 py-2 text-xs font-bold"
+    >
+      <p>{text}</p>
     </div>
   );
 }
