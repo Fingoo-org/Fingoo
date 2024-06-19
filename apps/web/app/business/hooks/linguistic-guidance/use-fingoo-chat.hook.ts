@@ -3,6 +3,7 @@ import { generateId, type ChatRequest, type ToolCallHandler } from 'ai';
 import usePredictIndicator from './use-predict-indicator.hook';
 import useInstruction from './use-instruction.hook';
 import useAnalyzeEconomy from './use-analyze-economy.hook';
+import useRecommendIndicator from './use-recommend-indicator.hook';
 
 //   // 1. symbol을 이용하여 indicatorId를 가져온다(동적 저장소)
 //   // 2. 메타데이터 생성
@@ -15,6 +16,7 @@ export const useFingooChat = () => {
   const { predictEconomicIndicatorHandler } = usePredictIndicator();
   const { getInstruction } = useInstruction();
   const { analyzeEconomicHandler } = useAnalyzeEconomy();
+  const { recommendIndicatorHandler } = useRecommendIndicator();
 
   const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
     console.log('client');
@@ -71,14 +73,7 @@ export const useFingooChat = () => {
         symbols: string[];
       };
 
-      content = JSON.stringify(
-        `
-          추천 심볼 리스트: ${symbols}
-          
-          - 왜 해당 심볼을 추천하는지에 대한 이유를 설명해야합니다.
-          
-        `,
-      );
+      content = await recommendIndicatorHandler(symbols);
     }
 
     const functionResponse: ChatRequest = {
@@ -96,7 +91,7 @@ export const useFingooChat = () => {
     return functionResponse;
   };
 
-  const { messages, input,  handleInputChange, setInput, handleSubmit,  isLoading } = useChat({
+  const { messages, input, handleInputChange, setInput, handleSubmit, isLoading } = useChat({
     experimental_onToolCall: toolCallHandler,
     onFinish: (message) => {
       console.log('finished', message);
