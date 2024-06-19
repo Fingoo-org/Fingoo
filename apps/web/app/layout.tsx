@@ -3,7 +3,6 @@ import './globals.css';
 import { cn } from './utils/style';
 import localFont from 'next/font/local';
 import GoogleAnalyticsProvider from './logging/provider/google-analytics-provider';
-import ChatProvider from './business/hooks/linguistic-guidance/provider/chat-provider';
 
 const myFont = localFont({
   src: './PretendardVariable.woff2',
@@ -22,11 +21,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="kr"
       className="scrollbar-track-white scrollbar-thumb-slate-200 scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-w-1.5"
     >
-      <ChatProvider>
-        <GoogleAnalyticsProvider>
-          <body className={cn(myFont.variable, 'font-pretendard')}>{children}</body>
-        </GoogleAnalyticsProvider>
-      </ChatProvider>
+      <GoogleAnalyticsProvider>
+        <body className={cn(myFont.variable, 'font-pretendard')}>{children}</body>
+      </GoogleAnalyticsProvider>
     </html>
   );
 }
