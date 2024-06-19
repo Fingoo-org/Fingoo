@@ -6,7 +6,7 @@ import { Chip } from '../../view/atom/chip';
 
 const PREDICT_PROMPTS = ['S&P500 예측해줘', '애플 주식 예측해줘', '엔비디아 예측해줘'];
 
-const ANALYZE_PROMPTS = ['미국 반도체 시장 분석해줘', '경제 현황 분석해줘'];
+const ANALYZE_PROMPTS = ['미국 반도체 시장 분석해줘', '경제 현황 분석해줘', '에너지 시장 분석해줘'];
 
 const RECOMMEND_PROMPTS = ['미국 반도체 주식 추천해줘'];
 // '미국 은행 관련 주식 추천해줘',
