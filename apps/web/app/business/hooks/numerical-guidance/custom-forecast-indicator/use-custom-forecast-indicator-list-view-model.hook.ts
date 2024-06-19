@@ -9,12 +9,15 @@ import { useMemo } from 'react';
 import { usePending } from '@/app/utils/hooks/usePending.hook';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { createNotDuplicatedName } from '@/app/utils/helper';
+import { useIndicatorBoardMetadataList } from '../indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 
 export const useCustomForecastIndicatorListViewModel = () => {
   const { data: customForecastIndicatorList, isValidating } = useFetchCustomForecastIndicatorList();
   const { trigger: createCustomForecastIndicatorTrigger, isMutating: isCreateCustomForecastIndicatorMutating } =
     useCreateCustomForecastIndicator();
   const { trigger: deleteCustomForecastIndicatorTrigger } = useDeleteCustomForecastIndicator();
+
+  const { revalidateIndicatorBoardMetadataList } = useIndicatorBoardMetadataList();
 
   const { isPending } = usePending(isValidating, isCreateCustomForecastIndicatorMutating);
 
@@ -54,6 +57,9 @@ export const useCustomForecastIndicatorListViewModel = () => {
         return newCustomForecastIndicatorList?.formattedCustomForecastIndicatorList;
       },
       revalidate: false,
+      onSuccess: () => {
+        revalidateIndicatorBoardMetadataList();
+      },
     });
   };
 
