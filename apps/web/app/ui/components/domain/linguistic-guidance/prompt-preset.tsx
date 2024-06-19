@@ -47,11 +47,11 @@ function Chip({ text, value, onClick }: ChipProps) {
   };
 
   return (
-    <div
+    <button
       onClick={handleClick}
       className="flex animate-pulse  items-center rounded-md bg-fingoo-gray-1.5 px-4 py-2 text-xs font-bold"
     >
       <p>{text}</p>
-    </div>
+    </button>
   );
 }
