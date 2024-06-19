@@ -57,7 +57,7 @@ export const tools: Array<ChatCompletionTool> = [
     type: 'function',
     function: {
       name: 'explain_economic_indicator',
-      description: '사용자가 질문한 경제 지표에 대한 설명을 사용자에게 제공한다.',
+      description: '경제 지표에 대한 심볼을 받고 이에 대한 개요를 설명한다.',
       parameters: {
         type: 'object',
         properties: {
@@ -96,7 +96,7 @@ export const tools: Array<ChatCompletionTool> = [
       name: 'speak_to_user',
       // description: '도구 응답 지시사항을 준수하여 사용자의 질문에 대답합니다.',
       description:
-        'properties의 message description에 명시된 출력 필드를 반드시 구분하고, 출력필드의 내용 그대로 사용자의 질문에 대답합니다.',
+        'properties의 message description에 명시된 출력 필드를 반드시 구분하고, 출력필드의 내용 그대로 사용자의 질문에 대답합니다. ',
       parameters: {
         type: 'object',
         properties: {
@@ -119,13 +119,14 @@ export const tools: Array<ChatCompletionTool> = [
             추가 참고 지표 추천: 추가적으로 살펴보면 좋을 것 같은 연관 지표가 있다면 해당 지표의 이름(심볼명) 
 
             - explain 출력필드:
-            필드 1: 경제 지표에 대한 설명
-            필드 2: 관련된 지표에 대한 설명
-            필드 3: 경제 지표의 의미와 중요성
+            해당 지표 이름과 심볼: 해당하는 경제 지표에 대한 이름, FRED의 심볼값
+            지표 개요 설명: 설명하고자 하는 지표에 대한 개요를 설명합니다.
+            연관성 설명: 해당 지표가 시장에서 어떤 위치에 있는지, 어떤 시장과 연관이 있는지를 설명합니다.
 
             -recommend 출력필드:
-            출력 필드 1: 추천 지표에 대한 설명
-            출력 필드 2: 추천 지표를 왜 추천했는가에 대한 이유 설명
+            지표 이름과 심볼: 각각의 추천 지표에 대한 이름과 심볼값 명시 (예시: 월마트(WMT))
+            개별 지표 개요 설명: 각각의 추천 지표에 대한 개별적인 개요를 설명합니다. (예시: 월마트(Walmart)는 미국의 다국적 소매 기업으로, 전 세계적으로 가장 큰 소매업체 중 하나입니다. 1962년 샘 월튼(Sam Walton)에 의해 설립되었으며, 현재 본사는 아칸소주 벤턴빌에 위치하고 있습니다. 월마트는 다양한 상품을 저렴한 가격에 제공하는 대형 할인 매장으로 유명합니다.)
+            연관성 설명: 각각의 추천 지표와 질문과의 연관성을 설명합니다.
             .
             `,
           },
