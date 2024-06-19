@@ -2,6 +2,7 @@ import { TextInput } from '@tremor/react';
 import { ChatRequestOptions } from 'ai';
 import { useMemo, useRef } from 'react';
 import { flushSync } from 'react-dom';
+import { Chip } from '../../view/atom/chip';
 
 const PREDICT_PROMPTS = ['S&P500 예측해줘', '애플 주식 예측해줘', '엔비디아 예측해줘'];
 
@@ -50,26 +51,5 @@ export default function PromptPreset({ value, setInput, formAction }: PromptPres
         <TextInput className="h-0 w-0" ref={inputRef} value={value} disabled={true} />
       </form>
     </div>
-  );
-}
-
-type ChipProps = {
-  text: string;
-  value?: string;
-  onClick?: (text: string) => void;
-};
-
-function Chip({ text, value, onClick }: ChipProps) {
-  const handleClick = () => {
-    onClick?.(value ?? text);
-  };
-
-  return (
-    <button
-      onClick={handleClick}
-      className="flex animate-pulse  items-center rounded-md bg-fingoo-gray-1.5 px-4 py-2 text-xs font-bold"
-    >
-      <p>{text}</p>
-    </button>
   );
 }
