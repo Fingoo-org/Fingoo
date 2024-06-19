@@ -1,6 +1,7 @@
 import { addIndicatorsToMetadata, getIndicatorValue } from '../../services/linguistic-guidance/indicator.service';
 import { getIndicatorBySymbol } from '../../services/linguistic-guidance/search-symbol.service';
 import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
+import { Indicator } from '../../services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
@@ -30,8 +31,7 @@ export default function useAnalyzeEconomy() {
           return createIndicator(indicator);
         }),
       )
-    ).filter((indicator) => indicator !== undefined);
-
+    ).filter((indicator) => indicator !== undefined) as Indicator[];
     // 2. 메타데이터 만들기
     const metadataId = await createIndicatorBoardMetadata('Fingoo가 분석한 지표들');
 

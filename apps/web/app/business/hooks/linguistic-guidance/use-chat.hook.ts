@@ -14,7 +14,6 @@ type Mock = {
 
 export function useChat(): UseChatHelpers | Mock {
   const chat = useContext(ChatContext);
-  console.log('chat', chat);
   if (!chat) {
     if (process.env.NODE_ENV === 'test') {
       return {
