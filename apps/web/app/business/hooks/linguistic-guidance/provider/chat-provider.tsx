@@ -1,3 +1,5 @@
+'use client';
+
 import { UseChatHelpers } from 'ai/react';
 import { createContext } from 'react';
 import { useFingooChat } from '../use-fingoo-chat.hook';

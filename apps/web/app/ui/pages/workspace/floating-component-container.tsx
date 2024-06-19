@@ -1,4 +1,3 @@
-import IndicatorDialogMenu from '../../components/domain/numerical-guidance/indicator/indicator-dialog-menu';
 import MetadataDeleteDialog from '../../components/domain/numerical-guidance/indicator-board-metadata/metadata-delete-dialog';
 import MetadataDialogMenu from '../../components/domain/numerical-guidance/indicator-board-metadata/metadata-dialog-menu/metadata-dialog-menu';
 import Toaster from '../../components/view/molecule/toast/toaster';
@@ -11,7 +10,6 @@ export default function FloatingComponentContainer() {
     <>
       <MetadataDialogMenu />
       <MetadataDeleteDialog />
-      <IndicatorDialogMenu />
       <CustomForecastIndicatorEditDialogMenu />
       <CustomForecastIndicatorCreateDialogMenu />
       <MetadataListItemRowDialogMenu />

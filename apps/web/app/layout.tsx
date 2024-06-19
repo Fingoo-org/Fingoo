@@ -3,7 +3,7 @@ import './globals.css';
 import { cn } from './utils/style';
 import localFont from 'next/font/local';
 import GoogleAnalyticsProvider from './logging/provider/google-analytics-provider';
-import ChatProvider from './business/hooks/linguistic-guidance/use-chat.hook';
+import ChatProvider from './business/hooks/linguistic-guidance/provider/chat-provider';
 
 const myFont = localFont({
   src: './PretendardVariable.woff2',
