@@ -4,6 +4,7 @@ import usePredictIndicator from './use-predict-indicator.hook';
 import useInstruction from './use-instruction.hook';
 import useAnalyzeEconomy from './use-analyze-economy.hook';
 import useRecommendIndicator from './use-recommend-indicator.hook';
+import useExplainIndicator from './use-explain-indicator.hook';
 
 //   // 1. symbol을 이용하여 indicatorId를 가져온다(동적 저장소)
 //   // 2. 메타데이터 생성
@@ -17,7 +18,7 @@ export const useFingooChat = () => {
   const { getInstruction } = useInstruction();
   const { analyzeEconomicHandler } = useAnalyzeEconomy();
   const { recommendIndicatorHandler } = useRecommendIndicator();
-
+  const { handleExplainIndicator } = useExplainIndicator();
   const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
     console.log('client');
     console.log('chatMessages:', chatMessages);
@@ -57,15 +58,7 @@ export const useFingooChat = () => {
         symbol: string;
       };
 
-      content = JSON.stringify(
-        `
-        ${symbol}에 대한 정보를 설명합니다.
-
-        - 5살짜리도 이해할 수 있도록 쉽고 자세히 설명해야 합니다.
-        - 지표의 의미와 중요성을 설명해야 합니다.
-        - 지표의 특징과 활용 방법을 설명해야 합니다.
-        `,
-      );
+      content = await handleExplainIndicator(symbol);
     }
 
     if (functionCall.name === 'recommend_economic_indicator') {

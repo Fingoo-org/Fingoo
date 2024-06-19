@@ -51,12 +51,12 @@ export default function useAnalyzeEconomy() {
 
     // 6. GPT에 분석 요청
     return `
-    분석한 지표들: ${symbols.join(', ')}
+    분석한 지표들: ${JSON.stringify(symbols)}
 
-    분석 지표들 값: ${indicatorsValue.map((indicatorValue) => indicatorValue.values).join(', ')}
+    분석 지표들 값: ${JSON.stringify(indicatorsValue.map((indicatorValue) => indicatorValue.values))}
 
-    - 관련있는 지표를 왜 해당 지표가 질문과 관련있는지 설명해야합니다.
-    - 지표를 중심으로 전체적인 흐름과 상황을 분석해주어야합니다.
+    - 반드시 분석한 지표에 대한 이름과 심볼명을 밝혀야합니다.
+    - 분석한 지표들을 바탕으로 종합적인 시장 추세를 설명해야합니다.
     `;
   };
 
