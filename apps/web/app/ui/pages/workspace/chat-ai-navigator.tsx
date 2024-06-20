@@ -6,9 +6,7 @@ import { cn } from '@/app/utils/style';
 import IconButton from '../../components/view/atom/icons/icon-button';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
-import AdBannerImage1 from '@/public/assets/images/ad_banner_1.png';
-import AdBannerImage2 from '@/public/assets/images/ad_banner_2.png';
-import Image from 'next/image';
+import AdBanner from './ad-banner';
 
 export default function ChatAiNavigator() {
   const [collpase, setCollpase] = useState(false);
@@ -44,11 +42,7 @@ export default function ChatAiNavigator() {
         {!collpase ? (
           <>
             <div className="h-[100px] w-full bg-gray-300">
-              {isBigScreen ? (
-                <Image src={AdBannerImage1} alt="광고 배너" />
-              ) : (
-                <Image src={AdBannerImage2} alt="광고 배너" />
-              )}
+              <AdBanner />
             </div>
             <div className="h-6 w-full border"></div>
             <div
