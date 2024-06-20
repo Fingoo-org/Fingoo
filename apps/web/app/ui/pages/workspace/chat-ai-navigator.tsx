@@ -50,8 +50,14 @@ export default function ChatAiNavigator() {
                 <Image src={AdBannerImage2} alt="광고 배너" />
               )}
             </div>
-            <div className="h-[3vh] w-full border"></div>
-            <div className="h-[84vh]">
+            <div className="h-6 w-full border"></div>
+            <div
+              style={{
+                height: 'calc(100% - 124px)',
+                overflowY: 'auto',
+                overflowX: 'hidden',
+              }}
+            >
               <Chat />
             </div>
           </>
