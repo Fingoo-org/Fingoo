@@ -90,11 +90,11 @@ export default function usePredictIndicator() {
     revalidateCustomForecastIndicatorList();
 
     // 메타데이터에 추가한다. 선택된 메타데이터가 없으면 생성후 처리한다
+    let metadataId: string | undefined;
     if (!selectedMetadata) {
-      const metadataId = await createIndicatorBoardMetadata('Fingoo의 예측 결과');
+      metadataId = await createIndicatorBoardMetadata('Fingoo의 예측 결과');
       await addCustomForecastIndicatorToMetadataCommand(metadataId, custonforecastIndicatorId);
       await revalidateIndicatorBoardMetadataList();
-      displayIndicatorBoardMetadata(metadataId);
     } else {
       addCustomForecastIndicatorToMetadata(custonforecastIndicatorId);
     }
@@ -103,6 +103,10 @@ export default function usePredictIndicator() {
     const { data } = await instance.get(`${API_PATH.customForecastIndicator}/value/${custonforecastIndicatorId}`);
 
     const predictedEconomicIndicatorValues = data.customForecastIndicatorValues;
+
+    if (metadataId) {
+      displayIndicatorBoardMetadata(metadataId);
+    }
 
     return JSON.stringify(
       `
