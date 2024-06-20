@@ -8,6 +8,9 @@ import {
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { getIndicatorIdBySymbolToAPI } from '../../services/linguistic-guidance/search-symbol.service';
+import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
+import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
+import { addCustomForecastIndicatorToMetadataCommand } from '../../services/linguistic-guidance/indicator.service';
 
 function formatSymbol(symbol: string) {
   if (symbol.includes(':')) {
@@ -30,7 +33,18 @@ type Props = {
 export default function usePredictIndicator() {
   const { createCustomForecastIndicator } = useCustomForecastIndicatorListViewModel();
   const revalidateCustomForecastIndicatorList = useRevalidateCustomForecastIndicatorList();
-  const { addCustomForecastIndicatorToMetadata } = useSelectedIndicatorBoardMetadata();
+  const { addCustomForecastIndicatorToMetadata, selectMetadataById, selectedMetadata } =
+    useSelectedIndicatorBoardMetadata();
+  const { addMetadataToIndicatorBoard } = useIndicatorBoard();
+  const { createIndicatorBoardMetadata, revalidateIndicatorBoardMetadataList } = useIndicatorBoardMetadataList();
+
+  const displayIndicatorBoardMetadata = (metadataId: string) => {
+    const isSuccess = addMetadataToIndicatorBoard(metadataId);
+
+    if (isSuccess) {
+      selectMetadataById(metadataId);
+    }
+  };
 
   async function predictEconomicIndicatorHandler({ target_symbol, source_symbols }: Props) {
     const target_indicator_response = await getIndicatorIdBySymbolToAPI(formatSymbol(target_symbol));
@@ -75,7 +89,16 @@ export default function usePredictIndicator() {
     await instance.patch(`${API_PATH.customForecastIndicator}/${custonforecastIndicatorId}`, body);
     revalidateCustomForecastIndicatorList();
 
-    addCustomForecastIndicatorToMetadata(custonforecastIndicatorId);
+    // 메타데이터에 추가한다. 선택된 메타데이터가 없으면 생성후 처리한다
+    if (!selectedMetadata) {
+      const metadataId = await createIndicatorBoardMetadata('Fingoo의 예측 결과');
+      await addCustomForecastIndicatorToMetadataCommand(metadataId, custonforecastIndicatorId);
+      await revalidateIndicatorBoardMetadataList();
+      displayIndicatorBoardMetadata(metadataId);
+    } else {
+      addCustomForecastIndicatorToMetadata(custonforecastIndicatorId);
+    }
+
     // 4: 예측 지표 값을 가져온다.
     const { data } = await instance.get(`${API_PATH.customForecastIndicator}/value/${custonforecastIndicatorId}`);
 
