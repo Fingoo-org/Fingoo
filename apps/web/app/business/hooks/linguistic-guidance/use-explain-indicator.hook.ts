@@ -1,4 +1,4 @@
-import { getIndicatorBySymbol } from '../../services/linguistic-guidance/search-symbol.service';
+import { getIndicatorBySymbolAPIFirst } from '../../services/linguistic-guidance/search-symbol.service';
 import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 
 const INSTRUCTION = `
@@ -11,7 +11,7 @@ speak_to_user에 명시된 출력필드를 따르며 아래와 같은 지시사�
 
 export default function useExplainIndicator() {
   const handleExplainIndicator = async (symbol: string) => {
-    const indicatorResponse = await getIndicatorBySymbol(symbol);
+    const indicatorResponse = await getIndicatorBySymbolAPIFirst(symbol);
 
     if (!indicatorResponse) {
       return JSON.stringify(`
