@@ -6,6 +6,7 @@ import { cn } from '@/app/utils/style';
 import IconButton from '../../components/view/atom/icons/icon-button';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
+import AdBanner from './ad-banner';
 
 export default function ChatAiNavigator() {
   const [collpase, setCollpase] = useState(false);
@@ -40,9 +41,17 @@ export default function ChatAiNavigator() {
       >
         {!collpase ? (
           <>
-            <div className="h-[13vh] w-full bg-gray-300"></div>
-            <div className="h-[3vh] w-full border"></div>
-            <div className="h-[84vh]">
+            <div className="h-[100px] w-full bg-gray-300">
+              <AdBanner />
+            </div>
+            <div className="h-6 w-full border"></div>
+            <div
+              style={{
+                height: 'calc(100% - 124px)',
+                overflowY: 'auto',
+                overflowX: 'hidden',
+              }}
+            >
               <Chat />
             </div>
           </>

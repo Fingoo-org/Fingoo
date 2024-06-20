@@ -8,6 +8,7 @@ export type UserEvent =
   | 'click_axis_delete_button'
   | 'click_sidebar_toggle'
   | 'submit_gpt_form'
+  | 'click_ad_banner'
   | 'toast_error';
 
 export type UserTracker = {
