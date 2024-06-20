@@ -1,8 +1,10 @@
 import { TextInput } from '@tremor/react';
 import { ChatRequestOptions } from 'ai';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { Chip } from '../../view/atom/chip';
+import IconButton from '../../view/atom/icons/icon-button';
+import { RefreshIcon } from '@heroicons/react/solid';
 
 const PREDICT_PROMPTS = ['S&P500 예측해줘', '애플 주식 예측해줘', '엔비디아 예측해줘'];
 
@@ -22,6 +24,10 @@ function getPrompts() {
   return PROMPTS.map((prompts) => getRandomPrompt(prompts));
 }
 
+function getSeed() {
+  return Math.round(Math.random() * 1000);
+}
+
 type PromptPresetProps = {
   value: string;
   setInput: (value: string) => void;
@@ -31,6 +37,7 @@ type PromptPresetProps = {
 export default function PromptPreset({ value, setInput, formAction }: PromptPresetProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [randomSeed, setRandomSeed] = useState(getSeed);
 
   const handleClick = (prompt: string) => {
     flushSync(() => {
@@ -40,10 +47,21 @@ export default function PromptPreset({ value, setInput, formAction }: PromptPres
     formRef.current?.requestSubmit();
   };
 
-  const prompts = useMemo(() => getPrompts(), []);
+  const prompts = useMemo(() => getPrompts(), [randomSeed]);
+
+  const handleReset = () => {
+    setRandomSeed(getSeed());
+  };
 
   return (
     <div className="flex flex-wrap gap-2 px-6	">
+      <IconButton
+        onClick={handleReset}
+        icon={RefreshIcon}
+        variant={'simple'}
+        color={'gray'}
+        className="rounded-full hover:animate-spin"
+      />
       {prompts.map((prompt) => (
         <Chip onClick={handleClick} key={prompt} text={prompt} />
       ))}
