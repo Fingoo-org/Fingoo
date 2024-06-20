@@ -57,13 +57,13 @@ export const tools: Array<ChatCompletionTool> = [
     type: 'function',
     function: {
       name: 'explain_economic_indicator',
-      description: '경제 지표에 대한 심볼을 받고 이에 대한 개요를 설명한다.',
+      description: '경제 지표에 대한 정보를 설명한다.',
       parameters: {
         type: 'object',
         properties: {
           symbol: {
             type: 'string',
-            description: '사용자가 질문한 경제 지표',
+            description: '설명할 경제 지표의 심볼(예시: 005930, EUR/USD, BTC/USD, SPY, IXIC, 0P00000AMG, GSPC 등)',
           },
         },
         required: ['symbol'],
