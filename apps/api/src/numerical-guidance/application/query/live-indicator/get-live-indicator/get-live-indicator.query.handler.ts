@@ -14,6 +14,11 @@ import { LoadIndicatorPort } from '../../../port/persistence/indicator/load-indi
 import { LoadLiveEconomyIndicatorPort } from '../../../port/external/fred/load-live-economy-indicator.port';
 import { EconomyDto } from '../../indicator/get-indicator-list/dto/economy.dto';
 
+type RedisKeyData = { key: string; endDate: string };
+const MILLISECONDS_IN_A_DAY = 86400000;
+const DAYS_IN_A_WEEK = 7;
+const THURSDAY_OFFSET = 4;
+
 @Injectable()
 @QueryHandler(GetLiveIndicatorQuery)
 export class GetLiveIndicatorQueryHandler implements IQueryHandler {
@@ -36,9 +41,11 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
 
     const indicatorDto: IndicatorDtoType = await this.loadIndicatorPort.loadIndicator(indicatorId, indicatorType);
 
-    const { key, endDate } = this.createLiveIndicatorKey(indicatorDto, interval, startDate);
+    const redisKeyData: RedisKeyData = this.createLiveIndicatorKey(indicatorDto, interval, startDate);
 
-    let liveIndicatorDto: LiveIndicatorDtoType = await this.loadCachedLiveIndicatorPort.loadCachedLiveIndicator(key);
+    let liveIndicatorDto: LiveIndicatorDtoType = await this.loadCachedLiveIndicatorPort.loadCachedLiveIndicator(
+      redisKeyData.key,
+    );
 
     if (this.isNotCached(liveIndicatorDto)) {
       if (indicatorType === 'economy' && interval === 'none') {
@@ -47,12 +54,18 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
           indicatorDto,
           economicInterval,
           startDate,
-          endDate,
-          key,
+          redisKeyData.endDate,
+          redisKeyData.key,
         );
         this.logger.log('Live indicator(FRED) 호출');
       } else {
-        liveIndicatorDto = await this.loadAndCacheLiveIndicator(indicatorDto, interval, startDate, endDate, key);
+        liveIndicatorDto = await this.loadAndCacheLiveIndicator(
+          indicatorDto,
+          interval,
+          startDate,
+          redisKeyData.endDate,
+          redisKeyData.key,
+        );
         this.logger.log('Live indicator(TWELVE) 호출');
       }
     }
@@ -98,7 +111,7 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
     return indicatorDto == null;
   }
 
-  private createLiveIndicatorKey(indicatorDto: IndicatorDtoType, interval: Interval, startDate: string) {
+  private createLiveIndicatorKey(indicatorDto: IndicatorDtoType, interval: Interval, startDate: string): RedisKeyData {
     const nowEndDate = this.getEndDate();
     const endDate = this.formatDayToString(nowEndDate);
     const keyInterval = this.getKeyInterval(interval, indicatorDto);
@@ -157,11 +170,10 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
     return String(date.getFullYear());
   }
 
-  // 해당 날짜(년도별) ISO 식 주차 구하는 함수
   private getISOWeekNumber(date: Date): number {
     const tempDate = new Date(date.getTime());
-    tempDate.setDate(tempDate.getDate() + 4 - (tempDate.getDay() || 7));
+    tempDate.setDate(tempDate.getDate() + THURSDAY_OFFSET - (tempDate.getDay() || DAYS_IN_A_WEEK));
     const yearStart = new Date(tempDate.getFullYear(), 0, 1);
-    return Math.ceil(((tempDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+    return Math.ceil(((tempDate.getTime() - yearStart.getTime()) / MILLISECONDS_IN_A_DAY + 1) / DAYS_IN_A_WEEK);
   }
 }
