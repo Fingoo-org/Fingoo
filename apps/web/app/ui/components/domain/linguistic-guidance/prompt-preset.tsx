@@ -6,13 +6,19 @@ import { Chip } from '../../view/atom/chip';
 import IconButton from '../../view/atom/icons/icon-button';
 import { RefreshIcon } from '@heroicons/react/solid';
 
-const PREDICT_PROMPTS = ['S&P500 예측해줘', '애플 주식 예측해줘', '엔비디아 예측해줘'];
+const PREDICT_PROMPTS = ['S&P500 예측해줘', '애플 주식 예측해줘', '미국환율 예측해줘'];
 
-const ANALYZE_PROMPTS = ['미국 반도체 시장 분석해줘', '에너지 시장 분석해줘'];
+const ANALYZE_PROMPTS = ['미국 반도체 시장 분석해줘', '에너지 시장 분석해줘', '헬스케어 시장 분석해줘'];
 
-const RECOMMEND_PROMPTS = ['미국 반도체 주식 추천해줘', '미국 IT 주식 추천해줘'];
+const RECOMMEND_PROMPTS = ['미국 반도체 주식 추천해줘', '미국 IT 주식 추천해줘', '헬스케어 관련 주식 추천해줘'];
 // '미국 은행 관련 주식 추천해줘',
-const EXPLANATION_PROMPTS = ['AMZN에 대해 설명해줘', 'S&P 500 지수에 대해 설명해줘'];
+const EXPLANATION_PROMPTS = [
+  'AMZN에 대해 설명해줘',
+  '비트코인에 대해 설명해줘',
+  '암드는 뭐하는 회사야?',
+  '퀄컴이 뭐하는 회사야?',
+  '비트코인에 대해 설명해줘',
+];
 
 const PROMPTS = [PREDICT_PROMPTS, ANALYZE_PROMPTS, RECOMMEND_PROMPTS, EXPLANATION_PROMPTS];
 

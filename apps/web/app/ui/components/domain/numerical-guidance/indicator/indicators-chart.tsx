@@ -57,7 +57,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
     <Pending isPending={isLiveIndicatorPending || isCustomForecastIndicatorPending}>
       <div className="relative">
         <div className="flex items-center justify-center">
-          <EditableMetadataTittle indicatorBoardMetadataId={indicatorBoardMetadataId!} />
+          <EditableMetadataTittle className="max-w-64" indicatorBoardMetadataId={indicatorBoardMetadataId!} />
         </div>
         <div className="flex px-14 pt-6">
           <DateRangeNavigator indicatorBoardMetadataId={indicatorBoardMetadataId!} />

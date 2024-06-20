@@ -43,6 +43,8 @@ export default function usePredictIndicator() {
     const source_indicators = (
       await Promise.all(
         source_symbols.map(async (source_symbol) => {
+          if (source_symbol === target_symbol) return;
+
           const source_indicator_response = await getIndicatorIdBySymbolToAPI(formatSymbol(source_symbol));
 
           if (!source_indicator_response) return;
