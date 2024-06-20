@@ -8,10 +8,12 @@ import { Interval, LiveIndicatorDtoType } from '../../../../utils/type/type-defi
 
 const SECONDS_IN_DAY = 86400;
 const DAYS_IN_WEEK = 7;
+const CALCULATING_WEEK_NUM = 8;
 const DAYS_IN_MONTH = 30;
 const DECEMBER = 11;
 const LAST_DAY_OF_DECEMBER = 31;
 const JS_MONTH_CAL_NUM = 1;
+const EXTRA_DAY = 1;
 
 @Injectable()
 export class LiveIndicatorRedisAdapter implements LoadCachedLiveIndicatorPort, CachingLiveIndicatorPort {
@@ -71,7 +73,7 @@ export class LiveIndicatorRedisAdapter implements LoadCachedLiveIndicatorPort, C
 
   private calculateWeekRemainingSeconds(currentDate: Date): number {
     const dayOfWeek = currentDate.getDay(); // 0 (일요일) ~ 6 (토요일)
-    const remainingDays = DAYS_IN_WEEK - dayOfWeek; // 주말까지 남은 일수 계산
+    const remainingDays = ((DAYS_IN_WEEK + JS_MONTH_CAL_NUM - dayOfWeek) % CALCULATING_WEEK_NUM) + EXTRA_DAY; // 주말까지 남은 일수 계산
     return remainingDays * SECONDS_IN_DAY;
   }
 
@@ -79,7 +81,7 @@ export class LiveIndicatorRedisAdapter implements LoadCachedLiveIndicatorPort, C
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const lastDayOfMonth = new Date(year, month + JS_MONTH_CAL_NUM, 0).getDate();
-    const remainingDays = lastDayOfMonth - currentDate.getDate();
+    const remainingDays = lastDayOfMonth - currentDate.getDate() + EXTRA_DAY;
     return remainingDays * SECONDS_IN_DAY;
   }
 
@@ -89,7 +91,8 @@ export class LiveIndicatorRedisAdapter implements LoadCachedLiveIndicatorPort, C
     const remainingDays =
       lastDayOfYear -
       currentDate.getDate() +
-      (new Date(year, DECEMBER, LAST_DAY_OF_DECEMBER).getMonth() - currentDate.getMonth()) * DAYS_IN_MONTH;
+      (new Date(year, DECEMBER, LAST_DAY_OF_DECEMBER).getMonth() - currentDate.getMonth()) * DAYS_IN_MONTH +
+      EXTRA_DAY;
     return remainingDays * SECONDS_IN_DAY;
   }
 }
