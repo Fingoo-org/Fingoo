@@ -13,6 +13,46 @@ const defaultMessages: Message = {
   role: 'assistant',
 };
 
+const MockMessages: Message[] = [
+  {
+    id: '1',
+    content:
+      '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
+    role: 'user',
+  },
+  {
+    id: '2',
+    content: '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
+    role: 'assistant',
+  },
+  {
+    id: '3',
+    content:
+      '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
+    role: 'user',
+  },
+  {
+    id: '4',
+    content: '안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요',
+    role: 'assistant',
+  },
+  {
+    id: '5',
+    content: '안녕하세요',
+    role: 'user',
+  },
+  {
+    id: '6',
+    content: '안녕하세요',
+    role: 'assistant',
+  },
+  {
+    id: '7',
+    content: '안녕하세요',
+    role: 'assistant',
+  },
+];
+
 export default function Chat() {
   const logger = useLogger();
   const { messages, input, handleInputChange, setInput, handleSubmit, isLoading } = useChat();
@@ -29,7 +69,7 @@ export default function Chat() {
 
   return (
     <div className="flex h-full items-end">
-      <div className=" w-full">
+      <div className="w-full">
         <div className="max-h-[73vh] overflow-y-auto px-6 scrollbar-thin">
           <Messages messages={messagesWithGreeting} isLoading={isLoading} />
         </div>
