@@ -1,5 +1,8 @@
 import { addIndicatorsToMetadata, getIndicatorValue } from '../../services/linguistic-guidance/indicator.service';
-import { getIndicatorBySymbol } from '../../services/linguistic-guidance/search-symbol.service';
+import {
+  getIndicatorBySymbol,
+  getIndicatorBySymbolAPIFirst,
+} from '../../services/linguistic-guidance/search-symbol.service';
 import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 import { Indicator } from '../../services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
@@ -24,7 +27,7 @@ export default function useAnalyzeEconomy() {
     const indicators = (
       await Promise.all(
         symbols.map(async (symbol) => {
-          const indicator = await getIndicatorBySymbol(symbol);
+          const indicator = await getIndicatorBySymbolAPIFirst(symbol);
 
           if (!indicator) return;
 
@@ -53,7 +56,17 @@ export default function useAnalyzeEconomy() {
     return `
     분석한 지표들: ${JSON.stringify(symbols)}
 
-    분석 지표들 값: ${JSON.stringify(indicatorsValue.map((indicatorValue) => indicatorValue.values))}
+    분석 지표들 값: ${JSON.stringify(
+      indicatorsValue.map((indicatorValue) => {
+        return {
+          symbol: indicatorValue.symbol,
+          value: indicatorValue.values.slice(
+            Math.max(indicatorValue.values.length - 30, 0),
+            indicatorValue.values.length - 1,
+          ),
+        };
+      }),
+    )}
 
     - 반드시 분석한 지표에 대한 이름과 심볼명을 밝혀야합니다.
     - 분석한 지표들을 바탕으로 종합적인 시장 추세를 설명해야합니다.
