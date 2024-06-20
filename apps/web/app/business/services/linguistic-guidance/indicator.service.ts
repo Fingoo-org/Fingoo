@@ -1,5 +1,8 @@
 import { API_PATH } from '@/app/store/querys/api-path';
-import { AddIndicatorToMetadataRequestBody } from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
+import {
+  AddCustomForecastIndicatorToMetadataRequestBody,
+  AddIndicatorToMetadataRequestBody,
+} from '@/app/store/querys/numerical-guidance/indicator-board-metadata.query';
 import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator-value.query';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { getStartDate } from '@/app/utils/date-formatter';
@@ -37,4 +40,13 @@ export async function addIndicatorsToMetadata(
       },
     );
   }
+}
+
+export async function addCustomForecastIndicatorToMetadataCommand(metadataId: string, customForecastIndicatorId: string) {
+  await instance.post<any, any, AddCustomForecastIndicatorToMetadataRequestBody>(
+    `${API_PATH.indicatorBoardMetadata}/custom-forecast-indicator/${metadataId}`,
+    {
+      customForecastIndicatorId,
+    },
+  );
 }
