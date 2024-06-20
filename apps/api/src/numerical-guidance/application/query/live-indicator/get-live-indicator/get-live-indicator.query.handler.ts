@@ -108,7 +108,7 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
     return { key, endDate };
   }
 
-  getEndDate(): Date {
+  private getEndDate(): Date {
     return new Date();
   }
 
@@ -143,9 +143,8 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
 
   private formatWeekToString(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
     const week = this.getISOWeekNumber(date);
-    return `${year}-${month}-W${week}`;
+    return `${year}-W${week}`;
   }
 
   private formatMonthToString(date: Date): string {
@@ -160,19 +159,9 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
 
   // 해당 날짜(년도별) ISO 식 주차 구하는 함수
   private getISOWeekNumber(date: Date): number {
-    const dayOfWeek = date.getDay(); // 0 (일요일) ~ 6 (토요일)
-    const jan1 = new Date(date.getFullYear(), 0, 1); // 해당 년도의 1월 1일
-    const firstWeekStart = jan1.getDate() - jan1.getDay() + (jan1.getDay() === 0 ? -6 : 1);
-    const currentWeekStart = date.getDate() - dayOfWeek;
-
-    if (firstWeekStart <= currentWeekStart) {
-      return Math.ceil((currentWeekStart - firstWeekStart) / 7) + 1;
-    } else {
-      const prevYearStart = new Date(date.getFullYear() - 1, 0, 1);
-      const prevYearFirstWeekStart =
-        prevYearStart.getDate() - prevYearStart.getDay() + (prevYearStart.getDay() === 0 ? -6 : 1);
-      const prevYearWeeks = Math.ceil((prevYearStart.getTime() - prevYearFirstWeekStart) / (7 * 24 * 3600 * 1000));
-      return prevYearWeeks + Math.ceil((date.getTime() - firstWeekStart) / (7 * 24 * 3600 * 1000)) + 1;
-    }
+    const tempDate = new Date(date.getTime());
+    tempDate.setDate(tempDate.getDate() + 4 - (tempDate.getDay() || 7));
+    const yearStart = new Date(tempDate.getFullYear(), 0, 1);
+    return Math.ceil(((tempDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   }
 }
