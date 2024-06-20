@@ -73,7 +73,8 @@ export class LiveIndicatorRedisAdapter implements LoadCachedLiveIndicatorPort, C
 
   private calculateWeekRemainingSeconds(currentDate: Date): number {
     const dayOfWeek = currentDate.getDay(); // 0 (일요일) ~ 6 (토요일)
-    const remainingDays = ((DAYS_IN_WEEK + JS_MONTH_CAL_NUM - dayOfWeek) % CALCULATING_WEEK_NUM) + EXTRA_DAY; // 주말까지 남은 일수 계산
+    let remainingDays = ((DAYS_IN_WEEK + JS_MONTH_CAL_NUM - dayOfWeek) % CALCULATING_WEEK_NUM) + EXTRA_DAY; // 주말까지 남은 일수 계산
+    if (remainingDays == 1) remainingDays += EXTRA_DAY;
     return remainingDays * SECONDS_IN_DAY;
   }
 
