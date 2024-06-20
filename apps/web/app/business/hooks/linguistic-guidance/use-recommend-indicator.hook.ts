@@ -44,10 +44,9 @@ export default function useRecommendIndicator() {
 
     return JSON.stringify(
       `
-        추천 심볼 리스트: ${JSON.stringify(symbols.join(', '))}
+        추천 심볼 리스트: ${JSON.stringify(symbols)}
         
         - 왜 해당 심볼을 추천하는지에 대한 이유를 설명해야합니다.
-        
       `,
     );
   };
