@@ -15,6 +15,7 @@ type MultiLineChartProps = {
   syncId?: string;
   noDataText?: string;
   className?: string;
+  height?: number;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export default function MultiLineChart({
@@ -23,6 +24,7 @@ export default function MultiLineChart({
   noDataText,
   syncId,
   className,
+  height,
   ...props
 }: MultiLineChartProps) {
   const [value, setValue] = useState<EventProps>(null);
@@ -38,6 +40,7 @@ export default function MultiLineChart({
         data={formatteedData}
         index={index}
         categories={categories}
+        height={height}
         // colors={['indigo-300', 'indigo-300', 'indigo-300', 'green-300', 'violet-400']}
         colors={['yellow-400', 'rose-300', 'green-300', 'blue-400', 'violet-400', 'red-400', 'red-400']}
         yAxisWidth={60}

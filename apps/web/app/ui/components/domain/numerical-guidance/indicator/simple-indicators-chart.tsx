@@ -38,7 +38,6 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
               categories={categories}
               noDataText={getNoDataText(categories)}
               syncId={indicatorBoardMetadataId}
-              className="h-80"
             />
           );
         })
@@ -49,7 +48,6 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
           noDataText={
             indicatorBoardMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'
           }
-          className="h-80"
         />
       )}
     </>

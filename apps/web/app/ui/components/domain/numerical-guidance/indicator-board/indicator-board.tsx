@@ -28,7 +28,7 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
   return (
     <Card
       onDoubleClick={handleMetadataSelect}
-      className={cn('min-h-[32.5rem] w-full rounded-lg bg-white px-4 py-5', {
+      className={cn('max-h-screen min-h-[32.5rem] w-full rounded-lg bg-white px-4 py-5', {
         'border-4 border-fingoo-main': isSelected,
       })}
     >

@@ -42,6 +42,7 @@ interface ActiveDot {
 type ExtendedLineChartProps = LineChartProps & {
   autoNowDateReferenceLine?: boolean;
   syncId?: string;
+  height?: number;
 };
 
 const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((props, ref) => {
@@ -76,6 +77,7 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
     tickGap = 5,
     autoNowDateReferenceLine = true,
     syncId,
+    height = 320,
     ...other
   } = props;
   const CustomTooltip = customTooltip;
@@ -134,7 +136,14 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
   }
 
   return (
-    <div ref={ref} className={tremorTwMerge('h-80 w-full', className)} {...other}>
+    <div
+      ref={ref}
+      style={{
+        height: height,
+      }}
+      className={tremorTwMerge('w-full', className)}
+      {...other}
+    >
       <ResponsiveContainer className="h-full w-full">
         {data?.length ? (
           <ReChartsLineChart
