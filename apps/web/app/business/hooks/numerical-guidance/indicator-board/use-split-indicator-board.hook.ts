@@ -1,10 +1,12 @@
 import { SplitScreen, useIndicatorBoardStore } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import { useWorkspaceStore } from '@/app/store/stores/numerical-guidance/workspace.store';
+import { useState } from 'react';
 
 export const useSplitIndicatorBoard = () => {
   const indicatorBoardInfos = useIndicatorBoardStore((state) => state.indicatorBoardInfos);
   const splitScreen = useIndicatorBoardStore((state) => state.splitScreen);
   const numberOfMetadataInIndicatorBoard = useIndicatorBoardStore((state) => state.indicatorBoardInfos.length);
+  const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
 
   const {
     addIndicatorBoardInfo,
@@ -61,13 +63,25 @@ export const useSplitIndicatorBoard = () => {
     return false;
   }
 
+  const handleDragSwapWithOtherContext = (newValue: { [key: string]: string[] }) => {
+    const newIndicatorBoardMetadataIds = Object.keys(newValue).map((_, index) => newValue[`${index}`][0]);
+    reorderIndicatorBoardInfos(newIndicatorBoardMetadataIds);
+  };
+
+  const handleActiveChange = (activeId: string | null) => {
+    setActiveDragItemId(activeId);
+  };
+
   return {
     splitScreen,
     indicatorBoardInfos,
     draggableIndicatorBoardContextValue,
+    activeDragMetadataId: activeDragItemId,
     reorderIndicatorBoardInfos,
     transitionSplitScreen,
     addMetadataToIndicatorBoard,
+    handleActiveChange,
+    handleDragSwapWithOtherContext
   };
 };
 

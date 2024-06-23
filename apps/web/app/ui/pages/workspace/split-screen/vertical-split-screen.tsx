@@ -8,21 +8,15 @@ import { SortableContext } from '@dnd-kit/sortable';
 import { Card } from '@tremor/react';
 import Image from 'next/image';
 import ChartImage from '@/public/assets/images/chart-image.png';
-import { useState } from 'react';
 import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
 export default function VerticalSplitScreen() {
-  const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
-  const { draggableIndicatorBoardContextValue, reorderIndicatorBoardInfos } = useSplitIndicatorBoard();
-
-  const handleDragSwapWithOtherContext = (newValue: { [key: string]: string[] }) => {
-    const newIndicatorBoardMetadataIds = Object.keys(newValue).map((_, index) => newValue[`${index}`][0]);
-    reorderIndicatorBoardInfos(newIndicatorBoardMetadataIds);
-  };
-
-  const handleActiveChange = (activeId: string | null) => {
-    setActiveDragItemId(activeId);
-  };
+  const {
+    activeDragMetadataId,
+    draggableIndicatorBoardContextValue,
+    handleDragSwapWithOtherContext,
+    handleActiveChange,
+  } = useSplitIndicatorBoard();
 
   return (
     <DraggableContext
@@ -50,10 +44,10 @@ export default function VerticalSplitScreen() {
                   <SortableContext id={`${index}`} items={item}>
                     <div
                       className={cn('flex h-full items-center justify-center px-2', {
-                        'border-2 border-lime-300': activeDragItemId ? item[0] !== activeDragItemId : false,
+                        'border-2 border-lime-300': activeDragMetadataId ? item[0] !== activeDragMetadataId : false,
                       })}
                     >
-                      <Draggable active={item[0] === activeDragItemId} handle="top" id={item[0]}>
+                      <Draggable active={item[0] === activeDragMetadataId} handle="top" id={item[0]}>
                         <IndicatorBoard indicatorBoardMetadataId={item[0]} />
                       </Draggable>
                     </div>
