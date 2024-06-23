@@ -9,11 +9,11 @@ import { Card } from '@tremor/react';
 import Image from 'next/image';
 import ChartImage from '@/public/assets/images/chart-image.png';
 import { useState } from 'react';
-import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
+import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
 export default function VerticalSplitScreen() {
   const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
-  const { indicatorBoardInfos, reorderIndicatorBoardInfos } = useIndicatorBoard();
+  const { draggableIndicatorBoardContextValue, reorderIndicatorBoardInfos } = useSplitIndicatorBoard();
 
   const handleDragSwapWithOtherContext = (newValue: { [key: string]: string[] }) => {
     const newIndicatorBoardMetadataIds = Object.keys(newValue).map((_, index) => newValue[`${index}`][0]);
@@ -24,18 +24,9 @@ export default function VerticalSplitScreen() {
     setActiveDragItemId(activeId);
   };
 
-  const draggableContextValue = indicatorBoardInfos.reduce<{
-    [key: string]: string[];
-  }>((acc, info, index) => {
-    return {
-      ...acc,
-      [`${index}`]: [info.metadataId],
-    };
-  }, {});
-
   return (
     <DraggableContext
-      values={draggableContextValue}
+      values={draggableIndicatorBoardContextValue}
       onActiveChange={handleActiveChange}
       onDragSwapWithOtherContext={handleDragSwapWithOtherContext}
       dragOverlayItem={({ activeId }) => (
@@ -51,7 +42,7 @@ export default function VerticalSplitScreen() {
     >
       <ResizablePanelGroup direction="horizontal">
         {Array.from({ length: 2 }, () => 0).map((_, index) => {
-          const item = draggableContextValue[index];
+          const item = draggableIndicatorBoardContextValue[index];
           return (
             <>
               {item ? (

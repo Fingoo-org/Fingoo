@@ -14,8 +14,8 @@ import { cn } from '@/app/utils/style';
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import MetadataListItemRow from './metadata-list-item-row';
 import { useLogger } from '@/app/logging/logging-context';
-import { sendGAEvent } from '@next/third-parties/google';
 import MetadataListItemDraggableRow from './metadata-list-item-draggable-row';
+import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -33,8 +33,9 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     indicatorBoardMetadata?.indicatorIdsWithSectionIds,
   );
 
-  const { addMetadataToIndicatorBoard, checkMetadataInIndicatorBoard, deleteMetadataFromIndicatorBoard } =
-    useIndicatorBoard(item.id);
+  const { checkMetadataInIndicatorBoard, deleteMetadataFromIndicatorBoard } = useIndicatorBoard(item.id);
+
+  const { addMetadataToIndicatorBoard } = useSplitIndicatorBoard();
 
   useEffect(() => {
     setIndicatorIdsWithsectionIds(indicatorBoardMetadata?.indicatorIdsWithSectionIds);

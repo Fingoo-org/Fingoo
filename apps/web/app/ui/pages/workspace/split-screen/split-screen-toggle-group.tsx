@@ -1,8 +1,8 @@
 'use client';
-import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import ToggleGroup from '../../../components/view/molecule/toggle-group';
 import { type SplitScreen, splitScreens } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import { useLogger } from '@/app/logging/logging-context';
+import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
 function isSplitScreen(value: string): value is SplitScreen {
   return splitScreens.includes(value as SplitScreen);
@@ -10,7 +10,7 @@ function isSplitScreen(value: string): value is SplitScreen {
 
 export default function SplitScreenToggleGroup() {
   const logger = useLogger();
-  const { splitScreen, transitionSplitScreen } = useIndicatorBoard();
+  const { splitScreen, transitionSplitScreen } = useSplitIndicatorBoard();
 
   const handleSplitScreenChange = (value: string) => {
     if (isSplitScreen(value)) {
