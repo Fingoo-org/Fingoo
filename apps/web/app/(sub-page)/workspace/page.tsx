@@ -4,7 +4,7 @@ import Workspace from '../../ui/pages/workspace/workspace';
 export default function Page() {
   return (
     <div className="relative h-full w-full">
-      <div className="absolute left-1/2 top-2 -translate-x-1/2 rounded-lg ">
+      <div className="absolute left-1/2 top-2 z-10 -translate-x-1/2 rounded-lg ">
         <SplitScreenToggleGroup />
       </div>
       <div className="flex h-full items-center justify-center">
