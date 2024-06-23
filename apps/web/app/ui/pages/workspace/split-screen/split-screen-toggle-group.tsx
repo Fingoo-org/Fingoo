@@ -27,7 +27,7 @@ export default function SplitScreenToggleGroup() {
       <ToggleGroup.Item value="vertical">
         <SplitSquareVerticalIcon className="h-4 w-4 rotate-90 transform" />
       </ToggleGroup.Item>
-      <ToggleGroup.Item disabled={true} value="square">
+      <ToggleGroup.Item value="square">
         <LayoutGridIcon className="h-4 w-4" />
       </ToggleGroup.Item>
     </ToggleGroup>
