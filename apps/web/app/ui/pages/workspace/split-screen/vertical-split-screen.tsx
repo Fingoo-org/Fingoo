@@ -1,42 +1,20 @@
-import EditableMetadataTittle from '@/app/ui/components/domain/numerical-guidance/indicator-board-metadata/editable-metadata-title';
 import IndicatorBoard from '@/app/ui/components/domain/numerical-guidance/indicator-board/indicator-board';
-import DraggableContext from '@/app/ui/components/util/draggable-context';
 import Draggable from '@/app/ui/components/view/atom/draggable/draggable';
 import ResizablePanelGroup from '@/app/ui/components/view/molecule/resizable-panel-group';
 import { cn } from '@/app/utils/style';
 import { SortableContext } from '@dnd-kit/sortable';
-import { Card } from '@tremor/react';
-import Image from 'next/image';
-import ChartImage from '@/public/assets/images/chart-image.png';
 import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
+import IndicatorBoardDraggableContext from '@/app/ui/components/domain/numerical-guidance/indicator-board/indicator-board-draggable-context';
 
 export default function VerticalSplitScreen() {
-  const {
-    activeDragMetadataId,
-    draggableIndicatorBoardContextValue,
-    handleDragSwapWithOtherContext,
-    handleActiveChange,
-  } = useSplitIndicatorBoard();
+  const { activeDragMetadataId, draggableIndicatorBoardContextValue } = useSplitIndicatorBoard();
 
   return (
-    <DraggableContext
-      values={draggableIndicatorBoardContextValue}
-      onActiveChange={handleActiveChange}
-      onDragSwapWithOtherContext={handleDragSwapWithOtherContext}
-      dragOverlayItem={({ activeId }) => (
-        <Card className="min-h-[32.5rem] w-full rounded-lg bg-white opacity-60 shadow-2xl">
-          <div className="flex items-center justify-center">
-            <EditableMetadataTittle indicatorBoardMetadataId={activeId!} />
-          </div>
-          <div className="mt-12 h-5 w-full px-8">
-            <Image quality={75} src={ChartImage} alt="chart-image" />
-          </div>
-        </Card>
-      )}
-    >
+    <IndicatorBoardDraggableContext>
       <ResizablePanelGroup direction="horizontal">
         {Array.from({ length: 2 }, () => 0).map((_, index) => {
           const item = draggableIndicatorBoardContextValue[index];
+          const metadataId = item?.[0];
           return (
             <>
               {item ? (
@@ -44,11 +22,11 @@ export default function VerticalSplitScreen() {
                   <SortableContext id={`${index}`} items={item}>
                     <div
                       className={cn('flex h-full items-center justify-center px-2', {
-                        'border-2 border-lime-300': activeDragMetadataId ? item[0] !== activeDragMetadataId : false,
+                        'border-2 border-lime-300': activeDragMetadataId ? metadataId !== activeDragMetadataId : false,
                       })}
                     >
-                      <Draggable active={item[0] === activeDragMetadataId} handle="top" id={item[0]}>
-                        <IndicatorBoard indicatorBoardMetadataId={item[0]} />
+                      <Draggable active={metadataId === activeDragMetadataId} handle="top" id={metadataId}>
+                        <IndicatorBoard indicatorBoardMetadataId={metadataId} />
                       </Draggable>
                     </div>
                   </SortableContext>
@@ -65,6 +43,6 @@ export default function VerticalSplitScreen() {
           );
         })}
       </ResizablePanelGroup>
-    </DraggableContext>
+    </IndicatorBoardDraggableContext>
   );
 }
