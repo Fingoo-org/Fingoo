@@ -3,7 +3,7 @@ import MultiLineChart from '../../../view/molecule/multi-line-chart/multi-line-c
 import { useCustomForecastIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicators-value-view-model.hook';
 import { createIndicatorFormatter } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
-import { getViewport } from '@/app/utils/helper';
+import { useIndicatorBoardSize } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board-size.hook';
 
 type SimpleIndicatorsChartProps = {
   indicatorBoardMetadataId?: string;
@@ -13,6 +13,8 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
   const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
   const { indicatorsValue } = useLiveIndicatorsValueViewModel(indicatorBoardMetadata?.id);
   const { customForecastIndicatorsValue } = useCustomForecastIndicatorsValueViewModel(indicatorBoardMetadata?.id);
+
+  const { chartHeight } = useIndicatorBoardSize({ indicatorBoardMetadataId });
 
   const indicatorFormatter = createIndicatorFormatter(
     indicatorsValue?.indicatorsValue ?? [],
@@ -29,13 +31,12 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
         noDataText={
           indicatorBoardMetadata ? '선택한 지표가 없습니다. 지표를 선택해주세요' : '메타데이터를 선택해주세요'
         }
+        height={chartHeight}
       />
     );
   }
 
   const chartNumber = Object.keys(indicatorBoardMetadata?.indicatorIdsWithSectionIds).length;
-
-  const chartHeight = getChartHeight(chartNumber);
 
   return (
     <>
@@ -70,14 +71,4 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
 
     return '메타데이터를 선택해주세요';
   }
-}
-
-function getAvailableHeight() {
-  const { viewportHeight } = getViewport();
-
-  return viewportHeight - 250;
-}
-
-function getChartHeight(chartNumber: number) {
-  return chartNumber === 1 ? 320 : getAvailableHeight() / chartNumber;
 }
