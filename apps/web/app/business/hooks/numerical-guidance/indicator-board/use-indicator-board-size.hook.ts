@@ -21,7 +21,7 @@ function getChartHeight(chartCount: number, splitScreen: SplitScreen) {
     return 200;
   }
 
-  return chartCount === 1 ? 320 : getAvailableHeight(splitScreen) / chartCount;
+  return chartCount === 1 ? 320 : Math.min(320, getAvailableHeight(splitScreen) / chartCount);
 }
 
 export const useIndicatorBoardSize = ({ indicatorBoardMetadataId }: Props) => {
