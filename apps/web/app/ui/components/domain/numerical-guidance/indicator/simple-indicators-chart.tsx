@@ -35,7 +35,7 @@ export default function SimpleIndicatorsChart({ indicatorBoardMetadataId }: Simp
 
   const chartNumber = Object.keys(indicatorBoardMetadata?.indicatorIdsWithSectionIds).length;
 
-  const chartHeight = getAvailableHeight() / chartNumber;
+  const chartHeight = getChartHeight(chartNumber);
 
   return (
     <>
@@ -76,4 +76,8 @@ function getAvailableHeight() {
   const { viewportHeight } = getViewport();
 
   return viewportHeight - 250;
+}
+
+function getChartHeight(chartNumber: number) {
+  return chartNumber === 1 ? 320 : getAvailableHeight() / chartNumber;
 }
