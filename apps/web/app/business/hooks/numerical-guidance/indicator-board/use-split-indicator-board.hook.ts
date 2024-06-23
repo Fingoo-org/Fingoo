@@ -6,7 +6,7 @@ export const useSplitIndicatorBoard = () => {
   const indicatorBoardInfos = useIndicatorBoardStore((state) => state.indicatorBoardInfos);
   const splitScreen = useIndicatorBoardStore((state) => state.splitScreen);
   const numberOfMetadataInIndicatorBoard = useIndicatorBoardStore((state) => state.indicatorBoardInfos.length);
-  const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
+  const activeDragMetadataId = useIndicatorBoardStore((state) => state.activeDragMetadataId);
 
   const {
     addIndicatorBoardInfo,
@@ -14,6 +14,7 @@ export const useSplitIndicatorBoard = () => {
     setIndicatorBoardInfos,
     sliceIndicatorBoardInfos,
     setSplitScreen,
+    setActiveDragMetadataId,
   } = useIndicatorBoardStore((state) => state.actions);
 
   const selectedMetadataId = useWorkspaceStore((state) => state.selectedMetadataId);
@@ -69,19 +70,19 @@ export const useSplitIndicatorBoard = () => {
   };
 
   const handleActiveChange = (activeId: string | null) => {
-    setActiveDragItemId(activeId);
+    setActiveDragMetadataId(activeId);
   };
 
   return {
     splitScreen,
     indicatorBoardInfos,
     draggableIndicatorBoardContextValue,
-    activeDragMetadataId: activeDragItemId,
+    activeDragMetadataId,
     reorderIndicatorBoardInfos,
     transitionSplitScreen,
     addMetadataToIndicatorBoard,
     handleActiveChange,
-    handleDragSwapWithOtherContext
+    handleDragSwapWithOtherContext,
   };
 };
 
