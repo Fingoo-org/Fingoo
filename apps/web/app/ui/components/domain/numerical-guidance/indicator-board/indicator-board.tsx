@@ -11,6 +11,7 @@ import { Card } from '../../../view/molecule/card/card';
 import { CardSkeleton } from '../../../view/skeletons';
 import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
 import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
+import { useGenerateImage } from '@/app/utils/hooks/use-generate-image';
 
 type IndicatorBoardProps = {
   indicatorBoardMetadataId?: string;
@@ -21,8 +22,10 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
   const { splitScreen } = useSplitIndicatorBoard();
   const isSelected = indicatorBoardMetadataId ? selectedMetadataId === indicatorBoardMetadataId : false;
 
+  const { ref, downloadImage, generateImageBlob } = useGenerateImage<HTMLDivElement>({
+    imageName: 'chart-image',
+  });
 
-  
   const handleMetadataSelect = () => {
     if (indicatorBoardMetadataId) {
       selectMetadataById(indicatorBoardMetadataId);
@@ -48,7 +51,7 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
           <div className="flex items-center justify-center">
             <EditableMetadataTittle className="max-w-64" indicatorBoardMetadataId={indicatorBoardMetadataId!} />
           </div>
-          <IndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
+          <IndicatorsChart ref={ref} indicatorBoardMetadataId={indicatorBoardMetadataId} />
           <div className="">
             <IntervalToggleGroup indicatorBoardMetadataId={indicatorBoardMetadataId} />
           </div>

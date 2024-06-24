@@ -13,6 +13,7 @@ import ImageSharePopover from '../../../view/molecule/image-share-popover/image-
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import CSVDownloadButton from './csv-download-button';
 import DateRangeNavigator from './date-range-navigator';
+import React from 'react';
 
 const BASE_URL =
   'https://ubxtslkqovlqrxvvxqea.supabase.co/storage/v1/object/public/fingoo_bucket/indicatorBoardMetadata';
@@ -21,7 +22,10 @@ type IndicatorsChartProps = {
   indicatorBoardMetadataId?: string;
 };
 
-export default function IndicatorsChart({ indicatorBoardMetadataId }: IndicatorsChartProps) {
+const IndicatorChart = React.forwardRef<HTMLDivElement, IndicatorsChartProps>(function IndicatorsChart(
+  { indicatorBoardMetadataId },
+  ref,
+) {
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard(indicatorBoardMetadataId);
   const { indicatorBoardMetadata, uploadIndicatorBoardMetadataImage } =
     useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
@@ -29,23 +33,6 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
   const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel(
     indicatorBoardMetadata?.id,
   );
-  const [imageUrl, setImageUrl] = useState<string>('');
-
-  const { ref, downloadImage, generateImageBlob } = useGenerateImage<HTMLDivElement>({
-    imageName: 'chart-image',
-  });
-
-  const handleImageDownload = useCallback(async () => {
-    await downloadImage();
-  }, []);
-
-  const handleImageUrlCreate = async () => {
-    const imageFile = await generateImageBlob();
-    if (imageFile) {
-      const urlUUID = await uploadIndicatorBoardMetadataImage(imageFile);
-      setImageUrl(urlUUID);
-    }
-  };
 
   // const handleToggle = (active: boolean) => {
   //   setIsAdvancedChart(active);
@@ -64,7 +51,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
             <SimpleIndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
           )}
         </div>
-        <div className="absolute right-3 top-1">
+        {/* <div className="absolute right-3 top-1">
           <ImageSharePopover
             baseUrl={BASE_URL}
             url={`/${imageUrl}`}
@@ -76,8 +63,8 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
               <CSVDownloadButton indicatorBoardMetadataId={indicatorBoardMetadataId} />
             </div>
           </ImageSharePopover>
-        </div>
-        {/* <MetadataSharePopover indicatorBoardMetadataId={indicatorBoardMetadataId} /> */}
+        </div> */}
+        <MetadataSharePopover indicatorBoardMetadataId={indicatorBoardMetadataId} />
         {/* <div className="absolute left-3 top-1">
           <ToggleButton
             onToggle={handleToggle}
@@ -88,11 +75,14 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
       </div>
     </Pending>
   );
-}
+});
+
+export default IndicatorChart;
 
 type Prop = {
   indicatorBoardMetadataId?: string;
 };
+
 function MetadataSharePopover({ indicatorBoardMetadataId }: Prop) {
   const { uploadIndicatorBoardMetadataImage } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
   const [imageUrl, setImageUrl] = useState<string>('');
