@@ -7,10 +7,10 @@ export default function SquareSplitScreen() {
     <IndicatorBoardDraggableContext>
       <ResizablePanelGroup direction={'vertical'}>
         <ResizablePanelGroup.Panel defaultSize={50}>
-          <HorizontalIndicatorBoard indexOffset={0} />
+          <HorizontalIndicatorBoard draggableHandle={'left'} indexOffset={0} />
         </ResizablePanelGroup.Panel>
         <ResizablePanelGroup.Panel defaultSize={50}>
-          <HorizontalIndicatorBoard indexOffset={2} />
+          <HorizontalIndicatorBoard draggableHandle={'left'} indexOffset={2} />
         </ResizablePanelGroup.Panel>
       </ResizablePanelGroup>
     </IndicatorBoardDraggableContext>

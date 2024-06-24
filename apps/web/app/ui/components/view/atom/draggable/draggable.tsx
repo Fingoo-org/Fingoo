@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/app/utils/style';
 import IconButton from '../icons/icon-button';
 
-type Handle = 'top';
+export type Handle = 'top' | 'left';
 
 type DraggableProps = {
   id: string;
@@ -36,11 +36,19 @@ export default function Draggable({
       style={style}
     >
       <div className="relative">
-        {handle === 'top' && (
-          <div className="absolute left-1/2 z-10 -translate-x-1/2 cursor-grab">
-            <IconButton size={'sm'} color={'gray'} {...attributes} {...listeners} icon={GripHorizontalIcon} />
-          </div>
-        )}
+        <div
+          className={cn(
+            'absolute  z-10  cursor-grab',
+            {
+              'left-1/2 -translate-x-1/2': handle === 'top',
+            },
+            {
+              'left-1 top-1 rotate-90': handle === 'left',
+            },
+          )}
+        >
+          <IconButton size={'sm'} color={'gray'} {...attributes} {...listeners} icon={GripHorizontalIcon} />
+        </div>
         {children}
       </div>
     </div>
