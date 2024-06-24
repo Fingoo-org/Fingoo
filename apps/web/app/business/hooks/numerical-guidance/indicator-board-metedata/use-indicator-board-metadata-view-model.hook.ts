@@ -129,7 +129,9 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
   const uploadIndicatorBoardMetadataImage = async (imageBlod: Blob) => {
     const formData = new FormData();
     formData.append('fileName', imageBlod);
-    return await uploadIndicatorBoardMetadataImageTrigger(formData);
+    return await uploadIndicatorBoardMetadataImageTrigger(formData, {
+      revalidate: false,
+    });
   };
 
   return {
