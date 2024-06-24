@@ -38,7 +38,7 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
       onDoubleClick={handleMetadataSelect}
       className={cn('max-h-screen  w-full space-y-5 rounded-lg bg-white px-4 py-5', {
         'border-4 border-fingoo-main': isSelected,
-        'max-h-[50vh]': splitScreen === 'square',
+        'max-h-[50vh] space-y-1 px-1 py-3': splitScreen === 'square',
       })}
     >
       <ClientDataSuspense

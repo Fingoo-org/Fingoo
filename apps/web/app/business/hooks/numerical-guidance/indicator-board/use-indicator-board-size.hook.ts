@@ -10,10 +10,10 @@ function getAvailableHeight(splitScreen: SplitScreen) {
   const { viewportHeight } = getViewport();
 
   if (splitScreen === 'square') {
-    return viewportHeight / 2 - 200;
+    return viewportHeight / 2 - 150;
   }
 
-  return viewportHeight - 250;
+  return viewportHeight - 180;
 }
 
 function getChartHeight(chartCount: number, splitScreen: SplitScreen) {
