@@ -9,6 +9,8 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerica
 import { cn } from '@/app/utils/style';
 import { Card } from '../../../view/molecule/card/card';
 import { CardSkeleton } from '../../../view/skeletons';
+import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
+import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
 
 type IndicatorBoardProps = {
   indicatorBoardMetadataId?: string;
@@ -16,9 +18,11 @@ type IndicatorBoardProps = {
 
 const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetadataId }: IndicatorBoardProps) {
   const { selectedMetadataId, selectMetadataById } = useSelectedIndicatorBoardMetadata();
-
+  const { splitScreen } = useSplitIndicatorBoard();
   const isSelected = indicatorBoardMetadataId ? selectedMetadataId === indicatorBoardMetadataId : false;
 
+
+  
   const handleMetadataSelect = () => {
     if (indicatorBoardMetadataId) {
       selectMetadataById(indicatorBoardMetadataId);
@@ -28,8 +32,9 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
   return (
     <Card
       onDoubleClick={handleMetadataSelect}
-      className={cn('max-h-screen  w-full rounded-lg bg-white px-4 py-5', {
+      className={cn('max-h-screen  w-full space-y-5 rounded-lg bg-white px-4 py-5', {
         'border-4 border-fingoo-main': isSelected,
+        'max-h-[50vh]': splitScreen === 'square',
       })}
     >
       <ClientDataSuspense
@@ -40,8 +45,11 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
         }
       >
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
+          <div className="flex items-center justify-center">
+            <EditableMetadataTittle className="max-w-64" indicatorBoardMetadataId={indicatorBoardMetadataId!} />
+          </div>
           <IndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
-          <div className="py-6">
+          <div className="">
             <IntervalToggleGroup indicatorBoardMetadataId={indicatorBoardMetadataId} />
           </div>
           <CustomForecastIndicatorStabilityCallout indicatorBoardMetadataId={indicatorBoardMetadataId} />

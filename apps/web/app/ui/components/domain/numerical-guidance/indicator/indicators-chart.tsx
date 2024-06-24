@@ -25,9 +25,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
   const { isAdvancedChart, setIsAdvancedChart } = useIndicatorBoard(indicatorBoardMetadataId);
   const { indicatorBoardMetadata, uploadIndicatorBoardMetadataImage } =
     useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
-  const { indicatorsValue, isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel(
-    indicatorBoardMetadata?.id,
-  );
+  const { isPending: isLiveIndicatorPending } = useLiveIndicatorsValueViewModel(indicatorBoardMetadata?.id);
   const { isPending: isCustomForecastIndicatorPending } = useCustomForecastIndicatorsValueViewModel(
     indicatorBoardMetadata?.id,
   );
@@ -49,17 +47,14 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
     }
   };
 
-  const handleToggle = (active: boolean) => {
-    setIsAdvancedChart(active);
-  };
+  // const handleToggle = (active: boolean) => {
+  //   setIsAdvancedChart(active);
+  // };
 
   return (
     <Pending isPending={isLiveIndicatorPending || isCustomForecastIndicatorPending}>
       <div className="relative">
-        <div className="flex items-center justify-center">
-          <EditableMetadataTittle className="max-w-64" indicatorBoardMetadataId={indicatorBoardMetadataId!} />
-        </div>
-        <div className="flex px-14 pt-6">
+        <div className="flex px-14">
           <DateRangeNavigator indicatorBoardMetadataId={indicatorBoardMetadataId!} />
         </div>
         <div ref={ref} className="w-full px-8" data-testid="indicators-chart">
@@ -82,6 +77,7 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
             </div>
           </ImageSharePopover>
         </div>
+        {/* <MetadataSharePopover indicatorBoardMetadataId={indicatorBoardMetadataId} /> */}
         {/* <div className="absolute left-3 top-1">
           <ToggleButton
             onToggle={handleToggle}
@@ -91,5 +87,44 @@ export default function IndicatorsChart({ indicatorBoardMetadataId }: Indicators
         </div> */}
       </div>
     </Pending>
+  );
+}
+
+type Prop = {
+  indicatorBoardMetadataId?: string;
+};
+function MetadataSharePopover({ indicatorBoardMetadataId }: Prop) {
+  const { uploadIndicatorBoardMetadataImage } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
+  const [imageUrl, setImageUrl] = useState<string>('');
+
+  const { ref, downloadImage, generateImageBlob } = useGenerateImage<HTMLDivElement>({
+    imageName: 'chart-image',
+  });
+
+  const handleImageDownload = useCallback(async () => {
+    await downloadImage();
+  }, []);
+
+  const handleImageUrlCreate = async () => {
+    const imageFile = await generateImageBlob();
+    if (imageFile) {
+      const urlUUID = await uploadIndicatorBoardMetadataImage(imageFile);
+      setImageUrl(urlUUID);
+    }
+  };
+  return (
+    <div className="absolute right-3 top-1">
+      <ImageSharePopover
+        baseUrl={BASE_URL}
+        url={`/${imageUrl}`}
+        onPopoverTriggerClick={handleImageUrlCreate}
+        onDownloadImage={handleImageDownload}
+        disabled={!indicatorBoardMetadataId ? true : false}
+      >
+        <div className="flex w-full justify-center pt-4">
+          <CSVDownloadButton indicatorBoardMetadataId={indicatorBoardMetadataId} />
+        </div>
+      </ImageSharePopover>
+    </div>
   );
 }
