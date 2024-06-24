@@ -12,6 +12,7 @@ import { CardSkeleton } from '../../../view/skeletons';
 import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
 import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
 import { useGenerateImage } from '@/app/utils/hooks/use-generate-image';
+import { MetadataSharePopover } from './metadata-share-popover';
 
 type IndicatorBoardProps = {
   indicatorBoardMetadataId?: string;
@@ -48,8 +49,15 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
         }
       >
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
-          <div className="flex items-center justify-center">
+          <div className="relative flex items-center justify-center">
             <EditableMetadataTittle className="max-w-64" indicatorBoardMetadataId={indicatorBoardMetadataId!} />
+            <div className="absolute right-3 top-1">
+              <MetadataSharePopover
+                downloadImage={downloadImage}
+                generateImageBlob={generateImageBlob}
+                indicatorBoardMetadataId={indicatorBoardMetadataId}
+              />
+            </div>
           </div>
           <IndicatorsChart ref={ref} indicatorBoardMetadataId={indicatorBoardMetadataId} />
           <div className="">
