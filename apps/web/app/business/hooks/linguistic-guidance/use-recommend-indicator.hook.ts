@@ -1,4 +1,4 @@
-import { useLogger } from '@/app/logging/logging-context';
+import { useLogger } from '@/app/logging/use-logger.hook';
 import { addIndicatorsToMetadata } from '../../services/linguistic-guidance/indicator.service';
 import { getIndicatorIdBySymbolToAPI } from '../../services/linguistic-guidance/search-symbol.service';
 import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';

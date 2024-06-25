@@ -11,7 +11,7 @@ import { getIndicatorIdBySymbolToAPI } from '../../services/linguistic-guidance/
 import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
 import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 import { addCustomForecastIndicatorToMetadataCommand } from '../../services/linguistic-guidance/indicator.service';
-import { useLogger } from '@/app/logging/logging-context';
+import { useLogger } from '@/app/logging/use-logger.hook';
 
 function formatSymbol(symbol: string) {
   if (symbol.includes(':')) {

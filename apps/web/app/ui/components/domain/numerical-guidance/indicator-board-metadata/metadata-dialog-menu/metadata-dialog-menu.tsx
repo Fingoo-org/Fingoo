@@ -6,7 +6,7 @@ import { useDialog } from '../../../../../../utils/hooks/use-dialog.hook';
 import TinyInput from '../../../../view/atom/tiny-input/tiny-input';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
 import { IndicatorBoardMetadata } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-view-model.service';
-import { useLogger } from '@/app/logging/logging-context';
+import { useLogger } from '@/app/logging/use-logger.hook';
 
 export default function MetadataDialogMenu() {
   const logger = useLogger();

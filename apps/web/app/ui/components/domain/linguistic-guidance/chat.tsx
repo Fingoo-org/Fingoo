@@ -1,7 +1,7 @@
 'use client';
 import { ChatRequestOptions } from 'ai';
 import PromptForm from '../../view/molecule/prompt-form/prompt-form';
-import { useLogger } from '@/app/logging/logging-context';
+import { useLogger } from '@/app/logging/use-logger.hook';
 import type { Message } from 'ai';
 import { Messages } from '../../view/molecule/messages';
 import PromptPreset from './prompt-preset';

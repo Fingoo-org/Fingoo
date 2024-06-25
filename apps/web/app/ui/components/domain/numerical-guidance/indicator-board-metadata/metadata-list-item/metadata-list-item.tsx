@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/app/utils/style';
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import MetadataListItemRow from './metadata-list-item-row';
-import { useLogger } from '@/app/logging/logging-context';
+import { useLogger } from '@/app/logging/use-logger.hook';
 import { sendGAEvent } from '@next/third-parties/google';
 import MetadataListItemDraggableRow from './metadata-list-item-draggable-row';
 

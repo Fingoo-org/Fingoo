@@ -1,6 +1,6 @@
 'use client';
 import IndicatorBoardToolbar from './indicator-board-toolbar';
-import { useLogger } from '@/app/logging/logging-context';
+import { useLogger } from '@/app/logging/use-logger.hook';
 import SideNavigationBar from '@/app/ui/components/view/molecule/side-navigation-bar';
 import { DashboardIcon } from '@radix-ui/react-icons';
 import MetadataListContainer from './metadata-list-container';
