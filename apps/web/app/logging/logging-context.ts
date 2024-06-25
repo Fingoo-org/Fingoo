@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 export type UserEvent =
   | 'click_metadata_item'
@@ -9,6 +9,9 @@ export type UserEvent =
   | 'click_sidebar_toggle'
   | 'submit_gpt_form'
   | 'click_ad_banner'
+  | 'GPT_create_metadata'
+  | 'open_sidebar'
+  | 'close_sidebar'
   | 'toast_error';
 
 export type UserTracker = {
@@ -16,16 +19,3 @@ export type UserTracker = {
 };
 
 export const LoggingContext = createContext<UserTracker | null>(null);
-
-export const useLogger = (): UserTracker => {
-  const logger = useContext(LoggingContext);
-  if (!logger) {
-    if (process.env.NODE_ENV === 'test') {
-      return {
-        track: () => {},
-      };
-    }
-    throw new Error('useLogging must be used within a LoggingProvider');
-  }
-  return logger;
-};

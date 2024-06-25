@@ -1,3 +1,4 @@
+import { useLogger } from '@/app/logging/use-logger.hook';
 import { addIndicatorsToMetadata, getIndicatorValue } from '../../services/linguistic-guidance/indicator.service';
 import {
   getIndicatorBySymbol,
@@ -10,9 +11,14 @@ import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicat
 import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
 
 export default function useAnalyzeEconomy() {
-  const { createIndicatorBoardMetadata, revalidateIndicatorBoardMetadataList } = useIndicatorBoardMetadataList();
+  const {
+    metadataList,
+    createIndicatorBoardMetadata: createMetadata,
+    revalidateIndicatorBoardMetadataList,
+  } = useIndicatorBoardMetadataList();
   const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
   const { addMetadataToIndicatorBoard } = useIndicatorBoard();
+  const logger = useLogger();
 
   const displayIndicatorBoardMetadata = (metadataId: string) => {
     const isSuccess = addMetadataToIndicatorBoard(metadataId);
@@ -20,6 +26,13 @@ export default function useAnalyzeEconomy() {
     if (isSuccess) {
       selectMetadataById(metadataId);
     }
+  };
+
+  const createIndicatorBoardMetadata = async (title: string) => {
+    const id = await createMetadata(title);
+    logger.track('GPT_create_metadata', { metadata_item_count: metadataList?.length ?? -1 });
+
+    return id;
   };
 
   const analyzeEconomicHandler = async (symbols: string[]) => {

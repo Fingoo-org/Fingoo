@@ -4,7 +4,8 @@
 import * as React from 'react';
 
 import type { ToastActionElement, ToastProps } from '@/app/ui/components/view/molecule/toast/toast';
-import { useLogger, UserTracker } from '@/app/logging/logging-context';
+import { UserTracker } from '@/app/logging/logging-context';
+import { useLogger } from '@/app/logging/use-logger.hook';
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;

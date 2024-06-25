@@ -11,6 +11,7 @@ import { getIndicatorIdBySymbolToAPI } from '../../services/linguistic-guidance/
 import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
 import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 import { addCustomForecastIndicatorToMetadataCommand } from '../../services/linguistic-guidance/indicator.service';
+import { useLogger } from '@/app/logging/use-logger.hook';
 
 function formatSymbol(symbol: string) {
   if (symbol.includes(':')) {
@@ -36,7 +37,12 @@ export default function usePredictIndicator() {
   const { addCustomForecastIndicatorToMetadata, selectMetadataById, selectedMetadata } =
     useSelectedIndicatorBoardMetadata();
   const { addMetadataToIndicatorBoard } = useIndicatorBoard();
-  const { createIndicatorBoardMetadata, revalidateIndicatorBoardMetadataList } = useIndicatorBoardMetadataList();
+  const {
+    metadataList,
+    createIndicatorBoardMetadata: createMetadata,
+    revalidateIndicatorBoardMetadataList,
+  } = useIndicatorBoardMetadataList();
+  const logger = useLogger();
 
   const displayIndicatorBoardMetadata = (metadataId: string) => {
     const isSuccess = addMetadataToIndicatorBoard(metadataId);
@@ -44,6 +50,13 @@ export default function usePredictIndicator() {
     if (isSuccess) {
       selectMetadataById(metadataId);
     }
+  };
+
+  const createIndicatorBoardMetadata = async (title: string) => {
+    const id = await createMetadata(title);
+    logger.track('GPT_create_metadata', { metadata_item_count: metadataList?.length ?? -1 });
+
+    return id;
   };
 
   async function predictEconomicIndicatorHandler({ target_symbol, source_symbols }: Props) {
