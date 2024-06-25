@@ -9,6 +9,7 @@ export type UserEvent =
   | 'click_sidebar_toggle'
   | 'submit_gpt_form'
   | 'click_ad_banner'
+  | 'GPT_create_metadata'
   | 'toast_error';
 
 export type UserTracker = {
@@ -20,9 +21,11 @@ export const LoggingContext = createContext<UserTracker | null>(null);
 export const useLogger = (): UserTracker => {
   const logger = useContext(LoggingContext);
   if (!logger) {
-    if (process.env.NODE_ENV === 'test') {
+    if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
       return {
-        track: () => {},
+        track: (event: UserEvent) => {
+          console.log('Logging event:', event);
+        },
       };
     }
     throw new Error('useLogging must be used within a LoggingProvider');

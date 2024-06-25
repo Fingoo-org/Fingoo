@@ -1,3 +1,4 @@
+import { useLogger } from '@/app/logging/logging-context';
 import { addIndicatorsToMetadata } from '../../services/linguistic-guidance/indicator.service';
 import { getIndicatorIdBySymbolToAPI } from '../../services/linguistic-guidance/search-symbol.service';
 import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
@@ -7,9 +8,14 @@ import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicat
 import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
 
 export default function useRecommendIndicator() {
-  const { createIndicatorBoardMetadata, revalidateIndicatorBoardMetadataList } = useIndicatorBoardMetadataList();
+  const {
+    metadataList,
+    createIndicatorBoardMetadata: createMetadata,
+    revalidateIndicatorBoardMetadataList,
+  } = useIndicatorBoardMetadataList();
   const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
   const { addMetadataToIndicatorBoard } = useIndicatorBoard();
+  const logger = useLogger();
 
   const displayIndicatorBoardMetadata = (metadataId: string) => {
     const isSuccess = addMetadataToIndicatorBoard(metadataId);
@@ -17,6 +23,13 @@ export default function useRecommendIndicator() {
     if (isSuccess) {
       selectMetadataById(metadataId);
     }
+  };
+
+  const createIndicatorBoardMetadata = async (title: string) => {
+    const id = await createMetadata(title);
+    logger.track('GPT_create_metadata', { metadata_item_count: metadataList?.length ?? -1 });
+
+    return id;
   };
 
   const recommendIndicatorHandler = async (symbols: string[]) => {
