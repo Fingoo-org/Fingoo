@@ -10,6 +10,8 @@ export type UserEvent =
   | 'submit_gpt_form'
   | 'click_ad_banner'
   | 'GPT_create_metadata'
+  | 'open_sidebar'
+  | 'close_sidebar'
   | 'toast_error';
 
 export type UserTracker = {
