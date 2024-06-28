@@ -9,7 +9,7 @@ def applyWeight(df: pd.DataFrame, applyData, weight):
       print('가중치가 적용되지 않았습니다.')
       return df
     else:
-        totalCount = 10
+        totalCount = 15
         theta = weight/1000
         base = df[applyData].iloc[-(totalCount)]
         test = df[applyData].iloc[-(totalCount):-1]

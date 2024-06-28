@@ -11,11 +11,27 @@ def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
   dfVar = df[group]
   for i in group:
     if verification.getADFDataFrame(dfVar[i])['Data']['p_value'] >= 0.05:
-      dfVar.loc[:, i] = dfVar[i].diff().bfill()
+      while verification.getADFDataFrame(dfVar[i])['Data']['p_value'] >= 0.05:
+        print(verification.getADFDataFrame(dfVar[i]))
+        dfVar.loc[:, i] = dfVar[i].diff().bfill()
+        print('---------------------------------')
+        print(verification.getADFDataFrame(dfVar[i]))
+        print('---------------------------------')
+      print('정상성 검증 완료 ~ ! 차분 끝')
   
   dfNorm = (dfVar/dfVar.iloc[0]) - 1
   
-  model = VAR(dfNorm).fit(10)
+  minAic=100
+  optP=0
+  for p in range(1,10):
+    result = VAR(dfNorm).fit(p)
+    if(result.aic <= minAic):
+      minAic = result.aic
+      optP = p
+  
+  print('optimized P: ', optP)
+  model = VAR(dfNorm).fit(optP)
+  
   ins = dfNorm.values[-model.k_ar:]
   forecast = model.forecast(y=ins, steps=period)
   dfForecast = pd.DataFrame(forecast, columns=dfNorm.columns)
