@@ -17,10 +17,7 @@ load_dotenv()
 BASE_URL = os.getenv("FAST_BASE_URL")
 
 def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[int], validIndicatorId: list[str], db: Session) -> ForecastIndicatorDto:
-# 데이터베이스로부터 Indicator 정보 가져오기
   varIndicators: list[IndicatorDto] = []
-
-  # 재료 지표에 targetIndicator와 type 포함(var 관점에서는 재료지표와 타겟 지표가 모두 있어야 함)
   sourceIndicatorIds.append(targetIndicatorId)
   sourceIndicatorsType.append(targetIndicatorType)
 
@@ -38,10 +35,6 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
     varIndicators.append(indicatorDto)
 
   print(varIndicators)
-  
-  nameList = []
-  for varIndicator in varIndicators:
-    nameList.append(varIndicator.name)
 
   APIList = []
   session = requests.Session()
@@ -72,10 +65,10 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
 
   df_var = replaceNanAndInf(df_var)
   
-  weights.append(0)
-  for indicator, weight in zip(df_var, weights):
-    weight = int(weight)
-    df_var = verification.applyWeight(df_var, indicator, weight)
+  # weights.append(0)
+  # for indicator, weight in zip(df_var, weights):
+  #   weight = int(weight)
+  #   df_var = verification.applyWeight(df_var, indicator, weight)
 
   try:
     if len(validIndicatorId) >= 2:
@@ -123,9 +116,9 @@ def predictWithoutTargetIndicator(targetIndicatorId:str, targetIndicatorType:str
       indicatorDto = IndicatorDto(id=str(result[0]), name=result[1], ticker=result[2])
   sourceIndicators.append(indicatorDto)
 
-  nameList = []
-  for sourceIndicator in sourceIndicators:
-    nameList.append(sourceIndicator.name)
+  # nameList = []
+  # for sourceIndicator in sourceIndicators:
+  #   nameList.append(sourceIndicator.name)
 
   for sourceIndicator in sourceIndicators:
     if sourceIndicator.id == targetIndicatorId:
@@ -147,18 +140,18 @@ def predictWithoutTargetIndicator(targetIndicatorId:str, targetIndicatorType:str
   APIList.append(targetIndicatorDf)
 
   sourceDataFrames = {}
-  for name, df in zip(nameList, APIList):
-    sourceDataFrames[name] = df.set_index('date')['value']
+  for sourceIndicatorId, df in zip([targetIndicatorId], APIList):
+    sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
 
   df_arima = pd.DataFrame(sourceDataFrames)
 
   df_arima.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
   
-  weights = []
-  weights.append(0)
-  for indicator, weight in zip(df_arima, weights):
-    weight = int(weight)
-    df_arima = verification.applyWeight(df_arima, indicator, weight)
+  # weights = []
+  # weights.append(0)
+  # for indicator, weight in zip(df_arima, weights):
+  #   weight = int(weight)
+  #   df_arima = verification.applyWeight(df_arima, indicator, weight)
 
   print('Arima')
   customForecastIndicator = forecast.runArima(df_arima, targetIndicatorName, int(len(df_arima)/2))
@@ -240,10 +233,10 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
 
   df_var = replaceNanAndInf(df_var)
   
-  weights.append(0)
-  for indicator, weight in zip(df_var, weights):
-    weight = int(weight)
-    df_var = verification.applyWeight(df_var, indicator, weight)
+  # weights.append(0)
+  # for indicator, weight in zip(df_var, weights):
+  #   weight = int(weight)
+  #   df_var = verification.applyWeight(df_var, indicator, weight)
 
   falseResult:list[Verification] = []
   for varIndicator in varIndicators:
@@ -271,30 +264,30 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     return sourceIndicatorsVerification
 
   # coint jojansen
-  try:
-    grangerDf = verification.grangerVerification(df_var)
-    checkDf = verification.findSignificantValues(grangerDf)
-    grangerGroup = verification.findInfluentialGroups(checkDf)
-    cointJohansenVerificationResult: list[Verification] = []
-    cointJohansenVerification = verification.cointJohansenVerification(df_var, grangerGroup)
-    cointJohansenVerificationList = [str(item) for item in cointJohansenVerification]
-    for varIndicator in varIndicators:
-      if varIndicator.id in cointJohansenVerificationList:
-        ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'True'}
-      else:
-        ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'False'}
-      cointJohansenVerificationResult.append(ver)
-  except Exception:
-    sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
-      "grangerGroup": grangerVerificationResult,
-      "cointJohansenVerification": falseResult
-    }
-    return sourceIndicatorsVerification
+  # try:
+  #   grangerDf = verification.grangerVerification(df_var)
+  #   checkDf = verification.findSignificantValues(grangerDf)
+  #   grangerGroup = verification.findInfluentialGroups(checkDf)
+  #   cointJohansenVerificationResult: list[Verification] = []
+  #   cointJohansenVerification = verification.cointJohansenVerification(df_var, grangerGroup)
+  #   cointJohansenVerificationList = [str(item) for item in cointJohansenVerification]
+  #   for varIndicator in varIndicators:
+  #     if varIndicator.id in cointJohansenVerificationList:
+  #       ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'True'}
+  #     else:
+  #       ver: Verification = {'indicatorId': varIndicator.id, 'verification': 'False'}
+  #     cointJohansenVerificationResult.append(ver)
+  # except Exception:
+  #   sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
+  #     "grangerGroup": grangerVerificationResult,
+  #     "cointJohansenVerification": falseResult
+  #   }
+  #   return sourceIndicatorsVerification
   
-  # Source Indicators Verification Response 객체 생성
+  # Source Indicators Verification Response 객체 생성 (공적분 검정은 일단 사용하지 않으므로, false)
   sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
     "grangerGroup": grangerVerificationResult,
-    "cointJohansenVerification": cointJohansenVerificationResult
+    "cointJohansenVerification": falseResult #cointJohansenVerificationResult
   }
   return sourceIndicatorsVerification
 
