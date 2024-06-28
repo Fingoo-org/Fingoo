@@ -60,15 +60,8 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
     sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
 
   df_var = pd.DataFrame(sourceDataFrames)
-
   df_var.columns = [varIndicator.id for varIndicator in varIndicators]
-
   df_var = replaceNanAndInf(df_var)
-  
-  # weights.append(0)
-  # for indicator, weight in zip(df_var, weights):
-  #   weight = int(weight)
-  #   df_var = verification.applyWeight(df_var, indicator, weight)
 
   try:
     if len(validIndicatorId) >= 2:
@@ -94,15 +87,15 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
               }
         return result
       elif targetIndicatorId not in validIndicatorId:
-        return predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, db)
+        return predictWithoutSourceIndicators(targetIndicatorId, targetIndicatorType, db)
     else:
-      return predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, db)
+      return predictWithoutSourceIndicators(targetIndicatorId, targetIndicatorType, db)
   except Exception as error:
     print(f'Error: {error}')
     # arima
-    return predictWithoutTargetIndicator(targetIndicatorId, targetIndicatorType, db)
+    return predictWithoutSourceIndicators(targetIndicatorId, targetIndicatorType, db)
   
-def predictWithoutTargetIndicator(targetIndicatorId:str, targetIndicatorType:str, db: Session) -> ForecastIndicatorDto:
+def predictWithoutSourceIndicators(targetIndicatorId:str, targetIndicatorType:str, db: Session) -> ForecastIndicatorDto:
   sourceIndicators: list[IndicatorDto] = []
   if targetIndicatorType == 'forex_pairs' or targetIndicatorType == 'cryptocurrencies':
     query = text(f"SELECT id, symbol FROM public.{targetIndicatorType} WHERE id = '{targetIndicatorId}'")
@@ -115,10 +108,6 @@ def predictWithoutTargetIndicator(targetIndicatorId:str, targetIndicatorType:str
     if result:
       indicatorDto = IndicatorDto(id=str(result[0]), name=result[1], ticker=result[2])
   sourceIndicators.append(indicatorDto)
-
-  # nameList = []
-  # for sourceIndicator in sourceIndicators:
-  #   nameList.append(sourceIndicator.name)
 
   for sourceIndicator in sourceIndicators:
     if sourceIndicator.id == targetIndicatorId:
@@ -144,14 +133,7 @@ def predictWithoutTargetIndicator(targetIndicatorId:str, targetIndicatorType:str
     sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
 
   df_arima = pd.DataFrame(sourceDataFrames)
-
   df_arima.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
-  
-  # weights = []
-  # weights.append(0)
-  # for indicator, weight in zip(df_arima, weights):
-  #   weight = int(weight)
-  #   df_arima = verification.applyWeight(df_arima, indicator, weight)
 
   print('Arima')
   customForecastIndicator = forecast.runArima(df_arima, targetIndicatorName, int(len(df_arima)/2))
