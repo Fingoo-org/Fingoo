@@ -9,19 +9,21 @@ type HorizontalIndicatorBoardProps = {
   indexOffset: number;
   draggableHandle?: Handle;
 };
+
 export function HorizontalIndicatorBoard({ indexOffset, draggableHandle = 'top' }: HorizontalIndicatorBoardProps) {
   const { activeDragMetadataId, draggableIndicatorBoardContextValue } = useSplitIndicatorBoard();
 
   return (
     <ResizablePanelGroup direction="horizontal">
       {Array.from({ length: 2 }, () => 0).map((_, index) => {
-        const item = draggableIndicatorBoardContextValue[index + indexOffset];
+        const id = index + indexOffset;
+        const item = draggableIndicatorBoardContextValue[id];
         const metadataId = item?.[0];
         return (
           <>
             {item ? (
-              <ResizablePanelGroup.Panel key={index} defaultSize={50}>
-                <SortableContext id={`${index}`} items={item}>
+              <ResizablePanelGroup.Panel key={id} defaultSize={50}>
+                <SortableContext id={`${id}`} items={item}>
                   <div
                     className={cn('flex h-full items-center justify-center px-2', {
                       'border-2 border-lime-300': activeDragMetadataId ? metadataId !== activeDragMetadataId : false,
@@ -34,13 +36,12 @@ export function HorizontalIndicatorBoard({ indexOffset, draggableHandle = 'top' 
                 </SortableContext>
               </ResizablePanelGroup.Panel>
             ) : (
-              <ResizablePanelGroup.Panel key={index} defaultSize={50}>
+              <ResizablePanelGroup.Panel key={id} defaultSize={50}>
                 <div className="flex h-full items-center justify-center px-2">
                   <IndicatorBoard />
                 </div>
               </ResizablePanelGroup.Panel>
             )}
-            {index === 0 ? <ResizablePanelGroup.Handle disabled={true} /> : null}
           </>
         );
       })}
