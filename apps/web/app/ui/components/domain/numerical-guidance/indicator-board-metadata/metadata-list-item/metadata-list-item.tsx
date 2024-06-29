@@ -133,7 +133,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       })}
     >
       <ExpandableListItem.Title>
-        <div className="py-1 pl-4">{item.name}</div>
+        <div className="py-1 pl-4 ">{item.name}</div>
       </ExpandableListItem.Title>
       <ExpandableListItem.ExpandedContent>
         <DraggableContext

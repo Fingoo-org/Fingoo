@@ -56,7 +56,7 @@ export default function MetadataListItemRow({
   };
   return (
     indicatorTitle && (
-      <div className="relative">
+      <div className="relative text-fingoo-gray-6">
         <DraggableItem
           className="flex h-9 items-center before:mr-2 before:inline-block before:h-4 before:w-1 before:rounded-full before:bg-fingoo-sub first:mt-2 last:mb-2"
           active={activeDragItemId === indicatorId}
