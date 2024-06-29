@@ -54,6 +54,7 @@ export default function MetadataListItemRow({
       metadataId: indicatorBoardMetadataId,
     });
   };
+
   return (
     indicatorTitle && (
       <div className="relative text-fingoo-gray-6">

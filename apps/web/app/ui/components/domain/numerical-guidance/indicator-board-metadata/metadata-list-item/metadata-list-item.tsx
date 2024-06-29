@@ -109,7 +109,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
             ))
           ) : (
             <DraggableItem
-              className="border-dotted border-fingoo-main"
+              className="border-dotted border-fingoo-main text-fingoo-gray-6"
               active={false}
               disabled={true}
               id={`sectionContext${index + 1}`}
