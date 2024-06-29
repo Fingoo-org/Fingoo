@@ -9,6 +9,10 @@ import { useSelectedIndicatorBoardMetadata } from '@/app/business/hooks/numerica
 import { cn } from '@/app/utils/style';
 import { Card } from '../../../view/molecule/card/card';
 import { CardSkeleton } from '../../../view/skeletons';
+import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
+import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
+import { useGenerateImage } from '@/app/utils/hooks/use-generate-image';
+import { MetadataSharePopover } from './metadata-share-popover';
 
 type IndicatorBoardProps = {
   indicatorBoardMetadataId?: string;
@@ -16,8 +20,12 @@ type IndicatorBoardProps = {
 
 const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetadataId }: IndicatorBoardProps) {
   const { selectedMetadataId, selectMetadataById } = useSelectedIndicatorBoardMetadata();
-
+  const { splitScreen } = useSplitIndicatorBoard();
   const isSelected = indicatorBoardMetadataId ? selectedMetadataId === indicatorBoardMetadataId : false;
+
+  const { ref, downloadImage, generateImageBlob } = useGenerateImage<HTMLDivElement>({
+    imageName: 'chart-image',
+  });
 
   const handleMetadataSelect = () => {
     if (indicatorBoardMetadataId) {
@@ -28,8 +36,9 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
   return (
     <Card
       onDoubleClick={handleMetadataSelect}
-      className={cn('min-h-[32.5rem] w-full rounded-lg bg-white px-4 py-5', {
+      className={cn('max-h-screen  w-full space-y-5 rounded-lg bg-white px-4 py-5', {
         'border-4 border-fingoo-main': isSelected,
+        'max-h-[50vh] space-y-1 px-1 py-3': splitScreen === 'square',
       })}
     >
       <ClientDataSuspense
@@ -40,8 +49,18 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
         }
       >
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
-          <IndicatorsChart indicatorBoardMetadataId={indicatorBoardMetadataId} />
-          <div className="py-6">
+          <div className="relative flex items-center justify-center">
+            <EditableMetadataTittle className="max-w-64" indicatorBoardMetadataId={indicatorBoardMetadataId!} />
+            <div className="absolute right-3 top-1">
+              <MetadataSharePopover
+                downloadImage={downloadImage}
+                generateImageBlob={generateImageBlob}
+                indicatorBoardMetadataId={indicatorBoardMetadataId}
+              />
+            </div>
+          </div>
+          <IndicatorsChart ref={ref} indicatorBoardMetadataId={indicatorBoardMetadataId} />
+          <div className="">
             <IntervalToggleGroup indicatorBoardMetadataId={indicatorBoardMetadataId} />
           </div>
           <CustomForecastIndicatorStabilityCallout indicatorBoardMetadataId={indicatorBoardMetadataId} />

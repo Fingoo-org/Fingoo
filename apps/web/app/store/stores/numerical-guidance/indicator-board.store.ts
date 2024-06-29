@@ -20,6 +20,7 @@ type IndicatorBoardInfo = {
 type IndicatorBoardState = {
   splitScreen: SplitScreen;
   indicatorBoardInfos: IndicatorBoardInfo[];
+  activeDragMetadataId: string | null;
 };
 
 type IndicatorBoardAction = {
@@ -31,6 +32,7 @@ type IndicatorBoardAction = {
   clearIndicatorBoardInfos: () => void;
   sliceIndicatorBoardInfos: (length: number) => IndicatorBoardInfo[];
   setIndicatorBoardInfos: (infos: IndicatorBoardInfo[]) => void;
+  setActiveDragMetadataId: (metadataId: string | null) => void;
 };
 
 type IndicatorBoardStore = IndicatorBoardState & {
@@ -40,6 +42,7 @@ type IndicatorBoardStore = IndicatorBoardState & {
 const initialIndicatorBoardState: IndicatorBoardState = {
   splitScreen: 'full',
   indicatorBoardInfos: [],
+  activeDragMetadataId: null,
 };
 
 export const useIndicatorBoardStore = create<IndicatorBoardStore>((set, get) => {
@@ -74,6 +77,7 @@ export const useIndicatorBoardStore = create<IndicatorBoardStore>((set, get) => 
       clearIndicatorBoardInfos: () => set({ indicatorBoardInfos: [] }),
       sliceIndicatorBoardInfos: (length) => get().indicatorBoardInfos.slice(0, length),
       setIndicatorBoardInfos: (infos) => set({ indicatorBoardInfos: infos }),
+      setActiveDragMetadataId: (metadataId) => set({ activeDragMetadataId: metadataId }),
     },
   };
 });

@@ -16,6 +16,7 @@ import MetadataListItemRow from './metadata-list-item-row';
 import { useLogger } from '@/app/logging/use-logger.hook';
 import { sendGAEvent } from '@next/third-parties/google';
 import MetadataListItemDraggableRow from './metadata-list-item-draggable-row';
+import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -33,8 +34,9 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     indicatorBoardMetadata?.indicatorIdsWithSectionIds,
   );
 
-  const { addMetadataToIndicatorBoard, checkMetadataInIndicatorBoard, deleteMetadataFromIndicatorBoard } =
-    useIndicatorBoard(item.id);
+  const { checkMetadataInIndicatorBoard, deleteMetadataFromIndicatorBoard } = useIndicatorBoard(item.id);
+
+  const { addMetadataToIndicatorBoard } = useSplitIndicatorBoard();
 
   useEffect(() => {
     setIndicatorIdsWithsectionIds(indicatorBoardMetadata?.indicatorIdsWithSectionIds);
@@ -108,7 +110,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
             ))
           ) : (
             <DraggableItem
-              className="border-dotted border-fingoo-main"
+              className="border-dotted border-fingoo-main text-fingoo-gray-6"
               active={false}
               disabled={true}
               id={`sectionContext${index + 1}`}
@@ -132,7 +134,7 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
       })}
     >
       <ExpandableListItem.Title>
-        <div className="py-1 pl-4">{item.name}</div>
+        <div className="py-1 pl-4 ">{item.name}</div>
       </ExpandableListItem.Title>
       <ExpandableListItem.ExpandedContent>
         <DraggableContext

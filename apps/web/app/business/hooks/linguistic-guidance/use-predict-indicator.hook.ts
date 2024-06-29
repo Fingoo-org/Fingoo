@@ -8,9 +8,9 @@ import {
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { getIndicatorIdBySymbolToAPI } from '../../services/linguistic-guidance/search-symbol.service';
-import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
 import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 import { addCustomForecastIndicatorToMetadataCommand } from '../../services/linguistic-guidance/indicator.service';
+import { useSplitIndicatorBoard } from '../numerical-guidance/indicator-board/use-split-indicator-board.hook';
 import { useLogger } from '@/app/logging/use-logger.hook';
 
 function formatSymbol(symbol: string) {
@@ -36,7 +36,8 @@ export default function usePredictIndicator() {
   const revalidateCustomForecastIndicatorList = useRevalidateCustomForecastIndicatorList();
   const { addCustomForecastIndicatorToMetadata, selectMetadataById, selectedMetadata } =
     useSelectedIndicatorBoardMetadata();
-  const { addMetadataToIndicatorBoard } = useIndicatorBoard();
+  const { addMetadataToIndicatorBoard } = useSplitIndicatorBoard();
+  
   const {
     metadataList,
     createIndicatorBoardMetadata: createMetadata,

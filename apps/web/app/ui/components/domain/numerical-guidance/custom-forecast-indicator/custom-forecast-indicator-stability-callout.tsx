@@ -1,6 +1,8 @@
 import Callout from '../../../view/molecule/callout';
 import { useCustomForecastIndicatorListViewModel } from '@/app/business/hooks/numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 import { useIndicatorBoardMetadataViewModel } from '@/app/business/hooks/numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-view-model.hook';
+import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
+import { cn } from '@/app/utils/style';
 
 type CustomForecastIndicatorStabilityCalloutProps = {
   indicatorBoardMetadataId?: string;
@@ -9,6 +11,7 @@ type CustomForecastIndicatorStabilityCalloutProps = {
 export default function CustomForecastIndicatorStabilityCallout({
   indicatorBoardMetadataId,
 }: CustomForecastIndicatorStabilityCalloutProps) {
+  const { splitScreen } = useSplitIndicatorBoard();
   const { indicatorBoardMetadata } = useIndicatorBoardMetadataViewModel(indicatorBoardMetadataId);
   const { customForecastIndicatorList } = useCustomForecastIndicatorListViewModel();
 
@@ -26,6 +29,9 @@ export default function CustomForecastIndicatorStabilityCallout({
 
   return (
     <Callout
+      className={cn({
+        'py-1 text-xs': splitScreen === 'square',
+      })}
       variant={isStability ? 'default' : 'warning'}
       content={isStability ? '안정성이 검증된 예측 지표입니다.' : '안정성이 검증되지 않은 예측 지표입니다.'}
     />

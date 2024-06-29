@@ -5,7 +5,7 @@ import { createIndicator } from '../../services/numerical-guidance/view-model/in
 import { Indicator } from '../../services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
 import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { useIndicatorBoard } from '../numerical-guidance/indicator-board/use-indicator-board.hook';
+import { useSplitIndicatorBoard } from '../numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
 export default function useRecommendIndicator() {
   const {
@@ -14,7 +14,7 @@ export default function useRecommendIndicator() {
     revalidateIndicatorBoardMetadataList,
   } = useIndicatorBoardMetadataList();
   const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
-  const { addMetadataToIndicatorBoard } = useIndicatorBoard();
+  const { addMetadataToIndicatorBoard } = useSplitIndicatorBoard();
   const logger = useLogger();
 
   const displayIndicatorBoardMetadata = (metadataId: string) => {

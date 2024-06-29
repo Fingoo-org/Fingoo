@@ -32,9 +32,9 @@ const Callout = React.forwardRef<HTMLDivElement, CalloutProps>(
   ({ className, variant, icon, content, ...props }, ref) => {
     const Icon = icon;
     return (
-      <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props}>
+      <div ref={ref} role="alert" className={cn('text-sm', alertVariants({ variant }), className)} {...props}>
         {Icon ? <Icon className="mr-2 h-4 w-4" /> : null}
-        <div className='"text-sm [&_p]:leading-relaxed"'>{content}</div>
+        <div className='" [&_p]:leading-relaxed"'>{content}</div>
       </div>
     );
   },
