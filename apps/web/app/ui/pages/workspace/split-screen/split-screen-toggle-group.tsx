@@ -1,8 +1,8 @@
 'use client';
 import ToggleGroup from '../../../components/view/molecule/toggle-group';
 import { type SplitScreen, splitScreens } from '@/app/store/stores/numerical-guidance/indicator-board.store';
-import { useLogger } from '@/app/logging/logging-context';
 import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
+import { useLogger } from '@/app/logging/use-logger.hook';
 
 function isSplitScreen(value: string): value is SplitScreen {
   return splitScreens.includes(value as SplitScreen);

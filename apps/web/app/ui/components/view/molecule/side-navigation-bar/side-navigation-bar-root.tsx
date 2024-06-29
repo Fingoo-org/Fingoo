@@ -48,6 +48,7 @@ export function SideNavigationBarRoot({
   const handleMenuSelect = (value: string) => {
     if (collapsed === true) {
       setCollapsed(false);
+      onCollapsed?.(false);
     }
     setSelected(value);
   };

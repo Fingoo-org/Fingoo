@@ -1,5 +1,6 @@
 import React from 'react';
-import { useLogger, UserEvent } from '../logging-context';
+import { UserEvent } from '../logging-context';
+import { useLogger } from '../use-logger.hook';
 
 type LogClickProps = {
   event: UserEvent;
