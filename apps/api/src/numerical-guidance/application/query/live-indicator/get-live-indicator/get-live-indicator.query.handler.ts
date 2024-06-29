@@ -14,6 +14,11 @@ import { LoadIndicatorPort } from '../../../port/persistence/indicator/load-indi
 import { LoadLiveEconomyIndicatorPort } from '../../../port/external/fred/load-live-economy-indicator.port';
 import { EconomyDto } from '../../indicator/get-indicator-list/dto/economy.dto';
 
+type RedisKeyData = { key: string; endDate: string };
+const MILLISECONDS_IN_A_DAY = 86400000;
+const DAYS_IN_A_WEEK = 7;
+const THURSDAY_OFFSET = 4;
+
 @Injectable()
 @QueryHandler(GetLiveIndicatorQuery)
 export class GetLiveIndicatorQueryHandler implements IQueryHandler {
@@ -36,9 +41,11 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
 
     const indicatorDto: IndicatorDtoType = await this.loadIndicatorPort.loadIndicator(indicatorId, indicatorType);
 
-    const { key, endDate } = this.createLiveIndicatorKey(indicatorDto, interval, startDate);
+    const redisKeyData: RedisKeyData = this.createLiveIndicatorKey(indicatorDto, interval, startDate);
 
-    let liveIndicatorDto: LiveIndicatorDtoType = await this.loadCachedLiveIndicatorPort.loadCachedLiveIndicator(key);
+    let liveIndicatorDto: LiveIndicatorDtoType = await this.loadCachedLiveIndicatorPort.loadCachedLiveIndicator(
+      redisKeyData.key,
+    );
 
     if (this.isNotCached(liveIndicatorDto)) {
       if (indicatorType === 'economy' && interval === 'none') {
@@ -47,12 +54,18 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
           indicatorDto,
           economicInterval,
           startDate,
-          endDate,
-          key,
+          redisKeyData.endDate,
+          redisKeyData.key,
         );
         this.logger.log('Live indicator(FRED) 호출');
       } else {
-        liveIndicatorDto = await this.loadAndCacheLiveIndicator(indicatorDto, interval, startDate, endDate, key);
+        liveIndicatorDto = await this.loadAndCacheLiveIndicator(
+          indicatorDto,
+          interval,
+          startDate,
+          redisKeyData.endDate,
+          redisKeyData.key,
+        );
         this.logger.log('Live indicator(TWELVE) 호출');
       }
     }
@@ -98,31 +111,69 @@ export class GetLiveIndicatorQueryHandler implements IQueryHandler {
     return indicatorDto == null;
   }
 
-  private createLiveIndicatorKey(indicatorDto: IndicatorDtoType, interval: string, formattedStartDate: string) {
-    const endDate = this.getEndDate();
-    if (interval === 'none') {
-      const economicInterval: string = (indicatorDto as EconomyDto).frequency;
-      return {
-        key: `${indicatorDto.indicatorType}/live${indicatorDto.symbol}${economicInterval}${formattedStartDate}${endDate}`,
-        endDate: endDate,
-      };
+  private createLiveIndicatorKey(indicatorDto: IndicatorDtoType, interval: Interval, startDate: string): RedisKeyData {
+    const nowEndDate = this.getEndDate();
+    const endDate = this.formatDayToString(nowEndDate);
+    const keyInterval = this.getKeyInterval(interval, indicatorDto);
+    const redisExpiredKey = this.getRedisExpiredKey(nowEndDate, interval);
+
+    const key = `${indicatorDto.indicatorType}/live-${indicatorDto.symbol}-interval:${keyInterval}-startDate:${startDate}-redisExpiredKey:${redisExpiredKey}`;
+    return { key, endDate };
+  }
+
+  private getEndDate(): Date {
+    return new Date();
+  }
+
+  private getRedisExpiredKey(currentDate: Date, interval: string): string {
+    switch (interval) {
+      case 'day':
+        return this.formatDayToString(currentDate);
+      case 'week':
+        return this.formatWeekToString(currentDate);
+      case 'month':
+        return this.formatMonthToString(currentDate);
+      case 'year':
+        return this.formatYearToString(currentDate);
+      default:
+        return this.formatDayToString(currentDate);
     }
-    return {
-      key: `${indicatorDto.indicatorType}/live${indicatorDto.symbol}${interval}${formattedStartDate}${endDate}`,
-      endDate: endDate,
-    };
   }
 
-  private getEndDate(): string {
-    const currentDate = new Date();
-    return this.formatDateToString(currentDate);
+  private getKeyInterval(interval: Interval, indicatorDto: IndicatorDtoType): string {
+    if (interval === 'none') {
+      return (indicatorDto as EconomyDto).frequency || '';
+    }
+    return interval;
   }
 
-  private formatDateToString(date: Date): string {
+  private formatDayToString(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-
     return `${year}-${month}-${day}`;
+  }
+
+  private formatWeekToString(date: Date): string {
+    const year = date.getFullYear();
+    const week = this.getISOWeekNumber(date);
+    return `${year}-W${week}`;
+  }
+
+  private formatMonthToString(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    return `${year}-${month}`;
+  }
+
+  private formatYearToString(date: Date): string {
+    return String(date.getFullYear());
+  }
+
+  private getISOWeekNumber(date: Date): number {
+    const tempDate = new Date(date.getTime());
+    tempDate.setDate(tempDate.getDate() + THURSDAY_OFFSET - (tempDate.getDay() || DAYS_IN_A_WEEK));
+    const yearStart = new Date(tempDate.getFullYear(), 0, 1);
+    return Math.ceil(((tempDate.getTime() - yearStart.getTime()) / MILLISECONDS_IN_A_DAY + 1) / DAYS_IN_A_WEEK);
   }
 }

@@ -33,9 +33,7 @@ export class TwelveApiManager {
       const twelveInterval = this.convertIntervalToTwelveInterval(interval);
       const requestUrl: string = `${BASE_URL}/time_series/?symbol=${symbol}&interval=${twelveInterval}&start_date=${startDate}&end_date=${endDate}&apikey=${process.env.TWELVE_KEY}`;
       const response = await this.api.axiosRef.get(requestUrl);
-      const resultResponse = this.checkTwelveException(response.data);
-      console.log(resultResponse);
-      return resultResponse;
+      return this.checkTwelveException(response.data);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException({

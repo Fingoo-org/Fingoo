@@ -9,7 +9,6 @@ export class AppController {
   @Get()
   @Public()
   getHello(): string {
-    console.log('test');
     return this.appService.getHello();
   }
 }
