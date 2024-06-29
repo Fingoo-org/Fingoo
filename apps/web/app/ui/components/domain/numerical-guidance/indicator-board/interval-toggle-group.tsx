@@ -29,7 +29,7 @@ export default function IntervalToggleGroup({ indicatorBoardMetadataId }: Interv
       onValueChange={handleIntervalChange}
       type="single"
     >
-      <ToggleGroup.Item value="day">
+      <ToggleGroup.Item  value="day">
         <Item>Day</Item>
       </ToggleGroup.Item>
       <ToggleGroup.Item value="week">
@@ -48,8 +48,8 @@ export default function IntervalToggleGroup({ indicatorBoardMetadataId }: Interv
     return (
       <div
         className={cn({
-          'w-20': splitScreen === 'full',
-          'w-10': splitScreen !== 'full',
+          'w-20': splitScreen !== 'square',
+          'w-10 text-xs': splitScreen === 'square',
         })}
       >
         {children}
