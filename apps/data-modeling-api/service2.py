@@ -17,6 +17,35 @@ load_dotenv()
 
 BASE_URL = os.getenv("FAST_BASE_URL")
 
+def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[int], validIndicatorId: list[str], db: Session) -> ForecastIndicatorDto:
+  varIndicators: list[IndicatorDto] = []
+  sourceIndicatorIds.append(targetIndicatorId)
+  sourceIndicatorsType.append(targetIndicatorType)
+
+  for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
+    varIndicators.append(getIndicatorDtoFromDB(sourceIndicatorId, sourceIndicatorType, db))
+  print(varIndicators)
+  
+  APIList = []
+  session = requests.Session()
+  retry = Retry(connect=10, backoff_factor=1)
+  adapter = HTTPAdapter(max_retries=retry)
+  session.mount('http://', adapter)
+  startDate = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime("%Y-%m-%d")
+
+  for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
+    APIList.append(getIndicatorValue(sourceIndicatorId, sourceIndicatorType, startDate))
+
+  sourceDataFrames = {}
+  for sourceIndicatorId, df in zip(sourceIndicatorIds, APIList):
+    sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
+
+  df_var = pd.DataFrame(sourceDataFrames)
+  df_var.columns = [varIndicator.id for varIndicator in varIndicators]
+  df_var = replaceNanAndInf(df_var)
+  
+  
+
 def sourceIndicatorsVerification2(targetIndicatorId:str, targetIndicatorType:str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
   varIndicators: list[IndicatorDto] = []
   sourceIndicatorIds.append(targetIndicatorId)
@@ -44,11 +73,6 @@ def sourceIndicatorsVerification2(targetIndicatorId:str, targetIndicatorType:str
   df_var.columns = [varIndicator.id for varIndicator in varIndicators]
   df_var = replaceNanAndInf(df_var)
 
-  falseResult:list[Verification] = []
-  for varIndicator in varIndicators:
-    ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
-    falseResult.append(ver)
-
   # granger
   try: 
     grangerDf = verification.grangerVerification(df_var)
@@ -64,15 +88,15 @@ def sourceIndicatorsVerification2(targetIndicatorId:str, targetIndicatorType:str
       grangerVerificationResult.append(ver)
   except Exception:
     sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
-      "grangerGroup": falseResult,
-      "cointJohansenVerification": falseResult
+      "grangerGroup": getFalseVerificationResult(varIndicators),
+      "cointJohansenVerification": getFalseVerificationResult(varIndicators)
     }
     return sourceIndicatorsVerification
   
   # Source Indicators Verification Response 객체 생성 (공적분 검정은 일단 사용하지 않으므로, false)
   sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
     "grangerGroup": grangerVerificationResult,
-    "cointJohansenVerification": falseResult #cointJohansenVerificationResult
+    "cointJohansenVerification": getFalseVerificationResult(varIndicators) #cointJohansenVerificationResult
   }
   return sourceIndicatorsVerification
 
@@ -131,3 +155,10 @@ def replaceNanAndInf(df: pd.DataFrame):
   df.replace([np.inf, -np.inf], np.nan, inplace=True)
   df.fillna(df.max(), inplace=True)
   return df
+
+def getFalseVerificationResult(varIndicators: list[str]):
+  falseResult:list[Verification] = []
+  for varIndicator in varIndicators:
+    ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
+    falseResult.append(ver)
+  return falseResult
