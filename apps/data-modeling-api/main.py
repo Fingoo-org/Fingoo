@@ -1,6 +1,7 @@
 from fastapi import Depends, HTTPException, Query
 from fastapi import FastAPI
 from service import predict, sourceIndicatorsVerification, predictWithoutSourceIndicators
+from service2 import sourceIndicatorsVerification2
 from database import engine, Base, get_db
 from sqlalchemy.orm import Session
 from mangum import Mangum
@@ -46,7 +47,7 @@ def loadSourceIndicatorsVerification(
     db: Session = Depends(get_db)
     ):
       try:
-        verificaion = sourceIndicatorsVerification(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, db)
+        verificaion = sourceIndicatorsVerification2(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, db)
         return verificaion
       except Exception as error:
         raise HTTPException(status_code=500, detail=f"{str(error)}")

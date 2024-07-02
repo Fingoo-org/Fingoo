@@ -17,6 +17,65 @@ load_dotenv()
 
 BASE_URL = os.getenv("FAST_BASE_URL")
 
+def sourceIndicatorsVerification2(targetIndicatorId:str, targetIndicatorType:str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
+  varIndicators: list[IndicatorDto] = []
+  sourceIndicatorIds.append(targetIndicatorId)
+  sourceIndicatorsType.append(targetIndicatorType)
+
+  for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
+    varIndicators.append(getIndicatorDtoFromDB(sourceIndicatorId, sourceIndicatorType, db))
+  print(varIndicators)
+  
+  APIList = []
+  session = requests.Session()
+  retry = Retry(connect=10, backoff_factor=1)
+  adapter = HTTPAdapter(max_retries=retry)
+  session.mount('http://', adapter)
+  startDate = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime("%Y-%m-%d")
+
+  for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
+    APIList.append(getIndicatorValue(sourceIndicatorId, sourceIndicatorType, startDate))
+
+  sourceDataFrames = {}
+  for sourceIndicatorId, df in zip(sourceIndicatorIds, APIList):
+    sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
+
+  df_var = pd.DataFrame(sourceDataFrames)
+  df_var.columns = [varIndicator.id for varIndicator in varIndicators]
+  df_var = replaceNanAndInf(df_var)
+
+  falseResult:list[Verification] = []
+  for varIndicator in varIndicators:
+    ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
+    falseResult.append(ver)
+
+  # granger
+  try: 
+    grangerDf = verification.grangerVerification(df_var)
+    checkDf = verification.findSignificantValues(grangerDf)
+    grangerGroup = verification.findInfluentialGroups(checkDf)
+    print(f'Var Group: {grangerGroup}')
+    grangerVerificationResult:list[Verification] = []
+    for varIndicator in varIndicators:
+      if varIndicator.id in grangerGroup:
+        ver: Verification = {"indicatorId": varIndicator.id, "verification": "True"}
+      else:
+        ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
+      grangerVerificationResult.append(ver)
+  except Exception:
+    sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
+      "grangerGroup": falseResult,
+      "cointJohansenVerification": falseResult
+    }
+    return sourceIndicatorsVerification
+  
+  # Source Indicators Verification Response 객체 생성 (공적분 검정은 일단 사용하지 않으므로, false)
+  sourceIndicatorsVerification: SourceIndicatorsVerificationResponse = {
+    "grangerGroup": grangerVerificationResult,
+    "cointJohansenVerification": falseResult #cointJohansenVerificationResult
+  }
+  return sourceIndicatorsVerification
+
 def getSingleResult(df: pd.DataFrame, targetIndicatorId: str):
   print('ARIMA')
   customForecastIndicator = forecast.runArima(df, targetIndicatorId, int(len(df)/2))
