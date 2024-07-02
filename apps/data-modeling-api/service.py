@@ -81,6 +81,7 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
                 date = forecastDate
               )
               values.append(forecastValue)
+            
             result: ForecastIndicatorDto = {
               "type": "multi",
               "values": values
@@ -94,7 +95,7 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
     print(f'Error: {error}')
     # arima
     return predictWithoutSourceIndicators(targetIndicatorId, targetIndicatorType, db)
-  
+
 def predictWithoutSourceIndicators(targetIndicatorId:str, targetIndicatorType:str, db: Session) -> ForecastIndicatorDto:
   sourceIndicators: list[IndicatorDto] = []
   if targetIndicatorType == 'forex_pairs' or targetIndicatorType == 'cryptocurrencies':
@@ -108,10 +109,6 @@ def predictWithoutSourceIndicators(targetIndicatorId:str, targetIndicatorType:st
     if result:
       indicatorDto = IndicatorDto(id=str(result[0]), name=result[1], ticker=result[2])
   sourceIndicators.append(indicatorDto)
-
-  for sourceIndicator in sourceIndicators:
-    if sourceIndicator.id == targetIndicatorId:
-      targetIndicatorName = sourceIndicator.name
 
   APIList = []
   session = requests.Session()
@@ -136,8 +133,8 @@ def predictWithoutSourceIndicators(targetIndicatorId:str, targetIndicatorType:st
   df_arima.columns = [sourceIndicator.name for sourceIndicator in sourceIndicators]
 
   print('Arima')
-  customForecastIndicator = forecast.runArima(df_arima, targetIndicatorName, int(len(df_arima)/2))
-  forecastdata = customForecastIndicator[targetIndicatorName].to_dict()
+  customForecastIndicator = forecast.runArima(df_arima, targetIndicatorId, int(len(df_arima)/2))
+  forecastdata = customForecastIndicator[targetIndicatorId].to_dict()
   forecastValuesWithoutDates = list(forecastdata.values())
   values = []
   currentDate = datetime.datetime.now()
@@ -177,14 +174,6 @@ def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str,
     varIndicators.append(indicatorDto)
 
   print(varIndicators)
-  
-  nameList = []
-  for varIndicator in varIndicators:
-    nameList.append(varIndicator.name)
-
-  for varIndicator in varIndicators:
-    if varIndicator.id == targetIndicatorId:
-      targetIndicatorName = varIndicator.name
 
   APIList = []
   session = requests.Session()
@@ -278,3 +267,24 @@ def replaceNanAndInf(df: pd.DataFrame):
   df.replace([np.inf, -np.inf], np.nan, inplace=True)
   df.fillna(df.max(), inplace=True)
   return df
+
+def applyWeight(df: pd.DataFrame, applyData, weight):
+    if weight == 0:
+      print('가중치가 적용되지 않았습니다.')
+      return df
+    else:
+        totalCount = 15
+        theta = weight/1000
+        base = df[applyData].iloc[-(totalCount)]
+        test = df[applyData].iloc[-(totalCount):-1]
+
+        for i in range(len(test)):
+            df.loc[df.index[-(totalCount) + i], applyData] = base
+
+        for j in range(len(test)):
+            data = df.loc[df.index[-(totalCount) + j - 1], applyData]
+            df.loc[df.index[-(totalCount) + j], applyData] = data * (1 + theta)
+
+        df.loc[df.index[-1], applyData] = df.loc[df.index[-2], applyData] * (1 + theta)
+
+        return df
