@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, Query
 from fastapi import FastAPI
-from service import predict, sourceIndicatorsVerification, predictWithoutSourceIndicators
-from service2 import sourceIndicatorsVerification2
+# from service import predict, sourceIndicatorsVerification, predictWithoutSourceIndicators
+from service2 import sourceIndicatorsVerification2, predict2
 from database import engine, Base, get_db
 from sqlalchemy.orm import Session
 from mangum import Mangum
@@ -28,11 +28,7 @@ def loadIndicatorValue(
     db: Session = Depends(get_db)
     ):
       try:
-        if not sourceIndicatorId and not weight:
-          prediction = predictWithoutSourceIndicators(targetIndicatorId, targetIndicatorType, db)
-        else:
-          prediction = predict(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, validIndicatorId, db)
-
+        prediction = predict2(targetIndicatorId, targetIndicatorType, sourceIndicatorId, sourceIndicatorType, weight, validIndicatorId, db)
         return prediction
       except Exception as error:
           raise HTTPException(status_code=500, detail=f"{str(error)}")

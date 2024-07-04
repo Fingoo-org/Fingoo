@@ -8,8 +8,6 @@ from verificationModule import verification
 from forecastModule import forecast
 import datetime
 import requests
-from urllib3.util.retry import Retry
-from requests.adapters import HTTPAdapter
 import os
 from dotenv import load_dotenv
 
@@ -17,7 +15,30 @@ load_dotenv()
 
 BASE_URL = os.getenv("FAST_BASE_URL")
 
-def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[int], validIndicatorId: list[str], db: Session) -> ForecastIndicatorDto:
+def predict2(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[int], validIndicatorIds: list[str], db: Session) -> ForecastIndicatorDto:
+  try:
+    if not sourceIndicatorIds and not weights:
+      df = preprocessSingleData(targetIndicatorId, targetIndicatorType, db)
+      result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
+      return result
+    else:
+      df = preprocessMultiData(targetIndicatorId, targetIndicatorType, sourceIndicatorIds, sourceIndicatorsType, db)
+      if len(validIndicatorIds) >= 2:
+        if targetIndicatorId in validIndicatorIds:
+          result: ForecastIndicatorDto = {"type": "multi", "values": getMultiResult(df, validIndicatorIds, targetIndicatorId)}
+          return result
+        elif targetIndicatorId not in validIndicatorIds:
+          result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
+          return result
+      else:
+        result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
+        return result
+  except Exception as error:
+    print(f'Error: {error}')
+    result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
+    return result
+  
+def preprocessMultiData(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], db: Session) -> pd.DataFrame:
   varIndicators: list[IndicatorDto] = []
   sourceIndicatorIds.append(targetIndicatorId)
   sourceIndicatorsType.append(targetIndicatorType)
@@ -27,10 +48,6 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
   print(varIndicators)
   
   APIList = []
-  session = requests.Session()
-  retry = Retry(connect=10, backoff_factor=1)
-  adapter = HTTPAdapter(max_retries=retry)
-  session.mount('http://', adapter)
   startDate = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime("%Y-%m-%d")
 
   for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
@@ -43,8 +60,24 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
   df_var = pd.DataFrame(sourceDataFrames)
   df_var.columns = [varIndicator.id for varIndicator in varIndicators]
   df_var = replaceNanAndInf(df_var)
+  return df_var
+
+def preprocessSingleData(targetIndicatorId:str, targetIndicatorType: str, db: Session) -> pd.DataFrame:
+  sourceIndicators: list[IndicatorDto] = []
+  sourceIndicators.append(getIndicatorDtoFromDB(targetIndicatorId, targetIndicatorType, db))
+
+  APIList = []
+  startDate = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime("%Y-%m-%d")
   
+  APIList.append(getIndicatorValue(targetIndicatorId, targetIndicatorType, startDate))
+  sourceDataFrames = {}
+  for sourceIndicatorId, df in zip([targetIndicatorId], APIList):
+    sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
   
+  df_arima = pd.DataFrame(sourceDataFrames)
+  df_arima.columns = [sourceIndicator.id for sourceIndicator in sourceIndicators]
+  df_arima = replaceNanAndInf(df_arima)
+  return df_arima
 
 def sourceIndicatorsVerification2(targetIndicatorId:str, targetIndicatorType:str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
   varIndicators: list[IndicatorDto] = []
@@ -56,10 +89,6 @@ def sourceIndicatorsVerification2(targetIndicatorId:str, targetIndicatorType:str
   print(varIndicators)
   
   APIList = []
-  session = requests.Session()
-  retry = Retry(connect=10, backoff_factor=1)
-  adapter = HTTPAdapter(max_retries=retry)
-  session.mount('http://', adapter)
   startDate = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime("%Y-%m-%d")
 
   for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
