@@ -37,7 +37,7 @@ export interface SparkAreaChartProps extends BaseSparkChartProps {
   showGradient?: boolean;
 }
 
-const AreaChart = React.forwardRef<HTMLDivElement, SparkAreaChartProps>((props, ref) => {
+const SparkAreaChart = React.forwardRef<HTMLDivElement, SparkAreaChartProps>((props, ref) => {
   const {
     data = [],
     categories = [],
@@ -131,6 +131,6 @@ const AreaChart = React.forwardRef<HTMLDivElement, SparkAreaChartProps>((props, 
   );
 });
 
-AreaChart.displayName = 'AreaChart';
+SparkAreaChart.displayName = 'SparkAreaChart';
 
-export default AreaChart;
+export default SparkAreaChart;
