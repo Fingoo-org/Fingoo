@@ -54,5 +54,6 @@ export const Default: Story = {
     lineChartCategories: ['Performance'],
     areaChartCategories: ['Benchmark'],
     index: 'month',
+    className: 'h-24 w-56',
   },
 };

@@ -137,6 +137,7 @@ const SparkChart = React.forwardRef<HTMLDivElement, SparkChartProps>((props, ref
                 type={curveType}
                 dataKey={category}
                 stroke=""
+                strokeDasharray="4 4"
                 strokeWidth={2}
                 strokeLinejoin="round"
                 strokeLinecap="round"
