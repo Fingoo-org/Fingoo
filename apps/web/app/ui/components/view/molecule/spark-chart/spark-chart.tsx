@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Area, AreaChart as ReChartsAreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import { Line, Area, ComposedChart as ReChartsComposedChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 import { BaseColors } from '@tremor/react/dist/lib/constants';
 import { colorPalette, themeColorRange } from '@tremor/react/dist/lib/theme';
@@ -21,26 +21,28 @@ interface BaseAnimationTimingProps {
 
 interface BaseSparkChartProps extends BaseAnimationTimingProps, React.HTMLAttributes<HTMLDivElement> {
   data: any[];
-  categories: string[];
   index: string;
   colors?: (Color | string)[];
   noDataText?: string;
   autoMinValue?: boolean;
   minValue?: number;
   maxValue?: number;
+  areaChartCategories: string[];
+  lineChartCategories: string[];
 }
 
-export interface SparkAreaChartProps extends BaseSparkChartProps {
+export interface SparkChartProps extends BaseSparkChartProps {
   stack?: boolean;
   curveType?: CurveType;
   connectNulls?: boolean;
   showGradient?: boolean;
 }
 
-const SparkAreaChart = React.forwardRef<HTMLDivElement, SparkAreaChartProps>((props, ref) => {
+const SparkChart = React.forwardRef<HTMLDivElement, SparkChartProps>((props, ref) => {
   const {
     data = [],
-    categories = [],
+    areaChartCategories = [],
+    lineChartCategories = [],
     index,
     stack = false,
     colors = themeColorRange,
@@ -56,6 +58,7 @@ const SparkAreaChart = React.forwardRef<HTMLDivElement, SparkAreaChartProps>((pr
     className,
     ...other
   } = props;
+  const categories = [...areaChartCategories, ...lineChartCategories];
   const categoryColors = constructCategoryColors(categories, colors);
   const yAxisDomain = getYAxisDomain(autoMinValue, minValue, maxValue);
 
@@ -63,7 +66,7 @@ const SparkAreaChart = React.forwardRef<HTMLDivElement, SparkAreaChartProps>((pr
     <div ref={ref} className={tremorTwMerge('h-12 w-28', className)} {...other}>
       <ResponsiveContainer className="h-full w-full">
         {data?.length ? (
-          <ReChartsAreaChart data={data} margin={{ top: 1, left: 1, right: 1, bottom: 1 }}>
+          <ReChartsComposedChart data={data} margin={{ top: 1, left: 1, right: 1, bottom: 1 }}>
             <YAxis hide domain={yAxisDomain as AxisDomain} />
             <XAxis hide dataKey={index} />
             {categories.map((category) => {
@@ -100,7 +103,7 @@ const SparkAreaChart = React.forwardRef<HTMLDivElement, SparkAreaChartProps>((pr
                 </defs>
               );
             })}
-            {categories.map((category) => (
+            {areaChartCategories.map((category) => (
               <Area
                 className={
                   getColorClassNames(categoryColors.get(category) ?? BaseColors.Gray, colorPalette.text).strokeColor
@@ -122,7 +125,27 @@ const SparkAreaChart = React.forwardRef<HTMLDivElement, SparkAreaChartProps>((pr
                 connectNulls={connectNulls}
               />
             ))}
-          </ReChartsAreaChart>
+            {lineChartCategories.map((category) => (
+              <Line
+                className={tremorTwMerge(
+                  getColorClassNames(categoryColors.get(category) ?? BaseColors.Gray, colorPalette.text).strokeColor,
+                )}
+                strokeOpacity={1}
+                dot={false}
+                key={category}
+                name={category}
+                type={curveType}
+                dataKey={category}
+                stroke=""
+                strokeWidth={2}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                isAnimationActive={showAnimation}
+                animationDuration={animationDuration}
+                connectNulls={connectNulls}
+              />
+            ))}
+          </ReChartsComposedChart>
         ) : (
           <NoData noDataText={noDataText} />
         )}
@@ -131,6 +154,6 @@ const SparkAreaChart = React.forwardRef<HTMLDivElement, SparkAreaChartProps>((pr
   );
 });
 
-SparkAreaChart.displayName = 'SparkAreaChart';
+SparkChart.displayName = 'SparkChart';
 
-export default SparkAreaChart;
+export default SparkChart;
