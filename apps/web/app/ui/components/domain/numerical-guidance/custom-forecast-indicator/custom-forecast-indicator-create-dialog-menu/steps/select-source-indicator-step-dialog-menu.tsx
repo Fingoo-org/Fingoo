@@ -81,7 +81,9 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
         </Card>
       </DialogMenu.Content>
       <DialogMenu.Content>
-        <CustomForecastIndicatorCreateSparkChart />
+        <Card className="p-1.5">
+          <CustomForecastIndicatorCreateSparkChart />
+        </Card>
       </DialogMenu.Content>
       <DialogMenu.Content>
         <SourceIndicatorCreateSliderGroup />
