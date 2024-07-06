@@ -31,8 +31,7 @@ import { colorPalette, themeColorRange } from '@tremor/react/dist/lib/theme';
 import { defaultValueFormatter, getColorClassNames } from '@tremor/react/dist/lib/utils';
 import { tremorTwMerge } from '@tremor/react/dist/lib/tremorTwMerge';
 
-import { CurveType } from '@tremor/react/dist/lib/inputTypes';
-import { caculateNowDate } from '@/app/utils/helper';
+import { getNowDate } from '@/app/utils/date-formatter';
 
 interface ActiveDot {
   index?: number;
@@ -90,7 +89,7 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
   const yAxisDomain = getYAxisDomain(autoMinValue, minValue, maxValue);
   const hasOnValueChange = !!onValueChange;
 
-  const nowDate = autoNowDateReferenceLine ? caculateNowDate() : undefined;
+  const nowDate = autoNowDateReferenceLine ? getNowDate() : undefined;
 
   function onDotClick(itemData: any, event: React.MouseEvent) {
     event.stopPropagation();

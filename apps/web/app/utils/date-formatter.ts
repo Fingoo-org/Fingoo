@@ -72,3 +72,11 @@ function calculateDefaultStartDate(interval: Interval) {
       return dayjs('1901-01-01');
   }
 }
+export function getNowDate() {
+  const now = dayjs();
+  return now.format('YYYY-MM-DD');
+}
+
+export function calculateDateAfter(date: string, days: number) {
+  return parseDate(date).add(days, 'day').format('YYYY-MM-DD');
+}

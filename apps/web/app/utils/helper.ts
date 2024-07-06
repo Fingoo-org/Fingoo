@@ -1,8 +1,5 @@
 import { utcFormat } from 'd3-time-format';
 import React from 'react';
-import { add } from '@fingoo/helpers';
-
-const formatTime = utcFormat('%Y-%m-%d');
 
 export const filterChildrenByType = (children: React.ReactNode, elementType: React.ElementType) => {
   const childArray = React.Children.toArray(children);
@@ -24,11 +21,6 @@ export function deepEqual(obj1: any, obj2: any) {
   }
 
   return true;
-}
-
-export function caculateNowDate() {
-  const now = new Date();
-  return formatTime(now);
 }
 
 export function createNotDuplicatedName(baseName: string, names: string[]) {
