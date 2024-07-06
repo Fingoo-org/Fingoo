@@ -11,6 +11,7 @@ import { useDialog } from '@/app/utils/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import Tooltip from '@/app/ui/components/view/atom/tooltip';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
+import CustomForecastIndicatorCreateSparkChart from '../custom-forecast-indicator-create-spark-chart';
 
 type SelectSourceIndicatorStepDialogMenuProps = {
   prevStep: () => void;
@@ -78,6 +79,9 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
         <Card className="p-1.5">
           <DialogIndicatorList render={render} />
         </Card>
+      </DialogMenu.Content>
+      <DialogMenu.Content>
+        <CustomForecastIndicatorCreateSparkChart />
       </DialogMenu.Content>
       <DialogMenu.Content>
         <SourceIndicatorCreateSliderGroup />
