@@ -11,7 +11,7 @@ import { DialogMenuSize } from './dialog-menu.style';
 import { Color, colorPalette } from '@/app/utils/style';
 import { Position } from '@/app/store/stores/dialog.store';
 
-type Side = 'top' | 'bottom';
+type Side = 'top' | 'bottom' | 'right';
 
 type DialogMenuProps = {
   dialogKey: DialogKey;
@@ -26,16 +26,29 @@ const getDialogMenuHeader = (children: React.ReactNode) => {
 
 const getCoordinate = (side: Side, position: Position) => {
   const { viewportHeight } = getViewport();
+  console.log(position);
 
-  return side === 'bottom'
-    ? {
-        left: position.x,
-        top: position.y,
-      }
-    : {
-        left: position.x,
-        bottom: viewportHeight - position.y,
-      };
+  if (side === 'top') {
+    return {
+      left: position.x,
+      bottom: viewportHeight - position.y,
+    };
+  }
+
+  if (side === 'bottom') {
+    return {
+      left: position.x,
+      top: position.y,
+    };
+  }
+
+  console.log(viewportHeight - position.y);
+  if (side === 'right') {
+    return {
+      left: position.right + 10,
+      top: position.y - (viewportHeight - position.y) / 2,
+    };
+  }
 };
 
 export function DialogMenuRoot({
