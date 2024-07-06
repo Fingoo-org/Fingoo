@@ -3,7 +3,7 @@ import {
   FormattedRowType,
 } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
 
-export function formatChartData(data: FormattedRowType[], categories: string[]): any {
+export function formatChartData(data: FormattedRowType[], categories: string[]) {
   const calculateChartValue = chartValueFormatterFactory(categories);
   return data.map((d) => {
     return {

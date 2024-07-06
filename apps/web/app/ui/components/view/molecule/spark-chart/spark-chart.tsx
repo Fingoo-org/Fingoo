@@ -13,6 +13,8 @@ import { constructCategoryColors, getYAxisDomain } from '@tremor/react/dist/comp
 import { AxisDomain } from 'recharts/types/util/types';
 import NoData from '@tremor/react/dist/components/chart-elements/common/NoData';
 import { Color } from '@tremor/react';
+import { FormattedRowType } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
+import { formatChartData } from '@/app/utils/tremor/chart-data-formatter';
 
 interface BaseAnimationTimingProps {
   animationDuration?: number;
@@ -20,7 +22,7 @@ interface BaseAnimationTimingProps {
 }
 
 interface BaseSparkChartProps extends BaseAnimationTimingProps, React.HTMLAttributes<HTMLDivElement> {
-  data: any[];
+  data: FormattedRowType[];
   index: string;
   colors?: (Color | string)[];
   noDataText?: string;
@@ -62,11 +64,12 @@ const SparkChart = React.forwardRef<HTMLDivElement, SparkChartProps>((props, ref
   const categoryColors = constructCategoryColors(categories, colors);
   const yAxisDomain = getYAxisDomain(autoMinValue, minValue, maxValue);
 
+  const formattedData = formatChartData(data, categories);
   return (
     <div ref={ref} className={tremorTwMerge('h-12 w-28', className)} {...other}>
       <ResponsiveContainer className="h-full w-full">
-        {data?.length ? (
-          <ReChartsComposedChart data={data} margin={{ top: 1, left: 1, right: 1, bottom: 1 }}>
+        {formattedData?.length ? (
+          <ReChartsComposedChart data={formattedData} margin={{ top: 1, left: 1, right: 1, bottom: 1 }}>
             <YAxis hide domain={yAxisDomain as AxisDomain} />
             <XAxis hide dataKey={index} />
             {categories.map((category) => {
