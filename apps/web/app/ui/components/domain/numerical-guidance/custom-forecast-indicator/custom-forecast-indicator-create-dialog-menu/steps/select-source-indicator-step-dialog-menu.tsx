@@ -81,7 +81,7 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
         </Card>
       </DialogMenu.Content>
       <DialogMenu.Content>
-        <Card className="p-1.5">
+        <Card className="px-1.5 py-3">
           <CustomForecastIndicatorCreateSparkChart />
         </Card>
       </DialogMenu.Content>

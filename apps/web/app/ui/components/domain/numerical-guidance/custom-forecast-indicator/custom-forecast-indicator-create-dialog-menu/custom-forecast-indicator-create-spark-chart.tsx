@@ -32,6 +32,7 @@ export default function CustomForecastIndicatorCreateSparkChart() {
       data={indicatorFormatter.formattedIndicatorsInRow}
       areaChartCategories={areaChartCategories}
       lineChartCategories={lineChartCategories}
+      autoReferenceArea={true}
     />
   );
 }
