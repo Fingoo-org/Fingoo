@@ -15,18 +15,31 @@ load_dotenv()
 
 BASE_URL = os.getenv("FAST_BASE_URL")
 
-def predict2(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[int], validIndicatorIds: list[str], db: Session) -> ForecastIndicatorDto:
+def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[int], validIndicatorIds: list[str], db: Session) -> ForecastIndicatorDto:
   try:
     if not sourceIndicatorIds and not weights:
       df = preprocessSingleData(targetIndicatorId, targetIndicatorType, db)
       result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
       return result
     else:
+      noneWeighted = checkWeight(weights)
       df = preprocessMultiData(targetIndicatorId, targetIndicatorType, sourceIndicatorIds, sourceIndicatorsType, db)
       if len(validIndicatorIds) >= 2:
         if targetIndicatorId in validIndicatorIds:
-          result: ForecastIndicatorDto = {"type": "multi", "values": getMultiResult(df, validIndicatorIds, targetIndicatorId)}
-          return result
+          if noneWeighted:
+            result: ForecastIndicatorDto = {"type": "multi", "values": getMultiResult(df, validIndicatorIds, targetIndicatorId)}
+            return result
+          else:
+            print('가중치 적용 VAR 시작')
+            varResult = getMultiResult(df, validIndicatorIds, targetIndicatorId)
+            applyIndicatorsAndWeights = getApplyIndicators(sourceIndicatorIds, weights, validIndicatorIds)
+            print('가중치가 0이 아니면서 유효성 만족하는 지표 찾기 완료')
+            weightedDf = applyWeight(df, applyIndicatorsAndWeights[0],applyIndicatorsAndWeights[1], len(varResult))
+            print('가중치 적용한 데이터프레임 생성 완료')
+            weightedMultiValues = getWeightedResult(weightedDf, varResult, targetIndicatorId, len(varResult))
+            print('가중치 적용 예측값 생성 완료')
+            result: ForecastIndicatorDto = {"type": "multi", "values": weightedMultiValues}
+            return result
         elif targetIndicatorId not in validIndicatorIds:
           result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
           return result
@@ -38,48 +51,7 @@ def predict2(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds
     result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
     return result
   
-def preprocessMultiData(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], db: Session) -> pd.DataFrame:
-  varIndicators: list[IndicatorDto] = []
-  sourceIndicatorIds.append(targetIndicatorId)
-  sourceIndicatorsType.append(targetIndicatorType)
-
-  for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
-    varIndicators.append(getIndicatorDtoFromDB(sourceIndicatorId, sourceIndicatorType, db))
-  print(varIndicators)
-  
-  APIList = []
-  startDate = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime("%Y-%m-%d")
-
-  for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
-    APIList.append(getIndicatorValue(sourceIndicatorId, sourceIndicatorType, startDate))
-
-  sourceDataFrames = {}
-  for sourceIndicatorId, df in zip(sourceIndicatorIds, APIList):
-    sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
-
-  df_var = pd.DataFrame(sourceDataFrames)
-  df_var.columns = [varIndicator.id for varIndicator in varIndicators]
-  df_var = replaceNanAndInf(df_var)
-  return df_var
-
-def preprocessSingleData(targetIndicatorId:str, targetIndicatorType: str, db: Session) -> pd.DataFrame:
-  sourceIndicators: list[IndicatorDto] = []
-  sourceIndicators.append(getIndicatorDtoFromDB(targetIndicatorId, targetIndicatorType, db))
-
-  APIList = []
-  startDate = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime("%Y-%m-%d")
-  
-  APIList.append(getIndicatorValue(targetIndicatorId, targetIndicatorType, startDate))
-  sourceDataFrames = {}
-  for sourceIndicatorId, df in zip([targetIndicatorId], APIList):
-    sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
-  
-  df_arima = pd.DataFrame(sourceDataFrames)
-  df_arima.columns = [sourceIndicator.id for sourceIndicator in sourceIndicators]
-  df_arima = replaceNanAndInf(df_arima)
-  return df_arima
-
-def sourceIndicatorsVerification2(targetIndicatorId:str, targetIndicatorType:str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
+def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], weights: list[float], db: Session) ->  SourceIndicatorsVerificationResponse:
   varIndicators: list[IndicatorDto] = []
   sourceIndicatorIds.append(targetIndicatorId)
   sourceIndicatorsType.append(targetIndicatorType)
@@ -128,6 +100,47 @@ def sourceIndicatorsVerification2(targetIndicatorId:str, targetIndicatorType:str
     "cointJohansenVerification": getFalseVerificationResult(varIndicators) #cointJohansenVerificationResult
   }
   return sourceIndicatorsVerification
+  
+def preprocessMultiData(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], db: Session) -> pd.DataFrame:
+  varIndicators: list[IndicatorDto] = []
+  sourceIndicatorIds.append(targetIndicatorId)
+  sourceIndicatorsType.append(targetIndicatorType)
+
+  for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
+    varIndicators.append(getIndicatorDtoFromDB(sourceIndicatorId, sourceIndicatorType, db))
+  print(varIndicators)
+  
+  APIList = []
+  startDate = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime("%Y-%m-%d")
+
+  for sourceIndicatorId, sourceIndicatorType in zip(sourceIndicatorIds, sourceIndicatorsType):
+    APIList.append(getIndicatorValue(sourceIndicatorId, sourceIndicatorType, startDate))
+
+  sourceDataFrames = {}
+  for sourceIndicatorId, df in zip(sourceIndicatorIds, APIList):
+    sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
+
+  df_var = pd.DataFrame(sourceDataFrames)
+  df_var.columns = [varIndicator.id for varIndicator in varIndicators]
+  df_var = replaceNanAndInf(df_var)
+  return df_var
+
+def preprocessSingleData(targetIndicatorId:str, targetIndicatorType: str, db: Session) -> pd.DataFrame:
+  sourceIndicators: list[IndicatorDto] = []
+  sourceIndicators.append(getIndicatorDtoFromDB(targetIndicatorId, targetIndicatorType, db))
+
+  APIList = []
+  startDate = (datetime.datetime.now()-datetime.timedelta(days=30)).strftime("%Y-%m-%d")
+  
+  APIList.append(getIndicatorValue(targetIndicatorId, targetIndicatorType, startDate))
+  sourceDataFrames = {}
+  for sourceIndicatorId, df in zip([targetIndicatorId], APIList):
+    sourceDataFrames[sourceIndicatorId] = df.set_index('date')['value']
+  
+  df_arima = pd.DataFrame(sourceDataFrames)
+  df_arima.columns = [sourceIndicator.id for sourceIndicator in sourceIndicators]
+  df_arima = replaceNanAndInf(df_arima)
+  return df_arima
 
 def getSingleResult(df: pd.DataFrame, targetIndicatorId: str):
   print('ARIMA')
@@ -191,3 +204,56 @@ def getFalseVerificationResult(varIndicators: list[str]):
     ver: Verification = {"indicatorId": varIndicator.id, "verification": "False"}
     falseResult.append(ver)
   return falseResult
+
+def applyWeight(df: pd.DataFrame, applyIndicators:list[str], weights: list[int], totalCount: int):
+    if not weights or len(applyIndicators) != len(weights):
+      print('칼럼의 길이가 맞지 않습니다.')
+      return df
+    else:
+      newData = pd.DataFrame(columns=df.columns)
+      for i in range(totalCount):
+        newRow = df.iloc[-1].copy()
+        for applyIndicator, weight in zip(applyIndicators, weights):
+            theta = weight / 1000
+            base = df[applyIndicator].iloc[-1]
+            newRow[applyIndicator] = base * (1 + theta) ** (i + 1)
+        newData = pd.concat([newData, newRow.to_frame().T], ignore_index=True)
+
+    df = pd.concat([df, newData], ignore_index=True)
+    print('가중치 적용 완료')
+    print(df)
+    return df
+
+def getWeightedResult(df: pd.DataFrame, varResult:list, targetIndicatorId: str, totalCount:int):
+  print('회귀분석 시작')
+  regressionData:list = forecast.runRegression(df, targetIndicatorId, totalCount)
+  if len(regressionData) != len(varResult):
+    raise ValueError("두 칼럼의 길이가 맞지 않습니다.")
+  print("가중치가 적용된 VAR")
+  weightedResult = [0.5 * (reg + var) for reg, var in zip(regressionData, varResult)]
+
+  return weightedResult
+
+def getApplyIndicators(sourceIndicatorIds: list[str], weights: list[int], validIndicatorIds: list[str]):
+  validIndicators = []
+  validWeights = []
+  for sourceIndicatorId, weight in zip(sourceIndicatorIds, weights):
+    if sourceIndicatorId in validIndicatorIds:
+      validIndicators.append(sourceIndicatorId)
+      validWeights.append(weight)
+  applyIndicators = []
+  applyWeights = []
+  for validIndicator, validWeight in zip(validIndicators, validWeights):
+    if validWeight != 0:
+      applyIndicators.append(validIndicator)
+      applyWeights.append(validWeight)
+  return applyIndicators, applyWeights
+
+def checkWeight(weights: list[int]) -> bool:
+  cnt = 0
+  for weight in weights:
+    if weight == 0: cnt+=1
+  
+  if cnt == len(weights) and sum(weights) == 0:
+    return False
+

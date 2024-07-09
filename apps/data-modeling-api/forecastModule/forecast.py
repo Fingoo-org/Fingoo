@@ -1,5 +1,6 @@
 from statsmodels.tsa.api import VAR
 from statsmodels.tsa.arima.model import ARIMA
+import statsmodels.api as sm
 from verificationModule import verification
 import pandas as pd
 import numpy as np
@@ -51,3 +52,42 @@ def runArima(df: pd.DataFrame, target: str, period: int) -> pd.DataFrame:
   forecast_df = pd.DataFrame({target: forecast})
 
   return forecast_df
+
+def runRegression(df: pd.DataFrame, targetIndicatorId: str, totalCount:int) -> list:
+  print('로그1')
+  df = df.iloc[-(totalCount):-1]
+  y = df[targetIndicatorId]
+  x = df.drop(columns=[targetIndicatorId])
+  print('로그2')
+  print(y)
+  print(x)
+
+  bestRSquared = -1
+  bestModel = None
+  bestColumn = None
+
+  for column in x.columns:
+    xSingle = sm.add_constant(x[column])
+    model = sm.OLS(y, xSingle).fit()
+    rSquared = model.rsquared
+    print('최적 회귀 모델 찾기 시작 ~ !')
+    print(xSingle)
+    print(model)
+    print(rSquared)
+
+    if(rSquared > bestRSquared):
+      bestRSquared = rSquared
+      bestModel = model
+      bestColumn = column
+
+  print('로그3')
+  print(bestColumn)
+  print(x[bestColumn])
+  print('로그3.25')
+  bestX = sm.add_constant(x[bestColumn]) # 여기서 문제가 있음
+  print('로그3.5')
+  print(bestX)
+  predictions = bestModel.predict(bestX)
+  print('로그4')
+
+  return predictions.tolist()
