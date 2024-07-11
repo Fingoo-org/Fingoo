@@ -1,5 +1,9 @@
 from pydantic import BaseModel
 
+class RsquaredResult(BaseModel):
+    id: str
+    rsquared: float
+
 class IndicatorDto(BaseModel):
     id: str
     name: str
@@ -15,6 +19,7 @@ class ForecastValue(BaseModel):
 class ForecastIndicatorDto(BaseModel):
     type: str
     values: list[ForecastValue]
+    rsquaredResults: list[RsquaredResult]
 
 class Verification(BaseModel):
     indicatorId: str

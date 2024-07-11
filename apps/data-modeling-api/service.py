@@ -19,7 +19,7 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
   try:
     if not sourceIndicatorIds and not weights:
       df = preprocessSingleData(targetIndicatorId, targetIndicatorType, db)
-      result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
+      result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId), "rsquaredResults": []}
       return result
     else:
       noneWeighted = checkWeight(weights)
@@ -27,7 +27,7 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
       if len(validIndicatorIds) >= 2:
         if targetIndicatorId in validIndicatorIds:
           if noneWeighted == False:
-            result: ForecastIndicatorDto = {"type": "multi", "values": getMultiResult(df, validIndicatorIds, targetIndicatorId)}
+            result: ForecastIndicatorDto = {"type": "multi", "values": getMultiResult(df, validIndicatorIds, targetIndicatorId), "rsquaredResults": []}
             return result
           else:
             print('가중치 적용 VAR 분석 시작')
@@ -35,21 +35,23 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
             applyIndicatorsAndWeights = getApplyIndicators(sourceIndicatorIds, weights, validIndicatorIds)
             weightedDf = applyWeight(df, applyIndicatorsAndWeights[0],applyIndicatorsAndWeights[1], len(varResult)+1)
             print('가중치 적용한 데이터프레임 생성 완료')
-            weightedMultiValues = getWeightedResult(weightedDf, varResult, targetIndicatorId, len(varResult)+1)
+            weightedMultiData = getWeightedResult(weightedDf, varResult, targetIndicatorId, len(varResult)+1)
+            weightedMultiValues = weightedMultiData[0]
+            weightedMultiResults = weightedMultiData[1]
             if len(weightedMultiValues)==0:
               print("가중치를 철회한 VAR")
-              return {"type": "multi", "values": varResult}
-            result: ForecastIndicatorDto = {"type": "multi", "values": weightedMultiValues}
+              return {"type": "multi", "values": varResult, "rsquaredResults": weightedMultiResults}
+            result: ForecastIndicatorDto = {"type": "multi", "values": weightedMultiValues, "rsquaredResults": weightedMultiResults}
             return result
         elif targetIndicatorId not in validIndicatorIds:
-          result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
+          result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId), "rsquaredResults": []}
           return result
       else:
-        result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
+        result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId), "rsquaredResults": []}
         return result
   except Exception as error:
     print(f'Error: {error}')
-    result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId)}
+    result: ForecastIndicatorDto = {"type": "single", "values": getSingleResult(df, targetIndicatorId), "rsquaredResults": []}
     return result
   
 def sourceIndicatorsVerification(targetIndicatorId:str, targetIndicatorType:str, sourceIndicatorIds: list[str], sourceIndicatorsType: list[str], db: Session) ->  SourceIndicatorsVerificationResponse:
@@ -172,13 +174,15 @@ def getMultiResult(df: pd.DataFrame, validIndicatorIds: list[str], targetIndicat
       return values
 
 def getWeightedResult(df: pd.DataFrame, varResult:list, targetIndicatorId: str, totalCount:int):
-  regressionData:list = forecast.runRegression(df, targetIndicatorId, totalCount)[0]
-  if len(regressionData) == 0: return []
+  regressionData = forecast.runRegression(df, targetIndicatorId, totalCount)
+  regressionValues:list = regressionData[0]
+  rsquaredResults = regressionData[1]
+  if len(regressionValues) == 0: return [], rsquaredResults
 
   varValueData = [fv.value for fv in varResult]
-  if len(regressionData) != len(varValueData): raise ValueError("VAR 칼럼과 회귀분석 결과 칼럼의 길이가 맞지 않습니다.")
+  if len(regressionValues) != len(varValueData): raise ValueError("VAR 칼럼과 회귀분석 결과 칼럼의 길이가 맞지 않습니다.")
 
-  weightedValuesWithoutDates = [0.5 * (reg + var) for reg, var in zip(regressionData, varValueData)]
+  weightedValuesWithoutDates = [0.5 * (reg + var) for reg, var in zip(regressionValues, varValueData)]
   values = []
   currentDate = datetime.datetime.now()
   for i in range(len(weightedValuesWithoutDates)):
@@ -186,7 +190,7 @@ def getWeightedResult(df: pd.DataFrame, varResult:list, targetIndicatorId: str, 
     forecastValue = ForecastValue(value=weightedValuesWithoutDates[i], date = forecastDate)
     values.append(forecastValue)
   print("가중치가 적용된 VAR")
-  return values
+  return values, rsquaredResults
 
 def getIndicatorValue(indicatorId:str, indicatorType: str, startDate:str) -> pd.DataFrame:
   req = requests.get(f'http://{BASE_URL}?indicatorId={indicatorId}&interval=day&indicatorType={indicatorType}&startDate={startDate}')

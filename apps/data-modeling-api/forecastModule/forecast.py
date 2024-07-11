@@ -5,7 +5,7 @@ from verificationModule import verification
 import pandas as pd
 import numpy as np
 import pmdarima as pm
-from dtos import RegressionModelAndRsquared
+from dtos import RegressionModelAndRsquared, RsquaredResult
 
 def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
   df = df.bfill()
@@ -77,7 +77,10 @@ def runRegression(df: pd.DataFrame, targetIndicatorId: str, totalCount:int):
 
   sumRsquared = sum([model.rsquared for model in models if model.rsquared >= 0])
   results = []
+  rsquaredResults:list[RsquaredResult] = []
   for model in models:
+    rsquaredResult= RsquaredResult(id=model.sourceIndicatorId, rsquared=model.rsquared)
+    rsquaredResults.append(rsquaredResult)
     if model.rsquared >= 0:
       ratio: float = model.rsquared/sumRsquared
       result = [x*ratio for x in model.values]
@@ -89,4 +92,4 @@ def runRegression(df: pd.DataFrame, targetIndicatorId: str, totalCount:int):
     print("분석된 회귀식의 결정계수가 모두 음수입니다.")
     sumResults = []
   
-  return sumResults, models
+  return sumResults, rsquaredResults
