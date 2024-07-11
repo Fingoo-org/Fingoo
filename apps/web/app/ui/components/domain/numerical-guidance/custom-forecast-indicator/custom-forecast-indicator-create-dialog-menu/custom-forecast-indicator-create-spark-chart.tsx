@@ -14,6 +14,7 @@ export default function CustomForecastIndicatorCreateSparkChart() {
     indicators: sourceIndicators.map((s) => ({
       ...s,
       id: s.sourceIndicatorId,
+      weight: s.weight,
     })),
   });
 

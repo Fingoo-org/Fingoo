@@ -37,7 +37,13 @@ export default function SourceIndicatorSlider({
       {item.disabled ? (
         <div className="grow">Disabled</div>
       ) : (
-        <Slider onValueChange={handleSourceIndicatorWeightChange} value={[item.weight]} key={item.id} />
+        <Slider
+          min={-50}
+          max={50}
+          onValueChange={handleSourceIndicatorWeightChange}
+          value={[item.weight]}
+          key={item.id}
+        />
       )}
       <IconButton color={'gray'} icon={XCircleIcon} size={'xs'} onClick={handleSourceIndicatorDelete} />
     </Card>
