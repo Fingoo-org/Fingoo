@@ -9,7 +9,7 @@ type Props = {
   startPoint: Point;
 };
 
-class GeometricSeriesCalculator {
+export class GeometricSeriesCalculator {
   readonly startPoint: Point;
   constructor({ startPoint }: Props) {
     this.startPoint = startPoint;
