@@ -30,3 +30,8 @@ class SourceIndicatorIdAndWeight(BaseModel):
     
 class SourceIndicatorIdAndWeightList(BaseModel):
     indicators: list[SourceIndicatorIdAndWeight]
+
+class RegressionModelAndRsquared(BaseModel):
+    sourceIndicatorId: str
+    values: list[float]
+    rsquared: float

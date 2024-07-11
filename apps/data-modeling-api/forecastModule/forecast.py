@@ -5,6 +5,7 @@ from verificationModule import verification
 import pandas as pd
 import numpy as np
 import pmdarima as pm
+from dtos import RegressionModelAndRsquared
 
 def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
   df = df.bfill()
@@ -53,41 +54,39 @@ def runArima(df: pd.DataFrame, target: str, period: int) -> pd.DataFrame:
 
   return forecast_df
 
-def runRegression(df: pd.DataFrame, targetIndicatorId: str, totalCount:int) -> list:
-  print('로그1')
+def runRegression(df: pd.DataFrame, targetIndicatorId: str, totalCount:int):
   df = df.iloc[-(totalCount):-1]
   y = df[targetIndicatorId]
   x = df.drop(columns=[targetIndicatorId])
-  print('로그2')
-  print(y)
-  print(x)
 
-  bestRSquared = -1
-  bestModel = None
-  bestColumn = None
+  if len(y)!=len(x) : raise ValueError("가중치를 적용한 값과 VAR 결과 데이터 수가 맞지 않습니다.")
 
+  models: list[RegressionModelAndRsquared] = []
+
+  print('회귀분석 시작 ~ !')
   for column in x.columns:
     xSingle = sm.add_constant(x[column])
     model = sm.OLS(y, xSingle).fit()
-    rSquared = model.rsquared
-    print('최적 회귀 모델 찾기 시작 ~ !')
-    print(xSingle)
-    print(model)
-    print(rSquared)
+    predictions = model.predict(xSingle).tolist()
+    rsquared = model.rsquared
+    print(f'{column} 결정계수: {rsquared}')
+    regressionModelAndRsquared = RegressionModelAndRsquared(
+            sourceIndicatorId=column, values=predictions, rsquared=rsquared
+        )
+    models.append(regressionModelAndRsquared)
 
-    if(rSquared > bestRSquared):
-      bestRSquared = rSquared
-      bestModel = model
-      bestColumn = column
-
-  print('로그3')
-  print(bestColumn)
-  print(x[bestColumn])
-  print('로그3.25')
-  bestX = sm.add_constant(x[bestColumn]) # 여기서 문제가 있음
-  print('로그3.5')
-  print(bestX)
-  predictions = bestModel.predict(bestX)
-  print('로그4')
-
-  return predictions.tolist()
+  sumRsquared = sum([model.rsquared for model in models if model.rsquared >= 0])
+  results = []
+  for model in models:
+    if model.rsquared >= 0:
+      ratio: float = model.rsquared/sumRsquared
+      result = [x*ratio for x in model.values]
+      results.append(result)
+  
+  if(len(results)>0):
+    sumResults:list[float] = [sum(values) for values in zip(*results)]
+  else:
+    print("분석된 회귀식의 결정계수가 모두 음수입니다.")
+    sumResults = []
+  
+  return sumResults, models
