@@ -1,6 +1,5 @@
-import { convertLiveIndicatorsValueViewModel } from '@/app/business/services/numerical-guidance/view-model/indicator-value/actual-indicators-value-view-model.service';
+import { convertSparkIndicatorsValueViewModel } from '@/app/business/services/numerical-guidance/view-model/indicator-value/spark-indicator-value-view-model.service';
 import {
-  IndicatorInfo,
   LiveIndicatorRequestParams,
   useFetchLiveIndicatorsValueByType,
 } from '@/app/store/querys/numerical-guidance/indicator-value.query';
@@ -10,6 +9,7 @@ import { useMemo } from 'react';
 type Indicator = {
   id: string;
   indicatorType: IndicatorType;
+  weight?: number;
 };
 
 type Props = {
@@ -25,10 +25,15 @@ export const useSparkIndicatorsValueViewModel = ({ indicators }: Props) => {
 
   const { data: indicatorsValueData } = useFetchLiveIndicatorsValueByType(params, indicators);
 
-  const convertedIndciatorsValue = useMemo(() => {
-    if (!indicatorsValueData) return undefined;
+  const IndicatosValueWithWeight = indicatorsValueData?.indicatorsValue.map((indicatorValue) => {
+    const weight = indicators.find((indicator) => indicator.id === indicatorValue.indicatorId)?.weight;
+    return { ...indicatorValue, weight: weight ?? 0 };
+  });
 
-    const convertedIndciatorsValue = convertLiveIndicatorsValueViewModel(indicatorsValueData);
+  const convertedIndciatorsValue = useMemo(() => {
+    if (!IndicatosValueWithWeight) return undefined;
+
+    const convertedIndciatorsValue = convertSparkIndicatorsValueViewModel(IndicatosValueWithWeight);
     return convertedIndciatorsValue;
   }, [indicatorsValueData]);
 
