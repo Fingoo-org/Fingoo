@@ -14,7 +14,7 @@ export default function SplitScreenToggleGroup() {
 
   const handleSplitScreenChange = (value: string) => {
     if (isSplitScreen(value)) {
-      logger.track('click_screen_split_toggle', { toggle_type: value });
+      logger.track('click_screen_split_toggle', { toggle_type: value, previous_toggle_type: splitScreen });
       transitionSplitScreen(value as SplitScreen);
     }
   };
