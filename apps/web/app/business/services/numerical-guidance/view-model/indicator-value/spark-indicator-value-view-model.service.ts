@@ -8,7 +8,7 @@ export class SparkIndicatorValue extends ActualIndicatorValue {
   readonly weight: number;
 
   constructor({ indicatorId, symbol, type, values, weight }: SparkIndicatorProps) {
-    const lastValue = values[values.length - 1];
+    const lastValue = values[0];
     const geometricSeriesCalculator = new GeometricSeriesCalculator({
       startPoint: {
         date: lastValue.date,
@@ -16,7 +16,9 @@ export class SparkIndicatorValue extends ActualIndicatorValue {
       },
     });
     const geometricValues = geometricSeriesCalculator.calculate(15, weight);
-    const newValues = [...values, ...geometricValues];
+
+    console.log('geometricValues', geometricValues, weight);
+    const newValues = [...geometricValues.reverse(), ...values];
 
     super({ indicatorId, symbol, type, values: newValues });
     this.weight = weight;

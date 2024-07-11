@@ -35,7 +35,7 @@ export const useSparkIndicatorsValueViewModel = ({ indicators }: Props) => {
 
     const convertedIndciatorsValue = convertSparkIndicatorsValueViewModel(IndicatosValueWithWeight);
     return convertedIndciatorsValue;
-  }, [indicatorsValueData]);
+  }, [IndicatosValueWithWeight]);
 
   return {
     indicatorsValue: convertedIndciatorsValue,
