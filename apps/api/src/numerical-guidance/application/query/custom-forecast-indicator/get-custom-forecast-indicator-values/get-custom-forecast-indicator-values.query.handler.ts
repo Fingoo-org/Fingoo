@@ -37,8 +37,6 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
 
     const indicatorDto = await this.loadIndicatorPort.loadIndicator(targetIndicatorId, tempType);
 
-    // 니놈이 문제구나
-
     const customForecastIndicatorValuesResponse: CustomForecastIndicatorValuesResponse = {
       customForecastIndicatorId: customForecastIndicatorId,
       targetIndicatorId: targetIndicatorId,
@@ -47,6 +45,7 @@ export class GetCustomForecastIndicatorValuesQueryHandler implements IQueryHandl
       name: this.getIndicatorNameByType(indicatorDto),
       exchange: this.getExchangeByType(indicatorDto),
       forecastType: customFroecastIndicatorValues.forecastType,
+      rsquaredResults: customFroecastIndicatorValues.rsquaredResults,
       customForecastIndicatorValues: customFroecastIndicatorValues.indicatorValues,
     };
     return customForecastIndicatorValuesResponse;

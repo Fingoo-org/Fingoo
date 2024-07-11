@@ -94,9 +94,15 @@ export type Verification = {
   verification: string;
 };
 
+export type RsquaredResult = {
+  indicatorId: string;
+  rsquared: float;
+};
+
 export type ForecastApiResponse = {
   indicatorValues: IndicatorValue[];
   forecastType: ForecastType;
+  rsquaredResults: RsquaredResult[];
 };
 
 export type CustomForecastIndicatorValuesResponse = {
@@ -107,5 +113,6 @@ export type CustomForecastIndicatorValuesResponse = {
   name: string;
   exchange: string;
   forecastType: ForecastType;
+  rsquaredResults: RsquaredResult[];
   customForecastIndicatorValues: IndicatorValue[];
 };
