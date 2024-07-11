@@ -1,8 +1,9 @@
 from pydantic import BaseModel
+from typing import Union
 
 class RsquaredResult(BaseModel):
     id: str
-    rsquared: float
+    rsquared: Union[float, str]
 
 class IndicatorDto(BaseModel):
     id: str
@@ -39,4 +40,4 @@ class SourceIndicatorIdAndWeightList(BaseModel):
 class RegressionModelAndRsquared(BaseModel):
     sourceIndicatorId: str
     values: list[float]
-    rsquared: float
+    rsquared: Union[float, str]

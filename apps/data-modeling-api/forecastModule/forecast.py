@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import pmdarima as pm
 from dtos import RegressionModelAndRsquared, RsquaredResult
+import numpy as np
 
 def runVar(df: pd.DataFrame, group: list[str], period: int) -> pd.DataFrame:
   df = df.bfill()
@@ -69,7 +70,10 @@ def runRegression(df: pd.DataFrame, targetIndicatorId: str, totalCount:int):
     model = sm.OLS(y, xSingle).fit()
     predictions = model.predict(xSingle).tolist()
     rsquared = model.rsquared
-    print(f'{column} 결정계수: {rsquared}')
+    if not isinstance(rsquared, float) or np.isnan(rsquared) or np.isinf(rsquared): rsquared = -100
+    rsquared = float(rsquared)
+    print(f'{column} 결정계수: {rsquared}, {type(rsquared)}')
+
     regressionModelAndRsquared = RegressionModelAndRsquared(
             sourceIndicatorId=column, values=predictions, rsquared=rsquared
         )
@@ -81,7 +85,7 @@ def runRegression(df: pd.DataFrame, targetIndicatorId: str, totalCount:int):
   for model in models:
     rsquaredResult= RsquaredResult(id=model.sourceIndicatorId, rsquared=model.rsquared)
     rsquaredResults.append(rsquaredResult)
-    if model.rsquared >= 0:
+    if model.rsquared > 0:
       ratio: float = model.rsquared/sumRsquared
       result = [x*ratio for x in model.values]
       results.append(result)

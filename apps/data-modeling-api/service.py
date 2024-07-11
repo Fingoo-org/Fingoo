@@ -33,7 +33,7 @@ def predict(targetIndicatorId:str, targetIndicatorType: str, sourceIndicatorIds:
             print('가중치 적용 VAR 분석 시작')
             varResult = getMultiResult(df, validIndicatorIds, targetIndicatorId)
             applyIndicatorsAndWeights = getApplyIndicators(sourceIndicatorIds, weights, validIndicatorIds)
-            weightedDf = applyWeight(df, applyIndicatorsAndWeights[0],applyIndicatorsAndWeights[1], len(varResult)+1)
+            weightedDf = applyWeight(df,targetIndicatorId, applyIndicatorsAndWeights[0],applyIndicatorsAndWeights[1], len(varResult)+1)
             print('가중치 적용한 데이터프레임 생성 완료')
             weightedMultiData = getWeightedResult(weightedDf, varResult, targetIndicatorId, len(varResult)+1)
             weightedMultiValues = weightedMultiData[0]
@@ -227,7 +227,7 @@ def getFalseVerificationResult(varIndicators: list[str]):
     falseResult.append(ver)
   return falseResult
 
-def applyWeight(df: pd.DataFrame, applyIndicators:list[str], weights: list[int], totalCount: int):
+def applyWeight(df: pd.DataFrame, targetIndicatorId:str, applyIndicators:list[str], weights: list[int], totalCount: int):
     if not weights or len(applyIndicators) != len(weights):
       print('가중치 적용 지표와 입력된 가중치가 일치하지 않습니다.')
       return df
@@ -236,12 +236,14 @@ def applyWeight(df: pd.DataFrame, applyIndicators:list[str], weights: list[int],
       for i in range(totalCount):
         newRow = df.iloc[-1].copy()
         for applyIndicator, weight in zip(applyIndicators, weights):
-            theta = weight / 1000
-            base = df[applyIndicator].iloc[-1]
-            newRow[applyIndicator] = base * (1 + theta) ** (i + 1)
+          theta = weight / 1000
+          base = df[applyIndicator].iloc[-1]
+          newRow[applyIndicator] = base * (1 + theta) ** (i + 1)
         newData = pd.concat([newData, newRow.to_frame().T], ignore_index=True)
 
     df = pd.concat([df, newData], ignore_index=True)
+    selected_columns = applyIndicators + [targetIndicatorId]
+    df = df[selected_columns]
     print('가중치 적용 완료')
     return df
 
