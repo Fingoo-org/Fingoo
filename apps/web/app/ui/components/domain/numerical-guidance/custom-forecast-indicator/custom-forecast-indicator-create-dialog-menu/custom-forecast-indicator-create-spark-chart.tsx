@@ -2,6 +2,7 @@ import { useCreatingCustomForecastIndicator } from '@/app/business/hooks/numeric
 import { useSparkIndicatorsValueViewModel } from '@/app/business/hooks/numerical-guidance/indicator/use-spark-indicators-value-view-model.hook';
 import { createIndicatorFormatter } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
 import SparkChart from '@/app/ui/components/view/molecule/spark-chart/spark-chart';
+import { SPARK_INDICATOR_COLOR } from '@/app/utils/style/color';
 
 export default function CustomForecastIndicatorCreateSparkChart() {
   const { targetIndicator, sourceIndicators } = useCreatingCustomForecastIndicator();
@@ -23,12 +24,15 @@ export default function CustomForecastIndicatorCreateSparkChart() {
     sourceIndicatorsValue?.indicatorsValue ?? [],
   );
 
+  console.log(indicatorFormatter.formattedIndicatorsInRow);
+
   const areaChartCategories = targetIndicator ? [targetIndicator.symbol] : [];
   const lineChartCategories = indicatorFormatter.columns.filter((column) => column !== targetIndicator?.symbol);
 
   return (
     <SparkChart
-      className="h-36 w-full"
+      colors={SPARK_INDICATOR_COLOR}
+      className="h-40 w-full"
       index="date"
       data={indicatorFormatter.formattedIndicatorsInRow}
       areaChartCategories={areaChartCategories}

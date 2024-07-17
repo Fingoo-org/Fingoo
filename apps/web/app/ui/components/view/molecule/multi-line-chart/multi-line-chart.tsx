@@ -6,6 +6,7 @@ import { ChartTooltip } from './chart-tooltip';
 import { FormattedRowType } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
 import { cn } from '@/app/utils/style';
 import { formatChartData } from '@/app/utils/tremor/chart-data-formatter';
+import { INDICATOR_COLOR } from '@/app/utils/style/color';
 
 type MultiLineChartProps = {
   data: FormattedRowType[];
@@ -40,7 +41,7 @@ export default function MultiLineChart({
         categories={categories}
         height={height}
         // colors={['indigo-300', 'indigo-300', 'indigo-300', 'green-300', 'violet-400']}
-        colors={['yellow-400', 'rose-300', 'green-300', 'blue-400', 'violet-400', 'red-400', 'red-400']}
+        colors={INDICATOR_COLOR}
         yAxisWidth={60}
         onValueChange={(v) => setValue(v)}
         showAnimation={true}
