@@ -1,6 +1,7 @@
 import { IndicatorValueResponse } from '@/app/store/querys/numerical-guidance/indicator-value.query';
 import { ActualIndicatorValue } from './actual-indicators-value-view-model.service';
 import { GeometricSeriesCalculator } from '../../chart/linear-regression/geometric-series-calculator.service';
+import { getNowDate } from '@/app/utils/date-formatter';
 
 type SparkIndicatorProps = IndicatorValueResponse & { weight: number };
 
@@ -8,16 +9,15 @@ export class SparkIndicatorValue extends ActualIndicatorValue {
   readonly weight: number;
 
   constructor({ indicatorId, symbol, type, values, weight }: SparkIndicatorProps) {
-    const lastValue = values[0];
+    const lastValue = values[0].value;
     const geometricSeriesCalculator = new GeometricSeriesCalculator({
       startPoint: {
-        date: lastValue.date,
-        value: typeof lastValue.value === 'number' ? lastValue.value : parseInt(lastValue.value),
+        date: getNowDate(),
+        value: typeof lastValue === 'number' ? lastValue : parseFloat(lastValue),
       },
     });
     const geometricValues = geometricSeriesCalculator.calculate(15, weight);
 
-    console.log('geometricValues', geometricValues, weight);
     const newValues = [...geometricValues.reverse(), ...values];
 
     super({ indicatorId, symbol, type, values: newValues });
