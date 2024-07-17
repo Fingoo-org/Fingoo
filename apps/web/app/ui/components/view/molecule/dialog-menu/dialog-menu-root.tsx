@@ -8,16 +8,18 @@ import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { filterChildrenByType, getViewport } from '@/app/utils/helper';
 import { cn, getColorClassNames } from '@/app/utils/style';
 import { dialogMenuSize, DialogMenuSize } from './dialog-menu.style';
-import { Color, colorPalette } from '@/app/utils/style';
+import { Color } from '@/app/utils/style';
 import { Position } from '@/app/store/stores/dialog.store';
 
-type Side = 'top' | 'bottom' | 'right';
+type Side = 'top' | 'bottom' | 'right' | 'right-top';
 
 type DialogMenuProps = {
   dialogKey: DialogKey;
   size?: DialogMenuSize;
   color?: Color;
   side?: Side;
+  xOffset?: number;
+  yOffset?: number;
 };
 
 const getDialogMenuHeader = (children: React.ReactNode) => {
@@ -26,29 +28,42 @@ const getDialogMenuHeader = (children: React.ReactNode) => {
 
 const getCoordinate = (side: Side, position: Position) => {
   const { viewportHeight } = getViewport();
-  console.log(position);
 
-  if (side === 'top') {
-    return {
-      left: position.x,
-      bottom: viewportHeight - position.y,
-    };
+  switch (side) {
+    case 'top':
+      return {
+        left: position.x,
+        bottom: viewportHeight - position.y,
+      };
+    case 'bottom':
+      return {
+        left: position.x,
+        top: position.y,
+      };
+    case 'right':
+      return {
+        left: position.right + 10,
+        top: position.y - (viewportHeight - position.y) / 2,
+      };
+    case 'right-top':
+      return {
+        left: position.right + 10,
+        bottom: viewportHeight - position.y,
+      };
   }
+};
 
-  if (side === 'bottom') {
-    return {
-      left: position.x,
-      top: position.y,
-    };
-  }
-
-  console.log(viewportHeight - position.y);
-  if (side === 'right') {
-    return {
-      left: position.right + 10,
-      top: position.y - (viewportHeight - position.y) / 2,
-    };
-  }
+const addOffset = (
+  coordinate: { left?: number; top?: number; bottom?: number; right?: number },
+  xOffset: number,
+  yOffset: number,
+) => {
+  return {
+    left: coordinate.left ? coordinate.left + xOffset : undefined,
+    top: coordinate.top ? coordinate.top + yOffset : undefined,
+    bottom: coordinate.bottom ? coordinate.bottom - yOffset : undefined,
+    right: coordinate.right ? coordinate.right - xOffset : undefined,
+  };
 };
 
 export function DialogMenuRoot({
@@ -57,6 +72,8 @@ export function DialogMenuRoot({
   dialogKey,
   size = 'xs',
   side = 'bottom',
+  xOffset = 0,
+  yOffset = 0,
 }: React.PropsWithChildren<DialogMenuProps>) {
   const { isOpen, position, closeDialog } = useDialog(dialogKey);
   const dialogMenuHeader = getDialogMenuHeader(children);
@@ -68,6 +85,7 @@ export function DialogMenuRoot({
   const dialogSize = dialogMenuSize[size];
 
   const coordinate = getCoordinate(side, position);
+  const coordinateWithOffset = addOffset(coordinate, xOffset, yOffset);
 
   const handleOnClick = () => {
     closeDialog();
@@ -79,7 +97,7 @@ export function DialogMenuRoot({
         <Transition as={React.Fragment} show={isOpen || false}>
           <div className="pointer-events-auto relative z-0">
             <div onClick={handleOnClick} className="fixed left-0 top-0 h-screen w-screen" />
-            <div role="dialog" style={coordinate} className="fixed">
+            <div role="dialog" style={coordinateWithOffset} className="fixed">
               <Transition.Child
                 as={React.Fragment}
                 enter="transition ease-out duration-100"
