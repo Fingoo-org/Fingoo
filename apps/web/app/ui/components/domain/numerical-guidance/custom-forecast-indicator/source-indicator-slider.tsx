@@ -3,7 +3,7 @@ import IconButton from '../../../view/atom/icons/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { Card } from '../../../view/molecule/card/card';
-import { cn } from '@/app/utils/style';
+import ColorCubic from '../../../view/atom/color-cubic';
 
 export type SourceIndicatorInfo = {
   weight: number;
@@ -38,7 +38,7 @@ export default function SourceIndicatorSlider({
   return (
     <Card className="flex items-center rounded-lg px-1 py-1">
       <div className="mx-1 block w-12 truncate  text-xs">{item.symbol}</div>
-      {color ? <div className={cn(`mr-2 h-4 w-4  rounded-sm`, `bg-${color}`)} /> : null}
+      {color ? <ColorCubic color={color} /> : null}
       {item.disabled ? (
         <div className="grow">Disabled</div>
       ) : (
