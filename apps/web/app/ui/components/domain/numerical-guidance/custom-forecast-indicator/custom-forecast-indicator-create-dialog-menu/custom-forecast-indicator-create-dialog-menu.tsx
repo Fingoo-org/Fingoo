@@ -9,7 +9,7 @@ export default function CustomForecastIndicatorCreateDialogMenu() {
   const { Stepper, nextStep, prevStep } = useStepper();
 
   return (
-    <DialogMenu color={'gray'} size={'xl'} side={'right'} dialogKey={DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_CREATE_MENU}>
+    <DialogMenu color={'gray'} size={'3xl'} side={'right'} dialogKey={DIALOG_KEY.CUSTOM_FORECAST_INDICATOR_CREATE_MENU}>
       <Stepper>
         <Stepper.Step step={0}>
           <SelectTargetIndicatorStepDialogMenu nextStep={nextStep} />

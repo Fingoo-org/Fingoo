@@ -6,8 +6,8 @@ import { DialogMenuHeader } from './dialog-menu-header';
 import { useDialog } from '../../../../../utils/hooks/use-dialog.hook';
 import { DialogKey } from '@/app/utils/keys/dialog-key';
 import { filterChildrenByType, getViewport } from '@/app/utils/helper';
-import { Size, cn, getColorClassNames } from '@/app/utils/style';
-import { DialogMenuSize } from './dialog-menu.style';
+import { cn, getColorClassNames } from '@/app/utils/style';
+import { dialogMenuSize, DialogMenuSize } from './dialog-menu.style';
 import { Color, colorPalette } from '@/app/utils/style';
 import { Position } from '@/app/store/stores/dialog.store';
 
@@ -15,7 +15,7 @@ type Side = 'top' | 'bottom' | 'right';
 
 type DialogMenuProps = {
   dialogKey: DialogKey;
-  size?: Size;
+  size?: DialogMenuSize;
   color?: Color;
   side?: Side;
 };
@@ -65,7 +65,7 @@ export function DialogMenuRoot({
     return !React.isValidElement(child) || (child as React.ReactElement).type !== DialogMenuHeader;
   });
 
-  const dialogSize = DialogMenuSize[size];
+  const dialogSize = dialogMenuSize[size];
 
   const coordinate = getCoordinate(side, position);
 
