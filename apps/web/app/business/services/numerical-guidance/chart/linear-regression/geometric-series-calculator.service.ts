@@ -19,7 +19,7 @@ export class GeometricSeriesCalculator {
     const result = [];
     const theta = weight / 1000;
 
-    for (let i = 1; i <= afterDays; i++) {
+    for (let i = 0; i <= afterDays - 1; i++) {
       const date = calculateDateAfter(this.startDate, i);
       const value = this.startValue * (theta + 1) ** i;
       result.push({ date, value });
