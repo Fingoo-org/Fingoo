@@ -3,6 +3,7 @@ import IconButton from '../../../view/atom/icons/icon-button';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { Card } from '../../../view/molecule/card/card';
+import { Color } from '@tremor/react';
 
 export type SourceIndicatorInfo = {
   weight: number;
@@ -14,12 +15,15 @@ export type SourceIndicatorInfo = {
 
 type SourceIndicatorSliderProps = {
   item: SourceIndicatorInfo;
+  color?: Color;
+
   onWeightChange: (item: SourceIndicatorInfo, value: number) => void;
   onSourceIndicatorDelete: (item: SourceIndicatorInfo) => void;
 };
 
 export default function SourceIndicatorSlider({
   item,
+  color = 'blue',
   onWeightChange,
   onSourceIndicatorDelete,
 }: SourceIndicatorSliderProps) {
@@ -33,11 +37,12 @@ export default function SourceIndicatorSlider({
 
   return (
     <Card className="flex items-center rounded-lg px-1 py-1">
-      <div className="mr-2 block w-16 truncate text-xs">{item.symbol}</div>
+      <div className="mx-1 block w-12 truncate  text-xs">{item.symbol}</div>
+      {color ? <div className={`h-4 w-4 rounded-sm bg-${color}-400 mr-2`} /> : null}
       {item.disabled ? (
         <div className="grow">Disabled</div>
       ) : (
-        <>
+        <div className="flex grow items-center">
           <Slider
             min={-50}
             max={50}
@@ -46,7 +51,7 @@ export default function SourceIndicatorSlider({
             key={item.id}
           />
           <div className="px-1 text-xs">{item.weight}</div>
-        </>
+        </div>
       )}
       <IconButton color={'gray'} icon={XCircleIcon} size={'xs'} onClick={handleSourceIndicatorDelete} />
     </Card>
