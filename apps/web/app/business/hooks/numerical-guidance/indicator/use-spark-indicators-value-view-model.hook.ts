@@ -23,7 +23,7 @@ export const useSparkIndicatorsValueViewModel = ({ indicators }: Props) => {
     ids: indicators.map((indicator) => indicator.id),
   };
 
-  const { data: indicatorsValueData } = useFetchLiveIndicatorsValueByType(params, indicators);
+  const { data: indicatorsValueData, isLoading, isValidating } = useFetchLiveIndicatorsValueByType(params, indicators);
 
   const IndicatosValueWithWeight = indicatorsValueData?.indicatorsValue.map((indicatorValue) => {
     const weight = indicators.find((indicator) => indicator.id === indicatorValue.indicatorId)?.weight;
@@ -39,5 +39,6 @@ export const useSparkIndicatorsValueViewModel = ({ indicators }: Props) => {
 
   return {
     indicatorsValue: convertedIndciatorsValue,
+    isPending: isLoading || isValidating,
   };
 };
