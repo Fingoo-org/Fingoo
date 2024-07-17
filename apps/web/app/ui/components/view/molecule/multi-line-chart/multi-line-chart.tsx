@@ -3,11 +3,10 @@ import { EventProps } from '@tremor/react';
 import LineChart from './line-chart';
 import { useState } from 'react';
 import { ChartTooltip } from './chart-tooltip';
-import {
-  FormattedRowType,
-  chartValueFormatterFactory,
-} from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
+import { FormattedRowType } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
 import { cn } from '@/app/utils/style';
+import { formatChartData } from '@/app/utils/tremor/chart-data-formatter';
+import { INDICATOR_COLOR } from '@/app/utils/style/color';
 
 type MultiLineChartProps = {
   data: FormattedRowType[];
@@ -30,7 +29,7 @@ export default function MultiLineChart({
   const [value, setValue] = useState<EventProps>(null);
   const index = 'date';
 
-  const formatteedData = formmatData(data, categories);
+  const formatteedData = formatChartData(data, categories);
   return (
     <>
       <LineChart
@@ -42,7 +41,7 @@ export default function MultiLineChart({
         categories={categories}
         height={height}
         // colors={['indigo-300', 'indigo-300', 'indigo-300', 'green-300', 'violet-400']}
-        colors={['yellow-400', 'rose-300', 'green-300', 'blue-400', 'violet-400', 'red-400', 'red-400']}
+        colors={INDICATOR_COLOR}
         yAxisWidth={60}
         onValueChange={(v) => setValue(v)}
         showAnimation={true}
@@ -56,41 +55,4 @@ export default function MultiLineChart({
       />
     </>
   );
-}
-
-function formmatData(data: FormattedRowType[], categories: string[]) {
-  const caculateChartValue = chartValueFormatterFactory(categories);
-
-  return data.map((d) => {
-    return {
-      ...Object.keys(d).reduce((acc, key) => {
-        if (key === 'date') {
-          return { ...acc, [key]: d[key] };
-        }
-        return {
-          ...acc,
-          [key]: caculateChartValue(
-            d[key] as {
-              value: number;
-              displayValue: number;
-            },
-          ),
-        };
-      }, {}),
-      displayValue: Object.keys(d).reduce((acc, key) => {
-        if (key === 'date') {
-          return { ...acc, [key]: d[key] };
-        }
-        return {
-          ...acc,
-          [key]: (
-            d[key] as {
-              value: number;
-              displayValue: number;
-            }
-          ).displayValue,
-        };
-      }, {}),
-    };
-  });
 }

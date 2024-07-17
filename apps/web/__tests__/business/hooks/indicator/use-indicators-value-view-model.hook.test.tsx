@@ -129,6 +129,6 @@ describe('useLiveIndicatorsValueViewModel', () => {
     });
 
     // then
-    expect(result.current.indicatorsValue?.length).toBe(0);
+    expect(result.current.indicatorsValue?.length).toBeUndefined();
   });
 });

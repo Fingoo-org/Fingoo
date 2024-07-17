@@ -11,6 +11,9 @@ import { useDialog } from '@/app/utils/hooks/use-dialog.hook';
 import { DIALOG_KEY } from '@/app/utils/keys/dialog-key';
 import Tooltip from '@/app/ui/components/view/atom/tooltip';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
+import CustomForecastIndicatorCreateSparkChart from '../custom-forecast-indicator-create-spark-chart';
+import ColorCubic from '@/app/ui/components/view/atom/color-cubic';
+import { SPARK_INDICATOR_COLOR } from '@/app/utils/style/color';
 
 type SelectSourceIndicatorStepDialogMenuProps = {
   prevStep: () => void;
@@ -21,7 +24,7 @@ const TOOLTIP_MESSAGE = `재료 지표는 원하는 지표를 예측하는데 �
 
 export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: SelectSourceIndicatorStepDialogMenuProps) {
   const {
-    targetIndicatorId,
+    targetIndicator,
     isCreating,
     addSourceIndicator,
     deleteSourceIndicator,
@@ -56,7 +59,7 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
         onSelect={handleItemSelected}
         selected={includeSourceIndicator(indicator.id)}
         style={style}
-        disabled={indicator.id === targetIndicatorId}
+        disabled={indicator.id === targetIndicator?.id}
       >
         <div className="flex h-full w-full items-center text-xs font-normal">
           <span>{indicator.symbol}</span>
@@ -80,6 +83,18 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
         </Card>
       </DialogMenu.Content>
       <DialogMenu.Content>
+        <div className="flex items-center py-1 text-xs font-bold">
+          <div>타겟지표 :</div>
+          <div>{targetIndicator?.symbol}</div>
+          <div className="ml-2">
+            <ColorCubic color={SPARK_INDICATOR_COLOR[0]} />
+          </div>
+        </div>
+        <Card className="px-1.5 py-3">
+          <CustomForecastIndicatorCreateSparkChart />
+        </Card>
+      </DialogMenu.Content>
+      <DialogMenu.Content>
         <SourceIndicatorCreateSliderGroup />
       </DialogMenu.Content>
       <DialogMenu.Content>
@@ -88,7 +103,7 @@ export default function SelectSourceIndicatorStepDialogMenu({ prevStep }: Select
             이전
           </Button>
           <Button
-            disabled={targetIndicatorId === undefined ? true : false}
+            disabled={targetIndicator?.id === undefined ? true : false}
             onClick={handleCustomForecastIndicatorCreate}
             color={'black'}
             size={'xs'}

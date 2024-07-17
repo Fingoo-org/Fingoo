@@ -93,6 +93,7 @@ export const useCreatingCustomForecastIndicator = () => {
   };
 
   return {
+    targetIndicator: targetIndicatorInfo,
     targetIndicatorId: targetIndicatorInfo?.id,
     sourceIndicators,
     isCreating,

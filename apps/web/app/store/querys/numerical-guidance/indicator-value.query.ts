@@ -38,7 +38,7 @@ export const useFetchLiveIndicatorsValueByType = (
 
   const { startDate, interval, ids } = params;
   // fix: id마다 indicator Type 찾을 수 있도록 변경할 필요 있음 indicatorType은 다행이 key에 들어갈 필요는 없음
-  const key = ids ? [`${API_PATH.liveIndicatorValue}`, interval, startDate, ...ids] : null;
+  const key = ids && ids.length !== 0 ? [`${API_PATH.liveIndicatorValue}`, interval, startDate, ...ids] : null;
 
   return useSWRImmutable<IndicatorsValueResponse, any, string[] | null>(key, async (key) => {
     if (process.env.NODE_ENV === 'test') {

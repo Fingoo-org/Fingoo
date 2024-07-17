@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { current } from 'tailwindcss/colors';
 
 export const useStepper = () => {
   const [step, setStep] = useState(0);
@@ -23,6 +24,7 @@ export const useStepper = () => {
   });
 
   return {
+    currentStep: step,
     Stepper,
     nextStep,
     prevStep,

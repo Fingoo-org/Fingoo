@@ -2,6 +2,7 @@ import { useCreatingCustomForecastIndicator } from '@/app/business/hooks/numeric
 import SourceIndicatorSlider, { SourceIndicatorInfo } from '../source-indicator-slider';
 import Tooltip from '@/app/ui/components/view/atom/tooltip';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
+import { SPARK_INDICATOR_COLOR } from '@/app/utils/style/color';
 
 export default function SourceIndicatorCreateSliderGroup() {
   const { sourceIndicators, updateSourceIndicatorWeight, deleteSourceIndicator } = useCreatingCustomForecastIndicator();
@@ -24,7 +25,7 @@ export default function SourceIndicatorCreateSliderGroup() {
           </Tooltip>
         </div>
       ) : null}
-      {sourceIndicators.map((sourceIndicator) => {
+      {sourceIndicators.map((sourceIndicator, index) => {
         return (
           <SourceIndicatorSlider
             key={sourceIndicator.sourceIndicatorId}
@@ -32,6 +33,7 @@ export default function SourceIndicatorCreateSliderGroup() {
               id: sourceIndicator.sourceIndicatorId,
               ...sourceIndicator,
             }}
+            color={SPARK_INDICATOR_COLOR[index + 1]}
             onWeightChange={handleSourceIndicatorWeightChange}
             onSourceIndicatorDelete={handleSourceIndicatorDelete}
           />
