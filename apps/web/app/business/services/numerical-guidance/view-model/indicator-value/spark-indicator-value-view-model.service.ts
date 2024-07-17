@@ -10,18 +10,23 @@ export class SparkIndicatorValue extends ActualIndicatorValue {
 
   constructor({ indicatorId, symbol, type, values, weight }: SparkIndicatorProps) {
     const lastValue = values[0].value;
-    const geometricSeriesCalculator = new GeometricSeriesCalculator({
-      startPoint: {
-        date: getNowDate(),
-        value: typeof lastValue === 'number' ? lastValue : parseFloat(lastValue),
-      },
-    });
-    const geometricValues = geometricSeriesCalculator.calculate(15, weight);
+
+    const geometricValues = SparkIndicatorValue.createGeometricValues(lastValue, weight);
 
     const newValues = [...geometricValues.reverse(), ...values];
 
     super({ indicatorId, symbol, type, values: newValues });
     this.weight = weight;
+  }
+
+  static createGeometricValues(value: number | string, weight: number) {
+    const geometricSeriesCalculator = new GeometricSeriesCalculator({
+      startPoint: {
+        date: getNowDate(),
+        value: typeof value === 'number' ? value : parseFloat(value),
+      },
+    });
+    return geometricSeriesCalculator.calculate(15, weight);
   }
 }
 
