@@ -17,11 +17,11 @@ export function LogClick({ children, event, properties }: React.PropsWithChildre
   }
 
   return React.cloneElement(child as React.ReactElement, {
-    onClick: (...args: any[]) => {
+    onClick: (e: React.MouseEvent<HTMLElement>) => {
       logger.track(event, properties);
 
       if (child.props && typeof child.props['onClick'] === 'function') {
-        return child.props['onClick'](...args);
+        return child.props['onClick'](e);
       }
     },
   });
