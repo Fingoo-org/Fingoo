@@ -9,7 +9,7 @@ import {
   useFetchIndicatorBoardMetadataList,
 } from '../../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useWorkspaceStore } from '../../../../store/stores/numerical-guidance/workspace.store';
-import { convertIndcatorBoardMetadataList } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-list-view-model.service';
+import { convertIndicatorBoardMetadataList } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-list-view-model.service';
 import { useWorkspace } from '../../use-workspace.hook';
 
 export const useSelectedIndicatorBoardMetadata = () => {
@@ -27,7 +27,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
 
-    return convertIndcatorBoardMetadataList(indicatorBoardMetadataList);
+    return convertIndicatorBoardMetadataList(indicatorBoardMetadataList);
   }, [indicatorBoardMetadataList]);
 
   const selectedMetadata = useMemo(() => {

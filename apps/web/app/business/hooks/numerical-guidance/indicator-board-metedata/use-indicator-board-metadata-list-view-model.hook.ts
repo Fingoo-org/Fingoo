@@ -6,7 +6,7 @@ import {
 } from '../../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useFetchIndicatorBoardMetadataList } from '../../../../store/querys/numerical-guidance/indicator-board-metadata.query';
 import { useEffect, useMemo } from 'react';
-import { convertIndcatorBoardMetadataList } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-list-view-model.service';
+import { convertIndicatorBoardMetadataList } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-list-view-model.service';
 import {
   IndicatorInMetadataUnitTypes,
   useIndicatorBoardMetadataStore,
@@ -31,7 +31,7 @@ export const useIndicatorBoardMetadataList = () => {
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
 
-    return convertIndcatorBoardMetadataList(indicatorBoardMetadataList);
+    return convertIndicatorBoardMetadataList(indicatorBoardMetadataList);
   }, [indicatorBoardMetadataList]);
 
   useEffect(() => {
