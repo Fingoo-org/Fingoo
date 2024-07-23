@@ -31,10 +31,10 @@ export async function POST(req: Request) {
 
   // Ask OpenAI for a streaming chat completion given the prompt
   const response = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo-0125',
+    model: 'gpt-4o-mini',
     stream: true,
     tool_choice: 'required',
-    temperature: 0.3,
+    temperature: 1.3,
     messages: [
       {
         role: 'system',
@@ -62,7 +62,8 @@ export async function POST(req: Request) {
         return openai.chat.completions.create({
           messages: [...messages, ...newMessages],
           stream: true,
-          model: 'gpt-3.5-turbo-0125',
+          temperature: 1.3,
+          model: 'gpt-4o-mini',
           tools,
         });
       }
