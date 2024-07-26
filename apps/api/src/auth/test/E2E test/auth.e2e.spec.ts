@@ -16,6 +16,7 @@ import { AuthService } from '../../application/auth.service';
 import { MockAuthGuard, mockAuthorization, mockUser } from '../data/mock-auth.guard';
 import { HttpExceptionFilter } from '../../../utils/exception-filter/http-exception-filter';
 import { UserCertificationDto } from '../../api/dto/response/user-certification.dto';
+import { CqrsModule } from '@nestjs/cqrs';
 
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(() => ({
@@ -75,6 +76,7 @@ describe('Auth E2E Test', () => {
               synchronize: true,
             }),
           }),
+          CqrsModule,
         ],
         controllers: [AuthController],
         providers: [

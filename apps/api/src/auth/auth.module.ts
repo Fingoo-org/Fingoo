@@ -6,9 +6,10 @@ import { MemberEntity } from './entity/member.entity';
 import { PassportModule } from '@nestjs/passport';
 import { SupabaseStrategy } from './supabase/supabase.strategy';
 import { SupabaseService } from './supabase/supabase.service';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MemberEntity]), PassportModule],
+  imports: [TypeOrmModule.forFeature([MemberEntity]), PassportModule, CqrsModule],
   controllers: [AuthController],
   providers: [AuthService, SupabaseService, SupabaseStrategy],
 })

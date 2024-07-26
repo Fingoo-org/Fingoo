@@ -9,19 +9,27 @@ import { User } from '@supabase/supabase-js';
 import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 import { SupabaseService } from '../supabase/supabase.service';
 import { ApiExceptionResponse } from '../../utils/exception-filter/api-exception-response.decorator';
+import { CommandBus } from '@nestjs/cqrs';
+import { CreateIndicatorBoardMetadataCommand } from '../../numerical-guidance/application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command';
 
 @Controller('/api/auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly supabaseService: SupabaseService,
+    private commandBus: CommandBus,
   ) {}
 
   @Public()
   @Post('/signUp')
   async signUp(@Body() signUpDto: SignUpDto): Promise<UserCertificationDto> {
     const { email, password } = signUpDto;
-    return this.supabaseService.signUp(email, password);
+    const account = await this.supabaseService.signUp(email, password);
+
+    // 빈 메타데이터를 만듭니다.
+    const command = new CreateIndicatorBoardMetadataCommand('빈 메타데이터', account.userId);
+    this.commandBus.execute(command);
+    return account;
   }
 
   @ApiCreatedResponse()
