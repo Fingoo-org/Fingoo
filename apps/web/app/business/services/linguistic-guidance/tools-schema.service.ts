@@ -138,6 +138,26 @@ export const tools: Array<ChatCompletionTool> = [
   {
     type: 'function',
     function: {
+      name: 'draw_metadater',
+      description: '사용자에게 지표를 메타데이터로 보여준다.',
+      parameters: {
+        type: 'object',
+        properties: {
+          symbols: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            description: '사용자가 요청한 경제 지표 리스트',
+          },
+        },
+        required: ['symbols'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'get_instructions',
       description: '사용자 질문에 대한 적절한 instruction을 얻는다.',
       parameters: {
@@ -145,12 +165,13 @@ export const tools: Array<ChatCompletionTool> = [
         properties: {
           query: {
             type: 'string',
-            enum: ['predict', 'analyze', 'explain', 'recommend'],
+            enum: ['predict', 'analyze', 'explain', 'recommend', 'draw'],
             description: `""사용자가 하는 질문의 타입은 다음 중 하나가 될 수 있다:
             - predict: 경제 지표 예측과 해석을 요청하는 질문.""
             - analyze: 시장 상황이나 지수와 같은 종합적인 경제 상황에 대한 분석을 요청하는 질문(예시: IT시장 상황을 분석해줘)
             - explain: 특정 단일 지표에 대한 설명이나 분석을 요청하는 질문 (예시: 월마트의 현재 상황을 분석해줘, WMT분석해줘)
             - recommend: 유망한 경제 지표를 추천받는 질문 (예시: 현재 은행관련 괜찮은 주식이 있을까?)
+            - draw: 경제 지표를 화면에 보여주도록 요청하는 질문 (예시: 애플 지표를 보여줘, 애플과 아마존의 지표를 화면에 표시해줘)
             `,
           },
         },
