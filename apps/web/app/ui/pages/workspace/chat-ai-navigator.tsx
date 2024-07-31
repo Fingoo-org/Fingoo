@@ -9,37 +9,37 @@ import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
 import AdBanner from './ad-banner';
 
 export default function ChatAiNavigator() {
-  const [collpase, setCollpase] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const { isBigScreen } = useResponsive();
 
-  const handleCollpase = () => {
-    setCollpase(!collpase);
+  const handleCollapse = () => {
+    setCollapsed(!collapsed);
   };
 
   const sidebarWidth = isBigScreen ? 400 : 300;
 
   return (
-    <div className="relatvie">
+    <div className="relative">
       <IconButton
         size={'xs'}
-        data-collapsed={collpase}
+        data-collapsed={collapsed}
         className={cn(
           'absolute top-[3vh] z-10 rounded-full bg-fingoo-gray-1.5 drop-shadow-fingoo transition-transform duration-200 data-[collapsed=true]:rotate-180',
-          collpase ? 'right-[8px]' : isBigScreen ? 'right-[388px]' : 'right-[288px]',
+          collapsed ? 'right-[8px]' : isBigScreen ? 'right-[388px]' : 'right-[288px]',
         )}
         color={'gray'}
-        onClick={handleCollpase}
+        onClick={handleCollapse}
         icon={ChevronRightIcon}
       />
       <Sidebar
-        collapsed={collpase}
+        collapsed={collapsed}
         transitionDuration={0}
         collapsedWidth="20px"
         width={`${sidebarWidth}px`}
         backgroundColor={'#fff'}
         className="h-full shadow-sm"
       >
-        {!collpase ? (
+        {!collapsed ? (
           <>
             <div className="h-[100px] w-full bg-gray-300">
               <AdBanner />
