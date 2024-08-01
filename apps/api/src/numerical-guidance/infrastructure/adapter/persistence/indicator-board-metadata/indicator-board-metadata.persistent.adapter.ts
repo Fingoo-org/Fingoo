@@ -342,7 +342,12 @@ export class IndicatorBoardMetadataPersistentAdapter
   async deleteIndicatorBoardMetadata(id: string) {
     try {
       const indicatorBoardMetadataEntity: IndicatorBoardMetadataEntity =
-        await this.indicatorBoardMetadataRepository.findOneBy({ id: id });
+        await this.indicatorBoardMetadataRepository.findOne({
+          relations: ['member'],
+          where: {
+            id,
+          },
+        });
       this.nullCheckForEntity(indicatorBoardMetadataEntity);
 
       const { member } = indicatorBoardMetadataEntity;
