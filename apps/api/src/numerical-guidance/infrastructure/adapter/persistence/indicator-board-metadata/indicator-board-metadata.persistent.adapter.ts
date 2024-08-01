@@ -345,6 +345,12 @@ export class IndicatorBoardMetadataPersistentAdapter
         await this.indicatorBoardMetadataRepository.findOneBy({ id: id });
       this.nullCheckForEntity(indicatorBoardMetadataEntity);
 
+      const { member } = indicatorBoardMetadataEntity;
+      const metadatas = await this.loadIndicatorBoardMetadataList(member.id);
+      if (metadatas.length <= 1) {
+        throw new BadRequestException();
+      }
+
       await this.indicatorBoardMetadataRepository.remove(indicatorBoardMetadataEntity);
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -361,6 +367,13 @@ export class IndicatorBoardMetadataPersistentAdapter
           1. id 값이 uuid 형식을 잘 따르고 있는지 확인해주세요.`,
           message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
           cause: error,
+        });
+      } else if (error instanceof BadRequestException) {
+        throw new BadRequestException({
+          HttpStatus: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] 지표보드 메타데이터를 삭제하는 도중에 entity 오류가 발생했습니다.
+          2. 메타데이터가 1개 미만으로 감소하는지 확인해주세요.`,
+          message: '정보를 불러오는 중에 문제가 발생했습니다. 다시 시도해주세요.',
         });
       } else {
         throw new InternalServerErrorException({
