@@ -15,7 +15,7 @@
 
 #### 지표 예측(Function Calling UX flow)
 
-![1](https://github.com/user-attachments/assets/8ef04fe0-53fb-4aee-9674-89dcf94b807d)
+![1](https://github.com/user-attachments/assets/3a20f16f-4866-4cb9-88d0-5f98711370e8)
 
 - 핀구 봇(GPT)에게 특정 지표의 예측을 요청할 수 있습니다.
 - GPT 기반으로 예측 지표를 생성하고, 예측값에 대한 해석을 제공합니다.
