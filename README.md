@@ -4,7 +4,7 @@
 
 **나만의 투자분석 친구 FINGOO**
 
-경제 분석, 시각화, 공유할 수 있는 금융 플랫폼
+경제 분석, 시각화, 공유할 수 있는 금융 투자 분석 플랫폼
 
 ![Next.js](https://img.shields.io/badge/Next.js-v14-000000?style=flat-square&logo=Next.js&logoColor=white)
 ![Nest.js](https://img.shields.io/badge/nestjs-v14-E0234E?style=flat-square&logo=nestjs&logoColor=white)
