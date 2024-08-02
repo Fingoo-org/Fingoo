@@ -1,3 +1,4 @@
+import { useLogger } from '@/app/logging/use-logger.hook';
 import { addIndicatorsToMetadata, getIndicatorValue } from '../../services/linguistic-guidance/indicator.service';
 import { getIndicatorBySymbolAPIFirst } from '../../services/linguistic-guidance/search-symbol.service';
 import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
@@ -15,6 +16,7 @@ export default function useDrawMetadata() {
 
   const { selectMetadataById } = useSelectedIndicatorBoardMetadata();
   const { addMetadataToIndicatorBoard } = useSplitIndicatorBoard();
+  const logger = useLogger();
 
   const displayIndicatorBoardMetadata = (metadataId: string) => {
     const isSuccess = addMetadataToIndicatorBoard(metadataId);
@@ -26,6 +28,7 @@ export default function useDrawMetadata() {
 
   const createIndicatorBoardMetadata = async (title: string) => {
     const id = await createMetadata(title);
+    logger.track('GPT_create_metadata', { metadata_item_count: metadataList?.length ?? -1 });
 
     return id;
   };
@@ -44,7 +47,7 @@ export default function useDrawMetadata() {
       )
     ).filter((indicator) => indicator !== undefined) as Indicator[];
     // 2. 메타데이터 만들기
-    const metadataId = await createIndicatorBoardMetadata('Fingoo가 분석한 지표들');
+    const metadataId = await createIndicatorBoardMetadata(`${symbols[0]} 외 ${symbols.length - 1}개 메타데이터`);
 
     // 3. 메타데이터에 지표 추가
     await addIndicatorsToMetadata(metadataId, indicators);
@@ -60,9 +63,7 @@ export default function useDrawMetadata() {
     // 5. 메타데이터 선택
     displayIndicatorBoardMetadata(metadataId);
 
-    return `
-    생성된 지표들: ${JSON.stringify(symbols)}
-    `;
+    return JSON.stringify(`생성된 지표들: ${JSON.stringify(symbols)}`);
   };
   return {
     drawMetadataHandler,
