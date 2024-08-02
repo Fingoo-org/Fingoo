@@ -5,6 +5,7 @@ export type FunctionName =
   | 'analyze_economic_indicators'
   | 'explain_economic_indicator'
   | 'recommend_economic_indicator'
+  | 'draw_metadata'
   | 'speak_to_user'
   | 'get_instructions';
 
@@ -127,7 +128,10 @@ export const tools: Array<ChatCompletionTool> = [
             지표 이름과 심볼: 각각의 추천 지표에 대한 이름과 심볼값 명시 (예시: 월마트(WMT))
             개별 지표 개요 설명: 각각의 추천 지표에 대한 개별적인 개요를 설명합니다. (예시: 월마트(Walmart)는 미국의 다국적 소매 기업으로, 전 세계적으로 가장 큰 소매업체 중 하나입니다. 1962년 샘 월튼(Sam Walton)에 의해 설립되었으며, 현재 본사는 아칸소주 벤턴빌에 위치하고 있습니다. 월마트는 다양한 상품을 저렴한 가격에 제공하는 대형 할인 매장으로 유명합니다.)
             연관성 설명: 각각의 추천 지표와 질문과의 연관성을 설명합니다.
-            .
+
+            - draw 출력필드:            
+            해당 지표 이름과 심볼: 해당하는 경제 지표에 대한 이름, FRED의 심볼값
+            지표에 대한 간략한 설명
             `,
           },
         },
@@ -138,8 +142,8 @@ export const tools: Array<ChatCompletionTool> = [
   {
     type: 'function',
     function: {
-      name: 'draw_metadater',
-      description: '사용자에게 지표를 메타데이터로 보여준다.',
+      name: 'draw_metadata',
+      description: '사용자가 요청한 경제 지표 리스트를 메타데이터에 그려준다.',
       parameters: {
         type: 'object',
         properties: {
@@ -171,7 +175,7 @@ export const tools: Array<ChatCompletionTool> = [
             - analyze: 시장 상황이나 지수와 같은 종합적인 경제 상황에 대한 분석을 요청하는 질문(예시: IT시장 상황을 분석해줘)
             - explain: 특정 단일 지표에 대한 설명이나 분석을 요청하는 질문 (예시: 월마트의 현재 상황을 분석해줘, WMT분석해줘)
             - recommend: 유망한 경제 지표를 추천받는 질문 (예시: 현재 은행관련 괜찮은 주식이 있을까?)
-            - draw: 경제 지표를 화면에 보여주도록 요청하는 질문 (예시: 애플 지표를 보여줘, 애플과 아마존의 지표를 화면에 표시해줘)
+            - draw: 경제 지표를 메타데이터로 보여주도록 요청하는 질문 (예시: 애플 지표를 보여줘, 애플, 아마존의 지표를 화면에 표시해줘)
             `,
           },
         },
