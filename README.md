@@ -1,4 +1,4 @@
-![공유](https://github.com/user-attachments/assets/ad1cd874-f819-4800-8372-3518bdec8694)<div align="center" >
+<div align="center" >
 
 # 🐧 FINGOO
 
@@ -77,73 +77,35 @@
 - 이미지를 다운로드할 수 있습니다.
 - 차트 데이터를 CSV 파일로 다운로드할 수 있습니다.
 
-### 팀원
-
-<table>
-  <th>J053</th>
-  <th>J073</th>
-  <th>J143</th>
-  <th>J205</th>
-  <tr>
-    <td><img src="https://avatars.githubusercontent.com/u/53340295?v=4" width="180" height="180"/></td>
-    <td><img src="https://avatars.githubusercontent.com/u/50133823?v=4" width="180" height="180"/></td>
-    <td><img src="https://avatars.githubusercontent.com/u/25934842?v=4" width="180" height="180"/></td>
-    <td><img src="https://avatars.githubusercontent.com/u/30085476?v=4" width="180" height="180"/></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/JunYupK">김준엽</a>
-    </td>
-    <td align="center"><a href="https://github.com/Palwol">박미림</a>
-    </td>
-    <td align="center"><a href="https://github.com/leesungbin">이성빈</a>
-    </td>
-    <td align="center"><a href="https://github.com/yeynii">최예윤</a>
-  </tr>
-</table>
-
 ### 개발 환경 세팅
 
-> 환경변수는 `/frontend`, `/backend` 폴더에 있는 `.env.sample` 파일을 참고해주시기 바랍니다.
+> 환경변수는 apps/web, apps/api 폴더에 있는 .env.sample 파일을 참고해주시기 바랍니다.
 
-#### Front-end
+### 통합
 
 ```bash
-cd frontend
 npm install
-npm start
+npm run dev
 ```
 
-#### Back-end
+**Front-end**
 
 ```bash
-cd backend
 npm install
-npm start
+npm run dev:web
+```
+
+**Back-end**
+
+```bash
+npm install
+npm run dev:api
 ```
 
 ## 기술스택
-![techstack](https://user-images.githubusercontent.com/25934842/283773241-2f8a6c59-0f52-4425-9f29-c6b9ac8bb9ab.png)
 
-## 데이터 수집 정책
+- frontend: `Next.js 14`, `TypeScript`, `React`, `SWR`, `Zustand`, `Jest`, `Storybook`, `MSW`, `Tailwind`, `Vercel AI SDK`
+- backend: `Nest.js`, `Postgresql`, `Typeorm`, `Redis`, `Swagger`, `Passport`
+- infra: `Turporepo`, `Docker`, `Github Action`, `AWS Lambda`, `Supabase` , `Testcontainers`
 
-- PRV 서비스에서 사용되는 모든 논문 정보는 Crossref API를 통해 수집됩니다.
-- 사용자로부터 수집되는 정보는 다음과 같습니다.
-  - 검색 키워드
-- 수집되는 정보는 다음과 같은 목적으로 이용합니다.
-  - 인기 검색어 서비스 제공
-  - 키워드 자동완성 검색 서비스 제공
-  - 키워드 검색 서비스 제공
-  - 논문 DOI를 통한 인용관계 시각화 서비스 제공
-- 사용자는 키워드 검색시 PRV 데이터베이스에 있는 정보 혹은 Crossref API를 통해 요청한 정보를 조회할 수 있으며, 데이터베이스에 없는 논문에 대한 데이터 수집은 Request batch에 의해 처리되므로 검색 결과를 즉시 받아보지 못할 수 있습니다.
-- Request batch에 의해 수집된 결과는 데이터베이스에 저장됩니다.
-- 추가 문의사항은 viewpoint.prv@gmail.com 로 연락바랍니다.
-
-### [Crossref](https://www.crossref.org/) API
-
-- Crossref : Official digital object identifier Registration Agency of the International DOI Foundation.
-- 22.12.08. 기준 140,229,346개의 논문 메타데이터를 보유 중
-- License - Creative Commons Attribution 4.0 International (CC BY 4.0)
-  <p align="center">
-  <img src="https://user-images.githubusercontent.com/30085476/223893006-95a362a2-7e17-4826-aa6e-ecd561e47584.png" width=100></img
-  <p>
 
