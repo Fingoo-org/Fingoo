@@ -1,7 +1,6 @@
 'use client';
 import { Sidebar } from 'react-pro-sidebar';
 import Chat from '../../components/domain/linguistic-guidance/chat';
-import { useState } from 'react';
 import { cn } from '@/app/utils/style';
 import IconButton from '../../components/view/atom/icons/icon-button';
 import { ChevronRightIcon } from '@heroicons/react/solid';
@@ -10,16 +9,11 @@ import AdBanner from './ad-banner';
 import { useViewModeStore } from '@/app/store/stores/viewmode.store';
 
 export default function ChatAiNavigator() {
-  const { viewMode } = useViewModeStore();
-  const [collapsed, setCollapsed] = useState(viewMode);
+  const { chatbotSidebarCollapsed, setChatbotSidebarCollapsed } = useViewModeStore();
   const { isBigScreen } = useResponsive();
 
-  if (viewMode !== collapsed) {
-    setCollapsed(viewMode);
-  }
-
   const handleCollapse = () => {
-    setCollapsed(!collapsed);
+    setChatbotSidebarCollapsed(!chatbotSidebarCollapsed);
   };
 
   const sidebarWidth = isBigScreen ? 400 : 300;
@@ -28,24 +22,24 @@ export default function ChatAiNavigator() {
     <div className="relative">
       <IconButton
         size={'xs'}
-        data-collapsed={collapsed}
+        data-collapsed={chatbotSidebarCollapsed}
         className={cn(
           'absolute top-[3vh] z-10 rounded-full bg-fingoo-gray-1.5 drop-shadow-fingoo transition-transform duration-200 data-[collapsed=true]:rotate-180',
-          collapsed ? 'right-[8px]' : isBigScreen ? 'right-[388px]' : 'right-[288px]',
+          chatbotSidebarCollapsed ? 'right-[8px]' : isBigScreen ? 'right-[388px]' : 'right-[288px]',
         )}
         color={'gray'}
         onClick={handleCollapse}
         icon={ChevronRightIcon}
       />
       <Sidebar
-        collapsed={collapsed}
+        collapsed={chatbotSidebarCollapsed}
         transitionDuration={0}
         collapsedWidth="20px"
         width={`${sidebarWidth}px`}
         backgroundColor={'#fff'}
         className="h-full shadow-sm"
       >
-        {!collapsed ? (
+        {!chatbotSidebarCollapsed ? (
           <>
             <div className="h-[100px] w-full bg-gray-300">
               <AdBanner />

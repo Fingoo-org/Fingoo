@@ -9,11 +9,11 @@ import { filterChildrenByType } from '@/app/utils/helper';
 import React from 'react';
 import { SideNavigationBarMenu } from './side-navigation-bar-menu';
 import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
+import { useViewModeStore } from '@/app/store/stores/viewmode.store';
 
 type SideNavigationBarRootProps = {
   defaultValue?: string;
   onCollapsed?: (collapsed: boolean) => void;
-  collapsed?: boolean;
 };
 
 const getSideNavigationBarContent = (children: React.ReactNode) => {
@@ -28,33 +28,27 @@ export function SideNavigationBarRoot({
   defaultValue,
   children,
   onCollapsed,
-  collapsed: collapsedProp = false,
 }: React.PropsWithChildren<SideNavigationBarRootProps>) {
-  const [collapsed, setCollapsed] = useState(false);
+  const { sideNavbarCollapsed, setSideNavbarCollapsed } = useViewModeStore();
   const [selected, setSelected] = useState<string | undefined>(defaultValue);
 
   const { isBigScreen } = useResponsive();
 
   const sideNavWidth = isBigScreen ? '350px' : '300px';
 
-  // 외부 collapsed prop 변화 감지, 내부 상태와 동기화
-  useEffect(() => {
-    setCollapsed(collapsedProp);
-  }, [collapsedProp]);
-
   const handleCollapse = () => {
-    setCollapsed(!collapsed);
+    setSideNavbarCollapsed(!sideNavbarCollapsed);
 
-    if (!collapsed === true) {
+    if (!sideNavbarCollapsed) {
       setSelected(undefined);
     }
 
-    onCollapsed?.(!collapsed);
+    onCollapsed?.(!sideNavbarCollapsed);
   };
 
   const handleMenuSelect = (value: string) => {
-    if (collapsed === true) {
-      setCollapsed(false);
+    if (sideNavbarCollapsed) {
+      setSideNavbarCollapsed(false);
       onCollapsed?.(false);
     }
     setSelected(value);
@@ -91,11 +85,11 @@ export function SideNavigationBarRoot({
         transitionDuration={500}
         collapsedWidth="0"
         width={sideNavWidth}
-        collapsed={collapsed}
+        collapsed={sideNavbarCollapsed}
         backgroundColor={'#fff'}
         className="h-screen shadow-sm"
       >
-        <CloseButton collapsed={collapsed} onCollapse={handleCollapse} />
+        <CloseButton collapsed={sideNavbarCollapsed} onCollapse={handleCollapse} />
         <div className="flex h-[93vh] flex-col">{selectedNavigationBarContent}</div>
       </Sidebar>
     </div>
