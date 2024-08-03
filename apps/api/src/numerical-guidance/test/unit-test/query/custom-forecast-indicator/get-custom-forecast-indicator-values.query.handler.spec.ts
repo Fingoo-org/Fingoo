@@ -16,6 +16,7 @@ const testForecastResponseData: CustomForecastIndicatorValuesResponse = {
   name: 'LG에너지솔루션',
   exchange: 'KOSPI',
   forecastType: 'single',
+  rsquaredResults: [],
   customForecastIndicatorValues: [
     {
       value: '50328.131',

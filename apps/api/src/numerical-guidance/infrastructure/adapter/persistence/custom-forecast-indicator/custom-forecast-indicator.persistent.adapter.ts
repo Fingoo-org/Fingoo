@@ -119,9 +119,11 @@ export class CustomForecastIndicatorPersistentAdapter
       const res = await this.api.axiosRef.get(requestUrl);
       const resultValues = res.data.values;
       const resultForecastType = res.data.type;
+      const resultRsquared = res.data.rsquaredResults;
       const result = {
         indicatorValues: resultValues,
         forecastType: resultForecastType,
+        rsquaredResults: resultRsquared,
       };
       return result;
     } catch (error) {
@@ -239,17 +241,13 @@ export class CustomForecastIndicatorPersistentAdapter
           '&';
         let indicatorsUrl: string = '';
         let indicatorsTypeUrl: string = '';
-        let weightsUrl: string = '';
         for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
           indicatorsUrl += `sourceIndicatorId=${customForecastIndicator.sourceIndicatorsInformation[i].sourceIndicatorId}&`;
         }
         for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
           indicatorsTypeUrl += `sourceIndicatorType=${customForecastIndicator.sourceIndicatorsInformation[i].indicatorType}&`;
         }
-        for (let i = 0; i < customForecastIndicator.sourceIndicatorsInformation.length; i++) {
-          weightsUrl += `weight=${customForecastIndicator.sourceIndicatorsInformation[i].weight}&`;
-        }
-        const requestUrl = url + indicatorsUrl + indicatorsTypeUrl + weightsUrl;
+        const requestUrl = url + indicatorsUrl + indicatorsTypeUrl;
         console.log(requestUrl);
         const res = await this.api.axiosRef.get(requestUrl);
         const grangerGroup = res.data.grangerGroup;

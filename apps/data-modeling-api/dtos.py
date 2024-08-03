@@ -1,4 +1,9 @@
 from pydantic import BaseModel
+from typing import Union
+
+class RsquaredResult(BaseModel):
+    id: str
+    rsquared: Union[float, str]
 
 class IndicatorDto(BaseModel):
     id: str
@@ -15,6 +20,7 @@ class ForecastValue(BaseModel):
 class ForecastIndicatorDto(BaseModel):
     type: str
     values: list[ForecastValue]
+    rsquaredResults: list[RsquaredResult]
 
 class Verification(BaseModel):
     indicatorId: str
@@ -30,3 +36,8 @@ class SourceIndicatorIdAndWeight(BaseModel):
     
 class SourceIndicatorIdAndWeightList(BaseModel):
     indicators: list[SourceIndicatorIdAndWeight]
+
+class RegressionModelAndRsquared(BaseModel):
+    sourceIndicatorId: str
+    values: list[float]
+    rsquared: Union[float, str]
