@@ -1,7 +1,7 @@
 import { ChevronDoubleLeftIcon } from '@heroicons/react/solid';
 import IconButton from '../../atom/icons/icon-button';
 import { Sidebar } from 'react-pro-sidebar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FingooLogoImage from '@/public/assets/images/fingoo-logo.png';
 import Image from 'next/image';
 import { SideNavigationBarContent } from './side-navigation-bar-content';
@@ -13,6 +13,7 @@ import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
 type SideNavigationBarRootProps = {
   defaultValue?: string;
   onCollapsed?: (collapsed: boolean) => void;
+  collapsed?: boolean;
 };
 
 const getSideNavigationBarContent = (children: React.ReactNode) => {
@@ -27,6 +28,7 @@ export function SideNavigationBarRoot({
   defaultValue,
   children,
   onCollapsed,
+  collapsed: collapsedProp = false,
 }: React.PropsWithChildren<SideNavigationBarRootProps>) {
   const [collapsed, setCollapsed] = useState(false);
   const [selected, setSelected] = useState<string | undefined>(defaultValue);
@@ -34,6 +36,11 @@ export function SideNavigationBarRoot({
   const { isBigScreen } = useResponsive();
 
   const sideNavWidth = isBigScreen ? '350px' : '300px';
+
+  // 외부 collapsed prop 변화 감지, 내부 상태와 동기화
+  useEffect(() => {
+    setCollapsed(collapsedProp);
+  }, [collapsedProp]);
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);

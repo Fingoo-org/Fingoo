@@ -7,10 +7,16 @@ import IconButton from '../../components/view/atom/icons/icon-button';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
 import AdBanner from './ad-banner';
+import { useViewModeStore } from '@/app/store/stores/viewmode.store';
 
 export default function ChatAiNavigator() {
-  const [collapsed, setCollapsed] = useState(false);
+  const { viewMode } = useViewModeStore();
+  const [collapsed, setCollapsed] = useState(viewMode);
   const { isBigScreen } = useResponsive();
+
+  if (viewMode !== collapsed) {
+    setCollapsed(viewMode);
+  }
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
