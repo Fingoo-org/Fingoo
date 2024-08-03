@@ -13,6 +13,9 @@ import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/
 import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
 import { useGenerateImage } from '@/app/utils/hooks/use-generate-image';
 import { MetadataSharePopover } from './metadata-share-popover';
+import ViewModeIcon from '../../../view/atom/viewmode-icon';
+import { useViewMode } from '@/app/business/hooks/use-viewmode.hook';
+import IconButton from '../../../view/atom/icons/icon-button';
 
 type IndicatorBoardProps = {
   indicatorBoardMetadataId?: string;
@@ -33,6 +36,8 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
     }
   };
 
+  const { enableViewMode } = useViewMode();
+
   return (
     <Card
       onDoubleClick={handleMetadataSelect}
@@ -51,7 +56,8 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
           <div className="relative flex items-center justify-center">
             <EditableMetadataTittle className="max-w-64" indicatorBoardMetadataId={indicatorBoardMetadataId!} />
-            <div className="absolute right-3 top-1">
+            <div className="absolute right-3 top-1 flex items-center space-x-2">
+              <IconButton icon={ViewModeIcon} className="cursor-pointer" onClick={enableViewMode} color="gray" />
               <MetadataSharePopover
                 downloadImage={downloadImage}
                 generateImageBlob={generateImageBlob}
