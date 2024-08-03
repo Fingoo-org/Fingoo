@@ -7,7 +7,7 @@ import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-b
 import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 import { useSplitIndicatorBoard } from '../numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
-export default function useDrawMetadata() {
+export default function useDrawEconomicMetadata() {
   const {
     metadataList,
     createIndicatorBoardMetadata: createMetadata,
@@ -33,7 +33,7 @@ export default function useDrawMetadata() {
     return id;
   };
 
-  const drawMetadataHandler = async (symbols: string[]) => {
+  const drawEconomicMetadataHandler = async (symbols: string[]) => {
     // 1. 심볼로 아이디 가져오기
     const indicators = (
       await Promise.all(
@@ -66,6 +66,6 @@ export default function useDrawMetadata() {
     return JSON.stringify(`생성된 지표들: ${JSON.stringify(symbols)}`);
   };
   return {
-    drawMetadataHandler,
+    drawEconomicMetadataHandler,
   };
 }
