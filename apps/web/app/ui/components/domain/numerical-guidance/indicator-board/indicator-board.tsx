@@ -14,7 +14,7 @@ import EditableMetadataTittle from '../indicator-board-metadata/editable-metadat
 import { useGenerateImage } from '@/app/utils/hooks/use-generate-image';
 import { MetadataSharePopover } from './metadata-share-popover';
 import ViewModeIcon from '../../../view/atom/viewmode-icon';
-import { useViewMode } from '@/app/business/hooks/use-viewmode.hook';
+import { useViewMode } from '@/app/business/hooks/use-view-mode.hook';
 import IconButton from '../../../view/atom/icons/icon-button';
 
 type IndicatorBoardProps = {
