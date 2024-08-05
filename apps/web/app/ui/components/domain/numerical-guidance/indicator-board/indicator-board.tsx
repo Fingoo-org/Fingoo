@@ -13,9 +13,7 @@ import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/
 import EditableMetadataTittle from '../indicator-board-metadata/editable-metadata-title';
 import { useGenerateImage } from '@/app/utils/hooks/use-generate-image';
 import { MetadataSharePopover } from './metadata-share-popover';
-import { useViewMode } from '@/app/business/hooks/use-view-mode.hook';
-import IconButton from '../../../view/atom/icons/icon-button';
-import { CornersIcon } from '@radix-ui/react-icons';
+import { ViewModeTriggerButton } from './view-mode-trigger-button';
 
 type IndicatorBoardProps = {
   indicatorBoardMetadataId?: string;
@@ -36,8 +34,6 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
     }
   };
 
-  const { enableViewMode } = useViewMode();
-
   return (
     <Card
       onDoubleClick={handleMetadataSelect}
@@ -57,7 +53,7 @@ const IndicatorBoard = React.memo(function IndicatorBoard({ indicatorBoardMetada
           <div className="relative flex items-center justify-center">
             <EditableMetadataTittle className="max-w-64" indicatorBoardMetadataId={indicatorBoardMetadataId!} />
             <div className="absolute right-3 top-1 flex items-center space-x-2">
-              <IconButton icon={CornersIcon} className="cursor-pointer" onClick={enableViewMode} color="gray" />
+              <ViewModeTriggerButton />
               <MetadataSharePopover
                 downloadImage={downloadImage}
                 generateImageBlob={generateImageBlob}
