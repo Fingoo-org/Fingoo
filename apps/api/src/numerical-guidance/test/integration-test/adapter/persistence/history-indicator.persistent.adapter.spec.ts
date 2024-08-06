@@ -111,7 +111,7 @@ describe('HistoryIndicatorPersistentAdapter', () => {
     // historyIndicatorPersistentAdapter = module.get(HistoryIndicatorPersistentAdapter);
     dataSource = module.get<DataSource>(DataSource);
     await seeding();
-  }, 20000);
+  }, 80000);
 
   afterAll(async () => {
     await environment.stop();

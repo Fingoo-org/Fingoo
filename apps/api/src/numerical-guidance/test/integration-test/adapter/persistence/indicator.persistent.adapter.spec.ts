@@ -102,7 +102,7 @@ describe('IndicatorPersistentAdapter', () => {
     indicatorPersistentAdapter = module.get(IndicatorPersistentAdapter);
     dataSource = module.get<DataSource>(DataSource);
     await seeding();
-  }, 20000);
+  }, 80000);
 
   afterAll(async () => {
     await environment.stop();

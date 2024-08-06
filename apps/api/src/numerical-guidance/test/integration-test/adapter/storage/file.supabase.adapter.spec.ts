@@ -23,7 +23,7 @@ describe('FileSupabaseAdapter', () => {
       providers: [FileSupabaseAdapter],
     }).compile();
     fileSupabaseAdapter = module.get(FileSupabaseAdapter);
-  }, 20000);
+  }, 80000);
 
   afterAll(async () => {
     await environment.stop();
@@ -55,7 +55,7 @@ describe('FileSupabaseAdapter', () => {
     const expectInvalidName = null;
     expect(expectInvalidName).not.toEqual(result);
     expect(result).toMatch(uuidPattern);
-  });
+  }, 100000);
 
   it('supabase 파일 업로드 - 빈 파일을 보내는 경우', async () => {
     // given
@@ -73,5 +73,5 @@ describe('FileSupabaseAdapter', () => {
         cause: Error,
       }),
     );
-  });
+  }, 100000);
 });

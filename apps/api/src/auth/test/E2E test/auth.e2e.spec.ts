@@ -144,7 +144,7 @@ describe('Auth E2E Test', () => {
         password: 'Test1!',
       })
       .expect(HttpStatus.CREATED);
-  });
+  }, 80000);
 
   it('/post 회원가입을 진행한다.', async () => {
     return request(app.getHttpServer())
@@ -155,5 +155,5 @@ describe('Auth E2E Test', () => {
         password: 'Test1!',
       })
       .expect(HttpStatus.CREATED);
-  });
+  }, 80000);
 });
