@@ -1,19 +1,19 @@
 import { ChevronDoubleLeftIcon } from '@heroicons/react/solid';
 import IconButton from '../../atom/icons/icon-button';
 import { Sidebar } from 'react-pro-sidebar';
-import { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import FingooLogoImage from '@/public/assets/images/fingoo-logo.png';
 import Image from 'next/image';
 import { SideNavigationBarContent } from './side-navigation-bar-content';
 import { filterChildrenByType } from '@/app/utils/helper';
-import React from 'react';
 import { SideNavigationBarMenu } from './side-navigation-bar-menu';
 import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
-import { useViewModeStore } from '@/app/store/stores/viewmode.store';
+import { useControlled } from '@/app/utils/hooks/use-controlled.hook';
 
 type SideNavigationBarRootProps = {
   defaultValue?: string;
-  onCollapsed?: (collapsed: boolean) => void;
+  collapsed?: boolean;
+  onCollapse?: (collapsed: boolean) => void;
 };
 
 const getSideNavigationBarContent = (children: React.ReactNode) => {
@@ -27,32 +27,40 @@ const getSideNavigationBarMenu = (children: React.ReactNode) => {
 export function SideNavigationBarRoot({
   defaultValue,
   children,
-  onCollapsed,
+  collapsed: controlledCollapsed,
+  onCollapse,
 }: React.PropsWithChildren<SideNavigationBarRootProps>) {
-  const { sideNavbarCollapsed, setSideNavbarCollapsed } = useViewModeStore();
+  const [collapsed, setCollapsed] = useControlled({
+    valueProps: controlledCollapsed,
+    defaultValue: false,
+  });
+
   const [selected, setSelected] = useState<string | undefined>(defaultValue);
 
   const { isBigScreen } = useResponsive();
 
   const sideNavWidth = isBigScreen ? '350px' : '300px';
 
-  const handleCollapse = () => {
-    setSideNavbarCollapsed(!sideNavbarCollapsed);
+  const handleCollapse = useCallback(() => {
+    setCollapsed(!collapsed);
 
-    if (!sideNavbarCollapsed) {
+    if (!collapsed) {
       setSelected(undefined);
     }
 
-    onCollapsed?.(!sideNavbarCollapsed);
-  };
+    onCollapse?.(!collapsed);
+  }, [collapsed, setCollapsed, onCollapse]);
 
-  const handleMenuSelect = (value: string) => {
-    if (sideNavbarCollapsed) {
-      setSideNavbarCollapsed(false);
-      onCollapsed?.(false);
-    }
-    setSelected(value);
-  };
+  const handleMenuSelect = useCallback(
+    (value: string) => {
+      if (collapsed) {
+        setCollapsed(false);
+        onCollapse?.(false);
+      }
+      setSelected(value);
+    },
+    [collapsed, setCollapsed, onCollapse],
+  );
 
   const navigationBarContents = getSideNavigationBarContent(children);
 
@@ -85,11 +93,11 @@ export function SideNavigationBarRoot({
         transitionDuration={500}
         collapsedWidth="0"
         width={sideNavWidth}
-        collapsed={sideNavbarCollapsed}
+        collapsed={collapsed}
         backgroundColor={'#fff'}
         className="h-screen shadow-sm"
       >
-        <CloseButton collapsed={sideNavbarCollapsed} onCollapse={handleCollapse} />
+        <CloseButton collapsed={collapsed} onCollapse={handleCollapse} />
         <div className="flex h-[93vh] flex-col">{selectedNavigationBarContent}</div>
       </Sidebar>
     </div>

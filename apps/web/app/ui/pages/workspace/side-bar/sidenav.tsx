@@ -25,7 +25,7 @@ export default function SideNav() {
   };
 
   return (
-    <SideNavigationBar defaultValue="dashboard" onCollapsed={handleCollapsedChange}>
+    <SideNavigationBar collapsed={sideNavbarCollapsed} onCollapse={handleCollapsedChange} defaultValue="dashboard">
       <SideNavigationBar.Menu value="dashboard" icon={DashboardIcon} />
       <SideNavigationBar.Content value="dashboard">
         <div className="mx-4 grid h-full grid-rows-[1fr_2fr]">
