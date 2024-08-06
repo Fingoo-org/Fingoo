@@ -5,6 +5,8 @@ import useInstruction from './use-instruction.hook';
 import useAnalyzeEconomy from './use-analyze-economy.hook';
 import useRecommendIndicator from './use-recommend-indicator.hook';
 import useExplainIndicator from './use-explain-indicator.hook';
+import useDrawEconomicMetadata from './use-draw-economic-metadata.hook';
+import useMetadata from './use-draw-metadata.hook';
 
 //   // 1. symbol을 이용하여 indicatorId를 가져온다(동적 저장소)
 //   // 2. 메타데이터 생성
@@ -19,6 +21,8 @@ export const useFingooChat = () => {
   const { analyzeEconomicHandler } = useAnalyzeEconomy();
   const { recommendIndicatorHandler } = useRecommendIndicator();
   const { handleExplainIndicator } = useExplainIndicator();
+  const { drawEconomicMetadataHandler } = useDrawEconomicMetadata();
+  const { drawMetadataHandler } = useMetadata();
   const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
     console.log('client');
     console.log('chatMessages:', chatMessages);
@@ -67,6 +71,17 @@ export const useFingooChat = () => {
       };
 
       content = await recommendIndicatorHandler(symbols);
+    }
+
+    if (functionCall.name === 'draw_economic_metadata') {
+      const { symbols } = parsedFunctionCallArguments as {
+        symbols: string[];
+      };
+      content = await drawEconomicMetadataHandler(symbols);
+    }
+
+    if (functionCall.name === 'draw_metadata') {
+      content = await drawMetadataHandler();
     }
 
     const functionResponse: ChatRequest = {
