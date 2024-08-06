@@ -1,8 +1,10 @@
 import { useViewModeStore } from '@/app/store/stores/viewmode.store';
 
 export const useViewMode = () => {
-  const { viewMode, setSideNavbarCollapsed, setChatbotSidebarCollapsed, sideNavbarCollapsed, chatbotSidebarCollapsed } =
+  const { setSideNavbarCollapsed, setChatbotSidebarCollapsed, sideNavbarCollapsed, chatbotSidebarCollapsed } =
     useViewModeStore();
+
+  const isViewMode = sideNavbarCollapsed && chatbotSidebarCollapsed;
 
   const enableViewMode = () => {
     setSideNavbarCollapsed(true);
@@ -10,7 +12,7 @@ export const useViewMode = () => {
   };
 
   return {
-    isViewMode: viewMode,
+    isViewMode,
     setSideNavbarCollapsed,
     setChatbotSidebarCollapsed,
     enableViewMode,
