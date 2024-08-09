@@ -9,6 +9,8 @@
 ![Next.js](https://img.shields.io/badge/Next.js-v14-000000?style=flat-square&logo=Next.js&logoColor=white)
 ![Nest.js](https://img.shields.io/badge/nestjs-v14-E0234E?style=flat-square&logo=nestjs&logoColor=white)
 
+[업무 가이드](https://spurious-patella-f27.notion.site/06f3d1e403a942b59b2c10896db3b22e) | [텀블벅](https://tumblbug.com/fingoo)
+
 </div>
 
 ### 기능 목록
