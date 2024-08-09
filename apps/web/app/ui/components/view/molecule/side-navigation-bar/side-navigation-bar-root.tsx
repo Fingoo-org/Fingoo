@@ -1,18 +1,19 @@
 import { ChevronDoubleLeftIcon } from '@heroicons/react/solid';
 import IconButton from '../../atom/icons/icon-button';
 import { Sidebar } from 'react-pro-sidebar';
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import FingooLogoImage from '@/public/assets/images/fingoo-logo.png';
 import Image from 'next/image';
 import { SideNavigationBarContent } from './side-navigation-bar-content';
 import { filterChildrenByType } from '@/app/utils/helper';
-import React from 'react';
 import { SideNavigationBarMenu } from './side-navigation-bar-menu';
 import { useResponsive } from '@/app/utils/hooks/use-responsive.hook';
+import { useControlled } from '@/app/utils/hooks/use-controlled.hook';
 
 type SideNavigationBarRootProps = {
   defaultValue?: string;
-  onCollapsed?: (collapsed: boolean) => void;
+  collapsed?: boolean;
+  onCollapse?: (collapsed: boolean) => void;
 };
 
 const getSideNavigationBarContent = (children: React.ReactNode) => {
@@ -26,32 +27,40 @@ const getSideNavigationBarMenu = (children: React.ReactNode) => {
 export function SideNavigationBarRoot({
   defaultValue,
   children,
-  onCollapsed,
+  collapsed: controlledCollapsed,
+  onCollapse,
 }: React.PropsWithChildren<SideNavigationBarRootProps>) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useControlled({
+    valueProps: controlledCollapsed,
+    defaultValue: false,
+  });
+
   const [selected, setSelected] = useState<string | undefined>(defaultValue);
 
   const { isBigScreen } = useResponsive();
 
   const sideNavWidth = isBigScreen ? '350px' : '300px';
 
-  const handleCollapse = () => {
+  const handleCollapse = useCallback(() => {
     setCollapsed(!collapsed);
 
-    if (!collapsed === true) {
+    if (!collapsed) {
       setSelected(undefined);
     }
 
-    onCollapsed?.(!collapsed);
-  };
+    onCollapse?.(!collapsed);
+  }, [collapsed, setCollapsed, onCollapse]);
 
-  const handleMenuSelect = (value: string) => {
-    if (collapsed === true) {
-      setCollapsed(false);
-      onCollapsed?.(false);
-    }
-    setSelected(value);
-  };
+  const handleMenuSelect = useCallback(
+    (value: string) => {
+      if (collapsed) {
+        setCollapsed(false);
+        onCollapse?.(false);
+      }
+      setSelected(value);
+    },
+    [collapsed, setCollapsed, onCollapse],
+  );
 
   const navigationBarContents = getSideNavigationBarContent(children);
 
