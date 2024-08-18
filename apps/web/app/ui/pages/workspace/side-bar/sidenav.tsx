@@ -5,13 +5,17 @@ import SideNavigationBar from '@/app/ui/components/view/molecule/side-navigation
 import { DashboardIcon } from '@radix-ui/react-icons';
 import MetadataListContainer from './metadata-list-container';
 import { useRef } from 'react';
+import { useViewModeStore } from '@/app/store/stores/viewmode.store';
 
 export default function SideNav() {
   const logger = useLogger();
   const timestamp = useRef(Date.now());
 
-  const handleCollapsedChange = (collapsed: boolean) => {
-    if (collapsed === true) {
+  const { sideNavbarCollapsed, setSideNavbarCollapsed } = useViewModeStore();
+
+  const handleCollapsedChange = (newCollapsed: boolean) => {
+    setSideNavbarCollapsed(newCollapsed);
+    if (newCollapsed === true) {
       timestamp.current = Date.now();
       logger.track('close_sidebar', { date: new Date() });
     } else {
@@ -21,7 +25,7 @@ export default function SideNav() {
   };
 
   return (
-    <SideNavigationBar defaultValue="dashboard" onCollapsed={handleCollapsedChange}>
+    <SideNavigationBar collapsed={sideNavbarCollapsed} onCollapse={handleCollapsedChange} defaultValue="dashboard">
       <SideNavigationBar.Menu value="dashboard" icon={DashboardIcon} />
       <SideNavigationBar.Content value="dashboard">
         <div className="mx-4 grid h-full grid-rows-[1fr_2fr]">
