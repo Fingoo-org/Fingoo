@@ -29,7 +29,7 @@ export const useFingooChat = () => {
   const { drawMetadataHandler } = useMetadata();
   const { splitScreenHandler } = useSplitScreen();
   const { addAxisHandler } = useAddAxis();
-  const { useViewModeActiveHandler } = useViewModeActive();
+  const { viewModeActiveHandler } = useViewModeActive();
   const toolCallHandler: ToolCallHandler = async (chatMessages, toolCalls) => {
     console.log('client');
     console.log('chatMessages:', chatMessages);
@@ -103,7 +103,7 @@ export const useFingooChat = () => {
     }
 
     if (functionCall.name === 'use_viewmode_active') {
-      content = useViewModeActiveHandler();
+      content = viewModeActiveHandler();
     }
 
     const functionResponse: ChatRequest = {
