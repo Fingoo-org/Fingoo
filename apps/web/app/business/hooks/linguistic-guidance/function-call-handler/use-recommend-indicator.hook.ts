@@ -1,11 +1,11 @@
 import { useLogger } from '@/app/logging/use-logger.hook';
-import { addIndicatorsToMetadata } from '../../services/linguistic-guidance/indicator.service';
-import { getIndicatorIdBySymbolToAPI } from '../../services/linguistic-guidance/search-symbol.service';
-import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
-import { Indicator } from '../../services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
-import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
-import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { useSplitIndicatorBoard } from '../numerical-guidance/indicator-board/use-split-indicator-board.hook';
+import { addIndicatorsToMetadata } from '../../../services/linguistic-guidance/indicator.service';
+import { getIndicatorIdBySymbolToAPI } from '../../../services/linguistic-guidance/search-symbol.service';
+import { createIndicator } from '../../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
+import { Indicator } from '../../../services/numerical-guidance/view-model/indicator-list/indicators/indicator.service';
+import { useIndicatorBoardMetadataList } from '../../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
+import { useSelectedIndicatorBoardMetadata } from '../../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useSplitIndicatorBoard } from '../../numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
 export default function useRecommendIndicator() {
   const {

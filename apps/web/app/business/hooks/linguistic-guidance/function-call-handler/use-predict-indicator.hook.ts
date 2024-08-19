@@ -1,16 +1,16 @@
 import { instance } from '@/app/utils/http';
-import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
+import { createIndicator } from '../../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 import { API_PATH } from '@/app/store/querys/api-path';
-import { useCustomForecastIndicatorListViewModel } from '../numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
+import { useCustomForecastIndicatorListViewModel } from '../../numerical-guidance/custom-forecast-indicator/use-custom-forecast-indicator-list-view-model.hook';
 import {
   updateSourceIndicatorRequestBody,
   useRevalidateCustomForecastIndicatorList,
 } from '@/app/store/querys/numerical-guidance/custom-forecast-indicator.query';
-import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
-import { getIndicatorIdBySymbolToAPI } from '../../services/linguistic-guidance/search-symbol.service';
-import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
-import { addCustomForecastIndicatorToMetadataCommand } from '../../services/linguistic-guidance/indicator.service';
-import { useSplitIndicatorBoard } from '../numerical-guidance/indicator-board/use-split-indicator-board.hook';
+import { useSelectedIndicatorBoardMetadata } from '../../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { getIndicatorIdBySymbolToAPI } from '../../../services/linguistic-guidance/search-symbol.service';
+import { useIndicatorBoardMetadataList } from '../../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
+import { addCustomForecastIndicatorToMetadataCommand } from '../../../services/linguistic-guidance/indicator.service';
+import { useSplitIndicatorBoard } from '../../numerical-guidance/indicator-board/use-split-indicator-board.hook';
 import { useLogger } from '@/app/logging/use-logger.hook';
 
 function formatSymbol(symbol: string) {
@@ -37,7 +37,7 @@ export default function usePredictIndicator() {
   const { addCustomForecastIndicatorToMetadata, selectMetadataById, selectedMetadata } =
     useSelectedIndicatorBoardMetadata();
   const { addMetadataToIndicatorBoard } = useSplitIndicatorBoard();
-  
+
   const {
     metadataList,
     createIndicatorBoardMetadata: createMetadata,

@@ -1,5 +1,5 @@
-import { getIndicatorBySymbolAPIFirst } from '../../services/linguistic-guidance/search-symbol.service';
-import { createIndicator } from '../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
+import { getIndicatorBySymbolAPIFirst } from '../../../services/linguistic-guidance/search-symbol.service';
+import { createIndicator } from '../../../services/numerical-guidance/view-model/indicator-list/indicator-view-model.service';
 
 const INSTRUCTION = `
 speak_to_user에 명시된 출력필드를 따르며 아래와 같은 지시사항을 따라 사용자에게 지표에 대한 설명을 제공합니다.
