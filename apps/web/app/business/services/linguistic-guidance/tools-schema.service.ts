@@ -8,7 +8,9 @@ export type FunctionName =
   | 'draw_economic_metadata'
   | 'draw_metadata'
   | 'speak_to_user'
-  | 'get_instructions';
+  | 'get_instructions'
+  | 'add_axis'
+  | 'use_viewmode_active';
 
 export const tools: Array<ChatCompletionTool> = [
   {
@@ -136,6 +138,12 @@ export const tools: Array<ChatCompletionTool> = [
 
             - draw_metadata 출력필드:
             생성이 완료되었습니다.
+
+            - split_screen 출력필드:
+            화면 분할이 완료되었습니다.
+
+            - use_viewmode_active 출력필드:
+            뷰모드 화면 전환이 완료되었습니다.
             `,
           },
         },
@@ -173,7 +181,17 @@ export const tools: Array<ChatCompletionTool> = [
         properties: {
           query: {
             type: 'string',
-            enum: ['predict', 'analyze', 'explain', 'recommend', 'draw_economic_metadata', 'draw_metadata'],
+            enum: [
+              'predict',
+              'analyze',
+              'explain',
+              'recommend',
+              'draw_economic_metadata',
+              'draw_metadata',
+              'split_screen',
+              'add_axis',
+              'use_viewmode_active',
+            ],
             description: `""사용자가 하는 질문의 타입은 다음 중 하나가 될 수 있다:
             - predict: 경제 지표 예측과 해석을 요청하는 질문.""
             - analyze: 시장 상황이나 지수와 같은 종합적인 경제 상황에 대한 분석을 요청하는 질문(예시: IT시장 상황을 분석해줘)
@@ -181,6 +199,9 @@ export const tools: Array<ChatCompletionTool> = [
             - recommend: 유망한 경제 지표를 추천받는 질문 (예시: 현재 은행관련 괜찮은 주식이 있을까?)
             - draw_economic_metadata: 경제 지표를 메타데이터로 보여주도록 요청하는 질문 (예시: 애플 지표를 보여줘, 애플, 아마존의 지표를 화면에 표시해줘)
             - draw_metadata: 단순 메타데이터를 생성하도록 요청하는 질문 (예시: 메타데이터를 생성해줘)
+            - split_screen: 사용자의 메타데이터가 화면에 몇 개 보여지도록 설정하는 질문 (예시: 메타데이터 1개만 보여줘, 2개의 메타데이터를 동시에 보여줘, 메타데이터를 최대한 화면에 보여줘)
+            - add_axis: 사용자의 현재 메타데이터에 특정 지표들을 다른 차트로 구분하여 보여주도록 요청하는 질문 (예시: 현재 화면에서 애플의 차트를 따로 보여줘, 현재 메타데이터에서 아마존 지표를 구분해서 보여줘)
+            - use_viewmode_active: 사용자의 현재 화면에서 지피티 프롬프트창과 메타데이터 선택창을 접어 뷰모드를 실행합니다.
             `,
           },
         },
@@ -193,6 +214,42 @@ export const tools: Array<ChatCompletionTool> = [
     function: {
       name: 'draw_metadata',
       description: '단순 메타데이터를 생성한다.',
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'split_screen',
+      description: '사용자 화면 분할을 설정한다.',
+      parameters: {
+        type: 'object',
+        properties: {
+          split_screen_mode: {
+            type: 'string',
+            description: `
+            사용자는 화면 분할 모드는 다음 세 가지중 하나로 선택할 수 있다:
+            - full: 화면에 메타데이터가 하나만 보여지는 모드
+            - vertical: 화면에 메타데이터 두 개가 보여지는 모드
+            - square: 화면에 메타데이터 네 개가 보여지는 모드
+            `,
+          },
+        },
+        required: ['split_screen_mode'],
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'add_axis',
+      description: '현제 메타데이터에 차트를 구분하여 보여질 수 있도록 한다.',
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'use_viewmode_active',
+      description: '현재 화면에서 지피티 프롬프트창과 메타데이터 선택창을 collapse하는 뷰모드를 실행합니다.',
     },
   },
 ];
