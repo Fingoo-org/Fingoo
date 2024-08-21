@@ -3,9 +3,19 @@ import { useSplitIndicatorBoard } from '../../numerical-guidance/indicator-board
 
 export default function useSplitScreen() {
   const { transitionSplitScreen } = useSplitIndicatorBoard();
-  const splitScreenHandler = (mode: SplitScreen) => {
-    transitionSplitScreen(mode);
-    return '화면분할완료';
+
+  const isSplitScreen = (mode: string): mode is SplitScreen => {
+    const validScreens: SplitScreen[] = ['full', 'square', 'vertical'];
+    return validScreens.includes(mode as SplitScreen);
+  };
+
+  const splitScreenHandler = (mode: string) => {
+    if (isSplitScreen(mode)) {
+      transitionSplitScreen(mode);
+      return '화면분할 완료';
+    } else {
+      return '화면분할 실패, 재시도해주세요';
+    }
   };
 
   return { splitScreenHandler };

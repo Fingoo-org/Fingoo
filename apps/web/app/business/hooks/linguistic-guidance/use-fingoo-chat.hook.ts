@@ -93,7 +93,7 @@ export const useFingooChat = () => {
 
     if (functionCall.name === 'split_screen') {
       const { split_screen_mode } = parsedFunctionCallArguments as {
-        split_screen_mode: SplitScreen;
+        split_screen_mode: string;
       };
       content = splitScreenHandler(split_screen_mode);
     }
