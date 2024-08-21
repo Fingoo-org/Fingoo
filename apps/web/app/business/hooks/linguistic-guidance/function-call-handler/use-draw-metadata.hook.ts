@@ -1,7 +1,7 @@
 import { useLogger } from '@/app/logging/use-logger.hook';
-import { useIndicatorBoardMetadataList } from '../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
-import { useSplitIndicatorBoard } from '../numerical-guidance/indicator-board/use-split-indicator-board.hook';
-import { useSelectedIndicatorBoardMetadata } from '../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
+import { useIndicatorBoardMetadataList } from '../../numerical-guidance/indicator-board-metedata/use-indicator-board-metadata-list-view-model.hook';
+import { useSplitIndicatorBoard } from '../../numerical-guidance/indicator-board/use-split-indicator-board.hook';
+import { useSelectedIndicatorBoardMetadata } from '../../numerical-guidance/indicator-board-metedata/use-selected-indicator-board-metadata-view-model.hook';
 
 export default function useDrawMetadata() {
   const { metadataList, createIndicatorBoardMetadata: createMetadata } = useIndicatorBoardMetadataList();
