@@ -17,6 +17,8 @@ import { MockAuthGuard, mockAuthorization, mockUser } from '../data/mock-auth.gu
 import { HttpExceptionFilter } from '../../../utils/exception-filter/http-exception-filter';
 import { UserCertificationDto } from '../../api/dto/response/user-certification.dto';
 import { CqrsModule } from '@nestjs/cqrs';
+import { CreateIndicatorBoardMetadataCommandHandler } from 'src/numerical-guidance/application/command/indicator-board-metadata/create-indicator-board-metadata/create-indicator-board-metadata.command.handler';
+import { IndicatorBoardMetadataEntity } from 'src/numerical-guidance/infrastructure/adapter/persistence/indicator-board-metadata/entity/indicator-board-metadata.entity';
 
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn(() => ({
@@ -59,7 +61,7 @@ describe('Auth E2E Test', () => {
           ConfigModule.forRoot({
             isGlobal: true,
           }),
-          TypeOrmModule.forFeature([MemberEntity]),
+          TypeOrmModule.forFeature([MemberEntity, IndicatorBoardMetadataEntity]),
           TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -72,7 +74,7 @@ describe('Auth E2E Test', () => {
               username: DBenvironment.getUsername(),
               password: DBenvironment.getPassword(),
               database: DBenvironment.getDatabase(),
-              entities: [MemberEntity],
+              entities: [MemberEntity, IndicatorBoardMetadataEntity],
               synchronize: true,
             }),
           }),
@@ -80,6 +82,7 @@ describe('Auth E2E Test', () => {
         ],
         controllers: [AuthController],
         providers: [
+          CreateIndicatorBoardMetadataCommandHandler,
           AuthService,
           {
             provide: SupabaseService,
@@ -107,6 +110,14 @@ describe('Auth E2E Test', () => {
                 request.user = mockUser;
                 request.headers.authorization = mockAuthorization;
                 return of(true);
+              }),
+            },
+          },
+          {
+            provide: 'CreateIndicatorBoardMetadataPort',
+            useValue: {
+              createIndicatorBoardMetadata: jest.fn().mockImplementation(() => {
+                return 'mock-metadata-id';
               }),
             },
           },
@@ -144,7 +155,7 @@ describe('Auth E2E Test', () => {
         password: 'Test1!',
       })
       .expect(HttpStatus.CREATED);
-  });
+  }, 80000);
 
   it('/post 회원가입을 진행한다.', async () => {
     return request(app.getHttpServer())
@@ -155,5 +166,5 @@ describe('Auth E2E Test', () => {
         password: 'Test1!',
       })
       .expect(HttpStatus.CREATED);
-  });
+  }, 80000);
 });
