@@ -207,33 +207,33 @@ jobs:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
           severity: info
           text: 'web was successfully deploy'
-
-  deploy-api-server:
-    runs-on: ubuntu-latest
-    needs: [build-api]
-    steps:
-      - name: deploy api server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.EC2_KEY }}
-          script: |
-            sudo docker rm -f $(docker ps -qa)
-            sudo docker-compose pull api
-            docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
-            docker image prune -f
-      - name: Send discord message if fail
-        if: ${{ failure() }}
-        uses: rjstone/discord-webhook-notify@v1.0.4
-        with:
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          severity: error
-          text: 'api server failed to deploy'
-      - name: Send discord message if success
-        if: ${{ success() }}
-        uses: rjstone/discord-webhook-notify@v1.0.4
-        with:
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          severity: info
-          text: 'api server was successfully deploy'
+  # 베타버전 종료로 인한, 배포 임시 중단
+  # deploy-api-server:
+  #   runs-on: ubuntu-latest
+  #   needs: [build-api]
+  #   steps:
+  #     - name: deploy api server
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       with:
+  #         host: ${{ secrets.EC2_HOST }}
+  #         username: ec2-user
+  #         key: ${{ secrets.EC2_KEY }}
+  #         script: |
+  #           sudo docker rm -f $(docker ps -qa)
+  #           sudo docker-compose pull api
+  #           docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
+  #           docker image prune -f
+  #     - name: Send discord message if fail
+  #       if: ${{ failure() }}
+  #       uses: rjstone/discord-webhook-notify@v1.0.4
+  #       with:
+  #         webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  #         severity: error
+  #         text: 'api server failed to deploy'
+  #     - name: Send discord message if success
+  #       if: ${{ success() }}
+  #       uses: rjstone/discord-webhook-notify@v1.0.4
+  #       with:
+  #         webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  #         severity: info
+  #         text: 'api server was successfully deploy'
