@@ -1,6 +1,6 @@
 const API_URL =
   process.env.NODE_ENV === 'production'
-    ? 'https://d2i424u8912f3c.cloudfront.net/api'
+    ? process.env.NEXT_PUBLIC_API_URL
     : process.env.NEXT_PUBLIC_CODESPACES === 'true'
       ? 'https://' + process.env.NEXT_PUBLIC_CODESPACE_NAME + '-8000.app.github.dev/api'
       : 'http://localhost:8000/api';
