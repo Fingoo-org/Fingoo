@@ -109,3 +109,8 @@ export type CustomForecastIndicatorValuesResponse = {
   forecastType: ForecastType;
   customForecastIndicatorValues: IndicatorValue[];
 };
+
+export type ChartTimeline = {
+  time: Date;
+  value: number;
+};

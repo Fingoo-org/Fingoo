@@ -59,6 +59,9 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/searc
 import { FredApiManager } from './infrastructure/adapter/fred/util/fred-api.manager';
 import { EconomyEntity } from './infrastructure/adapter/persistence/indicator/entity/economy.entity';
 import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fred.adapter';
+import { GetMajorChartQueryHandler } from './application/query/major-chart/get-major-chart.query.handler';
+import { MajorChartPersistentAdapter } from './infrastructure/adapter/persistence/major-chart/major-chart.persistent.adapter';
+import { MajorChartController } from './api/major-chart/major-chart.controller';
 
 @Module({
   controllers: [
@@ -67,6 +70,7 @@ import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fr
     IndicatorController,
     IndicatorBoardMetadataController,
     LiveIndicatorController,
+    MajorChartController,
   ],
   imports: [
     CqrsModule,
@@ -123,6 +127,7 @@ import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fr
     SearchTwelveIndicatorQueryHandler,
     SearchIndicatorQueryHandler,
     IndicatorTwelveAdapter,
+    GetMajorChartQueryHandler,
     {
       provide: 'LoadCachedLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
@@ -250,6 +255,10 @@ import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fr
     {
       provide: 'LoadLiveEconomyIndicatorPort',
       useClass: IndicatorFredAdapter,
+    },
+    {
+      provide: 'LoadMajorChartPort',
+      useClass: MajorChartPersistentAdapter,
     },
     TwelveApiManager,
     FredApiManager,
