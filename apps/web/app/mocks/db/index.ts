@@ -13,6 +13,8 @@ import {
   MockCustomForecastIndicatorAction,
   mockCustomForecastIndicatorAction,
 } from './custom-forecast-indicator-action.mock';
+import { MajorChartResponse } from '@/app/store/querys/mobile/major-chart.query';
+import { mockMajorChartAction, MockMajorChartAction } from './major-chart-action.mock';
 
 type MockDatabase = {
   metadataList: IndicatorBoardMetadataResponse[];
@@ -20,14 +22,19 @@ type MockDatabase = {
   indicatorsValue: IndicatorValueResponse[];
   historyIndicatorsValue: historyIndicatorsValueMockData;
   customForecastIndicatorList: CustomForecastIndicatorListResponse;
+  majorCountry: MajorChartResponse[];
 };
 
-type MockDatabaseAction = MockCustomForecastIndicatorAction & MockIndicatorBoardMetadataAction & MockIndicatorAction;
+type MockDatabaseAction = MockCustomForecastIndicatorAction &
+  MockIndicatorBoardMetadataAction &
+  MockIndicatorAction &
+  MockMajorChartAction;
 
 export const mockDB: MockDatabaseAction = {
   ...mockIndicatorBoardMetadataAction,
   ...mockIndicatorAction,
   ...mockCustomForecastIndicatorAction,
+  ...mockMajorChartAction,
 };
 
 const initialState: MockDatabase = {
@@ -381,6 +388,44 @@ const initialState: MockDatabase = {
           mic_code: 'XNYS',
           type: 'Common Stock',
         },
+      ],
+    },
+  ],
+  majorCountry: [
+    {
+      country: 'US',
+      symbolName: 'S&P500',
+      symbolPrice: 40872.23,
+      symbolChanges: 0.24,
+      timeLine: [
+        '40871.99',
+        '40871.75',
+        '40871.51',
+        '40871.27',
+        '40872.23',
+        '40871.99',
+        '40871.75',
+        '40871.51',
+        '40871.27',
+        '40872.23',
+      ],
+    },
+    {
+      country: 'KR',
+      symbolName: 'KOSPI',
+      symbolPrice: 2999.99,
+      symbolChanges: -9.0,
+      timeLine: [
+        '3000.99',
+        '2958.99',
+        '2999.99',
+        '3008.99',
+        '2999.99',
+        '3000.99',
+        '2958.99',
+        '2999.99',
+        '3008.99',
+        '2999.99',
       ],
     },
   ],
