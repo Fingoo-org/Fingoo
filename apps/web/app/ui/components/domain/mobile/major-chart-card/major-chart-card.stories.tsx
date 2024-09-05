@@ -2,7 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import MajorChartCard from './major-chart-card';
 
-const meta = {
+const meta: Meta<typeof MajorChartCard> = {
   title: 'mobile/molecule/MajorChartCard',
   component: MajorChartCard,
   decorators: [
@@ -12,10 +12,14 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof MajorChartCard>;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    country: 'US',
+  },
+};
