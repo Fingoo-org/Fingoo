@@ -15,6 +15,7 @@ import {
 } from './custom-forecast-indicator-action.mock';
 import { MajorChartResponse } from '@/app/store/querys/mobile/major-chart.query';
 import { mockMajorChartAction, MockMajorChartAction } from './major-chart-action.mock';
+import { majorChartCountry } from '../mock-data/major-chart-value.mock';
 
 type MockDatabase = {
   metadataList: IndicatorBoardMetadataResponse[];
@@ -391,44 +392,7 @@ const initialState: MockDatabase = {
       ],
     },
   ],
-  majorCountry: [
-    {
-      country: 'US',
-      symbolName: 'S&P500',
-      symbolPrice: 40872.23,
-      symbolChanges: 0.24,
-      timeLine: [
-        '40871.99',
-        '40871.75',
-        '40871.51',
-        '40871.27',
-        '40872.23',
-        '40871.99',
-        '40871.75',
-        '40871.51',
-        '40871.27',
-        '40872.23',
-      ],
-    },
-    {
-      country: 'KR',
-      symbolName: 'KOSPI',
-      symbolPrice: 2999.99,
-      symbolChanges: -9.0,
-      timeLine: [
-        '3000.99',
-        '2958.99',
-        '2999.99',
-        '3008.99',
-        '2999.99',
-        '3000.99',
-        '2958.99',
-        '2999.99',
-        '3008.99',
-        '2999.99',
-      ],
-    },
-  ],
+  majorCountry: majorChartCountry,
 };
 
 // mock이라 성능상의 문제가 필요 없음으로 사용
