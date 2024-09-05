@@ -59,6 +59,7 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/searc
 import { FredApiManager } from './infrastructure/adapter/fred/util/fred-api.manager';
 import { EconomyEntity } from './infrastructure/adapter/persistence/indicator/entity/economy.entity';
 import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fred.adapter';
+import { QuoteIndicatorController } from './api/quote-indicator/quote-indicator.controller';
 
 @Module({
   controllers: [
@@ -67,6 +68,7 @@ import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fr
     IndicatorController,
     IndicatorBoardMetadataController,
     LiveIndicatorController,
+    QuoteIndicatorController,
   ],
   imports: [
     CqrsModule,
