@@ -36,16 +36,7 @@ export class GetQuoteIndicatorDto {
   })
   @IsOptional()
   @IsString()
-  volume_time_period?: string;
-
-  @ApiProperty({
-    example: 'BBG000BPH459',
-    description: '금융 상품 글로벌 식별자(FIGI)로 필터링',
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  figi?: string;
+  volume_time_period?: string = '9';
 
   @ApiProperty({
     example: 'XNYX',
@@ -54,7 +45,7 @@ export class GetQuoteIndicatorDto {
   })
   @IsOptional()
   @IsString()
-  mic_code?: string;
+  mic_code?: string = '';
 
   @ApiProperty({
     example: 'true',
@@ -63,7 +54,7 @@ export class GetQuoteIndicatorDto {
   })
   @IsOptional()
   @IsBoolean()
-  eod?: boolean;
+  eod?: boolean = false;
 
   @ApiProperty({
     example: '1day',
@@ -73,5 +64,14 @@ export class GetQuoteIndicatorDto {
   @IsOptional()
   @IsString()
   @IsEnum(['1min', '5min', '15min', '30min', '1day'])
-  interval?: QuoteIndicatorIntervalEnum;
+  interval?: QuoteIndicatorIntervalEnum = QuoteIndicatorIntervalEnum.DAY1;
+
+  @ApiProperty({
+    example: 'Asia/Seoul',
+    description: '기준 timezone',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  timezone?: string = 'Asia/Seoul';
 }
