@@ -1,13 +1,13 @@
-import { ChartTimeline } from '../../utils/type/type-definition';
 import { AggregateRoot } from '../../utils/domain/aggregate-root';
 import { ApiProperty } from '@nestjs/swagger';
+import ChartTimeline from '../api/major-chart/dto/char-timeline.dto';
 
 export class MajorChart extends AggregateRoot {
   @ApiProperty({
-    example: 'US',
-    description: '국가 코드 (2자리)',
+    example: 'USD',
+    description: '화폐',
   })
-  readonly country: string;
+  readonly currency: string;
 
   @ApiProperty({
     example: 'S&P500',
@@ -34,14 +34,14 @@ export class MajorChart extends AggregateRoot {
   readonly timeline: ChartTimeline[];
 
   constructor(
-    country: string,
+    currency: string,
     symbolName: string,
     symbolPrice: number,
     symbolChanges: number,
     timeline: ChartTimeline[],
   ) {
     super();
-    this.country = country;
+    this.currency = currency;
     this.symbolName = symbolName;
     this.symbolPrice = symbolPrice;
     this.symbolChanges = symbolChanges;

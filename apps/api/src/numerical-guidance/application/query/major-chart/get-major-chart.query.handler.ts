@@ -12,9 +12,8 @@ export class GetMajorChartQueryHandler implements IQueryHandler {
     private readonly loadMajorChartPort: LoadMajorChartPort,
   ) {}
 
-  async execute(query: GetMajorChartQuery): Promise<MajorChart> {
+  async execute(query: GetMajorChartQuery): Promise<MajorChart[]> {
     const { country } = query;
-    const majorChart = await this.loadMajorChartPort.loadMajorChart(country);
-    return majorChart;
+    return this.loadMajorChartPort.loadMajorChart(country);
   }
 }

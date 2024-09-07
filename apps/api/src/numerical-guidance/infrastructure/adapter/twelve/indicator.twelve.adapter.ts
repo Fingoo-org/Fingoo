@@ -23,9 +23,16 @@ import { TypeORMError } from 'typeorm/error/TypeORMError';
 import { IndicatorValueManager } from '../../../util/indicator-value-manager';
 import { LoadLiveIndicatorPort } from '../../../application/port/external/twelve/load-live-indicator.port';
 import { IndicatorTwelveMapper } from './mapper/indicator.twelve.mapper';
+import { MajorChart } from 'src/numerical-guidance/domain/major-chart';
+import { format, setHours, setMinutes, setSeconds, startOfDay, subDays } from 'date-fns';
+import { plainToInstance } from 'class-transformer';
+import ChartTimeline from '../../../../numerical-guidance/api/major-chart/dto/char-timeline.dto';
+import { LoadLiveMajorChartIndicator } from '../../../../numerical-guidance/application/port/external/twelve/load-live-major-chart-indicator.port';
 
 @Injectable()
-export class IndicatorTwelveAdapter implements SearchTwelveIndicatorPort, LoadLiveIndicatorPort {
+export class IndicatorTwelveAdapter
+  implements SearchTwelveIndicatorPort, LoadLiveIndicatorPort, LoadLiveMajorChartIndicator
+{
   private readonly logger = new Logger(IndicatorTwelveAdapter.name);
 
   constructor(
@@ -33,6 +40,55 @@ export class IndicatorTwelveAdapter implements SearchTwelveIndicatorPort, LoadLi
     @Inject('IndicatorValueManager')
     private readonly indicatorValueManager: IndicatorValueManager<IndicatorValue>,
   ) {}
+
+  async loadMajorChart(symbol: string, interval: Interval): Promise<MajorChart> {
+    const todayStartDate = setSeconds(setMinutes(setHours(startOfDay(Date.now()), 9), 0), 0);
+    const todayEndDate = setSeconds(setMinutes(setHours(startOfDay(Date.now()), 16), 0), 0);
+    const yesterdayStartDate = subDays(todayStartDate, 1);
+    const yesterdayEndDate = subDays(todayEndDate, 1);
+
+    try {
+      // const todayTimeline = await this.twelveApiUtil.getTimeSeries(
+      //   symbol,
+      //   interval,
+      //   format(todayStartDate, 'yyyy-MM-dd HH:mm:ss'),
+      //   format(todayEndDate, 'yyyy-MM-dd HH:mm:ss'),
+      // );
+
+      const yesterdayTimelines = await this.twelveApiUtil.getTimeSeries(
+        symbol,
+        interval,
+        format(yesterdayStartDate, 'yyyy-MM-dd HH:mm:ss'),
+        format(yesterdayEndDate, 'yyyy-MM-dd HH:mm:ss'),
+      );
+
+      // console.log(todayTimeline);
+      // console.log(yesterdayTimelines);
+      // TODO 오늘 심볼을 아직 읽지 못함 API 를 좀 더 알아봐야한다.
+      // 프론트에서 연동 할 수 있도록 어제일자로 우선 구현해둠
+
+      return plainToInstance(MajorChart, {
+        currency: yesterdayTimelines.meta['currency'],
+        symbolName: symbol,
+        symbolPrice: yesterdayTimelines.values[0]['open'],
+        symbolChanges: ((yesterdayTimelines.values[0]['open'] as number) -
+          yesterdayTimelines.values[0]['open']) as number,
+        timeline: yesterdayTimelines.values.map((value) =>
+          plainToInstance(ChartTimeline, { time: value['datetime'], value: Number(value['open']) }),
+        ),
+      });
+    } catch (error) {
+      console.error(error);
+      if (error instanceof Error) {
+        throw new InternalServerErrorException({
+          HttpStatus: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: '[ERROR] 지표를 검색하는 중 중에 예상치 못한 문제가 발생했습니다.',
+          message: '서버에 오류가 발생했습니다. 잠시후 다시 시도해주세요.',
+          cause: error,
+        });
+      }
+    }
+  }
 
   async searchIndicator(symbol: string): Promise<SearchedIndicatorsDto> {
     try {

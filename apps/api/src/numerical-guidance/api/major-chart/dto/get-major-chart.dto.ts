@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ChartTimeline } from '../../../../utils/type/type-definition';
+import ChartTimeline from './char-timeline.dto';
 
 export class GetMajorChartDto {
   @ApiProperty({
@@ -29,6 +29,8 @@ export class GetMajorChartDto {
   @ApiProperty({
     example: [],
     description: '시간별 지표 값',
+    type: ChartTimeline,
+    isArray: true,
   })
   readonly timeline: ChartTimeline[];
 }

@@ -56,10 +56,13 @@ export class TwelveApiManager {
     if (interval == 'week') {
       return '1week';
     }
+    if (interval == 'min') {
+      return '5min';
+    }
   }
-  private checkTwelveException(responseData: any): { values: [] } {
+  private checkTwelveException(responseData: any): { values: any[]; meta: any } {
     if (responseData.code == 400) {
-      const result: { values: [] } = { values: [] };
+      const result: { meta: any; values: [] } = { values: [], meta: {} };
       return result;
     }
     if (responseData.code == 404) {

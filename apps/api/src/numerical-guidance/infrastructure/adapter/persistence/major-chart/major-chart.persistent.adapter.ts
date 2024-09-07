@@ -1,12 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { LoadMajorChartPort } from 'src/numerical-guidance/application/port/persistence/major-chart/load-major-chart.port';
-import { MajorChart } from 'src/numerical-guidance/domain/major-chart';
+import { Inject, Injectable } from '@nestjs/common';
+import { LoadLiveMajorChartIndicator } from '../../../../../numerical-guidance/application/port/external/twelve/load-live-major-chart-indicator.port';
+import { LoadMajorChartPort } from '../../../../../numerical-guidance/application/port/persistence/major-chart/load-major-chart.port';
+import { MajorChart } from '../../../../../numerical-guidance/domain/major-chart';
 
 @Injectable()
 export class MajorChartPersistentAdapter implements LoadMajorChartPort {
-  constructor() {}
+  constructor(
+    @Inject('LoadLiveMajorChartIndicator')
+    private readonly loadMajorChartPort: LoadLiveMajorChartIndicator,
+  ) {}
 
-  loadMajorChart(country: string): Promise<MajorChart> {
-    throw new Error(country + ' Method not implemented.');
+  loadMajorChart(country: string): Promise<MajorChart[]> {
+    return Promise.all(this.getSymbols(country).map((symbol) => this.loadMajorChartPort.loadMajorChart(symbol, 'min')));
+  }
+
+  private getSymbols(country: string): string[] {
+    switch (country) {
+      case 'US':
+        return ['DJI', 'SPX', 'IXIC'];
+    }
   }
 }

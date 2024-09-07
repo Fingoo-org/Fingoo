@@ -16,7 +16,7 @@ export class MajorChartController {
     example: 'US',
     required: true,
   })
-  @ApiOkResponse({ type: GetMajorChartDto })
+  @ApiOkResponse({ type: GetMajorChartDto, isArray: true })
   @Get('/:country')
   @Public()
   async loadMajorChart(@Param('country') country) {

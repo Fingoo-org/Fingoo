@@ -253,6 +253,10 @@ import { MajorChartController } from './api/major-chart/major-chart.controller';
       useClass: IndicatorTwelveAdapter,
     },
     {
+      provide: 'LoadLiveMajorChartIndicator',
+      useClass: IndicatorTwelveAdapter,
+    },
+    {
       provide: 'LoadLiveEconomyIndicatorPort',
       useClass: IndicatorFredAdapter,
     },
