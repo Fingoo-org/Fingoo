@@ -20,7 +20,7 @@ export class BaseQuoteIndicatorDto implements IndicatorQuoteData {
     example: 'stocks',
     description: '지표 종류',
   })
-  type: IndicatorType;
+  indicatorType: IndicatorType;
 
   @ApiProperty({
     example: 'Apple Inc',
@@ -35,10 +35,10 @@ export class BaseQuoteIndicatorDto implements IndicatorQuoteData {
   exchange: string;
 
   @ApiProperty({
-    example: new Date('2024-08-30'),
+    example: '2024-08-30',
     description: '날짜 및 시간',
   })
-  datetime: Date;
+  datetime: string;
 
   @ApiProperty({
     example: 1725024600,
