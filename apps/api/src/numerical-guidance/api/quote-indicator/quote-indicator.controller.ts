@@ -12,7 +12,6 @@ import { QuoteFundDto } from '../../application/query/quote-indicator/get-quote-
 import { GetQuoteIndicatorDto } from './dto/get-quote-indicator.dto';
 import { IndicatorQuoteData } from '../../application/query/quote-indicator/get-quote-indicator/interface/quote-indicator-data.interface';
 import { GetQuoteIndicatorQuery } from '../../application/query/quote-indicator/get-quote-indicator/get-quote-indicator.query';
-import { QuoteIndicatorIntervalEnum } from '../../../utils/enum/enum-definition';
 
 @ApiTags('QuoteIndicatorController')
 @Controller('/api/numerical-guidance')
@@ -29,27 +28,19 @@ export class QuoteIndicatorController {
   @ApiExceptionResponse(400, 'message123', '[ERROR]123')
   @ApiExceptionResponse(404, 'message', '[ERROR]')
   @Public()
-  @Get('/indicator/quote')
+  @Get('/indicators/quote')
   async getQuote(@Query() getQuoteIndicatorDto: GetQuoteIndicatorDto): Promise<IndicatorQuoteData> {
-    const {
-      indicatorId,
-      symbol,
-      indicatorType,
-      volume_time_period = '9',
-      figi,
-      mic_code,
-      eod,
-      interval = QuoteIndicatorIntervalEnum.DAY1,
-    } = getQuoteIndicatorDto;
+    const { indicatorId, symbol, indicatorType, volume_time_period, mic_code, eod, interval, timezone } =
+      getQuoteIndicatorDto;
     const query = new GetQuoteIndicatorQuery(
       indicatorId,
       symbol,
       indicatorType,
       volume_time_period,
-      figi,
       mic_code,
       eod,
       interval,
+      timezone,
     );
     return this.queryBus.execute(query);
   }
