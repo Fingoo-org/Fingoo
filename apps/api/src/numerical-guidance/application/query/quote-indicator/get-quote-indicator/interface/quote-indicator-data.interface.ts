@@ -3,7 +3,7 @@ import { QuoteIndicatorFiftyTwoWeekData } from './quote-indicator.fifty-two-week
 export interface IndicatorQuoteData {
   symbol: string;
   name: string;
-  datetime: Date;
+  datetime: string;
   open: string;
   high: string;
   low: string;
