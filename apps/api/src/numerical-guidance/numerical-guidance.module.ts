@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LiveIndicatorRedisAdapter } from './infrastructure/adapter/redis/live-indicator.redis.adapter';
+import { QuoteIndicatorRedisAdapter } from './infrastructure/adapter/redis/quote-indicator.redis.adapter';
 import { CqrsModule } from '@nestjs/cqrs';
 import { HttpModule } from '@nestjs/axios';
 import { IndicatorPersistentAdapter } from './infrastructure/adapter/persistence/indicator/indicator.persistent.adapter';
@@ -15,6 +16,7 @@ import { DeleteIndicatorIdCommandHandler } from './application/command/indicator
 import { DeleteIndicatorBoardMetadataCommandHandler } from './application/command/indicator-board-metadata/delete-indicator-board-metadata/delete-indicator-board-metadata.command.handler';
 import { UpdateIndicatorBoardMetadataNameCommandHandler } from './application/command/indicator-board-metadata/update-indicator-board-metadata-name/update-indicator-board-metadata-name.command.handler';
 import { GetLiveIndicatorQueryHandler } from './application/query/live-indicator/get-live-indicator/get-live-indicator.query.handler';
+import { GetQuoteIndicatorQueryHandler } from './application/query/quote-indicator/get-quote-indicator/get-quote-indicator.query.handler';
 import { IndicatorEntity } from './infrastructure/adapter/persistence/indicator/entity/indicator.entity';
 import { GetHistoryIndicatorQueryHandler } from './application/query/history-indicator/get-history-indicator/get-history-indicator.query.handler';
 import { HistoryIndicatorPersistentAdapter } from './infrastructure/adapter/persistence/history-indicator/history-indicator.persistent.adapter';
@@ -34,6 +36,7 @@ import { HistoryIndicatorController } from './api/history-indicator/history-indi
 import { IndicatorController } from './api/indicator/indicator.controller';
 import { IndicatorBoardMetadataController } from './api/indicator-board-metadata/indicator-board-metadata.controller';
 import { LiveIndicatorController } from './api/live-indicator/live-indicator.controller';
+import { QuoteIndicatorController } from './api/quote-indicator/quote-indicator.controller';
 import { DeleteCustomForecastIndicatorIdCommandHandler } from './application/command/custom-forecast-indicator/delete-custom-forecast-indicator-id/delete-custom-forecast-indicator-id.command.handler';
 import { DeleteCustomForecastIndicatorCommandHandler } from './application/command/custom-forecast-indicator/delete-custom-forecast-indicator/delete-custom-forecast-indicator.command.handler';
 import { UpdateCustomForecastIndicatorNameCommandHandler } from './application/command/custom-forecast-indicator/update-custom-forecast-indicator-name/update-custom-forecast-indicator-name.command.handler';
@@ -59,7 +62,6 @@ import { SearchIndicatorQueryHandler } from './application/query/indicator/searc
 import { FredApiManager } from './infrastructure/adapter/fred/util/fred-api.manager';
 import { EconomyEntity } from './infrastructure/adapter/persistence/indicator/entity/economy.entity';
 import { IndicatorFredAdapter } from './infrastructure/adapter/fred/indicator.fred.adapter';
-import { QuoteIndicatorController } from './api/quote-indicator/quote-indicator.controller';
 
 @Module({
   controllers: [
@@ -101,6 +103,7 @@ import { QuoteIndicatorController } from './api/quote-indicator/quote-indicator.
     SupabaseStrategy,
     AdjustIndicatorValue,
     GetLiveIndicatorQueryHandler,
+    GetQuoteIndicatorQueryHandler,
     GetHistoryIndicatorQueryHandler,
     CreateIndicatorBoardMetadataCommandHandler,
     GetIndicatorBoardMetadataQueryHandler,
@@ -130,12 +133,20 @@ import { QuoteIndicatorController } from './api/quote-indicator/quote-indicator.
       useClass: LiveIndicatorRedisAdapter,
     },
     {
+      provide: 'LoadCachedQuoteIndicatorPort',
+      useClass: QuoteIndicatorRedisAdapter,
+    },
+    {
       provide: 'LoadHistoryIndicatorPort',
       useClass: HistoryIndicatorPersistentAdapter,
     },
     {
       provide: 'CachingLiveIndicatorPort',
       useClass: LiveIndicatorRedisAdapter,
+    },
+    {
+      provide: 'CachingQuoteIndicatorPort',
+      useClass: QuoteIndicatorRedisAdapter,
     },
     {
       provide: 'LoadIndicatorsPort',
@@ -247,6 +258,10 @@ import { QuoteIndicatorController } from './api/quote-indicator/quote-indicator.
     },
     {
       provide: 'LoadLiveIndicatorPort',
+      useClass: IndicatorTwelveAdapter,
+    },
+    {
+      provide: 'LoadQuoteIndicatorPort',
       useClass: IndicatorTwelveAdapter,
     },
     {
