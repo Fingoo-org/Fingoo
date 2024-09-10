@@ -1,8 +1,4 @@
-import {
-  MajorChartResponse,
-  useFetchMajorChart,
-  useFetchMajorChartWithCountry,
-} from '@/app/store/querys/mobile/major-chart.query';
+import { MajorChartResponse, useFetchMajorChartWithCountry } from '@/app/store/querys/mobile/major-chart.query';
 import { useMemo } from 'react';
 
 export const useChunkArray = (array: MajorChartResponse[] | undefined, size: number) => {
@@ -18,33 +14,6 @@ export const useChunkArray = (array: MajorChartResponse[] | undefined, size: num
   }, [array, size]);
 
   return chunkedArray;
-};
-
-export const useCountryMajorChartCard = () => {
-  const { data: majorChartDataList, isValidating, mutate: revalidateMajorChartData } = useFetchMajorChart();
-
-  const formattedMajorCharts = useMemo(() => {
-    if (!majorChartDataList) return undefined;
-
-    return majorChartDataList.map((majorChartData) => ({
-      country: majorChartData.country,
-      symbolName: majorChartData.symbolName,
-      symbolPrice: majorChartData.symbolPrice,
-      symbolChanges: majorChartData.symbolChanges,
-      timeline: majorChartData.timeline.map(({ time, value }) => ({
-        time,
-        value,
-      })),
-    }));
-  }, [majorChartDataList]);
-
-  const chunkedMajorCharts = useChunkArray(formattedMajorCharts, 4);
-
-  return {
-    majorCharts: chunkedMajorCharts,
-    isPending: isValidating,
-    revalidateMajorChartData,
-  };
 };
 
 export const useCountryMajorChartCardWithCountry = (country: string) => {

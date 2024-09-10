@@ -8,10 +8,6 @@ export type MajorChartParam = {
 };
 
 export const majorChartHandlers = [
-  http.get<MajorChartParam>(API_PATH.majorChart, async () => {
-    await delayForDevelopment();
-    return HttpResponse.json(mockDB.getMajorChart());
-  }),
   http.get<MajorChartParam>(`${API_PATH.majorChart}/:country`, async ({ params }) => {
     const { country } = params;
     const response = mockDB.getMajorChartWithCountry(country);
