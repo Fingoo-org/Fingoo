@@ -12,9 +12,16 @@ export const useIndicatorQuote = (request: IndicatorQuoteRequest) => {
     if (!indicatorQuoteData) {
       return {
         currency: 'USD',
+        open: 0,
         close: 0,
         change: 0,
         percentChange: '0%',
+        volume: 0,
+        isMarketOpen: true,
+        fiftyTwoWeek: {
+          low: 0,
+          high: 0,
+        },
       };
     }
 
