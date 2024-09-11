@@ -47,6 +47,6 @@ export type IndicatorQuoteResponse = {
 
 export const useFetchIndicatorQuote = (parameter: IndicatorQuoteRequest) =>
   useSWRImmutable<IndicatorQuoteResponse>(
-    `${API_PATH.indicatorQuote}/indicatorId=${parameter.indicatorId}&symbol=${parameter.symbol}&indicatorType=${parameter.indicatorType}&volumeTimePeriod=${parameter.volumeTimePeriod}&micCode=${parameter.micCode}&eod=${parameter.eod}&interval=${parameter.interval}&timezone=${parameter.timezone}`,
+    `${API_PATH.indicatorQuote}?indicatorId=${parameter.indicatorId}&symbol=${parameter.symbol}&indicatorType=${parameter.indicatorType}&volumeTimePeriod=${parameter.volumeTimePeriod}&micCode=${parameter.micCode}&eod=${parameter.eod}&interval=${parameter.interval}&timezone=${parameter.timezone}`,
     defaultFetcher,
   );
