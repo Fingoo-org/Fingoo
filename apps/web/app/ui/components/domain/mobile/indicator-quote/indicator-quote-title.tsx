@@ -1,6 +1,6 @@
-import { IndicatorQuoteRequest } from '@/app/store/querys/mobile/indicator-quote.query';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../view/molecule/card/card';
-import { useIndicatorQuote } from '@/app/business/hooks/mobile/indicator/use-indicator-quote-view-model.hooks';
+import { useIndicatorQuote } from '@/app/business/hooks/numerical-guidance/indicator/use-indicator-quote-view-model.hooks';
+import { Card, CardContent, CardHeader, CardTitle } from '../../../view/molecule/card/card';
+import { IndicatorQuoteRequest } from '@/app/store/querys/numerical-guidance/indicator-quote.query';
 import Pending from '../../../view/molecule/pending';
 
 export function IndicatorQuoteTitle(indicator: IndicatorQuoteRequest) {

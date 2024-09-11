@@ -1,4 +1,7 @@
-import { IndicatorQuoteRequest, useFetchIndicatorQuote } from '@/app/store/querys/mobile/indicator-quote.query';
+import {
+  IndicatorQuoteRequest,
+  useFetchIndicatorQuote,
+} from '@/app/store/querys/numerical-guidance/indicator-quote.query';
 import { useMemo } from 'react';
 
 export const useIndicatorQuote = (request: IndicatorQuoteRequest) => {

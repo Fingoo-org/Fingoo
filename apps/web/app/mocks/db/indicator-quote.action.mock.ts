@@ -1,4 +1,4 @@
-import { IndicatorQuoteRequest, IndicatorQuoteResponse } from '@/app/store/querys/mobile/indicator-quote.query';
+import { IndicatorQuoteResponse } from '@/app/store/querys/numerical-guidance/indicator-quote.query';
 import { mockDatabaseStore } from '.';
 
 export type MockIndicatorQuoteAction = {
