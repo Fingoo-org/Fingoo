@@ -13,4 +13,5 @@ export const API_PATH = {
   customForecastIndicator: `${API_URL}/numerical-guidance/custom-forecast-indicator`,
   historyIndicatorsValue: `${API_URL}/numerical-guidance/indicators/history`,
   indicatorQuote: `${API_URL}/numerical-guidance/indicators/quote`,
+  majorChart: `${API_URL}/major-chart`,
 };

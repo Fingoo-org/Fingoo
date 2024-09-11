@@ -15,6 +15,9 @@ import {
 } from './custom-forecast-indicator-action.mock';
 import { mockIndicatorQuoteAction, MockIndicatorQuoteAction } from './indicator-quote.action.mock';
 import { IndicatorQuoteResponse } from '@/app/store/querys/numerical-guidance/indicator-quote.query';
+import { MajorIndicatorResponse } from '@/app/store/querys/numerical-guidance/major-indicator.query';
+import { mockMajorIndicatorAction, MockMajorIndicatorAction } from './major-indicator-action.mock';
+import { majorIndicatorCountry } from '../mock-data/major-indicator-value.mock';
 
 type MockDatabase = {
   metadataList: IndicatorBoardMetadataResponse[];
@@ -23,18 +26,21 @@ type MockDatabase = {
   historyIndicatorsValue: historyIndicatorsValueMockData;
   customForecastIndicatorList: CustomForecastIndicatorListResponse;
   indicatorQuoteResponse: IndicatorQuoteResponse[];
+  majorIndicator: MajorIndicatorResponse[];
 };
 
 type MockDatabaseAction = MockCustomForecastIndicatorAction &
   MockIndicatorBoardMetadataAction &
   MockIndicatorAction &
-  MockIndicatorQuoteAction;
+  MockIndicatorQuoteAction &
+  MockMajorIndicatorAction;
 
 export const mockDB: MockDatabaseAction = {
   ...mockIndicatorBoardMetadataAction,
   ...mockIndicatorAction,
   ...mockCustomForecastIndicatorAction,
   ...mockIndicatorQuoteAction,
+  ...mockMajorIndicatorAction,
 };
 
 const initialState: MockDatabase = {
@@ -449,6 +455,7 @@ const initialState: MockDatabase = {
       averageVolume: '1234123',
     },
   ],
+  majorIndicator: majorIndicatorCountry,
 };
 
 // mock이라 성능상의 문제가 필요 없음으로 사용
