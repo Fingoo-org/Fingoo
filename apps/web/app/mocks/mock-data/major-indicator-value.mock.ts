@@ -1,4 +1,4 @@
-export const majorChartCountry = [
+export const majorIndicatorCountry = [
   {
     country: 'US',
     symbolName: 'S&P500',

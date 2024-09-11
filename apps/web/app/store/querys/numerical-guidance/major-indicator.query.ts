@@ -7,7 +7,7 @@ export type TimelineProps = {
   value: number;
 };
 
-export type MajorChartResponse = {
+export type MajorIndicatorResponse = {
   country: string;
   symbolName: string;
   symbolPrice: number;
@@ -15,5 +15,5 @@ export type MajorChartResponse = {
   timeline: TimelineProps[];
 };
 
-export const useFetchMajorChartWithCountry = (country: string) =>
-  useSWRImmutable<MajorChartResponse[]>(`${API_PATH.majorChart}/${country}`, defaultFetcher);
+export const useFetchMajorIndicatorWithCountry = (country: string) =>
+  useSWRImmutable<MajorIndicatorResponse[]>(`${API_PATH.majorChart}/${country}`, defaultFetcher);

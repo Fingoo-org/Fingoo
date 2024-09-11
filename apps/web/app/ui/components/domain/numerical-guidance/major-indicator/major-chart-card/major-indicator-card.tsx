@@ -1,11 +1,11 @@
 import * as React from 'react';
-import Pending from '../../../view/molecule/pending';
-import ChartCardGrid from '../../../view/molecule/chart-card/chart-card';
-import { useCountryMajorChartCardWithCountry } from '@/app/business/hooks/mobile/major-chart/use-major-chart-card-view-model.hook';
-import { Carousel, CarouselContent, CarouselDotButton, CarouselItem } from '../../../view/atom/carousel/carousel';
+import Pending from '../../../../view/molecule/pending';
+import ChartCardGrid from '../../../../view/molecule/chart-card/chart-card';
+import { Carousel, CarouselContent, CarouselDotButton, CarouselItem } from '../../../../view/atom/carousel/carousel';
+import { useCountryMajorIndicatorCardWithCountry } from '@/app/business/hooks/numerical-guidance/major-indicator/use-major-chart-card-view-model.hook';
 
-export default function MajorChartCard({ country }: { country: string }) {
-  const { majorChartsWithCountry, isPending } = useCountryMajorChartCardWithCountry(country);
+export default function MajorIndicatorCard({ country }: { country: string }) {
+  const { majorChartsWithCountry, isPending } = useCountryMajorIndicatorCardWithCountry(country);
   return (
     <Carousel>
       <Pending isPending={isPending}>
@@ -25,7 +25,6 @@ export default function MajorChartCard({ country }: { country: string }) {
             </CarouselItem>
           ))}
         </CarouselContent>
-
         <CarouselDotButton />
       </Pending>
     </Carousel>

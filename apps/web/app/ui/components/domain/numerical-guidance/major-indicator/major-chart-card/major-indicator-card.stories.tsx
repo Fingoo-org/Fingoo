@@ -1,10 +1,10 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import MajorChartCard from './major-chart-card';
+import MajorIndicatorCard from './major-indicator-card';
 
-const meta: Meta<typeof MajorChartCard> = {
-  title: 'mobile/molecule/MajorChartCard',
-  component: MajorChartCard,
+const meta: Meta<typeof MajorIndicatorCard> = {
+  title: 'numerical-guidance/molecule/MajorIndicatorCard',
+  component: MajorIndicatorCard,
   decorators: [
     (Story: React.ComponentType) => (
       <div style={{ width: 500 }}>

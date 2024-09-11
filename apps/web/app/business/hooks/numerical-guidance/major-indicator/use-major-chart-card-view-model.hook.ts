@@ -1,7 +1,10 @@
-import { MajorChartResponse, useFetchMajorChartWithCountry } from '@/app/store/querys/mobile/major-chart.query';
+import {
+  MajorIndicatorResponse,
+  useFetchMajorIndicatorWithCountry,
+} from '@/app/store/querys/numerical-guidance/major-indicator.query';
 import { useMemo } from 'react';
 
-export const useChunkArray = (array: MajorChartResponse[] | undefined, size: number) => {
+export const useChunkArray = (array: MajorIndicatorResponse[] | undefined, size: number) => {
   const chunkedArray = useMemo(() => {
     if (!array) return [];
 
@@ -16,12 +19,12 @@ export const useChunkArray = (array: MajorChartResponse[] | undefined, size: num
   return chunkedArray;
 };
 
-export const useCountryMajorChartCardWithCountry = (country: string) => {
+export const useCountryMajorIndicatorCardWithCountry = (country: string) => {
   const {
     data: majorChartDataList,
     isValidating,
     mutate: revalidateMajorChartData,
-  } = useFetchMajorChartWithCountry(country);
+  } = useFetchMajorIndicatorWithCountry(country);
 
   const formattedMajorCharts = useMemo(() => {
     if (!majorChartDataList) return undefined;
