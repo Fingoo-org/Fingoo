@@ -6,29 +6,24 @@ import Pending from '../../../view/molecule/pending';
 export function IndicatorQuoteTitle(indicator: IndicatorQuoteRequest) {
   const { formattedIndicatorQuote: indicatorQuoteData, isPending } = useIndicatorQuote(indicator);
 
-  if (!indicatorQuoteData) {
-    return (
-      <Card>
-        <CardTitle>데이터를 불러올 수 없습니다.</CardTitle>
-      </Card>
-    );
-  }
-
   return (
     <Pending isPending={isPending}>
       <Card>
         <CardHeader>
           <CardTitle className=" text-lg">
-            {indicatorQuoteData.currency === 'USD' ? '$' : '₩'}
+            {indicatorQuoteData.currency === 'USD' ? '$ ' : '₩ '}
             {indicatorQuoteData.close}
           </CardTitle>
-          <CardDescription className=" flex flex-row">
-            어제보다
-            <div className={` pl-3 ${Number(indicatorQuoteData.change) < 0 ? 'text-blue-600' : 'text-red-600'}`}>
-              {indicatorQuoteData.change} ({indicatorQuoteData.percentChange})
-            </div>
-          </CardDescription>
         </CardHeader>
+
+        <CardContent className=" flex flex-row">
+          어제보다
+          <p className={` pl-2 ${Number(indicatorQuoteData.change) < 0 ? 'text-blue-500' : 'text-red-500'}`}>
+            {Number(indicatorQuoteData.change) < 0 ? '-' : '+'}
+            {indicatorQuoteData.currency === 'USD' ? '$' : '₩'}
+            {Math.abs(Number(indicatorQuoteData.change))} ({indicatorQuoteData.percentChange})
+          </p>
+        </CardContent>
       </Card>
     </Pending>
   );

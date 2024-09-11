@@ -1,13 +1,13 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { IndicatorQuoteTitle } from './indicator-quote-title';
+import { IndicatorQuoteAnalytics } from './indicator-quote-analytics';
 
-const meta: Meta<typeof IndicatorQuoteTitle> = {
-  title: 'mobile/molecule/indicatorTitle',
-  component: IndicatorQuoteTitle,
+const meta: Meta<typeof IndicatorQuoteAnalytics> = {
+  title: 'mobile/molecule/indicatorQuoteAnalytics',
+  component: IndicatorQuoteAnalytics,
   decorators: [
     (Story: React.ComponentType) => (
-      <div style={{ width: 353 }}>
+      <div style={{ width: 352 }}>
         <Story />
       </div>
     ),
