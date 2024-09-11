@@ -13,6 +13,9 @@ import {
   MockCustomForecastIndicatorAction,
   mockCustomForecastIndicatorAction,
 } from './custom-forecast-indicator-action.mock';
+import { MajorIndicatorResponse } from '@/app/store/querys/numerical-guidance/major-indicator.query';
+import { mockMajorIndicatorAction, MockMajorIndicatorAction } from './major-indicator-action.mock';
+import { majorIndicatorCountry } from '../mock-data/major-indicator-value.mock';
 
 type MockDatabase = {
   metadataList: IndicatorBoardMetadataResponse[];
@@ -20,14 +23,19 @@ type MockDatabase = {
   indicatorsValue: IndicatorValueResponse[];
   historyIndicatorsValue: historyIndicatorsValueMockData;
   customForecastIndicatorList: CustomForecastIndicatorListResponse;
+  majorIndicator: MajorIndicatorResponse[];
 };
 
-type MockDatabaseAction = MockCustomForecastIndicatorAction & MockIndicatorBoardMetadataAction & MockIndicatorAction;
+type MockDatabaseAction = MockCustomForecastIndicatorAction &
+  MockIndicatorBoardMetadataAction &
+  MockIndicatorAction &
+  MockMajorIndicatorAction;
 
 export const mockDB: MockDatabaseAction = {
   ...mockIndicatorBoardMetadataAction,
   ...mockIndicatorAction,
   ...mockCustomForecastIndicatorAction,
+  ...mockMajorIndicatorAction,
 };
 
 const initialState: MockDatabase = {
@@ -384,6 +392,7 @@ const initialState: MockDatabase = {
       ],
     },
   ],
+  majorIndicator: majorIndicatorCountry,
 };
 
 // mock이라 성능상의 문제가 필요 없음으로 사용

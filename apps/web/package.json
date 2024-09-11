@@ -52,6 +52,7 @@
     "d3-format": "^3.1.0",
     "d3-time-format": "^4.1.0",
     "dayjs": "^1.11.10",
+    "embla-carousel-react": "^8.2.0",
     "file-saver": "^2.0.5",
     "html-to-image": "^1.11.11",
     "js-cookie": "^3.0.5",
