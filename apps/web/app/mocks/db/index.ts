@@ -13,8 +13,8 @@ import {
   MockCustomForecastIndicatorAction,
   mockCustomForecastIndicatorAction,
 } from './custom-forecast-indicator-action.mock';
-import { IndicatorQuoteResponse } from '@/app/store/querys/mobile/indicator-quote.query';
 import { mockIndicatorQuoteAction, MockIndicatorQuoteAction } from './indicator-quote.action.mock';
+import { IndicatorQuoteResponse } from '@/app/store/querys/numerical-guidance/indicator-quote.query';
 
 type MockDatabase = {
   metadataList: IndicatorBoardMetadataResponse[];
