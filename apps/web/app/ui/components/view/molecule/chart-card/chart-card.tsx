@@ -2,13 +2,14 @@ import * as React from 'react';
 import { cn } from '@/app/utils/style';
 import { Card, CardHeader, CardTitle, CardContent } from '../card/card';
 import Avatar from '../../atom/avatar/avatar';
+import MiniChart, { ChartTimeline } from '../../atom/mini-chart/mini-chart';
 
 interface ChartCardProps {
   indexName: string;
   value: number;
   changeValue: number;
   countryFlag: string;
-  chart: React.ReactNode;
+  chartData: ChartTimeline[];
 }
 
 interface IndexProps {
@@ -25,11 +26,7 @@ const ChangeDisplay: React.FC<{ changeValue: number }> = ({ changeValue }) => (
   <div className="text-sm">{`${changeValue > 0 ? '+' : ''}${changeValue.toFixed(2)}%`}</div>
 );
 
-const ChartImage: React.FC<{ chart: string | React.ReactNode }> = ({ chart }) => (
-  <div className="h-12 w-full">{chart}</div>
-);
-
-const ChartCard: React.FC<ChartCardProps> = ({ indexName, value, changeValue, countryFlag, chart }) => {
+const ChartCard: React.FC<ChartCardProps> = ({ indexName, value, changeValue, countryFlag, chartData }) => {
   const isPositive = changeValue > 0;
   return (
     <Card className={'w-full rounded-sm'}>
@@ -43,7 +40,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ indexName, value, changeValue, co
             <ValueDisplay value={value} />
             <ChangeDisplay changeValue={changeValue} />
           </div>
-          <ChartImage chart={chart} />
+          <MiniChart data={chartData} className="h-12 w-14" isPositive={isPositive} />
         </div>
       </CardContent>
     </Card>
@@ -59,7 +56,7 @@ const ChartCardGrid: React.FC<IndexProps> = ({ data }) => (
         value={item.value}
         changeValue={item.changeValue}
         countryFlag={item.countryFlag}
-        chart={item.chart}
+        chartData={item.chartData}
       />
     ))}
   </div>
