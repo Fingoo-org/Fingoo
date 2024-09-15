@@ -50,7 +50,7 @@ async function bootstrap() {
         : 'http://localhost';
 
   app.enableCors({
-    origin: ['https://fingoo-web-beta.vercel.app', applicationHost, 'http://localhost:3000'],
+    origin: ['https://fingoo.app', 'https://fingoo-web-beta.vercel.app', applicationHost, 'http://localhost:3000'],
     credentials: true,
   });
 
