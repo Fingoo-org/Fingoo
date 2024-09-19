@@ -2,6 +2,8 @@ import { AggregateRoot } from '../../utils/domain/aggregate-root';
 import { ApiProperty } from '@nestjs/swagger';
 import ChartTimeline from '../api/major-chart/dto/chart-timeline.dto';
 import { IndicatorType } from '../../utils/type/type-definition';
+import { IsIndicatorType } from '../../utils/validation/is.indicator-type.validation';
+import { IsString, IsUUID } from 'class-validator';
 
 export class MajorChart extends AggregateRoot {
   @ApiProperty({

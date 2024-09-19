@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import ChartTimeline from './chart-timeline.dto';
 import { IndicatorType } from '../../../../utils/type/type-definition';
+import { IsString, IsUUID } from 'class-validator';
+import { IsIndicatorType } from '../../../../utils/validation/is.indicator-type.validation';
 
 export class GetMajorChartDto {
   @ApiProperty({
