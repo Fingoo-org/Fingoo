@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import ChartTimeline from './char-timeline.dto';
+import ChartTimeline from './chart-timeline.dto';
 
 export class GetMajorChartDto {
   @ApiProperty({

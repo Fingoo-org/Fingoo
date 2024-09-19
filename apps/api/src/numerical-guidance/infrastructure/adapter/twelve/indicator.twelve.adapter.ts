@@ -26,7 +26,7 @@ import { IndicatorTwelveMapper } from './mapper/indicator.twelve.mapper';
 import { MajorChart } from 'src/numerical-guidance/domain/major-chart';
 import { format, setHours, setMinutes, setSeconds, startOfDay, subDays } from 'date-fns';
 import { plainToInstance } from 'class-transformer';
-import ChartTimeline from '../../../../numerical-guidance/api/major-chart/dto/char-timeline.dto';
+import ChartTimeline from '../../../api/major-chart/dto/chart-timeline.dto';
 import { LoadLiveMajorChartIndicator } from '../../../../numerical-guidance/application/port/external/twelve/load-live-major-chart-indicator.port';
 
 @Injectable()

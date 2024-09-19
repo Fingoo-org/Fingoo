@@ -1,6 +1,6 @@
 import { AggregateRoot } from '../../utils/domain/aggregate-root';
 import { ApiProperty } from '@nestjs/swagger';
-import ChartTimeline from '../api/major-chart/dto/char-timeline.dto';
+import ChartTimeline from '../api/major-chart/dto/chart-timeline.dto';
 
 export class MajorChart extends AggregateRoot {
   @ApiProperty({
