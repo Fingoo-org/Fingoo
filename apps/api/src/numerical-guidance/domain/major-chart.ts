@@ -1,8 +1,26 @@
 import { AggregateRoot } from '../../utils/domain/aggregate-root';
 import { ApiProperty } from '@nestjs/swagger';
 import ChartTimeline from '../api/major-chart/dto/chart-timeline.dto';
+import { IndicatorType } from '../../utils/type/type-definition';
 
 export class MajorChart extends AggregateRoot {
+  @ApiProperty({
+    example: '160e5499-4925-4e38-bb00-8ea6d8056484',
+    description: '지표 PK (UUID)',
+  })
+  @IsString()
+  @IsUUID()
+  readonly indicatorId: string;
+
+  @ApiProperty({
+    example: 'stocks',
+    description:
+      '지표 타입 (예: stocks ,forex_pairs, cryptocurrencies, etf, indices, customForecastIndicator, funds, bonds)',
+  })
+  @IsString()
+  @IsIndicatorType()
+  readonly indicatorType: IndicatorType;
+
   @ApiProperty({
     example: 'USD',
     description: '화폐',

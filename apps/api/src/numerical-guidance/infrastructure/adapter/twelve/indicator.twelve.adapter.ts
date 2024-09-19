@@ -28,6 +28,7 @@ import { format, setHours, setMinutes, setSeconds, startOfDay, subDays } from 'd
 import { plainToInstance } from 'class-transformer';
 import ChartTimeline from '../../../api/major-chart/dto/chart-timeline.dto';
 import { LoadLiveMajorChartIndicator } from '../../../../numerical-guidance/application/port/external/twelve/load-live-major-chart-indicator.port';
+import { SearchIndicatorBySymbolPort } from '../../../application/port/persistence/indicator/search-indicator-by-symbol.port';
 
 @Injectable()
 export class IndicatorTwelveAdapter
@@ -39,9 +40,14 @@ export class IndicatorTwelveAdapter
     private readonly twelveApiUtil: TwelveApiManager,
     @Inject('IndicatorValueManager')
     private readonly indicatorValueManager: IndicatorValueManager<IndicatorValue>,
+    //Adapter에 Port를 추가해 사용하면 좋지 않지만, 가장 쉬운 구현 방법이 이 방법 뿐임, 추후 수정 필요
+    @Inject('SearchIndicatorBySymbolPort')
+    private readonly searchIndicatorBySymbolPort: SearchIndicatorBySymbolPort,
   ) {}
 
   async loadMajorChart(symbol: string, interval: Interval): Promise<MajorChart> {
+    const indicatorData = await this.searchIndicatorBySymbolPort.searchIndicatorBySymbol(symbol);
+
     const todayStartDate = setSeconds(setMinutes(setHours(startOfDay(Date.now()), 9), 0), 0);
     const todayEndDate = setSeconds(setMinutes(setHours(startOfDay(Date.now()), 16), 0), 0);
     const yesterdayStartDate = subDays(todayStartDate, 1);
@@ -68,6 +74,8 @@ export class IndicatorTwelveAdapter
       // 프론트에서 연동 할 수 있도록 어제일자로 우선 구현해둠
 
       return plainToInstance(MajorChart, {
+        indicatorId: indicatorData.id,
+        indicatorType: indicatorData.indicatorType,
         currency: yesterdayTimelines.meta['currency'],
         symbolName: symbol,
         symbolPrice: yesterdayTimelines.values[0]['open'],
