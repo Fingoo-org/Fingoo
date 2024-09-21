@@ -15,6 +15,7 @@ export const useSplitIndicatorBoard = () => {
     sliceIndicatorBoardInfos,
     setSplitScreen,
     setActiveDragMetadataId,
+    deleteIndicatorBoardInfo,
   } = useIndicatorBoardStore((state) => state.actions);
 
   const selectedMetadataId = useWorkspaceStore((state) => state.selectedMetadataId);
@@ -64,6 +65,10 @@ export const useSplitIndicatorBoard = () => {
     return false;
   }
 
+  function deleteMetadataFromIndicatorBoard(metadataId: string) {
+    deleteIndicatorBoardInfo(metadataId);
+  }
+
   const handleDragSwapWithOtherContext = (newValue: { [key: string]: string[] }) => {
     const newIndicatorBoardMetadataIds = Object.keys(newValue).map((_, index) => newValue[`${index}`][0]);
     reorderIndicatorBoardInfos(newIndicatorBoardMetadataIds);
@@ -83,6 +88,7 @@ export const useSplitIndicatorBoard = () => {
     addMetadataToIndicatorBoard,
     handleActiveChange,
     handleDragSwapWithOtherContext,
+    deleteMetadataFromIndicatorBoard,
   };
 };
 
