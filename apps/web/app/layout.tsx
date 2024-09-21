@@ -9,6 +9,7 @@ import FloatingComponentContainer from './ui/pages/workspace/floating-component-
 import SideNav from './ui/pages/workspace/side-bar/sidenav';
 import { SWRProvider } from './ui/components/util/swr-provider';
 import ChatProvider from './business/hooks/linguistic-guidance/provider/chat-provider';
+import Script from "next/script";
 
 const myFont = localFont({
   src: './PretendardVariable.woff2',
@@ -42,6 +43,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </ChatProvider>
           </MockingUser>
         </body>
+        <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019952761112111`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+      />
       </GoogleAnalyticsProvider>
     </html>
   );
