@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
   IndicatorBoardMetadataResponse,
   IndicatorInfoResponse,
@@ -11,6 +11,7 @@ import {
 import { useWorkspaceStore } from '../../../../store/stores/numerical-guidance/workspace.store';
 import { convertIndicatorBoardMetadataList } from '@/app/business/services/numerical-guidance/view-model/indicator-board-metadata/indicator-board-metadata-list-view-model.service';
 import { useWorkspace } from '../../use-workspace.hook';
+import { useSplitIndicatorBoard } from '../indicator-board/use-split-indicator-board.hook';
 
 export const useSelectedIndicatorBoardMetadata = () => {
   const selectedMetadataId = useWorkspaceStore((state) => state.selectedMetadataId);
@@ -24,11 +25,19 @@ export const useSelectedIndicatorBoardMetadata = () => {
   const { trigger: deleteCustomForecastIndicatorTrigger } =
     useDeleteCustomForecastIndicatorFromMetadata(selectedMetadataId);
 
+  const { addMetadataToIndicatorBoard, deleteMetadataFromIndicatorBoard } = useSplitIndicatorBoard();
+
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
 
     return convertIndicatorBoardMetadataList(indicatorBoardMetadataList);
   }, [indicatorBoardMetadataList]);
+
+  useEffect(() => {
+    if (!selectedMetadataId && convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList.length) {
+      selectMetadataById(convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList[0].id);
+    }
+  }, [selectedMetadataId, convertedIndicatorBoardMetadataList]);
 
   const selectedMetadata = useMemo(() => {
     if (!selectedMetadataId) return undefined;
@@ -123,11 +132,21 @@ export const useSelectedIndicatorBoardMetadata = () => {
     );
   };
 
-  const selectMetadataById = (metadataId: string | undefined) => {
-    selectMetadata(metadataId);
+  function selectMetadataById(metadataId: string) {
+    const isSuccess = addMetadataToIndicatorBoard(metadataId);
+    if (isSuccess) {
+      selectMetadata(metadataId);
+      activeTab();
+    }
+  }
 
-    activeTab();
-  };
+  function unselectMetadataById(metadataId: string) {
+    const isSelected = selectedMetadata?.id === metadataId;
+    deleteMetadataFromIndicatorBoard(metadataId);
+    if (isSelected) {
+      selectMetadata(undefined);
+    }
+  }
 
   return {
     selectedMetadataId,
@@ -135,7 +154,8 @@ export const useSelectedIndicatorBoardMetadata = () => {
     addIndicatorToMetadata,
     deleteIndicatorFromMetadata,
     addCustomForecastIndicatorToMetadata,
-    selectMetadataById: selectMetadataById,
+    selectMetadataById,
     deleteCustomForecastIndicatorFromMetadata,
+    unselectMetadataById,
   };
 };

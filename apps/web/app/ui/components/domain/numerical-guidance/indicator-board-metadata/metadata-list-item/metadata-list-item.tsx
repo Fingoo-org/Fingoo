@@ -14,9 +14,7 @@ import { cn } from '@/app/utils/style';
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import MetadataListItemRow from './metadata-list-item-row';
 import { useLogger } from '@/app/logging/use-logger.hook';
-import { sendGAEvent } from '@next/third-parties/google';
 import MetadataListItemDraggableRow from './metadata-list-item-draggable-row';
-import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -28,15 +26,13 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
 
   const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
-  const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
+  const { selectedMetadata, selectMetadataById, unselectMetadataById } = useSelectedIndicatorBoardMetadata();
   const { indicatorBoardMetadata, updateIndicatorIdsWithsectionIds } = useIndicatorBoardMetadataViewModel(item.id);
   const [indicatorIdsWithSectionIds, setIndicatorIdsWithsectionIds] = useState<{ [key: string]: string[] } | undefined>(
     indicatorBoardMetadata?.indicatorIdsWithSectionIds,
   );
 
-  const { checkMetadataInIndicatorBoard, deleteMetadataFromIndicatorBoard } = useIndicatorBoard(item.id);
-
-  const { addMetadataToIndicatorBoard } = useSplitIndicatorBoard();
+  const { checkMetadataInIndicatorBoard } = useIndicatorBoard(item.id);
 
   useEffect(() => {
     setIndicatorIdsWithsectionIds(indicatorBoardMetadata?.indicatorIdsWithSectionIds);
@@ -56,17 +52,11 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     logger.track('click_metadata_item', {
       value: item.id,
     });
-    const isSuccess = addMetadataToIndicatorBoard(item.id);
-    if (isSuccess) {
-      selectMetadataById(item.id);
-    }
+    selectMetadataById(item.id);
   };
 
   const handleDeSelect = () => {
-    deleteMetadataFromIndicatorBoard(item.id);
-    if (isSelected) {
-      selectMetadataById(undefined);
-    }
+    unselectMetadataById(item.id);
   };
 
   const handleIconButton = () => {
