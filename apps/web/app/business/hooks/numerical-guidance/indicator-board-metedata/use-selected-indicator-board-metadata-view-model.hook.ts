@@ -25,7 +25,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
   const { trigger: deleteCustomForecastIndicatorTrigger } =
     useDeleteCustomForecastIndicatorFromMetadata(selectedMetadataId);
 
-  const { addMetadataToIndicatorBoard, deleteMetadataFromIndicatorBoard } = useSplitIndicatorBoard();
+  const { addMetadataToIndicatorBoard } = useSplitIndicatorBoard();
 
   const convertedIndicatorBoardMetadataList = useMemo(() => {
     if (!indicatorBoardMetadataList) return undefined;
@@ -35,7 +35,12 @@ export const useSelectedIndicatorBoardMetadata = () => {
 
   useEffect(() => {
     if (!selectedMetadataId && convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList.length) {
-      selectMetadataById(convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList[0].id);
+      const isSuccess = addMetadataToIndicatorBoard(
+        convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList[0].id,
+      );
+      if (isSuccess) {
+        selectMetadataById(convertedIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList[0].id);
+      }
     }
   }, [selectedMetadataId, convertedIndicatorBoardMetadataList]);
 
@@ -132,20 +137,10 @@ export const useSelectedIndicatorBoardMetadata = () => {
     );
   };
 
-  function selectMetadataById(metadataId: string) {
-    const isSuccess = addMetadataToIndicatorBoard(metadataId);
-    if (isSuccess) {
-      selectMetadata(metadataId);
-      activeTab();
-    }
-  }
+  function selectMetadataById(metadataId: string | undefined) {
+    selectMetadata(metadataId);
 
-  function unselectMetadataById(metadataId: string) {
-    const isSelected = selectedMetadata?.id === metadataId;
-    deleteMetadataFromIndicatorBoard(metadataId);
-    if (isSelected) {
-      selectMetadata(undefined);
-    }
+    activeTab();
   }
 
   return {
@@ -156,6 +151,5 @@ export const useSelectedIndicatorBoardMetadata = () => {
     addCustomForecastIndicatorToMetadata,
     selectMetadataById,
     deleteCustomForecastIndicatorFromMetadata,
-    unselectMetadataById,
   };
 };

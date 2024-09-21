@@ -15,6 +15,7 @@ import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indic
 import MetadataListItemRow from './metadata-list-item-row';
 import { useLogger } from '@/app/logging/use-logger.hook';
 import MetadataListItemDraggableRow from './metadata-list-item-draggable-row';
+import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
 
 type MetadataListItemProps = {
   item: IndicatorBoardMetadata;
@@ -26,11 +27,13 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
 
   const [activeDragItemId, setActiveDragItemId] = useState<string | null>(null);
   const { dialogPositionRef: iconButtonRef, openDialogWithPayload } = useDialog(DIALOG_KEY.METADATA_EDIT_MENU);
-  const { selectedMetadata, selectMetadataById, unselectMetadataById } = useSelectedIndicatorBoardMetadata();
+  const { selectedMetadata, selectMetadataById } = useSelectedIndicatorBoardMetadata();
   const { indicatorBoardMetadata, updateIndicatorIdsWithsectionIds } = useIndicatorBoardMetadataViewModel(item.id);
   const [indicatorIdsWithSectionIds, setIndicatorIdsWithsectionIds] = useState<{ [key: string]: string[] } | undefined>(
     indicatorBoardMetadata?.indicatorIdsWithSectionIds,
   );
+
+  const { addMetadataToIndicatorBoard, deleteMetadataFromIndicatorBoard } = useSplitIndicatorBoard();
 
   const { checkMetadataInIndicatorBoard } = useIndicatorBoard(item.id);
 
@@ -52,11 +55,17 @@ export default function MetadataListItem({ item }: MetadataListItemProps) {
     logger.track('click_metadata_item', {
       value: item.id,
     });
-    selectMetadataById(item.id);
+    const isSuccess = addMetadataToIndicatorBoard(item.id);
+    if (isSuccess) {
+      selectMetadataById(item.id);
+    }
   };
 
   const handleDeSelect = () => {
-    unselectMetadataById(item.id);
+    deleteMetadataFromIndicatorBoard(item.id);
+    if (isSelected) {
+      selectMetadataById(undefined);
+    }
   };
 
   const handleIconButton = () => {
