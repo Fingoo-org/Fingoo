@@ -3,8 +3,23 @@ import Link from 'next/link';
 import { CardContent, CardFooter, Card } from '@/app/ui/components/view/molecule/card/card';
 import Form from './ui/components/view/molecule/form';
 import { authenticate } from './business/services/auth/sign-in.service';
+import SplitScreenToggleGroup from './ui/pages/workspace/split-screen/split-screen-toggle-group';
+import Workspace from './ui/pages/workspace/workspace';
 
 export default function Page() {
+  return (
+    <div className="relative h-full w-full">
+      <div className="absolute left-1/2 top-2 z-10 -translate-x-1/2 rounded-lg ">
+        <SplitScreenToggleGroup />
+      </div>
+      <div className="flex h-full items-center justify-center">
+        <Workspace />
+      </div>
+    </div>
+  );
+}
+
+function LoginFormPage() {
   return (
     <div className="flex min-h-[100dvh] items-center justify-center bg-gray-100 px-4 dark:bg-gray-950">
       <div className="w-full max-w-md space-y-6">

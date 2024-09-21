@@ -68,6 +68,19 @@ describe('MetadataList', () => {
     expect(await screen.findAllByText('메타데이터(1)'));
   });
 
+  it('사용자가 메타데이터를 선택하지 않아도, 기본으로 메타데이터가 선택된다', async () => {
+    // given
+    render(
+      <SWRProviderWithoutCache>
+        <MetadataList />
+      </SWRProviderWithoutCache>,
+    );
+
+    // when
+    // then
+    expect(await screen.findByRole('tab', { selected: true })).toBeInTheDocument();
+  });
+
   it('사용자가 메타데이터를 클릭하면, 메타데이터가 선택된다.', async () => {
     // given
     const user = userEvent.setup();
@@ -79,7 +92,6 @@ describe('MetadataList', () => {
     await waitFor(async () => expect(await screen.findByText(/metadata1/i)).toBeInTheDocument());
 
     // when
-    expect(screen.queryByRole('tab', { selected: true })).toBeNull();
     await user.click(await screen.findByText(/metadata1/i));
 
     // then

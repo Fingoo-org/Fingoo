@@ -37,7 +37,7 @@ describe('useSelectedIndicatorBoardMetadata', () => {
     expect(result.current.selectedMetadata).toEqual(result.current.metadataList?.[0]);
   });
 
-  it('메타데이터를 선택하지 않으면, 선택한 메타데이터 값이 존재하지 않는다.', async () => {
+  it('메타데이터를 선택하지 않으면, 기본으로 0번째 메타데이터가 선택된다', async () => {
     // given
     const { result } = renderHook(() => {
       return {
@@ -54,10 +54,10 @@ describe('useSelectedIndicatorBoardMetadata', () => {
     });
 
     // then
-    expect(result.current.selectedMetadata).toBeUndefined();
+    expect(result.current.selectedMetadata).toEqual(result.current.metadataList?.[0]);
   });
 
-  it('메타데이터를 선택했다가 해제하면, 선택한 메타데이터 값이 존재하지 않는다.', async () => {
+  it('메타데이터를 선택했다가 해제하면, 기본으로 0번째 메타데이터가 선택된다.', async () => {
     // given
     const { result } = renderHook(() => {
       return {
@@ -70,18 +70,18 @@ describe('useSelectedIndicatorBoardMetadata', () => {
 
     // when
     act(() => {
-      if (result.current.metadataList?.[0]) {
-        result.current.actions.selectMetadata(result.current.metadataList?.[0].id);
+      if (result.current.metadataList?.[1]) {
+        result.current.actions.selectMetadata(result.current.metadataList?.[1].id);
       }
     });
     await waitFor(() => expect(result.current.selectedMetadata).not.toBeUndefined());
     act(() => {
       result.current.actions.selectMetadata(undefined);
     });
-    await waitFor(() => expect(result.current.selectedMetadata).toBeUndefined());
+    // await waitFor(() => expect(result.current.selectedMetadata).toBeUndefined());
 
     // then
-    expect(result.current.selectedMetadata).toBeUndefined();
+    expect(result.current.selectedMetadata).toEqual(result.current.metadataList?.[0]);
   });
 
   it('메타데이터를 선택했다가 다른 메타데이터를 선택하면, 마지막에 선택한 메타데이터 값을 가져온다', async () => {

@@ -35,10 +35,6 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     updateIndicatorBoardInfo(indicatorBoardMetadataId, { dateRange });
   }
 
-  function deleteMetadataFromIndicatorBoard(metadataId: string) {
-    deleteIndicatorBoardInfo(metadataId);
-  }
-
   return {
     indicatorBoardInfos,
     indicatorBoardInfo,
@@ -48,7 +44,6 @@ export const useIndicatorBoard = (indicatorBoardMetadataId?: string) => {
     setIsAdvancedChart,
     setInterval,
     checkMetadataInIndicatorBoard,
-    deleteMetadataFromIndicatorBoard,
     updateDateRange,
   };
 };
