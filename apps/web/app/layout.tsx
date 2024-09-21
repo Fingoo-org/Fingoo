@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <FloatingComponentContainer />
                 </div>
               </SWRProvider>
-            </ChatProvider>MockingUser
+            </ChatProvider>
           </MockingUser>
         </body>
       </GoogleAnalyticsProvider>
