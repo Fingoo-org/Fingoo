@@ -29,8 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <GoogleAnalyticsProvider>
         <body className={cn(myFont.variable, 'font-pretendard')}>
-          <ChatProvider>
-            <MockingUser>
+          <MockingUser>
+            <ChatProvider>
               <SWRProvider>
                 <div className="flex h-screen md:flex-row md:overflow-hidden">
                   <SideNav />
@@ -39,8 +39,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <FloatingComponentContainer />
                 </div>
               </SWRProvider>
-            </MockingUser>
-          </ChatProvider>
+            </ChatProvider>MockingUser
+          </MockingUser>
         </body>
       </GoogleAnalyticsProvider>
     </html>
