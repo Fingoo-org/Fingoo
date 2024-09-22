@@ -12,6 +12,8 @@ export type MajorIndicatorResponse = {
   symbolName: string;
   symbolPrice: number;
   symbolChanges: number;
+  indicatorId: string;
+  indicatorType: string;
   timeline: TimelineProps[];
 };
 
