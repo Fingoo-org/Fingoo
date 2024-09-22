@@ -8,37 +8,41 @@ export function IndicatorQuoteAnalytics(indicator: IndicatorQuoteRequest) {
 
   return (
     <Pending isPending={isPending}>
-      <Card>
-        <CardHeader>
-          <CardTitle className=" flex items-center justify-center text-lg">주요통계</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {indicatorQuoteData.isMarketOpen ? (
+      {indicatorQuoteData !== undefined ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className=" flex items-center justify-center text-lg">주요통계</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {indicatorQuoteData.isMarketOpen ? (
+              <div className=" flex justify-between text-sm">
+                <div>시작</div>
+                <div>{indicatorQuoteData.open}</div>
+              </div>
+            ) : (
+              ''
+            )}
             <div className=" flex justify-between text-sm">
-              <div>시작</div>
-              <div>{indicatorQuoteData.open}</div>
+              <div>1년 최고</div>
+              <div>{indicatorQuoteData.fiftyTwoWeek.high}</div>
             </div>
-          ) : (
-            ''
-          )}
-          <div className=" flex justify-between text-sm">
-            <div>1년 최고</div>
-            <div>{indicatorQuoteData.fiftyTwoWeek.high}</div>
-          </div>
-          <div className=" flex justify-between text-sm">
-            <div>1년 최저</div>
-            <div>{indicatorQuoteData.fiftyTwoWeek.low}</div>
-          </div>
-          {indicatorQuoteData.isMarketOpen ? (
             <div className=" flex justify-between text-sm">
-              <div>거래량</div>
-              <div>{indicatorQuoteData.volume}</div>
+              <div>1년 최저</div>
+              <div>{indicatorQuoteData.fiftyTwoWeek.low}</div>
             </div>
-          ) : (
-            ''
-          )}
-        </CardContent>
-      </Card>
+            {indicatorQuoteData.isMarketOpen ? (
+              <div className=" flex justify-between text-sm">
+                <div>거래량</div>
+                <div>{indicatorQuoteData.volume}</div>
+              </div>
+            ) : (
+              ''
+            )}
+          </CardContent>
+        </Card>
+      ) : (
+        ''
+      )}
     </Pending>
   );
 }

@@ -8,23 +8,27 @@ export function IndicatorQuoteTitle(indicator: IndicatorQuoteRequest) {
 
   return (
     <Pending isPending={isPending}>
-      <Card>
-        <CardHeader>
-          <CardTitle className=" text-lg">
-            {indicatorQuoteData.currency === 'USD' ? '$ ' : '₩ '}
-            {indicatorQuoteData.close}
-          </CardTitle>
-        </CardHeader>
+      {indicatorQuoteData !== undefined ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className=" text-lg">
+              {indicatorQuoteData.currency === 'USD' ? '$ ' : '₩ '}
+              {indicatorQuoteData.close}
+            </CardTitle>
+          </CardHeader>
 
-        <CardContent className=" flex flex-row">
-          어제보다
-          <p className={` pl-2 ${Number(indicatorQuoteData.change) < 0 ? 'text-blue-500' : 'text-red-500'}`}>
-            {Number(indicatorQuoteData.change) < 0 ? '-' : '+'}
-            {indicatorQuoteData.currency === 'USD' ? '$' : '₩'}
-            {Math.abs(Number(indicatorQuoteData.change))} ({indicatorQuoteData.percentChange})
-          </p>
-        </CardContent>
-      </Card>
+          <CardContent className=" flex flex-row">
+            어제보다
+            <p className={` pl-2 ${Number(indicatorQuoteData.change) < 0 ? 'text-blue-500' : 'text-red-500'}`}>
+              {Number(indicatorQuoteData.change) < 0 ? '-' : '+'}
+              {indicatorQuoteData.currency === 'USD' ? '$' : '₩'}
+              {Math.abs(Number(indicatorQuoteData.change))} ({indicatorQuoteData.percentChange})
+            </p>
+          </CardContent>
+        </Card>
+      ) : (
+        ''
+      )}
     </Pending>
   );
 }
