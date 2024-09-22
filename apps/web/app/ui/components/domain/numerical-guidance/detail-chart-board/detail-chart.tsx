@@ -2,31 +2,45 @@
 import React from 'react';
 import LineChart from '../../../view/molecule/multi-line-chart/line-chart';
 import { cn } from '@/app/utils/style';
+import { useDetailChart } from '@/app/business/hooks/numerical-guidance/detail-chart-board/use-detail-chart.hook';
+import { Interval } from '@/app/store/stores/numerical-guidance/indicator-board.store';
+import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { FormattedRowType } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
 
 type DetailChartProps = {
-  data: { date: string; value: number }[];
-  category: string;
+  indicatorId: string;
+  startDate: string;
+  interval: Interval;
+  indicatorType: IndicatorType;
   noDataText?: string;
-  height?: number;
   showHighLowPoints?: boolean;
   customColor?: string;
 };
 
 export default function DetailChart({
-  data,
-  category,
+  indicatorId,
+  startDate,
+  interval,
+  indicatorType,
   noDataText = 'no data',
-  height = 300,
   showHighLowPoints = true,
   customColor,
 }: DetailChartProps) {
-  const formattedData: FormattedRowType[] = data.map(({ date, value }) => ({
-    date,
-    [category]: value.toString(),
-  }));
+  const { detailChart, isLoading, isError } = useDetailChart({
+    indicatorId,
+    interval,
+    indicatorType,
+    startDate,
+  });
 
-  const index = 'date';
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error loading chart data</div>;
+
+  const chartData: FormattedRowType[] =
+    detailChart?.values.map(({ date, value }) => ({
+      date,
+      [detailChart.symbol]: value.toString(),
+    })) || [];
 
   const getCustomColorClass = (color: string) => {
     return color;
@@ -35,10 +49,10 @@ export default function DetailChart({
   return (
     <div className={cn('w-full')}>
       <LineChart
-        data={formattedData}
-        index={index}
-        categories={[category]}
-        height={height}
+        data={chartData}
+        index="date"
+        categories={[detailChart?.symbol || '']}
+        height={300}
         showXAxis={false}
         yAxisWidth={60}
         noDataText={noDataText}
@@ -46,7 +60,7 @@ export default function DetailChart({
         showAnimation={true}
         animationDuration={600}
         connectNulls={true}
-        showHighLowPoints={true}
+        showHighLowPoints={showHighLowPoints}
         customColors={customColor ? [getCustomColorClass(customColor)] : undefined}
         customReferenceLine={50}
         showLegend={false}
