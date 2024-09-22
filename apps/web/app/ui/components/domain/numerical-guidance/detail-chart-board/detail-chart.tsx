@@ -15,6 +15,7 @@ type DetailChartProps = {
   noDataText?: string;
   showHighLowPoints?: boolean;
   customColor?: string;
+  previousClose?: string;
 };
 
 export default function DetailChart({
@@ -24,6 +25,7 @@ export default function DetailChart({
   noDataText = 'no data',
   showHighLowPoints = true,
   customColor,
+  previousClose,
 }: DetailChartProps) {
   const { interval } = useIndicatorBoard(indicatorId);
   const { detailChart, isLoading, isError } = useDetailChart({
@@ -46,6 +48,8 @@ export default function DetailChart({
     return color;
   };
 
+  const previousCloseNumber = previousClose ? parseFloat(previousClose) : undefined;
+
   return (
     <div className={cn('w-full')}>
       <LineChart
@@ -62,7 +66,7 @@ export default function DetailChart({
         connectNulls={true}
         showHighLowPoints={showHighLowPoints}
         customColors={customColor ? [getCustomColorClass(customColor)] : undefined}
-        customReferenceLine={50}
+        customReferenceLine={previousCloseNumber}
         showLegend={false}
       />
     </div>

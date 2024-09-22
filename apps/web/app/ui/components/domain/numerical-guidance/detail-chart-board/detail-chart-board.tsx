@@ -36,6 +36,7 @@ const DetailChartBoard = React.memo(function DetailChartBoard({
               startDate={startDate}
               indicatorType={indicatorType}
               customColor="blue-500" // todo
+              previousClose="0" // todo
             />
           )}
           <div className="">
