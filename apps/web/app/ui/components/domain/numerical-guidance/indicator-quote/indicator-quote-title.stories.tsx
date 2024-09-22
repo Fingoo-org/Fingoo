@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { IndicatorQuoteTitle } from './indicator-quote-title';
 
 const meta: Meta<typeof IndicatorQuoteTitle> = {
-  title: 'mobile/molecule/indicatorTitle',
+  title: 'numerical-guidance/molecule/indicator-quote/indicatorTitle',
   component: IndicatorQuoteTitle,
   decorators: [
     (Story: React.ComponentType) => (
