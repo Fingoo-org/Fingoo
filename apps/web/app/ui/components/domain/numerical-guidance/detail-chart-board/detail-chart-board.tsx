@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DetailChart from './detail-chart';
 import IntervalToggleGroup from '../indicator-board/interval-toggle-group';
 import { SWRConfig } from 'swr';
@@ -7,20 +7,18 @@ import ClientDataSuspense from '../../../util/client-data-suspense';
 import { Card } from '../../../view/molecule/card/card';
 import { CardSkeleton } from '../../../view/skeletons';
 import { cn } from '@/app/utils/style';
+import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 type DetailChartBoardProps = {
   indicatorBoardMetadataId?: string;
+  indicatorType: IndicatorType;
 };
 
-const DetailChartBoard = React.memo(function DetailChartBoard({ indicatorBoardMetadataId }: DetailChartBoardProps) {
-  //
-  const sampleData = [
-    { date: '2023-09-01', value: 150 },
-    { date: '2023-09-02', value: 170 },
-    { date: '2023-09-03', value: 160 },
-  ];
-
-  const category = 'value'; // 차트 카테고리
+const DetailChartBoard = React.memo(function DetailChartBoard({
+  indicatorBoardMetadataId,
+  indicatorType,
+}: DetailChartBoardProps) {
+  const startDate = new Date().toISOString().split('T')[0];
 
   return (
     <Card className={cn('max-h-screen w-full space-y-5 rounded-lg bg-white px-4 py-5')}>
@@ -32,7 +30,14 @@ const DetailChartBoard = React.memo(function DetailChartBoard({ indicatorBoardMe
         }
       >
         <SWRConfig value={{ suspense: true, keepPreviousData: true }}>
-          <DetailChart data={sampleData} category={category} customColor="blue-500" />
+          {indicatorBoardMetadataId && (
+            <DetailChart
+              indicatorId={indicatorBoardMetadataId}
+              startDate={startDate}
+              indicatorType={indicatorType}
+              customColor="blue-500" // todo
+            />
+          )}
           <div className="">
             <IntervalToggleGroup indicatorBoardMetadataId={indicatorBoardMetadataId} />
           </div>

@@ -6,11 +6,11 @@ import { useDetailChart } from '@/app/business/hooks/numerical-guidance/detail-c
 import { Interval } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { FormattedRowType } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
+import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 
 type DetailChartProps = {
   indicatorId: string;
   startDate: string;
-  interval: Interval;
   indicatorType: IndicatorType;
   noDataText?: string;
   showHighLowPoints?: boolean;
@@ -20,12 +20,12 @@ type DetailChartProps = {
 export default function DetailChart({
   indicatorId,
   startDate,
-  interval,
   indicatorType,
   noDataText = 'no data',
   showHighLowPoints = true,
   customColor,
 }: DetailChartProps) {
+  const { interval } = useIndicatorBoard(indicatorId);
   const { detailChart, isLoading, isError } = useDetailChart({
     indicatorId,
     interval,
