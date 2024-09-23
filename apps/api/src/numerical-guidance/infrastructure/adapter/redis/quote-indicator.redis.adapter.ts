@@ -176,7 +176,7 @@ export class QuoteIndicatorRedisAdapter
     return previousDate;
   }
 
-  private async fetchQuoteData(
+  private async loadQuoteData(
     interval: QuoteIndicatorIntervalEnum,
     date: Date,
     indicatorDto: IndicatorDtoType,
