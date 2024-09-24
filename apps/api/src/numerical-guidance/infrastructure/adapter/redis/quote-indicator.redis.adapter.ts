@@ -34,12 +34,12 @@ export class QuoteIndicatorRedisAdapter
     nowDate: Date,
     timezone: string,
   ): Promise<IndicatorQuoteData> {
-    const currentData: IndicatorQuoteData = await this.fetchQuoteData(interval, nowDate, indicatorDto, timezone);
+    const currentData: IndicatorQuoteData = await this.loadQuoteData(interval, nowDate, indicatorDto, timezone);
     if (currentData) {
       return currentData;
     }
     const previousDate: Date = this.datetimeMinusInterval(interval, nowDate);
-    return this.fetchQuoteData(interval, previousDate, indicatorDto, timezone);
+    return this.loadQuoteData(interval, previousDate, indicatorDto, timezone);
   }
 
   private createQuoteIndicatorKey(
