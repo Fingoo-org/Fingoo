@@ -7,11 +7,11 @@ export type IndicatorQuoteRequest = {
   indicatorId: string;
   symbol: string;
   indicatorType: IndicatorType;
-  volumeTimePeriod: string;
-  micCode: string;
-  eod: boolean;
-  interval: string;
-  timezone: string;
+  volumeTimePeriod?: string;
+  micCode?: string;
+  eod?: boolean;
+  interval?: string;
+  timezone?: string;
 };
 
 export type FiftyTwoWeek = {
@@ -45,8 +45,20 @@ export type IndicatorQuoteResponse = {
   averageVolume: string;
 };
 
-export const useFetchIndicatorQuote = (parameter: IndicatorQuoteRequest) =>
-  useSWRImmutable<IndicatorQuoteResponse>(
-    `${API_PATH.indicatorQuote}?indicatorId=${parameter.indicatorId}&symbol=${parameter.symbol}&indicatorType=${parameter.indicatorType}&volumeTimePeriod=${parameter.volumeTimePeriod}&micCode=${parameter.micCode}&eod=${parameter.eod}&interval=${parameter.interval}&timezone=${parameter.timezone}`,
-    defaultFetcher,
-  );
+export const useFetchIndicatorQuote = (parameter: IndicatorQuoteRequest) => {
+  const queryParams = new URLSearchParams({
+    indicatorId: parameter.indicatorId,
+    symbol: parameter.symbol,
+    indicatorType: parameter.indicatorType,
+  });
+
+  if (parameter.volumeTimePeriod) queryParams.append('volumeTimePeriod', parameter.volumeTimePeriod);
+  if (parameter.micCode) queryParams.append('micCode', parameter.micCode);
+  if (parameter.eod !== undefined) queryParams.append('eod', String(parameter.eod));
+  if (parameter.interval) queryParams.append('interval', parameter.interval);
+  if (parameter.timezone) queryParams.append('timezone', parameter.timezone);
+
+  const url = `${API_PATH.indicatorQuote}?${queryParams.toString()}`;
+
+  return useSWRImmutable<IndicatorQuoteResponse>(url, defaultFetcher);
+};

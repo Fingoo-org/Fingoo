@@ -23,10 +23,6 @@ export const Default: Story = {
     indicatorId: '1605499-4925-438-bb00-8ea6d8056484',
     symbol: 'AAPL',
     indicatorType: 'stocks',
-    volumeTimePeriod: '9',
-    micCode: 'XNYX',
     eod: true,
-    interval: '1day',
-    timezone: 'ASIA/Seoul',
   },
 };
