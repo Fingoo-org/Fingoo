@@ -23,7 +23,12 @@ export const useIndicatorQuote = ({ indicatorId, symbol, indicatorType, ...optio
 
   const { data, isValidating, mutate } = useFetchIndicatorQuote(request);
 
-  const formattedIndicatorQuote = useMemo(() => data ?? undefined, [data]);
+  const formattedIndicatorQuote = useMemo(() => {
+    if (!data) {
+      return undefined;
+    }
+    return data;
+  }, [data]);
 
   return {
     formattedIndicatorQuote,
