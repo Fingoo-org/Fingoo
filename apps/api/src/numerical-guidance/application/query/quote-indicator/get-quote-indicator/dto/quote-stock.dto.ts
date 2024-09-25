@@ -1,5 +1,6 @@
 import { BaseQuoteIndicatorDto } from './base-quote-indicator.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { QuoteIndicatorFiftyTwoWeekDto } from './quote-indicator.fify-two-week.dto';
 
 export class QuoteStockDto extends BaseQuoteIndicatorDto {
   @ApiProperty({
@@ -27,6 +28,8 @@ export class QuoteStockDto extends BaseQuoteIndicatorDto {
   average_volume: string;
 
   static create(data: QuoteStockDto): QuoteStockDto {
-    return Object.assign(new QuoteStockDto(), data);
+    const quoteStockDto: QuoteStockDto = Object.assign(new QuoteStockDto(), data);
+    quoteStockDto.fifty_two_week = new QuoteIndicatorFiftyTwoWeekDto(data.fifty_two_week);
+    return quoteStockDto;
   }
 }

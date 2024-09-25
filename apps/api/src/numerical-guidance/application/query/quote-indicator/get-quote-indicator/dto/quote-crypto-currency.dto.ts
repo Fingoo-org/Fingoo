@@ -1,5 +1,6 @@
 import { BaseQuoteIndicatorDto } from './base-quote-indicator.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { QuoteIndicatorFiftyTwoWeekDto } from './quote-indicator.fify-two-week.dto';
 
 export class QuoteCryptoCurrencyDto extends BaseQuoteIndicatorDto {
   @ApiProperty({
@@ -21,6 +22,8 @@ export class QuoteCryptoCurrencyDto extends BaseQuoteIndicatorDto {
   rolling_change: string;
 
   static create(data: QuoteCryptoCurrencyDto): QuoteCryptoCurrencyDto {
-    return Object.assign(new QuoteCryptoCurrencyDto(), data);
+    const quoteCryptoCurrencyDto: QuoteCryptoCurrencyDto = Object.assign(new QuoteCryptoCurrencyDto(), data);
+    quoteCryptoCurrencyDto.fifty_two_week = new QuoteIndicatorFiftyTwoWeekDto(data.fifty_two_week);
+    return quoteCryptoCurrencyDto;
   }
 }
