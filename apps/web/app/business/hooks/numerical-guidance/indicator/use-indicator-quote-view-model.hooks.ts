@@ -4,19 +4,30 @@ import {
 } from '@/app/store/querys/numerical-guidance/indicator-quote.query';
 import { useMemo } from 'react';
 
-export const useIndicatorQuote = (request: IndicatorQuoteRequest) => {
-  const {
-    data: indicatorQuoteData,
-    isValidating,
-    mutate: revalidateIndicatorQuoteData,
-  } = useFetchIndicatorQuote(request);
+const DEFAULT_REQUEST: Omit<IndicatorQuoteRequest, 'indicatorId' | 'symbol' | 'indicatorType'> = {
+  volumeTimePeriod: '9',
+  micCode: 'XNYS',
+  eod: false,
+  interval: '1day',
+  timezone: 'Asia/Seoul',
+};
 
-  const formattedIndicatorQuote = useMemo(() => {
-    if (!indicatorQuoteData) {
-      return undefined;
-    }
-    return indicatorQuoteData;
-  }, [indicatorQuoteData]);
+export const useIndicatorQuote = ({ indicatorId, symbol, indicatorType, ...optionalParams }: IndicatorQuoteRequest) => {
+  const request: IndicatorQuoteRequest = {
+    indicatorId,
+    symbol,
+    indicatorType,
+    ...DEFAULT_REQUEST,
+    ...optionalParams,
+  };
 
-  return { formattedIndicatorQuote, isPending: isValidating, revalidateIndicatorQuoteData };
+  const { data, isValidating, mutate } = useFetchIndicatorQuote(request);
+
+  const formattedIndicatorQuote = useMemo(() => data ?? undefined, [data]);
+
+  return {
+    formattedIndicatorQuote,
+    isPending: isValidating,
+    revalidateIndicatorQuoteData: mutate,
+  };
 };
