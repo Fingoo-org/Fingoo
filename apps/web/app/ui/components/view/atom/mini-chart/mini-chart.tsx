@@ -8,7 +8,7 @@ interface ColoredLineChartProps {
   color: string;
 }
 
-const ColoredLineChart: React.FC<ColoredLineChartProps> = ({ data, color }) => {
+const ColoredLineChart = ({ data, color }: ColoredLineChartProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data}>
