@@ -16,17 +16,17 @@ interface IndexProps {
   data: ChartCardProps[];
 }
 
-const ValueDisplay: React.FC<{ value: number }> = ({ value }) => (
+const ValueDisplay = ({ value }: { value: number }) => (
   <div className="text-lg font-bold">
     {value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
   </div>
 );
 
-const ChangeDisplay: React.FC<{ changeValue: number }> = ({ changeValue }) => (
+const ChangeDisplay = ({ changeValue }: { changeValue: number }) => (
   <div className="text-sm">{`${changeValue > 0 ? '+' : ''}${changeValue.toFixed(2)}%`}</div>
 );
 
-const ChartCard: React.FC<ChartCardProps> = ({ indexName, value, changeValue, countryFlag, chartData }) => {
+const ChartCard = ({ indexName, value, changeValue, countryFlag, chartData }: ChartCardProps) => {
   const isPositive = changeValue > 0;
   return (
     <Card className={'w-full rounded-sm'}>
@@ -47,7 +47,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ indexName, value, changeValue, co
   );
 };
 
-const ChartCardGrid: React.FC<IndexProps> = ({ data }) => (
+const ChartCardGrid = ({ data }: IndexProps) => (
   <div className="grid grid-cols-2">
     {data.map((item, index) => (
       <ChartCard

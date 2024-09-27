@@ -24,7 +24,7 @@ interface MiniChartProps {
   isPositive: boolean;
 }
 
-const MiniChart: React.FC<MiniChartProps> = ({ data, className, isPositive }) => {
+const MiniChart = ({ data, className, isPositive }: MiniChartProps) => {
   if (!data || data.length === 0) {
     return <div className={className}>No data</div>;
   }
