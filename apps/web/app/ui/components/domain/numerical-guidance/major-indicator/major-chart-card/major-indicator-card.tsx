@@ -19,7 +19,7 @@ export default function MajorIndicatorCard({ country }: { country: string }) {
                   value: chartData.symbolPrice,
                   changeValue: chartData.symbolChanges,
                   countryFlag: `/public/assets/images/${chartData.country.toLowerCase()}.svg`,
-                  chart: <div className="flex items-center justify-center bg-gray-300">차트</div>,
+                  chartData: chartData.timeline,
                 }))}
               />
             </CarouselItem>
