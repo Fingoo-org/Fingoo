@@ -23,9 +23,15 @@ import { TypeORMError } from 'typeorm/error/TypeORMError';
 import { IndicatorValueManager } from '../../../util/indicator-value-manager';
 import { LoadLiveIndicatorPort } from '../../../application/port/external/twelve/load-live-indicator.port';
 import { IndicatorTwelveMapper } from './mapper/indicator.twelve.mapper';
+import { LoadQuoteIndicatorPort } from '../../../application/port/external/twelve/load-quote-indicator.port';
+import { IndicatorQuoteData } from '../../../application/query/quote-indicator/get-quote-indicator/interface/quote-indicator-data.interface';
+import { QuoteIndicatorIntervalEnum } from '../../../../utils/enum/enum-definition';
+import { QuoteIndicatorMapper } from './mapper/quote-indicator.mapper';
 
 @Injectable()
-export class IndicatorTwelveAdapter implements SearchTwelveIndicatorPort, LoadLiveIndicatorPort {
+export class IndicatorTwelveAdapter
+  implements SearchTwelveIndicatorPort, LoadLiveIndicatorPort, LoadQuoteIndicatorPort
+{
   private readonly logger = new Logger(IndicatorTwelveAdapter.name);
 
   constructor(
@@ -79,7 +85,26 @@ export class IndicatorTwelveAdapter implements SearchTwelveIndicatorPort, LoadLi
     );
 
     const values: IndicatorValue[] = this.convertRowDataToIndicatorValue(responseData);
-    return await this.generateIndicatorDto(interval, indicatorDto, responseData, values);
+    return await this.generateLiveIndicatorDto(interval, indicatorDto, responseData, values);
+  }
+
+  async loadQuoteIndicator(
+    indicatorDto: IndicatorDtoType,
+    volumn_time_period: string,
+    mic_code: string,
+    eod: boolean,
+    interval: QuoteIndicatorIntervalEnum,
+    timezone: string,
+  ): Promise<IndicatorQuoteData> {
+    const responseData = await this.twelveApiUtil.getQuote(
+      indicatorDto.symbol,
+      volumn_time_period,
+      mic_code,
+      eod,
+      interval,
+      timezone,
+    );
+    return QuoteIndicatorMapper.mapObjectToDto(indicatorDto.indicatorType, responseData);
   }
 
   private convertRowDataToIndicatorValue(responseData): IndicatorValue[] {
@@ -88,7 +113,7 @@ export class IndicatorTwelveAdapter implements SearchTwelveIndicatorPort, LoadLi
     });
   }
 
-  private async generateIndicatorDto(interval: Interval, indicatorDto, responseData, values) {
+  private async generateLiveIndicatorDto(interval: Interval, indicatorDto, responseData, values) {
     if (interval == 'year') {
       const valuesPerOneYear = await this.indicatorValueManager.convertIndicatorValueMonthToYear(values);
       return IndicatorTwelveMapper.mapToIndicatorDtoByType(indicatorDto, valuesPerOneYear, responseData);

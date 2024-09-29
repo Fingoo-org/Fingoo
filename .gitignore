@@ -2,3 +2,5 @@ node_modules
 .turbo
 out
 .vercel
+.idea
+.env
