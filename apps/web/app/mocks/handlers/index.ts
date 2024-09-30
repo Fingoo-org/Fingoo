@@ -2,6 +2,7 @@ import { delay } from 'msw';
 import { customForecastIndicatorHandlers } from './custom-forecast-indicator-handler.mock';
 import { indicatorHandlers } from './indicator-handler.mock';
 import { indicatorBoardMetadataHandlers } from './indicator-board-metadata-handler.mock';
+import { indicatorQuoteHandlers } from './indicator-quote-handler.mock';
 import { majorChartHandlers } from './major-chart-handler.mock';
 
 export const delayForDevelopment = async (ms = 1000) => {
@@ -14,5 +15,6 @@ export const handlers = [
   ...indicatorBoardMetadataHandlers,
   ...customForecastIndicatorHandlers,
   ...indicatorHandlers,
+  ...indicatorQuoteHandlers,
   ...majorChartHandlers,
 ];

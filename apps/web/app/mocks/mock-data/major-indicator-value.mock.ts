@@ -4,6 +4,8 @@ export const majorIndicatorCountry = [
     symbolName: 'S&P500',
     symbolPrice: 40872.23,
     symbolChanges: 0.24,
+    indicatorId: 'SnP500',
+    indicatorType: 'stock_index',
     timeline: [
       {
         time: '2024-09-01T12:00:00Z',
@@ -50,6 +52,8 @@ export const majorIndicatorCountry = [
   {
     country: 'US',
     symbolName: 'Dow Jones',
+    indicatorId: 'Dow',
+    indicatorType: 'stock_index',
     symbolPrice: 34678.5,
     symbolChanges: -0.15,
     timeline: [
@@ -98,6 +102,8 @@ export const majorIndicatorCountry = [
   {
     country: 'US',
     symbolName: 'NASDAQ',
+    indicatorId: 'Nas',
+    indicatorType: 'stock_index',
     symbolPrice: 14532.75,
     symbolChanges: 0.35,
     timeline: [
@@ -146,6 +152,8 @@ export const majorIndicatorCountry = [
   {
     country: 'US',
     symbolName: '10-Year Treasury Bond',
+    indicatorId: '10-year',
+    indicatorType: 'stock_index',
     symbolPrice: 3.82,
     symbolChanges: -0.02,
     timeline: [
@@ -194,6 +202,8 @@ export const majorIndicatorCountry = [
   {
     country: 'KR',
     symbolName: 'KOSPI',
+    indicatorId: 'KOS',
+    indicatorType: 'stock_index',
     symbolPrice: 2482.35,
     symbolChanges: 0.17,
     timeline: [
@@ -242,6 +252,8 @@ export const majorIndicatorCountry = [
   {
     country: 'KR',
     symbolName: 'KOSDAQ',
+    indicatorId: 'KosDaq',
+    indicatorType: 'stock_index',
     symbolPrice: 833.47,
     symbolChanges: -0.23,
     timeline: [
@@ -290,6 +302,8 @@ export const majorIndicatorCountry = [
   {
     country: 'CN',
     symbolName: 'SSE Composite',
+    indicatorId: 'SSE',
+    indicatorType: 'stock_index',
     symbolPrice: 3178.45,
     symbolChanges: 0.05,
     timeline: [
@@ -338,6 +352,8 @@ export const majorIndicatorCountry = [
   {
     country: 'CN',
     symbolName: 'CSI 300',
+    indicatorId: 'CSI',
+    indicatorType: 'stock_index',
     symbolPrice: 4012.6,
     symbolChanges: -0.12,
     timeline: [

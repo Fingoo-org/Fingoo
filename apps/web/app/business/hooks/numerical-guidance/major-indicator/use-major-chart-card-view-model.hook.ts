@@ -34,6 +34,8 @@ export const useCountryMajorIndicatorCardWithCountry = (country: string) => {
       symbolName: majorChartData.symbolName,
       symbolPrice: majorChartData.symbolPrice,
       symbolChanges: majorChartData.symbolChanges,
+      indicatorId: majorChartData.indicatorId,
+      indicatorType: majorChartData.indicatorType,
       timeline: majorChartData.timeline.map(({ time, value }) => ({
         time,
         value,

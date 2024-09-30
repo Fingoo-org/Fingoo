@@ -12,5 +12,6 @@ export const API_PATH = {
   liveIndicatorValue: `${API_URL}/numerical-guidance/indicators/live`, // refactor: be 수정되면 k-stock 사라져야함
   customForecastIndicator: `${API_URL}/numerical-guidance/custom-forecast-indicator`,
   historyIndicatorsValue: `${API_URL}/numerical-guidance/indicators/history`,
+  indicatorQuote: `${API_URL}/numerical-guidance/indicators/quote`,
   majorChart: `${API_URL}/major-chart`,
 };
