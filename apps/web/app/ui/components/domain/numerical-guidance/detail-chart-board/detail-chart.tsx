@@ -9,7 +9,7 @@ import { useIndicatorQuote } from '@/app/business/hooks/numerical-guidance/indic
 import { useDetailBoard } from '@/app/business/hooks/numerical-guidance/detail-chart-board/use-detail-board.hook';
 import Pending from '../../../view/molecule/pending';
 
-type DetailChartProps = {
+export type DetailChartProps = {
   indicatorId: string;
   symbol: string;
   indicatorType: IndicatorType;

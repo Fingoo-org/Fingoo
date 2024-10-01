@@ -1,45 +1,37 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import DetailChart from './detail-chart';
-import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import DetailChart, { DetailChartProps } from './detail-chart';
+import { indicatorTypes } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
 const meta: Meta<typeof DetailChart> = {
-  title: 'numerical-guidance/atom/DetailChart',
+  title: 'numerical-guidance/molecule/detail-chart-board/DetailChart',
   component: DetailChart,
+  decorators: [
+    (Story: React.ComponentType) => (
+      <div style={{ width: 352 }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     indicatorId: { control: 'text' },
-    startDate: { control: 'text' },
-    indicatorType: {
-      control: 'select',
-      options: [
-        'stocks',
-        'forex_pairs',
-        'cryptocurrencies',
-        'etf',
-        'indices',
-        'customForecastIndicator',
-        'funds',
-        'bonds',
-      ],
-    },
+    symbol: { control: 'text' },
+    indicatorType: { control: { type: 'select', options: indicatorTypes } },
     noDataText: { control: 'text' },
     showHighLowPoints: { control: 'boolean' },
-    customColor: { control: 'color' },
-  },
-  args: {
-    indicatorId: '160e5499-4925-4e38-bb00-8ea6d8056484',
-    startDate: '2023-01-01',
-    indicatorType: 'stocks' as IndicatorType,
-    noDataText: 'No data available',
-    showHighLowPoints: true,
-    customColor: '#ef4444',
   },
 };
 
 export default meta;
 
-type Story = StoryObj<typeof DetailChart>;
+type Story = StoryObj<DetailChartProps>;
 
 export const Default: Story = {
-  render: (args) => <DetailChart {...args} />,
+  args: {
+    indicatorId: '1',
+    symbol: 'AAPL',
+    indicatorType: 'stocks',
+    noDataText: 'No chart data',
+    showHighLowPoints: true,
+  },
 };
