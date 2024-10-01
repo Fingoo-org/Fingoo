@@ -14,7 +14,7 @@ export const ApiExceptionResponse = (statusCode: number, message: string, error:
           timestamp: { type: 'string', format: 'date-time', example: '2024-03-04T05:17:33.756Z' },
           url: {
             type: 'string',
-            example: '/api/numerical-guidance/..',
+            example: '/api/..',
           },
         },
       },
