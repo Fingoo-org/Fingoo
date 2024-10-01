@@ -63,5 +63,14 @@ describe('IndicatorFredAdapter', () => {
     expectedFields.forEach((field) => {
       expect(result).toHaveProperty(field);
     });
+
+    const expectedValuesFieldCount = 2;
+    const actualValuesFieldCount = Object.keys(result.values[0]).length;
+    expect(actualValuesFieldCount).toEqual(expectedValuesFieldCount);
+
+    const expectedValuesFields = ['date', 'value'];
+    expectedValuesFields.forEach((field) => {
+      expect(result.values[0]).toHaveProperty(field);
+    });
   }, 15000);
 });
