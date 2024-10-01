@@ -1,6 +1,6 @@
 import { BusinessRule } from 'src/utils/domain/business.rule';
 
-export const CONTENT_LIMIT_RULE = 5000;
+export const CONTENT_LIMIT_RULE = 400;
 
 export class PostContentLengthShouldNotExceedLimitRule implements BusinessRule {
   constructor(private readonly content: string) {}
