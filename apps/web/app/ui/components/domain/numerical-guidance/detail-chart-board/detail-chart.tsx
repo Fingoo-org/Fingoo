@@ -3,40 +3,51 @@ import React from 'react';
 import LineChart from '../../../view/molecule/multi-line-chart/line-chart';
 import { cn } from '@/app/utils/style';
 import { useDetailChart } from '@/app/business/hooks/numerical-guidance/detail-chart-board/use-detail-chart.hook';
-import { Interval } from '@/app/store/stores/numerical-guidance/indicator-board.store';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import { FormattedRowType } from '@/app/business/services/numerical-guidance/chart/indicator-formatter.service';
-import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
+import { useIndicatorQuote } from '@/app/business/hooks/numerical-guidance/indicator/use-indicator-quote-view-model.hooks';
+import { useDetailBoard } from '@/app/business/hooks/numerical-guidance/detail-chart-board/use-detail-board.hook';
+import Pending from '../../../view/molecule/pending';
 
 type DetailChartProps = {
   indicatorId: string;
-  startDate: string;
+  symbol: string;
   indicatorType: IndicatorType;
   noDataText?: string;
   showHighLowPoints?: boolean;
-  customColor?: string;
-  previousClose?: string;
 };
 
 export default function DetailChart({
   indicatorId,
-  startDate,
+  symbol,
   indicatorType,
   noDataText = 'no data',
   showHighLowPoints = true,
-  customColor,
-  previousClose,
 }: DetailChartProps) {
-  const { interval } = useIndicatorBoard(indicatorId);
-  const { detailChart, isLoading, isError } = useDetailChart({
+  const startDate = new Date().toISOString().split('T')[0];
+  const { interval } = useDetailBoard();
+
+  const {
+    detailChart,
+    isLoading: isChartLoading,
+    isError: isChartError,
+  } = useDetailChart({
     indicatorId,
     interval,
     indicatorType,
     startDate,
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading chart data</div>;
+  const { formattedIndicatorQuote: indicatorQuoteData, isPending: isQuoteLoading } = useIndicatorQuote({
+    indicatorId,
+    symbol,
+    indicatorType,
+  });
+
+  const customColor = indicatorQuoteData && Number(indicatorQuoteData.change) < 0 ? 'blue-500' : 'red-500';
+  const previousCloseNumber = indicatorQuoteData?.previousClose
+    ? parseFloat(indicatorQuoteData.previousClose)
+    : undefined;
 
   const chartData: FormattedRowType[] =
     detailChart?.values.map(({ date, value }) => ({
@@ -44,31 +55,33 @@ export default function DetailChart({
       [detailChart.symbol]: value.toString(),
     })) || [];
 
-  const getCustomColorClass = (color: string) => {
-    return color;
-  };
-
-  const previousCloseNumber = previousClose ? parseFloat(previousClose) : undefined;
+  const isLoading = isChartLoading || isQuoteLoading;
 
   return (
-    <div className={cn('w-full')}>
-      <LineChart
-        data={chartData}
-        index="date"
-        categories={[detailChart?.symbol || '']}
-        height={300}
-        showXAxis={false}
-        yAxisWidth={60}
-        noDataText={noDataText}
-        curveType="linear"
-        showAnimation={true}
-        animationDuration={600}
-        connectNulls={true}
-        showHighLowPoints={showHighLowPoints}
-        customColors={customColor ? [getCustomColorClass(customColor)] : undefined}
-        customReferenceLine={previousCloseNumber}
-        showLegend={false}
-      />
-    </div>
+    <Pending isPending={isLoading}>
+      {isChartError ? (
+        <div>Error loading chart data</div>
+      ) : (
+        <div className={cn('w-full')}>
+          <LineChart
+            data={chartData}
+            index="date"
+            categories={[detailChart?.symbol || '']}
+            height={300}
+            showXAxis={false}
+            yAxisWidth={60}
+            noDataText={noDataText}
+            curveType="linear"
+            showAnimation={true}
+            animationDuration={600}
+            connectNulls={true}
+            showHighLowPoints={showHighLowPoints}
+            customColors={[customColor]}
+            customReferenceLine={previousCloseNumber}
+            showLegend={false}
+          />
+        </div>
+      )}
+    </Pending>
   );
 }
