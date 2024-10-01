@@ -80,23 +80,23 @@ export const liveEconomyIndicatorTestData = {
     },
     {
       date: '2019-01-01',
-      value: '20977.326',
+      value: '21000.945',
     },
     {
       date: '2020-01-01',
-      value: '20451.945',
+      value: '20482.341',
     },
     {
       date: '2021-01-01',
-      value: '21590.414',
+      value: '21648.657',
     },
     {
       date: '2022-01-01',
-      value: '21992.687',
+      value: '22176.949',
     },
     {
       date: '2023-01-01',
-      value: '22528.503',
+      value: '22769.38',
     },
   ],
 };
