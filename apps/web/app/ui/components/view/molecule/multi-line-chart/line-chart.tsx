@@ -334,7 +334,7 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
                         />
                         <text
                           x={cx}
-                          y={value === highPoint ? cy - 10 : cy + 20}
+                          y={parseFloat(value) === highPoint ? cy - 10 : cy + 20}
                           textAnchor="middle"
                           fontSize="12"
                           fill={stroke}
