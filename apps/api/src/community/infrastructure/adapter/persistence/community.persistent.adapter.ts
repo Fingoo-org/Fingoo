@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePostPort } from 'src/community/application/port/persistent/create-post.port';
+import { CreatePostPort } from 'src/community/application/port/persistent/post/create-post.port';
 import { Post } from 'src/community/domain/post';
 import { PostEntity } from './entity/post.entity';
-import { LoadPostsPort } from 'src/community/application/port/persistent/load-posts.port';
-import { PostDto } from 'src/community/application/query/get-posts/post.dto';
+import { LoadPostsPort } from 'src/community/application/port/persistent/post/load-posts.port';
+import { PostDto } from 'src/community/application/query/post/get-post/dto/post.dto';
 
 const testData = [
   {

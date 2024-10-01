@@ -1,19 +1,19 @@
 import { Test } from '@nestjs/testing';
-import { CommunityController } from 'src/community/api/community.controller';
+import { PostController } from 'src/community/api/post.controller';
 import { CqrsModule } from '@nestjs/cqrs';
-import { GetPostsQueryHandler } from 'src/community/application/query/get-posts/get-posts.query.handler';
+import { GetPostsQueryHandler } from 'src/community/application/query/post/get-post/get-posts.query.handler';
 import * as request from 'supertest';
 import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
-import { CreatePostCommandHandler } from 'src/community/application/command/create-post/create-post.command.handler';
+import { CreatePostCommandHandler } from 'src/community/application/command/post/create-post/create-post.command.handler';
 import { CONTENT_LIMIT_RULE } from 'src/community/domain/rule/PostContentLengthShouldNotExceedLimit.rule';
 
-describe('CommunityController', () => {
+describe('PostController', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [CqrsModule],
-      controllers: [CommunityController],
+      controllers: [PostController],
       providers: [
         GetPostsQueryHandler,
         CreatePostCommandHandler,

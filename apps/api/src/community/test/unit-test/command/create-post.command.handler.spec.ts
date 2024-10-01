@@ -1,8 +1,8 @@
 import { Post } from 'src/community/domain/post';
 import { Test } from '@nestjs/testing';
-import { CreatePostCommand } from 'src/community/application/command/create-post/create-post.command';
-import { CreatePostCommandHandler } from 'src/community/application/command/create-post/create-post.command.handler';
-import { CreatePostPort } from 'src/community/application/port/persistent/create-post.port';
+import { CreatePostCommand } from 'src/community/application/command/post/create-post/create-post.command';
+import { CreatePostCommandHandler } from 'src/community/application/command/post/create-post/create-post.command.handler';
+import { CreatePostPort } from 'src/community/application/port/persistent/post/create-post.port';
 
 jest.spyOn(crypto, 'randomUUID').mockReturnValue('0000-0000-0000-0000-0000');
 

@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreatePostCommand } from './create-post.command';
 import { Inject, Injectable } from '@nestjs/common';
 import { Post } from 'src/community/domain/post';
-import { CreatePostPort } from '../../port/persistent/create-post.port';
+import { CreatePostPort } from '../../../port/persistent/create-post.port';
 
 @Injectable()
 @CommandHandler(CreatePostCommand)
