@@ -2,7 +2,7 @@ import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { CONTENT_LIMIT_RULE } from '../../../domain/rule/PostContentLengthShouldNotExceedLimit.rule';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreatePostRequestDto {
+export class UpdatePostRequestDto {
   @ApiProperty({
     example:
       '“그래서 최저임금 얼마나 인상돼야 해?”는 저자기 이 책을 집필하면서 가장 많이 들은 질문이다. ' +

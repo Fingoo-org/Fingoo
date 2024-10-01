@@ -1,8 +1,16 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
-import { CONTENT_LIMIT_RULE } from '../../../domain/rule/PostContentLengthShouldNotExceedLimit.rule';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDate, IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { CONTENT_LIMIT_RULE } from '../../../domain/rule/PostContentLengthShouldNotExceedLimit.rule';
 
-export class CreatePostRequestDto {
+export class CreatePostResponseDto {
+  @ApiProperty({
+    example: '1',
+    description: '게시글 PK',
+  })
+  @IsString()
+  @IsNotEmpty()
+  readonly postId: string;
+
   @ApiProperty({
     example:
       '“그래서 최저임금 얼마나 인상돼야 해?”는 저자기 이 책을 집필하면서 가장 많이 들은 질문이다. ' +
@@ -12,8 +20,34 @@ export class CreatePostRequestDto {
       '이 책은 단순한 최저임금 전쟁 설명서를 넘어서, 거대한 흐름에서 최저임금과 경제의 뼈대를 이해할 수 있는 기회가 될 것이다.',
     description: '게시글 내용',
   })
+  @MaxLength(CONTENT_LIMIT_RULE)
   @IsString()
   @IsNotEmpty()
-  @MaxLength(CONTENT_LIMIT_RULE)
   readonly content: string;
+
+  @ApiProperty({
+    example: '김도경',
+    description: '게시글 작성자 이름',
+  })
+  @IsString()
+  @IsNotEmpty()
+  readonly author: string;
+
+  @ApiProperty({
+    example: '2024-10-02',
+    description: '생성 날짜',
+  })
+  @IsDate()
+  @IsString()
+  @IsNotEmpty()
+  readonly createAt: string;
+
+  @ApiProperty({
+    example: '2024-10-02',
+    description: '수정 날짜',
+  })
+  @IsDate()
+  @IsString()
+  @IsNotEmpty()
+  readonly updateAt: string;
 }
