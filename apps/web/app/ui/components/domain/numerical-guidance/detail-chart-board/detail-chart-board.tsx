@@ -9,7 +9,7 @@ import { cn } from '@/app/utils/style';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import DetailChartIntervalGroup from './detail-chart-interval-group';
 
-type DetailChartBoardProps = {
+export type DetailChartBoardProps = {
   indicatorId: string;
   symbol: string;
   indicatorType: IndicatorType;

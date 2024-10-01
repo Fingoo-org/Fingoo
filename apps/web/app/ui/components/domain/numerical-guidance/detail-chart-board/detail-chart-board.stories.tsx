@@ -1,28 +1,22 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import DetailChartBoard from './detail-chart-board';
-import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
+import DetailChartBoard, { DetailChartBoardProps } from './detail-chart-board';
+import { indicatorTypes } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 
-type DetailChartBoardProps = React.ComponentProps<typeof DetailChartBoard>;
-
-const meta: Meta<DetailChartBoardProps> = {
-  title: 'numerical-guidance/molecule/DetailChartBoard',
+const meta: Meta<typeof DetailChartBoard> = {
+  title: 'numerical-guidance/molecule/detail-chart-board/DetailChartBoard',
   component: DetailChartBoard,
+  decorators: [
+    (Story: React.ComponentType) => (
+      <div style={{ width: 500 }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
-    indicatorBoardMetadataId: { control: 'text' },
-    indicatorType: {
-      control: 'select',
-      options: [
-        'stocks',
-        'forex_pairs',
-        'cryptocurrencies',
-        'etf',
-        'indices',
-        'customForecastIndicator',
-        'funds',
-        'bonds',
-      ],
-    },
+    indicatorId: { control: 'text' },
+    symbol: { control: 'text' },
+    indicatorType: { control: { type: 'select', options: indicatorTypes } },
   },
 };
 
@@ -32,7 +26,8 @@ type Story = StoryObj<DetailChartBoardProps>;
 
 export const Default: Story = {
   args: {
-    indicatorBoardMetadataId: '1', // 기본 메타데이터 ID
-    indicatorType: 'stocks' as IndicatorType, // 기본 인디케이터 타입
+    indicatorId: '1',
+    symbol: 'AAPL',
+    indicatorType: 'stocks',
   },
 };
