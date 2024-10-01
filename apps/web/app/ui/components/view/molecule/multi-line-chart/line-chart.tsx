@@ -313,7 +313,7 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
 
                   const value = payload[dataKey];
 
-                  if (showHighLowPoints && (value === highPoint || value === lowPoint)) {
+                  if (showHighLowPoints && (parseFloat(value) === highPoint || parseFloat(value) === lowPoint)) {
                     return (
                       <Fragment key={index}>
                         <Dot
