@@ -1,7 +1,7 @@
 // tremor/react의 line chart를 커스터마이징하기 위해 가져옴
 
 'use client';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import {
   CartesianGrid,
   Dot,
@@ -101,8 +101,13 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
 
   const nowDate = autoNowDateReferenceLine ? getNowDate() : undefined;
 
-  const highPoint = data.length > 0 ? Math.max(...data.map((d: any) => d[categories[0]])) : null;
-  const lowPoint = data.length > 0 ? Math.min(...data.map((d: any) => d[categories[0]])) : null;
+  const [highPoint, lowPoint] = useMemo(() => {
+    if (data.length === 0 || categories.length === 0) {
+      return [null, null];
+    }
+    const values = data.map((d: any) => d[categories[0]]);
+    return [Math.max(...values), Math.min(...values)];
+  }, [data, categories]);
 
   function onDotClick(itemData: any, event: React.MouseEvent) {
     event.stopPropagation();
