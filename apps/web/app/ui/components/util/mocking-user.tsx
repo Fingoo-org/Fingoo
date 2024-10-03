@@ -15,7 +15,7 @@ export default function MockingUser({ children }: React.PropsWithChildren) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: 'admin@test.com',
+            email: 'corporation.dok.service@gmail.com',
             password: '123456',
           }),
         });
