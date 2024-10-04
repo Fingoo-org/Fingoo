@@ -8,6 +8,7 @@ import { CardSkeleton } from '../../../view/skeletons';
 import { cn } from '@/app/utils/style';
 import { IndicatorType } from '@/app/store/stores/numerical-guidance/indicator-list.store';
 import DetailChartIntervalGroup from './detail-chart-interval-group';
+import { useDetailBoardStore } from '@/app/store/stores/numerical-guidance/detail-board.store';
 
 export type DetailChartBoardProps = {
   indicatorId: string;
@@ -20,6 +21,14 @@ const DetailChartBoard = React.memo(function DetailChartBoard({
   symbol,
   indicatorType,
 }: DetailChartBoardProps) {
+  const { setInterval } = useDetailBoardStore((state) => state.actions);
+
+  useEffect(() => {
+    return () => {
+      setInterval('day');
+    };
+  }, [indicatorId, setInterval]);
+
   return (
     <Card className={cn('max-h-screen w-full space-y-5 rounded-lg bg-white px-4 py-5')}>
       <ClientDataSuspense
