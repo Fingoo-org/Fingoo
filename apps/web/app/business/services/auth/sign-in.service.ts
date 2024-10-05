@@ -25,6 +25,14 @@ export async function authenticate(prevState: FormState, formData: FormData): Pr
     ...validatedFields.data,
   };
 
+  // 잘못된 요청 처리 로직
+  const failureResponse = (message: string): FormState => ({
+    isSuccess: false,
+    isFailure: true,
+    validationError: {},
+    message,
+  });
+
   try {
     const response = await fetch(`${API_PATH.auth}/signIn`, {
       method: 'POST',
@@ -50,12 +58,7 @@ export async function authenticate(prevState: FormState, formData: FormData): Pr
     console.log(error);
     if (error instanceof HttpError && error.statusCode === 404) {
       // 잘못된 요청 처리 로직
-      return {
-        isSuccess: false,
-        isFailure: true,
-        validationError: {},
-        message: '로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요',
-      };
+      return failureResponse('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요');
     } else {
       throw error;
     }

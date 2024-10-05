@@ -33,6 +33,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     ? convertedIndicatorBoardMetadataList?.findIndicatorBoardMetadataById(metadataId)
     : undefined;
 
+  const optimisticRevalidate = { revalidate: false };
   const updateIndicatorBoardMetadata = (newData: { name: string }) => {
     updateIndicatorBoardMetadataTrigger(
       {
@@ -44,7 +45,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
             convertedIndicatorBoardMetadataList?.updateIndicatorBoardMetadataNameById(metadataId, newData.name);
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        revalidate: false,
+        ...optimisticRevalidate,
       },
     );
   };
@@ -62,7 +63,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
           );
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        revalidate: false,
+        ...optimisticRevalidate,
       },
     );
   };
@@ -80,7 +81,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
             convertedIndicatorBoardMetadataList?.addSectionToIndicatorBoardMetadata(metadataId);
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        revalidate: false,
+        ...optimisticRevalidate,
       },
     );
   };
@@ -99,7 +100,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
 
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        revalidate: false,
+        ...optimisticRevalidate,
       },
     );
   };
@@ -121,7 +122,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
           );
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        revalidate: false,
+        ...optimisticRevalidate,
       },
     );
   };
@@ -130,7 +131,7 @@ export const useIndicatorBoardMetadataViewModel = (metadataId: string | undefine
     const formData = new FormData();
     formData.append('fileName', imageBlod);
     return await uploadIndicatorBoardMetadataImageTrigger(formData, {
-      revalidate: false,
+      ...optimisticRevalidate,
     });
   };
 
