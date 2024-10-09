@@ -1,6 +1,6 @@
 import { useIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-indicator-board.hook';
 import { useSplitIndicatorBoard } from '@/app/business/hooks/numerical-guidance/indicator-board/use-split-indicator-board.hook';
-import { BaseIntervalToggleGroup } from './base-interval-toggle-group';
+import { BaseIntervalToggleGroup } from '../indicator/base-interval-toggle-group';
 
 type IntervalToggleGroupProps = {
   indicatorBoardMetadataId?: string;

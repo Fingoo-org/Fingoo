@@ -1,5 +1,5 @@
 import { useDetailBoardStore } from '@/app/store/stores/numerical-guidance/detail-board.store';
-import { BaseIntervalToggleGroup } from '../indicator-board/base-interval-toggle-group';
+import { BaseIntervalToggleGroup } from '../indicator/base-interval-toggle-group';
 
 export default function DetailChartIntervalGroup() {
   const { interval } = useDetailBoardStore();
