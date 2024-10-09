@@ -8,20 +8,20 @@ function isInterval(value: string): value is Interval {
 
 export interface BaseIntervalToggleGroupProps {
   interval: Interval;
-  setInterval: (interval: Interval) => void;
+  onChange: (interval: Interval) => void;
   disabled?: boolean;
   splitScreen?: 'square' | string;
 }
 
 export function BaseIntervalToggleGroup({
   interval,
-  setInterval,
+  onChange,
   disabled = false,
   splitScreen,
 }: BaseIntervalToggleGroupProps) {
   const handleIntervalChange = (value: string) => {
     if (isInterval(value)) {
-      setInterval(value);
+      onChange(value);
     }
   };
 
