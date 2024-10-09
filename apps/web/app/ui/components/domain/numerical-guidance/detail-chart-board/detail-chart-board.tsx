@@ -27,7 +27,7 @@ const DetailChartBoard = React.memo(function DetailChartBoard({
     return () => {
       setInterval('day');
     };
-  }, [indicatorId, setInterval]);
+  }, [indicatorId]);
 
   return (
     <Card className={cn('max-h-screen w-full space-y-5 rounded-lg bg-white px-4 py-5')}>
