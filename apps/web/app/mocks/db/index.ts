@@ -14,6 +14,7 @@ import {
   mockCustomForecastIndicatorAction,
 } from './custom-forecast-indicator-action.mock';
 import { mockIndicatorQuoteAction, MockIndicatorQuoteAction } from './indicator-quote.action.mock';
+import { MockPostAction, mockPostAction } from './post.action.mock';
 import { IndicatorQuoteResponse } from '@/app/store/querys/numerical-guidance/indicator-quote.query';
 import { MajorIndicatorResponse } from '@/app/store/querys/numerical-guidance/major-indicator.query';
 import { mockMajorIndicatorAction, MockMajorIndicatorAction } from './major-indicator-action.mock';
@@ -36,7 +37,8 @@ type MockDatabaseAction = MockCustomForecastIndicatorAction &
   MockIndicatorBoardMetadataAction &
   MockIndicatorAction &
   MockIndicatorQuoteAction &
-  MockMajorIndicatorAction;
+  MockMajorIndicatorAction &
+  MockPostAction;
 
 // 데이터를  Action으로 관리한다. Action은 도메인 별로 분리하고 있다.
 export const mockDB: MockDatabaseAction = {
@@ -45,6 +47,7 @@ export const mockDB: MockDatabaseAction = {
   ...mockCustomForecastIndicatorAction,
   ...mockIndicatorQuoteAction,
   ...mockMajorIndicatorAction,
+  ...mockPostAction,
 };
 
 const initialState: MockDatabase = {
