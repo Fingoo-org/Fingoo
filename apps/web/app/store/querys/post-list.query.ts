@@ -3,7 +3,7 @@ import { API_PATH } from './api-path';
 import { defaultFetcher } from './fetcher';
 
 // 사용자 정보 타입 정의
-export type User = {
+export type UserResponse = {
   id: string; // 사용자 고유 ID
   userName: string; // 사용자 이름
   profileImageUrl: string | null; // 프로필 이미지 URL (null일 수 있음)
@@ -12,7 +12,7 @@ export type User = {
 // 게시물 정보 타입 정의
 export type PostResponse = {
   id: string; // 게시물 고유 ID
-  author: User; // 게시물 작성자 정보
+  author: UserResponse; // 게시물 작성자 정보
   content: string; // 게시물 내용
   imageUrl?: string; // 게시물에 포함된 이미지 URL (선택적)
   createdAt: string; // 게시물 작성 시간 (ISO 포맷의 문자열)

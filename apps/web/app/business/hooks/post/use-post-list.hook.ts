@@ -2,7 +2,7 @@ import { useFetchPostList } from '@/app/store/querys/post-list.query';
 import { useMemo } from 'react';
 import { convertPostViewModel } from '../../services/post/view-model/post-view-model.service';
 
-export const usePostyList = () => {
+export const usePostList = () => {
   const { data: communityList, setSize } = useFetchPostList();
   const convertedCommunityList = useMemo(() => {
     if (!communityList) return undefined;
