@@ -25,19 +25,19 @@ export const useLiveIndicatorsValueViewModel = (indicatorBoardMetadataId?: strin
     indicatorBoardMetadata?.indicatorInfos ?? [],
   );
 
-  const convertedIndciatorsValue = useMemo(() => {
+  const convertedIndicatorsValue = useMemo(() => {
     if (!indicatorsValueData) return undefined;
 
-    const convertedIndciatorsValue = convertLiveIndicatorsValueViewModel(indicatorsValueData);
-    convertedIndciatorsValue.indicatorsValue.forEach((indicator) => {
+    const convertedIndicatorsValue = convertLiveIndicatorsValueViewModel(indicatorsValueData);
+    convertedIndicatorsValue.indicatorsValue.forEach((indicator) => {
       const unitType = indicatorsUnitType?.find((unit) => unit.indicatorId === indicator.indicatorId)?.unitType;
       indicator.unitType = unitType ?? 'default';
     });
-    return convertedIndciatorsValue;
+    return convertedIndicatorsValue;
   }, [indicatorsValueData, indicatorsUnitType]);
 
   return {
-    indicatorsValue: convertedIndciatorsValue,
+    indicatorsValue: convertedIndicatorsValue,
     isPending: isLoading,
   };
 };

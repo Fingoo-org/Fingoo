@@ -1,7 +1,7 @@
 // tremor/react의 line chart를 커스터마이징하기 위해 가져옴
 
 'use client';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import {
   CartesianGrid,
   Dot,
@@ -42,6 +42,9 @@ type ExtendedLineChartProps = LineChartProps & {
   autoNowDateReferenceLine?: boolean;
   syncId?: string;
   height?: number;
+  showHighLowPoints?: boolean;
+  customColors?: string[];
+  customReferenceLine?: number;
 };
 
 const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((props, ref) => {
@@ -77,6 +80,9 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
     autoNowDateReferenceLine = true,
     syncId,
     height = 320,
+    showHighLowPoints = false,
+    customColors,
+    customReferenceLine,
     ...other
   } = props;
   const CustomTooltip = customTooltip;
@@ -84,12 +90,24 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
   const [legendHeight, setLegendHeight] = useState(60);
   const [activeDot, setActiveDot] = useState<ActiveDot | undefined>(undefined);
   const [activeLegend, setActiveLegend] = useState<string | undefined>(undefined);
-  const categoryColors = constructCategoryColors(categories, colors);
+
+  const categoryColors = constructCategoryColors(
+    categories,
+    customColors && customColors.length > 0 ? customColors : colors,
+  );
 
   const yAxisDomain = getYAxisDomain(autoMinValue, minValue, maxValue);
   const hasOnValueChange = !!onValueChange;
 
   const nowDate = autoNowDateReferenceLine ? getNowDate() : undefined;
+
+  const [highPoint, lowPoint] = useMemo(() => {
+    if (data.length === 0 || categories.length === 0) {
+      return [null, null];
+    }
+    const values = data.map((d: any) => d[categories[0]]);
+    return [Math.max(...values), Math.min(...values)];
+  }, [data, categories]);
 
   function onDotClick(itemData: any, event: React.MouseEvent) {
     event.stopPropagation();
@@ -296,7 +314,41 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
                   );
                 }}
                 dot={(props: any) => {
-                  const { stroke, strokeLinecap, strokeLinejoin, strokeWidth, cx, cy, dataKey, index } = props;
+                  const { stroke, strokeLinecap, strokeLinejoin, strokeWidth, cx, cy, dataKey, index, payload } = props;
+
+                  const value = payload[dataKey];
+
+                  if (showHighLowPoints && (parseFloat(value) === highPoint || parseFloat(value) === lowPoint)) {
+                    return (
+                      <Fragment key={index}>
+                        <Dot
+                          cx={cx}
+                          cy={cy}
+                          r={5}
+                          stroke={stroke}
+                          fill={stroke}
+                          strokeLinecap={strokeLinecap}
+                          strokeLinejoin={strokeLinejoin}
+                          strokeWidth={strokeWidth}
+                          className={tremorTwMerge(
+                            'stroke-tremor-background dark:stroke-dark-tremor-background',
+                            onValueChange ? 'cursor-pointer' : '',
+                            getColorClassNames(categoryColors.get(dataKey) ?? BaseColors.Gray, colorPalette.text)
+                              .fillColor,
+                          )}
+                        />
+                        <text
+                          x={cx}
+                          y={parseFloat(value) === highPoint ? cy - 10 : cy + 20}
+                          textAnchor="middle"
+                          fontSize="12"
+                          fill={stroke}
+                        >
+                          {value}
+                        </text>
+                      </Fragment>
+                    );
+                  }
 
                   if (
                     (hasOnlyOneValueForThisKey(data, category) &&
@@ -361,6 +413,14 @@ const LineChart = React.forwardRef<HTMLDivElement, ExtendedLineChartProps>((prop
                   />
                 ))
               : null}
+            {customReferenceLine !== undefined && (
+              <ReferenceLine
+                y={customReferenceLine}
+                stroke={BaseColors.Gray}
+                strokeDasharray="3 3" // 점선
+                strokeWidth={1}
+              />
+            )}
           </ReChartsLineChart>
         ) : (
           <NoData noDataText={noDataText} />

@@ -29,14 +29,14 @@ export default function MultiLineChart({
   const [value, setValue] = useState<EventProps>(null);
   const index = 'date';
 
-  const formatteedData = formatChartData(data, categories);
+  const formattedData = formatChartData(data, categories);
   return (
     <>
       <LineChart
         {...props}
         syncId={syncId}
         className={cn('h-full ', className)}
-        data={formatteedData}
+        data={formattedData}
         index={index}
         categories={categories}
         height={height}

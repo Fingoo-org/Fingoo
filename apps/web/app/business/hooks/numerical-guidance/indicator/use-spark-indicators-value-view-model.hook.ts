@@ -30,15 +30,15 @@ export const useSparkIndicatorsValueViewModel = ({ indicators }: Props) => {
     return { ...indicatorValue, weight: weight ?? 0 };
   });
 
-  const convertedIndciatorsValue = useMemo(() => {
+  const convertedIndicatorsValue = useMemo(() => {
     if (!IndicatosValueWithWeight) return undefined;
 
-    const convertedIndciatorsValue = convertSparkIndicatorsValueViewModel(IndicatosValueWithWeight);
-    return convertedIndciatorsValue;
+    const convertedIndicatorsValue = convertSparkIndicatorsValueViewModel(IndicatosValueWithWeight);
+    return convertedIndicatorsValue;
   }, [IndicatosValueWithWeight]);
 
   return {
-    indicatorsValue: convertedIndciatorsValue,
+    indicatorsValue: convertedIndicatorsValue,
     isPending: isLoading || isValidating,
   };
 };
