@@ -16,7 +16,7 @@ export const usePostList = () => {
     setSize((size) => size + 1);
   };
   return {
-    indicatorList: convertedCommunityList,
+    postList: convertedCommunityList,
     loadMoreIndicators,
   };
 };

@@ -2,8 +2,11 @@ import { PostResponse } from '@/app/store/querys/post-list.query';
 
 export class Post {
   readonly id: string;
-  readonly authorName: string;
-  readonly profileImageUrl: string | null;
+  readonly author: {
+    id: string;
+    userName: string;
+    profileImageUrl: string | null;
+  };
   readonly content: string;
   readonly imageUrl?: string;
   readonly createdAt: string;
@@ -24,8 +27,11 @@ export class Post {
     hasUserLiked,
   }: PostResponse) {
     this.id = id;
-    this.authorName = author.userName;
-    this.profileImageUrl = author.profileImageUrl;
+    this.author = {
+      id: author.id,
+      userName: author.userName,
+      profileImageUrl: author.profileImageUrl,
+    };
     this.content = content;
     this.imageUrl = imageUrl;
     this.createdAt = createdAt;
@@ -39,9 +45,9 @@ export class Post {
     return {
       id: this.id,
       author: {
-        id: this.id,
-        userName: this.authorName,
-        profileImageUrl: this.profileImageUrl,
+        id: this.author.id,
+        userName: this.author.userName,
+        profileImageUrl: this.author.profileImageUrl,
       },
       content: this.content,
       imageUrl: this.imageUrl,

@@ -22,7 +22,7 @@ export type PostResponse = {
   hasUserLiked: boolean; // 사용자가 이 게시물에 좋아요를 눌렀는지 여부
 };
 
-type PaginationMeta = {
+export type PaginationMeta = {
   total: number;
   hasNextData: boolean;
   cursor: number;
@@ -33,22 +33,29 @@ export type PostListResponse = {
   meta: PaginationMeta;
 };
 
-export const createKeyMakerIndicatorListInfinite = () => {
-  return (pageIndex: number, previousPageData: PostListResponse) => {
-    // 끝에 도달
-    if (previousPageData && !previousPageData.meta.hasNextData) return null;
+// Infinite Scroll을 위한 키 생성 함수
+export const createKeyMakerPostListInfinite = () => {
+  return (pageIndex: number, previousPageData: PostListResponse | null) => {
+    // 이전 페이지의 데이터가 없거나 마지막 페이지에 도달했을 때 null 반환
+    if (previousPageData && !previousPageData.meta.hasNextData) {
+      return null;
+    }
 
-    // 첫 페이지, `previousPageData`가 없음
-    if (pageIndex === 0) return `${API_PATH.postList}/list?cursorToken=1`;
+    // 첫 번째 페이지의 경우
+    if (pageIndex === 0) {
+      return `${API_PATH.postList}/list?cursorToken=1`;
+    }
 
-    // API의 엔드포인트에 커서를 추가
-    return `${API_PATH.postList}/list?cursorToken=${previousPageData.meta.cursor}`;
+    // 다음 페이지의 커서를 추가하여 API 엔드포인트 생성
+    return `${API_PATH.postList}/list?cursorToken=${previousPageData?.meta.cursor}`;
   };
 };
 
-// 최신순(?)에 의한 데이터 무한스크롤 패칭
+// 최신 게시물 데이터를 무한 스크롤 방식으로 패치하는 훅
 export const useFetchPostList = () => {
-  return useSWRInfinite<PostListResponse>(createKeyMakerIndicatorListInfinite(), defaultFetcher);
+  return useSWRInfinite<PostListResponse>(createKeyMakerPostListInfinite(), defaultFetcher);
 };
 
-export const useFetchPost = () => {};
+export const useFetchPost = () => {
+  // 게시물 하나를 가져오는 로직이 필요하면 여기에 추가합니다.
+};

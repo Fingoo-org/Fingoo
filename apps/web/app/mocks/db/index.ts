@@ -19,7 +19,7 @@ import { IndicatorQuoteResponse } from '@/app/store/querys/numerical-guidance/in
 import { MajorIndicatorResponse } from '@/app/store/querys/numerical-guidance/major-indicator.query';
 import { mockMajorIndicatorAction, MockMajorIndicatorAction } from './major-indicator-action.mock';
 import { majorIndicatorCountry } from '../mock-data/major-indicator-value.mock';
-import { PostListResponse } from '@/app/store/querys/post-list.query';
+import { PostResponse } from '@/app/store/querys/post-list.query';
 
 // 서버로 부터 받을 MockData을 지정
 type MockDatabase = {
@@ -30,7 +30,7 @@ type MockDatabase = {
   customForecastIndicatorList: CustomForecastIndicatorListResponse;
   indicatorQuoteResponse: IndicatorQuoteResponse[];
   majorIndicator: MajorIndicatorResponse[];
-  post: PostListResponse[];
+  post: PostResponse[];
 };
 
 type MockDatabaseAction = MockCustomForecastIndicatorAction &
@@ -465,42 +465,33 @@ const initialState: MockDatabase = {
   majorIndicator: majorIndicatorCountry,
   post: [
     {
-      data: [
-        {
-          id: 'post1',
-          author: {
-            id: 'user1',
-            userName: 'John Doe',
-            profileImageUrl: 'https://example.com/profile1.jpg',
-          },
-          content: 'This is the first post.',
-          imageUrl: 'https://example.com/image1.jpg',
-          createdAt: '2024-09-30T12:00:00Z',
-          likeCount: 10,
-          commentCount: 5,
-          shareCount: 2,
-          hasUserLiked: true,
-        },
-        {
-          id: 'post2',
-          author: {
-            id: 'user2',
-            userName: 'Jane Smith',
-            profileImageUrl: null,
-          },
-          content: 'This is the second post.',
-          createdAt: '2024-09-29T08:30:00Z',
-          likeCount: 5,
-          commentCount: 2,
-          shareCount: 1,
-          hasUserLiked: false,
-        },
-      ],
-      meta: {
-        total: 2,
-        hasNextData: false,
-        cursor: 2,
+      id: 'post1',
+      author: {
+        id: 'user1',
+        userName: 'John Doe',
+        profileImageUrl: 'https://example.com/profile1.jpg',
       },
+      content: 'This is the first post.',
+      imageUrl: 'https://example.com/image1.jpg',
+      createdAt: '2024-09-30T12:00:00Z',
+      likeCount: 10,
+      commentCount: 5,
+      shareCount: 2,
+      hasUserLiked: true,
+    },
+    {
+      id: 'post2',
+      author: {
+        id: 'user2',
+        userName: 'Jane Smith',
+        profileImageUrl: null,
+      },
+      content: 'This is the second post.',
+      createdAt: '2024-09-29T08:30:00Z',
+      likeCount: 5,
+      commentCount: 2,
+      shareCount: 1,
+      hasUserLiked: false,
     },
   ],
 };
