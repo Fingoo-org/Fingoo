@@ -1,22 +1,22 @@
-import { PostResponse } from '@/app/store/querys/post-list.query';
+import { PostResponse } from '@/app/store/querys/post/post-list.query';
 
 export class Post {
-  readonly id: string;
+  readonly postId: string;
   readonly author: {
-    id: string;
+    userId: string;
     userName: string;
     profileImageUrl: string | null;
   };
   readonly content: string;
   readonly imageUrl?: string;
   readonly createdAt: string;
-  readonly likeCount: number;
+  likeCount: number;
   readonly commentCount: number;
   readonly shareCount: number;
-  readonly hasUserLiked: boolean;
+  hasUserLiked: boolean;
 
   constructor({
-    id,
+    postId,
     author,
     content,
     imageUrl,
@@ -26,9 +26,9 @@ export class Post {
     shareCount,
     hasUserLiked,
   }: PostResponse) {
-    this.id = id;
+    this.postId = postId;
     this.author = {
-      id: author.id,
+      userId: author.userId,
       userName: author.userName,
       profileImageUrl: author.profileImageUrl,
     };
@@ -43,9 +43,9 @@ export class Post {
 
   get formattedPost(): PostResponse {
     return {
-      id: this.id,
+      postId: this.postId,
       author: {
-        id: this.author.id,
+        userId: this.author.userId,
         userName: this.author.userName,
         profileImageUrl: this.author.profileImageUrl,
       },
