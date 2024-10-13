@@ -14,4 +14,5 @@ export const API_PATH = {
   historyIndicatorsValue: `${API_URL}/numerical-guidance/indicators/history`,
   indicatorQuote: `${API_URL}/numerical-guidance/indicators/quote`,
   majorChart: `${API_URL}/major-chart`,
+  communityPost: `${API_URL}/community/post`,
 };
