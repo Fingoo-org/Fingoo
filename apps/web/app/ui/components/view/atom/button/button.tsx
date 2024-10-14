@@ -11,6 +11,8 @@ type ButtonProps = {
   color?: Color;
   variant?: ButtonVariant;
   isLoading?: boolean;
+  borderRadius?: string;
+  shadow?: string;
 } & NativeButtonType;
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
@@ -22,15 +24,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
     className,
     disabled,
     isLoading,
+    borderRadius = 'rounded-lg',
+    shadow = '',
     ...props
   }: ButtonProps,
   ref,
 ) {
-  const buttonShapeStyles = variant !== ButtonVariants.Light ? 'rounded-lg border' : '';
+  const buttonShapeStyles = variant !== ButtonVariants.Light ? `border ${borderRadius}` : borderRadius;
   const buttonProportionsStyle = getButtonProportions(variant);
   const buttonColorStyle = getButtonColors(variant, color);
 
-  iconSizes[size].height;
   return (
     <button
       disabled={disabled}
@@ -40,6 +43,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
         'inline-flex items-center justify-center',
         disabled && 'cursor-not-allowed opacity-50',
         buttonShapeStyles,
+        shadow,
         buttonProportionsStyle[size].paddingX,
         buttonProportionsStyle[size].paddingY,
         buttonProportionsStyle[size].fontSize,
