@@ -23,11 +23,13 @@ export function ChartShareDrawer() {
       </DrawerTrigger>
       <DrawerContent className="bg-gray-1">
         <div className="relative mx-auto w-full max-w-sm">
-          <DrawerClose asChild>
-            <IconButton icon={Cross1Icon} className="absolute right-4 top-4 cursor-pointer" color="black" />
-          </DrawerClose>
-          <DrawerHeader className="flex items-center justify-center pt-4">
-            <DrawerTitle>차트 공유</DrawerTitle>
+          <DrawerHeader className="relative flex items-center justify-center px-4 py-3">
+            <DrawerTitle className="absolute left-1/2 -translate-x-1/2 transform">차트 공유</DrawerTitle>
+            <div className="flex w-full justify-end">
+              <DrawerClose asChild>
+                <IconButton icon={Cross1Icon} className="cursor-pointer" color="black" />
+              </DrawerClose>
+            </div>
           </DrawerHeader>
           <div className="space-y-4 p-4 pb-0">
             <IconActionCard
