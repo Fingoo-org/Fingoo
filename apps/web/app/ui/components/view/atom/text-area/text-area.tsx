@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { cn } from '@/app/utils/style';
 
 interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -9,18 +9,22 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 
 export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
-    { className, backgroundColor = 'transparent', textColor = 'inherit', minRows = 1, value = '', ...props },
+    { className, backgroundColor = 'transparent', textColor = 'inherit', minRows = 1, value = '', onChange, ...props },
     forwardedRef,
   ) => {
     const localRef = useRef<HTMLTextAreaElement>(null);
 
-    useEffect(() => {
+    const adjustHeight = useCallback(() => {
       const textarea = localRef.current;
       if (textarea) {
         textarea.style.height = 'auto';
         textarea.style.height = `${textarea.scrollHeight}px`;
       }
-    }, [value]);
+    }, []);
+
+    useEffect(() => {
+      adjustHeight();
+    }, [value, adjustHeight]);
 
     useEffect(() => {
       if (typeof forwardedRef === 'function') {
@@ -29,6 +33,13 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
         forwardedRef.current = localRef.current;
       }
     }, [forwardedRef]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      if (onChange) {
+        onChange(e);
+      }
+      adjustHeight();
+    };
 
     return (
       <textarea
@@ -41,9 +52,12 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
         style={{
           backgroundColor,
           color: textColor,
-          minHeight: `${minRows * 1}rem`,
+          minHeight: `${minRows * 1.5}rem`,
+          overflow: 'hidden',
         }}
         value={value}
+        onChange={handleChange}
+        rows={minRows}
         {...props}
       />
     );
