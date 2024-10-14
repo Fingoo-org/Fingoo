@@ -12,13 +12,6 @@ const meta: Meta<typeof PostCreateDrawer> = {
       defaultViewport: 'mobile1',
     },
   },
-  decorators: [
-    (Story) => (
-      <div className="h-screen bg-gray-100">
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 export default meta;
@@ -28,12 +21,15 @@ export const InitiallyOpen: Story = {
   render: () => {
     const [isOpen, setIsOpen] = React.useState(true);
     return (
-      <>
-        <div className="p-4">
-          <Button onClick={() => setIsOpen(true)}>새 게시물 작성</Button>
-        </div>
-        <PostCreateDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      </>
+      <div className="p-4">
+        <Button onClick={() => setIsOpen(true)}>새 게시물 작성</Button>
+        <PostCreateDrawer
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          userName="user_name"
+          userAvatarSrc="https://example.com/avatar.jpg"
+        />
+      </div>
     );
   },
 };
