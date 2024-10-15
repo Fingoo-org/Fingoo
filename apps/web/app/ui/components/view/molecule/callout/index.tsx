@@ -24,17 +24,18 @@ const alertVariants = cva(
 
 type CalloutProps = {
   icon?: React.ElementType;
-  content: string;
+  content?: string;
 } & React.HTMLAttributes<HTMLDivElement> &
   VariantProps<typeof alertVariants>;
 
 const Callout = React.forwardRef<HTMLDivElement, CalloutProps>(
-  ({ className, variant, icon, content, ...props }, ref) => {
+  ({ className, variant, icon, content, children, ...props }, ref) => {
+    const calloutContent = content || children;
     const Icon = icon;
     return (
       <div ref={ref} role="alert" className={cn('text-sm', alertVariants({ variant }), className)} {...props}>
         {Icon ? <Icon className="mr-2 h-4 w-4" /> : null}
-        <div className='" [&_p]:leading-relaxed"'>{content}</div>
+        <div className='" [&_p]:leading-relaxed"'>{calloutContent}</div>
       </div>
     );
   },
