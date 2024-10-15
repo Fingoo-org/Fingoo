@@ -13,20 +13,10 @@ const meta: Meta<typeof ChartShareDrawer> = {
 export default meta;
 type Story = StoryObj<typeof ChartShareDrawer>;
 
-export const Default: Story = {};
-
-export const Mobile: Story = {
+export const Default: Story = {
   parameters: {
     viewport: {
       defaultViewport: 'mobile1',
-    },
-  },
-};
-
-export const Tablet: Story = {
-  parameters: {
-    viewport: {
-      defaultViewport: 'tablet',
     },
   },
 };
