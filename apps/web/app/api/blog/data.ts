@@ -1,7 +1,7 @@
 import { Generated } from 'kysely';
 
 interface PostTable {
-  id: Generated<number>;
+  id: Generated<string>;
   title: string;
   content: string;
   updatedAt: Generated<Date>;
