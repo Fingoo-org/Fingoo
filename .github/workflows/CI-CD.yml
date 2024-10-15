@@ -33,8 +33,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Vercel Link
-        run: vercel link --yes --token=${{ secrets.VERCEL_TEAM_ACCESS_TOKEN }} --project=${{ secrets.FINGOO_PROJECT_NAME }}
+      
       - name: Install Dependencies
         # 이전의 cache가 없다면 의존성을 설치합니다.
         if: steps.cache.outputs.cache-hit != 'true'
@@ -51,7 +50,9 @@ jobs:
         working-directory: apps/api
 
       - name: Setting web .env
-        run: vercel env pull .env --token=${{ secrets.VERCEL_TEAM_ACCESS_TOKEN }}
+        run: |
+          vercel link --yes --token=${{ secrets.VERCEL_TEAM_ACCESS_TOKEN }} --project=${{ secrets.FINGOO_PROJECT_NAME }}
+          vercel env pull .env --token=${{ secrets.VERCEL_TEAM_ACCESS_TOKEN }}
         working-directory: apps/web
 
       - name: Test
