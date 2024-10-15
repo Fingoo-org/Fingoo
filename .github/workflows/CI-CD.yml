@@ -51,7 +51,7 @@ jobs:
         working-directory: apps/api
 
       - name: Setting web .env
-        run: vercel env pull .env
+        run: vercel env pull .env --token=${{ secrets.VERCEL_TEAM_ACCESS_TOKEN }}
         working-directory: apps/web
 
       - name: Test
