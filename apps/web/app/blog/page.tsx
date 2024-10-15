@@ -12,13 +12,8 @@ export default async function Page() {
           <h2 className="mb-2 text-4xl font-bold">FINGOO 블로그</h2>
         </div>
         {posts.map((post) => (
-          <Link href={`/blog/${post.id}`}>
-            <BlogPostItem
-              key={post.id}
-              title={post.title}
-              date={post.updatedAt.toISOString().slice(0, 10)}
-              preview={post.preview}
-            />
+          <Link key={post.id} href={`/blog/${post.id}`}>
+            <BlogPostItem title={post.title} date={post.updatedAt.toISOString().slice(0, 10)} preview={post.preview} />
           </Link>
         ))}
       </div>
@@ -32,7 +27,7 @@ interface BlogPostProps {
   preview: string;
 }
 
-export function BlogPostItem({ title, date, preview }: BlogPostProps) {
+function BlogPostItem({ title, date, preview }: BlogPostProps) {
   return (
     <article className="mb-8 border-b border-gray-200 pb-8">
       <h2 className="mb-2 text-2xl font-bold">{title}</h2>
