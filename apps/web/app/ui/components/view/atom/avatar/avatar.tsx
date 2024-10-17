@@ -8,6 +8,7 @@ const avatarVariants = cva(`object-cover`, {
       default: `rounded-full w-6 h-6`,
       square: ` w-6 h-6 object-fill`,
       big_circle: `rounded-full w-12 h-12`,
+      post_circle: `rounded-full w-[42px] h-[42px]`,
     },
   },
   defaultVariants: {
