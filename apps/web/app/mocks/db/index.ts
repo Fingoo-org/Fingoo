@@ -19,7 +19,7 @@ import { IndicatorQuoteResponse } from '@/app/store/querys/numerical-guidance/in
 import { MajorIndicatorResponse } from '@/app/store/querys/numerical-guidance/major-indicator.query';
 import { mockMajorIndicatorAction, MockMajorIndicatorAction } from './major-indicator-action.mock';
 import { majorIndicatorCountry } from '../mock-data/major-indicator-value.mock';
-import { PostResponse } from '@/app/store/querys/post-list.query';
+import { PostResponse } from '@/app/store/querys/post/post-list.query';
 
 // 서버로 부터 받을 MockData을 지정
 type MockDatabase = {
@@ -39,8 +39,6 @@ type MockDatabaseAction = MockCustomForecastIndicatorAction &
   MockIndicatorQuoteAction &
   MockMajorIndicatorAction &
   MockPostAction;
-
-// 데이터를  Action으로 관리한다. Action은 도메인 별로 분리하고 있다.
 export const mockDB: MockDatabaseAction = {
   ...mockIndicatorBoardMetadataAction,
   ...mockIndicatorAction,
@@ -465,9 +463,9 @@ const initialState: MockDatabase = {
   majorIndicator: majorIndicatorCountry,
   post: [
     {
-      id: 'post1',
+      postId: 'post1',
       author: {
-        id: 'user1',
+        userId: 'user1',
         userName: 'John Doe',
         profileImageUrl: 'https://example.com/profile1.jpg',
       },
@@ -480,9 +478,9 @@ const initialState: MockDatabase = {
       hasUserLiked: true,
     },
     {
-      id: 'post2',
+      postId: 'post2',
       author: {
-        id: 'user2',
+        userId: 'user2',
         userName: 'Jane Smith',
         profileImageUrl: null,
       },

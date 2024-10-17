@@ -1,4 +1,4 @@
-import { PostListResponse } from '@/app/store/querys/post-list.query';
+import { PostListResponse } from '@/app/store/querys/post/post-list.query';
 import { mockDatabaseStore } from '.';
 
 export type MockPostAction = {
