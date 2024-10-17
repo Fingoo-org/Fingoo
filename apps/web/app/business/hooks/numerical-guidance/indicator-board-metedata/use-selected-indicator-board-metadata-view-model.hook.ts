@@ -49,6 +49,8 @@ export const useSelectedIndicatorBoardMetadata = () => {
     return convertedIndicatorBoardMetadataList?.findIndicatorBoardMetadataById(selectedMetadataId);
   }, [selectedMetadataId, convertedIndicatorBoardMetadataList]);
 
+  const optimisticRevalidateOption = { revalidate: false };
+
   const addIndicatorToMetadata = (indicatorInfo: IndicatorInfoResponse) => {
     if (!selectedMetadata) {
       return;
@@ -64,7 +66,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
           );
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        revalidate: false,
+        ...optimisticRevalidateOption,
       },
     );
   };
@@ -87,7 +89,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
             );
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        revalidate: false,
+        ...optimisticRevalidateOption,
       },
     );
   };
@@ -109,7 +111,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
           );
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        revalidate: false,
+        ...optimisticRevalidateOption,
       },
     );
   };
@@ -132,7 +134,7 @@ export const useSelectedIndicatorBoardMetadata = () => {
             );
           return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
         },
-        revalidate: false,
+        ...optimisticRevalidateOption,
       },
     );
   };
