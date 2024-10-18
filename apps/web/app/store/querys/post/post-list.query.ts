@@ -55,11 +55,10 @@ export const useFetchPostList = () => {
 };
 
 export type UpdatePostHeartRequestBody = {
-  postId: string; // 특정 게시물 ID
   hasUserLiked: boolean; // 좋아요 상태
 };
 
-export const useUpdatePostHeart = (postId: string) => {
+export const useUpdatePostHeart = (postId: string | undefined) => {
   return useSWRMutation(API_PATH.pathchHeart, async (url: string, { arg }: { arg: UpdatePostHeartRequestBody }) => {
     if (!postId) return;
     await patchFetcher<UpdatePostHeartRequestBody>([url, postId], { arg });

@@ -25,7 +25,6 @@ export const usePostList = () => {
 
   const updateHeartFromPost = async (hasUserLiked: boolean) => {
     if (!selectedPostId) return;
-
     updateHeartTrigger(
       { hasUserLiked }, // 서버에 보낼 데이터
       {
@@ -69,10 +68,11 @@ export const usePostList = () => {
   return {
     selectedPostId,
     selectedPost,
-    postList: convertedPostList, // 무한 스크롤
+    postList: convertedPostList,
     isPending: isValidating,
+    updateHeartFromPost,
+    loadMorePosts: () => setSize((size) => size + 1),
     // addHeartToPost, // 하트 추가 기능
     // removeHeartFromPost, // 하트 제거 기능
-    loadMorePosts: () => setSize((size) => size + 1), // 추가 포스트 로드
   };
 };

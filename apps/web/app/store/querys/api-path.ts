@@ -15,5 +15,5 @@ export const API_PATH = {
   indicatorQuote: `${API_URL}/numerical-guidance/indicators/quote`,
   majorChart: `${API_URL}/major-chart`,
   postList: `${API_URL}/community/post`,
-  postHeart: `${API_URL}/community/post/heart`,
+  pathchHeart: `${API_URL}/community/like`,
 };
