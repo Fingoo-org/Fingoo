@@ -1,5 +1,5 @@
 import useSWRInfinite from 'swr/infinite';
-import { defaultFetcher, deleteFetcher, postFetcher } from '../fetcher';
+import { defaultFetcher, deleteFetcher, patchFetcher, postFetcher } from '../fetcher';
 import { API_PATH } from '../api-path';
 import useSWRMutation from 'swr/mutation';
 
@@ -34,22 +34,17 @@ export type PostListResponse = {
   meta: PaginationMeta;
 };
 
-type AddOrDeleteHeartToPostRequestBody = Pick<PostResponse, 'postId'>;
+// type AddOrDeleteHeartToPostRequestBody = Pick<PostResponse, 'postId'>;
 
 // Infinite Scroll을 위한 키 생성 함수
 export const createKeyMakerPostListInfinite = () => {
-  return (pageIndex: number, previousPageData: PostListResponse | null) => {
-    // 이전 페이지의 데이터가 없거나 마지막 페이지에 도달했을 때 null 반환
+  return (pageIndex: number, previousPageData: PostListResponse) => {
     if (previousPageData && !previousPageData.meta.hasNextData) {
       return null;
     }
-
-    // 첫 번째 페이지의 경우
     if (pageIndex === 0) {
       return `${API_PATH.postList}/list?cursorToken=1`;
     }
-
-    // 다음 페이지의 커서를 추가하여 API 엔드포인트 생성
     return `${API_PATH.postList}/list?cursorToken=${previousPageData?.meta.cursor}`;
   };
 };
@@ -59,22 +54,30 @@ export const useFetchPostList = () => {
   return useSWRInfinite<PostListResponse>(createKeyMakerPostListInfinite(), defaultFetcher);
 };
 
-export const useFetchPost = () => {
-  // 게시물 하나를 가져오는 로직이 필요하면 여기에 추가합니다.
+export type UpdatePostHeartRequestBody = {
+  postId: string; // 특정 게시물 ID
+  hasUserLiked: boolean; // 좋아요 상태
 };
 
-// 하트 추가요청 to 서버: API_PATH/postHeart/123
-export const useAddHeartToPost = (postId: string | undefined) =>
-  useSWRMutation(API_PATH.postHeart, async (url: string, { arg }: { arg: AddOrDeleteHeartToPostRequestBody }) => {
+export const useUpdatePostHeart = (postId: string) => {
+  return useSWRMutation(API_PATH.pathchHeart, async (url: string, { arg }: { arg: UpdatePostHeartRequestBody }) => {
     if (!postId) return;
-    await postFetcher<AddOrDeleteHeartToPostRequestBody>([url, postId], {
-      arg,
-    });
-  });
-
-// 하트 삭제요청 to 서버: API_PATH/postHeart/123
-export const useDeleteHeartFromPost = () => {
-  return useSWRMutation(API_PATH.postHeart, async (url, { arg: postId }: { arg: string }) => {
-    await deleteFetcher([url, postId]);
+    await patchFetcher<UpdatePostHeartRequestBody>([url, postId], { arg });
   });
 };
+
+// 좋아요 추가 to 서버: API_PATH/postHeart/123
+// export const useAddHeartToPost = (postId: string | undefined) =>
+//   useSWRMutation(API_PATH.postHeart, async (url: string, { arg }: { arg: AddOrDeleteHeartToPostRequestBody }) => {
+//     if (!postId) return;
+//     await postFetcher<AddOrDeleteHeartToPostRequestBody>([url, postId], {
+//       arg,
+//     });
+//   });
+
+// // 좋아요 삭제 to 서버: API_PATH/postHeart/123
+// export const useDeleteHeartFromPost = () => {
+//   return useSWRMutation(API_PATH.postHeart, async (url, { arg: postId }: { arg: string }) => {
+//     await deleteFetcher([url, postId]);
+//   });
+// };
