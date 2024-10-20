@@ -12,8 +12,11 @@ describe('usePostList', () => {
     resetAllStore();
   });
   it('게시물 리스트를 가져온다.', async () => {
+    // given
     const { result } = renderHook(() => usePostList(), { wrapper });
     await waitFor(() => expect(result.current.postList).not.toBeUndefined());
+    // when
+    // then
     expect(result.current.postList?.length).toBeGreaterThan(0);
     expect(result.current.postList?.[0].author.userName).toBe('John Doe');
   });
