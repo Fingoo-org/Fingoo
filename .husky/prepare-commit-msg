@@ -34,7 +34,7 @@ COMMIT_MESSAGE=$1
 
 BRANCH_NAME=$(git symbolic-ref --short HEAD)
 BRANCH_NAME="${BRANCH_NAME##*/}"
-JIRA_ID=$(echo "$BRANCH_NAME" | egrep -o '(EI-[0-9]+|MC-[0-9]+)')
+JIRA_ID=$(echo "$BRANCH_NAME" | egrep -o '(EI-[0-9]+|MC-[0-9]+|KAN-[0-9]+)')
 
 # merge commit 제외
 MERGE=$(cat $COMMIT_MESSAGE|grep -i 'merge'|wc -l)
