@@ -12,16 +12,12 @@ type PostListItemProps = {
 };
 
 export default function PostListItem({ item, style }: PostListItemProps) {
-  const { selectedPost, addHeartToPost, removeHeartFromPost } = usePostList();
+  const { selectedPost, updateHeartFromPost } = usePostList();
   const isSelected: boolean = selectedPost?.postId === item.postId;
 
   const handleItemSelect = () => {
     console.log('isSelected: ', isSelected);
-    addHeartToPost(item.postId);
-  };
-  const handleItemDeSelect = () => {
-    console.log('isSelected: ', isSelected);
-    removeHeartFromPost(item.postId);
+    updateHeartFromPost(item.hasUserLiked);
   };
 
   return (
@@ -88,7 +84,7 @@ export default function PostListItem({ item, style }: PostListItemProps) {
             <div className="flex items-center gap-4">
               <div
                 className="flex items-center gap-1 rounded-md px-2 py-1 hover:bg-gray-300"
-                onClick={() => (isSelected ? handleItemDeSelect() : handleItemSelect())}
+                onClick={() => handleItemSelect()}
               >
                 <Heart size={18} color={item.hasUserLiked ? 'red' : 'gray'} />
                 <span className={`text-sm text-gray-500`}>{item.likeCount}</span>
