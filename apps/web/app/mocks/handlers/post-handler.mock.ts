@@ -10,7 +10,7 @@ type postParam = {
 };
 
 export const postHandlers = [
-  http.get(`${API_PATH.postList}`, async () => {
+  http.get(`${API_PATH.postList}/list`, async () => {
     await delayForDevelopment();
     return HttpResponse.json(mockDB.getPostList());
   }),

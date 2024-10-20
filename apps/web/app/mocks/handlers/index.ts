@@ -18,5 +18,5 @@ export const handlers = [
   ...indicatorHandlers,
   ...indicatorQuoteHandlers,
   ...majorChartHandlers,
-  // ...postHandlers,
+  ...postHandlers,
 ];

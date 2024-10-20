@@ -463,7 +463,7 @@ const initialState: MockDatabase = {
   majorIndicator: majorIndicatorCountry,
   post: [
     {
-      postId: 'post1',
+      postId: '1',
       author: {
         userId: 'user1',
         userName: 'John Doe',
@@ -478,7 +478,7 @@ const initialState: MockDatabase = {
       hasUserLiked: true,
     },
     {
-      postId: 'post2',
+      postId: '2',
       author: {
         userId: 'user2',
         userName: 'Jane Smith',
