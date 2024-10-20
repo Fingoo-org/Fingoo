@@ -14,11 +14,14 @@ import {
   mockCustomForecastIndicatorAction,
 } from './custom-forecast-indicator-action.mock';
 import { mockIndicatorQuoteAction, MockIndicatorQuoteAction } from './indicator-quote.action.mock';
+import { MockPostAction, mockPostAction } from './post.action.mock';
 import { IndicatorQuoteResponse } from '@/app/store/querys/numerical-guidance/indicator-quote.query';
 import { MajorIndicatorResponse } from '@/app/store/querys/numerical-guidance/major-indicator.query';
 import { mockMajorIndicatorAction, MockMajorIndicatorAction } from './major-indicator-action.mock';
 import { majorIndicatorCountry } from '../mock-data/major-indicator-value.mock';
+import { PostResponse } from '@/app/store/querys/post/post-list.query';
 
+// 서버로 부터 받을 MockData을 지정
 type MockDatabase = {
   metadataList: IndicatorBoardMetadataResponse[];
   indicators: IndicatorByTypeResponse[];
@@ -27,20 +30,22 @@ type MockDatabase = {
   customForecastIndicatorList: CustomForecastIndicatorListResponse;
   indicatorQuoteResponse: IndicatorQuoteResponse[];
   majorIndicator: MajorIndicatorResponse[];
+  post: PostResponse[];
 };
 
 type MockDatabaseAction = MockCustomForecastIndicatorAction &
   MockIndicatorBoardMetadataAction &
   MockIndicatorAction &
   MockIndicatorQuoteAction &
-  MockMajorIndicatorAction;
-
+  MockMajorIndicatorAction &
+  MockPostAction;
 export const mockDB: MockDatabaseAction = {
   ...mockIndicatorBoardMetadataAction,
   ...mockIndicatorAction,
   ...mockCustomForecastIndicatorAction,
   ...mockIndicatorQuoteAction,
   ...mockMajorIndicatorAction,
+  ...mockPostAction,
 };
 
 const initialState: MockDatabase = {
@@ -456,6 +461,37 @@ const initialState: MockDatabase = {
     },
   ],
   majorIndicator: majorIndicatorCountry,
+  post: [
+    {
+      postId: '1',
+      author: {
+        userId: 'user1',
+        userName: 'John Doe',
+        profileImageUrl: 'https://example.com/profile1.jpg',
+      },
+      content: 'This is the first post.',
+      imageUrl: 'https://example.com/image1.jpg',
+      createdAt: '2024-09-30T12:00:00Z',
+      likeCount: 10,
+      commentCount: 5,
+      shareCount: 2,
+      hasUserLiked: true,
+    },
+    {
+      postId: '2',
+      author: {
+        userId: 'user2',
+        userName: 'Jane Smith',
+        profileImageUrl: null,
+      },
+      content: 'This is the second post.',
+      createdAt: '2024-09-29T08:30:00Z',
+      likeCount: 5,
+      commentCount: 2,
+      shareCount: 1,
+      hasUserLiked: false,
+    },
+  ],
 };
 
 // mock이라 성능상의 문제가 필요 없음으로 사용

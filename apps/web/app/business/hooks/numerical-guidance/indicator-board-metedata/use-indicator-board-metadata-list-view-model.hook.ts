@@ -55,6 +55,8 @@ export const useIndicatorBoardMetadataList = () => {
     }
   }, [convertedIndicatorBoardMetadataList]);
 
+  const optimisticRevalidateOption = { revalidate: false };
+
   const createIndicatorBoardMetadata = async (name?: string) => {
     const metadata = {
       indicatorBoardMetadataName: createNotDuplicatedName(
@@ -74,7 +76,7 @@ export const useIndicatorBoardMetadataList = () => {
           convertedIndicatorBoardMetadataList?.deleteIndicatorBoardMetadata(metadataId);
         return newIndicatorBoardMetadataList?.formattedIndicatorBoardMetadataList;
       },
-      revalidate: false,
+      ...optimisticRevalidateOption,
     });
   };
 

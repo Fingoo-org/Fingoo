@@ -1,0 +1,23 @@
+import { renderHook, waitFor } from '@testing-library/react';
+import { SWRProviderWithoutCache } from '@/app/ui/components/util/swr-provider';
+import { usePostList } from '@/app/business/hooks/post/use-post-list.hook';
+import { mockDatabaseStore, resetMockDB } from '@/app/mocks/db';
+import { resetAllStore } from '@/app/store/stores/reset-store';
+
+const wrapper = SWRProviderWithoutCache;
+
+describe('usePostList', () => {
+  beforeEach(() => {
+    resetMockDB();
+    resetAllStore();
+  });
+  it('게시물 리스트를 가져온다.', async () => {
+    // given
+    const { result } = renderHook(() => usePostList(), { wrapper });
+    await waitFor(() => expect(result.current.postList).not.toBeUndefined());
+    // when
+    // then
+    expect(result.current.postList?.length).toBeGreaterThan(0);
+    expect(result.current.postList?.[0].author.userName).toBe('John Doe');
+  });
+});
